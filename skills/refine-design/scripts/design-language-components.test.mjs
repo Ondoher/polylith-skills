@@ -1,0 +1,48 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
+import {applyProposal} from './design-language.mjs';
+const make=()=>JSON.parse(fs.readFileSync(new URL('../references/extras-proposal.json',import.meta.url),'utf8'));
+const folder=()=>fs.mkdtempSync(path.join(os.tmpdir(),'design-language-components-test-'));
+const read=(b,f)=>fs.readFileSync(path.join(b,f),'utf8');
+const refine=b=>{const {revision,decisions,...d}=JSON.parse(read(b,'design-language/design-language.json'));return {...d,baseRevision:revision};};
+test('two documents share assets and data while separating foundations and compact specimens',()=>{
+ const b=folder(),report=applyProposal(b,make()),design=read(b,'design-language.md'),components=read(b,'components.md');
+ assert.equal(report.components,path.join(b,'components.md'));
+ assert.ok(design.includes('](./components.md)'));
+ assert.ok(!design.includes('](./design-language/specimens/button-'));
+ assert.ok(!design.includes('](./design-language/specimens/field-'));
+ assert.ok(!design.includes('| fieldHeight |'));
+ assert.ok(components.includes('](./design-language.md)'));
+ assert.ok(components.includes('button-primary-command-states.svg'));
+ assert.ok(components.includes('field-password-280.svg'));
+ assert.match(components,/focusGap \| 2px \| Unspecified/);
+ assert.ok(!components.includes('| State / color |'));
+ for(const doc of [design,components])for(const match of doc.matchAll(/\]\((\.\/[^)]+)\)/g))assert.ok(fs.existsSync(path.resolve(b,match[1].split('#')[0])));
+ assert.ok(design.lastIndexOf('## Open Questions')>design.lastIndexOf('## Decisions And Gaps'));
+ const before=[design,components,read(b,'design-language/design-language.json')];
+ assert.equal(applyProposal(b,refine(b)).revision,1);
+ assert.deepEqual([read(b,'design-language.md'),read(b,'components.md'),read(b,'design-language/design-language.json')],before);
+});
+test('unowned, edited or missing companion documents block publication of every artifact',()=>{
+ const b=folder();fs.writeFileSync(path.join(b,'components.md'),'Existing owner document');
+ assert.throws(()=>applyProposal(b,make()),/unowned components/);
+ assert.ok(!fs.existsSync(path.join(b,'design-language.md')));
+ const c=folder();applyProposal(c,make());const source=read(c,'design-language/design-language.json'),design=read(c,'design-language.md');
+ fs.writeFileSync(path.join(c,'components.md'),read(c,'components.md').replace('# Standard Components','# Owner alteration'));
+ const next=refine(c);next.button.label='Changed';
+ assert.throws(()=>applyProposal(c,next),/components.md was edited/);
+ assert.equal(read(c,'design-language/design-language.json'),source);assert.equal(read(c,'design-language.md'),design);
+ fs.unlinkSync(path.join(c,'components.md'));
+ assert.throws(()=>applyProposal(c,next),/components.md is missing/);
+ assert.equal(read(c,'design-language/design-language.json'),source);
+});
+test('optional password details move to the companion and respect preview selections',()=>{
+ const b=folder(),d=make();d.documentLayout.passwordPreview=true;d.documentLayout.embeddedField=false;
+ applyProposal(b,d);
+ assert.ok(read(b,'components.md').includes('component-password-280.svg'));
+ assert.ok(!read(b,'components.md').includes('field-password-280.svg'));
+ assert.ok(!read(b,'design-language.md').includes('component-password-280.svg'));
+});

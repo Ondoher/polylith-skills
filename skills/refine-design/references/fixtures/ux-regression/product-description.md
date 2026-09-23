@@ -1,0 +1,1 @@
+Example Records is a small tool for a person maintaining observation records. The bounded primary task is to select one record, correct it, save it, keep the corrected record visibly saved after success, and retain the correction for retry after failure.

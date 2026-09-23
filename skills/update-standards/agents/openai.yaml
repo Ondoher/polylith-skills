@@ -1,0 +1,4 @@
+interface:
+  display_name: "Update Standards"
+  short_description: "Commit and publish the canonical standards repository"
+  default_prompt: "Use $update-standards to checkpoint and publish the canonical standards repository to GitHub."

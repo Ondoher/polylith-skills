@@ -1,0 +1,11 @@
+{
+  "name": "generate-prd-skill",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test --test-isolation=none scripts/generate-prd.test.mjs scripts/full-publication.test.mjs scripts/product-neutrality.test.mjs scripts/cross-skill-integration.test.mjs"
+  },
+  "dependencies": {
+    "fontkit": "2.0.4"
+  }
+}

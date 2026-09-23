@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "0.2",
+  "designMode": "component",
+  "artifactKind": "comp",
+  "patternResearch": {
+    "method": "bounded-online-search",
+    "outcome": "comparables-found",
+    "reviewedAt": "2026-09-19",
+    "searchQueries": ["MUI List Item Button official selection guidance"],
+    "comparables": [
+      {
+        "id": "mui-list-item-button", "product": "Material UI", "sourceType": "platform-guidance",
+        "sourceUrl": "https://mui.com/material-ui/react-list/", "accessedAt": "2026-09-20",
+        "observations": ["List item buttons present actionable entries within an ordered content collection."]
+      }
+    ],
+    "sharedPatterns": ["A collection presents clearly separated entries, and an actionable entry retains a visible label."],
+    "selectedPattern": {
+      "summary": "A contained record collection with a clearly labeled actionable entry.",
+      "rationale": "The platform pattern supports an ordinary selectable collection without adding product-specific behavior.",
+      "adaptations": ["Use supplied design-language roles and the UX-owned action label."]
+    },
+    "rejectedPatterns": [],
+    "limits": ["The source supports collection and action semantics; it does not prescribe fixture content or dimensions."],
+    "verification": {"status": "source-checked", "checkedBy": "parent", "checkedAt": "2026-09-20", "notes": ["Parent verified the cited platform documentation."]}
+  },
+  "fidelity": {
+    "visualDecisions": ["The collection uses one contained visual group and a distinct labeled action."],
+    "stateDistinctions": ["The available state presents an actionable entry without selection emphasis."],
+    "representativeContent": ["A short observation label represents ordinary populated content."]
+  },
+  "id": "record-list-component-design",
+  "title": "Record List Component",
+  "revision": "1",
+  "status": "accepted",
+  "assessment": {"kind": "parent-assessment", "description": "Parent-authored synthetic fixture for the component-design contract."},
+  "sources": [
+    {"id": "ux", "kind": "ux", "path": "ux/ux-spec.json", "documentId": "field-journal-ux", "revision": "1"},
+    {"id": "design-language", "kind": "design-language", "path": "design-language/design-language.json", "documentId": "example-design", "revision": 1}
+  ],
+  "uxSource": {"sourceId": "ux", "documentId": "field-journal-ux", "revision": "1"},
+  "designLanguageSource": {"sourceId": "design-language", "documentId": "example-design", "revision": 1},
+  "componentTemplate": {
+    "id": "record-list-component", "name": "Record list", "version": "1", "uxRef": "record-list",
+    "replacesTemplateRef": {"id": "record-list-placeholder", "version": "1"},
+    "supportedStates": ["available"],
+    "parameters": [{"id": "label", "required": true, "description": "Visible record label supplied by the owning surface."}],
+    "sizing": {"width": "fill", "height": "fixed", "heightPx": 240},
+    "accessibility": {"role": "list", "name": "Observation records", "keyboard": ["Each actionable entry uses the platform activation behavior."]},
+    "stateScenes": [{"id": "available", "state": "available", "sceneRef": "record-list-available"}]
+  },
+  "promotion": {
+    "scope": "app-local", "rationale": "The first use belongs to one product workflow.",
+    "criteria": ["Promote after another product needs the same states and parameter meaning."]
+  },
+  "tokens": [
+    {"id": "space-small", "kind": "dimension", "value": 8, "unit": "px", "status": "default", "source": {"kind": "ui-default", "description": "Synthetic fixture spacing."}},
+    {"id": "space-medium", "kind": "dimension", "value": 16, "unit": "px", "status": "default", "source": {"kind": "ui-default", "description": "Synthetic fixture spacing."}}
+  ],
+  "templates": [
+    {
+      "id": "visual-block", "name": "Visual block", "kind": "visual", "version": "1", "status": "accepted", "availability": "available", "interaction": "presentational",
+      "html": {"renderer": "visual", "element": "div", "className": "ui-visual"}, "supportedStates": ["default"],
+      "parameters": [{"id": "role", "required": true}, {"id": "text", "required": false}, {"id": "accessibleLabel", "required": false}],
+      "sizing": {"width": "fill", "height": "fill"}
+    },
+    {
+      "id": "record-command", "name": "Record command", "kind": "command", "version": "1", "status": "accepted", "availability": "available", "interaction": "behavioral",
+      "html": {"renderer": "button", "element": "button", "className": "ui-button"}, "supportedStates": ["default"],
+      "parameters": [{"id": "label", "required": true}], "sizing": {"width": "fill", "height": "content"}
+    }
+  ],
+  "assets": [],
+  "scenes": [
+    {
+      "id": "record-list-available", "name": "Record list available", "status": "accepted", "completeness": "complete",
+      "surfaceRef": "records-workspace", "interactionFrameRef": "records-viewing", "deferredInteractionNodeRefs": [],
+      "subject": {"kind": "component", "ref": "record-list"}, "useCaseRefs": ["update-record"], "state": "available",
+      "viewport": {"width": 880, "height": 240}, "themeRef": "example-theme",
+      "uxQuestionRefs": [], "uiQuestionRefs": [], "unspecifiedRequirementRefs": [],
+      "root": {
+        "id": "record-list-layout", "kind": "region", "label": "Observation records", "uxRegionRef": "viewing-collection",
+        "layout": {
+          "mode": "grid", "columns": [{"unit": "fr", "value": 1}],
+          "rows": [{"unit": "fr", "value": 1}, {"unit": "content"}],
+          "gap": {"tokenRef": "space-small"}, "padding": {"tokenRef": "space-medium"}, "align": "stretch", "justify": "start"
+        },
+        "children": [
+          {
+            "id": "record-summary", "kind": "component", "uxRef": "record-list", "templateRef": {"id": "visual-block", "version": "1"}, "state": "default",
+            "parameters": {"role": "item", "text": "Ridge observation", "accessibleLabel": "Ridge observation record"},
+            "styleRefs": [], "assetRefs": [], "placement": {"row": 1, "column": 1}
+          },
+          {
+            "id": "open-record-command", "kind": "component", "uxRef": "record-list", "templateRef": {"id": "record-command", "version": "1"}, "state": "default",
+            "interactionNodeRef": "open-record-affordance", "actionRef": "open-record", "parameters": {"label": "Open record"},
+            "styleRefs": [{"kind": "color-role", "id": "primary-action"}], "assetRefs": [], "placement": {"row": 2, "column": 1}
+          }
+        ]
+      }
+    }
+  ],
+  "renderRequests": [
+    {"id": "record-list-available-clean", "sceneRef": "record-list-available", "variant": "clean", "output": "comps/record-list-available.html"},
+    {"id": "record-list-available-annotated", "sceneRef": "record-list-available", "variant": "annotated", "output": "comps/record-list-available-annotated.html"}
+  ],
+  "unspecifiedRequirements": [],
+  "uxChangeRequests": [],
+  "openQuestions": []
+}

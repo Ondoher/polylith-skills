@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "status": "defaulted",
+  "fieldHeight": 40,
+  "fieldPaddingX": 12,
+  "buttonHeight": 40,
+  "buttonPaddingX": 16,
+  "labelGap": 8,
+  "dialogWidth": 480,
+  "typeRoles": {
+    "heading": "heading",
+    "body": "body",
+    "label": "supporting",
+    "supporting": "supporting",
+    "button": "body"
+  }
+}

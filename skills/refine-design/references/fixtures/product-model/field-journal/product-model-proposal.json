@@ -1,0 +1,257 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "product-model-proposal",
+  "id": "field-journal",
+  "name": "Field Journal",
+  "status": "partial",
+  "owner": "product",
+  "consumerDomains": [
+    "prd",
+    "ux",
+    "system-architecture",
+    "technical-documentation",
+    "implementation-planning"
+  ],
+  "base": null,
+  "provenance": {
+    "producer": "refine-design",
+    "method": "semantic-parse"
+  },
+  "purpose": {
+    "id": "field-journal-purpose",
+    "summary": "Help field researchers preserve observations while working away from a desk.",
+    "status": "accepted",
+    "owner": "product",
+    "consumerDomains": [
+      "prd",
+      "ux",
+      "system-architecture",
+      "technical-documentation",
+      "implementation-planning"
+    ],
+    "provenance": {
+      "sourceClaimRefs": [
+        "claim-purpose"
+      ]
+    }
+  },
+  "users": [
+    {
+      "id": "field-researcher",
+      "name": "Field researcher",
+      "description": "A person who needs a dependable record of observations made away from a desk.",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "technical-documentation",
+        "implementation-planning"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-users"
+        ]
+      }
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "create-observations",
+      "name": "Create observations",
+      "description": "Create a dated observation with a title and notes.",
+      "outcome": "The researcher has a durable observation associated with its date.",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "system-architecture",
+        "technical-documentation",
+        "implementation-planning"
+      ],
+      "userRefs": [
+        "field-researcher"
+      ],
+      "relatedCapabilityRefs": [],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-create-observations"
+        ]
+      }
+    },
+    {
+      "id": "organize-expeditions",
+      "name": "Organize expeditions",
+      "description": "Group observations into named expeditions.",
+      "outcome": "The researcher can review observations in the context of an expedition.",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "system-architecture",
+        "technical-documentation",
+        "implementation-planning"
+      ],
+      "userRefs": [
+        "field-researcher"
+      ],
+      "relatedCapabilityRefs": [],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-organize-expeditions"
+        ]
+      }
+    },
+    {
+      "id": "review-glossary",
+      "name": "Review glossary",
+      "description": "Review an alphabetical glossary of terms used in observations.",
+      "outcome": "The researcher can find the meaning and usage of a term.",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "technical-documentation",
+        "implementation-planning"
+      ],
+      "userRefs": [
+        "field-researcher"
+      ],
+      "relatedCapabilityRefs": [],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-review-glossary"
+        ]
+      }
+    }
+  ],
+  "gaps": [
+    {
+      "id": "expedition-sharing-policy",
+      "kind": "open-question",
+      "question": "Can a researcher share an expedition with another researcher?",
+      "impact": "The answer changes collaboration behavior for organized expeditions.",
+      "status": "unresolved",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "system-architecture",
+        "technical-documentation",
+        "implementation-planning"
+      ],
+      "capabilityRefs": [
+        "organize-expeditions"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-expedition-sharing"
+        ]
+      }
+    }
+  ],
+  "sourceClaims": [
+    {
+      "id": "claim-purpose",
+      "startLine": 1,
+      "endLine": 4,
+      "summary": "The source names the product and states its purpose.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "field-journal-purpose"
+      ]
+    },
+    {
+      "id": "claim-users",
+      "startLine": 5,
+      "endLine": 6,
+      "summary": "The source identifies field researchers as the intended users.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "field-researcher"
+      ]
+    },
+    {
+      "id": "claim-create-observations",
+      "startLine": 7,
+      "endLine": 7,
+      "summary": "The source requires dated observations with titles and notes.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "create-observations"
+      ]
+    },
+    {
+      "id": "claim-organize-expeditions",
+      "startLine": 8,
+      "endLine": 8,
+      "summary": "The source requires organizing observations into named expeditions.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "organize-expeditions"
+      ]
+    },
+    {
+      "id": "claim-review-glossary",
+      "startLine": 9,
+      "endLine": 10,
+      "summary": "The source requires an alphabetical glossary of observation terms.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "review-glossary"
+      ]
+    },
+    {
+      "id": "claim-expedition-sharing",
+      "startLine": 11,
+      "endLine": 11,
+      "summary": "The source leaves expedition sharing unresolved.",
+      "disposition": "unresolved",
+      "recordRefs": [
+        "expedition-sharing-policy"
+      ]
+    }
+  ],
+  "identityClaims": [
+    {
+      "recordRef": "field-journal-purpose",
+      "kind": "new",
+      "previousRef": null,
+      "supersedesRefs": []
+    },
+    {
+      "recordRef": "field-researcher",
+      "kind": "new",
+      "previousRef": null,
+      "supersedesRefs": []
+    },
+    {
+      "recordRef": "create-observations",
+      "kind": "new",
+      "previousRef": null,
+      "supersedesRefs": []
+    },
+    {
+      "recordRef": "organize-expeditions",
+      "kind": "new",
+      "previousRef": null,
+      "supersedesRefs": []
+    },
+    {
+      "recordRef": "review-glossary",
+      "kind": "new",
+      "previousRef": null,
+      "supersedesRefs": []
+    },
+    {
+      "recordRef": "expedition-sharing-policy",
+      "kind": "new",
+      "previousRef": null,
+      "supersedesRefs": []
+    }
+  ],
+  "sourceClaimLineage": []
+}

@@ -1,0 +1,22 @@
+[
+    {
+        "id":  "roboto",
+        "source":  "https://raw.githubusercontent.com/google/fonts/main/ofl/roboto/Roboto%5Bwdth%2Cwght%5D.ttf",
+        "family":  "Roboto",
+        "sha256":  "d7598e12c5dbef095ff8272cfc55da0250bd07fbdecbac8a530b9b277872a134",
+        "retrieved":  "2026-09-17",
+        "license":  "roboto-OFL.txt",
+        "file":  "roboto.ttf",
+        "internalFamily":  "Roboto"
+    },
+    {
+        "id":  "merriweather",
+        "source":  "https://raw.githubusercontent.com/google/fonts/main/ofl/merriweather/Merriweather%5Bopsz%2Cwdth%2Cwght%5D.ttf",
+        "family":  "Merriweather",
+        "sha256":  "d0ed0e359e396af7ad05e73dffd11a3a4c326ea0d0283c56bd9361cb2cc86a96",
+        "retrieved":  "2026-09-17",
+        "license":  "merriweather-OFL.txt",
+        "file":  "merriweather.ttf",
+        "internalFamily":  "Merriweather Light"
+    }
+]

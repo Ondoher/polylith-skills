@@ -1,0 +1,6 @@
+interface:
+  display_name: "Initialize Project"
+  short_description: "Initialize a fresh application project"
+  default_prompt: "Use $initialize-project to initialize this fresh project."
+policy:
+  allow_implicit_invocation: true

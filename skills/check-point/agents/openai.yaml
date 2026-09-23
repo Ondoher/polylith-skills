@@ -1,0 +1,4 @@
+interface:
+  display_name: "Check Point"
+  short_description: "Review and commit the complete repository state"
+  default_prompt: "Use $check-point to propose a commit for all current repository changes."

@@ -1,0 +1,5 @@
+interface:
+  display_name: Install Polylith Skills
+  short_description: Link this repository's managed skills into Codex.
+  default_prompt: Inspect the installation plan, then install or repair the managed Polylith skills after obtaining approval for the disclosed Codex-home changes.
+

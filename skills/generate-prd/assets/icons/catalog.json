@@ -1,0 +1,72 @@
+{
+    "version":  "7.3.4",
+    "licenseSource":  "https://unpkg.com/@mui/icons-material@7.3.4/LICENSE",
+    "license":  "MIT",
+    "assets":  [
+                   {
+                       "source":  "https://unpkg.com/@mui/icons-material@7.3.4/PlayArrow.js",
+                       "sha256":  "f22e097c87f4689e20501e6beaacaa5cb921edddf3eb7dd3069eb38503764399",
+                       "name":  "PlayArrow",
+                       "file":  "PlayArrow.json",
+                       "sourceSha256":  "d906b52794d8a70b1c8a483c49925c03b22c9c545f73bf11684232bae0ed4cd1"
+                   },
+                   {
+                       "source":  "https://unpkg.com/@mui/icons-material@7.3.4/Pause.js",
+                       "sha256":  "6ee45982369512dd9248243ea6a38da03f8141f6d5e1609df2c773982b94a9e0",
+                       "name":  "Pause",
+                       "file":  "Pause.json",
+                       "sourceSha256":  "40f0a00b30d15a7982cccca5a58c8e5e9cf4efa896165a0d42e98268f3e3e938"
+                   },
+                   {
+                       "source":  "https://unpkg.com/@mui/icons-material@7.3.4/VideoCall.js",
+                       "sha256":  "0593cc7d8c5c97719be4a2b40d0060d1e416dd8b19265b31997378c403e26ec6",
+                       "name":  "VideoCall",
+                       "file":  "VideoCall.json",
+                       "sourceSha256":  "562e348f0d44de209ef0f14a294b4f94d873cb47101bf3f9ef25050fa9939651"
+                   },
+                   {
+                       "source":  "https://unpkg.com/@mui/icons-material@7.3.4/FileDownload.js",
+                       "sha256":  "b33caf98d460d831033beb1e4e73930e5e62b4ab47ba07ba1e9ee51669738d2c",
+                       "name":  "FileDownload",
+                       "file":  "FileDownload.json",
+                       "sourceSha256":  "84c4f25d7dd2cd639d3a7470e44b675ce761fc4fc719a01b89a2b292262b52ad"
+                   },
+                   {
+                       "source":  "https://unpkg.com/@mui/icons-material@7.3.4/Download.js",
+                       "sha256":  "54036b9c67f861b8696e4a7af697e4cba00d6178bb1cbb04377872c2710a3cdf",
+                       "name":  "Download",
+                       "file":  "Download.json",
+                       "sourceSha256":  "9cadcbc6da3951b177a66d5e50ad9ba49a6b700796208247e9bbde06dc3c0a64"
+                   },
+                   {
+                       "source":  "https://unpkg.com/@mui/icons-material@7.3.4/Visibility.js",
+                       "sha256":  "2f6040ef412f717d5fd995b2e777f4ea0249b27af5ed811e78140acc135d733b",
+                       "name":  "Visibility",
+                       "file":  "Visibility.json",
+                       "sourceSha256":  "99b642b20a77745002d81c05ef0d9306b00a44a8b962b4bbdebb40eba25fd9c7"
+                   },
+                   {
+                       "source":  "https://unpkg.com/@mui/icons-material@7.3.4/VisibilityOff.js",
+                       "sha256":  "8d3050c6abe1504c49cf1f3c8fd90696b9d5814229ce84b150d241270e4a22e4",
+                       "name":  "VisibilityOff",
+                       "file":  "VisibilityOff.json",
+                       "sourceSha256":  "63126e155b9978ced6c012326b96b2fd781964d91a5aba5396674f915c5280cf"
+                   },
+                   {
+                       "source":  "https://unpkg.com/@mui/icons-material@7.3.4/CheckCircle.js",
+                       "sha256":  "9bdc155052342cbf1f1eb13f54c075b1f20cfe9a8ac38e8dee36a9fed3c17a3c",
+                       "name":  "CheckCircle",
+                       "file":  "CheckCircle.json",
+                       "sourceSha256":  "95745f8263957d50f95b57a4a99632d982bc4dea3fcb119ed9ca5ff6ea56741f"
+                   },
+                   {
+                       "source":  "https://unpkg.com/@mui/icons-material@7.3.4/Cancel.js",
+                       "sha256":  "0d8ae3f17609752f70fa270c3b486dc88281c9c4947b60ef4849cd71e6188c87",
+                       "name":  "Cancel",
+                       "file":  "Cancel.json",
+                       "sourceSha256":  "6ba5832bc81dbf017ce1f3bd362f37df330062b57ed849babd357d01eb966489"
+                   }
+               ],
+    "library":  "@mui/icons-material",
+    "variant":  "Filled"
+}

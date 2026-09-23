@@ -1,0 +1,4 @@
+interface:
+  display_name: "Update Canonical Standard"
+  short_description: "Promote an active local override to canonical"
+  default_prompt: "Use $update-canonical-standard to promote the active repository override into its canonical engineering standard."

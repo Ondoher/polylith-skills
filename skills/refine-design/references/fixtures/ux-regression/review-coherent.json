@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "0.2",
+  "subject": {
+    "productDescription": {
+      "id": "product",
+      "sha256": "e785c2be935b2b169efaa78726593426a6dee9ecd046fa05f77d70b204bbca46"
+    },
+    "uxArtifact": {
+      "id": "example-records-ux",
+      "revision": "1",
+      "sha256": "5818c56048517db4d425b5a2d96fe5e382178d16ba1fd32c362866eb0f3e65a0"
+    },
+    "scopeRefs": [
+      "update-record"
+    ]
+  },
+  "verdict": "pass",
+  "summary": "The bounded record-correction task has a coherent entry, editing and save path, visible completion, and recovery that preserves the correction. Its semantic contract can proceed to UI design.",
+  "coverage": [
+    {
+      "criterion": "product-intent",
+      "result": "pass",
+      "evidenceRefs": [
+        "product",
+        "update-record",
+        "records-saved",
+        "records-failed"
+      ],
+      "note": "The task preserves the supplied requirements to select and correct one record, keep its saved result visible, and retain the correction for retry after failure."
+    },
+    {
+      "criterion": "task-coherence",
+      "result": "pass",
+      "evidenceRefs": [
+        "update-record",
+        "open-record",
+        "record-field",
+        "save-record",
+        "retry-save"
+      ],
+      "note": "Record activation leads to an editable value and a named save command. Completion is observable, and failure leads back into the same save flow through retry."
+    },
+    {
+      "criterion": "information-hierarchy",
+      "result": "pass",
+      "evidenceRefs": [
+        "record-list",
+        "records-workspace",
+        "records-editing",
+        "records-saving",
+        "records-saved",
+        "records-failed"
+      ],
+      "note": "Collection identity and selection provide context; the current value precedes its save command; progress, completion, and failure information appear in their relevant states."
+    },
+    {
+      "criterion": "action-economy-discoverability",
+      "result": "pass",
+      "evidenceRefs": [
+        "open-record",
+        "save-record",
+        "retry-save",
+        "update-record-pruning",
+        "contextualize-retry"
+      ],
+      "note": "Opening and saving serve distinct required steps. Retry appears only after failure, and keyboard alternatives invoke the same actions without creating competing visible routes."
+    },
+    {
+      "criterion": "mode-state-clarity",
+      "result": "pass",
+      "evidenceRefs": [
+        "record-list",
+        "records-viewing",
+        "records-editing",
+        "records-saving",
+        "records-saved",
+        "records-failed"
+      ],
+      "note": "The selected record remains identified, and viewing, editing, saving, saved, and failed states have distinguishable purposes and feedback."
+    },
+    {
+      "criterion": "feedback-cancellation-recovery",
+      "result": "pass",
+      "evidenceRefs": [
+        "save-record",
+        "save-status",
+        "record-field",
+        "retry-preserved-save",
+        "retry-save",
+        "records-workspace"
+      ],
+      "note": "Save feedback distinguishes progress from success and failure. The bounded save explicitly cannot be cancelled; failure retains the edit and exposes retry. Workspace exit requires saved work or an explicit discard decision."
+    },
+    {
+      "criterion": "baseline-accessibility",
+      "result": "pass",
+      "evidenceRefs": [
+        "open-record",
+        "save-record",
+        "retry-save",
+        "records-viewing",
+        "records-editing",
+        "records-saving",
+        "records-saved",
+        "records-failed"
+      ],
+      "note": "Named commands have equivalent platform-key activation, editing receives focus, and subsequent states describe focus retention or recovery intent. The scope introduces no specialized gesture requiring an additional alternative."
+    },
+    {
+      "criterion": "pattern-research",
+      "result": "pass",
+      "evidenceRefs": [
+        "open-record",
+        "save-record",
+        "retry-save",
+        "records-viewing",
+        "records-editing",
+        "records-saving",
+        "records-saved",
+        "records-failed"
+      ],
+      "note": "The ordinary classifications are credible for list activation, bounded value editing, explicit saving, status feedback, and contextual retry. No unfamiliar or complex interaction triggers a research obligation."
+    },
+    {
+      "criterion": "ux-ui-boundary",
+      "result": "pass",
+      "evidenceRefs": [
+        "records-workspace",
+        "records-editing",
+        "records-saved",
+        "records-failed"
+      ],
+      "note": "The artifact establishes information priority, task order, state behavior, and focus intent while leaving detailed geometry, styling, and framework components to UI."
+    },
+    {
+      "criterion": "handoff-traceability",
+      "result": "pass",
+      "evidenceRefs": [
+        "update-record",
+        "open-current-record",
+        "save-current-record",
+        "save-record-affordance",
+        "save-completion-feedback",
+        "save-failure-feedback",
+        "retry-save-affordance"
+      ],
+      "note": "Accepted task steps, actions, affordances, feedback, and frames provide stable references for implementing the bounded task without inventing its primary behavior or recovery outcome."
+    }
+  ],
+  "findings": [],
+  "researchChecks": [],
+  "limits": [
+    "This review covers selecting and correcting one available record, saving it, retaining visible completion, and retrying after failure; it does not assess broader collection-management workflows.",
+    "The supplied product-description byte length and both supplied SHA-256 digests match the inspected files. Structural validation and authoritative source-path resolution remain the parent's responsibility.",
+    "No pattern-research records were supplied or required for these ordinary interactions; no external sources were opened.",
+    "This is a semantic interaction review, not user testing, usability validation, accessibility conformance, standards compliance, engineering feasibility, or implementation approval. UI and implementation must preserve ordinary control semantics and visible focus.",
+    "Sanitized expected result for regression testing; not historical agent evidence."
+  ]
+}

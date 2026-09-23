@@ -1,0 +1,5 @@
+interface:
+  display_name: Uninstall Polylith Skills
+  short_description: Remove owned global Codex links safely.
+  default_prompt: Plan and safely remove the global Codex links installed from this repository while preserving the checkout and unrelated skills.
+

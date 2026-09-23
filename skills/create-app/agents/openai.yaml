@@ -1,0 +1,6 @@
+interface:
+  display_name: "Create App"
+  short_description: "Add an app to an established Polylith project"
+  default_prompt: "Use $create-app to add a new application to this project."
+policy:
+  allow_implicit_invocation: true

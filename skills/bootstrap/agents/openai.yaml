@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bootstrap"
+  short_description: "Load global and repository instructions"
+  default_prompt: "Use $bootstrap to load this repository's instructions."

@@ -1,0 +1,1066 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:codex:refine-design:ux-schema:0.2",
+  "title": "UX Interaction Architecture 0.2",
+  "description": "Product-neutral contract for the UX-to-UI interaction architecture handoff.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "title",
+    "revision",
+    "status",
+    "assessment",
+    "sources",
+    "product",
+    "application",
+    "features",
+    "useCases",
+    "surfaces",
+    "components",
+    "actions",
+    "interactionFrames",
+    "patternResearch",
+    "pruningReview",
+    "openQuestions"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "0.2" },
+    "id": { "$ref": "#/$defs/stableId" },
+    "title": { "$ref": "#/$defs/nonEmptyText" },
+    "revision": { "$ref": "#/$defs/nonEmptyText" },
+    "status": { "$ref": "#/$defs/status" },
+    "assessment": { "$ref": "#/$defs/assessment" },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "product": { "$ref": "#/$defs/product" },
+    "supportingDocuments": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/supportingDocument" }
+    },
+    "application": { "$ref": "#/$defs/application" },
+    "features": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/feature" }
+    },
+    "useCases": {
+      "type": "array",
+      "contains": {
+        "type": "object",
+        "required": ["taskPriority"],
+        "properties": { "taskPriority": { "const": "primary" } }
+      },
+      "minContains": 1,
+      "items": { "$ref": "#/$defs/useCase" }
+    },
+    "surfaces": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/surface" }
+    },
+    "components": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/component" }
+    },
+    "actions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/action" }
+    },
+    "interactionFrames": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/interactionFrame" }
+    },
+    "patternResearch": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/patternResearch" }
+    },
+    "pruningReview": { "$ref": "#/$defs/pruningReview" },
+    "openQuestions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/openQuestion" }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "useCases": {
+            "contains": {
+              "type": "object",
+              "required": ["taskPriority", "status"],
+              "properties": {
+                "taskPriority": { "const": "primary" },
+                "status": { "enum": ["accepted", "locked"] }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "pruningReview": {
+            "type": "object",
+            "required": ["status"],
+            "properties": { "status": { "enum": ["accepted", "locked"] } }
+          }
+        }
+      }
+    }
+  ],
+  "x-semanticRules": [
+    "Every array of records has unique id values within that array; action feedback ids are unique across all actions; alternate-input ids are unique across all actions and do not duplicate action ids; content ids and affordance ids are unique across all regions of a frame.",
+    "Every *Ref value resolves to an existing record of the named type. A use-case step targetRef resolves to either a surface or component. Every questionRef resolves to a record in openQuestions.",
+    "Area and surface ownership is reciprocal through area.surfaceRefs and surface.areaRef.",
+    "Feature and use-case ownership is reciprocal through feature.useCaseRefs and useCase.featureRef.",
+    "Surface and component membership is reciprocal through surface.componentRefs and component.surfaceRefs; every surface-region componentRef is also listed by its owning surface.",
+    "A feature lists every surface used by actions or frames belonging to that feature's use cases.",
+    "Each action.taskRefs set is reciprocal with the corresponding useCase.actionRefs set. A resolved use case references only resolved actions.",
+    "Each step.actionRef belongs to its use case actionRefs. Its targetRef shares at least one surface with that action's applicableStates.",
+    "Each action applicable state names a declared state of its referenced surface and each surface/state pair occurs once per action.",
+    "Within an action, canonical and alternate input names are distinct. Alternate inputs are equivalent invocation methods and never appear as visible affordances.",
+    "Feedback ids referenced by frame content belong to the referenced action. Feedback content shares a task and surface with that action, and an action/feedback pair appears at most once in a frame.",
+    "Cancellation and recovery action references do not point back to their owning action, share a task and surface with it, and are resolved when the owning action is resolved.",
+    "A researched or novel patternBasis researchRef resolves to research reciprocally listing the owning action or frame. Resolved owners require resolved, source-checked research. Researched patterns cannot cite a no-suitable-precedent outcome; novel patterns must cite that outcome and its uncertainty.",
+    "Research source ids, pattern ids, rejected-pattern ids, and source URLs are unique within a research record. Pattern sourceRefs resolve within that research record. A selected patternRef resolves within that record and is supported by a standard or platform-guidance source, or by at least two distinct sources.",
+    "Research taskRefs, actionRefs, and frameRefs resolve to their respective catalogs, at least one affected record is listed, and action/frame links are reciprocal through patternBasis.researchRef.",
+    "Each frame.surfaceRef and state resolve to an owning surface and one of its states. Surface.interactionFrameRefs and frame.surfaceRef are reciprocal. Resolved frames have resolved owning surfaces and resolved taskRefs.",
+    "Each frame region sourceRegionRef resolves to a functional region of the owning surface. Region order values are unique within each shell, surface, or frame as applicable.",
+    "Frame content taskRefs are a nonempty subset of frame.taskRefs; stateRefs resolve to owning-surface states and include the frame state. Equal normalized semantic content does not occur twice in one frame.",
+    "Every affordance actionRef resolves to an action that shares a frame task and is applicable to the frame surface/state. An action has at most one affordance per frame. Affordance order is unique within a region.",
+    "In a resolved frame, all affordances and their actions are resolved, and focus.orderRefs covers every frame affordance id exactly once.",
+    "Dialog, menu, and popover frames have a same-surface parentFrameRef, a triggerActionRef exposed by the parent frame, and a focus.returnActionRef equal to the trigger action.",
+    "State transitions target a declared state on the current surface; frame transitions target a frame on the current surface; surface transitions target a declared state on the target surface. Resolved transitions target resolved records and exactly one resolved surface frame for a target state.",
+    "Every resolved surface references only resolved frames, has exactly one resolved frame of kind surface for every declared state, and has no duplicate frame refs or functional-region order values.",
+    "Every resolved action has at least one accepted or locked canonical affordance in a resolved frame for each applicable surface/state context.",
+    "A pruning taskReview taskRef is unique. canonicalStepRefs equal that task's step ids in canonical order. reviewedActionRefs equal its actionRefs exactly once, and decision actionRefs partition the reviewed actions exactly once.",
+    "Pruning decision actionRefs belong to the reviewed task. Remove decisions cannot name retained catalog actions; demoted actions are not primary; contextualized actions are not always visible.",
+    "Every resolved primary task has exactly one resolved taskReview, and the top-level pruningReview is resolved.",
+    "Open-question affects entries identify real records or fields according to the producing workflow.",
+    "Source and supporting-document paths use the narrow unencoded ASCII repository-relative grammar declared by repositoryRelativePath. Supporting-document fragments are local identifiers; schemes, absolute paths, traversal, percent encoding, queries, credentials, whitespace, and Markdown metacharacters are forbidden.",
+    "Research source URLs use public HTTPS without user information. Hosts are not private, loopback, link-local, IPv4-compatible private/loopback, NAT64 private/loopback, single-label, local, or internal. Recursively decoded URL paths, queries, and fragments and all other durable research strings contain no bearer/vendor tokens, normalized credential-key assignments, secret query parameters, file URLs, or private absolute filesystem paths.",
+    "No geometry, coordinates, dimensions, styling, breakpoints, or product-specific layout assumptions are permitted outside the fields declared by this schema."
+  ],
+  "$defs": {
+    "nonEmptyText": {
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "repositoryRelativePath": {
+      "description": "A narrow unencoded ASCII repository-relative document path with one optional local fragment.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*(?:/[A-Za-z0-9][A-Za-z0-9._-]*)*(?:#[A-Za-z][A-Za-z0-9_.:-]*)?$"
+    },
+    "stableId": {
+      "description": "A nonempty identifier that remains stable across revisions of this UX document.",
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "status": {
+      "enum": ["default", "proposed", "accepted", "locked", "unresolved"]
+    },
+    "resolvedStatus": {
+      "enum": ["accepted", "locked"]
+    },
+    "priority": {
+      "enum": ["primary", "secondary", "contextual", "supporting"]
+    },
+    "persistence": {
+      "enum": ["persistent", "state-bound", "transient"]
+    },
+    "idList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/stableId" }
+    },
+    "referenceList": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/stableId" }
+    },
+    "textList": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/nonEmptyText" }
+    },
+    "uniqueTextList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/nonEmptyText" }
+    },
+    "assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "description"],
+      "properties": {
+        "kind": { "enum": ["ux-planner-assessment", "parent-assessment"] },
+        "description": { "$ref": "#/$defs/nonEmptyText" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "path", "revision", "kind"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "path": { "$ref": "#/$defs/repositoryRelativePath" },
+        "revision": { "$ref": "#/$defs/nonEmptyText" },
+        "kind": { "$ref": "#/$defs/nonEmptyText" }
+      }
+    },
+    "product": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "overview", "users"],
+      "properties": {
+        "name": { "$ref": "#/$defs/nonEmptyText" },
+        "overview": { "$ref": "#/$defs/nonEmptyText" },
+        "users": { "$ref": "#/$defs/textList" }
+      }
+    },
+    "supportingDocument": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "path", "description"],
+      "properties": {
+        "label": { "$ref": "#/$defs/nonEmptyText" },
+        "path": { "$ref": "#/$defs/repositoryRelativePath" },
+        "description": { "$ref": "#/$defs/nonEmptyText" }
+      }
+    },
+    "application": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "shell", "areas"],
+      "properties": {
+        "summary": { "$ref": "#/$defs/nonEmptyText" },
+        "shell": { "$ref": "#/$defs/shell" },
+        "areas": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/area" }
+        }
+      }
+    },
+    "shell": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "description", "status"],
+      "properties": {
+        "kind": { "$ref": "#/$defs/nonEmptyText" },
+        "description": { "$ref": "#/$defs/nonEmptyText" },
+        "status": { "$ref": "#/$defs/status" },
+        "navigation": { "$ref": "#/$defs/navigation" },
+        "regions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/shellRegion" }
+        }
+      }
+    },
+    "navigation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pattern", "description"],
+      "properties": {
+        "pattern": { "$ref": "#/$defs/nonEmptyText" },
+        "description": { "$ref": "#/$defs/nonEmptyText" }
+      }
+    },
+    "shellRegion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "kind", "purpose", "persistence", "order"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "name": { "$ref": "#/$defs/nonEmptyText" },
+        "kind": { "$ref": "#/$defs/nonEmptyText" },
+        "purpose": { "$ref": "#/$defs/nonEmptyText" },
+        "persistence": { "$ref": "#/$defs/nonEmptyText" },
+        "order": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "area": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "purpose", "status", "surfaceRefs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "name": { "$ref": "#/$defs/nonEmptyText" },
+        "purpose": { "$ref": "#/$defs/nonEmptyText" },
+        "status": { "$ref": "#/$defs/status" },
+        "surfaceRefs": { "$ref": "#/$defs/idList" }
+      }
+    },
+    "feature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "purpose", "status", "sourceRefs", "surfaceRefs", "useCaseRefs", "questionRefs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "name": { "$ref": "#/$defs/nonEmptyText" },
+        "purpose": { "$ref": "#/$defs/nonEmptyText" },
+        "status": { "$ref": "#/$defs/status" },
+        "sourceRefs": { "$ref": "#/$defs/idList" },
+        "surfaceRefs": { "$ref": "#/$defs/idList" },
+        "useCaseRefs": { "$ref": "#/$defs/idList" },
+        "questionRefs": { "$ref": "#/$defs/referenceList" }
+      }
+    },
+    "surface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "kind", "purpose", "entry", "exit", "focusIntent", "status", "areaRef", "regions", "componentRefs", "states", "interactionFrameRefs", "questionRefs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "name": { "$ref": "#/$defs/nonEmptyText" },
+        "kind": { "$ref": "#/$defs/nonEmptyText" },
+        "purpose": { "$ref": "#/$defs/nonEmptyText" },
+        "entry": { "$ref": "#/$defs/nonEmptyText" },
+        "exit": { "$ref": "#/$defs/nonEmptyText" },
+        "focusIntent": { "$ref": "#/$defs/nonEmptyText" },
+        "status": { "$ref": "#/$defs/status" },
+        "areaRef": { "$ref": "#/$defs/stableId" },
+        "regions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/surfaceRegion" }
+        },
+        "componentRefs": { "$ref": "#/$defs/idList" },
+        "states": { "$ref": "#/$defs/uniqueTextList" },
+        "interactionFrameRefs": { "$ref": "#/$defs/idList" },
+        "questionRefs": { "$ref": "#/$defs/referenceList" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["status"],
+            "properties": { "status": { "$ref": "#/$defs/resolvedStatus" } }
+          },
+          "then": {
+            "properties": {
+              "regions": { "minItems": 1 },
+              "interactionFrameRefs": { "minItems": 1 }
+            }
+          }
+        }
+      ]
+    },
+    "surfaceRegion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "purpose", "order", "componentRefs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "name": { "$ref": "#/$defs/nonEmptyText" },
+        "purpose": { "$ref": "#/$defs/nonEmptyText" },
+        "order": { "type": "integer", "minimum": 1 },
+        "componentRefs": { "$ref": "#/$defs/idList" }
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "kind", "purpose", "status", "surfaceRefs", "questionRefs", "capabilities", "states", "behaviorRequirements"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "name": { "$ref": "#/$defs/nonEmptyText" },
+        "kind": { "$ref": "#/$defs/nonEmptyText" },
+        "purpose": { "$ref": "#/$defs/nonEmptyText" },
+        "status": { "$ref": "#/$defs/status" },
+        "surfaceRefs": { "$ref": "#/$defs/idList" },
+        "questionRefs": { "$ref": "#/$defs/referenceList" },
+        "capabilities": { "$ref": "#/$defs/textList" },
+        "states": { "$ref": "#/$defs/textList" },
+        "behaviorRequirements": { "$ref": "#/$defs/textList" }
+      }
+    },
+    "patternResearch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "question", "trigger", "method", "reviewedAt", "searchQueries", "sources", "patterns", "outcome", "selection", "rejectedPatterns", "limits", "verification", "taskRefs", "actionRefs", "frameRefs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "status": { "$ref": "#/$defs/status" },
+        "question": { "$ref": "#/$defs/nonEmptyText" },
+        "trigger": { "enum": ["unfamiliar-capability", "complex-product-interaction", "no-established-pattern", "conflicting-conventions"] },
+        "method": { "enum": ["bounded-online-search", "supplied-sources-verified"] },
+        "reviewedAt": { "$ref": "#/$defs/nonEmptyText" },
+        "searchQueries": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/nonEmptyText" }
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/researchSource" }
+        },
+        "patterns": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/researchedPattern" }
+        },
+        "outcome": { "enum": ["pattern-selected", "conflicting-patterns-resolved", "no-suitable-precedent"] },
+        "selection": { "$ref": "#/$defs/researchSelection" },
+        "rejectedPatterns": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/rejectedPattern" }
+        },
+        "limits": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/nonEmptyText" }
+        },
+        "verification": { "$ref": "#/$defs/researchVerification" },
+        "taskRefs": { "$ref": "#/$defs/referenceList" },
+        "actionRefs": { "$ref": "#/$defs/referenceList" },
+        "frameRefs": { "$ref": "#/$defs/referenceList" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["outcome"],
+            "properties": { "outcome": { "const": "no-suitable-precedent" } }
+          },
+          "then": {
+            "properties": {
+              "selection": {
+                "required": ["uncertainty"],
+                "not": { "required": ["patternRef"] }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "selection": { "required": ["patternRef"] }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["status"],
+            "properties": { "status": { "$ref": "#/$defs/resolvedStatus" } }
+          },
+          "then": {
+            "properties": {
+              "verification": {
+                "required": ["status"],
+                "properties": { "status": { "const": "source-checked" } }
+              }
+            }
+          }
+        },
+        {
+          "anyOf": [
+            { "properties": { "taskRefs": { "minItems": 1 } } },
+            { "properties": { "actionRefs": { "minItems": 1 } } },
+            { "properties": { "frameRefs": { "minItems": 1 } } }
+          ]
+        }
+      ]
+    },
+    "researchSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "sourceType", "sourceUrl", "accessedAt", "observations"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "title": { "$ref": "#/$defs/nonEmptyText" },
+        "sourceType": { "enum": ["standard", "platform-guidance", "official-product-doc", "maintained-project-manual", "primary-research", "original-author-guidance"] },
+        "sourceUrl": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^(?!.*[/?#&](?:api[_-]?key|access[_-]?token|auth[_-]?token|client[_-]?secret|id[_-]?token|refresh[_-]?token|security[_-]?token|session[_-]?token|sig(?:nature)?|token|x-amz-(?:credential|security-token|signature))=)(?!.*[Ff][Ii][Ll][Ee](?::|%3[aA])(?:/|%2[fF]))[Hh][Tt][Tt][Pp][Ss]://(?![^/?#]*@)(?=(?:\\[[^\\]]+\\]|[^/?#]*\\.))(?!localhost(?:[:/?#]|$))(?![^/?#]*(?:\\.local|\\.internal)(?::[0-9]+)?(?:[/?#]|$))(?!127\\.)(?!10\\.)(?!169\\.254\\.)(?!192\\.168\\.)(?!172\\.(?:1[6-9]|2[0-9]|3[01])\\.)(?!\\[(?:::(?:0*1|0*7[fF]00:0*1|127\\.0\\.0\\.1)|(?:0{1,4}:){6}(?:0*7[fF]00:0*1|127\\.0\\.0\\.1)|(?:0{1,4}:){7}0*1)\\](?:[:/?#]|$))(?!\\[64:[fF][fF]9[bB]::(?:127\\.0\\.0\\.1|7[fF]00:1)\\](?:[:/?#]|$))"
+        },
+        "accessedAt": { "$ref": "#/$defs/nonEmptyText" },
+        "observations": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/nonEmptyText" }
+        }
+      }
+    },
+    "researchedPattern": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "sourceRefs", "summary", "applicability", "tradeoffs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "name": { "$ref": "#/$defs/nonEmptyText" },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/stableId" }
+        },
+        "summary": { "$ref": "#/$defs/nonEmptyText" },
+        "applicability": { "$ref": "#/$defs/nonEmptyText" },
+        "tradeoffs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/nonEmptyText" }
+        }
+      }
+    },
+    "researchSelection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "rationale", "adaptations"],
+      "properties": {
+        "patternRef": { "$ref": "#/$defs/stableId" },
+        "summary": { "$ref": "#/$defs/nonEmptyText" },
+        "rationale": { "$ref": "#/$defs/nonEmptyText" },
+        "adaptations": { "$ref": "#/$defs/textList" },
+        "uncertainty": { "$ref": "#/$defs/nonEmptyText" }
+      }
+    },
+    "rejectedPattern": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "pattern", "rationale"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "pattern": { "$ref": "#/$defs/nonEmptyText" },
+        "rationale": { "$ref": "#/$defs/nonEmptyText" }
+      }
+    },
+    "researchVerification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "notes"],
+      "properties": {
+        "status": { "enum": ["pending", "source-checked"] },
+        "checkedBy": {},
+        "checkedAt": {},
+        "notes": { "$ref": "#/$defs/textList" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["status"],
+            "properties": { "status": { "const": "source-checked" } }
+          },
+          "then": {
+            "required": ["checkedBy", "checkedAt"],
+            "properties": {
+              "checkedBy": { "const": "parent" },
+              "checkedAt": { "$ref": "#/$defs/nonEmptyText" },
+              "notes": { "minItems": 1 }
+            }
+          }
+        }
+      ]
+    },
+    "patternBasis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "rationale"],
+      "properties": {
+        "kind": { "enum": ["ordinary", "researched", "novel"] },
+        "rationale": { "$ref": "#/$defs/nonEmptyText" },
+        "researchRef": { "$ref": "#/$defs/stableId" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["kind"],
+            "properties": { "kind": { "const": "ordinary" } }
+          },
+          "then": { "not": { "required": ["researchRef"] } },
+          "else": { "required": ["researchRef"] }
+        }
+      ]
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "purpose", "status", "taskRefs", "outcome", "canonicalInteraction", "alternateInputs", "presentationClass", "visibility", "persistence", "priority", "applicableStates", "feedback", "cancellation", "recovery", "patternBasis", "questionRefs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "name": { "$ref": "#/$defs/nonEmptyText" },
+        "purpose": { "$ref": "#/$defs/nonEmptyText" },
+        "status": { "$ref": "#/$defs/status" },
+        "taskRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/stableId" }
+        },
+        "outcome": { "$ref": "#/$defs/nonEmptyText" },
+        "canonicalInteraction": { "$ref": "#/$defs/canonicalInteraction" },
+        "alternateInputs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/alternateInput" }
+        },
+        "presentationClass": { "enum": ["persistent-control", "contextual-control", "direct-manipulation", "menu-item", "dialog-action"] },
+        "visibility": { "$ref": "#/$defs/visibility" },
+        "persistence": { "$ref": "#/$defs/persistence" },
+        "priority": { "$ref": "#/$defs/priority" },
+        "applicableStates": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/applicableState" }
+        },
+        "feedback": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/feedback" }
+        },
+        "cancellation": { "$ref": "#/$defs/cancellation" },
+        "recovery": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/recovery" }
+        },
+        "patternBasis": { "$ref": "#/$defs/patternBasis" },
+        "questionRefs": { "$ref": "#/$defs/referenceList" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "anyOf": [
+              {
+                "required": ["presentationClass"],
+                "properties": { "presentationClass": { "const": "contextual-control" } }
+              },
+              {
+                "required": ["priority"],
+                "properties": { "priority": { "const": "contextual" } }
+              }
+            ]
+          },
+          "then": {
+            "properties": {
+              "visibility": {
+                "required": ["mode", "conditions"],
+                "properties": {
+                  "mode": { "enum": ["conditional", "on-demand"] },
+                  "conditions": { "minItems": 1 }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "canonicalInteraction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "input", "description"],
+      "properties": {
+        "method": { "enum": ["activate", "select", "enter", "navigate", "direct-manipulation", "dismiss", "confirm", "system-mediated"] },
+        "input": { "$ref": "#/$defs/nonEmptyText" },
+        "description": { "$ref": "#/$defs/nonEmptyText" }
+      }
+    },
+    "alternateInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "input", "description", "equivalentOutcome"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "input": { "$ref": "#/$defs/nonEmptyText" },
+        "description": { "$ref": "#/$defs/nonEmptyText" },
+        "equivalentOutcome": { "const": true }
+      }
+    },
+    "visibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "conditions"],
+      "properties": {
+        "mode": { "enum": ["always", "conditional", "on-demand"] },
+        "conditions": { "$ref": "#/$defs/textList" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["mode"],
+            "properties": { "mode": { "const": "always" } }
+          },
+          "then": { "properties": { "conditions": { "maxItems": 0 } } },
+          "else": { "properties": { "conditions": { "minItems": 1 } } }
+        }
+      ]
+    },
+    "applicableState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["surfaceRef", "state"],
+      "properties": {
+        "surfaceRef": { "$ref": "#/$defs/stableId" },
+        "state": { "$ref": "#/$defs/nonEmptyText" }
+      }
+    },
+    "feedback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "phase", "description", "persistence"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "phase": { "enum": ["invoked", "progress", "success", "failure", "canceled"] },
+        "description": { "$ref": "#/$defs/nonEmptyText" },
+        "persistence": { "$ref": "#/$defs/persistence" }
+      }
+    },
+    "cancellation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "description"],
+      "properties": {
+        "mode": { "enum": ["not-applicable", "available", "unavailable"] },
+        "description": { "$ref": "#/$defs/nonEmptyText" },
+        "actionRef": { "$ref": "#/$defs/stableId" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["mode"],
+            "properties": { "mode": { "const": "available" } }
+          },
+          "then": { "required": ["actionRef"] },
+          "else": { "not": { "required": ["actionRef"] } }
+        }
+      ]
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "condition", "response", "actionRefs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "condition": { "$ref": "#/$defs/nonEmptyText" },
+        "response": { "$ref": "#/$defs/nonEmptyText" },
+        "actionRefs": { "$ref": "#/$defs/idList" }
+      }
+    },
+    "useCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "featureRef", "goal", "taskPriority", "status", "trigger", "preconditions", "actionRefs", "steps", "outcome", "alternatives", "questionRefs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "name": { "$ref": "#/$defs/nonEmptyText" },
+        "featureRef": { "$ref": "#/$defs/stableId" },
+        "goal": { "$ref": "#/$defs/nonEmptyText" },
+        "taskPriority": { "enum": ["primary", "supporting"] },
+        "status": { "$ref": "#/$defs/status" },
+        "trigger": { "$ref": "#/$defs/nonEmptyText" },
+        "preconditions": { "$ref": "#/$defs/textList" },
+        "actionRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/stableId" }
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/useCaseStep" }
+        },
+        "outcome": { "$ref": "#/$defs/nonEmptyText" },
+        "alternatives": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/useCaseAlternative" }
+        },
+        "questionRefs": { "$ref": "#/$defs/referenceList" }
+      }
+    },
+    "useCaseStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "actor", "action", "actionRef", "targetRef", "response"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "actor": { "$ref": "#/$defs/nonEmptyText" },
+        "action": { "$ref": "#/$defs/nonEmptyText" },
+        "actionRef": { "$ref": "#/$defs/stableId" },
+        "targetRef": { "$ref": "#/$defs/stableId" },
+        "response": { "$ref": "#/$defs/nonEmptyText" }
+      }
+    },
+    "useCaseAlternative": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "condition", "response", "recovery", "status"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "condition": { "$ref": "#/$defs/nonEmptyText" },
+        "response": { "$ref": "#/$defs/nonEmptyText" },
+        "recovery": { "$ref": "#/$defs/nonEmptyText" },
+        "status": { "$ref": "#/$defs/status" }
+      }
+    },
+    "interactionFrame": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "kind", "purpose", "status", "surfaceRef", "state", "taskRefs", "patternBasis", "regions", "focus", "questionRefs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "name": { "$ref": "#/$defs/nonEmptyText" },
+        "kind": { "enum": ["surface", "dialog", "menu", "popover", "panel"] },
+        "purpose": { "$ref": "#/$defs/nonEmptyText" },
+        "status": { "$ref": "#/$defs/status" },
+        "surfaceRef": { "$ref": "#/$defs/stableId" },
+        "state": { "$ref": "#/$defs/nonEmptyText" },
+        "taskRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/stableId" }
+        },
+        "patternBasis": { "$ref": "#/$defs/patternBasis" },
+        "regions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/frameRegion" }
+        },
+        "parentFrameRef": { "$ref": "#/$defs/stableId" },
+        "triggerActionRef": { "$ref": "#/$defs/stableId" },
+        "focus": { "$ref": "#/$defs/focus" },
+        "questionRefs": { "$ref": "#/$defs/referenceList" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["kind"],
+            "properties": { "kind": { "enum": ["dialog", "menu", "popover"] } }
+          },
+          "then": {
+            "required": ["parentFrameRef", "triggerActionRef"],
+            "properties": {
+              "focus": { "required": ["returnActionRef"] }
+            }
+          },
+          "else": {
+            "not": {
+              "anyOf": [
+                { "required": ["parentFrameRef"] },
+                { "required": ["triggerActionRef"] }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "frameRegion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "kind", "purpose", "order", "priority", "content", "affordances"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "name": { "$ref": "#/$defs/nonEmptyText" },
+        "kind": { "$ref": "#/$defs/nonEmptyText" },
+        "purpose": { "$ref": "#/$defs/nonEmptyText" },
+        "order": { "type": "integer", "minimum": 1 },
+        "priority": { "$ref": "#/$defs/priority" },
+        "sourceRegionRef": { "$ref": "#/$defs/stableId" },
+        "content": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/frameContent" }
+        },
+        "affordances": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/affordance" }
+        }
+      }
+    },
+    "frameContent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "text", "purpose", "priority", "persistence", "taskRefs", "stateRefs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "kind": { "enum": ["information", "guidance", "feedback", "status", "technical-information"] },
+        "text": { "$ref": "#/$defs/nonEmptyText" },
+        "purpose": { "$ref": "#/$defs/nonEmptyText" },
+        "priority": { "$ref": "#/$defs/priority" },
+        "persistence": { "$ref": "#/$defs/persistence" },
+        "taskRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/stableId" }
+        },
+        "stateRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/nonEmptyText" }
+        },
+        "actionRef": { "$ref": "#/$defs/stableId" },
+        "feedbackRef": { "$ref": "#/$defs/stableId" },
+        "technicalExplanation": { "$ref": "#/$defs/nonEmptyText" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["kind"],
+            "properties": { "kind": { "const": "feedback" } }
+          },
+          "then": { "required": ["actionRef", "feedbackRef"] },
+          "else": {
+            "not": {
+              "anyOf": [
+                { "required": ["actionRef"] },
+                { "required": ["feedbackRef"] }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["kind"],
+            "properties": { "kind": { "const": "technical-information" } }
+          },
+          "then": { "required": ["technicalExplanation"] },
+          "else": { "not": { "required": ["technicalExplanation"] } }
+        }
+      ]
+    },
+    "affordance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "actionRef", "label", "status", "order", "interaction", "transition"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "actionRef": { "$ref": "#/$defs/stableId" },
+        "label": { "$ref": "#/$defs/nonEmptyText" },
+        "status": { "$ref": "#/$defs/status" },
+        "order": { "type": "integer", "minimum": 1 },
+        "interaction": { "const": "canonical" },
+        "transition": { "$ref": "#/$defs/transition" }
+      }
+    },
+    "transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "enum": ["none", "state", "frame", "surface", "completion"] },
+        "targetRef": { "$ref": "#/$defs/stableId" },
+        "targetState": { "$ref": "#/$defs/nonEmptyText" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["kind"],
+            "properties": { "kind": { "enum": ["none", "completion"] } }
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                { "required": ["targetRef"] },
+                { "required": ["targetState"] }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["kind"],
+            "properties": { "kind": { "const": "state" } }
+          },
+          "then": {
+            "required": ["targetState"],
+            "not": { "required": ["targetRef"] }
+          }
+        },
+        {
+          "if": {
+            "required": ["kind"],
+            "properties": { "kind": { "const": "frame" } }
+          },
+          "then": {
+            "required": ["targetRef"],
+            "not": { "required": ["targetState"] }
+          }
+        },
+        {
+          "if": {
+            "required": ["kind"],
+            "properties": { "kind": { "const": "surface" } }
+          },
+          "then": { "required": ["targetRef", "targetState"] }
+        }
+      ]
+    },
+    "focus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entry", "orderRefs"],
+      "properties": {
+        "entry": { "$ref": "#/$defs/nonEmptyText" },
+        "orderRefs": { "$ref": "#/$defs/idList" },
+        "returnActionRef": { "$ref": "#/$defs/stableId" }
+      }
+    },
+    "pruningReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "summary", "taskReviews"],
+      "properties": {
+        "status": { "$ref": "#/$defs/status" },
+        "summary": { "$ref": "#/$defs/nonEmptyText" },
+        "taskReviews": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/taskReview" }
+        }
+      }
+    },
+    "taskReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "taskRef", "status", "canonicalStepRefs", "reviewedActionRefs", "decisions"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "taskRef": { "$ref": "#/$defs/stableId" },
+        "status": { "$ref": "#/$defs/status" },
+        "canonicalStepRefs": { "$ref": "#/$defs/idList" },
+        "reviewedActionRefs": { "$ref": "#/$defs/idList" },
+        "decisions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/pruningDecision" }
+        }
+      }
+    },
+    "pruningDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "disposition", "candidate", "actionRefs", "rationale", "result"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "disposition": { "enum": ["retain", "remove", "merge", "demote", "contextualize", "no-change"] },
+        "candidate": { "$ref": "#/$defs/nonEmptyText" },
+        "actionRefs": { "$ref": "#/$defs/idList" },
+        "rationale": { "$ref": "#/$defs/nonEmptyText" },
+        "result": { "$ref": "#/$defs/nonEmptyText" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["disposition"],
+            "properties": { "disposition": { "const": "remove" } }
+          },
+          "then": { "properties": { "actionRefs": { "maxItems": 0 } } }
+        }
+      ]
+    },
+    "openQuestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "question", "owner", "why", "affects", "status"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "question": { "$ref": "#/$defs/nonEmptyText" },
+        "owner": { "$ref": "#/$defs/nonEmptyText" },
+        "why": { "$ref": "#/$defs/nonEmptyText" },
+        "affects": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/nonEmptyText" }
+        },
+        "status": { "enum": ["open", "answered"] }
+      }
+    }
+  }
+}

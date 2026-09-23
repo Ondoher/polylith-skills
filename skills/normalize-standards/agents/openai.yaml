@@ -1,0 +1,4 @@
+interface:
+  display_name: "Normalize Standards"
+  short_description: "Audit and reconcile repository standards safely"
+  default_prompt: "Use $normalize-standards to audit this repository's standards against my canonical global standards."

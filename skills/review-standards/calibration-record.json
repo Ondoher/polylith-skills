@@ -1,0 +1,1583 @@
+{
+  "request": {
+    "version": 1,
+    "purpose": "calibration-only; never application compliance",
+    "inputs": {
+      "agents/architecture-reviewer.toml": "fe7641cbc69943be3e4cdde7dddd7c031250466bea251b8675acb673558a619c",
+      "agents/checkpoint-advisor.toml": "ea5d83ae5c64cb4975edfdd8f5df99865a314252a9b18bd73a166104874e4f4c",
+      "agents/contracts-reviewer.toml": "b64f447f950dca55ef921ce14af5bbc5b3277baf5d3bfe28fe068fe8f65b571e",
+      "agents/privacy-security-reviewer.toml": "070069cf39d3371f9313cdd63db71e3b5614607f2003c91236f82e58dd66059d",
+      "agents/ui-reviewer.toml": "e176c689123906d570b85ef448bea73283f029145a7e387f1eaa583fe0613945",
+      "agents/verification-reviewer.toml": "937efa49c24a45188d4732b338fd4bcaef387bd5f0f80dc46725956c65afbefd",
+      "skills/review-standards/references/evidence-ledger.md": "289564eeacacf9c0634b607abc508dc211e29fed7eeb27c6bbec68d21d98e0be",
+      "skills/review-standards/scripts/react-event-check.mjs": "b93aaf77de155f3108255e9fe7c9b8947546533331d96af23c0a717fdf87e73e",
+      "skills/review-standards/scripts/review-ledger.mjs": "7155c4f2be596ba09fa14a06e78046fb298ea76facdc812fc20076251f096306",
+      "skills/review-standards/scripts/reviewer-calibration.mjs": "f6efcec399b5d583544434f169befd03ed05b1301390fc7e73f343b5818347d3",
+      "skills/review-standards/scripts/rule-inventory.mjs": "ad4468aa31b59c9e950c3a9aee306e65bded2ef90cea610118c25d8ed0dac3a6"
+    },
+    "repo": "C:\\Users\\gande\\.codex\\skills\\review-standards\\fixtures",
+    "baseline": {
+      "files": {
+        "CaseA.jsx": "73dd579280088ed769007b36cecef1559d320d25869d9029499cb23d46066211",
+        "CaseB.js": "ced65b10a81699cf310a20a598ab4044040d5759c91287d04fda9dc016d92714",
+        "CaseC.js": "dc104a5fa4a5812dc64887d593f078470c3bc3eb10eb755474b2947c0ffafe3a",
+        "CaseD.jsx": "a34455aea55d1d29edf3890c057ef52c163a9f876d4ea6823ac3dea51d7fbeaf",
+        "architecture/features/orders/OrderController.js": "b77fe34621eeb29cf8825d0e7a9ff9dc3003ceb00ecfca68dc996f882eb804d3",
+        "architecture/features/orders/InvoiceController.js": "836afe7a964e95475c1b1bc96dabc3f38c1b4a5d51381dde46a295b084dec556",
+        "architecture/PriceService.js": "2764ea4fedf70f7a71ef1d9c76a086cf8558adf6e15ec11f3e6f77423e8573a3",
+        "architecture/TotalService.js": "f27d9ae5f5eb3de2423711f2e5f12c8f360a566c056d840aa07d0fc4a304a29d",
+        "architecture/EntryA.js": "b2d7eb0c2bb3f916a5e5c14b2cb5048bd47fd92ab7623b193e5a2664ea85a529",
+        "architecture/EntryB.js": "488f4117a86668ce04b1ab7afc5cfc64859d133ee6646f8bb89f3de23c1c3576",
+        "architecture/shared/ledger.js": "a1845e6298febe400e368b3fb387ff6329f0dca63799dcdaaa32ffcdbb137a4c",
+        "architecture/features/billing/private/Ledger.js": "b3b042fc3792cd126a1e15524240f784eed4a1368548a108ebac5c2509bf208b"
+      }
+    },
+    "current": {
+      "files": {
+        "CaseA.jsx": "73dd579280088ed769007b36cecef1559d320d25869d9029499cb23d46066211",
+        "CaseB.js": "ced65b10a81699cf310a20a598ab4044040d5759c91287d04fda9dc016d92714",
+        "CaseC.js": "dc104a5fa4a5812dc64887d593f078470c3bc3eb10eb755474b2947c0ffafe3a",
+        "CaseD.jsx": "a34455aea55d1d29edf3890c057ef52c163a9f876d4ea6823ac3dea51d7fbeaf",
+        "architecture/features/orders/OrderController.js": "b77fe34621eeb29cf8825d0e7a9ff9dc3003ceb00ecfca68dc996f882eb804d3",
+        "architecture/features/orders/InvoiceController.js": "836afe7a964e95475c1b1bc96dabc3f38c1b4a5d51381dde46a295b084dec556",
+        "architecture/PriceService.js": "2764ea4fedf70f7a71ef1d9c76a086cf8558adf6e15ec11f3e6f77423e8573a3",
+        "architecture/TotalService.js": "f27d9ae5f5eb3de2423711f2e5f12c8f360a566c056d840aa07d0fc4a304a29d",
+        "architecture/EntryA.js": "b2d7eb0c2bb3f916a5e5c14b2cb5048bd47fd92ab7623b193e5a2664ea85a529",
+        "architecture/EntryB.js": "488f4117a86668ce04b1ab7afc5cfc64859d133ee6646f8bb89f3de23c1c3576",
+        "architecture/shared/ledger.js": "a1845e6298febe400e368b3fb387ff6329f0dca63799dcdaaa32ffcdbb137a4c",
+        "architecture/features/billing/private/Ledger.js": "b3b042fc3792cd126a1e15524240f784eed4a1368548a108ebac5c2509bf208b"
+      }
+    },
+    "lanes": {
+      "calibration": [
+        {
+          "path": "CaseA.jsx",
+          "rule": {
+            "id": "REACT-STRUCT-001",
+            "standard": "react.md",
+            "line": 43,
+            "endLine": 43,
+            "text": "- Break a large render into focused render methods named for purposeful semantic regions.",
+            "section": [
+              "React Code",
+              "Component Shape"
+            ]
+          }
+        },
+        {
+          "path": "CaseA.jsx",
+          "rule": {
+            "id": "REACT-EVENT-001",
+            "standard": "react.md",
+            "line": 57,
+            "endLine": 57,
+            "text": "- Do not use inline event callbacks. Pass named handler references to event props. Define and bind handlers outside render; do not place arrow functions, function expressions, or `.bind(...)` calls in JSX event props or event props inside JSX spreads and input/slot property objects. Render-prop and list-mapping callbacks are not event callbacks. Static checking covers syntactically visible event values; reviewers trace aliases and callback factories that require reasoning.",
+            "section": [
+              "React Code",
+              "Props, State, And Events"
+            ]
+          }
+        },
+        {
+          "path": "CaseA.jsx",
+          "rule": {
+            "id": "REACT-007",
+            "standard": "react.md",
+            "line": 22,
+            "endLine": 22,
+            "text": "- Components do not reach directly into models, transport logic, or unrelated registry services.",
+            "section": [
+              "React Code",
+              "Presentation Boundary"
+            ]
+          }
+        },
+        {
+          "path": "CaseA.jsx",
+          "rule": {
+            "id": "REMVC-006",
+            "standard": "remvc.md",
+            "line": 40,
+            "endLine": 48,
+            "text": "| Owner | Must own | Must not own |\n| --- | --- | --- |\n| Registry | app-facing service lookup, lifecycle coordination, and event surfaces | feature policy, startup selection, or domain behavior |\n| Executor | startup sequencing and initial controller/flow selection from external facts | page workflow, presentation, domain rules, or an implicit first-page policy |\n| Model | canonical durable/domain state, transport, persistence, serialization, normalization, and reusable domain rules | JSX, layout, localized labels, navigation, or screen workflow |\n| App-facing service | a stable capability, lifecycle, caching, subscriptions, and adaptation over models/internal collaborators | screen-specific presentation or another owner's policy |\n| Controller | commands, user-facing workflow, orchestration, feature sessions, activation/mounting, and invalidation | JSX, CSS, DOM mechanics, raw storage/transport, or duplicated canonical state |\n| View service | projection of controller state/actions into presentation-ready values, component choice, mounting, and event relay | domain mutation, persistence, transport, routing policy, defaults, or independent workflow |\n| React presentation | semantic JSX, MUI/DOM interaction, rendering, and genuinely transient visual state | registry orchestration, model/service calls, durable mutation, URL parsing, or feature mounting |",
+            "section": [
+              "REMVC",
+              "Strict Responsibility Matrix"
+            ]
+          }
+        },
+        {
+          "path": "CaseB.js",
+          "rule": {
+            "id": "REACT-STRUCT-001",
+            "standard": "react.md",
+            "line": 43,
+            "endLine": 43,
+            "text": "- Break a large render into focused render methods named for purposeful semantic regions.",
+            "section": [
+              "React Code",
+              "Component Shape"
+            ]
+          }
+        },
+        {
+          "path": "CaseB.js",
+          "rule": {
+            "id": "REACT-EVENT-001",
+            "standard": "react.md",
+            "line": 57,
+            "endLine": 57,
+            "text": "- Do not use inline event callbacks. Pass named handler references to event props. Define and bind handlers outside render; do not place arrow functions, function expressions, or `.bind(...)` calls in JSX event props or event props inside JSX spreads and input/slot property objects. Render-prop and list-mapping callbacks are not event callbacks. Static checking covers syntactically visible event values; reviewers trace aliases and callback factories that require reasoning.",
+            "section": [
+              "React Code",
+              "Props, State, And Events"
+            ]
+          }
+        },
+        {
+          "path": "CaseB.js",
+          "rule": {
+            "id": "REACT-007",
+            "standard": "react.md",
+            "line": 22,
+            "endLine": 22,
+            "text": "- Components do not reach directly into models, transport logic, or unrelated registry services.",
+            "section": [
+              "React Code",
+              "Presentation Boundary"
+            ]
+          }
+        },
+        {
+          "path": "CaseB.js",
+          "rule": {
+            "id": "REMVC-006",
+            "standard": "remvc.md",
+            "line": 40,
+            "endLine": 48,
+            "text": "| Owner | Must own | Must not own |\n| --- | --- | --- |\n| Registry | app-facing service lookup, lifecycle coordination, and event surfaces | feature policy, startup selection, or domain behavior |\n| Executor | startup sequencing and initial controller/flow selection from external facts | page workflow, presentation, domain rules, or an implicit first-page policy |\n| Model | canonical durable/domain state, transport, persistence, serialization, normalization, and reusable domain rules | JSX, layout, localized labels, navigation, or screen workflow |\n| App-facing service | a stable capability, lifecycle, caching, subscriptions, and adaptation over models/internal collaborators | screen-specific presentation or another owner's policy |\n| Controller | commands, user-facing workflow, orchestration, feature sessions, activation/mounting, and invalidation | JSX, CSS, DOM mechanics, raw storage/transport, or duplicated canonical state |\n| View service | projection of controller state/actions into presentation-ready values, component choice, mounting, and event relay | domain mutation, persistence, transport, routing policy, defaults, or independent workflow |\n| React presentation | semantic JSX, MUI/DOM interaction, rendering, and genuinely transient visual state | registry orchestration, model/service calls, durable mutation, URL parsing, or feature mounting |",
+            "section": [
+              "REMVC",
+              "Strict Responsibility Matrix"
+            ]
+          }
+        },
+        {
+          "path": "CaseC.js",
+          "rule": {
+            "id": "REACT-STRUCT-001",
+            "standard": "react.md",
+            "line": 43,
+            "endLine": 43,
+            "text": "- Break a large render into focused render methods named for purposeful semantic regions.",
+            "section": [
+              "React Code",
+              "Component Shape"
+            ]
+          }
+        },
+        {
+          "path": "CaseC.js",
+          "rule": {
+            "id": "REACT-EVENT-001",
+            "standard": "react.md",
+            "line": 57,
+            "endLine": 57,
+            "text": "- Do not use inline event callbacks. Pass named handler references to event props. Define and bind handlers outside render; do not place arrow functions, function expressions, or `.bind(...)` calls in JSX event props or event props inside JSX spreads and input/slot property objects. Render-prop and list-mapping callbacks are not event callbacks. Static checking covers syntactically visible event values; reviewers trace aliases and callback factories that require reasoning.",
+            "section": [
+              "React Code",
+              "Props, State, And Events"
+            ]
+          }
+        },
+        {
+          "path": "CaseC.js",
+          "rule": {
+            "id": "REACT-007",
+            "standard": "react.md",
+            "line": 22,
+            "endLine": 22,
+            "text": "- Components do not reach directly into models, transport logic, or unrelated registry services.",
+            "section": [
+              "React Code",
+              "Presentation Boundary"
+            ]
+          }
+        },
+        {
+          "path": "CaseC.js",
+          "rule": {
+            "id": "REMVC-006",
+            "standard": "remvc.md",
+            "line": 40,
+            "endLine": 48,
+            "text": "| Owner | Must own | Must not own |\n| --- | --- | --- |\n| Registry | app-facing service lookup, lifecycle coordination, and event surfaces | feature policy, startup selection, or domain behavior |\n| Executor | startup sequencing and initial controller/flow selection from external facts | page workflow, presentation, domain rules, or an implicit first-page policy |\n| Model | canonical durable/domain state, transport, persistence, serialization, normalization, and reusable domain rules | JSX, layout, localized labels, navigation, or screen workflow |\n| App-facing service | a stable capability, lifecycle, caching, subscriptions, and adaptation over models/internal collaborators | screen-specific presentation or another owner's policy |\n| Controller | commands, user-facing workflow, orchestration, feature sessions, activation/mounting, and invalidation | JSX, CSS, DOM mechanics, raw storage/transport, or duplicated canonical state |\n| View service | projection of controller state/actions into presentation-ready values, component choice, mounting, and event relay | domain mutation, persistence, transport, routing policy, defaults, or independent workflow |\n| React presentation | semantic JSX, MUI/DOM interaction, rendering, and genuinely transient visual state | registry orchestration, model/service calls, durable mutation, URL parsing, or feature mounting |",
+            "section": [
+              "REMVC",
+              "Strict Responsibility Matrix"
+            ]
+          }
+        },
+        {
+          "path": "CaseD.jsx",
+          "rule": {
+            "id": "REACT-STRUCT-001",
+            "standard": "react.md",
+            "line": 43,
+            "endLine": 43,
+            "text": "- Break a large render into focused render methods named for purposeful semantic regions.",
+            "section": [
+              "React Code",
+              "Component Shape"
+            ]
+          }
+        },
+        {
+          "path": "CaseD.jsx",
+          "rule": {
+            "id": "REACT-EVENT-001",
+            "standard": "react.md",
+            "line": 57,
+            "endLine": 57,
+            "text": "- Do not use inline event callbacks. Pass named handler references to event props. Define and bind handlers outside render; do not place arrow functions, function expressions, or `.bind(...)` calls in JSX event props or event props inside JSX spreads and input/slot property objects. Render-prop and list-mapping callbacks are not event callbacks. Static checking covers syntactically visible event values; reviewers trace aliases and callback factories that require reasoning.",
+            "section": [
+              "React Code",
+              "Props, State, And Events"
+            ]
+          }
+        },
+        {
+          "path": "CaseD.jsx",
+          "rule": {
+            "id": "REACT-007",
+            "standard": "react.md",
+            "line": 22,
+            "endLine": 22,
+            "text": "- Components do not reach directly into models, transport logic, or unrelated registry services.",
+            "section": [
+              "React Code",
+              "Presentation Boundary"
+            ]
+          }
+        },
+        {
+          "path": "CaseD.jsx",
+          "rule": {
+            "id": "REMVC-006",
+            "standard": "remvc.md",
+            "line": 40,
+            "endLine": 48,
+            "text": "| Owner | Must own | Must not own |\n| --- | --- | --- |\n| Registry | app-facing service lookup, lifecycle coordination, and event surfaces | feature policy, startup selection, or domain behavior |\n| Executor | startup sequencing and initial controller/flow selection from external facts | page workflow, presentation, domain rules, or an implicit first-page policy |\n| Model | canonical durable/domain state, transport, persistence, serialization, normalization, and reusable domain rules | JSX, layout, localized labels, navigation, or screen workflow |\n| App-facing service | a stable capability, lifecycle, caching, subscriptions, and adaptation over models/internal collaborators | screen-specific presentation or another owner's policy |\n| Controller | commands, user-facing workflow, orchestration, feature sessions, activation/mounting, and invalidation | JSX, CSS, DOM mechanics, raw storage/transport, or duplicated canonical state |\n| View service | projection of controller state/actions into presentation-ready values, component choice, mounting, and event relay | domain mutation, persistence, transport, routing policy, defaults, or independent workflow |\n| React presentation | semantic JSX, MUI/DOM interaction, rendering, and genuinely transient visual state | registry orchestration, model/service calls, durable mutation, URL parsing, or feature mounting |",
+            "section": [
+              "REMVC",
+              "Strict Responsibility Matrix"
+            ]
+          }
+        },
+        {
+          "path": "architecture/features/orders/OrderController.js",
+          "rule": {
+            "id": "ARCHITECTURE-015",
+            "standard": "architecture.md",
+            "line": 66,
+            "endLine": 69,
+            "text": "Everything beneath a feature is private by default. Another feature must not\nimport its controller, view, component, model, helper, CSS, type declaration,\ntest support, or asset. Cross-feature collaboration must use one of these\nintentional seams:",
+            "section": [
+              "Architecture",
+              "Feature Ownership"
+            ]
+          }
+        },
+        {
+          "path": "architecture/features/orders/OrderController.js",
+          "rule": {
+            "id": "REMVC-045",
+            "standard": "remvc.md",
+            "line": 204,
+            "endLine": 204,
+            "text": "Feature-internal code and assets are private. When another feature needs a capability, expose a narrow service or promote a genuinely shared building block instead of importing feature internals.",
+            "section": [
+              "REMVC",
+              "Feature Activation And Privacy"
+            ]
+          }
+        },
+        {
+          "path": "architecture/features/orders/OrderController.js",
+          "rule": {
+            "id": "POLYLITH-024",
+            "standard": "polylith.md",
+            "line": 98,
+            "endLine": 103,
+            "text": "`index.js` is the feature's runtime activation boundary. Keep most\nfeature-crossing imports there: it imports the owned implementations that\nregister services and contributions. Consumers locate app-facing capabilities\nthrough the registry. A feature view may directly import its own concrete React\ntree and private presentation helpers; that exception does not make those files\npublic to other features.",
+            "section": [
+              "Polylith",
+              "Synthetic Modules And Features"
+            ]
+          }
+        },
+        {
+          "path": "architecture/features/orders/InvoiceController.js",
+          "rule": {
+            "id": "ARCHITECTURE-015",
+            "standard": "architecture.md",
+            "line": 66,
+            "endLine": 69,
+            "text": "Everything beneath a feature is private by default. Another feature must not\nimport its controller, view, component, model, helper, CSS, type declaration,\ntest support, or asset. Cross-feature collaboration must use one of these\nintentional seams:",
+            "section": [
+              "Architecture",
+              "Feature Ownership"
+            ]
+          }
+        },
+        {
+          "path": "architecture/features/orders/InvoiceController.js",
+          "rule": {
+            "id": "REMVC-045",
+            "standard": "remvc.md",
+            "line": 204,
+            "endLine": 204,
+            "text": "Feature-internal code and assets are private. When another feature needs a capability, expose a narrow service or promote a genuinely shared building block instead of importing feature internals.",
+            "section": [
+              "REMVC",
+              "Feature Activation And Privacy"
+            ]
+          }
+        },
+        {
+          "path": "architecture/features/orders/InvoiceController.js",
+          "rule": {
+            "id": "POLYLITH-024",
+            "standard": "polylith.md",
+            "line": 98,
+            "endLine": 103,
+            "text": "`index.js` is the feature's runtime activation boundary. Keep most\nfeature-crossing imports there: it imports the owned implementations that\nregister services and contributions. Consumers locate app-facing capabilities\nthrough the registry. A feature view may directly import its own concrete React\ntree and private presentation helpers; that exception does not make those files\npublic to other features.",
+            "section": [
+              "Polylith",
+              "Synthetic Modules And Features"
+            ]
+          }
+        },
+        {
+          "path": "architecture/PriceService.js",
+          "rule": {
+            "id": "POLYLITH-030",
+            "standard": "polylith.md",
+            "line": 128,
+            "endLine": 128,
+            "text": "Services may start in parallel. Registry presence is not proof of readiness. Cross-service behavior belongs in `ready()` and every listener/resource requires matching cleanup.",
+            "section": [
+              "Polylith",
+              "Service Lifecycle"
+            ]
+          }
+        },
+        {
+          "path": "architecture/PriceService.js",
+          "rule": {
+            "id": "REMVC-038",
+            "standard": "remvc.md",
+            "line": 181,
+            "endLine": 181,
+            "text": "- do not call other services or assume their initialization is complete.",
+            "section": [
+              "REMVC",
+              "Service Lifecycle",
+              "`start()`"
+            ]
+          }
+        },
+        {
+          "path": "architecture/PriceService.js",
+          "rule": {
+            "id": "REMVC-043",
+            "standard": "remvc.md",
+            "line": 196,
+            "endLine": 196,
+            "text": "Every owned subscription, listener, timer, observer, connection, and imperative resource needs precise, idempotent cleanup. Replacing a transport or remounting a view must not accumulate listeners.",
+            "section": [
+              "REMVC",
+              "Service Lifecycle",
+              "`ready()`"
+            ]
+          }
+        },
+        {
+          "path": "architecture/TotalService.js",
+          "rule": {
+            "id": "POLYLITH-030",
+            "standard": "polylith.md",
+            "line": 128,
+            "endLine": 128,
+            "text": "Services may start in parallel. Registry presence is not proof of readiness. Cross-service behavior belongs in `ready()` and every listener/resource requires matching cleanup.",
+            "section": [
+              "Polylith",
+              "Service Lifecycle"
+            ]
+          }
+        },
+        {
+          "path": "architecture/TotalService.js",
+          "rule": {
+            "id": "REMVC-038",
+            "standard": "remvc.md",
+            "line": 181,
+            "endLine": 181,
+            "text": "- do not call other services or assume their initialization is complete.",
+            "section": [
+              "REMVC",
+              "Service Lifecycle",
+              "`start()`"
+            ]
+          }
+        },
+        {
+          "path": "architecture/TotalService.js",
+          "rule": {
+            "id": "REMVC-043",
+            "standard": "remvc.md",
+            "line": 196,
+            "endLine": 196,
+            "text": "Every owned subscription, listener, timer, observer, connection, and imperative resource needs precise, idempotent cleanup. Replacing a transport or remounting a view must not accumulate listeners.",
+            "section": [
+              "REMVC",
+              "Service Lifecycle",
+              "`ready()`"
+            ]
+          }
+        },
+        {
+          "path": "architecture/EntryA.js",
+          "rule": {
+            "id": "POLYLITH-022",
+            "standard": "polylith.md",
+            "line": 92,
+            "endLine": 92,
+            "text": "The application entry imports Polylith's generated feature aggregate so included feature entrypoints execute. Build-generated configuration and loadables likewise remain declared build concerns. Do not replace those seams with a manually maintained list of feature implementation imports.",
+            "section": [
+              "Polylith",
+              "Synthetic Modules And Features"
+            ]
+          }
+        },
+        {
+          "path": "architecture/EntryA.js",
+          "rule": {
+            "id": "REMVC-044",
+            "standard": "remvc.md",
+            "line": 201,
+            "endLine": 201,
+            "text": "Feature activation comes from Polylith build configuration and side-effect entry imports. Main entries import the generated feature aggregate; they do not directly import individual page components. Page metadata names a controller service, never a React component.",
+            "section": [
+              "REMVC",
+              "Feature Activation And Privacy"
+            ]
+          }
+        },
+        {
+          "path": "architecture/EntryB.js",
+          "rule": {
+            "id": "POLYLITH-022",
+            "standard": "polylith.md",
+            "line": 92,
+            "endLine": 92,
+            "text": "The application entry imports Polylith's generated feature aggregate so included feature entrypoints execute. Build-generated configuration and loadables likewise remain declared build concerns. Do not replace those seams with a manually maintained list of feature implementation imports.",
+            "section": [
+              "Polylith",
+              "Synthetic Modules And Features"
+            ]
+          }
+        },
+        {
+          "path": "architecture/EntryB.js",
+          "rule": {
+            "id": "REMVC-044",
+            "standard": "remvc.md",
+            "line": 201,
+            "endLine": 201,
+            "text": "Feature activation comes from Polylith build configuration and side-effect entry imports. Main entries import the generated feature aggregate; they do not directly import individual page components. Page metadata names a controller service, never a React component.",
+            "section": [
+              "REMVC",
+              "Feature Activation And Privacy"
+            ]
+          }
+        }
+      ]
+    },
+    "fingerprint": "27a6b803fec41908ea0a3b04e02e37fca5cf8a3c95fed2c99ba657dbf9b8aa20"
+  },
+  "primary": {
+    "kind": "primary",
+    "lane": "calibration",
+    "actor": "/root/calibration_primary",
+    "fingerprint": "27a6b803fec41908ea0a3b04e02e37fca5cf8a3c95fed2c99ba657dbf9b8aa20",
+    "entries": [
+      {
+        "path": "CaseA.jsx",
+        "ruleId": "REACT-STRUCT-001",
+        "status": "violation",
+        "reason": "The render method contains several distinct header, filtering, results, detail, and footer regions without focused render methods.",
+        "evidence": [
+          {
+            "path": "CaseA.jsx",
+            "line": 15,
+            "quote": "<main>"
+          },
+          {
+            "path": "CaseA.jsx",
+            "line": 33,
+            "quote": "<aside aria-label=\"Selected order\">"
+          }
+        ],
+        "severity": "important",
+        "consequence": "The large render obscures semantic regions and their maintenance boundaries.",
+        "remedy": "Extract named render methods for the header, filters, results, details, and footer."
+      },
+      {
+        "path": "CaseA.jsx",
+        "ruleId": "REACT-EVENT-001",
+        "status": "violation",
+        "reason": "The click prop receives an inline arrow callback.",
+        "evidence": [
+          {
+            "path": "CaseA.jsx",
+            "line": 19,
+            "quote": "<button onClick={() => this.loadOrders()}>Refresh</button>"
+          }
+        ],
+        "severity": "important",
+        "consequence": "A new event callback is created during each render.",
+        "remedy": "Bind a named refresh handler outside render and pass it to onClick."
+      },
+      {
+        "path": "CaseA.jsx",
+        "ruleId": "REACT-007",
+        "status": "violation",
+        "reason": "The component directly performs transport access with fetch.",
+        "evidence": [
+          {
+            "path": "CaseA.jsx",
+            "line": 9,
+            "quote": "const response = await fetch('/api/orders');"
+          }
+        ],
+        "severity": "important",
+        "consequence": "Presentation owns transport work that belongs behind a model or service boundary.",
+        "remedy": "Receive orders and a refresh callback through the owning view/controller boundary."
+      },
+      {
+        "path": "CaseA.jsx",
+        "ruleId": "REMVC-006",
+        "status": "violation",
+        "reason": "React presentation performs direct transport work, which the responsibility matrix prohibits.",
+        "evidence": [
+          {
+            "path": "CaseA.jsx",
+            "line": 9,
+            "quote": "const response = await fetch('/api/orders');"
+          }
+        ],
+        "severity": "important",
+        "consequence": "The React layer bypasses the model/service and controller workflow boundaries.",
+        "remedy": "Move loading to the owning controller and service/model; pass presentation values and actions to React."
+      },
+      {
+        "path": "CaseB.js",
+        "ruleId": "REACT-STRUCT-001",
+        "status": "not-applicable",
+        "reason": "This file defines a view service and contains no React render method.",
+        "evidence": [
+          {
+            "path": "CaseB.js",
+            "line": 2,
+            "quote": "export class CaseBView {"
+          }
+        ]
+      },
+      {
+        "path": "CaseB.js",
+        "ruleId": "REACT-EVENT-001",
+        "status": "not-applicable",
+        "reason": "This file contains no JSX event props.",
+        "evidence": [
+          {
+            "path": "CaseB.js",
+            "line": 8,
+            "quote": "async submitOrder(draft) {"
+          }
+        ]
+      },
+      {
+        "path": "CaseB.js",
+        "ruleId": "REACT-007",
+        "status": "not-applicable",
+        "reason": "This file is not a React component.",
+        "evidence": [
+          {
+            "path": "CaseB.js",
+            "line": 2,
+            "quote": "export class CaseBView {"
+          }
+        ]
+      },
+      {
+        "path": "CaseB.js",
+        "ruleId": "REMVC-006",
+        "status": "violation",
+        "reason": "The view service chooses workflow state and directly mutates through its model, both reserved for the controller/model boundary.",
+        "evidence": [
+          {
+            "path": "CaseB.js",
+            "line": 9,
+            "quote": "if (draft.total > 1000) this.screen = 'approval';"
+          },
+          {
+            "path": "CaseB.js",
+            "line": 11,
+            "quote": "await this.model.saveOrder(draft);"
+          }
+        ],
+        "severity": "important",
+        "consequence": "Workflow policy and domain mutation are embedded in presentation coordination.",
+        "remedy": "Have the view relay submit intent to its controller, which owns the decision and model/service call."
+      },
+      {
+        "path": "CaseC.js",
+        "ruleId": "REACT-STRUCT-001",
+        "status": "not-applicable",
+        "reason": "This controller file contains no React render method.",
+        "evidence": [
+          {
+            "path": "CaseC.js",
+            "line": 2,
+            "quote": "export class CaseCController {"
+          }
+        ]
+      },
+      {
+        "path": "CaseC.js",
+        "ruleId": "REACT-EVENT-001",
+        "status": "not-applicable",
+        "reason": "This file contains no JSX event props.",
+        "evidence": [
+          {
+            "path": "CaseC.js",
+            "line": 4,
+            "quote": "saveOrder(order) {"
+          }
+        ]
+      },
+      {
+        "path": "CaseC.js",
+        "ruleId": "REACT-007",
+        "status": "not-applicable",
+        "reason": "This file is not a React component.",
+        "evidence": [
+          {
+            "path": "CaseC.js",
+            "line": 2,
+            "quote": "export class CaseCController {"
+          }
+        ]
+      },
+      {
+        "path": "CaseC.js",
+        "ruleId": "REMVC-006",
+        "status": "violation",
+        "reason": "The controller directly uses raw browser persistence, which the matrix assigns to the model layer.",
+        "evidence": [
+          {
+            "path": "CaseC.js",
+            "line": 5,
+            "quote": "localStorage.setItem('orders', JSON.stringify(order));"
+          }
+        ],
+        "severity": "important",
+        "consequence": "Persistence bypasses the model/service boundary and becomes coupled to page workflow.",
+        "remedy": "Move persistence to an owning model or service and have the controller invoke its stable contract."
+      },
+      {
+        "path": "CaseD.jsx",
+        "ruleId": "REACT-STRUCT-001",
+        "status": "compliant",
+        "reason": "The small component has one focused button render region.",
+        "evidence": [
+          {
+            "path": "CaseD.jsx",
+            "line": 11,
+            "quote": "return <button type=\"button\" onClick={this.handleRefresh}>{this.props.label}</button>;"
+          }
+        ]
+      },
+      {
+        "path": "CaseD.jsx",
+        "ruleId": "REACT-EVENT-001",
+        "status": "compliant",
+        "reason": "The event prop receives a named handler bound outside render.",
+        "evidence": [
+          {
+            "path": "CaseD.jsx",
+            "line": 7,
+            "quote": "this.handleRefresh = this.handleRefresh.bind(this);"
+          },
+          {
+            "path": "CaseD.jsx",
+            "line": 11,
+            "quote": "return <button type=\"button\" onClick={this.handleRefresh}>{this.props.label}</button>;"
+          }
+        ]
+      },
+      {
+        "path": "CaseD.jsx",
+        "ruleId": "REACT-007",
+        "status": "compliant",
+        "reason": "The component relays user intent through an owner-supplied callback and has no direct model, transport, or registry access.",
+        "evidence": [
+          {
+            "path": "CaseD.jsx",
+            "line": 9,
+            "quote": "handleRefresh() { this.props.onRefresh(); }"
+          }
+        ]
+      },
+      {
+        "path": "CaseD.jsx",
+        "ruleId": "REMVC-006",
+        "status": "compliant",
+        "reason": "The React component renders a control and reports intent through its supplied callback.",
+        "evidence": [
+          {
+            "path": "CaseD.jsx",
+            "line": 9,
+            "quote": "handleRefresh() { this.props.onRefresh(); }"
+          }
+        ]
+      },
+      {
+        "path": "architecture/features/orders/OrderController.js",
+        "ruleId": "ARCHITECTURE-015",
+        "status": "violation",
+        "reason": "The orders controller reaches billing's private implementation through a shared re-export, which does not create an intentional cross-feature seam.",
+        "evidence": [
+          {
+            "path": "architecture/features/orders/OrderController.js",
+            "line": 1,
+            "quote": "import {settle} from '../../shared/ledger.js';"
+          },
+          {
+            "path": "architecture/shared/ledger.js",
+            "line": 1,
+            "quote": "export {settle} from '../features/billing/private/Ledger.js';"
+          },
+          {
+            "path": "architecture/features/billing/private/Ledger.js",
+            "line": 1,
+            "quote": "// Billing feature's private implementation; not a published feature entry."
+          }
+        ],
+        "severity": "important",
+        "consequence": "Orders depends on billing internals and billing cannot be removed or changed independently.",
+        "remedy": "Expose billing through an app-facing registry service or documented public feature contract."
+      },
+      {
+        "path": "architecture/features/orders/OrderController.js",
+        "ruleId": "REMVC-045",
+        "status": "violation",
+        "reason": "The controller consumes billing's feature-private implementation via a re-export instead of a narrow service or shared building block.",
+        "evidence": [
+          {
+            "path": "architecture/features/orders/OrderController.js",
+            "line": 1,
+            "quote": "import {settle} from '../../shared/ledger.js';"
+          },
+          {
+            "path": "architecture/shared/ledger.js",
+            "line": 1,
+            "quote": "export {settle} from '../features/billing/private/Ledger.js';"
+          },
+          {
+            "path": "architecture/features/billing/private/Ledger.js",
+            "line": 1,
+            "quote": "// Billing feature's private implementation; not a published feature entry."
+          }
+        ],
+        "severity": "important",
+        "consequence": "Feature privacy is bypassed and cross-feature capability ownership is hidden.",
+        "remedy": "Register a narrow billing capability and resolve it through the registry."
+      },
+      {
+        "path": "architecture/features/orders/OrderController.js",
+        "ruleId": "POLYLITH-024",
+        "status": "violation",
+        "reason": "The controller crosses feature ownership through a direct implementation import rather than locating an app-facing capability through the registry.",
+        "evidence": [
+          {
+            "path": "architecture/features/orders/OrderController.js",
+            "line": 1,
+            "quote": "import {settle} from '../../shared/ledger.js';"
+          },
+          {
+            "path": "architecture/shared/ledger.js",
+            "line": 1,
+            "quote": "export {settle} from '../features/billing/private/Ledger.js';"
+          },
+          {
+            "path": "architecture/features/billing/private/Ledger.js",
+            "line": 1,
+            "quote": "// Billing feature's private implementation; not a published feature entry."
+          }
+        ],
+        "severity": "important",
+        "consequence": "Feature-crossing ownership is hidden outside the activation and registry seam.",
+        "remedy": "Use a registry-provided billing capability from the controller."
+      },
+      {
+        "path": "architecture/features/orders/InvoiceController.js",
+        "ruleId": "ARCHITECTURE-015",
+        "status": "compliant",
+        "reason": "The orders controller obtains billing through a registry capability rather than importing feature internals.",
+        "evidence": [
+          {
+            "path": "architecture/features/orders/InvoiceController.js",
+            "line": 6,
+            "quote": "this.billing = this.registry.get('billing');"
+          }
+        ]
+      },
+      {
+        "path": "architecture/features/orders/InvoiceController.js",
+        "ruleId": "REMVC-045",
+        "status": "compliant",
+        "reason": "The cross-feature dependency uses a narrow registry service seam.",
+        "evidence": [
+          {
+            "path": "architecture/features/orders/InvoiceController.js",
+            "line": 6,
+            "quote": "this.billing = this.registry.get('billing');"
+          }
+        ]
+      },
+      {
+        "path": "architecture/features/orders/InvoiceController.js",
+        "ruleId": "POLYLITH-024",
+        "status": "compliant",
+        "reason": "The consumer locates the app-facing billing capability through the registry.",
+        "evidence": [
+          {
+            "path": "architecture/features/orders/InvoiceController.js",
+            "line": 6,
+            "quote": "this.billing = this.registry.get('billing');"
+          }
+        ]
+      },
+      {
+        "path": "architecture/PriceService.js",
+        "ruleId": "POLYLITH-030",
+        "status": "violation",
+        "reason": "Cross-service resolution, refresh, and listener installation occur in start, and the listener has no matching cleanup.",
+        "evidence": [
+          {
+            "path": "architecture/PriceService.js",
+            "line": 6,
+            "quote": "this.prices = this.registry.get('prices');"
+          },
+          {
+            "path": "architecture/PriceService.js",
+            "line": 8,
+            "quote": "this.prices.on('changed', () => this.recalculate());"
+          },
+          {
+            "path": "architecture/PriceService.js",
+            "line": 13,
+            "quote": "stop() {}"
+          }
+        ],
+        "severity": "important",
+        "consequence": "Parallel startup can observe an unready dependency and repeated lifecycle use accumulates listeners.",
+        "remedy": "Move dependency work to ready, retain the listener reference, and remove it during idempotent cleanup."
+      },
+      {
+        "path": "architecture/PriceService.js",
+        "ruleId": "REMVC-038",
+        "status": "violation",
+        "reason": "start calls another registry service before dependency readiness is established.",
+        "evidence": [
+          {
+            "path": "architecture/PriceService.js",
+            "line": 6,
+            "quote": "this.prices = this.registry.get('prices');"
+          },
+          {
+            "path": "architecture/PriceService.js",
+            "line": 7,
+            "quote": "this.prices.refresh();"
+          }
+        ],
+        "severity": "important",
+        "consequence": "The service assumes dependency initialization during the parallel start phase.",
+        "remedy": "Resolve and use the dependency in ready."
+      },
+      {
+        "path": "architecture/PriceService.js",
+        "ruleId": "REMVC-043",
+        "status": "violation",
+        "reason": "The owned changed listener is installed but stop provides no cleanup.",
+        "evidence": [
+          {
+            "path": "architecture/PriceService.js",
+            "line": 8,
+            "quote": "this.prices.on('changed', () => this.recalculate());"
+          },
+          {
+            "path": "architecture/PriceService.js",
+            "line": 13,
+            "quote": "stop() {}"
+          }
+        ],
+        "severity": "important",
+        "consequence": "Restarting the service can retain stale listeners and duplicate recalculation.",
+        "remedy": "Store a listener reference and unregister it in idempotent cleanup."
+      },
+      {
+        "path": "architecture/TotalService.js",
+        "ruleId": "POLYLITH-030",
+        "status": "compliant",
+        "reason": "Local state initializes in start; cross-service work occurs in ready and is cleaned up in stop.",
+        "evidence": [
+          {
+            "path": "architecture/TotalService.js",
+            "line": 7,
+            "quote": "this.total = 0;"
+          },
+          {
+            "path": "architecture/TotalService.js",
+            "line": 10,
+            "quote": "this.prices = this.registry.get('prices');"
+          },
+          {
+            "path": "architecture/TotalService.js",
+            "line": 19,
+            "quote": "this.prices.off('changed', this.handleChanged);"
+          }
+        ]
+      },
+      {
+        "path": "architecture/TotalService.js",
+        "ruleId": "REMVC-038",
+        "status": "compliant",
+        "reason": "start initializes only local state and does not access other services.",
+        "evidence": [
+          {
+            "path": "architecture/TotalService.js",
+            "line": 6,
+            "quote": "start() {"
+          },
+          {
+            "path": "architecture/TotalService.js",
+            "line": 7,
+            "quote": "this.total = 0;"
+          }
+        ]
+      },
+      {
+        "path": "architecture/TotalService.js",
+        "ruleId": "REMVC-043",
+        "status": "compliant",
+        "reason": "The retained listener is removed during guarded cleanup.",
+        "evidence": [
+          {
+            "path": "architecture/TotalService.js",
+            "line": 11,
+            "quote": "this.prices.on('changed', this.handleChanged);"
+          },
+          {
+            "path": "architecture/TotalService.js",
+            "line": 19,
+            "quote": "this.prices.off('changed', this.handleChanged);"
+          }
+        ]
+      },
+      {
+        "path": "architecture/EntryA.js",
+        "ruleId": "POLYLITH-022",
+        "status": "violation",
+        "reason": "The application entry manually imports a feature implementation instead of the generated feature aggregate.",
+        "evidence": [
+          {
+            "path": "architecture/EntryA.js",
+            "line": 2,
+            "quote": "import './features/orders/OrderController.js';"
+          }
+        ],
+        "severity": "important",
+        "consequence": "Activation no longer follows build-selected feature aggregation.",
+        "remedy": "Import Polylith's generated feature aggregate."
+      },
+      {
+        "path": "architecture/EntryA.js",
+        "ruleId": "REMVC-044",
+        "status": "violation",
+        "reason": "The main entry directly imports a feature implementation rather than the generated feature aggregate.",
+        "evidence": [
+          {
+            "path": "architecture/EntryA.js",
+            "line": 2,
+            "quote": "import './features/orders/OrderController.js';"
+          }
+        ],
+        "severity": "important",
+        "consequence": "Feature activation bypasses the build and side-effect entry boundary.",
+        "remedy": "Replace the direct implementation import with the generated feature aggregate import."
+      },
+      {
+        "path": "architecture/EntryB.js",
+        "ruleId": "POLYLITH-022",
+        "status": "compliant",
+        "reason": "The application entry imports the generated Polylith feature aggregate.",
+        "evidence": [
+          {
+            "path": "architecture/EntryB.js",
+            "line": 2,
+            "quote": "import '@polylith/features';"
+          }
+        ]
+      },
+      {
+        "path": "architecture/EntryB.js",
+        "ruleId": "REMVC-044",
+        "status": "compliant",
+        "reason": "The main entry uses the generated feature aggregate rather than an individual feature implementation.",
+        "evidence": [
+          {
+            "path": "architecture/EntryB.js",
+            "line": 2,
+            "quote": "import '@polylith/features';"
+          }
+        ]
+      }
+    ]
+  },
+  "audit": {
+    "kind": "audit",
+    "lane": "calibration",
+    "actor": "/root/calibration_audit",
+    "fingerprint": "27a6b803fec41908ea0a3b04e02e37fca5cf8a3c95fed2c99ba657dbf9b8aa20",
+    "primaryDigest": "9cb9a9b8c65a550bfbd9ac538d3196925bb9c23b8d65300ba7d4cf2369b0f284",
+    "entries": [
+      {
+        "path": "CaseA.jsx",
+        "ruleId": "REACT-STRUCT-001",
+        "status": "agree",
+        "reason": "Independent inspection confirms one render contains distinct header, filters, results, details, and footer regions without focused render methods.",
+        "evidence": [
+          {
+            "path": "CaseA.jsx",
+            "line": 15,
+            "quote": "<main>"
+          },
+          {
+            "path": "CaseA.jsx",
+            "line": 33,
+            "quote": "<aside aria-label=\"Selected order\">"
+          }
+        ]
+      },
+      {
+        "path": "CaseA.jsx",
+        "ruleId": "REACT-EVENT-001",
+        "status": "agree",
+        "reason": "Independent inspection confirms an inline arrow function is supplied to an event prop.",
+        "evidence": [
+          {
+            "path": "CaseA.jsx",
+            "line": 19,
+            "quote": "<button onClick={() => this.loadOrders()}>Refresh</button>"
+          }
+        ]
+      },
+      {
+        "path": "CaseA.jsx",
+        "ruleId": "REACT-007",
+        "status": "agree",
+        "reason": "Independent inspection confirms this React component directly performs transport access.",
+        "evidence": [
+          {
+            "path": "CaseA.jsx",
+            "line": 9,
+            "quote": "const response = await fetch('/api/orders');"
+          }
+        ]
+      },
+      {
+        "path": "CaseA.jsx",
+        "ruleId": "REMVC-006",
+        "status": "agree",
+        "reason": "Independent inspection confirms React presentation owns raw transport work reserved for the model/service boundary.",
+        "evidence": [
+          {
+            "path": "CaseA.jsx",
+            "line": 9,
+            "quote": "const response = await fetch('/api/orders');"
+          }
+        ]
+      },
+      {
+        "path": "CaseB.js",
+        "ruleId": "REACT-STRUCT-001",
+        "status": "agree",
+        "reason": "Independent inspection confirms this is a view-service class with no React render method.",
+        "evidence": [
+          {
+            "path": "CaseB.js",
+            "line": 2,
+            "quote": "export class CaseBView {"
+          }
+        ]
+      },
+      {
+        "path": "CaseB.js",
+        "ruleId": "REACT-EVENT-001",
+        "status": "agree",
+        "reason": "Independent inspection confirms the view-service source contains no JSX event prop.",
+        "evidence": [
+          {
+            "path": "CaseB.js",
+            "line": 8,
+            "quote": "async submitOrder(draft) {"
+          }
+        ]
+      },
+      {
+        "path": "CaseB.js",
+        "ruleId": "REACT-007",
+        "status": "agree",
+        "reason": "Independent inspection confirms this source is not a React component.",
+        "evidence": [
+          {
+            "path": "CaseB.js",
+            "line": 2,
+            "quote": "export class CaseBView {"
+          }
+        ]
+      },
+      {
+        "path": "CaseB.js",
+        "ruleId": "REMVC-006",
+        "status": "agree",
+        "reason": "Independent inspection confirms the view selects workflow state and directly invokes model mutation.",
+        "evidence": [
+          {
+            "path": "CaseB.js",
+            "line": 9,
+            "quote": "if (draft.total > 1000) this.screen = 'approval';"
+          },
+          {
+            "path": "CaseB.js",
+            "line": 11,
+            "quote": "await this.model.saveOrder(draft);"
+          }
+        ]
+      },
+      {
+        "path": "CaseC.js",
+        "ruleId": "REACT-STRUCT-001",
+        "status": "agree",
+        "reason": "Independent inspection confirms this controller source contains no React render method.",
+        "evidence": [
+          {
+            "path": "CaseC.js",
+            "line": 2,
+            "quote": "export class CaseCController {"
+          }
+        ]
+      },
+      {
+        "path": "CaseC.js",
+        "ruleId": "REACT-EVENT-001",
+        "status": "agree",
+        "reason": "Independent inspection confirms this controller source contains no JSX event prop.",
+        "evidence": [
+          {
+            "path": "CaseC.js",
+            "line": 4,
+            "quote": "saveOrder(order) {"
+          }
+        ]
+      },
+      {
+        "path": "CaseC.js",
+        "ruleId": "REACT-007",
+        "status": "agree",
+        "reason": "Independent inspection confirms this source is not a React component.",
+        "evidence": [
+          {
+            "path": "CaseC.js",
+            "line": 2,
+            "quote": "export class CaseCController {"
+          }
+        ]
+      },
+      {
+        "path": "CaseC.js",
+        "ruleId": "REMVC-006",
+        "status": "agree",
+        "reason": "Independent inspection confirms the controller directly persists durable state through browser storage.",
+        "evidence": [
+          {
+            "path": "CaseC.js",
+            "line": 5,
+            "quote": "localStorage.setItem('orders', JSON.stringify(order));"
+          }
+        ]
+      },
+      {
+        "path": "CaseD.jsx",
+        "ruleId": "REACT-STRUCT-001",
+        "status": "agree",
+        "reason": "Independent inspection confirms the small component renders one focused control.",
+        "evidence": [
+          {
+            "path": "CaseD.jsx",
+            "line": 11,
+            "quote": "return <button type=\"button\" onClick={this.handleRefresh}>{this.props.label}</button>;"
+          }
+        ]
+      },
+      {
+        "path": "CaseD.jsx",
+        "ruleId": "REACT-EVENT-001",
+        "status": "agree",
+        "reason": "Independent inspection confirms the event receives a named handler bound outside render.",
+        "evidence": [
+          {
+            "path": "CaseD.jsx",
+            "line": 7,
+            "quote": "this.handleRefresh = this.handleRefresh.bind(this);"
+          },
+          {
+            "path": "CaseD.jsx",
+            "line": 11,
+            "quote": "return <button type=\"button\" onClick={this.handleRefresh}>{this.props.label}</button>;"
+          }
+        ]
+      },
+      {
+        "path": "CaseD.jsx",
+        "ruleId": "REACT-007",
+        "status": "agree",
+        "reason": "Independent inspection confirms the component relays intent through its supplied callback without model, transport, or registry access.",
+        "evidence": [
+          {
+            "path": "CaseD.jsx",
+            "line": 9,
+            "quote": "handleRefresh() { this.props.onRefresh(); }"
+          }
+        ]
+      },
+      {
+        "path": "CaseD.jsx",
+        "ruleId": "REMVC-006",
+        "status": "agree",
+        "reason": "Independent inspection confirms the component only renders a control and relays intent.",
+        "evidence": [
+          {
+            "path": "CaseD.jsx",
+            "line": 9,
+            "quote": "handleRefresh() { this.props.onRefresh(); }"
+          }
+        ]
+      },
+      {
+        "path": "architecture/features/orders/OrderController.js",
+        "ruleId": "ARCHITECTURE-015",
+        "status": "agree",
+        "reason": "Independent tracing confirms the orders controller consumes billing's private implementation through a shared re-export, which is not an intentional seam.",
+        "evidence": [
+          {
+            "path": "architecture/features/orders/OrderController.js",
+            "line": 1,
+            "quote": "import {settle} from '../../shared/ledger.js';"
+          },
+          {
+            "path": "architecture/shared/ledger.js",
+            "line": 1,
+            "quote": "export {settle} from '../features/billing/private/Ledger.js';"
+          },
+          {
+            "path": "architecture/features/billing/private/Ledger.js",
+            "line": 1,
+            "quote": "// Billing feature's private implementation; not a published feature entry."
+          }
+        ]
+      },
+      {
+        "path": "architecture/features/orders/OrderController.js",
+        "ruleId": "REMVC-045",
+        "status": "agree",
+        "reason": "Independent tracing confirms the cross-feature dependency resolves to billing-private code rather than a narrow service or genuine shared building block.",
+        "evidence": [
+          {
+            "path": "architecture/features/orders/OrderController.js",
+            "line": 1,
+            "quote": "import {settle} from '../../shared/ledger.js';"
+          },
+          {
+            "path": "architecture/shared/ledger.js",
+            "line": 1,
+            "quote": "export {settle} from '../features/billing/private/Ledger.js';"
+          },
+          {
+            "path": "architecture/features/billing/private/Ledger.js",
+            "line": 1,
+            "quote": "// Billing feature's private implementation; not a published feature entry."
+          }
+        ]
+      },
+      {
+        "path": "architecture/features/orders/OrderController.js",
+        "ruleId": "POLYLITH-024",
+        "status": "agree",
+        "reason": "Independent tracing confirms the feature-crossing capability is directly imported through a re-export instead of located through the registry.",
+        "evidence": [
+          {
+            "path": "architecture/features/orders/OrderController.js",
+            "line": 1,
+            "quote": "import {settle} from '../../shared/ledger.js';"
+          },
+          {
+            "path": "architecture/shared/ledger.js",
+            "line": 1,
+            "quote": "export {settle} from '../features/billing/private/Ledger.js';"
+          },
+          {
+            "path": "architecture/features/billing/private/Ledger.js",
+            "line": 1,
+            "quote": "// Billing feature's private implementation; not a published feature entry."
+          }
+        ]
+      },
+      {
+        "path": "architecture/features/orders/InvoiceController.js",
+        "ruleId": "ARCHITECTURE-015",
+        "status": "agree",
+        "reason": "Independent inspection confirms the controller acquires billing through a registry capability and imports no feature internals.",
+        "evidence": [
+          {
+            "path": "architecture/features/orders/InvoiceController.js",
+            "line": 6,
+            "quote": "this.billing = this.registry.get('billing');"
+          }
+        ]
+      },
+      {
+        "path": "architecture/features/orders/InvoiceController.js",
+        "ruleId": "REMVC-045",
+        "status": "agree",
+        "reason": "Independent inspection confirms the cross-feature capability is accessed through the registry service seam.",
+        "evidence": [
+          {
+            "path": "architecture/features/orders/InvoiceController.js",
+            "line": 6,
+            "quote": "this.billing = this.registry.get('billing');"
+          }
+        ]
+      },
+      {
+        "path": "architecture/features/orders/InvoiceController.js",
+        "ruleId": "POLYLITH-024",
+        "status": "agree",
+        "reason": "Independent inspection confirms the consumer locates the billing capability through the registry.",
+        "evidence": [
+          {
+            "path": "architecture/features/orders/InvoiceController.js",
+            "line": 6,
+            "quote": "this.billing = this.registry.get('billing');"
+          }
+        ]
+      },
+      {
+        "path": "architecture/PriceService.js",
+        "ruleId": "POLYLITH-030",
+        "status": "agree",
+        "reason": "Independent inspection confirms cross-service resolution, refresh, and listener installation occur during start, while the listener lacks cleanup.",
+        "evidence": [
+          {
+            "path": "architecture/PriceService.js",
+            "line": 6,
+            "quote": "this.prices = this.registry.get('prices');"
+          },
+          {
+            "path": "architecture/PriceService.js",
+            "line": 8,
+            "quote": "this.prices.on('changed', () => this.recalculate());"
+          },
+          {
+            "path": "architecture/PriceService.js",
+            "line": 13,
+            "quote": "stop() {}"
+          }
+        ]
+      },
+      {
+        "path": "architecture/PriceService.js",
+        "ruleId": "REMVC-038",
+        "status": "agree",
+        "reason": "Independent inspection confirms start calls a registry service before the ready phase.",
+        "evidence": [
+          {
+            "path": "architecture/PriceService.js",
+            "line": 6,
+            "quote": "this.prices = this.registry.get('prices');"
+          },
+          {
+            "path": "architecture/PriceService.js",
+            "line": 7,
+            "quote": "this.prices.refresh();"
+          }
+        ]
+      },
+      {
+        "path": "architecture/PriceService.js",
+        "ruleId": "REMVC-043",
+        "status": "agree",
+        "reason": "Independent inspection confirms the anonymous listener has no matching removal in the empty stop method.",
+        "evidence": [
+          {
+            "path": "architecture/PriceService.js",
+            "line": 8,
+            "quote": "this.prices.on('changed', () => this.recalculate());"
+          },
+          {
+            "path": "architecture/PriceService.js",
+            "line": 13,
+            "quote": "stop() {}"
+          }
+        ]
+      },
+      {
+        "path": "architecture/TotalService.js",
+        "ruleId": "POLYLITH-030",
+        "status": "agree",
+        "reason": "Independent inspection confirms start initializes only local state, dependency work is deferred to ready, and the listener is removed in stop.",
+        "evidence": [
+          {
+            "path": "architecture/TotalService.js",
+            "line": 7,
+            "quote": "this.total = 0;"
+          },
+          {
+            "path": "architecture/TotalService.js",
+            "line": 10,
+            "quote": "this.prices = this.registry.get('prices');"
+          },
+          {
+            "path": "architecture/TotalService.js",
+            "line": 19,
+            "quote": "this.prices.off('changed', this.handleChanged);"
+          }
+        ]
+      },
+      {
+        "path": "architecture/TotalService.js",
+        "ruleId": "REMVC-038",
+        "status": "agree",
+        "reason": "Independent inspection confirms start is limited to local initialization.",
+        "evidence": [
+          {
+            "path": "architecture/TotalService.js",
+            "line": 6,
+            "quote": "start() {"
+          },
+          {
+            "path": "architecture/TotalService.js",
+            "line": 7,
+            "quote": "this.total = 0;"
+          }
+        ]
+      },
+      {
+        "path": "architecture/TotalService.js",
+        "ruleId": "REMVC-043",
+        "status": "agree",
+        "reason": "Independent inspection confirms the retained listener reference is unregistered by guarded cleanup.",
+        "evidence": [
+          {
+            "path": "architecture/TotalService.js",
+            "line": 11,
+            "quote": "this.prices.on('changed', this.handleChanged);"
+          },
+          {
+            "path": "architecture/TotalService.js",
+            "line": 19,
+            "quote": "this.prices.off('changed', this.handleChanged);"
+          }
+        ]
+      },
+      {
+        "path": "architecture/EntryA.js",
+        "ruleId": "POLYLITH-022",
+        "status": "agree",
+        "reason": "Independent inspection confirms the application entry manually imports a feature implementation instead of the generated aggregate.",
+        "evidence": [
+          {
+            "path": "architecture/EntryA.js",
+            "line": 2,
+            "quote": "import './features/orders/OrderController.js';"
+          }
+        ]
+      },
+      {
+        "path": "architecture/EntryA.js",
+        "ruleId": "REMVC-044",
+        "status": "agree",
+        "reason": "Independent inspection confirms the main entry bypasses generated feature activation with an implementation import.",
+        "evidence": [
+          {
+            "path": "architecture/EntryA.js",
+            "line": 2,
+            "quote": "import './features/orders/OrderController.js';"
+          }
+        ]
+      },
+      {
+        "path": "architecture/EntryB.js",
+        "ruleId": "POLYLITH-022",
+        "status": "agree",
+        "reason": "Independent inspection confirms the application entry imports the generated Polylith feature aggregate.",
+        "evidence": [
+          {
+            "path": "architecture/EntryB.js",
+            "line": 2,
+            "quote": "import '@polylith/features';"
+          }
+        ]
+      },
+      {
+        "path": "architecture/EntryB.js",
+        "ruleId": "REMVC-044",
+        "status": "agree",
+        "reason": "Independent inspection confirms the main entry uses the generated aggregate rather than an individual implementation.",
+        "evidence": [
+          {
+            "path": "architecture/EntryB.js",
+            "line": 2,
+            "quote": "import '@polylith/features';"
+          }
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "agents/architecture-reviewer.toml": "fe7641cbc69943be3e4cdde7dddd7c031250466bea251b8675acb673558a619c",
+    "agents/checkpoint-advisor.toml": "ea5d83ae5c64cb4975edfdd8f5df99865a314252a9b18bd73a166104874e4f4c",
+    "agents/contracts-reviewer.toml": "b64f447f950dca55ef921ce14af5bbc5b3277baf5d3bfe28fe068fe8f65b571e",
+    "agents/privacy-security-reviewer.toml": "070069cf39d3371f9313cdd63db71e3b5614607f2003c91236f82e58dd66059d",
+    "agents/ui-reviewer.toml": "e176c689123906d570b85ef448bea73283f029145a7e387f1eaa583fe0613945",
+    "agents/verification-reviewer.toml": "937efa49c24a45188d4732b338fd4bcaef387bd5f0f80dc46725956c65afbefd",
+    "skills/review-standards/references/evidence-ledger.md": "289564eeacacf9c0634b607abc508dc211e29fed7eeb27c6bbec68d21d98e0be",
+    "skills/review-standards/scripts/react-event-check.mjs": "b93aaf77de155f3108255e9fe7c9b8947546533331d96af23c0a717fdf87e73e",
+    "skills/review-standards/scripts/review-ledger.mjs": "7155c4f2be596ba09fa14a06e78046fb298ea76facdc812fc20076251f096306",
+    "skills/review-standards/scripts/reviewer-calibration.mjs": "f6efcec399b5d583544434f169befd03ed05b1301390fc7e73f343b5818347d3",
+    "skills/review-standards/scripts/rule-inventory.mjs": "ad4468aa31b59c9e950c3a9aee306e65bded2ef90cea610118c25d8ed0dac3a6"
+  }
+}

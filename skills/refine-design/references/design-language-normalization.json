@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "baseUnitPx": 4,
+  "presets": [
+    {
+      "id": "periwinkle-identity-v1",
+      "kind": "identity-palette",
+      "matches": [
+        "periwinkle branding",
+        "periwinkle brand color",
+        "periwinkle identity"
+      ],
+      "members": [
+        {
+          "id": "primary-action",
+          "name": "Deep periwinkle",
+          "value": "#6467C7",
+          "purposeTemplate": "Primary commands, focus emphasis, and the main {appName} identity color.",
+          "rationale": "Deeper periwinkle keeps the requested identity while supporting white button text more clearly than the light tint."
+        },
+        {
+          "id": "periwinkle-soft",
+          "name": "Light periwinkle",
+          "value": "#CCCCFF",
+          "purpose": "Supporting brand tint for restrained highlights and identity surfaces.",
+          "rationale": "Keeps the familiar light periwinkle available without using it behind white primary-action text."
+        }
+      ],
+      "identityMemberIds": [
+        "primary-action",
+        "periwinkle-soft"
+      ],
+      "identityRationaleTemplate": "The owner selected periwinkle as {appName} branding. Deep periwinkle carries primary emphasis; light periwinkle is a supporting tint. Derived interaction shades do not add identity colors.",
+      "preserveFrameworkSemanticColors": true
+    },
+    {
+      "id": "rounded-button-v1",
+      "kind": "component-shape",
+      "matches": [
+        "rounded buttons",
+        "buttons with rounded corners"
+      ],
+      "component": "button",
+      "radiusPx": 12,
+      "preserveOtherComponentRadii": true
+    },
+    {
+      "id": "slightly-roomier-button-v1",
+      "kind": "component-density-adjustment",
+      "matches": [
+        "a little more vertical padding on buttons",
+        "slightly more vertical button padding"
+      ],
+      "component": "button",
+      "heightDeltaPx": 4,
+      "preserveHorizontalPadding": true,
+      "preserveTypography": true
+    },
+    {
+      "id": "periwinkle-off-white-surface-v1",
+      "kind": "researched-surface-color",
+      "matches": [
+        "pleasant off white background",
+        "less harsh than white background",
+        "soft off white surface"
+      ],
+      "role": "surface",
+      "name": "Soft off-white surface",
+      "value": "#F7F7FC",
+      "purpose": "Ordinary application and component surfaces.",
+      "rationale": "A restrained cool off-white reduces the starkness of pure white and coordinates subtly with the periwinkle identity without turning the background into an accent.",
+      "researchReferences": [
+        {
+          "name": "Carbon color overview",
+          "url": "https://carbondesignsystem.com/elements/color/overview/",
+          "relevance": "Carbon demonstrates a light background alternative using Gray 10 (#F4F4F4) and separates background and layer roles."
+        },
+        {
+          "name": "Material Web color theming",
+          "url": "https://github.com/material-components/material-web/blob/main/docs/theming/color.md",
+          "relevance": "Material treats background and surface as semantic neutral roles generated within a theme rather than requiring pure white."
+        },
+        {
+          "name": "Atlassian color foundation",
+          "url": "https://atlassian.design/foundations/color",
+          "relevance": "Atlassian separates neutral surface roles and recommends choosing tokens by semantic use."
+        }
+      ],
+      "selectionNote": "The exact #F7F7FC value is a fixture-specific synthesis, not a value claimed by all three systems."
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reset Design"
+  short_description: "Rebuild design from human source only"
+  default_prompt: "Use $reset-design to rebuild this product's derived design from its current human-owned description without retaining prior design artifacts."

@@ -1,0 +1,1422 @@
+{
+  "button": {
+    "focusRole": "primary-action",
+    "id": "primary-command",
+    "label": "Export file",
+    "loadingLabel": "Exporting...",
+    "metrics": {
+      "borderWidth": 1,
+      "focusGap": null,
+      "focusWidth": 2,
+      "height": 40,
+      "minWidth": 144,
+      "paddingX": 16,
+      "radius": 4
+    },
+    "states": {
+      "default": {
+        "background": {
+          "kind": "role",
+          "role": "primary-action"
+        },
+        "border": {
+          "kind": "role",
+          "role": "primary-action"
+        },
+        "foreground": {
+          "kind": "role",
+          "role": "on-primary"
+        }
+      },
+      "disabled": {
+        "background": {
+          "kind": "role",
+          "role": "disabled-background"
+        },
+        "border": {
+          "kind": "role",
+          "role": "disabled-background"
+        },
+        "foreground": {
+          "amount": 0.26,
+          "baseRole": "disabled-background",
+          "kind": "mix",
+          "overlayRole": "state-overlay"
+        }
+      },
+      "focus": {
+        "background": {
+          "kind": "role",
+          "role": "primary-action"
+        },
+        "border": {
+          "kind": "role",
+          "role": "primary-action"
+        },
+        "foreground": {
+          "kind": "role",
+          "role": "on-primary"
+        }
+      },
+      "hover": {
+        "background": {
+          "amount": 0.3,
+          "baseRole": "primary-action",
+          "kind": "mix",
+          "overlayRole": "state-overlay"
+        },
+        "border": {
+          "amount": 0.3,
+          "baseRole": "primary-action",
+          "kind": "mix",
+          "overlayRole": "state-overlay"
+        },
+        "foreground": {
+          "kind": "role",
+          "role": "on-primary"
+        }
+      },
+      "loading": {
+        "background": {
+          "kind": "role",
+          "role": "primary-action"
+        },
+        "border": {
+          "kind": "role",
+          "role": "primary-action"
+        },
+        "foreground": {
+          "kind": "role",
+          "role": "on-primary"
+        }
+      },
+      "pressed": {
+        "background": {
+          "amount": 0.4,
+          "baseRole": "primary-action",
+          "kind": "mix",
+          "overlayRole": "state-overlay"
+        },
+        "border": {
+          "amount": 0.4,
+          "baseRole": "primary-action",
+          "kind": "mix",
+          "overlayRole": "state-overlay"
+        },
+        "foreground": {
+          "kind": "role",
+          "role": "on-primary"
+        }
+      }
+    },
+    "status": "unspecified",
+    "surfaceRole": "surface",
+    "template": "mui-contained-command-v1",
+    "typography": "supporting"
+  },
+  "documentLayout": {
+    "embeddedField": true,
+    "passwordPreview": false,
+    "shapeSurfaces": null,
+    "sharedStates": "Brand-driven primary states use explicit darkening mixes; focus, pressed and loading presentation remain proposals. Disabled treatment inherits MUI action colors. Derived shades are not additional identity colors.",
+    "spacingLayout": null,
+    "visualDirection": "Modmod-inspired minimal identity: one magenta accent mapped into MUI primary, with ordinary surfaces and status colors inherited from MUI. Demonstration only; sample-product identity is still undecided."
+  },
+  "icons": [
+    {
+      "accessibleLabel": "Play",
+      "asset": {
+        "library": "@mui/icons-material",
+        "name": "PlayArrow",
+        "variant": "Filled",
+        "version": "7.3.4"
+      },
+      "colorRole": "body-text",
+      "id": "playback-play",
+      "meaning": "Start playback.",
+      "name": "Play",
+      "sizePx": 24,
+      "status": "proposed"
+    },
+    {
+      "accessibleLabel": "Pause",
+      "asset": {
+        "library": "@mui/icons-material",
+        "name": "Pause",
+        "variant": "Filled",
+        "version": "7.3.4"
+      },
+      "colorRole": "body-text",
+      "id": "playback-pause",
+      "meaning": "Pause playback.",
+      "name": "Pause",
+      "sizePx": 24,
+      "status": "proposed"
+    },
+    {
+      "accessibleLabel": "Add file",
+      "asset": {
+        "library": "@mui/icons-material",
+        "name": "VideoCall",
+        "variant": "Filled",
+        "version": "7.3.4"
+      },
+      "colorRole": "body-text",
+      "id": "file-add",
+      "meaning": "Add a source file. A plus metaphor needs context review because it can suggest creating a new document.",
+      "name": "Add file",
+      "sizePx": 24,
+      "status": "proposed"
+    },
+    {
+      "accessibleLabel": "Export file",
+      "asset": {
+        "library": "@mui/icons-material",
+        "name": "FileDownload",
+        "variant": "Filled",
+        "version": "7.3.4"
+      },
+      "colorRole": "body-text",
+      "id": "file-export",
+      "meaning": "Export the current document to a file; use a visible label to distinguish it from saving the working document.",
+      "name": "Export file",
+      "sizePx": 24,
+      "status": "proposed"
+    },
+    {
+      "accessibleLabel": "Create assembly",
+      "asset": null,
+      "colorRole": "body-text",
+      "id": "assembly-create",
+      "meaning": "Unresolved product-specific grouping metaphor, included to exercise a missing icon choice.",
+      "name": "Create assembly",
+      "sizePx": 24,
+      "status": "unspecified"
+    },
+    {
+      "accessibleLabel": "Show password",
+      "asset": {
+        "library": "@mui/icons-material",
+        "name": "VisibilityOff",
+        "variant": "Filled",
+        "version": "7.3.4"
+      },
+      "colorRole": "body-text",
+      "id": "password-hidden",
+      "meaning": "Masked state indicator; activate the button to show the password.",
+      "name": "Password hidden",
+      "sizePx": 24,
+      "status": "proposed"
+    },
+    {
+      "accessibleLabel": "Hide password",
+      "asset": {
+        "library": "@mui/icons-material",
+        "name": "Visibility",
+        "variant": "Filled",
+        "version": "7.3.4"
+      },
+      "colorRole": "body-text",
+      "id": "password-visible",
+      "meaning": "Revealed state indicator; activate the button to hide the password.",
+      "name": "Password visible",
+      "sizePx": 24,
+      "status": "proposed"
+    },
+    {
+      "accessibleLabel": "Requirement met",
+      "asset": {
+        "library": "@mui/icons-material",
+        "name": "CheckCircle",
+        "variant": "Filled",
+        "version": "7.3.4"
+      },
+      "colorRole": "success",
+      "id": "requirement-met",
+      "meaning": "An example requirement is met.",
+      "name": "Requirement met",
+      "sizePx": 20,
+      "status": "proposed"
+    },
+    {
+      "accessibleLabel": "Requirement not met",
+      "asset": {
+        "library": "@mui/icons-material",
+        "name": "Cancel",
+        "variant": "Filled",
+        "version": "7.3.4"
+      },
+      "colorRole": "failure",
+      "id": "requirement-unmet",
+      "meaning": "An example requirement is not yet met.",
+      "name": "Requirement not met",
+      "sizePx": 20,
+      "status": "proposed"
+    }
+  ],
+  "id": "slice-six-demo",
+  "identityPalette": {
+    "memberIds": [
+      "core"
+    ],
+    "rationale": "Modmod is the initial model: one identity accent supplies MUI primary and direct app accents. Add a second or third color only for a distinct app purpose; none is also valid. This magenta demonstrates the model, not accepted sample-product branding."
+  },
+  "openQuestions": [
+    "What body line height should be accepted?",
+    "Which icon best communicates creating an assembly?",
+    "What spacing should be accepted between password requirement rows?",
+    "Which focus-ring gap and button-state treatments should be accepted?",
+    "When should validation appear, and should this app retain helper text when showing an error?"
+  ],
+  "palette": {
+    "id": "studio-brand",
+    "members": [
+      {
+        "id": "core",
+        "name": "Modmod identity accent",
+        "purpose": "Single app identity accent, used for primary actions and direct identity accents.",
+        "rationale": "Historical external example `modmod`: `src/assets/styles/modmod.css` (`--branded-color`). Initial model only; not accepted sample-product branding.",
+        "status": "proposed",
+        "value": "#E60CE9"
+      },
+      {
+        "id": "core-soft",
+        "name": "Soft blue",
+        "purpose": "Quiet brand-tinted backgrounds.",
+        "rationale": "Proposed supporting member, not an automatically generated shade.",
+        "status": "proposed",
+        "value": "#E8F0FC"
+      },
+      {
+        "id": "core-strong",
+        "name": "Strong blue",
+        "purpose": "Stronger identity emphasis.",
+        "rationale": "Proposed supporting member.",
+        "status": "proposed",
+        "value": "#24487F"
+      },
+      {
+        "id": "neutral-text",
+        "name": "Neutral text",
+        "purpose": "Readable foreground foundation.",
+        "rationale": "Fixed accepted value in the synthetic test.",
+        "status": "proposed",
+        "value": "#202020"
+      },
+      {
+        "id": "surface",
+        "name": "Field surface",
+        "purpose": "Field surface in this demonstration.",
+        "rationale": "Provisional specimen color.",
+        "status": "proposed",
+        "value": "#FFFFFF"
+      },
+      {
+        "id": "success",
+        "name": "Requirement met",
+        "purpose": "Requirement met in this demonstration.",
+        "rationale": "Provisional specimen color.",
+        "status": "proposed",
+        "value": "#2E7D32"
+      },
+      {
+        "id": "failure",
+        "name": "Requirement not met",
+        "purpose": "Requirement not met in this demonstration.",
+        "rationale": "Provisional specimen color.",
+        "status": "proposed",
+        "value": "#B3261E"
+      },
+      {
+        "id": "mui-light-primary-action",
+        "name": "MUI primary.main",
+        "purpose": "@mui/material 9.4.0 light palette.primary.main = #1976d2. Framework default; not an app branding choice.",
+        "rationale": "@mui/material 9.4.0 light palette.primary.main = #1976d2. Framework default; not an app branding choice.",
+        "status": "proposed",
+        "value": "#1976D2"
+      },
+      {
+        "id": "mui-light-primary-hover",
+        "name": "MUI primary.dark",
+        "purpose": "@mui/material 9.4.0 light palette.primary.dark = #1565c0. Framework default; not an app branding choice.",
+        "rationale": "@mui/material 9.4.0 light palette.primary.dark = #1565c0. Framework default; not an app branding choice.",
+        "status": "proposed",
+        "value": "#1565C0"
+      },
+      {
+        "id": "mui-light-on-primary",
+        "name": "MUI primary.contrastText",
+        "purpose": "@mui/material 9.4.0 light palette.primary.contrastText = #fff. Framework default; not an app branding choice.",
+        "rationale": "@mui/material 9.4.0 light palette.primary.contrastText = #fff. Framework default; not an app branding choice.",
+        "status": "proposed",
+        "value": "#FFFFFF"
+      },
+      {
+        "id": "mui-light-body-text",
+        "name": "MUI text.primary",
+        "purpose": "@mui/material 9.4.0 light palette.text.primary = rgba(0, 0, 0, 0.87); preview composited on palette.background.paper. Framework default; not an app branding choice.",
+        "rationale": "@mui/material 9.4.0 light palette.text.primary = rgba(0, 0, 0, 0.87); preview composited on palette.background.paper. Framework default; not an app branding choice.",
+        "status": "proposed",
+        "value": "#212121"
+      },
+      {
+        "id": "mui-light-surface",
+        "name": "MUI background.paper",
+        "purpose": "@mui/material 9.4.0 light palette.background.paper = #fff. Framework default; not an app branding choice.",
+        "rationale": "@mui/material 9.4.0 light palette.background.paper = #fff. Framework default; not an app branding choice.",
+        "status": "proposed",
+        "value": "#FFFFFF"
+      },
+      {
+        "id": "mui-light-success",
+        "name": "MUI success.main",
+        "purpose": "@mui/material 9.4.0 light palette.success.main = #2e7d32. Framework default; not an app branding choice.",
+        "rationale": "@mui/material 9.4.0 light palette.success.main = #2e7d32. Framework default; not an app branding choice.",
+        "status": "proposed",
+        "value": "#2E7D32"
+      },
+      {
+        "id": "mui-light-failure",
+        "name": "MUI error.main",
+        "purpose": "@mui/material 9.4.0 light palette.error.main = #d32f2f. Framework default; not an app branding choice.",
+        "rationale": "@mui/material 9.4.0 light palette.error.main = #d32f2f. Framework default; not an app branding choice.",
+        "status": "proposed",
+        "value": "#D32F2F"
+      },
+      {
+        "id": "mui-light-panel-border",
+        "name": "MUI divider",
+        "purpose": "@mui/material 9.4.0 light palette.divider = rgba(0, 0, 0, 0.12); preview composited on palette.background.paper. Framework default; not an app branding choice.",
+        "rationale": "@mui/material 9.4.0 light palette.divider = rgba(0, 0, 0, 0.12); preview composited on palette.background.paper. Framework default; not an app branding choice.",
+        "status": "proposed",
+        "value": "#E0E0E0"
+      },
+      {
+        "id": "mui-light-secondary-action",
+        "name": "MUI secondary.main",
+        "purpose": "@mui/material 9.4.0 light palette.secondary.main = #9c27b0. Framework default; not an app branding choice.",
+        "rationale": "@mui/material 9.4.0 light palette.secondary.main = #9c27b0. Framework default; not an app branding choice.",
+        "status": "proposed",
+        "value": "#9C27B0"
+      },
+      {
+        "id": "mui-light-information",
+        "name": "MUI info.main",
+        "purpose": "@mui/material 9.4.0 light palette.info.main = #0288d1. Framework default; not an app branding choice.",
+        "rationale": "@mui/material 9.4.0 light palette.info.main = #0288d1. Framework default; not an app branding choice.",
+        "status": "proposed",
+        "value": "#0288D1"
+      },
+      {
+        "id": "mui-light-warning",
+        "name": "MUI warning.main",
+        "purpose": "@mui/material 9.4.0 light palette.warning.main = #ed6c02. Framework default; not an app branding choice.",
+        "rationale": "@mui/material 9.4.0 light palette.warning.main = #ed6c02. Framework default; not an app branding choice.",
+        "status": "proposed",
+        "value": "#ED6C02"
+      },
+      {
+        "id": "mui-light-state-overlay",
+        "name": "MUI common.black",
+        "purpose": "@mui/material 9.4.0 light palette.common.black = #000. Framework default; not an app branding choice.",
+        "rationale": "@mui/material 9.4.0 light palette.common.black = #000. Framework default; not an app branding choice.",
+        "status": "proposed",
+        "value": "#000000"
+      },
+      {
+        "id": "mui-light-disabled-background",
+        "name": "MUI action.disabledBackground",
+        "purpose": "@mui/material 9.4.0 light palette.action.disabledBackground = rgba(0, 0, 0, 0.12); preview composited on palette.background.paper. Framework default; not an app branding choice.",
+        "rationale": "@mui/material 9.4.0 light palette.action.disabledBackground = rgba(0, 0, 0, 0.12); preview composited on palette.background.paper. Framework default; not an app branding choice.",
+        "status": "proposed",
+        "value": "#E0E0E0"
+      }
+    ],
+    "name": "MUI baseline and proposed identity colors"
+  },
+  "password": {
+    "colors": {
+      "border": "panel-border",
+      "surface": "surface"
+    },
+    "helperText": "Use a unique password that you do not use for other accounts.",
+    "icons": {
+      "fail": "requirement-unmet",
+      "hidden": "password-hidden",
+      "pass": "requirement-met",
+      "visible": "password-visible"
+    },
+    "id": "password",
+    "label": "Password",
+    "maskedLength": 12,
+    "metrics": {
+      "adornmentSize": 40,
+      "borderWidth": 1,
+      "fieldHeight": 56,
+      "iconGap": 8,
+      "paddingX": 14,
+      "radius": 4,
+      "ruleGap": null,
+      "ruleIconGap": 8,
+      "supportGap": 8,
+      "supportInset": 14
+    },
+    "rules": [
+      {
+        "id": "length",
+        "passed": true,
+        "text": "At least twelve characters"
+      },
+      {
+        "id": "mixed-case",
+        "passed": true,
+        "text": "Includes uppercase and lowercase letters"
+      },
+      {
+        "id": "number",
+        "passed": false,
+        "text": "Includes at least one number"
+      }
+    ],
+    "status": "unspecified",
+    "template": "mui-outlined-password-v1",
+    "typography": {
+      "body": "body",
+      "label": "field-label",
+      "support": "supporting"
+    },
+    "widths": [
+      280,
+      400
+    ]
+  },
+  "schemaVersion": "0.14",
+  "source": {
+    "description": "Synthetic component reference extending the modmod identity example with button variants and an unresolved diagram-canvas placeholder; not accepted sample-product design decisions.",
+    "kind": "fixture"
+  },
+  "theme": {
+    "id": "studio-default",
+    "name": "Studio default",
+    "roles": [
+      {
+        "id": "primary-action",
+        "name": "Primary action",
+        "paletteRef": {
+          "memberId": "core",
+          "paletteId": "studio-brand"
+        },
+        "purpose": "Map the identity accent to MUI primary, following modmod.",
+        "rationale": "Explicit brand-to-theme mapping; other ordinary UI colors keep MUI defaults.",
+        "status": "proposed"
+      },
+      {
+        "id": "identity-header",
+        "name": "Identity header",
+        "paletteRef": {
+          "memberId": "core",
+          "paletteId": "studio-brand"
+        },
+        "purpose": "Give the header a recognizable identity.",
+        "rationale": "Share the same source as the main action.",
+        "status": "proposed"
+      },
+      {
+        "id": "selected-region",
+        "name": "Selected region",
+        "paletteRef": {
+          "memberId": "core-soft",
+          "paletteId": "studio-brand"
+        },
+        "purpose": "Show a quiet selection tint.",
+        "rationale": "Use the softer member.",
+        "status": "proposed"
+      },
+      {
+        "id": "body-text",
+        "name": "Body text",
+        "paletteRef": {
+          "memberId": "mui-light-body-text",
+          "paletteId": "studio-brand"
+        },
+        "purpose": "@mui/material 9.4.0 light palette.text.primary = rgba(0, 0, 0, 0.87); preview composited on palette.background.paper. Framework default; not an app branding choice.",
+        "rationale": "Use the framework baseline. Runtime CSS references the applicable MUI variable; preview hex values are resolved documentation data.",
+        "status": "proposed"
+      },
+      {
+        "id": "panel-border",
+        "name": "Panel border",
+        "paletteRef": {
+          "memberId": "mui-light-panel-border",
+          "paletteId": "studio-brand"
+        },
+        "purpose": "@mui/material 9.4.0 light palette.divider = rgba(0, 0, 0, 0.12); preview composited on palette.background.paper. Framework default; not an app branding choice.",
+        "rationale": "Use the framework baseline. Runtime CSS references the applicable MUI variable; preview hex values are resolved documentation data.",
+        "status": "proposed"
+      },
+      {
+        "id": "surface",
+        "name": "Field surface",
+        "paletteRef": {
+          "memberId": "mui-light-surface",
+          "paletteId": "studio-brand"
+        },
+        "purpose": "@mui/material 9.4.0 light palette.background.paper = #fff. Framework default; not an app branding choice.",
+        "rationale": "Use the framework baseline. Runtime CSS references the applicable MUI variable; preview hex values are resolved documentation data.",
+        "status": "proposed"
+      },
+      {
+        "id": "success",
+        "name": "Requirement met",
+        "paletteRef": {
+          "memberId": "mui-light-success",
+          "paletteId": "studio-brand"
+        },
+        "purpose": "@mui/material 9.4.0 light palette.success.main = #2e7d32. Framework default; not an app branding choice.",
+        "rationale": "Use the framework baseline. Runtime CSS references the applicable MUI variable; preview hex values are resolved documentation data.",
+        "status": "proposed"
+      },
+      {
+        "id": "failure",
+        "name": "Requirement not met",
+        "paletteRef": {
+          "memberId": "mui-light-failure",
+          "paletteId": "studio-brand"
+        },
+        "purpose": "@mui/material 9.4.0 light palette.error.main = #d32f2f. Framework default; not an app branding choice.",
+        "rationale": "Use the framework baseline. Runtime CSS references the applicable MUI variable; preview hex values are resolved documentation data.",
+        "status": "proposed"
+      },
+      {
+        "id": "primary-hover",
+        "name": "Stock MUI hover reference",
+        "paletteRef": {
+          "memberId": "mui-light-primary-hover",
+          "paletteId": "studio-brand"
+        },
+        "purpose": "Retained stock MUI reference; the branded button instead derives hover from its identity color.",
+        "rationale": "Use the framework baseline. Runtime CSS references the applicable MUI variable; preview hex values are resolved documentation data.",
+        "status": "proposed"
+      },
+      {
+        "id": "on-primary",
+        "name": "on-primary",
+        "paletteRef": {
+          "memberId": "mui-light-on-primary",
+          "paletteId": "studio-brand"
+        },
+        "purpose": "@mui/material 9.4.0 light palette.primary.contrastText = #fff. Framework default; not an app branding choice.",
+        "rationale": "Use the framework baseline. Runtime CSS references the applicable MUI variable; preview hex values are resolved documentation data.",
+        "status": "proposed"
+      },
+      {
+        "id": "secondary-action",
+        "name": "secondary-action",
+        "paletteRef": {
+          "memberId": "mui-light-secondary-action",
+          "paletteId": "studio-brand"
+        },
+        "purpose": "@mui/material 9.4.0 light palette.secondary.main = #9c27b0. Framework default; not an app branding choice.",
+        "rationale": "Use the framework baseline. Runtime CSS references the applicable MUI variable; preview hex values are resolved documentation data.",
+        "status": "proposed"
+      },
+      {
+        "id": "information",
+        "name": "information",
+        "paletteRef": {
+          "memberId": "mui-light-information",
+          "paletteId": "studio-brand"
+        },
+        "purpose": "@mui/material 9.4.0 light palette.info.main = #0288d1. Framework default; not an app branding choice.",
+        "rationale": "Use the framework baseline. Runtime CSS references the applicable MUI variable; preview hex values are resolved documentation data.",
+        "status": "proposed"
+      },
+      {
+        "id": "warning",
+        "name": "warning",
+        "paletteRef": {
+          "memberId": "mui-light-warning",
+          "paletteId": "studio-brand"
+        },
+        "purpose": "@mui/material 9.4.0 light palette.warning.main = #ed6c02. Framework default; not an app branding choice.",
+        "rationale": "Use the framework baseline. Runtime CSS references the applicable MUI variable; preview hex values are resolved documentation data.",
+        "status": "proposed"
+      },
+      {
+        "id": "state-overlay",
+        "name": "state-overlay",
+        "paletteRef": {
+          "memberId": "mui-light-state-overlay",
+          "paletteId": "studio-brand"
+        },
+        "purpose": "@mui/material 9.4.0 light palette.common.black = #000. Framework default; not an app branding choice.",
+        "rationale": "Use the framework baseline. Runtime CSS references the applicable MUI variable; preview hex values are resolved documentation data.",
+        "status": "proposed"
+      },
+      {
+        "id": "disabled-background",
+        "name": "disabled-background",
+        "paletteRef": {
+          "memberId": "mui-light-disabled-background",
+          "paletteId": "studio-brand"
+        },
+        "purpose": "@mui/material 9.4.0 light palette.action.disabledBackground = rgba(0, 0, 0, 0.12); preview composited on palette.background.paper. Framework default; not an app branding choice.",
+        "rationale": "Use the framework baseline. Runtime CSS references the applicable MUI variable; preview hex values are resolved documentation data.",
+        "status": "proposed"
+      }
+    ]
+  },
+  "typography": {
+    "roles": [
+      {
+        "colorRole": "body-text",
+        "fontId": "roboto",
+        "id": "body",
+        "lineHeightPx": null,
+        "name": "Body text",
+        "purpose": "Ordinary application text.",
+        "rationale": "Provisional Roboto body specimen; line spacing is still undecided.",
+        "sampleLines": [
+          "Review your items and arrange the workspace.",
+          "Precise timing starts with a clear view."
+        ],
+        "sizePx": 16,
+        "status": "unspecified",
+        "style": "normal",
+        "weight": 400
+      },
+      {
+        "colorRole": "body-text",
+        "fontId": "merriweather",
+        "id": "heading",
+        "lineHeightPx": 40,
+        "name": "Section heading",
+        "purpose": "Explore a serif heading alongside sans-serif body text.",
+        "rationale": "Merriweather is the agreed initial serif candidate; these role metrics remain proposed.",
+        "sampleLines": [
+          "Shape the story"
+        ],
+        "sizePx": 32,
+        "status": "proposed",
+        "style": "normal",
+        "weight": 700
+      },
+      {
+        "colorRole": "body-text",
+        "fontId": "roboto",
+        "id": "field-label",
+        "lineHeightPx": 16,
+        "name": "Field label",
+        "purpose": "Field label for the password specimen.",
+        "rationale": "Proposed bounded specimen metrics.",
+        "sampleLines": [
+          "Field label example"
+        ],
+        "sizePx": 12,
+        "status": "proposed",
+        "style": "normal",
+        "weight": 400
+      },
+      {
+        "colorRole": "body-text",
+        "fontId": "roboto",
+        "id": "supporting",
+        "lineHeightPx": 20,
+        "name": "Supporting text",
+        "purpose": "Supporting text for the password specimen.",
+        "rationale": "Proposed bounded specimen metrics.",
+        "sampleLines": [
+          "Supporting text example"
+        ],
+        "sizePx": 14,
+        "status": "proposed",
+        "style": "normal",
+        "weight": 400
+      },
+      {
+        "id": "field-message",
+        "name": "Field message",
+        "fontId": "roboto",
+        "sizePx": 12,
+        "weight": 400,
+        "lineHeightPx": 20,
+        "style": "normal",
+        "colorRole": "body-text",
+        "sampleLines": [
+          "Use a clear, descriptive name."
+        ],
+        "purpose": "Shared helper/error message typography.",
+        "rationale": "MUI-oriented proposed message metrics; color is selected by message role.",
+        "status": "proposed"
+      }
+    ]
+  },
+  "unspecifiedRequirements": [
+    {
+      "decisionOwner": "UI",
+      "description": "Choose the body text line height.",
+      "id": "body-line-height",
+      "renderFallback": {
+        "source": "slice-3 demonstration defaults v1: 1.5 times 16px",
+        "value": 24
+      },
+      "target": "type:body:lineHeightPx"
+    },
+    {
+      "decisionOwner": "UI",
+      "description": "Choose a suitable assembly icon from MUI, or document a real coverage gap.",
+      "id": "assembly-icon-choice",
+      "renderFallback": {
+        "source": "slice-4 missing-icon placeholder v1",
+        "value": "placeholder"
+      },
+      "target": "icon:assembly-create"
+    },
+    {
+      "decisionOwner": "UI",
+      "description": "Choose the vertical gap between requirement rows.",
+      "id": "password-rule-gap",
+      "renderFallback": {
+        "source": "slice-5 demonstration metrics v1",
+        "value": 4
+      },
+      "target": "component:password:ruleGap"
+    },
+    {
+      "decisionOwner": "UI",
+      "description": "Choose separation between the command button and its keyboard focus ring.",
+      "id": "button-focus-gap",
+      "renderFallback": {
+        "source": "slice-6a specimen default v1",
+        "value": 2
+      },
+      "target": "button:primary-command:focusGap"
+    },
+    {
+      "id": "field-message-gap",
+      "target": "pattern:field-feedback:gap",
+      "description": "Choose the gap between a field and its messages.",
+      "decisionOwner": "UI",
+      "renderFallback": {
+        "value": 4,
+        "source": "text-field specimen gap default v1"
+      }
+    },
+    {
+      "id": "select-menu-gap",
+      "target": "select:preview-quality:menuGap",
+      "description": "Choose the gap between the select and its popup menu.",
+      "decisionOwner": "UI",
+      "renderFallback": {
+        "value": 4,
+        "source": "single-select specimen menu gap default v1"
+      }
+    }
+  ],
+  "baseRevision": 0,
+  "fieldMessages": {
+    "id": "field-feedback",
+    "template": "field-messages-v1",
+    "typography": "field-message",
+    "colors": {
+      "helper": {
+        "kind": "mix",
+        "baseRole": "surface",
+        "overlayRole": "state-overlay",
+        "amount": 0.6
+      },
+      "error": {
+        "kind": "role",
+        "role": "failure"
+      }
+    },
+    "metrics": {
+      "gap": null,
+      "inset": 14,
+      "messageGap": 4
+    },
+    "errorPresentation": "retain",
+    "status": "unspecified"
+  },
+  "textField": {
+    "id": "item-name",
+    "template": "mui-outlined-text-v1",
+    "widths": [
+      280,
+      400
+    ],
+    "label": "Item name",
+    "value": "Opening shot",
+    "helperText": "Use a name that makes this item easy to recognize.",
+    "errorText": "An item already uses this name. Choose a different name.",
+    "typography": {
+      "value": "body",
+      "label": "field-label"
+    },
+    "colors": {
+      "surface": {
+        "kind": "role",
+        "role": "surface"
+      },
+      "value": {
+        "kind": "role",
+        "role": "body-text"
+      },
+      "label": {
+        "kind": "mix",
+        "baseRole": "surface",
+        "overlayRole": "state-overlay",
+        "amount": 0.6
+      },
+      "border": {
+        "kind": "mix",
+        "baseRole": "surface",
+        "overlayRole": "state-overlay",
+        "amount": 0.23
+      },
+      "focus": {
+        "kind": "role",
+        "role": "primary-action"
+      },
+      "disabled": {
+        "kind": "mix",
+        "baseRole": "surface",
+        "overlayRole": "state-overlay",
+        "amount": 0.38
+      },
+      "disabledBorder": {
+        "kind": "mix",
+        "baseRole": "surface",
+        "overlayRole": "state-overlay",
+        "amount": 0.26
+      }
+    },
+    "metrics": {
+      "height": 56,
+      "paddingX": 14,
+      "radius": 4,
+      "borderWidth": 1,
+      "focusWidth": 2
+    },
+    "messagePattern": "field-feedback",
+    "status": "proposed"
+  },
+  "compositeInput": {
+    "id": "weekdays",
+    "template": "checkbox-group-v1",
+    "widths": [
+      280,
+      400
+    ],
+    "label": "Days to include",
+    "options": [
+      {
+        "id": "monday",
+        "label": "Monday"
+      },
+      {
+        "id": "tuesday",
+        "label": "Tuesday"
+      },
+      {
+        "id": "wednesday",
+        "label": "Wednesday"
+      },
+      {
+        "id": "thursday",
+        "label": "Thursday"
+      },
+      {
+        "id": "friday",
+        "label": "Friday"
+      },
+      {
+        "id": "saturday",
+        "label": "Saturday"
+      },
+      {
+        "id": "sunday",
+        "label": "Sunday"
+      }
+    ],
+    "selectedIds": [
+      "monday",
+      "wednesday",
+      "friday"
+    ],
+    "errorSelectedIds": [],
+    "helperText": "Choose the days to include in this report.",
+    "errorText": "Choose at least one day.",
+    "messagePattern": "field-feedback",
+    "typography": {
+      "label": "supporting",
+      "option": "supporting"
+    },
+    "colors": {
+      "surface": {
+        "kind": "role",
+        "role": "surface"
+      },
+      "text": {
+        "kind": "role",
+        "role": "body-text"
+      },
+      "border": {
+        "kind": "mix",
+        "baseRole": "surface",
+        "overlayRole": "state-overlay",
+        "amount": 0.6
+      },
+      "selected": {
+        "kind": "role",
+        "role": "primary-action"
+      },
+      "mark": {
+        "kind": "role",
+        "role": "on-primary"
+      }
+    },
+    "metrics": {
+      "padding": 14,
+      "columnGap": 12,
+      "rowGap": 8,
+      "optionGap": 8,
+      "checkboxSize": 18,
+      "rowHeight": 32,
+      "minCellWidth": 96,
+      "radius": 4
+    },
+    "status": "proposed"
+  },
+  "selectInput": {
+    "id": "preview-quality",
+    "template": "mui-outlined-select-v1",
+    "widths": [
+      280,
+      400
+    ],
+    "label": "Preview quality",
+    "options": [
+      {
+        "id": "draft",
+        "label": "Draft",
+        "disabled": false
+      },
+      {
+        "id": "standard",
+        "label": "Standard",
+        "disabled": false
+      },
+      {
+        "id": "high",
+        "label": "High",
+        "disabled": false
+      },
+      {
+        "id": "maximum",
+        "label": "Maximum",
+        "disabled": true
+      }
+    ],
+    "selectedId": "standard",
+    "activeId": "high",
+    "helperText": "Choose the detail level for the preview.",
+    "errorText": "This quality is unavailable. Choose another option.",
+    "messagePattern": "field-feedback",
+    "typography": {
+      "label": "field-label",
+      "value": "body",
+      "option": "supporting"
+    },
+    "colors": {
+      "surface": {
+        "kind": "role",
+        "role": "surface"
+      },
+      "text": {
+        "kind": "role",
+        "role": "body-text"
+      },
+      "label": {
+        "kind": "mix",
+        "baseRole": "surface",
+        "overlayRole": "state-overlay",
+        "amount": 0.6
+      },
+      "border": {
+        "kind": "mix",
+        "baseRole": "surface",
+        "overlayRole": "state-overlay",
+        "amount": 0.23
+      },
+      "focus": {
+        "kind": "role",
+        "role": "primary-action"
+      },
+      "disabled": {
+        "kind": "mix",
+        "baseRole": "surface",
+        "overlayRole": "state-overlay",
+        "amount": 0.38
+      },
+      "disabledBorder": {
+        "kind": "mix",
+        "baseRole": "surface",
+        "overlayRole": "state-overlay",
+        "amount": 0.26
+      },
+      "menuSurface": {
+        "kind": "role",
+        "role": "surface"
+      },
+      "menuBorder": {
+        "kind": "mix",
+        "baseRole": "surface",
+        "overlayRole": "state-overlay",
+        "amount": 0.23
+      },
+      "selectedSurface": {
+        "kind": "mix",
+        "baseRole": "surface",
+        "overlayRole": "primary-action",
+        "amount": 0.08
+      },
+      "activeSurface": {
+        "kind": "mix",
+        "baseRole": "surface",
+        "overlayRole": "state-overlay",
+        "amount": 0.12
+      },
+      "selectedMark": {
+        "kind": "role",
+        "role": "primary-action"
+      }
+    },
+    "metrics": {
+      "height": 56,
+      "paddingX": 14,
+      "arrowSize": 24,
+      "radius": 4,
+      "borderWidth": 1,
+      "focusWidth": 2,
+      "menuGap": null,
+      "optionHeight": 36,
+      "menuPadding": 8,
+      "optionPadding": 12,
+      "menuRadius": 4
+    },
+    "status": "unspecified"
+  },
+  "buttonVariants": {
+    "id": "command-family",
+    "template": "mui-button-variants-v1",
+    "iconId": "playback-play",
+    "accessibleLabel": "Play",
+    "tooltip": "Play",
+    "states": {
+      "outlined": {
+        "default": {
+          "background": {
+            "kind": "role",
+            "role": "surface"
+          },
+          "foreground": {
+            "kind": "role",
+            "role": "primary-action"
+          },
+          "border": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "primary-action",
+            "amount": 0.5
+          }
+        },
+        "hover": {
+          "background": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "primary-action",
+            "amount": 0.04
+          },
+          "foreground": {
+            "kind": "role",
+            "role": "primary-action"
+          },
+          "border": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "primary-action",
+            "amount": 1
+          }
+        },
+        "pressed": {
+          "background": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "primary-action",
+            "amount": 0.12
+          },
+          "foreground": {
+            "kind": "role",
+            "role": "primary-action"
+          },
+          "border": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "primary-action",
+            "amount": 1
+          }
+        },
+        "focus": {
+          "background": {
+            "kind": "role",
+            "role": "surface"
+          },
+          "foreground": {
+            "kind": "role",
+            "role": "primary-action"
+          },
+          "border": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "primary-action",
+            "amount": 1
+          }
+        },
+        "disabled": {
+          "background": {
+            "kind": "role",
+            "role": "surface"
+          },
+          "foreground": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "state-overlay",
+            "amount": 0.26
+          },
+          "border": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "state-overlay",
+            "amount": 0.12
+          }
+        },
+        "loading": {
+          "background": {
+            "kind": "role",
+            "role": "surface"
+          },
+          "foreground": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "state-overlay",
+            "amount": 0.26
+          },
+          "border": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "state-overlay",
+            "amount": 0.12
+          }
+        }
+      },
+      "text": {
+        "default": {
+          "background": {
+            "kind": "role",
+            "role": "surface"
+          },
+          "foreground": {
+            "kind": "role",
+            "role": "primary-action"
+          },
+          "border": {
+            "kind": "role",
+            "role": "surface"
+          }
+        },
+        "hover": {
+          "background": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "primary-action",
+            "amount": 0.04
+          },
+          "foreground": {
+            "kind": "role",
+            "role": "primary-action"
+          },
+          "border": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "primary-action",
+            "amount": 0.04
+          }
+        },
+        "pressed": {
+          "background": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "primary-action",
+            "amount": 0.12
+          },
+          "foreground": {
+            "kind": "role",
+            "role": "primary-action"
+          },
+          "border": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "primary-action",
+            "amount": 0.12
+          }
+        },
+        "focus": {
+          "background": {
+            "kind": "role",
+            "role": "surface"
+          },
+          "foreground": {
+            "kind": "role",
+            "role": "primary-action"
+          },
+          "border": {
+            "kind": "role",
+            "role": "surface"
+          }
+        },
+        "disabled": {
+          "background": {
+            "kind": "role",
+            "role": "surface"
+          },
+          "foreground": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "state-overlay",
+            "amount": 0.26
+          },
+          "border": {
+            "kind": "role",
+            "role": "surface"
+          }
+        },
+        "loading": {
+          "background": {
+            "kind": "role",
+            "role": "surface"
+          },
+          "foreground": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "state-overlay",
+            "amount": 0.26
+          },
+          "border": {
+            "kind": "role",
+            "role": "surface"
+          }
+        }
+      },
+      "icon": {
+        "default": {
+          "background": {
+            "kind": "role",
+            "role": "surface"
+          },
+          "foreground": {
+            "kind": "role",
+            "role": "primary-action"
+          },
+          "border": {
+            "kind": "role",
+            "role": "surface"
+          }
+        },
+        "hover": {
+          "background": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "primary-action",
+            "amount": 0.04
+          },
+          "foreground": {
+            "kind": "role",
+            "role": "primary-action"
+          },
+          "border": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "primary-action",
+            "amount": 0.04
+          }
+        },
+        "pressed": {
+          "background": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "primary-action",
+            "amount": 0.12
+          },
+          "foreground": {
+            "kind": "role",
+            "role": "primary-action"
+          },
+          "border": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "primary-action",
+            "amount": 0.12
+          }
+        },
+        "focus": {
+          "background": {
+            "kind": "role",
+            "role": "surface"
+          },
+          "foreground": {
+            "kind": "role",
+            "role": "primary-action"
+          },
+          "border": {
+            "kind": "role",
+            "role": "surface"
+          }
+        },
+        "disabled": {
+          "background": {
+            "kind": "role",
+            "role": "surface"
+          },
+          "foreground": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "state-overlay",
+            "amount": 0.26
+          },
+          "border": {
+            "kind": "role",
+            "role": "surface"
+          }
+        },
+        "loading": {
+          "background": {
+            "kind": "role",
+            "role": "surface"
+          },
+          "foreground": {
+            "kind": "mix",
+            "baseRole": "surface",
+            "overlayRole": "state-overlay",
+            "amount": 0.26
+          },
+          "border": {
+            "kind": "role",
+            "role": "surface"
+          }
+        }
+      }
+    },
+    "status": "proposed"
+  }
+}

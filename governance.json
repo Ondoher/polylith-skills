@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "repository": {
+    "id": "polylith-skills",
+    "canonicalRemote": "git@github.com:Ondoher/polylith-skills.git",
+    "defaultBranch": "main"
+  },
+  "catalog": {
+    "skills": [
+      "bootstrap",
+      "check-point",
+      "create-app",
+      "generate-prd",
+      "initialize-project",
+      "normalize-standards",
+      "refine-design",
+      "reset-design",
+      "review-standards",
+      "update-canonical-standard",
+      "update-standards",
+      "write-standards-guide"
+    ],
+    "retiredSkills": [],
+    "agents": [
+      "architecture-reviewer.toml",
+      "checkpoint-advisor.toml",
+      "contracts-reviewer.toml",
+      "controller-agent.toml",
+      "model-agent.toml",
+      "polylith-architect.toml",
+      "privacy-security-reviewer.toml",
+      "system-architect.toml",
+      "ui-designer.toml",
+      "ui-reviewer.toml",
+      "ux-planner.toml",
+      "ux-reviewer.toml",
+      "verification-reviewer.toml",
+      "view-agent.toml"
+    ],
+    "requiredDocumentation": [
+      "standards"
+    ],
+    "requiredPlanning": [
+      "implementation-agents",
+      "review-agents",
+      "skills-repository",
+      "application-scaffolding"
+    ]
+  },
+  "install": {
+    "skillsDirectory": "skills",
+    "agentsDirectory": "agents",
+    "documentationDirectory": "documentation",
+    "codexAgentsFile": "codex-home/AGENTS.md",
+    "stateFile": ".polylith-skills-installation.json"
+  }
+}

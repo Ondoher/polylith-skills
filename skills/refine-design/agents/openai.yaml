@@ -1,0 +1,6 @@
+interface:
+  display_name: "Refine Design"
+  short_description: "Iterative product design and static HTML PRD comps"
+  default_prompt: "Use $refine-design to refine the current design and identify the next consequential decisions."
+policy:
+  allow_implicit_invocation: true

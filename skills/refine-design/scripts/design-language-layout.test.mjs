@@ -1,0 +1,34 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {applyProposal} from './design-language.mjs';
+import {layoutModel} from './design-language-layout.mjs';
+const createFoundationProposal=()=>JSON.parse(fs.readFileSync(new URL('../references/extras-proposal.json',import.meta.url),'utf8'));
+const defaults=JSON.parse(fs.readFileSync(new URL('../references/layout-defaults.json',import.meta.url),'utf8'));
+const config={version:7,title:'Layout trial',visualDirection:null,layoutNotes:null,spacing:{scale:[4,8,12,16,24],groupGap:8,regionPadding:16,regionGap:24,status:'defaulted',fieldGap:16,helperGap:4,helperLineHeight:20},layout:defaults};
+const read=(b,p)=>fs.readFileSync(path.join(b,p),'utf8');
+const proposal=b=>{const {revision,decisions,...d}=JSON.parse(read(b,'design-language/design-language.json'));return {...d,baseRevision:revision};};
+test('current layout preserves notes, repeats exactly, and protects edited drawings',()=>{
+ const b=fs.mkdtempSync(path.join(os.tmpdir(),'layout-current-'));
+ applyProposal(b,createFoundationProposal(),{reviewLayout:config});
+ fs.appendFileSync(path.join(b,'layout.md'),'\nOwner note.');
+ const source=read(b,'design-language/design-language.json');
+ const report=applyProposal(b,proposal(b));assert.equal(report.outcome,'partial');
+ assert.equal(read(b,'design-language/design-language.json'),source);
+ const md=read(b,'layout.md'),svg=read(b,'design-language/specimens/layout-elements.svg');
+ assert.ok(md.endsWith('Owner note.'));assert.ok(md.includes('current editable design choices'));assert.ok(md.includes('## Open Questions'));assert.ok(svg.includes('<path'));assert.ok(svg.includes('Editable defaults'));
+ assert.ok(read(b,'decisions.md').includes('Current Design Defaults'));assert.ok(!read(b,'decisions.md').includes('## Unresolved Values'));
+ applyProposal(b,proposal(b));assert.equal(read(b,'layout.md'),md);assert.equal(read(b,'design-language/specimens/layout-elements.svg'),svg);
+ fs.appendFileSync(path.join(b,'design-language/specimens/layout-elements.svg'),'edited');
+ assert.throws(()=>applyProposal(b,proposal(b)),/edited/);assert.equal(read(b,'design-language/design-language.json'),source);
+});
+test('helper wrapping follows resolved typography and does not absorb next-field spacing',()=>{
+ const d=createFoundationProposal(),m=layoutModel(d,config),one=m.field(0,1),two=m.field(0,2),none=m.field(0,0);
+ assert.equal(two.end-one.end,m.types.supporting.lineHeightPx);
+ assert.equal(one.end-none.end,config.spacing.helperGap+m.types.supporting.lineHeightPx);
+ assert.equal(m.field(two.end+m.s.fieldGap).label-two.end,m.s.fieldGap);
+ assert.throws(()=>layoutModel(d,{...config,layout:{...defaults,fieldHeight:8}}),/larger component height/);
+ assert.throws(()=>layoutModel(d,{...config,layout:{...defaults,typeRoles:{...defaults.typeRoles,body:'missing'}}}),/Missing layout type role/);
+});

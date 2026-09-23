@@ -1,0 +1,4 @@
+interface:
+    display_name: 'Write Standards Guide'
+    short_description: 'Generate the repository standards reference'
+    default_prompt: "Use $write-standards-guide to generate or refresh this repository's STANDARDS.md."

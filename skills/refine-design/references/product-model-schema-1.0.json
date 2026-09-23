@@ -1,0 +1,1429 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codex.local/refine-design/product-model-schema-1.0.json",
+  "title": "Canonical product model, snapshot, pointer, and lock-authority contracts 1.0",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/proposal"
+    },
+    {
+      "$ref": "#/$defs/productModel"
+    },
+    {
+      "$ref": "#/$defs/productSnapshot"
+    },
+    {
+      "$ref": "#/$defs/currentPointer"
+    },
+    {
+      "$ref": "#/$defs/lockAuthority"
+    }
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+      "maxLength": 80
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32768,
+      "pattern": "^(?=.*\\S)[^\\u0000-\\u0008\\u000b\\u000c\\u000e-\\u001f\\u007f]+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "owner": {
+      "enum": [
+        "product",
+        "ux",
+        "ui",
+        "system-architecture",
+        "data-model",
+        "controller",
+        "technical-documentation",
+        "implementation-planning",
+        "testing",
+        "coding"
+      ]
+    },
+    "consumer": {
+      "enum": [
+        "prd",
+        "ux",
+        "ui",
+        "system-architecture",
+        "data-model",
+        "controller",
+        "technical-documentation",
+        "implementation-planning",
+        "testing",
+        "coding"
+      ]
+    },
+    "consumerDomains": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10000,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/consumer"
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceClaimRefs"
+      ],
+      "properties": {
+        "sourceClaimRefs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      }
+    },
+    "rootProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "producer",
+        "method"
+      ],
+      "properties": {
+        "producer": {
+          "const": "refine-design"
+        },
+        "method": {
+          "const": "semantic-parse"
+        }
+      }
+    },
+    "purpose": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "summary",
+        "status",
+        "owner",
+        "consumerDomains",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "summary": {
+          "$ref": "#/$defs/text"
+        },
+        "status": {
+          "enum": [
+            "accepted",
+            "locked"
+          ]
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "consumerDomains": {
+          "$ref": "#/$defs/consumerDomains"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    },
+    "user": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "description",
+        "status",
+        "owner",
+        "consumerDomains",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "$ref": "#/$defs/text"
+        },
+        "description": {
+          "$ref": "#/$defs/text"
+        },
+        "status": {
+          "enum": [
+            "accepted",
+            "locked",
+            "superseded"
+          ]
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "consumerDomains": {
+          "$ref": "#/$defs/consumerDomains"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "description",
+        "outcome",
+        "status",
+        "owner",
+        "consumerDomains",
+        "userRefs",
+        "relatedCapabilityRefs",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "$ref": "#/$defs/text"
+        },
+        "description": {
+          "$ref": "#/$defs/text"
+        },
+        "outcome": {
+          "$ref": "#/$defs/text"
+        },
+        "status": {
+          "enum": [
+            "accepted",
+            "locked",
+            "superseded"
+          ]
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "consumerDomains": {
+          "$ref": "#/$defs/consumerDomains"
+        },
+        "userRefs": {
+          "type": "array",
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "relatedCapabilityRefs": {
+          "type": "array",
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    },
+    "gap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "question",
+        "impact",
+        "status",
+        "owner",
+        "consumerDomains",
+        "capabilityRefs",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "enum": [
+            "open-question",
+            "missing-requirement",
+            "ambiguity",
+            "conflict"
+          ]
+        },
+        "question": {
+          "$ref": "#/$defs/text"
+        },
+        "impact": {
+          "$ref": "#/$defs/text"
+        },
+        "status": {
+          "enum": [
+            "unresolved",
+            "locked",
+            "superseded"
+          ]
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "consumerDomains": {
+          "$ref": "#/$defs/consumerDomains"
+        },
+        "capabilityRefs": {
+          "type": "array",
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    },
+    "claimCore": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "startLine",
+        "endLine",
+        "summary",
+        "disposition",
+        "recordRefs"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "startLine": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "endLine": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "summary": {
+          "$ref": "#/$defs/text"
+        },
+        "disposition": {
+          "enum": [
+            "incorporated",
+            "superseded",
+            "unresolved",
+            "unclassified"
+          ]
+        },
+        "recordRefs": {
+          "type": "array",
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      }
+    },
+    "persistedClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "startLine",
+        "endLine",
+        "summary",
+        "disposition",
+        "recordRefs",
+        "sourceRange",
+        "sourceSegmentSha256"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "startLine": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "endLine": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "summary": {
+          "$ref": "#/$defs/text"
+        },
+        "disposition": {
+          "enum": [
+            "incorporated",
+            "superseded",
+            "unresolved",
+            "unclassified"
+          ]
+        },
+        "recordRefs": {
+          "type": "array",
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "sourceRange": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "startByte",
+            "endByteExclusive"
+          ],
+          "properties": {
+            "startByte": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "endByteExclusive": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          }
+        },
+        "sourceSegmentSha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "proposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "kind",
+        "id",
+        "name",
+        "status",
+        "owner",
+        "consumerDomains",
+        "base",
+        "provenance",
+        "purpose",
+        "users",
+        "capabilities",
+        "gaps",
+        "sourceClaims",
+        "identityClaims",
+        "sourceClaimLineage"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "kind": {
+          "const": "product-model-proposal"
+        },
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "$ref": "#/$defs/text"
+        },
+        "status": {
+          "enum": [
+            "accepted",
+            "partial",
+            "locked"
+          ]
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "consumerDomains": {
+          "$ref": "#/$defs/consumerDomains"
+        },
+        "base": {
+          "$ref": "#/$defs/base"
+        },
+        "provenance": {
+          "$ref": "#/$defs/rootProvenance"
+        },
+        "purpose": {
+          "$ref": "#/$defs/purpose"
+        },
+        "users": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/user"
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/capability"
+          }
+        },
+        "gaps": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/gap"
+          }
+        },
+        "sourceClaims": {
+          "type": "array",
+          "maxItems": 10000,
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/claimCore"
+          }
+        },
+        "identityClaims": {
+          "type": "array",
+          "maxItems": 10000,
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/identityClaim"
+          }
+        },
+        "sourceClaimLineage": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/sourceClaimLineage"
+          }
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "path",
+        "sha256",
+        "byteLength",
+        "lineCount",
+        "revision",
+        "previousSha256"
+      ],
+      "properties": {
+        "id": {
+          "const": "product-description"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32768,
+          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9._ -]*[A-Za-z0-9_-])?(?:/[A-Za-z0-9](?:[A-Za-z0-9._ -]*[A-Za-z0-9_-])?)*$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^sources/[0-9a-f]{64}/product-description[.]md$"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "byteLength": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4194304
+        },
+        "lineCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "revision": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "previousSha256": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/sha256"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "revision": {
+                "const": 1
+              }
+            },
+            "required": [
+              "revision"
+            ]
+          },
+          "then": {
+            "properties": {
+              "previousSha256": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "previousSha256": {
+                "$ref": "#/$defs/sha256"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "productModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "kind",
+        "id",
+        "name",
+        "revision",
+        "status",
+        "owner",
+        "consumerDomains",
+        "source",
+        "parent",
+        "provenance",
+        "purpose",
+        "users",
+        "capabilities",
+        "gaps",
+        "sourceClaims",
+        "materialSha256",
+        "recordIndex",
+        "changeSet",
+        "authorityReceipts"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "kind": {
+          "const": "product-model"
+        },
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "$ref": "#/$defs/text"
+        },
+        "revision": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "status": {
+          "enum": [
+            "accepted",
+            "partial",
+            "locked"
+          ]
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "consumerDomains": {
+          "$ref": "#/$defs/consumerDomains"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "parent": {
+          "$ref": "#/$defs/modelParent"
+        },
+        "provenance": {
+          "$ref": "#/$defs/rootProvenance"
+        },
+        "purpose": {
+          "$ref": "#/$defs/purpose"
+        },
+        "users": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/user"
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/capability"
+          }
+        },
+        "gaps": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/gap"
+          }
+        },
+        "sourceClaims": {
+          "type": "array",
+          "maxItems": 10000,
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/persistedClaim"
+          }
+        },
+        "materialSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "recordIndex": {
+          "type": "array",
+          "maxItems": 10000,
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/recordIndexEntry"
+          }
+        },
+        "changeSet": {
+          "$ref": "#/$defs/changeSet"
+        },
+        "authorityReceipts": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/authorityGrant"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "revision": {
+                "const": 1
+              }
+            },
+            "required": [
+              "revision"
+            ]
+          },
+          "then": {
+            "properties": {
+              "parent": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "parent": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "productSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "kind",
+        "id",
+        "revision",
+        "parent",
+        "source",
+        "productModel",
+        "artifacts"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "kind": {
+          "const": "product-snapshot"
+        },
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "revision": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "parent": {
+          "$ref": "#/$defs/snapshotParent"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "productModel": {
+          "$ref": "#/$defs/productModelBinding"
+        },
+        "artifacts": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "product-artifact-schema-1.0.json#/$defs/snapshotEntry"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "revision": {
+                "const": 1
+              }
+            },
+            "required": [
+              "revision"
+            ]
+          },
+          "then": {
+            "properties": {
+              "parent": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "parent": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "currentPointer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "kind",
+        "snapshot"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "kind": {
+          "const": "product-current"
+        },
+        "snapshot": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "revision",
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "revision": {
+              "$ref": "#/$defs/positiveInteger"
+            },
+            "path": {
+              "type": "string",
+              "pattern": "^snapshots/[0-9a-f]{64}/product-snapshot[.]json$"
+            },
+            "sha256": {
+              "$ref": "#/$defs/sha256"
+            }
+          }
+        }
+      }
+    },
+    "positiveInteger": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "recordKind": {
+      "enum": [
+        "product",
+        "purpose",
+        "user",
+        "capability",
+        "gap"
+      ]
+    },
+    "anyRecordStatus": {
+      "enum": [
+        "accepted",
+        "partial",
+        "locked",
+        "superseded",
+        "unresolved"
+      ]
+    },
+    "base": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "snapshotSha256",
+            "modelSha256",
+            "revision"
+          ],
+          "properties": {
+            "snapshotSha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "modelSha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "revision": {
+              "$ref": "#/$defs/positiveInteger"
+            }
+          }
+        }
+      ]
+    },
+    "identityClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recordRef",
+        "kind",
+        "previousRef",
+        "supersedesRefs"
+      ],
+      "properties": {
+        "recordRef": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "enum": [
+            "new",
+            "continued"
+          ]
+        },
+        "previousRef": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/id"
+            }
+          ]
+        },
+        "supersedesRefs": {
+          "type": "array",
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "new"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "previousRef": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "previousRef": {
+                "$ref": "#/$defs/id"
+              },
+              "supersedesRefs": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "sourceClaimLineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "previousRef",
+        "successorRefs"
+      ],
+      "properties": {
+        "previousRef": {
+          "$ref": "#/$defs/id"
+        },
+        "successorRefs": {
+          "type": "array",
+          "maxItems": 10000,
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      }
+    },
+    "modelParent": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "revision",
+            "sha256"
+          ],
+          "properties": {
+            "revision": {
+              "$ref": "#/$defs/positiveInteger"
+            },
+            "sha256": {
+              "$ref": "#/$defs/sha256"
+            }
+          }
+        }
+      ]
+    },
+    "materialSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "revision",
+        "sourceSha256",
+        "claimRefs"
+      ],
+      "properties": {
+        "revision": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "sourceSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "claimRefs": {
+          "type": "array",
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      }
+    },
+    "recordIndexEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "status",
+        "owner",
+        "introducedRevision",
+        "materialSha256",
+        "materialSource",
+        "supersedesRefs"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "$ref": "#/$defs/recordKind"
+        },
+        "status": {
+          "$ref": "#/$defs/anyRecordStatus"
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "introducedRevision": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "materialSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "materialSource": {
+          "$ref": "#/$defs/materialSource"
+        },
+        "supersedesRefs": {
+          "type": "array",
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      }
+    },
+    "recordChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "classification",
+        "previousStatus",
+        "status",
+        "previousMaterialSha256",
+        "materialSha256"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "$ref": "#/$defs/recordKind"
+        },
+        "classification": {
+          "enum": [
+            "introduced",
+            "unchanged",
+            "changed"
+          ]
+        },
+        "previousStatus": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/anyRecordStatus"
+            }
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/anyRecordStatus"
+        },
+        "previousMaterialSha256": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/sha256"
+            }
+          ]
+        },
+        "materialSha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "const": "introduced"
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "properties": {
+              "previousStatus": {
+                "type": "null"
+              },
+              "previousMaterialSha256": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "previousStatus": {
+                "$ref": "#/$defs/anyRecordStatus"
+              },
+              "previousMaterialSha256": {
+                "$ref": "#/$defs/sha256"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "sourceClaimChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "classification",
+        "previousRefs"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "classification": {
+          "enum": [
+            "introduced",
+            "retained",
+            "succeeded"
+          ]
+        },
+        "previousRefs": {
+          "type": "array",
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "const": "introduced"
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "properties": {
+              "previousRefs": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "const": "retained"
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "properties": {
+              "previousRefs": {
+                "minItems": 1,
+                "maxItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "const": "succeeded"
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "properties": {
+              "previousRefs": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "changeSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classification",
+        "records",
+        "sourceClaims"
+      ],
+      "properties": {
+        "classification": {
+          "enum": [
+            "initial",
+            "source-only",
+            "material"
+          ]
+        },
+        "records": {
+          "type": "array",
+          "maxItems": 10000,
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/recordChange"
+          }
+        },
+        "sourceClaims": {
+          "type": "array",
+          "maxItems": 10000,
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/sourceClaimChange"
+          }
+        }
+      }
+    },
+    "authorityGrant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recordRef",
+        "owner",
+        "instruction"
+      ],
+      "properties": {
+        "recordRef": {
+          "$ref": "#/$defs/id"
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "instruction": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "snapshotParent": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "revision",
+            "sha256"
+          ],
+          "properties": {
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "revision": {
+              "$ref": "#/$defs/positiveInteger"
+            },
+            "sha256": {
+              "$ref": "#/$defs/sha256"
+            }
+          }
+        }
+      ]
+    },
+    "productModelBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision",
+        "path",
+        "sha256",
+        "materialSha256",
+        "recordIndexSha256"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "revision": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^models/[1-9][0-9]*-[0-9a-f]{64}/product-model[.]json$"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "materialSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "recordIndexSha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "lockAuthority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "kind",
+        "grants"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "kind": {
+          "const": "product-lock-authority"
+        },
+        "grants": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/authorityGrant"
+          }
+        }
+      }
+    }
+  },
+  "x-semanticRules": [
+    "The imperative writer validates unique stable IDs, closed cross-record references, source-claim disposition cardinality, bidirectional claim provenance, and an exact source-line and source-byte partition.",
+    "Proposal identity assertions account for every semantic record; updates retain every prior record, preserve record kind, keep superseded records terminal, and explicitly bind split, merge, or replacement lineage.",
+    "Removed source claims require complete successor lineage; retained claims cannot also declare lineage.",
+    "A partial model has an active gap or unclassified source claim, and a non-partial model has neither.",
+    "The writer computes material hashes, record indexes, change sets, authority receipts, revisions, parent bindings, and content-addressed paths; persisted values must recompute exactly.",
+    "The product source revision equals its model revision; each child advances exactly one revision, binds different exact source bytes, and names the exact parent source SHA-256.",
+    "Loading checks every child against its exact content-addressed parent: prior record status and material, change classification, introduction and terminal status, carried or current materialSource, source-claim predecessor coverage, and the exact required authority-receipt record and owner set.",
+    "The bound product-model ancestry is checked through revision 1, including each ancestor's exact source bytes and source-claim ranges.",
+    "Creating or materially changing a locked record requires a consumed target-scoped current-owner grant; unused grants fail.",
+    "Snapshot and current-pointer identities, revisions, parents, hashes, model bindings, record-index bindings, and external product-artifact entries must match the exact immutable files."
+  ]
+}

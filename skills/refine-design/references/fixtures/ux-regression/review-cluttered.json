@@ -1,0 +1,178 @@
+{
+  "schemaVersion": "0.2",
+  "subject": {
+    "productDescription": {
+      "id": "product",
+      "sha256": "e785c2be935b2b169efaa78726593426a6dee9ecd046fa05f77d70b204bbca46"
+    },
+    "uxArtifact": {
+      "id": "example-records-ux",
+      "revision": "1",
+      "sha256": "c5cafb8a3bda9eed6ee64408d5cc7a12e2dd0383faf042b1917dbe8882649687"
+    },
+    "scopeRefs": [
+      "update-record"
+    ]
+  },
+  "verdict": "revise",
+  "summary": "The correction, save, and retry flow supports the supplied task, but an unjustified persistent selection-confirmation command precedes task entry and merely repeats visible information. Resolve that pruning defect before UI handoff.",
+  "coverage": [
+    {
+      "criterion": "product-intent",
+      "result": "pass",
+      "evidenceRefs": [
+        "product",
+        "update-record",
+        "record-field",
+        "records-saved",
+        "records-failed"
+      ],
+      "note": "The artifact preserves record selection, correction, explicit saving, a visible saved result, and retention of failed corrections for retry."
+    },
+    {
+      "criterion": "task-coherence",
+      "result": "pass",
+      "evidenceRefs": [
+        "update-record",
+        "open-record",
+        "save-record",
+        "retry-save",
+        "records-editing",
+        "records-saved",
+        "records-failed"
+      ],
+      "note": "Opening the selected record leads to editing and saving; completion is observable, and failure has a defined retry path. The redundant preliminary command is addressed under hierarchy and action economy."
+    },
+    {
+      "criterion": "information-hierarchy",
+      "result": "finding",
+      "evidenceRefs": [
+        "collection-context",
+        "confirm-current-selection-affordance",
+        "open-record-affordance",
+        "records-viewing"
+      ],
+      "note": "A command that repeats the already-visible selection precedes the outcome-bearing task entry in both affordance order and focus order, without a documented need for that priority."
+    },
+    {
+      "criterion": "action-economy-discoverability",
+      "result": "finding",
+      "evidenceRefs": [
+        "confirm-visible-selection",
+        "confirm-current-selection",
+        "retain-selection-confirmation",
+        "update-record-pruning"
+      ],
+      "note": "The canonical route retains a persistent confirmation step whose stated outcome neither changes state nor advances the task. Its pruning rationale supplies no task, accessibility, safety, or efficiency justification."
+    },
+    {
+      "criterion": "mode-state-clarity",
+      "result": "pass",
+      "evidenceRefs": [
+        "record-list",
+        "records-workspace",
+        "records-editing",
+        "records-saving",
+        "records-saved",
+        "records-failed"
+      ],
+      "note": "Current selection remains visible, editing is distinguished from saving, and saved and failed results have separate semantic frames with appropriate contextual availability."
+    },
+    {
+      "criterion": "feedback-cancellation-recovery",
+      "result": "pass",
+      "evidenceRefs": [
+        "save-record",
+        "save-status",
+        "retry-preserved-save",
+        "retry-save",
+        "records-failed"
+      ],
+      "note": "Save progress, success, and failure are explicit. The bounded save is described as unavailable for cancellation, and failure preserves the correction with a contextual retry action."
+    },
+    {
+      "criterion": "baseline-accessibility",
+      "result": "pass",
+      "evidenceRefs": [
+        "open-record",
+        "save-record",
+        "retry-save",
+        "records-viewing",
+        "records-editing",
+        "records-failed"
+      ],
+      "note": "Named commands have equivalent keyboard activation and frames define focus intent. No specialized interaction requires an additional alternative. UI must realize these semantics with accessible controls and visible focus."
+    },
+    {
+      "criterion": "pattern-research",
+      "result": "pass",
+      "evidenceRefs": [
+        "open-record",
+        "confirm-current-selection",
+        "save-record",
+        "retry-save",
+        "records-viewing",
+        "records-editing",
+        "records-saving",
+        "records-saved",
+        "records-failed"
+      ],
+      "note": "The collection, editable value, explicit save, status feedback, and retry interactions are ordinary patterns. The unnecessary confirmation is an action-purpose defect rather than an unfamiliar interaction requiring research. No patternResearch records require checks."
+    },
+    {
+      "criterion": "ux-ui-boundary",
+      "result": "pass",
+      "evidenceRefs": [
+        "records-workspace",
+        "records-viewing",
+        "records-editing",
+        "records-saving",
+        "records-saved",
+        "records-failed"
+      ],
+      "note": "The artifact specifies behavior, information priority, focus intent, and transitions while leaving visual styling, exact geometry, and framework components to UI."
+    },
+    {
+      "criterion": "handoff-traceability",
+      "result": "pass",
+      "evidenceRefs": [
+        "update-record",
+        "open-record-affordance",
+        "save-record-affordance",
+        "retry-save-affordance",
+        "save-progress-feedback",
+        "save-completion-feedback",
+        "save-failure-feedback"
+      ],
+      "note": "Stable task, action, affordance, feedback, and frame references provide a traceable semantic handoff. The identified pruning correction must be resolved in UX before UI consumes the contract."
+    }
+  ],
+  "findings": [
+    {
+      "id": "redundant-selection-confirmation",
+      "severity": "blocking",
+      "criteria": [
+        "information-hierarchy",
+        "action-economy-discoverability"
+      ],
+      "recordRefs": [
+        "confirm-visible-selection",
+        "confirm-current-selection",
+        "confirm-current-selection-affordance",
+        "records-viewing",
+        "retain-selection-confirmation",
+        "update-record-pruning"
+      ],
+      "evidence": "The confirmation action explicitly repeats an already-visible selection without changing state or advancing the task. It is persistent and always visible in its applicable viewing state. The use case places it before opening the record, and the viewing frame places its affordance before Open record in both presentation and focus order. The pruning decision retains it while expressly acknowledging that it does not advance the task.",
+      "consequence": "A person correcting an observation encounters an additional apparent prerequisite and keyboard stop before entering the useful workflow. The command competes with task entry without adding information, preventing an error, or providing an identified accessibility benefit.",
+      "smallestRemedy": "Remove the confirmation from the canonical steps and persistent viewing affordances, updating its action and pruning records consistently while preserving visible selection. Retain separate confirmation only if a concrete task or accessibility need is established and its invocation is scoped to that need.",
+      "confidence": "high"
+    }
+  ],
+  "researchChecks": [],
+  "limits": [
+    "Reviewed the complete supplied update-record scope and immutable role and contract snapshots; both supplied file hashes matched.",
+    "This is a semantic artifact review, not user testing, implemented accessibility verification, engineering feasibility assessment, standards compliance, or implementation approval.",
+    "Sanitized expected result for regression testing; not historical agent evidence."
+  ]
+}

@@ -1,0 +1,1439 @@
+{
+  "schemaVersion": "0.2",
+  "id": "example-checkout",
+  "title": "Example Checkout UX",
+  "revision": "1",
+  "status": "accepted",
+  "assessment": {
+    "kind": "ux-planner-assessment",
+    "description": "Sanitized regression fixture; not evidence of a live agent evaluation."
+  },
+  "sources": [
+    {
+      "id": "checkout-brief",
+      "path": "checkout-description.md",
+      "revision": "1",
+      "kind": "supplied-product-description"
+    }
+  ],
+  "product": {
+    "name": "Example Checkout",
+    "overview": "A desktop app in which workshop staff select one available tool and one borrowing member, review the pairing, and record a checkout asynchronously. Duplicate submission is prevented. Success preserves the exact completed pairing until staff deliberately begin another checkout. Failure retains both selections and allows retry, correction, or cancellation of the uncommitted attempt.",
+    "users": [
+      "Workshop staff"
+    ]
+  },
+  "application": {
+    "summary": "One activity area and one workspace support the complete checkout task and its recovery paths.",
+    "shell": {
+      "kind": "desktop-application",
+      "description": "The application opens directly into the checkout workspace.",
+      "status": "accepted",
+      "navigation": {
+        "pattern": "single-workspace",
+        "description": "Checkout preparation, recording, results, and recovery remain in the same workspace."
+      },
+      "regions": [
+        {
+          "id": "application-identity",
+          "name": "Example Checkout",
+          "kind": "identity",
+          "purpose": "Identify the application.",
+          "persistence": "persistent",
+          "order": 1
+        },
+        {
+          "id": "application-workspace",
+          "name": "Checkout workspace",
+          "kind": "workspace",
+          "purpose": "Host the current checkout and its outcome.",
+          "persistence": "persistent",
+          "order": 2
+        }
+      ]
+    },
+    "areas": [
+      {
+        "id": "checkout-work",
+        "name": "Checkout",
+        "purpose": "Record the borrowing of one available tool by one member.",
+        "status": "accepted",
+        "surfaceRefs": [
+          "checkout-workspace"
+        ]
+      }
+    ]
+  },
+  "features": [
+    {
+      "id": "checkout",
+      "name": "Tool checkout",
+      "purpose": "Prepare, review, and record a tool and member pairing with clear completion and recoverable failure.",
+      "status": "accepted",
+      "sourceRefs": [
+        "checkout-brief"
+      ],
+      "surfaceRefs": [
+        "checkout-workspace"
+      ],
+      "useCaseRefs": [
+        "record-checkout"
+      ],
+      "questionRefs": []
+    }
+  ],
+  "useCases": [
+    {
+      "id": "record-checkout",
+      "name": "Record a checkout",
+      "featureRef": "checkout",
+      "goal": "Record the intended tool and borrowing member once and verify the exact completed pairing.",
+      "taskPriority": "primary",
+      "status": "accepted",
+      "trigger": "A staff member needs to check out an available tool to a borrowing member.",
+      "preconditions": [
+        "The checkout workspace is open.",
+        "At least one available tool and the intended borrowing member can be selected."
+      ],
+      "actionRefs": [
+        "select-tool",
+        "select-member",
+        "submit-checkout",
+        "cancel-checkout",
+        "begin-checkout"
+      ],
+      "steps": [
+        {
+          "id": "choose-tool",
+          "actor": "Staff member",
+          "action": "Select the available tool to be borrowed.",
+          "actionRef": "select-tool",
+          "targetRef": "tool-field",
+          "response": "The chosen tool is clearly identified in the workspace."
+        },
+        {
+          "id": "choose-member",
+          "actor": "Staff member",
+          "action": "Select the borrowing member.",
+          "actionRef": "select-member",
+          "targetRef": "member-field",
+          "response": "The chosen member is clearly identified alongside the chosen tool so the pairing can be reviewed."
+        },
+        {
+          "id": "review-and-record",
+          "actor": "Staff member",
+          "action": "Review the displayed tool and member, then activate Record checkout.",
+          "actionRef": "submit-checkout",
+          "targetRef": "checkout-action",
+          "response": "Recording begins with the reviewed pairing held unchanged. Further submissions are suppressed. On success, the workspace confirms the checkout and retains that exact completed pairing."
+        }
+      ],
+      "outcome": "One checkout has been recorded for the reviewed tool and member. Its completed pairing remains visible until staff explicitly begin another checkout.",
+      "alternatives": [
+        {
+          "id": "member-first",
+          "condition": "Staff identify the borrowing member before selecting the tool.",
+          "response": "Either selection can be made first without changing the task.",
+          "recovery": "Select the remaining item, review both values, and record the checkout.",
+          "status": "accepted"
+        },
+        {
+          "id": "incomplete-pair",
+          "condition": "One or both selections are missing.",
+          "response": "Record checkout is unavailable, and the unselected field remains visibly unset.",
+          "recovery": "Complete both selections before recording.",
+          "status": "accepted"
+        },
+        {
+          "id": "unavailable-choice",
+          "condition": "No available tool or selectable borrowing member can be found.",
+          "response": "The affected selector explains that it has no selectable choices. An existing selection in the other field remains visible.",
+          "recovery": "Select an available choice when one exists, or cancel an uncommitted attempt.",
+          "status": "accepted"
+        },
+        {
+          "id": "correct-pair",
+          "condition": "Staff notice the wrong tool or member before recording or after a failed attempt.",
+          "response": "They replace the affected selection using its existing selector. The other selection is retained.",
+          "recovery": "Review the corrected pairing and activate Record checkout.",
+          "status": "accepted"
+        },
+        {
+          "id": "recording-pending",
+          "condition": "Recording has started and its outcome is pending.",
+          "response": "The exact submitted pairing remains visible. Selectors and recording activation are unavailable, and progress is communicated.",
+          "recovery": "Wait for success or failure. The workspace does not offer cancellation of an in-progress recording.",
+          "status": "accepted"
+        },
+        {
+          "id": "recording-failed",
+          "condition": "Recording reports failure.",
+          "response": "A persistent failure message explains that recording failed. Both selections remain unchanged.",
+          "recovery": "Retry with the same recording control, correct either selection, or cancel the uncommitted attempt.",
+          "status": "accepted"
+        },
+        {
+          "id": "abandon-attempt",
+          "condition": "Staff decide not to proceed with an uncommitted attempt.",
+          "response": "Cancel checkout clears both selections and the attempt's feedback, returning to an empty workspace.",
+          "recovery": "Staff can begin selecting a new pairing.",
+          "status": "accepted"
+        },
+        {
+          "id": "another-checkout",
+          "condition": "A checkout has succeeded and staff want to record another.",
+          "response": "Begin another checkout explicitly clears the completed pairing from the current workspace and restores empty selectors.",
+          "recovery": "Select the next tool and borrowing member.",
+          "status": "accepted"
+        }
+      ],
+      "questionRefs": []
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "checkout-workspace",
+      "name": "Checkout workspace",
+      "kind": "workspace",
+      "purpose": "Prepare a single pairing, review it, record it, and inspect or recover from the result.",
+      "entry": "Open with neither field selected. Cancel checkout and Begin another checkout also return here with empty selections.",
+      "exit": "The task completes within this workspace. After success, the completed pairing remains until Begin another checkout is activated.",
+      "focusIntent": "Use ordinary keyboard-operable selectors and commands with visible focus. Follow tool, member, and applicable commands in task order. Selection changes retain focus. Progress and results are announced without repeatedly moving focus. After cancellation or beginning another checkout, focus returns to the tool selector.",
+      "status": "accepted",
+      "areaRef": "checkout-work",
+      "regions": [
+        {
+          "id": "checkout-pair",
+          "name": "Tool and member",
+          "purpose": "Identify and review the two participants in the checkout; preserve their exact identities while recording and after success.",
+          "order": 1,
+          "componentRefs": [
+            "tool-field",
+            "member-field"
+          ]
+        },
+        {
+          "id": "checkout-feedback",
+          "name": "Recording status",
+          "purpose": "Communicate progress, success, or failure without losing the pairing.",
+          "order": 2,
+          "componentRefs": [
+            "checkout-status"
+          ]
+        },
+        {
+          "id": "checkout-commands",
+          "name": "Checkout commands",
+          "purpose": "Record or retry the current attempt, cancel an uncommitted attempt, or deliberately start another after success.",
+          "order": 3,
+          "componentRefs": [
+            "checkout-action",
+            "cancel-action",
+            "another-checkout-action"
+          ]
+        }
+      ],
+      "componentRefs": [
+        "tool-field",
+        "member-field",
+        "checkout-status",
+        "checkout-action",
+        "cancel-action",
+        "another-checkout-action"
+      ],
+      "states": [
+        "empty",
+        "editing",
+        "saving",
+        "saved",
+        "failed"
+      ],
+      "interactionFrameRefs": [
+        "checkout-empty",
+        "checkout-editing",
+        "checkout-saving",
+        "checkout-saved",
+        "checkout-failed"
+      ],
+      "questionRefs": []
+    }
+  ],
+  "components": [
+    {
+      "id": "tool-field",
+      "name": "Available tool",
+      "kind": "single-selection-field",
+      "purpose": "Choose and identify exactly one available tool.",
+      "status": "accepted",
+      "surfaceRefs": [
+        "checkout-workspace"
+      ],
+      "questionRefs": [],
+      "capabilities": [
+        "Present distinguishable available tool choices.",
+        "Select one tool or replace the current selection.",
+        "Show the exact submitted or completed tool while changes are unavailable."
+      ],
+      "states": [
+        "current",
+        "edited",
+        "disabled"
+      ],
+      "behaviorRequirements": [
+        "Initially show no selected tool; do not silently choose one.",
+        "Use an ordinary labeled single-select control with native keyboard operation and visible focus.",
+        "Selecting or replacing a tool retains the member selection.",
+        "Allow selection in empty, editing, and failed workspace states.",
+        "Keep the submitted tool visible and prevent changes during saving.",
+        "After success, show the exact completed tool as read-only until Begin another checkout.",
+        "When no tool is available, explain that condition at the field and prevent selection.",
+        "Cancellation and Begin another checkout reset the field to no selection."
+      ]
+    },
+    {
+      "id": "member-field",
+      "name": "Borrowing member",
+      "kind": "single-selection-field",
+      "purpose": "Choose and identify exactly one borrowing member.",
+      "status": "accepted",
+      "surfaceRefs": [
+        "checkout-workspace"
+      ],
+      "questionRefs": [],
+      "capabilities": [
+        "Present distinguishable borrowing member choices.",
+        "Select one member or replace the current selection.",
+        "Show the exact submitted or completed member while changes are unavailable."
+      ],
+      "states": [
+        "current",
+        "edited",
+        "disabled"
+      ],
+      "behaviorRequirements": [
+        "Initially show no selected member; do not silently choose one.",
+        "Use an ordinary labeled single-select control with native keyboard operation and visible focus.",
+        "Selecting or replacing a member retains the tool selection.",
+        "Allow selection in empty, editing, and failed workspace states.",
+        "Keep the submitted member visible and prevent changes during saving.",
+        "After success, show the exact completed member as read-only until Begin another checkout.",
+        "When no member can be selected, explain that condition at the field.",
+        "Cancellation and Begin another checkout reset the field to no selection."
+      ]
+    },
+    {
+      "id": "checkout-status",
+      "name": "Checkout status",
+      "kind": "status",
+      "purpose": "Communicate the outcome of recording independently of command availability.",
+      "status": "accepted",
+      "surfaceRefs": [
+        "checkout-workspace"
+      ],
+      "questionRefs": [],
+      "capabilities": [
+        "Communicate recording progress.",
+        "Confirm successful recording.",
+        "Explain failure and available recovery."
+      ],
+      "states": [
+        "idle",
+        "saving",
+        "saved",
+        "failed"
+      ],
+      "behaviorRequirements": [
+        "Use one semantic status region for progress and results.",
+        "During saving, show and announce Recording checkout.",
+        "On success, show and announce Checkout recorded; keep this result and the exact completed pairing visible until staff begin another checkout.",
+        "On failure, show and announce Recording failed, retain both selections, and explain retry, correction, and cancellation.",
+        "Keep failure feedback until staff retry, change a selection, or cancel.",
+        "When a failed attempt is corrected, clear the old failure feedback and return the workspace to editing.",
+        "Do not repeatedly move keyboard focus when the status changes."
+      ]
+    },
+    {
+      "id": "checkout-action",
+      "name": "Record checkout",
+      "kind": "action",
+      "purpose": "Record the reviewed pairing and retry a failed attempt.",
+      "status": "accepted",
+      "surfaceRefs": [
+        "checkout-workspace"
+      ],
+      "questionRefs": [],
+      "capabilities": [
+        "Begin asynchronous recording of the displayed pairing.",
+        "Retry a failed attempt using the retained selections.",
+        "Suppress duplicate activation while recording."
+      ],
+      "states": [
+        "disabled",
+        "available",
+        "saving"
+      ],
+      "behaviorRequirements": [
+        "Show Record checkout before recording; make it unavailable until one available tool and one member are selected.",
+        "Activation captures the currently displayed pairing and immediately enters saving before another activation can submit.",
+        "While saving, show Recording checkout and suppress pointer, keyboard, repeated, and queued activation of this command.",
+        "Maintain a coherent visible focus location when the command becomes unavailable.",
+        "After failure, use the same command with the label Retry checkout.",
+        "Remove the recording command after success so the completed pairing cannot be submitted again from that state.",
+        "Use ordinary command keyboard activation and visible focus."
+      ]
+    },
+    {
+      "id": "cancel-action",
+      "name": "Cancel checkout",
+      "kind": "action",
+      "purpose": "Discard an uncommitted checkout attempt.",
+      "status": "accepted",
+      "surfaceRefs": [
+        "checkout-workspace"
+      ],
+      "questionRefs": [],
+      "capabilities": [
+        "Clear the current uncommitted pairing and its feedback."
+      ],
+      "states": [
+        "available"
+      ],
+      "behaviorRequirements": [
+        "Show only while editing an uncommitted attempt or after failure.",
+        "Clear both selections and feedback, then return focus to the tool selector.",
+        "Do not expose this command during saving or after success.",
+        "Use ordinary command keyboard activation and visible focus."
+      ]
+    },
+    {
+      "id": "another-checkout-action",
+      "name": "Begin another checkout",
+      "kind": "action",
+      "purpose": "Deliberately move from a completed checkout to a new empty attempt.",
+      "status": "accepted",
+      "surfaceRefs": [
+        "checkout-workspace"
+      ],
+      "questionRefs": [],
+      "capabilities": [
+        "Start a fresh checkout after success."
+      ],
+      "states": [
+        "available"
+      ],
+      "behaviorRequirements": [
+        "Show only after successful recording.",
+        "Keep the completed pairing visible until this command is activated.",
+        "On activation, clear both selections and completion feedback, then focus the tool selector.",
+        "Use ordinary command keyboard activation and visible focus."
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "id": "select-tool",
+      "name": "Select tool",
+      "purpose": "Choose or correct the tool in the current pairing.",
+      "status": "accepted",
+      "taskRefs": [
+        "record-checkout"
+      ],
+      "outcome": "Exactly one chosen tool is visibly associated with the current attempt.",
+      "canonicalInteraction": {
+        "method": "select",
+        "input": "Pointer selection",
+        "description": "Choose one available tool in the labeled single-select control. A new choice replaces the previous tool and retains the member. Selection is unavailable during saving and after success."
+      },
+      "alternateInputs": [
+        {
+          "id": "select-tool-keyboard",
+          "input": "Keyboard selection",
+          "description": "Focus the same selector and use its ordinary keyboard selection behavior.",
+          "equivalentOutcome": true
+        }
+      ],
+      "presentationClass": "persistent-control",
+      "visibility": {
+        "mode": "conditional",
+        "conditions": [
+          "The workspace is empty, editing, or failed; saving and saved present the selected tool as read-only information."
+        ]
+      },
+      "persistence": "state-bound",
+      "priority": "secondary",
+      "applicableStates": [
+        {
+          "surfaceRef": "checkout-workspace",
+          "state": "empty"
+        },
+        {
+          "surfaceRef": "checkout-workspace",
+          "state": "editing"
+        },
+        {
+          "surfaceRef": "checkout-workspace",
+          "state": "failed"
+        }
+      ],
+      "feedback": [
+        {
+          "id": "tool-selected",
+          "phase": "success",
+          "description": "The field shows the selected tool. A change after failure returns the attempt to editing.",
+          "persistence": "state-bound"
+        }
+      ],
+      "cancellation": {
+        "mode": "available",
+        "description": "Once a selection creates an uncommitted attempt, Cancel checkout discards the whole attempt.",
+        "actionRef": "cancel-checkout"
+      },
+      "recovery": [
+        {
+          "id": "tool-choice-recovery",
+          "condition": "The chosen tool is incorrect.",
+          "response": "Replace it in the same selector while retaining the member, or cancel the uncommitted attempt.",
+          "actionRefs": [
+            "cancel-checkout"
+          ]
+        }
+      ],
+      "patternBasis": {
+        "kind": "ordinary",
+        "rationale": "Choosing one value from a labeled single-select control is a familiar interaction."
+      },
+      "questionRefs": []
+    },
+    {
+      "id": "select-member",
+      "name": "Select member",
+      "purpose": "Choose or correct the borrowing member in the current pairing.",
+      "status": "accepted",
+      "taskRefs": [
+        "record-checkout"
+      ],
+      "outcome": "Exactly one chosen member is visibly associated with the current attempt.",
+      "canonicalInteraction": {
+        "method": "select",
+        "input": "Pointer selection",
+        "description": "Choose one borrowing member in the labeled single-select control. A new choice replaces the previous member and retains the tool. Selection is unavailable during saving and after success."
+      },
+      "alternateInputs": [
+        {
+          "id": "select-member-keyboard",
+          "input": "Keyboard selection",
+          "description": "Focus the same selector and use its ordinary keyboard selection behavior.",
+          "equivalentOutcome": true
+        }
+      ],
+      "presentationClass": "persistent-control",
+      "visibility": {
+        "mode": "conditional",
+        "conditions": [
+          "The workspace is empty, editing, or failed; saving and saved present the selected member as read-only information."
+        ]
+      },
+      "persistence": "state-bound",
+      "priority": "secondary",
+      "applicableStates": [
+        {
+          "surfaceRef": "checkout-workspace",
+          "state": "empty"
+        },
+        {
+          "surfaceRef": "checkout-workspace",
+          "state": "editing"
+        },
+        {
+          "surfaceRef": "checkout-workspace",
+          "state": "failed"
+        }
+      ],
+      "feedback": [
+        {
+          "id": "member-selected",
+          "phase": "success",
+          "description": "The field shows the selected member. A change after failure returns the attempt to editing.",
+          "persistence": "state-bound"
+        }
+      ],
+      "cancellation": {
+        "mode": "available",
+        "description": "Once a selection creates an uncommitted attempt, Cancel checkout discards the whole attempt.",
+        "actionRef": "cancel-checkout"
+      },
+      "recovery": [
+        {
+          "id": "member-choice-recovery",
+          "condition": "The chosen member is incorrect.",
+          "response": "Replace the member in the same selector while retaining the tool, or cancel the uncommitted attempt.",
+          "actionRefs": [
+            "cancel-checkout"
+          ]
+        }
+      ],
+      "patternBasis": {
+        "kind": "ordinary",
+        "rationale": "Choosing one value from a labeled single-select control is a familiar interaction."
+      },
+      "questionRefs": []
+    },
+    {
+      "id": "submit-checkout",
+      "name": "Record checkout",
+      "purpose": "Record the reviewed pairing once, including retry after failure.",
+      "status": "accepted",
+      "taskRefs": [
+        "record-checkout"
+      ],
+      "outcome": "The pairing is recorded successfully and remains visible, or a failure leaves both selections available for recovery.",
+      "canonicalInteraction": {
+        "method": "activate",
+        "input": "Pointer activation",
+        "description": "Activate Record checkout after reviewing both selected values. The command is unavailable with incomplete selections. Activation enters saving immediately and prevents additional submission. During saving the command remains visible as unavailable Recording checkout. Failure restores it as Retry checkout; success removes it."
+      },
+      "alternateInputs": [
+        {
+          "id": "submit-checkout-keyboard",
+          "input": "Keyboard activation",
+          "description": "Focus the same command and activate it using ordinary keyboard command behavior. The same availability and duplicate-submission guard apply.",
+          "equivalentOutcome": true
+        }
+      ],
+      "presentationClass": "persistent-control",
+      "visibility": {
+        "mode": "conditional",
+        "conditions": [
+          "The workspace is empty, editing, saving, or failed."
+        ]
+      },
+      "persistence": "state-bound",
+      "priority": "primary",
+      "applicableStates": [
+        {
+          "surfaceRef": "checkout-workspace",
+          "state": "empty"
+        },
+        {
+          "surfaceRef": "checkout-workspace",
+          "state": "editing"
+        },
+        {
+          "surfaceRef": "checkout-workspace",
+          "state": "saving"
+        },
+        {
+          "surfaceRef": "checkout-workspace",
+          "state": "failed"
+        }
+      ],
+      "feedback": [
+        {
+          "id": "checkout-recording",
+          "phase": "progress",
+          "description": "Recording checkout. Keep the submitted pairing visible and unchanged until the outcome.",
+          "persistence": "state-bound"
+        },
+        {
+          "id": "checkout-recorded",
+          "phase": "success",
+          "description": "Checkout recorded. Keep the exact completed pairing and this confirmation visible until Begin another checkout.",
+          "persistence": "state-bound"
+        },
+        {
+          "id": "checkout-recording-failed",
+          "phase": "failure",
+          "description": "Recording failed. Both selections have been kept. Retry, change either selection, or cancel the uncommitted attempt.",
+          "persistence": "state-bound"
+        }
+      ],
+      "cancellation": {
+        "mode": "unavailable",
+        "description": "An in-progress recording cannot be canceled through this workflow. Once failure is reported, Cancel checkout can discard the uncommitted attempt."
+      },
+      "recovery": [
+        {
+          "id": "checkout-failure-recovery",
+          "condition": "Recording reports failure.",
+          "response": "Retain both selections. The same recording command becomes Retry checkout. Staff may instead replace either selection and review again, or cancel the attempt.",
+          "actionRefs": [
+            "select-tool",
+            "select-member",
+            "cancel-checkout"
+          ]
+        }
+      ],
+      "patternBasis": {
+        "kind": "ordinary",
+        "rationale": "An explicit submit command with a guarded pending state, retained-input failure, and stable completion is a familiar form interaction."
+      },
+      "questionRefs": []
+    },
+    {
+      "id": "cancel-checkout",
+      "name": "Cancel checkout",
+      "purpose": "Abandon an uncommitted attempt.",
+      "status": "accepted",
+      "taskRefs": [
+        "record-checkout"
+      ],
+      "outcome": "Both selections and the attempt's feedback are cleared, leaving an empty workspace.",
+      "canonicalInteraction": {
+        "method": "activate",
+        "input": "Pointer activation",
+        "description": "Activate Cancel checkout while editing or after failure to discard the uncommitted pairing and return focus to the tool selector."
+      },
+      "alternateInputs": [
+        {
+          "id": "cancel-checkout-keyboard",
+          "input": "Keyboard activation",
+          "description": "Focus the same command and activate it using ordinary keyboard command behavior.",
+          "equivalentOutcome": true
+        }
+      ],
+      "presentationClass": "contextual-control",
+      "visibility": {
+        "mode": "conditional",
+        "conditions": [
+          "An uncommitted attempt is being edited or recording has failed."
+        ]
+      },
+      "persistence": "state-bound",
+      "priority": "secondary",
+      "applicableStates": [
+        {
+          "surfaceRef": "checkout-workspace",
+          "state": "editing"
+        },
+        {
+          "surfaceRef": "checkout-workspace",
+          "state": "failed"
+        }
+      ],
+      "feedback": [
+        {
+          "id": "checkout-canceled",
+          "phase": "canceled",
+          "description": "Both fields return to their unselected state and attempt feedback disappears.",
+          "persistence": "state-bound"
+        }
+      ],
+      "cancellation": {
+        "mode": "not-applicable",
+        "description": "This command immediately discards an uncommitted attempt."
+      },
+      "recovery": [],
+      "patternBasis": {
+        "kind": "ordinary",
+        "rationale": "An explicit cancel command that clears an uncommitted form is a familiar interaction."
+      },
+      "questionRefs": []
+    },
+    {
+      "id": "begin-checkout",
+      "name": "Begin another checkout",
+      "purpose": "Let staff deliberately move from a completed pairing to a new attempt.",
+      "status": "accepted",
+      "taskRefs": [
+        "record-checkout"
+      ],
+      "outcome": "A new checkout begins with neither a tool nor a member selected.",
+      "canonicalInteraction": {
+        "method": "activate",
+        "input": "Pointer activation",
+        "description": "After success, activate Begin another checkout to clear the completed pairing and confirmation from the workspace and focus the empty tool selector."
+      },
+      "alternateInputs": [
+        {
+          "id": "begin-checkout-keyboard",
+          "input": "Keyboard activation",
+          "description": "Focus the same command and activate it using ordinary keyboard command behavior.",
+          "equivalentOutcome": true
+        }
+      ],
+      "presentationClass": "contextual-control",
+      "visibility": {
+        "mode": "conditional",
+        "conditions": [
+          "The current checkout has been recorded successfully."
+        ]
+      },
+      "persistence": "state-bound",
+      "priority": "primary",
+      "applicableStates": [
+        {
+          "surfaceRef": "checkout-workspace",
+          "state": "saved"
+        }
+      ],
+      "feedback": [
+        {
+          "id": "checkout-begun",
+          "phase": "success",
+          "description": "The workspace shows empty tool and member selectors with focus at the tool selector.",
+          "persistence": "state-bound"
+        }
+      ],
+      "cancellation": {
+        "mode": "not-applicable",
+        "description": "This command begins a new empty attempt after the completed checkout."
+      },
+      "recovery": [],
+      "patternBasis": {
+        "kind": "ordinary",
+        "rationale": "An explicit next-task command after a stable success state is a familiar interaction."
+      },
+      "questionRefs": []
+    }
+  ],
+  "interactionFrames": [
+    {
+      "id": "checkout-empty",
+      "name": "Empty checkout",
+      "kind": "surface",
+      "purpose": "Start selecting the tool and borrowing member.",
+      "status": "accepted",
+      "surfaceRef": "checkout-workspace",
+      "state": "empty",
+      "taskRefs": [
+        "record-checkout"
+      ],
+      "patternBasis": {
+        "kind": "ordinary",
+        "rationale": "An initially unselected form with a submission command unavailable until required values are present is familiar."
+      },
+      "regions": [
+        {
+          "id": "pair",
+          "name": "Tool and member",
+          "kind": "selection",
+          "purpose": "Choose either participant first.",
+          "order": 1,
+          "priority": "primary",
+          "sourceRegionRef": "checkout-pair",
+          "content": [
+            {
+              "id": "pair-values",
+              "kind": "information",
+              "text": "Tool: not selected. Borrowing member: not selected.",
+              "purpose": "Expose the initial values of the two labeled selectors.",
+              "priority": "primary",
+              "persistence": "state-bound",
+              "taskRefs": [
+                "record-checkout"
+              ],
+              "stateRefs": [
+                "empty"
+              ]
+            }
+          ],
+          "affordances": [
+            {
+              "id": "tool-choice",
+              "actionRef": "select-tool",
+              "label": "Available tool",
+              "status": "accepted",
+              "order": 1,
+              "interaction": "canonical",
+              "transition": {
+                "kind": "state",
+                "targetState": "editing"
+              }
+            },
+            {
+              "id": "member-choice",
+              "actionRef": "select-member",
+              "label": "Borrowing member",
+              "status": "accepted",
+              "order": 2,
+              "interaction": "canonical",
+              "transition": {
+                "kind": "state",
+                "targetState": "editing"
+              }
+            }
+          ]
+        },
+        {
+          "id": "commands",
+          "name": "Checkout commands",
+          "kind": "commands",
+          "purpose": "Make the recording command discoverable while its required selections are missing.",
+          "order": 2,
+          "priority": "primary",
+          "sourceRegionRef": "checkout-commands",
+          "content": [],
+          "affordances": [
+            {
+              "id": "record-command",
+              "actionRef": "submit-checkout",
+              "label": "Record checkout",
+              "status": "accepted",
+              "order": 1,
+              "interaction": "canonical",
+              "transition": {
+                "kind": "none"
+              }
+            }
+          ]
+        }
+      ],
+      "focus": {
+        "entry": "Focus the tool selector. Use visible focus and ordinary selector keyboard behavior. Record checkout is unavailable; its position in the logical order does not make it activatable.",
+        "orderRefs": [
+          "tool-choice",
+          "member-choice",
+          "record-command"
+        ]
+      },
+      "questionRefs": []
+    },
+    {
+      "id": "checkout-editing",
+      "name": "Review checkout",
+      "kind": "surface",
+      "purpose": "Complete or correct the selections and review their pairing before recording.",
+      "status": "accepted",
+      "surfaceRef": "checkout-workspace",
+      "state": "editing",
+      "taskRefs": [
+        "record-checkout"
+      ],
+      "patternBasis": {
+        "kind": "ordinary",
+        "rationale": "Reviewing visible form values before explicit submission uses a familiar form interaction without a separate mode."
+      },
+      "regions": [
+        {
+          "id": "pair",
+          "name": "Tool and member",
+          "kind": "selection",
+          "purpose": "Keep the current selections available together for review and correction.",
+          "order": 1,
+          "priority": "primary",
+          "sourceRegionRef": "checkout-pair",
+          "content": [
+            {
+              "id": "pair-values",
+              "kind": "information",
+              "text": "Show the current tool and borrowing member in their labeled selectors; any missing selection remains explicitly unset.",
+              "purpose": "Let staff inspect the exact pairing they will record.",
+              "priority": "primary",
+              "persistence": "state-bound",
+              "taskRefs": [
+                "record-checkout"
+              ],
+              "stateRefs": [
+                "editing"
+              ]
+            }
+          ],
+          "affordances": [
+            {
+              "id": "tool-choice",
+              "actionRef": "select-tool",
+              "label": "Available tool",
+              "status": "accepted",
+              "order": 1,
+              "interaction": "canonical",
+              "transition": {
+                "kind": "state",
+                "targetState": "editing"
+              }
+            },
+            {
+              "id": "member-choice",
+              "actionRef": "select-member",
+              "label": "Borrowing member",
+              "status": "accepted",
+              "order": 2,
+              "interaction": "canonical",
+              "transition": {
+                "kind": "state",
+                "targetState": "editing"
+              }
+            }
+          ]
+        },
+        {
+          "id": "commands",
+          "name": "Checkout commands",
+          "kind": "commands",
+          "purpose": "Record the reviewed pairing or abandon the uncommitted attempt.",
+          "order": 2,
+          "priority": "primary",
+          "sourceRegionRef": "checkout-commands",
+          "content": [],
+          "affordances": [
+            {
+              "id": "record-command",
+              "actionRef": "submit-checkout",
+              "label": "Record checkout",
+              "status": "accepted",
+              "order": 1,
+              "interaction": "canonical",
+              "transition": {
+                "kind": "state",
+                "targetState": "saving"
+              }
+            },
+            {
+              "id": "cancel-command",
+              "actionRef": "cancel-checkout",
+              "label": "Cancel checkout",
+              "status": "accepted",
+              "order": 2,
+              "interaction": "canonical",
+              "transition": {
+                "kind": "state",
+                "targetState": "empty"
+              }
+            }
+          ]
+        }
+      ],
+      "focus": {
+        "entry": "Keep focus on the selector being changed. Record checkout becomes available only when both required selections are present; its saving transition applies only to an enabled activation. Keep visible focus through keyboard navigation.",
+        "orderRefs": [
+          "tool-choice",
+          "member-choice",
+          "record-command",
+          "cancel-command"
+        ]
+      },
+      "questionRefs": []
+    },
+    {
+      "id": "checkout-saving",
+      "name": "Recording checkout",
+      "kind": "surface",
+      "purpose": "Show the submitted pairing and recording progress while preventing another submission.",
+      "status": "accepted",
+      "surfaceRef": "checkout-workspace",
+      "state": "saving",
+      "taskRefs": [
+        "record-checkout"
+      ],
+      "patternBasis": {
+        "kind": "ordinary",
+        "rationale": "A pending form submission with fixed values, an unavailable submit command, and status feedback is familiar."
+      },
+      "regions": [
+        {
+          "id": "pair",
+          "name": "Submitted pairing",
+          "kind": "information",
+          "purpose": "Keep the exact submitted identities visible.",
+          "order": 1,
+          "priority": "primary",
+          "sourceRegionRef": "checkout-pair",
+          "content": [
+            {
+              "id": "pair-values",
+              "kind": "information",
+              "text": "Show the exact tool and borrowing member submitted for this checkout as read-only values.",
+              "purpose": "Identify the pairing whose recording is in progress.",
+              "priority": "primary",
+              "persistence": "state-bound",
+              "taskRefs": [
+                "record-checkout"
+              ],
+              "stateRefs": [
+                "saving"
+              ]
+            }
+          ],
+          "affordances": []
+        },
+        {
+          "id": "status",
+          "name": "Recording status",
+          "kind": "status",
+          "purpose": "Communicate progress and preserve context until the outcome.",
+          "order": 2,
+          "priority": "primary",
+          "sourceRegionRef": "checkout-feedback",
+          "content": [
+            {
+              "id": "recording-feedback",
+              "kind": "feedback",
+              "text": "Recording checkout…",
+              "purpose": "Communicate that recording is still pending. Success changes this workspace to saved; failure changes it to failed with both selections retained.",
+              "priority": "primary",
+              "persistence": "state-bound",
+              "taskRefs": [
+                "record-checkout"
+              ],
+              "stateRefs": [
+                "saving"
+              ],
+              "actionRef": "submit-checkout",
+              "feedbackRef": "checkout-recording"
+            }
+          ],
+          "affordances": []
+        },
+        {
+          "id": "commands",
+          "name": "Checkout command",
+          "kind": "commands",
+          "purpose": "Keep the recording command recognizable while suppressing activation.",
+          "order": 3,
+          "priority": "primary",
+          "sourceRegionRef": "checkout-commands",
+          "content": [],
+          "affordances": [
+            {
+              "id": "record-command",
+              "actionRef": "submit-checkout",
+              "label": "Recording checkout…",
+              "status": "accepted",
+              "order": 1,
+              "interaction": "canonical",
+              "transition": {
+                "kind": "none"
+              }
+            }
+          ]
+        }
+      ],
+      "focus": {
+        "entry": "Preserve a coherent visible focus location at the recording command while it is unavailable; suppress activation from every input. Announce progress without repeatedly moving focus. The read-only pairing remains available for inspection.",
+        "orderRefs": [
+          "record-command"
+        ]
+      },
+      "questionRefs": []
+    },
+    {
+      "id": "checkout-saved",
+      "name": "Checkout recorded",
+      "kind": "surface",
+      "purpose": "Keep the exact completed pairing visible and let staff deliberately begin another checkout.",
+      "status": "accepted",
+      "surfaceRef": "checkout-workspace",
+      "state": "saved",
+      "taskRefs": [
+        "record-checkout"
+      ],
+      "patternBasis": {
+        "kind": "ordinary",
+        "rationale": "A stable confirmation with read-only result details and an explicit next-task command is familiar."
+      },
+      "regions": [
+        {
+          "id": "pair",
+          "name": "Completed pairing",
+          "kind": "information",
+          "purpose": "Identify exactly which tool was checked out to which member.",
+          "order": 1,
+          "priority": "primary",
+          "sourceRegionRef": "checkout-pair",
+          "content": [
+            {
+              "id": "pair-values",
+              "kind": "information",
+              "text": "Show the exact completed tool and borrowing member as read-only values, retained from the successful checkout.",
+              "purpose": "Allow staff to verify the completed pairing until they deliberately begin another checkout.",
+              "priority": "primary",
+              "persistence": "state-bound",
+              "taskRefs": [
+                "record-checkout"
+              ],
+              "stateRefs": [
+                "saved"
+              ]
+            }
+          ],
+          "affordances": []
+        },
+        {
+          "id": "status",
+          "name": "Recording status",
+          "kind": "status",
+          "purpose": "Confirm completion.",
+          "order": 2,
+          "priority": "primary",
+          "sourceRegionRef": "checkout-feedback",
+          "content": [
+            {
+              "id": "recorded-feedback",
+              "kind": "feedback",
+              "text": "Checkout recorded.",
+              "purpose": "Confirm that the displayed pairing was recorded successfully.",
+              "priority": "primary",
+              "persistence": "state-bound",
+              "taskRefs": [
+                "record-checkout"
+              ],
+              "stateRefs": [
+                "saved"
+              ],
+              "actionRef": "submit-checkout",
+              "feedbackRef": "checkout-recorded"
+            }
+          ],
+          "affordances": []
+        },
+        {
+          "id": "commands",
+          "name": "Next checkout",
+          "kind": "commands",
+          "purpose": "Require an explicit action before clearing the completed pairing.",
+          "order": 3,
+          "priority": "primary",
+          "sourceRegionRef": "checkout-commands",
+          "content": [],
+          "affordances": [
+            {
+              "id": "another-command",
+              "actionRef": "begin-checkout",
+              "label": "Begin another checkout",
+              "status": "accepted",
+              "order": 1,
+              "interaction": "canonical",
+              "transition": {
+                "kind": "state",
+                "targetState": "empty"
+              }
+            }
+          ]
+        }
+      ],
+      "focus": {
+        "entry": "Announce completion. If focus was on the recording command that has now disappeared, move it to Begin another checkout without activating it. Otherwise preserve the staff member's focus. The completed pairing remains available to read.",
+        "orderRefs": [
+          "another-command"
+        ]
+      },
+      "questionRefs": []
+    },
+    {
+      "id": "checkout-failed",
+      "name": "Checkout recording failed",
+      "kind": "surface",
+      "purpose": "Explain failure while retaining the pairing and exposing retry, correction, and cancellation.",
+      "status": "accepted",
+      "surfaceRef": "checkout-workspace",
+      "state": "failed",
+      "taskRefs": [
+        "record-checkout"
+      ],
+      "patternBasis": {
+        "kind": "ordinary",
+        "rationale": "An inline submission error with retained inputs and retry or correction is a familiar form recovery pattern."
+      },
+      "regions": [
+        {
+          "id": "pair",
+          "name": "Retained pairing",
+          "kind": "selection",
+          "purpose": "Preserve the failed attempt's selections and allow correction.",
+          "order": 1,
+          "priority": "primary",
+          "sourceRegionRef": "checkout-pair",
+          "content": [
+            {
+              "id": "pair-values",
+              "kind": "information",
+              "text": "Keep the submitted tool and borrowing member selected in their original fields.",
+              "purpose": "Let staff retry without re-entering selections or replace only the incorrect value.",
+              "priority": "primary",
+              "persistence": "state-bound",
+              "taskRefs": [
+                "record-checkout"
+              ],
+              "stateRefs": [
+                "failed"
+              ]
+            }
+          ],
+          "affordances": [
+            {
+              "id": "tool-choice",
+              "actionRef": "select-tool",
+              "label": "Available tool",
+              "status": "accepted",
+              "order": 1,
+              "interaction": "canonical",
+              "transition": {
+                "kind": "state",
+                "targetState": "editing"
+              }
+            },
+            {
+              "id": "member-choice",
+              "actionRef": "select-member",
+              "label": "Borrowing member",
+              "status": "accepted",
+              "order": 2,
+              "interaction": "canonical",
+              "transition": {
+                "kind": "state",
+                "targetState": "editing"
+              }
+            }
+          ]
+        },
+        {
+          "id": "status",
+          "name": "Recording status",
+          "kind": "status",
+          "purpose": "Explain the failure and recovery choices.",
+          "order": 2,
+          "priority": "primary",
+          "sourceRegionRef": "checkout-feedback",
+          "content": [
+            {
+              "id": "failed-feedback",
+              "kind": "feedback",
+              "text": "Recording failed. Your selections have been kept. Retry, change either selection, or cancel this checkout.",
+              "purpose": "Make the failed outcome and recovery paths clear.",
+              "priority": "primary",
+              "persistence": "state-bound",
+              "taskRefs": [
+                "record-checkout"
+              ],
+              "stateRefs": [
+                "failed"
+              ],
+              "actionRef": "submit-checkout",
+              "feedbackRef": "checkout-recording-failed"
+            }
+          ],
+          "affordances": []
+        },
+        {
+          "id": "commands",
+          "name": "Checkout recovery",
+          "kind": "commands",
+          "purpose": "Retry the retained pairing or abandon the uncommitted attempt.",
+          "order": 3,
+          "priority": "primary",
+          "sourceRegionRef": "checkout-commands",
+          "content": [],
+          "affordances": [
+            {
+              "id": "record-command",
+              "actionRef": "submit-checkout",
+              "label": "Retry checkout",
+              "status": "accepted",
+              "order": 1,
+              "interaction": "canonical",
+              "transition": {
+                "kind": "state",
+                "targetState": "saving"
+              }
+            },
+            {
+              "id": "cancel-command",
+              "actionRef": "cancel-checkout",
+              "label": "Cancel checkout",
+              "status": "accepted",
+              "order": 2,
+              "interaction": "canonical",
+              "transition": {
+                "kind": "state",
+                "targetState": "empty"
+              }
+            }
+          ]
+        }
+      ],
+      "focus": {
+        "entry": "Announce the failure and retain focus on the recording command, now Retry checkout, if it held focus. Restore ordinary keyboard access to both selectors and recovery commands, with visible focus throughout.",
+        "orderRefs": [
+          "tool-choice",
+          "member-choice",
+          "record-command",
+          "cancel-command"
+        ]
+      },
+      "questionRefs": []
+    }
+  ],
+  "patternResearch": [],
+  "pruningReview": {
+    "status": "accepted",
+    "summary": "One workspace and one goal-oriented use case cover selection, review, recording, failure recovery, and deliberate repetition. Selection controls provide correction, the recording command provides retry, and persistent feedback has one owner.",
+    "taskReviews": [
+      {
+        "id": "checkout-pruning",
+        "taskRef": "record-checkout",
+        "status": "accepted",
+        "canonicalStepRefs": [
+          "choose-tool",
+          "choose-member",
+          "review-and-record"
+        ],
+        "reviewedActionRefs": [
+          "select-tool",
+          "select-member",
+          "submit-checkout",
+          "cancel-checkout",
+          "begin-checkout"
+        ],
+        "decisions": [
+          {
+            "id": "retain-selections",
+            "disposition": "retain",
+            "candidate": "One tool selector and one member selector.",
+            "actionRefs": [
+              "select-tool",
+              "select-member"
+            ],
+            "rationale": "Each selector owns an independently changing required value. The same selectors also support correction.",
+            "result": "Keep two ordinary single-selection controls with keyboard equivalents under their canonical actions."
+          },
+          {
+            "id": "merge-record-and-retry",
+            "disposition": "merge",
+            "candidate": "Separate recording and retry commands.",
+            "actionRefs": [
+              "submit-checkout"
+            ],
+            "rationale": "Both invoke recording for the displayed pairing; failure changes the existing command's context and label.",
+            "result": "Use one recording action with disabled, available, and saving behavior, and a Retry checkout label after failure."
+          },
+          {
+            "id": "contextualize-cancel",
+            "disposition": "contextualize",
+            "candidate": "Persistent cancellation command.",
+            "actionRefs": [
+              "cancel-checkout"
+            ],
+            "rationale": "Cancellation has an outcome only for an uncommitted attempt and is not offered while recording is pending.",
+            "result": "Show Cancel checkout only while editing or after failure."
+          },
+          {
+            "id": "contextualize-another",
+            "disposition": "contextualize",
+            "candidate": "Persistent command to begin another checkout.",
+            "actionRefs": [
+              "begin-checkout"
+            ],
+            "rationale": "This command is needed after success to preserve the completed pairing until deliberate continuation.",
+            "result": "Show Begin another checkout only after recording succeeds."
+          },
+          {
+            "id": "remove-review-mode",
+            "disposition": "remove",
+            "candidate": "Separate review navigation, review dialog, and confirmation step.",
+            "actionRefs": [],
+            "rationale": "Both selected identities can be reviewed together in the same workspace before the explicit recording command.",
+            "result": "Review remains part of the canonical recording step without additional controls or surfaces."
+          },
+          {
+            "id": "remove-duplicate-feedback",
+            "disposition": "remove",
+            "candidate": "Separate progress, success, and error message components or repeated result notifications.",
+            "actionRefs": [],
+            "rationale": "These are successive outcomes of the same recording attempt, while command availability has its own behavior contract.",
+            "result": "Use one status component and retain the recording action's independent saving state."
+          }
+        ]
+      }
+    ]
+  },
+  "openQuestions": []
+}

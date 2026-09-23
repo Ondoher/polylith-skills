@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codex.local/schemas/refine-design/ux-review-0.2.schema.json",
+  "title": "Refine Design UX Review Receipt 0.2",
+  "description": "Closed machine contract for an independent qualitative review of exact product-description and persisted UX content over a bounded scope.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "subject", "verdict", "summary", "coverage", "findings", "researchChecks", "limits"],
+  "properties": {
+    "schemaVersion": {"const": "0.2"},
+    "subject": {"$ref": "#/$defs/subject"},
+    "verdict": {"enum": ["pass", "revise"]},
+    "summary": {"$ref": "#/$defs/nonEmptyText"},
+    "coverage": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {"$ref": "#/$defs/coverage"}
+    },
+    "findings": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/finding"}
+    },
+    "researchChecks": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/researchCheck"}
+    },
+    "limits": {"$ref": "#/$defs/textList"}
+  },
+  "$defs": {
+    "nonEmptyText": {"type": "string", "minLength": 1, "pattern": ".*\\S.*"},
+    "stableId": {"type": "string", "minLength": 1, "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "textList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/nonEmptyText"}
+    },
+    "idList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/stableId"}
+    },
+    "nonEmptyIdList": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/stableId"}
+    },
+    "criterion": {
+      "enum": [
+        "product-intent",
+        "task-coherence",
+        "information-hierarchy",
+        "action-economy-discoverability",
+        "mode-state-clarity",
+        "feedback-cancellation-recovery",
+        "baseline-accessibility",
+        "pattern-research",
+        "ux-ui-boundary",
+        "handoff-traceability"
+      ]
+    },
+    "criteria": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/criterion"}
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["productDescription", "uxArtifact", "scopeRefs"],
+      "properties": {
+        "productDescription": {"$ref": "#/$defs/productDescriptionSubject"},
+        "uxArtifact": {"$ref": "#/$defs/uxArtifactSubject"},
+        "scopeRefs": {"$ref": "#/$defs/nonEmptyIdList"}
+      }
+    },
+    "productDescriptionSubject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "sha256"],
+      "properties": {
+        "id": {"$ref": "#/$defs/stableId"},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "uxArtifactSubject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision", "sha256"],
+      "properties": {
+        "id": {"$ref": "#/$defs/stableId"},
+        "revision": {"$ref": "#/$defs/nonEmptyText"},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["criterion", "result", "evidenceRefs", "note"],
+      "properties": {
+        "criterion": {"$ref": "#/$defs/criterion"},
+        "result": {"enum": ["pass", "finding", "not-applicable"]},
+        "evidenceRefs": {"$ref": "#/$defs/idList"},
+        "note": {"$ref": "#/$defs/nonEmptyText"}
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "severity", "criteria", "recordRefs", "evidence", "consequence", "smallestRemedy", "confidence"],
+      "properties": {
+        "id": {"$ref": "#/$defs/stableId"},
+        "severity": {"enum": ["blocking", "advisory"]},
+        "criteria": {"$ref": "#/$defs/criteria"},
+        "recordRefs": {"$ref": "#/$defs/nonEmptyIdList"},
+        "evidence": {"$ref": "#/$defs/nonEmptyText"},
+        "consequence": {"$ref": "#/$defs/nonEmptyText"},
+        "smallestRemedy": {"$ref": "#/$defs/nonEmptyText"},
+        "confidence": {"enum": ["high", "medium", "low"]}
+      }
+    },
+    "researchCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["researchRef", "result", "sourceRefs", "note"],
+      "properties": {
+        "researchRef": {"$ref": "#/$defs/stableId"},
+        "result": {"enum": ["supported", "unsupported", "unverified", "not-required"]},
+        "sourceRefs": {"$ref": "#/$defs/idList"},
+        "note": {"$ref": "#/$defs/nonEmptyText"}
+      }
+    }
+  },
+  "x-semanticRules": [
+    "subject.productDescription.id must identify the current human-owned product-description source listed by the UX artifact, and its sha256 must match the exact authoritative product-description bytes supplied to validation.",
+    "subject.uxArtifact id and revision must exactly match the validated persisted UX artifact, and its sha256 must match the exact authoritative UX bytes supplied to validation.",
+    "subject.scopeRefs must be a nonempty unique set that exactly matches the parent-requested scope, independent of order, and every reference must exist in the UX artifact.",
+    "coverage must contain exactly one row for each of the ten canonical criteria.",
+    "Every coverage evidenceRef and finding recordRef must reference an existing record in the UX artifact.",
+    "Every coverage row whose result is finding must be covered by at least one blocking finding whose criteria array includes that row's criterion.",
+    "Every criterion named by a blocking finding must have a coverage row whose result is finding.",
+    "Finding identifiers must be unique; every finding criteria array must be nonempty and contain unique canonical criteria.",
+    "researchChecks must contain exactly one row for every patternResearch record relevant to the expanded requested scope and no unrelated rows.",
+    "Every researchCheck sourceRef must identify a source inside its referenced patternResearch record.",
+    "A blocking finding, a finding coverage result, or an unsupported or unverified research check requires verdict revise.",
+    "A pass verdict may contain advisory findings only and does not claim usability validation, accessibility conformance, engineering feasibility, standards compliance, or implementation approval.",
+    "No field outside this schema is permitted; qualitative conclusions remain the reviewer's responsibility rather than an implication of structural validity."
+  ]
+}

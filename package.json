@@ -1,0 +1,11 @@
+{
+  "name": "polylith-skills",
+  "private": true,
+  "scripts": {
+    "test": "npm run test:tooling && npm --prefix skills/refine-design run test:full && npm --prefix skills/generate-prd test",
+    "test:tooling": "node --test --test-isolation=none tests/install-polylith-skills.test.mjs tests/installer-platform.test.mjs skills/create-app/scripts/scripts.spec.mjs skills/initialize-project/scripts/scripts.spec.mjs skills/normalize-standards/scripts/standards-attestation.spec.mjs skills/normalize-standards/scripts/standards-config.spec.mjs skills/reset-design/scripts/reset-design.test.mjs skills/review-standards/scripts/react-event-check.test.mjs skills/review-standards/scripts/review-ledger.test.mjs skills/review-standards/scripts/reviewer-calibration.test.mjs skills/review-standards/scripts/rule-inventory.test.mjs skills/write-standards-guide/scripts/standards-guide.spec.mjs"
+  },
+  "devDependencies": {
+    "@babel/parser": "7.29.8"
+  }
+}

@@ -1,0 +1,896 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codex.local/refine-design/product-artifact-schema-1.0.json",
+  "title": "Product artifact contracts 1.0",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/proposal"
+    },
+    {
+      "$ref": "#/$defs/artifact"
+    },
+    {
+      "$ref": "#/$defs/snapshotEntry"
+    }
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+      "maxLength": 80
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32768,
+      "pattern": "^(?=.*\\S)[^\\u0000-\\u0008\\u000b\\u000c\\u000e-\\u001f\\u007f]+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+[.][0-9]+(?:[.][0-9]+)?(?:-[a-z0-9.-]+)?$",
+      "maxLength": 64
+    },
+    "owner": {
+      "enum": [
+        "product",
+        "ux",
+        "ui",
+        "system-architecture",
+        "data-model",
+        "controller",
+        "technical-documentation",
+        "implementation-planning",
+        "testing",
+        "coding"
+      ]
+    },
+    "consumer": {
+      "enum": [
+        "prd",
+        "ux",
+        "ui",
+        "system-architecture",
+        "data-model",
+        "controller",
+        "technical-documentation",
+        "implementation-planning",
+        "testing",
+        "coding"
+      ]
+    },
+    "idRefs": {
+      "type": "array",
+      "maxItems": 10000,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/id"
+      }
+    },
+    "recordDependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "materialSha256"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "materialSha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "artifactDependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision",
+        "materialSha256"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "materialSha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "contractVersion",
+        "method"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "contractVersion": {
+          "$ref": "#/$defs/version"
+        },
+        "method": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "jsonValue": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "string",
+          "maxLength": 32768,
+          "pattern": "^[^\\u0000-\\u0008\\u000b\\u000c\\u000e-\\u001f\\u007f]*$"
+        },
+        {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        },
+        {
+          "type": "object",
+          "maxProperties": 10000,
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32768,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        }
+      ]
+    },
+    "commonProperties": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "artifactKind": {
+          "$ref": "#/$defs/id"
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "artifactSchemaVersion": {
+          "$ref": "#/$defs/version"
+        },
+        "status": {
+          "enum": [
+            "accepted",
+            "partial",
+            "locked",
+            "superseded"
+          ]
+        },
+        "consumerDomains": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/consumer"
+          }
+        },
+        "scopeRefs": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/idRefs"
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        },
+        "coverageRefs": {
+          "$ref": "#/$defs/idRefs"
+        },
+        "gapRefs": {
+          "$ref": "#/$defs/idRefs"
+        },
+        "lockRefs": {
+          "$ref": "#/$defs/idRefs"
+        },
+        "recordDependencies": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/recordDependency"
+          }
+        },
+        "artifactDependencies": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/artifactDependency"
+          }
+        },
+        "producer": {
+          "$ref": "#/$defs/producer"
+        },
+        "payload": {
+          "$ref": "#/$defs/jsonValue"
+        },
+        "resources": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/resourceDescriptor"
+          }
+        }
+      }
+    },
+    "proposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "kind",
+        "id",
+        "artifactKind",
+        "owner",
+        "artifactSchemaVersion",
+        "status",
+        "consumerDomains",
+        "scopeRefs",
+        "coverageRefs",
+        "gapRefs",
+        "lockRefs",
+        "recordDependencies",
+        "artifactDependencies",
+        "producer",
+        "resources",
+        "payload"
+      ],
+      "properties": {
+        "kind": {
+          "const": "product-artifact-proposal"
+        },
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "artifactKind": {
+          "$ref": "#/$defs/id"
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "artifactSchemaVersion": {
+          "$ref": "#/$defs/version"
+        },
+        "status": {
+          "enum": [
+            "accepted",
+            "partial",
+            "locked",
+            "superseded"
+          ]
+        },
+        "consumerDomains": {
+          "$ref": "#/$defs/commonProperties/properties/consumerDomains"
+        },
+        "scopeRefs": {
+          "$ref": "#/$defs/commonProperties/properties/scopeRefs"
+        },
+        "coverageRefs": {
+          "$ref": "#/$defs/idRefs"
+        },
+        "gapRefs": {
+          "$ref": "#/$defs/idRefs"
+        },
+        "lockRefs": {
+          "$ref": "#/$defs/idRefs"
+        },
+        "recordDependencies": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/recordDependency"
+          }
+        },
+        "artifactDependencies": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/artifactDependency"
+          }
+        },
+        "producer": {
+          "$ref": "#/$defs/producer"
+        },
+        "payload": {
+          "$ref": "#/$defs/jsonValue"
+        },
+        "resources": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/resourceDescriptor"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "partial"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "gapRefs": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "change": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "previousRevision",
+        "previousMaterialSha256"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "added",
+            "unchanged",
+            "modified",
+            "superseded"
+          ]
+        },
+        "previousRevision": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/revision"
+            }
+          ]
+        },
+        "previousMaterialSha256": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/sha256"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "added"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "previousRevision": {
+                "type": "null"
+              },
+              "previousMaterialSha256": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "previousRevision": {
+                "$ref": "#/$defs/revision"
+              },
+              "previousMaterialSha256": {
+                "$ref": "#/$defs/sha256"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "artifactHistory": {
+      "oneOf": [
+        {
+          "properties": {
+            "revision": {
+              "const": 1
+            },
+            "status": {
+              "enum": [
+                "accepted",
+                "partial",
+                "locked"
+              ]
+            },
+            "change": {
+              "properties": {
+                "kind": {
+                  "const": "added"
+                },
+                "previousRevision": {
+                  "type": "null"
+                },
+                "previousMaterialSha256": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "revision": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 9007199254740991
+            },
+            "status": {
+              "enum": [
+                "accepted",
+                "partial",
+                "locked"
+              ]
+            },
+            "change": {
+              "properties": {
+                "kind": {
+                  "const": "unchanged"
+                },
+                "previousRevision": {
+                  "$ref": "#/$defs/revision"
+                },
+                "previousMaterialSha256": {
+                  "$ref": "#/$defs/sha256"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "revision": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 9007199254740991
+            },
+            "status": {
+              "enum": [
+                "accepted",
+                "partial",
+                "locked"
+              ]
+            },
+            "change": {
+              "properties": {
+                "kind": {
+                  "const": "modified"
+                },
+                "previousRevision": {
+                  "$ref": "#/$defs/revision"
+                },
+                "previousMaterialSha256": {
+                  "$ref": "#/$defs/sha256"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "revision": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 9007199254740991
+            },
+            "status": {
+              "const": "superseded"
+            },
+            "change": {
+              "properties": {
+                "kind": {
+                  "const": "superseded"
+                },
+                "previousRevision": {
+                  "$ref": "#/$defs/revision"
+                },
+                "previousMaterialSha256": {
+                  "$ref": "#/$defs/sha256"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "kind",
+        "id",
+        "artifactKind",
+        "owner",
+        "artifactSchemaVersion",
+        "revision",
+        "status",
+        "consumerDomains",
+        "scopeRefs",
+        "coverageRefs",
+        "gapRefs",
+        "lockRefs",
+        "recordDependencies",
+        "artifactDependencies",
+        "producer",
+        "resources",
+        "payload",
+        "materialSha256",
+        "change"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "kind": {
+          "const": "product-artifact"
+        },
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "artifactKind": {
+          "$ref": "#/$defs/id"
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "artifactSchemaVersion": {
+          "$ref": "#/$defs/version"
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "status": {
+          "enum": [
+            "accepted",
+            "partial",
+            "locked",
+            "superseded"
+          ]
+        },
+        "consumerDomains": {
+          "$ref": "#/$defs/commonProperties/properties/consumerDomains"
+        },
+        "scopeRefs": {
+          "$ref": "#/$defs/commonProperties/properties/scopeRefs"
+        },
+        "coverageRefs": {
+          "$ref": "#/$defs/idRefs"
+        },
+        "gapRefs": {
+          "$ref": "#/$defs/idRefs"
+        },
+        "lockRefs": {
+          "$ref": "#/$defs/idRefs"
+        },
+        "recordDependencies": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/recordDependency"
+          }
+        },
+        "artifactDependencies": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/artifactDependency"
+          }
+        },
+        "producer": {
+          "$ref": "#/$defs/producer"
+        },
+        "payload": {
+          "$ref": "#/$defs/jsonValue"
+        },
+        "materialSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "change": {
+          "$ref": "#/$defs/change"
+        },
+        "resources": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/resourceDescriptor"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "partial"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "gapRefs": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/artifactHistory"
+        }
+      ]
+    },
+    "dependencyState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reasons"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "current",
+            "stale",
+            "locked-conflict"
+          ]
+        },
+        "reasons": {
+          "type": "array",
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        }
+      }
+    },
+    "snapshotEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "artifactKind",
+        "owner",
+        "artifactSchemaVersion",
+        "revision",
+        "status",
+        "consumerDomains",
+        "scopeRefs",
+        "coverageRefs",
+        "gapRefs",
+        "lockRefs",
+        "recordDependencies",
+        "artifactDependencies",
+        "producer",
+        "resources",
+        "change",
+        "content",
+        "dependencyState"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "artifactKind": {
+          "$ref": "#/$defs/id"
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "artifactSchemaVersion": {
+          "$ref": "#/$defs/version"
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "status": {
+          "enum": [
+            "accepted",
+            "partial",
+            "locked",
+            "superseded"
+          ]
+        },
+        "consumerDomains": {
+          "$ref": "#/$defs/commonProperties/properties/consumerDomains"
+        },
+        "scopeRefs": {
+          "$ref": "#/$defs/commonProperties/properties/scopeRefs"
+        },
+        "coverageRefs": {
+          "$ref": "#/$defs/idRefs"
+        },
+        "gapRefs": {
+          "$ref": "#/$defs/idRefs"
+        },
+        "lockRefs": {
+          "$ref": "#/$defs/idRefs"
+        },
+        "recordDependencies": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/recordDependency"
+          }
+        },
+        "artifactDependencies": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/artifactDependency"
+          }
+        },
+        "producer": {
+          "$ref": "#/$defs/producer"
+        },
+        "change": {
+          "$ref": "#/$defs/change"
+        },
+        "content": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256",
+            "materialSha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "pattern": "^artifacts/[a-z][a-z0-9-]*/[a-z][a-z0-9-]*/[1-9][0-9]*-[0-9a-f]{64}[.]json$"
+            },
+            "sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "materialSha256": {
+              "$ref": "#/$defs/sha256"
+            }
+          }
+        },
+        "dependencyState": {
+          "$ref": "#/$defs/dependencyState"
+        },
+        "resources": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/resourceDescriptor"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "partial"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "gapRefs": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/artifactHistory"
+        }
+      ]
+    },
+    "resourceDescriptor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "logicalPath",
+        "path",
+        "mediaType",
+        "byteLength",
+        "sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 80
+        },
+        "logicalPath": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^artifact-resources/[a-f0-9]{64}\\.(?:png|jpg|webp|svg)$"
+        },
+        "mediaType": {
+          "enum": [
+            "image/png",
+            "image/jpeg",
+            "image/webp",
+            "image/svg+xml"
+          ]
+        },
+        "byteLength": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20971520
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}

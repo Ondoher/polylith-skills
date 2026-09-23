@@ -1,0 +1,16 @@
+{
+  "name": "refine-design-renderer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "npm run test:fast",
+    "test:fast": "node --test --test-isolation=none scripts/greenfield-contract.test.mjs scripts/product-location.test.mjs scripts/product-model.test.mjs scripts/product-model-finalization.test.mjs scripts/product-model-established-contract.test.mjs scripts/product-schema-contract.test.mjs scripts/product-store-lock.test.mjs scripts/product-artifact-contract.test.mjs scripts/product-artifact-store.test.mjs scripts/product-artifact-finalization.test.mjs scripts/product-context.test.mjs scripts/product-neutrality.test.mjs scripts/product-publication-package.test.mjs scripts/product-publication-proposals.test.mjs",
+    "test:design": "npm run test:fast && node --test --test-isolation=none scripts/design-language-fonts.test.mjs scripts/design-language-extras.test.mjs scripts/design-language-normalization.test.mjs scripts/ux-design.test.mjs scripts/ux-review.test.mjs scripts/ux-schema-contract.test.mjs scripts/ux-review-schema-contract.test.mjs scripts/ux-interaction-wireframe.test.mjs scripts/ui-composition.test.mjs scripts/component-design.test.mjs",
+    "test:renderer": "node --test --test-isolation=none scripts/design-language-html.test.mjs scripts/design-language-mui.test.mjs scripts/design-language-icons.test.mjs scripts/design-language-button.test.mjs scripts/design-language-components.test.mjs scripts/design-language-composite.test.mjs scripts/design-language-identity.test.mjs scripts/design-language-password.test.mjs scripts/design-language-text-field.test.mjs scripts/design-language-select.test.mjs scripts/design-language-layout.test.mjs scripts/design-language-spacing.test.mjs scripts/design-language-verify.test.mjs",
+    "test:design:full": "npm run test:design && npm run test:renderer",
+    "test:full": "npm run test:design:full && node --test --test-isolation=none scripts/component-design-html.test.mjs scripts/consultation-provenance.test.mjs scripts/design-lock.test.mjs scripts/input-security.test.mjs scripts/prd-html.test.mjs scripts/refinement-impact.test.mjs scripts/ui-composition-html.test.mjs scripts/ux-review-evaluation-fixture.test.mjs"
+  },
+  "dependencies": {
+    "fontkit": "2.0.4"
+  }
+}

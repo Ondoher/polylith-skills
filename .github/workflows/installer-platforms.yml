@@ -1,0 +1,33 @@
+name: Installer platforms
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  installer:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-latest
+          - macos-latest
+          - ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate installer syntax
+        run: node --check scripts/install-polylith-skills.mjs
+      - name: Test platform policy
+        run: node tests/installer-platform.test.mjs
+      - name: Test installation lifecycle
+        run: node tests/install-polylith-skills.test.mjs
+

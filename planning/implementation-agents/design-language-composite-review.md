@@ -1,0 +1,11 @@
+# Composite Input Guidance And Feedback Review
+
+Implemented the owner clarification drawn from modmod: shared helper/error content belongs to a logical input, which can contain multiple controls. components.md now names the reusable pattern Input Guidance And Feedback. The schema keeps fieldMessages for compatibility, and both the ordinary field and new composite reference that same record. Child labels remain distinct; group errors do not imply that every child is individually invalid.
+
+Schema 0.12 adds a bounded checkbox-group specimen at 280px and 400px with supplied default/error selections. It lays out seven weekday choices in two or three measured columns, then places one shared message area beneath the entire component. The helper/error retain/replace policy, typography, roles and gap/inset are reused. No per-checkbox helper is introduced. The selected-day/error example is illustrative, not an Alexa feature or validation requirement. Complex custom inputs continue to need their own comps.
+
+ Shared pattern changes propagate to the composite's rendered layout and defaults. Accepted composite consumers protect their pattern/type/color dependencies under the existing explicit approval workflow. Migration preserves earlier assets and document notes; no source or SVG copies are created.
+
+Verification: all 92 renderer tests passed, including four new composite tests covering one message area per state, labeled/selected children, grid reflow, shared policy reuse, default propagation, migration, invalid inputs, ownership and accepted dependency protection. Skill validation, UI-role TOML parsing and local document-link checks passed. Visually inspected both widths in headless Chrome: labels fit, option order is preserved, shared feedback remains below the group, and the error affects group presentation rather than all child checkboxes. No live specialist, VS Code, runtime keyboard or assistive-technology evaluation was performed.
+
+Remaining work includes select/dropdown specimens, richer composite templates, child-specific error rendering, more states and full comps. The renderer demonstrates a shared presentation boundary, not general component composition or validation execution.

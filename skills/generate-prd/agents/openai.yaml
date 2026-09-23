@@ -1,0 +1,6 @@
+interface:
+  display_name: "Generate PRD"
+  short_description: "Publish validated product data as static HTML"
+  default_prompt: "Use $generate-prd to publish the persisted PRD context as deterministic static HTML."
+policy:
+  allow_implicit_invocation: true

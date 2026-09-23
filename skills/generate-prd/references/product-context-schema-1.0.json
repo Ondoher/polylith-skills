@@ -1,0 +1,835 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codex.local/refine-design/product-context-schema-1.0.json",
+  "title": "PRD product context 1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "contextId",
+    "consumer",
+    "sourceSnapshot",
+    "productModel",
+    "scopeRefs",
+    "product",
+    "capabilities",
+    "gaps",
+    "artifacts",
+    "locks",
+    "exclusions",
+    "provenance",
+    "materialSha256"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "contextId": {
+      "type": "string",
+      "pattern": "^prd-context-[0-9a-f]{12}$"
+    },
+    "consumer": {
+      "const": "prd"
+    },
+    "sourceSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision",
+        "sha256"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "productModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision",
+        "status",
+        "sha256",
+        "materialSha256"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "status": {
+          "$ref": "#/$defs/productStatus"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "materialSha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "scopeRefs": {
+      "$ref": "#/$defs/refs"
+    },
+    "product": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "status",
+        "owner",
+        "materialSha256",
+        "purpose",
+        "users"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "$ref": "#/$defs/text"
+        },
+        "status": {
+          "$ref": "#/$defs/productStatus"
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "materialSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "purpose": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "summary",
+            "status",
+            "owner",
+            "materialSha256"
+          ],
+          "properties": {
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "summary": {
+              "$ref": "#/$defs/text"
+            },
+            "status": {
+              "$ref": "#/$defs/recordStatus"
+            },
+            "owner": {
+              "$ref": "#/$defs/owner"
+            },
+            "materialSha256": {
+              "$ref": "#/$defs/sha256"
+            }
+          }
+        },
+        "users": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "name",
+              "description",
+              "status",
+              "owner",
+              "materialSha256"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/id"
+              },
+              "name": {
+                "$ref": "#/$defs/text"
+              },
+              "description": {
+                "$ref": "#/$defs/text"
+              },
+              "status": {
+                "$ref": "#/$defs/recordStatus"
+              },
+              "owner": {
+                "$ref": "#/$defs/owner"
+              },
+              "materialSha256": {
+                "$ref": "#/$defs/sha256"
+              }
+            }
+          }
+        }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "description",
+          "outcome",
+          "status",
+          "owner",
+          "materialSha256"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/id"
+          },
+          "name": {
+            "$ref": "#/$defs/text"
+          },
+          "description": {
+            "$ref": "#/$defs/text"
+          },
+          "outcome": {
+            "$ref": "#/$defs/text"
+          },
+          "status": {
+            "$ref": "#/$defs/recordStatus"
+          },
+          "owner": {
+            "$ref": "#/$defs/owner"
+          },
+          "materialSha256": {
+            "$ref": "#/$defs/sha256"
+          }
+        }
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "question",
+          "impact",
+          "status",
+          "owner",
+          "materialSha256",
+          "affectsRefs"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/id"
+          },
+          "kind": {
+            "enum": [
+              "open-question",
+              "missing-requirement",
+              "ambiguity",
+              "conflict"
+            ]
+          },
+          "question": {
+            "$ref": "#/$defs/text"
+          },
+          "impact": {
+            "$ref": "#/$defs/text"
+          },
+          "status": {
+            "enum": [
+              "unresolved",
+              "locked"
+            ]
+          },
+          "owner": {
+            "$ref": "#/$defs/owner"
+          },
+          "materialSha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "affectsRefs": {
+            "$ref": "#/$defs/refs"
+          }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "$ref": "#/$defs/artifact"
+      }
+    },
+    "locks": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ref",
+          "kind",
+          "owner"
+        ],
+        "properties": {
+          "ref": {
+            "$ref": "#/$defs/id"
+          },
+          "kind": {
+            "enum": [
+              "product",
+              "purpose",
+              "user",
+              "capability",
+              "gap",
+              "artifact"
+            ]
+          },
+          "owner": {
+            "$ref": "#/$defs/owner"
+          }
+        }
+      }
+    },
+    "exclusions": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "artifactKind",
+          "revision",
+          "status",
+          "outcome",
+          "materialSha256",
+          "reasons"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/id"
+          },
+          "artifactKind": {
+            "$ref": "#/$defs/id"
+          },
+          "revision": {
+            "$ref": "#/$defs/revision"
+          },
+          "status": {
+            "$ref": "#/$defs/artifactStatus"
+          },
+          "outcome": {
+            "enum": [
+              "stale",
+              "locked-conflict",
+              "superseded"
+            ]
+          },
+          "materialSha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "reasons": {
+            "type": "array",
+            "maxItems": 10000,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceId",
+        "sourceRevision",
+        "sourceSha256"
+      ],
+      "properties": {
+        "sourceId": {
+          "$ref": "#/$defs/id"
+        },
+        "sourceRevision": {
+          "$ref": "#/$defs/revision"
+        },
+        "sourceSha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "materialSha256": {
+      "$ref": "#/$defs/sha256"
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+      "maxLength": 80
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32768,
+      "pattern": "^[^\\u0000]+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "owner": {
+      "enum": [
+        "product",
+        "ux",
+        "ui",
+        "system-architecture",
+        "data-model",
+        "controller",
+        "technical-documentation",
+        "implementation-planning",
+        "testing",
+        "coding"
+      ]
+    },
+    "consumer": {
+      "enum": [
+        "prd",
+        "ux",
+        "ui",
+        "system-architecture",
+        "data-model",
+        "controller",
+        "technical-documentation",
+        "implementation-planning",
+        "testing",
+        "coding"
+      ]
+    },
+    "productStatus": {
+      "enum": [
+        "accepted",
+        "partial",
+        "locked"
+      ]
+    },
+    "recordStatus": {
+      "enum": [
+        "accepted",
+        "locked"
+      ]
+    },
+    "artifactStatus": {
+      "enum": [
+        "accepted",
+        "partial",
+        "locked",
+        "superseded"
+      ]
+    },
+    "consumableArtifactStatus": {
+      "enum": [
+        "accepted",
+        "partial",
+        "locked"
+      ]
+    },
+    "refs": {
+      "type": "array",
+      "maxItems": 10000,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/id"
+      }
+    },
+    "recordDependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "materialSha256"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "materialSha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "artifactDependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision",
+        "materialSha256"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "materialSha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "artifactHistory": {
+      "oneOf": [
+        {
+          "properties": {
+            "revision": {
+              "const": 1
+            },
+            "status": {
+              "enum": [
+                "accepted",
+                "partial",
+                "locked"
+              ]
+            },
+            "change": {
+              "properties": {
+                "kind": {
+                  "const": "added"
+                },
+                "previousRevision": {
+                  "type": "null"
+                },
+                "previousMaterialSha256": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "revision": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 9007199254740991
+            },
+            "status": {
+              "enum": [
+                "accepted",
+                "partial",
+                "locked"
+              ]
+            },
+            "change": {
+              "properties": {
+                "kind": {
+                  "const": "unchanged"
+                },
+                "previousRevision": {
+                  "$ref": "#/$defs/revision"
+                },
+                "previousMaterialSha256": {
+                  "$ref": "#/$defs/sha256"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "revision": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 9007199254740991
+            },
+            "status": {
+              "enum": [
+                "accepted",
+                "partial",
+                "locked"
+              ]
+            },
+            "change": {
+              "properties": {
+                "kind": {
+                  "const": "modified"
+                },
+                "previousRevision": {
+                  "$ref": "#/$defs/revision"
+                },
+                "previousMaterialSha256": {
+                  "$ref": "#/$defs/sha256"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "revision": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 9007199254740991
+            },
+            "status": {
+              "const": "superseded"
+            },
+            "change": {
+              "properties": {
+                "kind": {
+                  "const": "superseded"
+                },
+                "previousRevision": {
+                  "$ref": "#/$defs/revision"
+                },
+                "previousMaterialSha256": {
+                  "$ref": "#/$defs/sha256"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "kind",
+        "id",
+        "artifactKind",
+        "owner",
+        "artifactSchemaVersion",
+        "revision",
+        "status",
+        "consumerDomains",
+        "scopeRefs",
+        "coverageRefs",
+        "gapRefs",
+        "lockRefs",
+        "recordDependencies",
+        "artifactDependencies",
+        "producer",
+        "resources",
+        "payload",
+        "materialSha256",
+        "change"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "kind": {
+          "const": "product-artifact"
+        },
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "artifactKind": {
+          "$ref": "#/$defs/id"
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "artifactSchemaVersion": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+(?:\\.[0-9]+)?(?:-[a-z0-9.-]+)?$",
+          "maxLength": 64
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "status": {
+          "$ref": "#/$defs/consumableArtifactStatus"
+        },
+        "consumerDomains": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/consumer"
+          }
+        },
+        "scopeRefs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "coverageRefs": {
+          "$ref": "#/$defs/refs"
+        },
+        "gapRefs": {
+          "$ref": "#/$defs/refs"
+        },
+        "lockRefs": {
+          "$ref": "#/$defs/refs"
+        },
+        "recordDependencies": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/recordDependency"
+          }
+        },
+        "artifactDependencies": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/artifactDependency"
+          }
+        },
+        "producer": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "contractVersion",
+            "method"
+          ],
+          "properties": {
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "contractVersion": {
+              "type": "string",
+              "pattern": "^[0-9]+\\.[0-9]+(?:\\.[0-9]+)?(?:-[a-z0-9.-]+)?$",
+              "maxLength": 64
+            },
+            "method": {
+              "$ref": "#/$defs/id"
+            }
+          }
+        },
+        "payload": {},
+        "materialSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "change": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "previousRevision",
+            "previousMaterialSha256"
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "added",
+                "unchanged",
+                "modified",
+                "superseded"
+              ]
+            },
+            "previousRevision": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/$defs/revision"
+                }
+              ]
+            },
+            "previousMaterialSha256": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/$defs/sha256"
+                }
+              ]
+            }
+          }
+        },
+        "resources": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/resourceDescriptor"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/artifactHistory"
+        }
+      ]
+    },
+    "resourceDescriptor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "logicalPath",
+        "path",
+        "mediaType",
+        "byteLength",
+        "sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 80
+        },
+        "logicalPath": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^artifact-resources/[a-f0-9]{64}\\.(?:png|jpg|webp|svg)$"
+        },
+        "mediaType": {
+          "enum": [
+            "image/png",
+            "image/jpeg",
+            "image/webp",
+            "image/svg+xml"
+          ]
+        },
+        "byteLength": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20971520
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}

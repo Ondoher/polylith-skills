@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "0.2",
+  "id": "field-journal-ui",
+  "title": "Field Journal UI",
+  "revision": "1",
+  "status": "proposed",
+  "assessment": {"kind": "parent-assessment", "description": "Parent-authored synthetic fixture for the UI composition contract."},
+  "sources": [
+    {"id": "ux", "kind": "ux", "path": "ux/ux-spec.json", "documentId": "field-journal-ux", "revision": "1"},
+    {"id": "design-language", "kind": "design-language", "path": "design-language/design-language.json", "documentId": "example-design", "revision": 1}
+  ],
+  "uxSource": {"sourceId": "ux", "documentId": "field-journal-ux", "revision": "1"},
+  "designLanguageSource": {"sourceId": "design-language", "documentId": "example-design", "revision": 1},
+  "tokens": [
+    {"id": "space-medium", "kind": "dimension", "value": 16, "unit": "px", "status": "default", "source": {"kind": "ui-default", "description": "Synthetic spacing used by this executable fixture."}}
+  ],
+  "templates": [
+    {
+      "id": "heading", "name": "Heading", "kind": "text", "version": "1", "status": "default", "availability": "available", "interaction": "presentational",
+      "html": {"renderer": "heading", "element": "h1", "className": "ui-heading"},
+      "supportedStates": ["default"], "parameters": [{"id": "text", "required": true}], "sizing": {"width": "fill", "height": "content"}
+    },
+    {
+      "id": "record-list-placeholder", "name": "Record list", "kind": "custom-collection", "version": "1", "status": "unresolved", "availability": "placeholder", "interaction": "behavioral",
+      "html": {"renderer": "placeholder", "element": "section", "className": "ui-placeholder"},
+      "supportedStates": ["available"], "parameters": [], "sizing": {"width": "fill", "height": "fixed", "heightPx": 240}
+    }
+  ],
+  "assets": [],
+  "scenes": [
+    {
+      "id": "records-viewing", "name": "Records viewing", "status": "proposed", "completeness": "partial",
+      "surfaceRef": "records-workspace", "interactionFrameRef": "records-viewing", "deferredInteractionNodeRefs": [],
+      "subject": {"kind": "surface", "ref": "records-workspace"}, "useCaseRefs": ["update-record"], "state": "viewing",
+      "viewport": {"width": 960, "height": 640}, "themeRef": "example-theme",
+      "uxQuestionRefs": [], "uiQuestionRefs": [], "unspecifiedRequirementRefs": ["record-list-template"],
+      "root": {
+        "id": "records-layout", "kind": "region", "uxRegionRef": "viewing-collection",
+        "layout": {
+          "mode": "grid", "columns": [{"unit": "fr", "value": 1}],
+          "rows": [{"unit": "content"}, {"unit": "fr", "value": 1}],
+          "gap": {"tokenRef": "space-medium"}, "padding": {"tokenRef": "space-medium"}, "align": "stretch", "justify": "start"
+        },
+        "children": [
+          {
+            "id": "title", "kind": "component", "templateRef": {"id": "heading", "version": "1"}, "state": "default",
+            "parameters": {"text": "Observation records"},
+            "styleRefs": [{"kind": "typography-role", "id": "heading"}, {"kind": "color-role", "id": "body-text"}],
+            "assetRefs": [], "placement": {"row": 1, "column": 1}
+          },
+          {
+            "id": "record-list-instance", "kind": "component", "uxRef": "record-list",
+            "templateRef": {"id": "record-list-placeholder", "version": "1"}, "state": "available",
+            "interactionNodeRef": "open-record-affordance", "actionRef": "open-record",
+            "parameters": {}, "styleRefs": [], "assetRefs": [], "placement": {"row": 2, "column": 1},
+            "placeholder": {"label": "Record list — placeholder", "description": "Shows available records until its reusable component template is implemented."}
+          }
+        ]
+      }
+    }
+  ],
+  "renderRequests": [
+    {"id": "records-viewing-clean", "sceneRef": "records-viewing", "variant": "clean", "output": "comps/records-viewing.html"},
+    {"id": "records-viewing-annotated", "sceneRef": "records-viewing", "variant": "annotated", "output": "comps/records-viewing-annotated.html"}
+  ],
+  "unspecifiedRequirements": [
+    {"id": "record-list-template", "description": "The reusable record-list template has not been designed.", "owner": "ui", "affects": ["record-list-instance"], "blocks": ["complete scene rendering"], "status": "unresolved"}
+  ],
+  "uxChangeRequests": [],
+  "openQuestions": []
+}
