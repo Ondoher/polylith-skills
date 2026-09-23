@@ -130,7 +130,7 @@ sequenceDiagram
     Review-->>Parent: pass or revise
     alt revise or unavailable independent review
         Parent-->>Owner: Blocking findings or unavailable gate
-        Note over Parent,Review: Revise UX, persist, and use a fresh review; dependent UI stays gated
+        Note over Parent,Review: Revise UX, persist, and use a fresh review. Dependent UI stays gated.
     else validated pass
         Parent->>UI: Reviewed UX and current visual foundations
         UI-->>Parent: Composition proposal and any UX change requests
@@ -231,7 +231,7 @@ sequenceDiagram
     Publisher->>Context: Validate bindings, dependencies, locks, digests, resources
     alt Invalid input or output ownership conflict
         Publisher-->>Parent: Validation error
-        Parent-->>Owner: Explain failure; input corrections return to refinement
+        Parent-->>Owner: Explain failure. Input corrections return to refinement.
     else Valid input and destination
         Publisher->>Output: Write manifest-selected site or compact review
         Publisher->>Output: Write publication-receipt.json
