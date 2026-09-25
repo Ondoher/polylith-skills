@@ -172,7 +172,7 @@ Overlapping concerns intentionally route to multiple lanes. A lane receives only
 
 ## Bootstrap
 
-Standard bootstrap first performs eligible governance synchronization and reloads changed instructions. The explicit instructions-only profile skips synchronization and reviewer startup. After instructions load and all review gates pass, standard bootstrap:
+Standard bootstrap synchronizes an eligible clean governance checkout and reloads changed instructions. With local governance edits, it validates the installed links and uses the local rules without pulling. The explicit instructions-only profile skips synchronization and reviewer startup. After instructions load and all review gates pass, standard bootstrap:
 
 1. Parses every named set and folder assignment.
 2. Builds the reviewer roster from the union of standards actually assigned to repository folders.

@@ -19,7 +19,7 @@ researching, consulting agents, or choosing design defaults.
 
 Repository-backed state lives under product/<name>/. Refinement asks for a
 missing or ambiguous product name before saving. The normal final output is
-product/<name>/prd/; explicit detached exports are supported. Reset preserves
+documents/<name>/prd/; explicit detached exports are supported. Reset preserves
 human inputs and rebuilds derived design through the same location contract.
 
 ## Current artifacts and contracts
@@ -44,11 +44,18 @@ inspection and shared rendering; their location does not make refinement a
 second final publisher. The old instruction to physically move every renderer
 is not a remaining acceptance requirement.
 
-## Unimplemented consumer expansion
+## Consumer expansion
 
-The context resolver currently accepts only prd. Technical documentation,
-implementation planning, system-architecture views, and coder packages remain
-future consumers, even where model metadata can describe those domains.
+The context resolver accepts `prd` and a first pass of `technical`.
+Technical preparation, frozen context production, and linked Markdown publication
+are implemented for a first Alexa trial. Implementation planning,
+system-architecture views, and coder packages remain future consumers.
+The [technical-documentation contract](technical-documentation-contract.md)
+sets the audience, depth, and linked Markdown publication format. The [delivery plan](technical-documentation-delivery-plan.md) stages
+its draft, context, preparation, publication, and focused-document work; the implemented first pass is documented in
+[technical preparation](../../skills/refine-design/references/technical-preparation.md)
+and [generate-technical](../../skills/generate-technical/SKILL.md). Broader tests and
+review remain before routine use.
 
 Before adding each consumer:
 

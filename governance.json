@@ -7,12 +7,15 @@
   },
   "catalog": {
     "skills": [
+      "attach-detail",
       "bootstrap",
       "check-point",
       "create-app",
       "generate-prd",
+      "generate-technical",
       "initialize-project",
       "normalize-standards",
+      "refine-detail",
       "refine-design",
       "reset-design",
       "review-standards",
@@ -30,6 +33,7 @@
       "polylith-architect.toml",
       "privacy-security-reviewer.toml",
       "system-architect.toml",
+      "technical-researcher.toml",
       "ui-designer.toml",
       "ui-reviewer.toml",
       "ux-planner.toml",

@@ -59,7 +59,7 @@ Design defaults such as spacing, typography, density, ordinary component metrics
 The maintained output is a directly openable, server-free site:
 
 ```text
-product/<name>/prd/
+documents/<name>/prd/
   index.html
   design-language/index.html
   components/index.html

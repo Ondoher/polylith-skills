@@ -18,7 +18,7 @@ This topic records the operating design for the dedicated `polylith-skills` repo
 
 The developer has a local checkout of the governance repository and links its skills into the Codex user skill location. Skills and review agents resolve standards only from the local checkout. Authorized governance workflows may modify that checkout and may commit and push after their explicit approval gates.
 
-Standard-profile bootstrap synchronizes the checkout before loading standards when installation state is available. The explicit instructions-only profile skips that update and reviewer startup. Installed workflows provide standards-driven review, normalization, guide generation, canonical-standard promotion, and governance publishing.
+Standard-profile bootstrap synchronizes a clean checkout before loading standards when installation state is available. A dirty checkout uses validated local governance without pulling. The explicit instructions-only profile skips that update and reviewer startup. Installed workflows provide standards-driven review, normalization, guide generation, canonical-standard promotion, and governance publishing.
 
 ### Documentation-only mode
 
@@ -92,7 +92,7 @@ The installer cannot run before Codex can discover it. The minimal portable boot
 5. Invoke the repository-scoped `install-polylith-skills` skill discovered at `.agents/skills/install-polylith-skills`.
 6. Review and approve its proposed user-level links and local installation record.
 7. Restart Codex if the newly installed global skills do not appear.
-8. Invoke `bootstrap`; subsequent bootstraps synchronize the governance checkout automatically.
+8. Invoke `bootstrap`; subsequent bootstraps synchronize the governance checkout when it is clean, and use validated local authority while it has unpublished edits.
 
 Cloning the repository is the only required setup step that cannot be performed by the repository's own installer skill. A later convenience entry point may use `skill-installer` to fetch only `install-polylith-skills`, but it is not required for the core workflow and must ultimately establish the same full local checkout.
 
@@ -139,24 +139,24 @@ The repository-local `uninstall-polylith-skills` skill is the human-facing entry
 
 Existing linked skills need no file copy when their contents change: the links expose the new checkout content immediately after a successful pull. Update reconciliation is required when skills are added, renamed, or removed. It may add links for newly managed skills and may remove obsolete links only when the installation record proves that the installer created them and the engineer approves the disclosed removal. It must never remove an unrecorded same-named skill.
 
-The update operation must use `git pull --ff-only` and the same clean-tree, trusted-remote, configured-branch, failure, and post-update validation rules as bootstrap. If the installer skill itself changed, reread its updated instructions before applying link reconciliation. A failed pull or failed validation leaves the existing links in place and reports that the installation was not updated.
+The update operation must use `git pull --ff-only` and require a clean tree, trusted remote, configured branch, and post-update validation. Bootstrap invokes that update only for a clean checkout. If the installer skill itself changed, reread its updated instructions before applying link reconciliation. A failed pull or failed validation leaves the existing links in place and reports that the installation was not updated.
 
 User-level filesystem changes remain subject to Codex approval and sandbox enforcement. Installation authorizes only the disclosed link and installation-record changes; it does not authorize modifying unrelated Codex configuration, Git commits, pushes, or deletion of the governance checkout.
 
 ## Bootstrap Synchronization
 
-When installed mode is available, governance synchronization is the first state-changing bootstrap action:
+When installed mode is available, governance validation precedes reviewer startup:
 
 1. Resolve the governance checkout from trusted local installation metadata or the linked bootstrap skill.
 2. Verify that the checkout, configured remote, branch, and upstream match governance configuration.
-3. Require a clean working tree.
-4. run `git pull --ff-only` against the configured trusted upstream.
+3. Inspect the working tree. If dirty, run the installer `repair` plan read-only to validate installation ownership, then use local skills and standards without pulling. Report that local authority may be unpublished.
+4. If clean, run the installer `update` plan and apply its trusted `git pull --ff-only` and link reconciliation.
 5. If the checkout changed, reread the updated bootstrap skill, Codex-root `AGENTS.md`, and every applicable standard before continuing.
-6. Compute standards fingerprints and start eligible reviewers only after synchronization succeeds.
+6. Compute standards fingerprints from the actual local files and start eligible reviewers after validation and any eligible synchronization.
 
 Invoking bootstrap explicitly authorizes this narrowly scoped fast-forward pull in the governance repository. It does not authorize merges, rebases, stashing, discarding changes, commits, or pushes.
 
-Bootstrap must not resolve a dirty or diverged checkout automatically. If the checkout is dirty, diverged, misconfigured, or cannot be synchronized, report the precise condition and stop standards-dependent bootstrap and reviewer startup. An explicitly selected instructions-only profile may continue under the repository instructions after reporting that local governance could be stale.
+Bootstrap must not resolve a dirty or diverged checkout automatically. Dirty local work is valid development input: skip synchronization and continue from verified installed links. A misconfigured checkout, invalid required link, or failed planned clean-checkout update blocks standards-dependent reviewer startup. An explicitly selected instructions-only profile continues under loaded repository instructions.
 
 Network access and filesystem permissions remain subject to Codex sandbox and approval enforcement. The bootstrap workflow may request the required approval but must not weaken those controls.
 

@@ -16,7 +16,9 @@ The rebuilt data belongs in repository-root `product/<name>/`. The product name
 must be clear in the human description or supplied by you; otherwise the
 workflow asks. If the description lives in that directory, reset preserves it
 and purges only verified derived children. It never resets the whole shared
-`product/` directory or another product's data.
+`product/` directory or another product's data. Generated publications are inventoried
+separately under `documents/<name>/<doc-name>/`. A requested fresh PRD goes
+to `documents/<name>/prd/`; human-owned documents and other products are preserved.
 
 ## What happens
 

@@ -53,7 +53,7 @@ Also report:
 - semantically incompatible matching additions or replacements;
 - standards prose outside the overlay, broken references, and competing local sources.
 
-Use [the reconciliation template](assets/reconciliation-template.md). Link its governance field to canonical `documentation.md`. Preserve developer decisions unless new evidence materially changes an item, in which case mark it for re-review.
+Use [the reconciliation template](assets/reconciliation-template.md). Link its governance field to canonical `documentation.md`. Preserve developer decisions unless new evidence materially changes an item, in which case mark it for re-review. Format and check every Markdown file this skill edits, including a reconciliation report, manifest, or overlay, with the audited repository's installed Prettier and resolved configuration before completion.
 
 Audit mode never creates or refreshes `normalization.json`.
 

@@ -9,6 +9,7 @@ import {iconGeometry} from './design-language-icons.mjs';
 import {createDefaultReviewConfig, validateReviewConfig} from './design-language-review-pages.mjs';
 import {resolveThemeValue} from './design-language-theme.mjs';
 import {resolvedType} from './design-language-typography.mjs';
+import {resolveButtonColor} from './design-language-button.mjs';
 
 const GENERATOR = 'refine-design:design-language-html:v1';
 const VERSION = 'design-language-html-1.14';
@@ -403,6 +404,9 @@ export function renderDesignLanguageCss(document, layoutInput) {
     const fontFaces = fonts.map((font) => `@font-face { font-family: '${font.family}'; src: url('./fonts/${font.file}') format('truetype'); font-style: normal; font-weight: 100 900; font-display: swap; }`).join('\n');
     const paletteVariables = document.palette.members.map((member) => `    --rd-color-member-${cssIdentifier(member.id)}: ${member.value};`).join('\n');
     const roleVariables = document.theme.roles.map((role) => `    --rd-color-${cssIdentifier(role.id)}: ${roleValue(document, role.id)};`).join('\n');
+    const buttonVariables = Object.entries({contained: document.button.states, ...document.buttonVariants.states})
+        .flatMap(([variant, states]) => Object.entries(states).flatMap(([state, colors]) => Object.entries(colors)
+            .map(([part, expression]) => `    --rd-button-${variant}-${state}-${part}: ${resolveButtonColor(document, expression).value};`))).join('\n');
     const typeVariables = document.typography.roles.map((role) => {
         const type = resolvedType(document, role);
         const font = fontAsset(type.fontId);
@@ -419,6 +423,7 @@ ${fontFaces}
 :root {
 ${paletteVariables}
 ${roleVariables}
+${buttonVariables}
 ${typeVariables}
     --rd-review-canvas: #ededf5;
     --rd-review-card: #ffffff;
@@ -568,10 +573,10 @@ main { background: var(--rd-color-surface); }
 .rd-demo-control-anchor { position: relative; display: inline-flex; }
 .rd-demo-button, .rd-demo-icon-button { min-height: var(--rd-control-button-height); border: 1px solid transparent; border-radius: var(--rd-control-button-radius); font: inherit; font-weight: 500; }
 .rd-demo-button { padding: 0 var(--rd-control-button-padding-x); }
-.rd-demo-button--contained { background: var(--rd-color-primary-action); color: var(--rd-color-on-primary); }
-.rd-demo-button--outlined { border-color: var(--rd-color-primary-action); background: var(--rd-color-surface); color: var(--rd-color-primary-action); }
-.rd-demo-button--text { background: transparent; color: var(--rd-color-primary-action); }
-.rd-demo-icon-button { display: inline-grid; place-items: center; width: var(--rd-control-button-height); padding: 0; background: transparent; color: var(--rd-color-primary-action); }
+.rd-demo-button--contained { background: var(--rd-button-contained-default-background); color: var(--rd-button-contained-default-foreground); border-color: var(--rd-button-contained-default-border); }
+.rd-demo-button--outlined { background: var(--rd-button-outlined-default-background); color: var(--rd-button-outlined-default-foreground); border-color: var(--rd-button-outlined-default-border); }
+.rd-demo-button--text { background: var(--rd-button-text-default-background); color: var(--rd-button-text-default-foreground); border-color: var(--rd-button-text-default-border); }
+.rd-demo-icon-button { display: inline-grid; place-items: center; width: var(--rd-control-button-height); padding: 0; background: var(--rd-button-icon-default-background); color: var(--rd-button-icon-default-foreground); border-color: var(--rd-button-icon-default-border); }
 .rd-control-icon { width: 24px; height: 24px; fill: currentColor; }
 .rd-control-icon--missing { display: inline-grid; place-items: center; }
 .rd-demo-field-group { display: grid; gap: var(--rd-layout-helper-gap); min-width: 0; }

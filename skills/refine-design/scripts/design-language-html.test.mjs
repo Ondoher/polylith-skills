@@ -5,7 +5,8 @@ import path from 'node:path';
 import test from 'node:test';
 
 import {applyProposal} from './design-language.mjs';
-import {publishDesignLanguageHtml, renderDesignLanguageHtml} from './design-language-html.mjs';
+import {publishDesignLanguageHtml, renderDesignLanguageHtml, renderDesignLanguageCss} from './design-language-html.mjs';
+import {resolveThemeValue} from './design-language-theme.mjs';
 
 const proposalFile = new URL('../references/extras-proposal.json', import.meta.url);
 const fixture = () => JSON.parse(fs.readFileSync(proposalFile, 'utf8'));
@@ -25,6 +26,21 @@ function savedSource(base) {
     fs.writeFileSync(path.join(path.dirname(source), 'review-layout.json'), `${JSON.stringify(layoutFixture(), null, 2)}\n`);
     return source;
 }
+
+test('renders supplied button colors instead of imposing an interaction tint or label role', () => {
+    const base = folder();
+    const document = JSON.parse(fs.readFileSync(savedSource(base), 'utf8'));
+    document.button.states.hover.background = {kind: 'role', role: 'surface'};
+    document.button.states.pressed.foreground = {kind: 'role', role: 'body-text'};
+    document.buttonVariants.states.outlined.default.foreground = {kind: 'role', role: 'body-text'};
+    const css = renderDesignLanguageCss(document, layoutFixture());
+    const surface = resolveThemeValue(document, 'role:surface').value;
+    const body = resolveThemeValue(document, 'role:body-text').value;
+    assert.ok(css.includes(`--rd-button-contained-hover-background: ${surface};`));
+    assert.ok(css.includes(`--rd-button-contained-pressed-foreground: ${body};`));
+    assert.ok(css.includes(`--rd-button-outlined-default-foreground: ${body};`));
+    assert.match(css, /\.rd-demo-button--outlined \{[^}]*color: var\(--rd-button-outlined-default-foreground\)/);
+});
 
 test('publishes a deterministic standalone design-language page with local assets', () => {
     const base = folder();

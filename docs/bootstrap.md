@@ -14,7 +14,7 @@ The skill reads Codex-home and repository-root `AGENTS.md`, including documents 
 
 ## Standard profile
 
-When installation state exists, bootstrap first synchronizes the governance checkout through the installer. This requires the trusted remote and branch and a clean working tree, and uses a fast-forward-only pull. A blocked update stops standards-dependent startup. Bootstrap does not stash changes or resolve divergence.
+When installation state exists, bootstrap validates the governance checkout and its installed links. With a clean checkout, it synchronizes through the installer using a fast-forward-only pull. With local edits, it skips the pull and uses the current local skills and standards for reviewer startup, reporting that they may differ from the published branch. Invalid checkout identity or required links still block startup. Bootstrap does not stash changes or resolve divergence.
 
 It then delegates reviewer startup to `review-standards`. Startup depends on valid reviewer infrastructure and calibration, completed initial standards normalization, and valid current folder mappings. Eligible reviewers load their context before bootstrap reports readiness. Bootstrap also refreshes the generated `STANDARDS.md`.
 

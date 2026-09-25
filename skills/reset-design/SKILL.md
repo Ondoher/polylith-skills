@@ -25,7 +25,11 @@ data returns to this named root. Preserve an existing human description at its
 source path. If it or preserved owner resources live inside the named root,
 purge only inventoried derived files/subdirectories, never that containing root
 or the shared repository `product/` directory. Location policy does not authorize
-an implicit migration or deletion of ambiguous prior data.
+an implicit migration or deletion of ambiguous prior data. Generated publications
+use `<repository-root>/documents/<name>/<doc-name>/`; a requested PRD is
+installed at `documents/<name>/prd/`. Inventory owned generated document
+outputs separately from the data store. Preserve human-owned documentation and
+never purge the shared `documentation/` directory.
 
 ## Sole Product Inputs
 
@@ -42,7 +46,7 @@ Do not migrate, re-encode, imitate, compare against, or use an old artifact as a
 
 An item under any prior derived root is ineligible as a preserved resource, even when the description or current request links to it. Using such an item requires ordinary refinement rather than a clean reset. Record the path and starting hash of every allowed resource.
 
-Text already present in the human-owned product description remains input, even if it originated in an earlier design discussion. Plain Markdown has no reliable authorship provenance. Report this limitation; never guess which sentences to remove. A fresh refinement may write a newly organized product description, but its source snapshot must retain the exact starting bytes and the receipt records both hashes.
+Text already present in the human-owned product description remains input, even if it originated in an earlier design discussion. Plain Markdown has no reliable authorship provenance. Report this limitation; never guess which sentences to remove. A fresh refinement may write a newly organized product description; format and check that final Markdown with the working repository's installed Prettier before recording its final hash. The reset source snapshot must retain the exact starting bytes and the receipt records both hashes.
 
 ## Clean Run
 

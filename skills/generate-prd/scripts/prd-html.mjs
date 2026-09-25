@@ -234,7 +234,7 @@ function renderComponentCatalog(document, hasComps = false, hasComponentComps = 
 <body>
     <!-- ${TEXT_MARKER} -->
     <a class="rd-skip-link" href="#main-content">Skip to content</a>
-    <header class="rd-page-header"><div><p class="rd-eyebrow">Component reference</p><h1>Standard component states</h1><p class="rd-lede">Reusable visual and accessibility treatments for ordinary application components. Product-specific interactions receive separate comps.</p></div><dl class="rd-source-summary"><div><dt>Revision</dt><dd>${document.revision}</dd></div><div><dt>Components</dt><dd>7</dd></div><div><dt>Theme</dt><dd>${escapeHtml(document.theme.name)}</dd></div></dl></header>
+    <header class="rd-page-header"><div><p class="rd-eyebrow">Component reference</p><h1>Standard component states</h1><p class="rd-lede">Reusable visual and interaction states for ordinary application components. Product-specific interactions receive separate comps.</p></div><dl class="rd-source-summary"><div><dt>Revision</dt><dd>${document.revision}</dd></div><div><dt>Components</dt><dd>7</dd></div><div><dt>Theme</dt><dd>${escapeHtml(document.theme.name)}</dd></div></dl></header>
     ${renderSiteNavigation('components', '../', hasComps, hasComponentComps)}
     <nav class="rd-section-nav" aria-label="Component sections"><a href="#buttons">Buttons</a><a href="#fields">Fields</a><a href="#choices">Choices</a><a href="#selects">Selects</a><a href="#embedded-fields">Embedded fields</a></nav>
     <main id="main-content" class="prd-main prd-catalog">${renderButtonCatalog(document)}${renderFieldCatalog(document)}${renderChoiceCatalog(document)}${renderSelectCatalog(document)}${renderEmbeddedFieldCatalog(document)}</main>
@@ -296,15 +296,20 @@ function renderProductCss() {
 .prd-state figcaption span { color: var(--rd-review-label); font-size: 12px; text-transform: capitalize; }
 .prd-state-body { display: grid; align-content: center; min-height: 140px; padding: var(--rd-space-4); border-radius: var(--rd-radius-small); background: var(--rd-review-soft-alt); }
 .prd-button { display: inline-flex; align-items: center; justify-content: center; gap: var(--rd-space-2); width: max-content; min-width: 128px; min-height: var(--rd-control-button-height); padding: 0 var(--rd-control-button-padding-x); border: 1px solid transparent; border-radius: var(--rd-control-button-radius); font: inherit; font-weight: 500; cursor: default; }
-.prd-button--contained { background: var(--rd-color-primary-action); color: var(--rd-color-on-primary); }
-.prd-button--outlined { border-color: color-mix(in srgb, var(--rd-color-primary-action) 50%, var(--rd-color-surface)); background: var(--rd-color-surface); color: var(--rd-color-primary-action); }
-.prd-button--text, .prd-button--icon { background: transparent; color: var(--rd-color-primary-action); }
+.prd-button--contained { background: var(--rd-button-contained-default-background); color: var(--rd-button-contained-default-foreground); border-color: var(--rd-button-contained-default-border); }
+.prd-button--outlined { background: var(--rd-button-outlined-default-background); color: var(--rd-button-outlined-default-foreground); border-color: var(--rd-button-outlined-default-border); }
+.prd-button--text { background: var(--rd-button-text-default-background); color: var(--rd-button-text-default-foreground); border-color: var(--rd-button-text-default-border); }
+.prd-button--icon { background: var(--rd-button-icon-default-background); color: var(--rd-button-icon-default-foreground); border-color: var(--rd-button-icon-default-border); }
 .prd-button--icon { min-width: var(--rd-control-button-height); padding: 0; }
 .prd-button--icon svg, .prd-embedded-field button svg, .prd-rule-list svg { width: 20px; height: 20px; fill: currentColor; }
-.prd-button.prd-is-hover { background: color-mix(in srgb, var(--rd-color-primary-action) 70%, var(--rd-color-state-overlay)); }
-.prd-button.prd-is-pressed { background: color-mix(in srgb, var(--rd-color-primary-action) 60%, var(--rd-color-state-overlay)); }
+.prd-button--contained.prd-is-default { background: var(--rd-button-contained-default-background); color: var(--rd-button-contained-default-foreground); border-color: var(--rd-button-contained-default-border); }
+.prd-button--contained.prd-is-hover { background: var(--rd-button-contained-hover-background); color: var(--rd-button-contained-hover-foreground); border-color: var(--rd-button-contained-hover-border); }
+.prd-button--contained.prd-is-pressed { background: var(--rd-button-contained-pressed-background); color: var(--rd-button-contained-pressed-foreground); border-color: var(--rd-button-contained-pressed-border); }
+.prd-button--contained.prd-is-focus { background: var(--rd-button-contained-focus-background); color: var(--rd-button-contained-focus-foreground); border-color: var(--rd-button-contained-focus-border); }
+.prd-button--contained.prd-is-disabled { background: var(--rd-button-contained-disabled-background); color: var(--rd-button-contained-disabled-foreground); border-color: var(--rd-button-contained-disabled-border); }
+.prd-button--contained.prd-is-loading { background: var(--rd-button-contained-loading-background); color: var(--rd-button-contained-loading-foreground); border-color: var(--rd-button-contained-loading-border); }
 .prd-button.prd-is-focus { outline: 2px solid var(--rd-color-primary-action); outline-offset: 2px; }
-.prd-button:disabled { background: var(--rd-color-disabled-background); color: var(--rd-review-muted); }
+
 .prd-spinner { width: 16px; height: 16px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; }
 .prd-field, .prd-embedded-field { position: relative; display: grid; gap: var(--rd-layout-helper-gap); }
 .prd-field label, .prd-embedded-field label, .prd-floating-label { position: absolute; z-index: 1; top: 0; left: 10px; padding: 0 4px; background: var(--rd-color-surface); color: var(--rd-review-label); font-size: var(--rd-type-field-label-size); line-height: var(--rd-type-field-label-line); transform: translateY(-50%); }

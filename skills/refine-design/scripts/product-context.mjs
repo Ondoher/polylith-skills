@@ -1,4 +1,6 @@
+import {resolveTechnicalContext} from './technical-context.mjs';
 import path from 'node:path';
+import fs from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {verifyArtifactResourceFiles, publishArtifactResourceFiles} from './product-publication-package.mjs';
 
@@ -27,8 +29,8 @@ function normalizedScope(scope) {
   return unique((scope ?? []).map((item, index) => stableId(item, `scope[${index}]`)), 'scope');
 }
 
-function activeForPrd(record) {
-  return record.status !== 'superseded' && record.consumerDomains.includes('prd');
+function activeForAudience(record, audience = 'prd') {
+  return record.status !== 'superseded' && record.consumerDomains.includes(audience);
 }
 
 function recordIndex(chain) {
@@ -44,14 +46,14 @@ function recordIndex(chain) {
   return records;
 }
 
-function selectRecords(model, requestedScope, requiredRefs = []) {
-  if (!model.consumerDomains.includes('prd') || !activeForPrd(model.purpose)) fail('Product model and purpose must be available to prd');
+function selectRecords(model, requestedScope, requiredRefs = [], audience = 'prd') {
+  if (!model.consumerDomains.includes(audience) || !activeForAudience(model.purpose, audience)) fail(`Product model and purpose must be available to ${audience}`);
   const externalById = new Map([
     [model.id, {type: 'product', record: model}],
     [model.purpose.id, {type: 'purpose', record: model.purpose}],
-    ...model.users.filter(activeForPrd).map(record => [record.id, {type: 'user', record}]),
-    ...model.capabilities.filter(activeForPrd).map(record => [record.id, {type: 'capability', record}]),
-    ...model.gaps.filter(activeForPrd).map(record => [record.id, {type: 'gap', record}]),
+    ...model.users.filter(record => activeForAudience(record, audience)).map(record => [record.id, {type: 'user', record}]),
+    ...model.capabilities.filter(record => activeForAudience(record, audience)).map(record => [record.id, {type: 'capability', record}]),
+    ...model.gaps.filter(record => activeForAudience(record, audience)).map(record => [record.id, {type: 'gap', record}]),
   ]);
   for (const ref of [...requestedScope, ...requiredRefs]) {
     if (!externalById.has(ref)) fail(`PRD selection references unavailable record ${ref}`);
@@ -60,9 +62,9 @@ function selectRecords(model, requestedScope, requiredRefs = []) {
     ? new Set([
       model.id,
       model.purpose.id,
-      ...model.users.filter(activeForPrd).map(record => record.id),
-      ...model.capabilities.filter(activeForPrd).map(record => record.id),
-      ...model.gaps.filter(activeForPrd).map(record => record.id),
+      ...model.users.filter(record => activeForAudience(record, audience)).map(record => record.id),
+      ...model.capabilities.filter(record => activeForAudience(record, audience)).map(record => record.id),
+      ...model.gaps.filter(record => activeForAudience(record, audience)).map(record => record.id),
       ...requiredRefs,
     ])
     : new Set([model.id, model.purpose.id, ...requestedScope, ...requiredRefs]);
@@ -88,7 +90,7 @@ function selectRecords(model, requestedScope, requiredRefs = []) {
             changed = true;
           }
         }
-      } else if (activeForPrd(gap) && gap.capabilityRefs.some(ref => selected.has(ref))) {
+      } else if (activeForAudience(gap, audience) && gap.capabilityRefs.some(ref => selected.has(ref))) {
         selected.add(gap.id);
         changed = true;
       }
@@ -96,9 +98,9 @@ function selectRecords(model, requestedScope, requiredRefs = []) {
   }
   return {
     selected,
-    users: model.users.filter(record => selected.has(record.id) && activeForPrd(record)),
-    capabilities: model.capabilities.filter(record => selected.has(record.id) && activeForPrd(record)),
-    gaps: model.gaps.filter(record => selected.has(record.id) && activeForPrd(record)),
+    users: model.users.filter(record => selected.has(record.id) && activeForAudience(record, audience)),
+    capabilities: model.capabilities.filter(record => selected.has(record.id) && activeForAudience(record, audience)),
+    gaps: model.gaps.filter(record => selected.has(record.id) && activeForAudience(record, audience)),
   };
 }
 
@@ -134,7 +136,7 @@ function compareCodePoints(left, right) {
   return left < right ? -1 : left > right ? 1 : 0;
 }
 
-function selectArtifacts(chain, initialSelection, scoped) {
+function selectArtifacts(chain, initialSelection, scoped, audience = 'prd') {
   const inventory = artifactInventory(chain);
   const selected = new Map();
   const excluded = new Map();
@@ -156,7 +158,8 @@ function selectArtifacts(chain, initialSelection, scoped) {
   };
 
   const roots = [...inventory.values()].filter(({artifact}) => (
-    artifact.consumerDomains.includes('prd')
+    artifact.consumerDomains.includes(audience)
+    && (audience === 'prd' || artifact.artifactKind === 'technical-design')
     && (!scoped || (
       artifactTouchesScope(artifact, initialSelection.selected)
       && artifactClosureFitsScope(inventory.get(artifact.id))
@@ -188,7 +191,7 @@ function selectArtifacts(chain, initialSelection, scoped) {
     for (const dependency of artifact.artifactDependencies) {
       const target = inventory.get(dependency.id);
       if (!target) fail(`PRD artifact ${artifact.id} depends on missing artifact ${dependency.id}`);
-      if (!target.artifact.consumerDomains.includes('prd')) {
+      if (!target.artifact.consumerDomains.includes(audience)) {
         fail(`PRD artifact ${artifact.id} depends on non-PRD artifact ${dependency.id}`);
       }
       if (target.artifact.revision !== dependency.revision || target.artifact.materialSha256 !== dependency.materialSha256) {
@@ -235,16 +238,17 @@ function buildLocks(model, selection, artifacts) {
   return locks.sort((left, right) => compareCodePoints(left.ref, right.ref) || compareCodePoints(left.kind, right.kind));
 }
 
-function buildContext(chain, requestedScope) {
+export function buildContext(chain, requestedScope, consumer = 'prd') {
+  const audience = consumer === 'technical' ? 'technical-documentation' : 'prd';
   const scopeRefs = normalizedScope(requestedScope);
-  const initial = selectRecords(chain.model, scopeRefs);
-  const artifactSelection = selectArtifacts(chain, initial, scopeRefs.length > 0);
-  const selection = selectRecords(chain.model, scopeRefs, selectedRecordRefs(artifactSelection.artifacts));
+  const initial = selectRecords(chain.model, scopeRefs, [], audience);
+  const artifactSelection = selectArtifacts(chain, initial, scopeRefs.length > 0, audience);
+  const selection = selectRecords(chain.model, scopeRefs, selectedRecordRefs(artifactSelection.artifacts), audience);
   const records = recordIndex(chain);
   const context = {
     schemaVersion: '1.0',
     contextId: 'pending',
-    consumer: 'prd',
+    consumer,
     sourceSnapshot: {
       id: chain.snapshot.id,
       revision: chain.snapshot.revision,
@@ -310,11 +314,12 @@ function buildContext(chain, requestedScope) {
     materialSha256: 'pending',
   };
   context.materialSha256 = calculateProductContextMaterialSha256(context);
-  context.contextId = `prd-context-${context.materialSha256.slice(0, 12)}`;
+  context.contextId = `${consumer}-context-${context.materialSha256.slice(0, 12)}`;
   return context;
 }
 
-export function resolveProductContext({currentPath, consumer = 'prd', scope = []}) {
+export function resolveProductContext({currentPath, consumer = 'prd', scope = [], repositoryRoot}) {
+  if (consumer === 'technical') return resolveTechnicalContext({currentPath, scope, repositoryRoot});
   if (consumer !== 'prd') fail(`Unsupported product-context consumer ${consumer}`);
   const chain = loadCurrentProduct(currentPath);
   const context = validateProductContext(buildContext(chain, scope));
@@ -340,7 +345,7 @@ export function resolveProductContext({currentPath, consumer = 'prd', scope = []
 
 function parseCli(arguments_) {
   const values = {};
-  const names = new Set(['--current', '--consumer', '--scope']);
+  const names = new Set(['--current', '--consumer', '--scope', '--repo']);
   for (let index = 0; index < arguments_.length; index += 2) {
     const flag = arguments_[index];
     const value = arguments_[index + 1];
@@ -353,13 +358,14 @@ function parseCli(arguments_) {
   return values;
 }
 
-const isMain = process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
+const isMain = process.argv[1] && fs.realpathSync(fileURLToPath(import.meta.url)) === fs.realpathSync(path.resolve(process.argv[1]));
 if (isMain) {
   try {
     const options = parseCli(process.argv.slice(2));
     const result = resolveProductContext({
       currentPath: options['--current'],
       consumer: options['--consumer'] ?? 'prd',
+      repositoryRoot: options['--repo'],
       scope: options['--scope'] ? options['--scope'].split(',').filter(Boolean) : [],
     });
     process.stdout.write(stableJson({

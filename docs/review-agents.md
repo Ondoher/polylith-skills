@@ -27,6 +27,8 @@ The toolkit also contains planning and assessment specialists, including `ux-rev
 
 Installing the toolkit makes agent definitions available. Installation alone does not start a review session.
 
+The installed `documentation` junction or symbolic link may point outside the Codex home to the governance checkout. Context fingerprints follow that link and hash the canonical files within its physical documentation directory. Links inside that directory cannot escape it; repository inputs remain confined to their own repository.
+
 | Event | What happens |
 | --- | --- |
 | Standard `$bootstrap` | Loads instructions, synchronizes installed governance when applicable, checks eligibility, and initializes reviewers from the union of standards used by folder assignments. This establishes readiness, not repository-wide compliance. |
@@ -116,7 +118,7 @@ Approve proposed dependency or configuration changes before they are applied. Fo
 Use $bootstrap for this repository.
 ```
 
-Standard bootstrap may update the governance checkout; a dirty checkout or failed trusted fast-forward stops that startup. It does not stash or discard changes. Other startup failures are reported with recovery steps, and no reviewer starts while a startup gate fails.
+Standard bootstrap updates a clean governance checkout when the trusted fast-forward succeeds. With local governance edits, it skips the pull and starts reviewers from the local files after validating the checkout and required links. A failed clean-checkout update or invalid installation still blocks startup. It does not stash or discard changes. Other startup failures are reported with recovery steps, and no reviewer starts while a startup gate fails.
 
 Before a task, ask the assistant to capture the review baseline. After implementation:
 

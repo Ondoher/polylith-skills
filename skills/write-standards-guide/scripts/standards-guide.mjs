@@ -5,6 +5,7 @@ import {readFile, realpath, stat, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import {fileURLToPath} from 'node:url';
+import {formatRepositoryMarkdown} from '../../markdown-format.mjs';
 import {parseManifest, parseOverlay} from '../../normalize-standards/scripts/standards-config.mjs';
 import {publicationTarget, standardUrl} from './publication-links.mjs';
 
@@ -226,7 +227,7 @@ export async function buildGuide(args) {
 	while (lines.at(-1) === '') lines.pop();
 	return {
 		output,
-		content: `${lines.join('\n')}\n`,
+		content: formatRepositoryMarkdown(repo, output, `${lines.join('\n')}\n`),
 		sourceFingerprint,
 		normalization: normalization.normalizedAt,
 		repositoryConfigurationFingerprint,

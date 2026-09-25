@@ -14,7 +14,8 @@ Supply the actual context path and destination. When moving context between loca
 
 Refinement saves repository-backed contexts under
 `product/<name>/contexts/prd/<digest>/context.json`. The normal publication
-destination is `product/<name>/prd/`; an explicitly requested export may go
+destination is `documents/<name>/prd/` (for example, `documents/alexa/prd/`),
+following the shared `documents/<product>/<doc-name>/` convention; an explicitly requested export may go
 elsewhere. The publisher consumes the existing context and does not ask for or
 infer a new product name.
 

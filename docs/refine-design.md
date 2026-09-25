@@ -29,8 +29,9 @@ An existing description stays at its supplied location. Newly created
 descriptions normally live at `product/<name>/product-description.md`.
 
 Models, snapshots, contexts, UX, visual foundations, UI, component designs,
-research, and review records share that named root. The default generated PRD
-is `product/<name>/prd/`. Existing data elsewhere is not silently moved or reset.
+research, and review records share that named root. Generated human-facing documents use
+repository-root `documents/<name>/<doc-name>/`. The default generated PRD
+is `documents/<name>/prd/`. Existing data elsewhere is not silently moved or reset.
 
 For the example above, an existing description can remain at
 `documentation/product-description.md` while the generated data uses:
@@ -50,7 +51,8 @@ product/Field Journal/
   design-language/review-layout.json
   ui/ui-spec.json
   ui/components/<component-id>.json
-  prd/
+
+documents/Field Journal/prd/  # Published HTML, comps, and assets
 ```
 
 Optional files appear only when that work is needed. The immutable copy under
@@ -73,7 +75,7 @@ for exact naming and ownership rules.
 
 ## What happens
 
-The human-owned product description is the root input. Refinement interprets its meaning into a structured product model and records exact source bytes, stable record identities, revisions, and immutable snapshots. Updates preserve continued meaning and explicitly account for replaced or removed claims.
+The human-owned product description is the root input. Refinement formats and checks edited Markdown with the working repository's installed Prettier before recording its final bytes. It then interprets the description's meaning into a structured product model and records exact source bytes, stable record identities, revisions, and immutable snapshots. Updates preserve continued meaning and explicitly account for replaced or removed claims.
 
 Depending on scope, specialist work produces UX interaction design and review, visual foundations, UI compositions, component designs, or engineering assessments. Artifacts record dependencies on product decisions and other artifacts. Changed inputs can make affected work stale while leaving unrelated decisions usable.
 
@@ -83,11 +85,29 @@ Concrete specialist choices incorporated by the workflow become accepted working
 
 The workflow persists product and scoped design artifacts and can produce a self-contained PRD context package with validated data and declared resources. `generate-prd` consumes that package without reinterpreting your Markdown.
 
+For a technical-documentation request, refinement instead starts from the verified
+product snapshot and inspected repository source. A bounded system-architect
+assessment is required; the parent reconciles it with the product authority,
+preserves its report and a decision receipt, then commits technical records and
+freezes a `technical` context. Product-visible open questions remain gaps. The
+independent [generate-technical publisher](generate-technical.md) consumes that
+context to produce linked Markdown under `documents/<name>/technical/`.
+This path does not publish a PRD or change the human-owned description.
+An authored technical paper is declared with a labeled relative link in the
+description. Refinement records that line as a reference rather than a product
+requirement and binds the current paper bytes for technical context. Use
+[refine-detail](refine-detail.md) for the paper's research and revision; selected
+technical findings need their own reconciled evidence before governing the guide.
+Paper questions that remain open become the same product, technical, or evidence
+gaps used for questions from the primary description. The publisher shows those
+gaps in the common decisions and handoff pages and maps paper-backed records
+on a dedicated focused-paper page.
+
 Use the context beneath `product/<name>/contexts/prd/<context-hash>/` to publish
-the default review site at `product/<name>/prd/`. If you copy the context for an
+the default review site at `documents/<name>/prd/`. If you copy the context for an
 export, include its sibling `artifact-resources/` directory when present. An
 explicit export destination does not change the canonical data location.
 
 Refinement is planning work. It does not implement application code or publish the final PRD. It accepts current artifact schemas; migration of older artifacts is a separately authorized task. Use ordinary refinement for incremental changes and `reset-design` only to intentionally discard prior derived decisions.
 
-[Operational instructions](../skills/refine-design/SKILL.md) · [Publish a PRD](generate-prd.md) · [Reset a design](reset-design.md) · [All skills](../README.md)
+[Operational instructions](../skills/refine-design/SKILL.md) · [Publish a PRD](generate-prd.md) · [Publish a technical guide](generate-technical.md) · [Reset a design](reset-design.md) · [All skills](../README.md)

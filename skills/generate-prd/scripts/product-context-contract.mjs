@@ -596,12 +596,17 @@ function validateMaterialRecord(record, label, keys, statuses) {
  * @throws {Error} When any shape, value, reference, digest, or size invariant fails.
  */
 export function validateProductContext(context) {
+  return validateConsumerContext(context);
+}
+
+/** Shared envelope validation; technical payload validation is owned by its consumer. */
+export function validateConsumerContext(context, {consumer = 'prd', audience = 'prd', extraKeys = []} = {}) {
   object(context, 'context', [
     'schemaVersion', 'contextId', 'consumer', 'sourceSnapshot', 'productModel', 'scopeRefs',
-    'product', 'capabilities', 'gaps', 'artifacts', 'locks', 'exclusions', 'provenance', 'materialSha256',
+    'product', 'capabilities', 'gaps', 'artifacts', 'locks', 'exclusions', 'provenance', 'materialSha256', ...extraKeys,
   ]);
   if (context.schemaVersion !== PRODUCT_CONTEXT_SCHEMA_VERSION) fail(`context.schemaVersion must be ${PRODUCT_CONTEXT_SCHEMA_VERSION}`);
-  if (context.consumer !== 'prd') fail('context.consumer must be prd');
+  if (context.consumer !== consumer) fail(`context.consumer must be ${consumer}`);
   id(context.contextId, 'context.contextId');
   sha256(context.materialSha256, 'context.materialSha256');
 
@@ -682,7 +687,7 @@ export function validateProductContext(context) {
   const artifactById = new Map(context.artifacts.map(artifact => [artifact.id, artifact]));
   for (const artifact of context.artifacts) {
     if (!artifactStatuses.has(artifact.status)) fail(`context artifact ${artifact.id} is not consumable`);
-    if (!artifact.consumerDomains.includes('prd')) fail(`context artifact ${artifact.id} is not available to the prd consumer`);
+    if (!artifact.consumerDomains.includes(audience)) fail(`context artifact ${artifact.id} is not available to the ${audience} consumer`);
     for (const dependency of artifact.recordDependencies) {
       if (!recordMaterial.has(dependency.id)) fail(`context artifact ${artifact.id} depends on missing record ${dependency.id}`);
       if (recordMaterial.get(dependency.id) !== dependency.materialSha256) fail(`context artifact ${artifact.id} has stale material for record ${dependency.id}`);
@@ -755,7 +760,7 @@ export function validateProductContext(context) {
 
   const materialSha256 = calculateProductContextMaterialSha256(context);
   if (context.materialSha256 !== materialSha256) fail('context.materialSha256 does not match material content');
-  if (context.contextId !== `prd-context-${materialSha256.slice(0, 12)}`) fail('context.contextId does not match materialSha256');
+  if (context.contextId !== `${consumer}-context-${materialSha256.slice(0, 12)}`) fail('context.contextId does not match materialSha256');
   if (context.productModel.id !== context.product.id) fail('context product ID must match its product-model binding');
   if (context.provenance.sourceRevision !== context.productModel.revision) fail('context source revision must match its product-model revision');
   const aggregateBytes = Buffer.byteLength(canonicalProductContextJson(context), 'utf8');

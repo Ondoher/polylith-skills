@@ -15,6 +15,19 @@ Markdown. The publisher supports both a compact product review and the full
 manifest-selected design site. Remaining renderer helpers in refinement support
 bounded inspection and are not a second final-publication workflow.
 
+The [technical-documentation contract](technical-documentation-contract.md) records
+the agreed developer audience, boundary-level depth, and linked Markdown output
+for the next consumer. The [delivery plan](technical-documentation-delivery-plan.md)
+sets reviewable milestones. The [minimum technical-context contract](technical-context-contract.md)
+and its [synthetic fixture](fixtures/technical-context-minimum.json) define the
+milestone-2 input boundary. These remain planning contracts; the
+[technical publisher](../../skills/generate-technical/SKILL.md) has a first-pass implementation.
+The [linked white-paper workflow](technical-white-paper-workflow.md) records the
+proposed agent-assisted research and information-preserving revision path for a
+later focused-document milestone.
+The [technical-researcher contract](technical-researcher.md) defines the bounded
+read-only role used by the globally installed `refine-detail` skill.
+
 Repository-backed product-design data lives in `product/<name>/` at the
 repository root. Refinement asks for the product name when the description does
 not clearly state it and the current owner has not already supplied it. Existing

@@ -44,17 +44,22 @@ export function resolveProductLocation({repositoryRoot, productName}) {
   if (!gitStats || gitStats.isSymbolicLink() || (!gitStats.isDirectory() && !gitStats.isFile())) {
     throw new Error('repositoryRoot must be the repository root containing .git (directory or worktree file)');
   }
-  const products = path.join(root, 'product');
-  const productRoot = path.join(products, productName);
-  inspectDirectory(products);
-  inspectDirectory(productRoot);
-  if (fs.existsSync(products)) {
-    const collision = fs.readdirSync(products).find(name => name !== productName && name.toLowerCase() === productName.toLowerCase());
-    if (collision) throw new Error(`Product name collides with existing folder ${collision}; resolve its identity before writing`);
+  const productRoot = path.join(root, 'product', productName);
+  const documentationRoot = path.join(root, 'documents', productName);
+  for (const namedRoot of [productRoot, documentationRoot]) {
+    const parent = path.dirname(namedRoot);
+    inspectDirectory(parent);
+    inspectDirectory(namedRoot);
+    if (fs.existsSync(parent)) {
+      const collision = fs.readdirSync(parent).find(name => name !== productName && name.toLowerCase() === productName.toLowerCase());
+      if (collision) throw new Error(`Product name collides with existing folder ${collision}; resolve its identity before writing`);
+    }
+    if (fs.existsSync(path.join(namedRoot, '.git'))) {
+      throw new Error('Product location must not be an independently rooted repository');
+    }
   }
-  if (fs.existsSync(path.join(productRoot, '.git'))) {
-    throw new Error('Product data location must not be an independently rooted repository');
-  }
+  const publicationRoot = path.join(documentationRoot, 'prd');
+  inspectDirectory(publicationRoot);
   return {
     repositoryRoot: root,
     productName,
@@ -65,7 +70,8 @@ export function resolveProductLocation({repositoryRoot, productName}) {
     designLanguagePath: path.join(productRoot, 'design-language', 'design-language.json'),
     uiPath: path.join(productRoot, 'ui', 'ui-spec.json'),
     contextsRoot: path.join(productRoot, 'contexts'),
-    publicationRoot: path.join(productRoot, 'prd'),
+    documentationRoot,
+    publicationRoot,
   };
 }
 

@@ -25,6 +25,7 @@ The current claim dispositions remain:
 - `unresolved` for meaning represented by gaps;
 - `superseded` for meaning retained only by superseded records; and
 - `unclassified` for accounted source content whose responsible semantic classification is not yet known.
+- `reference` for a labeled `White paper:` link to a separate authored technical document. It has no product-record references and does not import that document's claims into the product model or PRD. The linked file receives its own live source binding in the technical-detail workflow.
 
 ## Material identity and revisions
 

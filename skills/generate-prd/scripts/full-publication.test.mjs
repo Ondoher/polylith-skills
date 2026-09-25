@@ -150,6 +150,11 @@ test('builds the complete linked static PRD from one explicit artifact manifest'
   assert.match(index, /component-comps\/index\.html/);
   assert.doesNotMatch(index, /<iframe/iu);
   assert.deepEqual(publication.resources, []);
+  const themeCss = publication.files.get('assets/prd.css').toString('utf8');
+  const productCss = publication.files.get('assets/product.css').toString('utf8');
+  assert.match(themeCss, /--rd-button-contained-hover-background: #[0-9A-F]{6};/);
+  assert.match(productCss, /\.prd-button--contained\.prd-is-hover \{[^}]*background: var\(--rd-button-contained-hover-background\)/);
+  assert.match(productCss, /\.prd-button--outlined \{[^}]*color: var\(--rd-button-outlined-default-foreground\)/);
 });
 
 test('does not infer a full-publication role when the manifest is absent', () => {

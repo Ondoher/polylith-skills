@@ -55,8 +55,11 @@ published changes first. Restart Codex when needed for discovery.
 
 | Skill | What it does |
 | --- | --- |
+| [attach-detail](docs/attach-detail.md) | Links an existing technical white paper from the product description with a checked relative path. |
+| [refine-detail](docs/refine-detail.md) | Researches and revises a linked technical white paper while accounting for all existing information. |
 | [refine-design](docs/refine-design.md) | Develops a product brief into persisted product, UX, and UI decisions with specialist consultation. |
 | [generate-prd](docs/generate-prd.md) | Publishes a static HTML product requirements document from validated design context. |
+| [generate-technical](docs/generate-technical.md) | Publishes a linked Markdown implementation guide from validated technical context. |
 | [reset-design](docs/reset-design.md) | Discards a product's derived design and rebuilds it from the current human-owned description. |
 
 ### Maintain standards and checkpoint work
@@ -74,13 +77,13 @@ published changes first. Restart Codex when needed for discovery.
 
 See the [project planning folder](planning/README.md) for roadmap notes, deferred implementation workflows, and design background.
 
-For the product-planning counterpart, read [Working with product-design skills](docs/product-design.md). It explains specialist responsibilities, decision ownership, and interaction flows for refinement, PRD publication, and a complete design reset.
+For the product-planning counterpart, read [Working with product-design skills](docs/product-design.md). It explains specialist responsibilities, decision ownership, and interaction flows for refinement, technical papers, publication, and a complete design reset.
 
 For a complete walkthrough of reviewer roles, setup, review timing, and local rules, read [Working with review agents](docs/review-agents.md). It includes example folder mappings, additions and replacements, and troubleshooting.
 
-Use `initialize-project` for a new project and `create-app` for an additional application. Use `refine-design` to develop requirements and design artifacts, then `generate-prd` to publish them. Reserve `reset-design` for an intentional fresh start.
+Use `initialize-project` for a new project and `create-app` for an additional application. Use `refine-design` to develop requirements and design artifacts, then `generate-prd` to publish them. Use `attach-detail` to link an existing authored technical white paper from the product description and `refine-detail` to research and revise it. For implementation-facing architecture, use `refine-design` technical preparation and `generate-technical` to publish its linked guide. Reserve `reset-design` for an intentional fresh start.
 
-Product-design data lives in repository-root `product/<name>/`. If the product description does not clearly state its name, `refine-design` asks before saving. Existing human descriptions stay in place; the named folder owns the derived data and the default `prd/` publication.
+Product-design data lives in repository-root `product/<name>/`. If the product description does not clearly state its name, `refine-design` asks before saving. Existing human descriptions stay in place. Generated product documentation goes under repository-root `documents/<product>/<doc-name>/`; the PRD goes in `documents/<product>/prd/`, including its comps and assets.
 
 For standards-driven work, `normalize-standards` establishes the initial folder mappings and local rules. `bootstrap` loads project authority and starts eligible review infrastructure; `review-standards` reviews selected work. `write-standards-guide` exposes the effective configuration to developers. `check-point` provides a separate commit review and approval step.
 

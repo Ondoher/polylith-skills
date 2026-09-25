@@ -1,6 +1,6 @@
 # Product context
 
-A product context is an immutable, content-addressed view of one verified product snapshot for one downstream consumer. The Slice 2 resolver supports `prd`. It reads only `current.json` and its verified source, model, snapshot, and artifact bindings; it never reparses the product description or asks an agent to fill a gap.
+A product context is an immutable, content-addressed view of one verified product snapshot for one downstream consumer. The resolver supports `prd` and the separately validated `technical` view. It reads only `current.json` and its verified source, model, snapshot, and artifact bindings; it never reparses the product description or asks an agent to fill a gap.
 
 Use `<repository-root>/product/<name>/current.json` from the
 [resolved product location](product-location.md). Context packages remain below
@@ -57,3 +57,13 @@ Artifacts whose authorial status is `superseded`, or whose snapshot dependency s
 - the product-model, snapshot, and source revision bindings.
 
 `materialSha256` is the SHA-256 of canonical JSON for the whole context after removing `contextId` and `materialSha256`. `contextId` is `prd-context-<first-12-digest-characters>`. Refinement and publication carry byte-identical copies of the executable context contract.
+
+## Technical consumer
+
+`--consumer technical --repo <repository-root>` selects the technical preparation
+path described in [technical preparation](technical-preparation.md). Its stored
+audience is `technical-documentation`; it retains exact product/artifact bindings
+and adds selected evidence and repository baselines. The PRD shape above is
+unchanged. The technical resolver requires live source inspection; detached
+validation does not make a claim of current code freshness. It does not publish
+Markdown or consume raw product prose.

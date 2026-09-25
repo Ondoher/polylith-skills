@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { existsSync } from 'node:fs';
+import { existsSync, realpathSync } from 'node:fs';
 import {
   cp,
   mkdir,
@@ -145,7 +145,11 @@ test('publishes twice from a detached immutable context after its product store 
   assert.equal(existsSync(store), false);
   assert.equal(existsSync(sourcePath), false);
 
-  const outputA = path.join(root, 'published-a');
+  await mkdir(path.join(root, '.git'));
+  const { resolveProductLocation } = await import(pathToFileURL(path.join(refineRoot, 'scripts', 'product-location.mjs')).href);
+  const location = resolveProductLocation({repositoryRoot: realpathSync(root), productName: 'Field Journal'});
+  const outputA = location.publicationRoot;
+  assert.equal(outputA, path.join(realpathSync(root), 'documents', 'Field Journal', 'prd'));
   const outputB = path.join(root, 'published-b');
   const receiptA = await generatePrd({
     contextPath: detachedContext,
@@ -168,6 +172,7 @@ test('publishes twice from a detached immutable context after its product store 
   assert.deepEqual(receiptB, receiptA);
 
   const filesA = await fileMap(outputA);
+  assert.equal(existsSync(location.productRoot), false, 'publication must not recreate a product data store');
   const filesB = await fileMap(outputB);
   assert.deepEqual([...filesA.keys()], [
     'assets/product.css',

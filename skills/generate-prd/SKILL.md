@@ -11,7 +11,8 @@ Publish an existing PRD context without changing its meaning. This skill is a me
 
 Repository-backed refinement saves canonical context packages under
 `<repository-root>/product/<name>/contexts/prd/<materialSha256>/context.json`.
-Use `<repository-root>/product/<name>/prd/` as the normal publication destination
+Generated product documentation uses `<repository-root>/documents/<name>/<doc-name>/`. Use the same confirmed folder name as the product data store, with `prd` as this document name. The complete site, including comps and assets, stays inside that document directory. For example, the product folder `field-journal` publishes to `documents/field-journal/prd/`.
+Use `<repository-root>/documents/<name>/prd/` as the normal publication destination
 when no different export destination was requested. A detached context may still
 be published outside its original repository; the publisher does not ask for a
 product name, reinterpret prose, or relocate the canonical data store.

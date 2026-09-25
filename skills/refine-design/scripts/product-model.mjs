@@ -81,7 +81,7 @@ const recordKinds = new Set(['product', 'purpose', 'user', 'capability', 'gap'])
 const changeClasses = new Set(['introduced', 'unchanged', 'changed']);
 const modelChangeClasses = new Set(['initial', 'source-only', 'material']);
 const claimChangeClasses = new Set(['introduced', 'retained', 'succeeded']);
-const dispositions = new Set(['incorporated', 'superseded', 'unresolved', 'unclassified']);
+const dispositions = new Set(['incorporated', 'superseded', 'unresolved', 'unclassified', 'reference']);
 const gapKinds = new Set(['open-question', 'missing-requirement', 'ambiguity', 'conflict']);
 const owners = new Set([
   'product', 'ux', 'ui', 'system-architecture', 'data-model', 'controller',
@@ -203,8 +203,8 @@ function normalizeClaimCore(claim, label) {
     recordRefs: unique(array(claim.recordRefs, `${label}.recordRefs`).map((item, index) => stableId(item, `${label}.recordRefs[${index}]`)), `${label}.recordRefs`).sort(),
   };
   if (result.endLine < result.startLine) fail(`${label}.endLine must not precede startLine`);
-  if (result.disposition === 'unclassified' && result.recordRefs.length !== 0) fail(`${label}.recordRefs must be empty for an unclassified claim`);
-  if (result.disposition !== 'unclassified' && result.recordRefs.length === 0) fail(`${label}.recordRefs must not be empty for disposition ${result.disposition}`);
+  if (['unclassified', 'reference'].includes(result.disposition) && result.recordRefs.length !== 0) fail(`${label}.recordRefs must be empty for an ${result.disposition} claim`);
+  if (!['unclassified', 'reference'].includes(result.disposition) && result.recordRefs.length === 0) fail(`${label}.recordRefs must not be empty for disposition ${result.disposition}`);
   return result;
 }
 
@@ -1106,6 +1106,7 @@ function verifySourceClaims(model, sourceBytes) {
     if (claim.sourceRange.startByte !== expectedStart || claim.sourceRange.endByteExclusive !== expectedEnd) fail(`Source claim ${claim.id} byte range does not match its line range`);
     const segment = sourceBytes.subarray(claim.sourceRange.startByte, claim.sourceRange.endByteExclusive);
     if (sha256(segment) !== claim.sourceSegmentSha256) fail(`Source claim ${claim.id} segment hash does not match the bound source`);
+    if (claim.disposition === 'reference' && !/^\s*- White paper: \[[^\]\r\n]+\]\([^)\r\n]+\)\s*$/mu.test(segment.toString('utf8'))) fail(`Reference source claim ${claim.id} has no White paper link`);
   }
 }
 

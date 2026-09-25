@@ -34,6 +34,8 @@ The current repository supplies promotion evidence; it does not limit the result
 
 Canonical changes belong only beneath `<codex-root>/documentation/standards`. Keep them broadly reusable and free of repository names, local paths, product decisions, temporary migration details, or one-project implementation choices.
 
+Format and check each edited Markdown file with the repository-local Prettier configuration that owns it before computing hashes or refreshing a generated guide. Do not use a global formatter in place of a declared local installation.
+
 ## Complete The Promotion
 
 - After the canonical document fully expresses the promoted requirement, remove the source `ADD` or `REPLACE` entry from `agents/topics/standards/overlay.md` because it is now redundant. A new additive canonical rule does not make a source `REPLACE` redundant when removing it would reactivate a conflicting canonical requirement; retain that override until the conflict is explicitly resolved.

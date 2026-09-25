@@ -25,6 +25,9 @@ See the [skill catalog](../../README.md#installed-skills),
 1. Extend the [product context pipeline](product-model-pipeline-plan.md) beyond
    the currently supported PRD consumer. Define technical-documentation and
    implementation-planning views before exposing them as working consumers.
+   Use the [technical-documentation delivery plan](technical-documentation-delivery-plan.md)
+   to validate the guide shape, add its context and preparation workflow, then
+   publish the general guide before adding focused issue documents.
 2. Finalize the [implementation-planning skill](implementation-planning-skill.md):
    deliverable format, lifecycle, readiness, update behavior, and frozen handoff.
 3. Review production-mode responsibilities for the Polylith architect, model,

@@ -10,6 +10,12 @@ Installed agents find this folder in the physical governance checkout through
 the existing documentation link. Work topics in consuming repositories remain
 separate: they divide local task context, not shared planning authority.
 
+Generated product documentation uses repository-root `documents/<product>/<doc-name>/`
+(for example, `documents/alexa/prd/`); durable design data stays under
+`product/<name>/`. The technical-guide publisher has a first-pass implementation;
+the [separate product publications](implementation-agents/product-publication-separation-plan.md)
+remain an accepted plan awaiting implementation.
+
 The product-design pipeline and standards tooling are implemented. Additional
 context consumers, implementation planning, and coordinated coding remain
 unfinished. This consolidation updates resource routing and installer validation;
@@ -25,6 +31,9 @@ for operational instructions and the roadmap below for remaining work.
 | [Implementation-agent design](implementation-agents/design.md) | Coding orchestrator, specialty ownership, test authorship, and review handoffs. |
 | [Implementation-planning skill](implementation-agents/implementation-planning-skill.md) | Deferred bridge from accepted design to bounded implementation deliverables. |
 | [Product-model pipeline](implementation-agents/product-model-pipeline-plan.md) | Durable product artifacts and downstream publication, planning, and coding contexts. |
+| [Technical-documentation contract](implementation-agents/technical-documentation-contract.md) | Agreed audience, depth, Markdown format, authority, and acceptance for a future technical-documentation consumer. |
+| [Technical-documentation delivery plan](implementation-agents/technical-documentation-delivery-plan.md) | Incremental, reviewable milestones from a bounded draft through context, publication, and focused issues. |
+| [Technical-documentation research](implementation-agents/technical-documentation-research.md) | Sources and practical design choices behind the technical-documentation contract. |
 
 Implementation planning and coding orchestration remain deferred until explicitly
 resumed. Claude Code and GitHub Copilot support is also deferred until the full

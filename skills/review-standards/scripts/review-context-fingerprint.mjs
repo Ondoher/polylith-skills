@@ -47,8 +47,13 @@ async function hashInput(kind, root, value) {
 	const normalized = normalizeRelative(value);
 	const candidate = path.resolve(root, ...normalized.split('/'));
 	if (!isWithin(root, candidate)) throw new Error(`${kind} input escapes its root: ${normalized}`);
+	// Installation links this namespace to the governance checkout. Treat its
+	// physical directory as the boundary, without accepting arbitrary file links.
+	const boundary = kind === 'codex' && normalized.startsWith('documentation/')
+		? await realpath(path.join(root, 'documentation'))
+		: root;
 	const resolved = await realpath(candidate);
-	if (!isWithin(root, resolved) || !(await stat(resolved)).isFile()) {
+	if (!isWithin(boundary, resolved) || !(await stat(resolved)).isFile()) {
 		throw new Error(`${kind} input is not a file beneath its root: ${normalized}`);
 	}
 	return {kind, path: normalized, sha256: sha256(await readFile(resolved))};

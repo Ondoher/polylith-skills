@@ -32,6 +32,8 @@ The helper uses the shared folder-standards parser, validates canonical links, a
 - repository-wide overlay entries; and
 - folder-specific overlay entries.
 
+The helper formats `STANDARDS.md` with the target repository's installed Prettier and resolved configuration in both `write` and `check` modes. The formatted bytes are the deterministic guide content. Install declared repository dependencies before invoking it; a declared but unavailable formatter blocks publication.
+
 Canonical standards links, including governance and overlay section targets, use GitHub URLs derived from the owning checkout's `governance.json` (`repository.canonicalRemote`, `repository.defaultBranch`, and the physical standards path). Resolve that checkout through the real installed documentation path so Codex-home junctions and symlinks work. Missing or invalid publication metadata is an error; do not silently emit machine-local links. Repository manifest and overlay links remain repository-relative.
 
 Read and hash canonical files locally exactly as before. The generated guide explains that GitHub shows the latest published branch while its fingerprints describe local inputs, which may be unpublished. Include publication metadata in the guide source fingerprint so a repository or branch change makes the guide stale. Publication uses `update-standards`; this generator neither commits nor pushes and never fetches remote standards.

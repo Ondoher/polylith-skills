@@ -334,7 +334,8 @@
             "incorporated",
             "superseded",
             "unresolved",
-            "unclassified"
+            "unclassified",
+            "reference"
           ]
         },
         "recordRefs": {
@@ -382,7 +383,8 @@
             "incorporated",
             "superseded",
             "unresolved",
-            "unclassified"
+            "unclassified",
+            "reference"
           ]
         },
         "recordRefs": {

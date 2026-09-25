@@ -21,6 +21,11 @@ test('guide publishes GitHub links while hashing local standards and preserving 
 	const canonicalDirectory = path.join(codex, 'documentation', 'standards');
 	mkdirSync(standardsDirectory, {recursive: true});
 	mkdirSync(canonicalDirectory, {recursive: true});
+	writeFileSync(path.join(repo, 'package.json'), JSON.stringify({devDependencies: {prettier: '3.9.6'}, prettier: {printWidth: 120}}));
+	const formatter = path.join(repo, 'node_modules', 'prettier', 'bin', 'prettier.cjs');
+	mkdirSync(path.dirname(formatter), {recursive: true});
+	writeFileSync(path.join(repo, 'node_modules', 'prettier', 'package.json'), JSON.stringify({name: 'prettier', bin: './bin/prettier.cjs'}));
+	writeFileSync(formatter, "const fs = require('node:fs'); process.stdout.write(fs.readFileSync(0, 'utf8') + '<!-- formatted locally -->\\n');\n");
 	const metadata = path.join(codex, 'governance.json');
 	writeFileSync(metadata, JSON.stringify(governance()));
 	const canonical = path.join(canonicalDirectory, 'documentation.md');
@@ -50,6 +55,7 @@ test('guide publishes GitHub links while hashing local standards and preserving 
 	};
 	const first = await run();
 	const firstGuide = readFileSync(path.join(repo, 'STANDARDS.md'), 'utf8');
+	assert.match(firstGuide, /<!-- formatted locally -->\n$/);
 	assert.equal((firstGuide.match(/https:\/\/github.com\/example\/standards\/blob\/main\/documentation\/standards\/documentation.md/g) ?? []).length, 2);
 	assert.ok(firstGuide.includes('(./agents/topics/standards/manifest.md)'));
 	assert.ok(!firstGuide.includes('../codex'));

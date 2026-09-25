@@ -2,12 +2,15 @@
 
 The product-design workflow turns human intent into durable requirements, interaction designs, visual specifications, and a published review document. You can start with a rough idea, refine one decision, or develop a complete design over several calls.
 
-Three skills own different parts of that work:
+These skills own different parts of that work:
 
 | Skill | Use it when | Main result |
 | --- | --- | --- |
+| [attach-detail](attach-detail.md) | An existing authored technical white paper needs a link from the product description. | One checked relative link in the human-owned description. |
+| [refine-detail](refine-detail.md) | A linked white paper needs research, clarification, or an information-preserving revision. | An improved authored paper with sourced findings and a checked revision ledger. |
 | [refine-design](refine-design.md) | You want to develop or revise product, UX, UI, or bounded architecture decisions. | Current product and design artifacts, with a context package ready for publication when requested. |
 | [generate-prd](generate-prd.md) | The context is ready and you want a human-readable product requirements document. | A deterministic static HTML publication and an integrity receipt. |
+| [generate-technical](generate-technical.md) | Reconciled technical context is ready for developers and coding agents. | A linked Markdown architecture guide and publication receipt. |
 | [reset-design](reset-design.md) | You explicitly want to discard the complete derived design and rebuild from the current human description. | A fresh product/design history, reset evidence, and optionally a new PRD. |
 
 These skills plan and document a product. They do not implement its application code. Project scaffolding belongs to `initialize-project` and `create-app`; code compliance belongs to the separate [review-agent workflow](review-agents.md).
@@ -26,13 +29,15 @@ Specialists receive bounded assignments and return assessments or structured pro
 | `ux-reviewer` | Independent product-design review of the saved UX and requested scope | A `pass` or `revise` receipt covering coherence, action economy, recovery, accessibility baseline, research, and UI handoff. |
 | `ui-designer` | Visual foundations, presentation, hierarchy, layout, component states, and visual accessibility | Structured design-language, whole-product composition, or specialized-component proposals. |
 | `system-architect` | Runtime and host boundaries, storage, APIs, trust, resources, and failure tradeoffs | Technical feasibility, architectural options, and missing guarantees relevant to the requested decision. |
+| `technical-researcher` | One linked technical paper and bounded ambiguous questions | Read-only primary-source findings, alternatives, evidence limits, and an advisory revision proposal. |
+| `polylith-architect` | Feature, shared-capability, service, and registry boundaries when they matter | A provisional structural map tied to current product and repository evidence. |
 | `model-agent` | Domain meaning, authoritative state, invariants, operations, and persistence/transport contracts | Read-only assessment of the guarantees the product or architecture needs. |
 | `controller-agent` | Workflow coordination, sessions, races, cancellation/retry, resource ownership, and view-facing contracts | Read-only assessment of how operations and lifecycle transitions should be coordinated. |
 | Independent UI-design assessment agent during reset | Qualitative review of fresh rendered surfaces and component states | A `pass` or `revise` assessment against the UI-design review contract, separate from the producing designer. |
 
 The last row describes a fresh assessment assignment, not an additional installed role named `ui-designer-reviewer`. It uses the [UI-design assessment contract](../planning/implementation-agents/ui-designer-review.md). It is also distinct from `ui-reviewer`, the engineering standards reviewer.
 
-`view-agent` and `polylith-architect` exist in the wider toolkit, but they are not automatic participants in refinement. Their availability alone does not authorize a coding workflow. Refinement uses additional technical specialties only when their actual contracts support the requested planning path.
+`view-agent` exists in the wider toolkit but is not an automatic participant in refinement. The Polylith architect and technical researcher run only for their bounded structural or paper-research questions. Their availability alone does not authorize a coding workflow.
 
 ## What carries decisions between calls
 
@@ -67,8 +72,12 @@ repository/
       design-language/design-language.json
       ui/ui-spec.json
       ui/components/
-      prd/                               # Default generated review site
+  documents/
+    Field Journal/
+      prd/                               # Published review site, comps, and assets
 ```
+
+Generated product documentation uses repository-root `documents/<product>/<doc-name>/`. For example, Alexa's PRD uses `documents/alexa/prd/`, with its comps and assets inside that directory. Use the same confirmed product folder name as the data store. Technical documents follow this convention too.
 
 The data root is also used for scoped planning, research, and review receipts.
 A changed product name or pre-existing store elsewhere needs an explicit
@@ -204,6 +213,52 @@ The branches are possible consultations, not three mandatory calls. Independent 
 
 The default is one focused consultation round, usually one or two roles, with at most one targeted follow-up round unless your request calls for broader work. Zero consultations is appropriate for recording an explicit decision or reusing a still-current assessment. Specialists are fresh for each bounded assignment; durable records supply future context.
 
+### Preparing and publishing a technical guide
+
+The documentation path makes the architecture work durable and then publishes
+it through a separate, deterministic skill. It starts from an accepted product
+model and verified snapshot; the current source is inspected without requiring
+a clean working tree. A real, current system-architect assessment is required.
+The Polylith architect is consulted only when the structural mapping changes
+the guide. The parent retains the report, reconciles recommendations within
+accepted product intent, and routes product-visible choices back to the owner.
+
+```mermaid
+flowchart TD
+    A[Verified product snapshot] --> B[Parent inspects relevant repository paths]
+    B --> C[System architect assesses bounded boundaries and failures]
+    C --> D{Does feature or registry mapping matter now?}
+    D -->|Yes| E[Polylith architect gives provisional mapping]
+    D -->|No| F[Parent reconciles advice and owner gaps]
+    E --> F
+    F --> G[refine-design commits technical artifact and freezes context]
+    G --> H[generate-technical validates context and publishes linked Markdown]
+```
+
+The publisher calls no agents and does not reopen decisions. The normal output
+is `documents/<product>/technical/`, with supporting records under
+`product/<product>/`. See the [preparation contract](../skills/refine-design/references/technical-preparation.md)
+and [publication guide](generate-technical.md). A deeper issue document can
+follow the general guide when one boundary needs more evidence and contracts.
+
+### Attaching a focused technical paper
+
+The globally installed [attach-detail](attach-detail.md) skill makes one small
+edit to the product description after an authored paper exists. It writes a
+`White paper:` link whose target is relative to the description file, then
+checks that the link resolves inside the product repository.
+
+```mermaid
+flowchart LR
+    A[Owner names description and existing paper] --> B[attach-detail checks paper and product]
+    B --> C[Add or correct one labeled relative link]
+    C --> D[Verify link and report stale derived artifacts]
+```
+
+Attaching does not research the paper or accept its proposals as requirements.
+The [paper-refinement flow](#develop-and-publish-a-focused-technical-paper) binds,
+researches, and revises linked papers before technical publication.
+
 ### Availability and completion
 
 When a named planner is unavailable, ordinary refinement can continue with honestly labeled `parent-assessment` work. The parent cannot substitute its own reread for an independent UX review: useful product and UX work may continue, while dependent UI remains gated.
@@ -301,6 +356,33 @@ repository's `product/` directory are outside the reset scope.
 
 The isolation claim is limited: the workflow controls supplied inputs and records their provenance, but the shared agent workspace does not provide an audited per-agent filesystem sandbox. Text already in the human description also remains input even if it originated in an earlier design discussion.
 
+## Develop and publish a focused technical paper
+
+Use [attach-detail](attach-detail.md) to register an existing authored paper in the human product description. Refresh the product model so the declaration is a document reference, then use [refine-detail](refine-detail.md) for a bounded research and revision cycle. The paper remains the sole editable document; source snapshots, research evidence, and revision ledgers live in the product support store. A linked paper may contain proposals and unresolved questions without changing product requirements or accepted architecture.
+
+```mermaid
+sequenceDiagram
+    actor Owner
+    participant Attach as attach-detail
+    participant Parent as refine-detail parent
+    participant Research as technical-researcher
+    participant Store as Product support store
+    participant Guide as Technical preparation and publisher
+    Owner->>Attach: Identify an existing paper
+    Attach->>Attach: Check target and add description link
+    Attach-->>Owner: Link and product-model refresh needed
+    Owner->>Parent: Focused paper question
+    Parent->>Store: Verify reference and snapshot current paper
+    Parent->>Research: Current paper, constraints, bounded questions
+    Research-->>Parent: Sources, options, gaps, proposed revision
+    Parent->>Parent: Check evidence and map all prior information
+    Parent->>Store: Save research and revision ledger
+    Parent->>Guide: Map paper claims and open questions to technical records
+    Guide-->>Owner: Focused paper section and shared question register
+```
+
+The research role advises; the parent owns evidence checks and the edit. Consult the system architect for consequential runtime or trust boundaries and the Polylith architect for feature or registry placement. Reuse current assessments when their inputs still apply. Technical preparation maps the paper's claims into ordinary technical records and its open questions into the common gap register, reusing an existing question when it has the same meaning. `generate-technical` gives the paper a focused mapping page while also showing those gaps in the shared decisions and handoff pages. The authored paper links back to the general guide. A paper change calls for a scoped recheck of any guide section or other paper using its conclusions.
+
 ## Choose the next useful action
 
 | Situation | Next action |
@@ -310,6 +392,7 @@ The isolation claim is limited: the workflow controls supplied inputs and record
 | Colors, type, or ordinary control treatment need direction | Refine the design language; preserve product behavior. |
 | A specialized control is still a labeled placeholder | Request component-mode design through refinement, including research and representative states. |
 | A technical guarantee affects a product promise | Use a bounded architecture consultation and return product implications to their owner. |
+| A technical issue needs a researched, authored treatment | Link the existing paper with `attach-detail`, then use `refine-detail` for one bounded question. |
 | The saved design is ready to share as HTML | Resolve the current PRD context and invoke `generate-prd`. |
 | An input change reaches a locked design | Identify the conflict and explicitly decide whether that named lock should change. |
 | You want all derived choices reconsidered without old-design influence | Explicitly request `reset-design` for the complete named product scope. |

@@ -1,0 +1,567 @@
+{
+  "fixtureVersion": "1.0",
+  "purpose": "Product-neutral milestone-2 design fixture; symbolic bindings, not a production context.",
+  "inputCatalog": {
+    "productRecords": [
+      {
+        "id": "switch-notebook",
+        "status": "accepted"
+      },
+      {
+        "id": "create-report",
+        "status": "accepted"
+      },
+      {
+        "id": "report-close-policy",
+        "status": "unresolved"
+      }
+    ],
+    "artifacts": [
+      {
+        "id": "switch-focus-constraint",
+        "audience": [
+          "technical-documentation"
+        ],
+        "scopeRefs": [
+          "switch-notebook"
+        ],
+        "revision": 1,
+        "materialBinding": "fixture:ux-revision-1",
+        "summary": "Canceled switches return focus to the initiating selector."
+      }
+    ],
+    "sourceBinding": "fixture:source-1",
+    "modelBinding": "fixture:model-1",
+    "snapshotBinding": "fixture:snapshot-2"
+  },
+  "repositoryBaselines": [
+    {
+      "id": "inspected-repository",
+      "repositoryId": "inventory-notebook",
+      "head": "fixture:head",
+      "indexSha256": "fixture:index",
+      "changes": [
+        {
+          "path": "src/report.js",
+          "indexStatus": " ",
+          "worktreeStatus": "M",
+          "indexObjectId": "fixture:committed-report",
+          "workingSha256": "fixture:report-working"
+        }
+      ],
+      "observations": [
+        {
+          "path": "src/notebook.js",
+          "workingSha256": "fixture:notebook-working",
+          "mode": "100644"
+        },
+        {
+          "path": "src/report.js",
+          "workingSha256": "fixture:report-working",
+          "mode": "100644"
+        }
+      ],
+      "materialSha256": "fixture:baseline"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "code-inspection",
+      "kind": "repository",
+      "summary": "Direct inspection of the two synthetic source observations.",
+      "binding": {
+        "baselineId": "inspected-repository",
+        "baselineSha256": "fixture:baseline",
+        "paths": [
+          "src/notebook.js",
+          "src/report.js"
+        ],
+        "locator": "Exports switchNotebook and createReport.",
+        "observationSha256": "fixture:observations"
+      }
+    },
+    {
+      "id": "system-assessment",
+      "kind": "assessment",
+      "summary": "Use staged replacement and a job lifetime independent of navigation; worker placement remains unselected.",
+      "binding": {
+        "role": "system-architect",
+        "question": "Who owns replacement and background task lifetime?",
+        "reportSha256": "fixture:report",
+        "inputRefs": [
+          "switch-notebook",
+          "create-report",
+          "code-inspection"
+        ],
+        "disposition": "accepted",
+        "rationale": "Accept ownership advice; retain placement as an unselected option."
+      }
+    },
+    {
+      "id": "parent-reconciliation",
+      "kind": "authority",
+      "summary": "Parent selects internal ownership within accepted behavior and leaves close policy to the owner.",
+      "binding": {
+        "actor": "parent",
+        "scopeRefs": [
+          "switch-notebook",
+          "create-report"
+        ],
+        "instruction": "Select deferred replacement and independent job ownership; do not select shutdown policy or worker placement.",
+        "receiptSha256": "fixture:receipt"
+      }
+    }
+  ],
+  "payload": {
+    "schemaVersion": "1.0",
+    "evidenceDependencies": [
+      {
+        "id": "code-inspection",
+        "materialSha256": "fixture:code-inspection"
+      },
+      {
+        "id": "parent-reconciliation",
+        "materialSha256": "fixture:parent-reconciliation"
+      },
+      {
+        "id": "system-assessment",
+        "materialSha256": "fixture:system-assessment"
+      }
+    ],
+    "records": [
+      {
+        "id": "starter-observation",
+        "kind": "fact",
+        "title": "Starter observation",
+        "summary": "The inspected fixture has a notebook selector but no persistent report runner.",
+        "owner": "technical-documentation",
+        "scopeRefs": [
+          "switch-notebook",
+          "create-report"
+        ],
+        "productRefs": [
+          "create-report",
+          "switch-notebook"
+        ],
+        "artifactRefs": [],
+        "dependsOn": [],
+        "evidenceRefs": [
+          "code-inspection"
+        ],
+        "status": "observed",
+        "details": {
+          "claim": "src/notebook.js changes a displayed name; src/report.js returns an in-memory string.",
+          "limits": "This says nothing about target persistence or real platform support."
+        }
+      },
+      {
+        "id": "deferred-install",
+        "kind": "decision",
+        "title": "Deferred install",
+        "summary": "Keep the original notebook until the replacement is validated.",
+        "owner": "technical-documentation",
+        "scopeRefs": [
+          "switch-notebook"
+        ],
+        "productRefs": [
+          "switch-notebook"
+        ],
+        "artifactRefs": [],
+        "dependsOn": [],
+        "evidenceRefs": [
+          "parent-reconciliation",
+          "system-assessment"
+        ],
+        "status": "accepted",
+        "details": {
+          "context": "Switching can encounter unsaved edits and an invalid candidate.",
+          "choice": "The transition owner stages the candidate; the notebook authority installs it only after validation.",
+          "alternatives": [
+            {
+              "option": "Clear the current notebook before reading the candidate",
+              "disposition": "declined",
+              "reason": "Violates the accepted preservation requirement."
+            }
+          ],
+          "consequences": [
+            "Candidate reads cannot mutate current authority."
+          ],
+          "authority": {
+            "actor": "parent",
+            "basis": "Allocates internal responsibility within the accepted preservation behavior.",
+            "evidenceRef": "parent-reconciliation"
+          },
+          "supersedes": []
+        }
+      },
+      {
+        "id": "independent-job",
+        "kind": "decision",
+        "title": "Independent job",
+        "summary": "The report operation owns its lifetime independently of the visible panel.",
+        "owner": "technical-documentation",
+        "scopeRefs": [
+          "create-report"
+        ],
+        "productRefs": [
+          "create-report"
+        ],
+        "artifactRefs": [],
+        "dependsOn": [],
+        "evidenceRefs": [
+          "parent-reconciliation",
+          "system-assessment"
+        ],
+        "status": "accepted",
+        "details": {
+          "context": "A saved-summary report continues while navigating between panels.",
+          "choice": "A job authority retains the saved input, progress and output resources until completion or acknowledged cancellation.",
+          "alternatives": [
+            {
+              "option": "Let the report panel own the task",
+              "disposition": "declined",
+              "reason": "Panel disposal would violate navigation continuity."
+            }
+          ],
+          "consequences": [
+            "The UI observes the operation instead of owning it."
+          ],
+          "authority": {
+            "actor": "parent",
+            "basis": "Internal ownership satisfies the accepted navigation requirement; application shutdown is unresolved.",
+            "evidenceRef": "parent-reconciliation"
+          },
+          "supersedes": []
+        }
+      },
+      {
+        "id": "notebook-authority",
+        "kind": "boundary",
+        "title": "Notebook authority",
+        "summary": "Own the current notebook and perform its final replacement.",
+        "owner": "technical-documentation",
+        "scopeRefs": [
+          "switch-notebook"
+        ],
+        "productRefs": [
+          "switch-notebook"
+        ],
+        "artifactRefs": [],
+        "dependsOn": [
+          "deferred-install"
+        ],
+        "evidenceRefs": [
+          "system-assessment"
+        ],
+        "status": "accepted",
+        "details": {
+          "responsibility": "Current notebook identity and saved data.",
+          "consumers": [
+            "Transition workflow"
+          ],
+          "exchanges": [
+            "Validated candidate and install result"
+          ],
+          "lifecycle": "Lives for the application session.",
+          "failureBehavior": "Failed candidate validation leaves the current notebook unchanged.",
+          "decisionRefs": [
+            "deferred-install"
+          ]
+        }
+      },
+      {
+        "id": "transition-owner",
+        "kind": "boundary",
+        "title": "Transition owner",
+        "summary": "Coordinate one pending notebook switch.",
+        "owner": "technical-documentation",
+        "scopeRefs": [
+          "switch-notebook"
+        ],
+        "productRefs": [
+          "switch-notebook"
+        ],
+        "artifactRefs": [],
+        "dependsOn": [
+          "deferred-install"
+        ],
+        "evidenceRefs": [],
+        "status": "accepted",
+        "details": {
+          "responsibility": "Guard order, candidate validation and one final installation.",
+          "consumers": [
+            "Notebook selector"
+          ],
+          "exchanges": [
+            "Pending action, guard result, candidate"
+          ],
+          "lifecycle": "One operation; retains prior context until outcome.",
+          "failureBehavior": "Cancel or failed validation stops the transition without discarding the current notebook.",
+          "decisionRefs": [
+            "deferred-install"
+          ]
+        }
+      },
+      {
+        "id": "report-job",
+        "kind": "boundary",
+        "title": "Report job",
+        "summary": "Own a report attempt based on saved input.",
+        "owner": "technical-documentation",
+        "scopeRefs": [
+          "create-report"
+        ],
+        "productRefs": [
+          "create-report"
+        ],
+        "artifactRefs": [],
+        "dependsOn": [
+          "independent-job"
+        ],
+        "evidenceRefs": [],
+        "status": "accepted",
+        "details": {
+          "responsibility": "Saved input identity, progress, cancellation and output resource cleanup.",
+          "consumers": [
+            "Report panel",
+            "Application status"
+          ],
+          "exchanges": [
+            "Attempt identity, saved input, output result"
+          ],
+          "lifecycle": "Outlives panel navigation; ends after completion or acknowledged cancellation.",
+          "failureBehavior": "Failure retains request inputs and never claims the report is complete.",
+          "decisionRefs": [
+            "independent-job"
+          ]
+        }
+      },
+      {
+        "id": "switch-flow",
+        "kind": "flow",
+        "title": "Switch flow",
+        "summary": "Switch after guard resolution and candidate validation.",
+        "owner": "technical-documentation",
+        "scopeRefs": [
+          "switch-notebook"
+        ],
+        "productRefs": [
+          "switch-notebook"
+        ],
+        "artifactRefs": [
+          "switch-focus-constraint"
+        ],
+        "dependsOn": [
+          "deferred-install",
+          "notebook-authority",
+          "transition-owner"
+        ],
+        "evidenceRefs": [],
+        "status": "accepted",
+        "details": {
+          "trigger": "Choose another notebook.",
+          "preconditions": [
+            "Current notebook and pending selection are captured."
+          ],
+          "steps": [
+            {
+              "ownerRef": "transition-owner",
+              "action": "Resolve the unsaved-work guard.",
+              "result": "Continue or stop without installing a candidate."
+            },
+            {
+              "ownerRef": "transition-owner",
+              "action": "Read and validate the chosen candidate.",
+              "result": "Validated candidate or a failure."
+            },
+            {
+              "ownerRef": "notebook-authority",
+              "action": "Install the validated candidate once.",
+              "result": "New current identity; release the old state after success."
+            }
+          ],
+          "success": [
+            "One validated notebook becomes current."
+          ],
+          "failure": [
+            "A read or validation failure preserves the original notebook and draft."
+          ],
+          "cancellation": "Cancel retains current state and returns focus to the initiating selector.",
+          "retry": "A retry starts a new captured attempt; no deferred request is replayed silently.",
+          "guarantees": [
+            "Final installation is the only authority transition."
+          ],
+          "limits": [
+            "Durable file-save mechanics are outside this flow."
+          ],
+          "verification": [
+            "Walk through a successful guard, candidate read and one final install."
+          ],
+          "decisionRefs": [
+            "deferred-install"
+          ]
+        }
+      },
+      {
+        "id": "close-policy-gap",
+        "kind": "gap",
+        "title": "Close policy gap",
+        "summary": "Closing with an active report requires an owner decision.",
+        "owner": "technical-documentation",
+        "scopeRefs": [
+          "create-report"
+        ],
+        "productRefs": [
+          "create-report",
+          "report-close-policy"
+        ],
+        "artifactRefs": [],
+        "dependsOn": [],
+        "evidenceRefs": [],
+        "status": "unresolved",
+        "details": {
+          "question": "Should application close wait, cancel, or offer a decision while a report is active?",
+          "category": "product",
+          "affectedRefs": [
+            "report-job",
+            "report-flow"
+          ],
+          "resolutionCriteria": [
+            "Owner selects visible behavior after a bounded lifetime feasibility assessment."
+          ],
+          "resolutionRefs": []
+        }
+      },
+      {
+        "id": "report-flow",
+        "kind": "flow",
+        "title": "Report flow",
+        "summary": "Create a report from saved input and retain progress across panel navigation.",
+        "owner": "technical-documentation",
+        "scopeRefs": [
+          "create-report"
+        ],
+        "productRefs": [
+          "create-report"
+        ],
+        "artifactRefs": [],
+        "dependsOn": [
+          "close-policy-gap",
+          "independent-job",
+          "report-job"
+        ],
+        "evidenceRefs": [],
+        "status": "conditional",
+        "details": {
+          "trigger": "Choose a saved inventory summary and request a report.",
+          "preconditions": [
+            "Input refers to a saved revision rather than a draft."
+          ],
+          "steps": [
+            {
+              "ownerRef": "report-job",
+              "action": "Capture the saved input and start one attempt.",
+              "result": "Stable attempt identity and owned resources."
+            },
+            {
+              "ownerRef": "report-job",
+              "action": "Build the report while publishing progress.",
+              "result": "Completion result or an explicit failure."
+            }
+          ],
+          "success": [
+            "Completed report is identified to the caller."
+          ],
+          "failure": [
+            "Incomplete output is never reported as complete; resource cleanup belongs to the job."
+          ],
+          "cancellation": "Remain active until the job acknowledges cancellation and releases resources.",
+          "retry": "A fresh attempt revalidates input and destination.",
+          "guarantees": [
+            "Panel navigation does not own job lifetime."
+          ],
+          "limits": [
+            "Application-close behavior remains unresolved; no shutdown guarantee is made."
+          ],
+          "verification": [
+            "Start from a saved revision, navigate panels and observe completion of the same attempt."
+          ],
+          "decisionRefs": [
+            "independent-job"
+          ]
+        }
+      },
+      {
+        "id": "worker-option",
+        "kind": "decision",
+        "title": "Worker option",
+        "summary": "A worker is an unselected placement option.",
+        "owner": "technical-documentation",
+        "scopeRefs": [
+          "create-report"
+        ],
+        "productRefs": [
+          "create-report"
+        ],
+        "artifactRefs": [],
+        "dependsOn": [],
+        "evidenceRefs": [
+          "parent-reconciliation",
+          "system-assessment"
+        ],
+        "status": "proposed",
+        "details": {
+          "context": "The eventual report workload might occupy the interface thread.",
+          "choice": "Consider a worker only after measuring the representative workload.",
+          "alternatives": [
+            {
+              "option": "Run a bounded task in the existing process",
+              "disposition": "unselected",
+              "reason": "No timing evidence selects either placement."
+            }
+          ],
+          "consequences": [
+            "No worker API or process boundary is accepted by this fixture."
+          ],
+          "authority": {
+            "actor": "parent",
+            "basis": "Records an option for later assessment, not authorization to implement it.",
+            "evidenceRef": "parent-reconciliation"
+          },
+          "supersedes": []
+        }
+      }
+    ]
+  },
+  "expected": {
+    "consumer": "technical",
+    "storedAudience": "technical-documentation",
+    "includedTechnicalIds": [
+      "close-policy-gap",
+      "deferred-install",
+      "independent-job",
+      "notebook-authority",
+      "report-flow",
+      "report-job",
+      "starter-observation",
+      "switch-flow",
+      "transition-owner",
+      "worker-option"
+    ],
+    "locks": [],
+    "exclusions": [],
+    "walkthroughs": [
+      "switch-flow",
+      "report-flow"
+    ],
+    "conditionalIds": [
+      "report-flow"
+    ],
+    "unresolvedIds": [
+      "close-policy-gap"
+    ],
+    "unselectedIds": [
+      "worker-option"
+    ]
+  }
+}
