@@ -1,9 +1,13 @@
 # Refinement efficiency: autonomous execution plan
 
-Status, 2026-09-26: implementation delivered with focused local verification.
-The required package gate remains blocked by inherited obsolete-schema tests;
-checkpoint advice is blocked by repository eligibility. Live performance is
-not yet measured. See the execution evidence below.
+Status, 2026-09-26: the initial implementation and subsequent package-test repairs
+are delivered. Checkpoint advice has been separated from standards-review gates.
+The first authorized live Alexa refinement took **101.80 minutes**, through a
+validated partial design context, without running `generate-prd`. This exposes
+substantial remaining authoring, handoff, and review costs; no speedup or credit
+saving has been established. See the [performance findings and proposed fixes](performance-findings.md)
+for the complete issue register, evidence limits, priorities, and low-cost checks.
+Earlier execution entries below are historical, not the current status.
 This work takes priority over further product-document format refinement.
 The owner expects to be AFK, delegates routine decisions to the assistant's
 judgment, and wants credit use minimized. Progress does not depend on answers
@@ -278,16 +282,16 @@ checks with results, adviser recommendation and snapshot fingerprint, commit
 hash when created, remaining issue, and next concrete action. Do not create long
 transcripts or duplicate the implementation in this plan.
 
-| Milestone                           | State                                     | Evidence / next action                                                                                                                                                      |
-| ----------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Plan and current-process inspection | Complete                                  | Source findings linked above; implementation results recorded below                                                                                                         |
-| Initial repository checkpoint       | Complete                                  | `f0d4ef9`; clean working tree after commit; owner subsequently authorized adviser-triggered commits and their suggested messages during plan execution                      |
-| A. Instruction/stage alignment      | Complete                                  | Skill, product-description/UX/review/publication contracts, planner/designer instructions and user guide now share the pre-review freeze sequence                           |
-| B. Run evidence and resume          | Complete                                  | `refinement-run.mjs`: immutable stage receipts, exact file checks, request/contract invalidation, observed durations/counts and explicit unknown usage                      |
-| C. Structured inputs and assembly   | Complete within selected scope            | `refinement-input.mjs` and `refinement-assembly.mjs`; full structured authority retained, existing graph and validators reused; changed prose still requires interpretation |
-| D. Local verification               | Focused checks pass; package gate blocked | 18 current-schema checks pass, including 11 new efficiency cases; required design command fails in its fast gate on inherited fixtures/expectations                         |
-| E. Conditional live evaluation      | Deferred to ordinary use                  | No authorized consuming-product input in this task and no paid trial; no measured latency/credit claim                                                                      |
-| Checkpoint adviser                  | Active; commit NOT_READY                  | Setup and formatting restored; adviser evaluated complete state. Missing validated repository review and inherited package failures remain; see follow-up below             |
+| Milestone                           | State                            | Evidence / next action                                                                                                                                                      |
+| ----------------------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Plan and current-process inspection | Complete                         | Source findings linked above; implementation results recorded below                                                                                                         |
+| Initial repository checkpoint       | Complete                         | `f0d4ef9`; clean working tree after commit; owner subsequently authorized adviser-triggered commits and their suggested messages during plan execution                      |
+| A. Instruction/stage alignment      | Complete                         | Skill, product-description/UX/review/publication contracts, planner/designer instructions and user guide now share the pre-review freeze sequence                           |
+| B. Run evidence and resume          | Complete                         | `refinement-run.mjs`: immutable stage receipts, exact file checks, request/contract invalidation, observed durations/counts and explicit unknown usage                      |
+| C. Structured inputs and assembly   | Complete within selected scope   | `refinement-input.mjs` and `refinement-assembly.mjs`; full structured authority retained, existing graph and validators reused; changed prose still requires interpretation |
+| D. Local verification               | Complete after package repair    | Later recorded root suite passed 489 tests; earlier obsolete-fixture failures are historical. No code tests were rerun for the performance findings document.               |
+| E. Conditional live evaluation      | First ordinary run measured      | Alexa refinement took 101.80 minutes through partial context; publication unmeasured. [Findings and fixes](performance-findings.md) record the remaining work.              |
+| Checkpoint adviser                  | Simplified after initial handoff | Semantic functionality is its sole criterion. Earlier startup and review-ledger gates are no longer adviser prerequisites; see the later simplification entry.              |
 
 Final handoff states what repetition was actually removed, which contracts and
 helpers changed, what local checks passed, any live evidence and its limits,
