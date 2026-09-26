@@ -26,7 +26,7 @@ The generated SVGs were visually inspected in a headless Chromium table harness:
 
 Its source and four SVGs use the agreed supporting subfolder. The fixture includes simulated acceptance and explicitly says it is not an accepted Alexa palette. The review artifact keeps the brand accent missing so the provisional default can be inspected. The automated follow-up separately supplies a proposed brand value and verifies the accepted color remains unchanged.
 
- The temporary browser-inspection.html and palette-preview.png are test harness artifacts, not extra product documents.
+The temporary browser-inspection.html and palette-preview.png are test harness artifacts, not extra product documents.
 
 ## Limits
 

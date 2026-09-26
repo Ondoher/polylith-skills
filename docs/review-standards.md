@@ -22,17 +22,17 @@ Reviewer threads are read-only. The parent workflow may refresh `STANDARDS.md`, 
 
 ## Prerequisites and modes
 
-Startup requires valid installed reviewer definitions, current calibration, a durable initial normalization marker, and valid current mappings. Formatting problems do not prevent inspection, but prevent a final `CLEAN` result or positive checkpoint recommendation.
+Standards-review startup requires valid installed reviewer definitions, current calibration, a durable initial normalization marker, and valid current mappings. Formatting problems do not prevent inspection, but prevent a final `CLEAN` result. Checkpoint advice bypasses these workflows and judges only whether the current changes form a reasonable unit of functionality.
 
-| Mode | Purpose |
-| --- | --- |
-| `bootstrap` | Initialize eligible reviewers from folder assignments. |
-| `topic-refresh` | Reload context after the governing topic changes. |
-| `review` | Review the task or selected paths. |
-| `setup reviewers` | Inspect and propose reviewer installation or repair. |
-| `setup formatting` | Inspect and propose formatting setup. |
-| `checkpoint-advisor evaluate` | Assess checkpoint readiness. |
-| `checkpoint-advisor monitor` | Enable session advice when explicitly requested. |
+| Mode                          | Purpose                                                |
+| ----------------------------- | ------------------------------------------------------ |
+| `bootstrap`                   | Initialize eligible reviewers from folder assignments. |
+| `topic-refresh`               | Reload context after the governing topic changes.      |
+| `review`                      | Review the task or selected paths.                     |
+| `setup reviewers`             | Inspect and propose reviewer installation or repair.   |
+| `setup formatting`            | Inspect and propose formatting setup.                  |
+| `checkpoint-advisor evaluate` | Judge the functional coherence of a checkpoint.        |
+| `checkpoint-advisor monitor`  | Enable session advice when explicitly requested.       |
 
 Setup changes require applicable authorization. Adviser monitoring can also be suspended, restarted, or queried for status. The adviser recommends checkpoints; `check-point` handles commit proposals and acceptance separately.
 

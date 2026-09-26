@@ -1,269 +1,262 @@
 {
-  "schemaVersion": 1,
-  "documents": [
-    {
-      "id": "prd",
-      "title": "Product requirements",
-      "pages": [
-        "prd.html"
-      ],
-      "sections": [
-        {
-          "id": "prd-overview",
-          "title": "Product overview",
-          "page": "prd.html",
-          "anchor": "overview"
-        },
-        {
-          "id": "prd-users",
-          "title": "Users, goals, and success",
-          "page": "prd.html",
-          "anchor": "users"
-        },
-        {
-          "id": "prd-scope",
-          "title": "Scope and boundaries",
-          "page": "prd.html",
-          "anchor": "scope",
-          "children": [
-            {
-              "id": "prd-in-scope",
-              "title": "In scope",
-              "page": "prd.html",
-              "anchor": "in-scope"
-            },
-            {
-              "id": "prd-out-of-scope",
-              "title": "Outside this example's scope",
-              "page": "prd.html",
-              "anchor": "out-of-scope"
-            }
-          ]
-        },
-        {
-          "id": "prd-concepts",
-          "title": "Product concepts",
-          "page": "prd.html",
-          "anchor": "concepts"
-        },
-        {
-          "id": "prd-requirements",
-          "title": "Functional requirements",
-          "page": "prd.html",
-          "anchor": "requirements",
-          "children": [
-            {
-              "id": "prd-recording",
-              "title": "Recording and returning to harvests",
-              "page": "prd.html",
-              "anchor": "recording-harvests",
-              "children": [
-                {
-                  "id": "requirement-record",
-                  "title": "Record a dated harvest",
-                  "page": "prd.html",
-                  "anchor": "req-01"
-                },
-                {
-                  "id": "requirement-empty",
-                  "title": "Prevent empty entries",
-                  "page": "prd.html",
-                  "anchor": "req-02"
-                },
-                {
-                  "id": "requirement-persist",
-                  "title": "Preserve saved entries",
-                  "page": "prd.html",
-                  "anchor": "req-03"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "prd-quality",
-          "title": "Quality and constraints",
-          "page": "prd.html",
-          "anchor": "quality",
-          "children": [
-            {
-              "id": "requirement-retry",
-              "title": "Keep the draft when saving fails",
-              "page": "prd.html",
-              "anchor": "req-04"
-            }
-          ]
-        },
-        {
-          "id": "prd-acceptance",
-          "title": "Acceptance and dependencies",
-          "page": "prd.html",
-          "anchor": "acceptance"
-        },
-        {
-          "id": "prd-decisions",
-          "title": "Open decisions",
-          "page": "prd.html",
-          "anchor": "decisions"
-        }
-      ]
-    },
-    {
-      "id": "interactions",
-      "title": "Interaction guide",
-      "pages": [
-        "interactions.html",
-        "record-harvest.html"
-      ],
-      "sections": [
-        {
-          "id": "application",
-          "title": "Application overview",
-          "page": "interactions.html",
-          "anchor": "application-overview",
-          "children": [
-            {
-              "id": "shared-shell",
-              "title": "The shared shell",
-              "page": "interactions.html",
-              "anchor": "shell"
-            },
-            {
-              "id": "harvests",
-              "title": "Harvests",
-              "page": "interactions.html",
-              "anchor": "harvests",
-              "children": [
-                {
-                  "id": "harvest-entry-form",
-                  "title": "Harvest entry form",
-                  "page": "interactions.html",
-                  "anchor": "harvest-entry-form",
-                  "children": [
-                    {
-                      "id": "record-harvest",
-                      "title": "Record a harvest",
-                      "page": "record-harvest.html",
-                      "anchor": "record-harvest",
-                      "children": [
-                        {
-                          "id": "harvest-main-flow",
-                          "title": "Main sequence",
-                          "page": "record-harvest.html",
-                          "anchor": "main-flow"
-                        },
-                        {
-                          "id": "harvest-alternatives",
-                          "title": "Alternatives and recovery",
-                          "page": "record-harvest.html",
-                          "anchor": "alternatives"
-                        },
-                        {
-                          "id": "harvest-outcome",
-                          "title": "End states",
-                          "page": "record-harvest.html",
-                          "anchor": "outcome"
-                        },
-                        {
-                          "id": "harvest-gaps",
-                          "title": "Shared references and gaps",
-                          "page": "record-harvest.html",
-                          "anchor": "gaps"
-                        }
-                      ],
-                      "pageTitle": true
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "pageTitle": true
-        },
-        {
-          "id": "interaction-coverage",
-          "title": "Coverage and open questions",
-          "page": "interactions.html",
-          "anchor": "coverage"
-        }
-      ]
-    },
-    {
-      "id": "design-language",
-      "title": "Design language",
-      "pages": [
-        "design-language.html"
-      ],
-      "sections": [
-        {
-          "id": "language-direction",
-          "title": "Visual direction",
-          "page": "design-language.html",
-          "anchor": "direction"
-        },
-        {
-          "id": "language-typography",
-          "title": "Typography",
-          "page": "design-language.html",
-          "anchor": "typography"
-        },
-        {
-          "id": "language-color",
-          "title": "Colors and theme",
-          "page": "design-language.html",
-          "anchor": "color"
-        },
-        {
-          "id": "language-spacing",
-          "title": "Spacing and layout",
-          "page": "design-language.html",
-          "anchor": "spacing"
-        },
-        {
-          "id": "language-surfaces",
-          "title": "Shape and surfaces",
-          "page": "design-language.html",
-          "anchor": "surfaces"
-        },
-        {
-          "id": "language-icons",
-          "title": "Iconography",
-          "page": "design-language.html",
-          "anchor": "icons"
-        },
-        {
-          "id": "language-components",
-          "title": "Basic component examples",
-          "page": "design-language.html",
-          "anchor": "components",
-          "children": [
-            {
-              "id": "language-actions",
-              "title": "Actions",
-              "page": "design-language.html",
-              "anchor": "actions"
-            },
-            {
-              "id": "language-text-entry",
-              "title": "Text entry",
-              "page": "design-language.html",
-              "anchor": "text-entry"
-            }
-          ]
-        },
-        {
-          "id": "language-states",
-          "title": "Shared states",
-          "page": "design-language.html",
-          "anchor": "states"
-        },
-        {
-          "id": "language-gaps",
-          "title": "Decisions and gaps",
-          "page": "design-language.html",
-          "anchor": "gaps"
-        }
-      ]
-    }
-  ]
+	"schemaVersion": 1,
+	"documents": [
+		{
+			"id": "prd",
+			"title": "Product requirements",
+			"pages": ["prd.html"],
+			"sections": [
+				{
+					"id": "prd-overview",
+					"title": "Product overview",
+					"page": "prd.html",
+					"anchor": "overview"
+				},
+				{
+					"id": "prd-users",
+					"title": "Users, goals, and success",
+					"page": "prd.html",
+					"anchor": "users"
+				},
+				{
+					"id": "prd-scope",
+					"title": "Scope and boundaries",
+					"page": "prd.html",
+					"anchor": "scope",
+					"children": [
+						{
+							"id": "prd-in-scope",
+							"title": "In scope",
+							"page": "prd.html",
+							"anchor": "in-scope"
+						},
+						{
+							"id": "prd-out-of-scope",
+							"title": "Outside this example's scope",
+							"page": "prd.html",
+							"anchor": "out-of-scope"
+						}
+					]
+				},
+				{
+					"id": "prd-concepts",
+					"title": "Product concepts",
+					"page": "prd.html",
+					"anchor": "concepts"
+				},
+				{
+					"id": "prd-requirements",
+					"title": "Functional requirements",
+					"page": "prd.html",
+					"anchor": "requirements",
+					"children": [
+						{
+							"id": "prd-recording",
+							"title": "Recording and returning to harvests",
+							"page": "prd.html",
+							"anchor": "recording-harvests",
+							"children": [
+								{
+									"id": "requirement-record",
+									"title": "Record a dated harvest",
+									"page": "prd.html",
+									"anchor": "req-01"
+								},
+								{
+									"id": "requirement-empty",
+									"title": "Prevent empty entries",
+									"page": "prd.html",
+									"anchor": "req-02"
+								},
+								{
+									"id": "requirement-persist",
+									"title": "Preserve saved entries",
+									"page": "prd.html",
+									"anchor": "req-03"
+								}
+							]
+						}
+					]
+				},
+				{
+					"id": "prd-quality",
+					"title": "Quality and constraints",
+					"page": "prd.html",
+					"anchor": "quality",
+					"children": [
+						{
+							"id": "requirement-retry",
+							"title": "Keep the draft when saving fails",
+							"page": "prd.html",
+							"anchor": "req-04"
+						}
+					]
+				},
+				{
+					"id": "prd-acceptance",
+					"title": "Acceptance and dependencies",
+					"page": "prd.html",
+					"anchor": "acceptance"
+				},
+				{
+					"id": "prd-decisions",
+					"title": "Open decisions",
+					"page": "prd.html",
+					"anchor": "decisions"
+				}
+			]
+		},
+		{
+			"id": "interactions",
+			"title": "Interaction guide",
+			"pages": ["interactions.html", "record-harvest.html"],
+			"sections": [
+				{
+					"id": "application",
+					"title": "Application overview",
+					"page": "interactions.html",
+					"anchor": "application-overview",
+					"children": [
+						{
+							"id": "shared-shell",
+							"title": "The shared shell",
+							"page": "interactions.html",
+							"anchor": "shell"
+						},
+						{
+							"id": "harvests",
+							"title": "Harvests",
+							"page": "interactions.html",
+							"anchor": "harvests",
+							"children": [
+								{
+									"id": "harvest-entry-form",
+									"title": "Harvest entry form",
+									"page": "interactions.html",
+									"anchor": "harvest-entry-form",
+									"children": [
+										{
+											"id": "record-harvest",
+											"title": "Record a harvest",
+											"page": "record-harvest.html",
+											"anchor": "record-harvest",
+											"children": [
+												{
+													"id": "harvest-main-flow",
+													"title": "Main sequence",
+													"page": "record-harvest.html",
+													"anchor": "main-flow"
+												},
+												{
+													"id": "harvest-alternatives",
+													"title": "Alternatives and recovery",
+													"page": "record-harvest.html",
+													"anchor": "alternatives"
+												},
+												{
+													"id": "harvest-outcome",
+													"title": "End states",
+													"page": "record-harvest.html",
+													"anchor": "outcome"
+												},
+												{
+													"id": "harvest-gaps",
+													"title": "Shared references and gaps",
+													"page": "record-harvest.html",
+													"anchor": "gaps"
+												}
+											],
+											"pageTitle": true
+										}
+									]
+								}
+							]
+						}
+					],
+					"pageTitle": true
+				},
+				{
+					"id": "interaction-coverage",
+					"title": "Coverage and open questions",
+					"page": "interactions.html",
+					"anchor": "coverage"
+				}
+			]
+		},
+		{
+			"id": "design-language",
+			"title": "Design language",
+			"pages": ["design-language.html"],
+			"sections": [
+				{
+					"id": "language-direction",
+					"title": "Visual direction",
+					"page": "design-language.html",
+					"anchor": "direction"
+				},
+				{
+					"id": "language-typography",
+					"title": "Typography",
+					"page": "design-language.html",
+					"anchor": "typography"
+				},
+				{
+					"id": "language-color",
+					"title": "Colors and theme",
+					"page": "design-language.html",
+					"anchor": "color"
+				},
+				{
+					"id": "language-spacing",
+					"title": "Spacing and layout",
+					"page": "design-language.html",
+					"anchor": "spacing"
+				},
+				{
+					"id": "language-surfaces",
+					"title": "Shape and surfaces",
+					"page": "design-language.html",
+					"anchor": "surfaces"
+				},
+				{
+					"id": "language-icons",
+					"title": "Iconography",
+					"page": "design-language.html",
+					"anchor": "icons"
+				},
+				{
+					"id": "language-components",
+					"title": "Basic component examples",
+					"page": "design-language.html",
+					"anchor": "components",
+					"children": [
+						{
+							"id": "language-actions",
+							"title": "Actions",
+							"page": "design-language.html",
+							"anchor": "actions"
+						},
+						{
+							"id": "language-text-entry",
+							"title": "Text entry",
+							"page": "design-language.html",
+							"anchor": "text-entry"
+						}
+					]
+				},
+				{
+					"id": "language-states",
+					"title": "Shared states",
+					"page": "design-language.html",
+					"anchor": "states"
+				},
+				{
+					"id": "language-gaps",
+					"title": "Decisions and gaps",
+					"page": "design-language.html",
+					"anchor": "gaps"
+				}
+			]
+		}
+	]
 }

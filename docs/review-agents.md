@@ -8,14 +8,14 @@ This guide covers setting up a consuming project and maintaining its review conf
 
 A reviewer lane is a specialist area. The workflow selects lanes from the standards assigned to the files under review, rather than sending every task to every agent.
 
-| Agent | What it examines | Typical questions |
-| --- | --- | --- |
-| `architecture-reviewer` | Architecture, Polylith composition, REMVC responsibilities, server boundaries, and app shells | Does state have a clear owner? Do dependencies respect feature boundaries? Are startup and cleanup correctly paired? |
-| `contracts-reviewer` | JavaScript types, JSDoc, public interfaces, and validation boundaries | Is the public contract explicit? Do callers and implementations agree? Is input validated at the appropriate boundary? |
-| `ui-reviewer` | React, MUI, base components, accessibility, localization, and UI behavior | Are responsibilities placed correctly? Are interactions accessible? Does the UI follow the applicable component and localization rules? |
-| `verification-reviewer` | Behavioral coverage, test ownership and placement, runners, and verification evidence | Do tests establish the required behavior? Are the right test lanes used? Does the reported validation support the change? |
+| Agent                       | What it examines                                                                                  | Typical questions                                                                                                                           |
+| --------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `architecture-reviewer`     | Architecture, Polylith composition, REMVC responsibilities, server boundaries, and app shells     | Does state have a clear owner? Do dependencies respect feature boundaries? Are startup and cleanup correctly paired?                        |
+| `contracts-reviewer`        | JavaScript types, JSDoc, public interfaces, and validation boundaries                             | Is the public contract explicit? Do callers and implementations agree? Is input validated at the appropriate boundary?                      |
+| `ui-reviewer`               | React, MUI, base components, accessibility, localization, and UI behavior                         | Are responsibilities placed correctly? Are interactions accessible? Does the UI follow the applicable component and localization rules?     |
+| `verification-reviewer`     | Behavioral coverage, test ownership and placement, runners, and verification evidence             | Do tests establish the required behavior? Are the right test lanes used? Does the reported validation support the change?                   |
 | `privacy-security-reviewer` | Privacy, personal data, authorization, secrets, schemas, persistence, identity, and notifications | Are trust boundaries enforced? Is data handled according to the selected persistence and privacy rules? Could sensitive information escape? |
-| `checkpoint-advisor` | Readiness of the complete repository state for a coherent commit | Is the work complete and verified? Are unrelated or partial changes mixed in? Is this a useful point to commit? |
+| `checkpoint-advisor`        | Functional coherence of the complete proposed checkpoint                                          | Do these changes form a reasonable unit of functionality? Is this a useful point to preserve the work?                                      |
 
 REMVC stands for Registry, Executor, Model, View, Controller. Its standards define how those responsibilities are assigned and how they interact.
 
@@ -29,14 +29,14 @@ Installing the toolkit makes agent definitions available. Installation alone doe
 
 The installed `documentation` junction or symbolic link may point outside the Codex home to the governance checkout. Context fingerprints follow that link and hash the canonical files within its physical documentation directory. Links inside that directory cannot escape it; repository inputs remain confined to their own repository.
 
-| Event | What happens |
-| --- | --- |
-| Standard `$bootstrap` | Loads instructions, synchronizes installed governance when applicable, checks eligibility, and initializes reviewers from the union of standards used by folder assignments. This establishes readiness, not repository-wide compliance. |
-| A task review | Maps the declared task changes and explicitly selected paths to standards, runs applicable primary reviewers and independent audits, and validates the combined evidence. |
-| An explicit review request | Uses the same eligibility gates and evidence requirements. Requesting an individual reviewer does not bypass them. |
-| Active-topic or governing work-context change | Runs `topic-refresh` to reload context and invalidate stale results. File paths still determine standards applicability. |
-| Changed manifest, overlay, assigned canonical rule, instructions, or review paths | Refreshes affected mappings, guide content, fingerprints, and reviewer context before relying on results again. |
-| Opted-in checkpoint monitoring | Evaluates after coherent work slices, relevant verification, context transitions, before risky work, and before handoff; unchanged state does not generate duplicate advice. |
+| Event                                                                             | What happens                                                                                                                                                                                                                             |
+| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Standard `$bootstrap`                                                             | Loads instructions, synchronizes installed governance when applicable, checks eligibility, and initializes reviewers from the union of standards used by folder assignments. This establishes readiness, not repository-wide compliance. |
+| A task review                                                                     | Maps the declared task changes and explicitly selected paths to standards, runs applicable primary reviewers and independent audits, and validates the combined evidence.                                                                |
+| An explicit review request                                                        | Uses the same eligibility gates and evidence requirements. Requesting an individual reviewer does not bypass them.                                                                                                                       |
+| Active-topic or governing work-context change                                     | Runs `topic-refresh` to reload context and invalidate stale results. File paths still determine standards applicability.                                                                                                                 |
+| Changed manifest, overlay, assigned canonical rule, instructions, or review paths | Refreshes affected mappings, guide content, fingerprints, and reviewer context before relying on results again.                                                                                                                          |
+| Opted-in checkpoint monitoring                                                    | Evaluates after coherent work slices, relevant verification, context transitions, before risky work, and before handoff; unchanged state does not generate duplicate advice.                                                             |
 
 The main assistant drives these events. There is no background filesystem watcher, scheduled review, or automatic Git hook implied by installation.
 
@@ -70,7 +70,7 @@ If reviewer definitions are missing or invalid, ask:
 Use $review-standards setup reviewers to inspect and propose the required repairs.
 ```
 
-Review and authorize the proposed user-level changes. The current infrastructure contract pins all six definitions above to `gpt-5.6-terra`: architecture, UI, and privacy/security use medium reasoning; contracts, verification, and checkpoint advice use low reasoning. These are validated requirements of this toolkit, not per-repository tuning knobs. Changing a definition does not update an already-running agent.
+Review and authorize the proposed user-level changes. The five standards-reviewer definitions are validated with `gpt-5.6-terra`: architecture, UI, and privacy/security use medium reasoning; contracts and verification use low reasoning. The independent checkpoint adviser is configured with `gpt-5.6-terra` and low reasoning. Changing a definition does not update an already-running agent; use a fresh instance.
 
 Reviewer calibration is another startup requirement. It exercises fresh primary and audit agents against synthetic violations and compliant controls and records their evidence. If calibration is missing or stale, have the setup workflow diagnose it and follow the [calibration protocol](../skills/review-standards/references/evidence-ledger.md#calibration-and-limits). It must run the independent fixture exercise and validate the results before sealing a replacement record. Do not edit hashes or mark calibration successful merely to get past startup.
 
@@ -110,7 +110,7 @@ The required setup includes a direct root `prettier` dependency, repository-owne
 }
 ```
 
-Approve proposed dependency or configuration changes before they are applied. Formatting writes are separate from the read-only check. Missing setup or a failed check does not prevent reviewers from inspecting code and reporting findings, but it prevents a final `CLEAN` result or positive checkpoint recommendation.
+Approve proposed dependency or configuration changes before they are applied. Formatting writes are separate from the read-only check. Missing setup or a failed check does not prevent reviewers from inspecting code and reporting findings, but it prevents a final `CLEAN` standards-review result. It has no effect on checkpoint advice.
 
 ### 4. Bootstrap and request a review
 
@@ -132,11 +132,11 @@ For existing work without an earlier captured baseline, explicitly identify the 
 
 There are three standards authorities:
 
-| Location | What you control |
-| --- | --- |
-| Installed `documentation/standards/` | Shared canonical rules, maintained in the governance repository. |
-| Project `agents/topics/standards/manifest.md` | Named standards sets and their folder assignments. |
-| Project `agents/topics/standards/overlay.md` | Local additions and replacements of canonical sections. |
+| Location                                      | What you control                                                 |
+| --------------------------------------------- | ---------------------------------------------------------------- |
+| Installed `documentation/standards/`          | Shared canonical rules, maintained in the governance repository. |
+| Project `agents/topics/standards/manifest.md` | Named standards sets and their folder assignments.               |
+| Project `agents/topics/standards/overlay.md`  | Local additions and replacements of canonical sections.          |
 
 Topics supply product and work context. Root `STANDARDS.md` is a generated explanation. Neither selects rules or overrides the manifest and overlay. An independently rooted child repository owns its own configuration even when a host builds or serves its applications.
 
@@ -267,12 +267,12 @@ Read the generated guide to confirm the intended selection. Do not hand-edit it 
 
 The workflow records a baseline, generates obligations for each applicable file/rule pair, gathers primary findings and independent audits, and validates the evidence against current source. Reports live under the Git-ignored `.codex-tmp/review-standards/session-*` directory. The parent may create that directory and add the narrow ignore entry, as well as refresh `STANDARDS.md`; reviewers themselves do not edit code or Git state.
 
-| Result | Meaning |
-| --- | --- |
-| `CLEAN` | All required mapped-rule evidence and independent audits validate against current source, with formatting passing. |
-| `FINDINGS_PRESENT` | Validated violations remain; formatting problems are also reported when present. |
-| `INCOMPLETE` | Evidence, coverage, agreement, freshness, or formatting is insufficient for a clean conclusion. |
-| Blocked startup | A prerequisite such as infrastructure, calibration, normalization, or interpretable configuration prevents the run. |
+| Result             | Meaning                                                                                                             |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `CLEAN`            | All required mapped-rule evidence and independent audits validate against current source, with formatting passing.  |
+| `FINDINGS_PRESENT` | Validated violations remain; formatting problems are also reported when present.                                    |
+| `INCOMPLETE`       | Evidence, coverage, agreement, freshness, or formatting is insufficient for a clean conclusion.                     |
+| Blocked startup    | A prerequisite such as infrastructure, calibration, normalization, or interpretable configuration prevents the run. |
 
 Findings include severity, location, canonical authority, the considered overlay, evidence, consequence, the smallest compliant remedy, and confidence. The assistant consolidates duplicates and prioritizes blocking, important, then advisory issues. After fixes, affected review and audit evidence must be refreshed; results from before an edit cannot certify the new source.
 
@@ -288,21 +288,21 @@ Use $review-standards checkpoint-advisor evaluate.
 
 For session monitoring, use `checkpoint-advisor monitor`; use `suspend`, `restart`, or `status` to control it. Restart applies after suspension in the current session and creates fresh adviser context.
 
-The adviser reports `NOT_READY`, `CHECKPOINT_RECOMMENDED`, or `CHECKPOINT_URGENT`. It considers the entire repository because `check-point` stages all changes, including work outside a narrow task review. It inspects existing verification evidence and runs the required formatting checks rather than independently running builds or tests. A covered task needs a current validated clean review before a positive recommendation.
+The adviser reports `NOT_READY`, `CHECKPOINT_RECOMMENDED`, or `CHECKPOINT_URGENT` based only on whether the current changes form a reasonable unit of functionality. It considers the entire repository because `check-point` stages all changes, including work outside a narrow task review. A useful checkpoint may capture an intermediate implementation step. Tests, formatting, normalization, calibration, standards-review results and fingerprints are not prerequisites. `NOT_READY` means the changes do not yet form a coherent unit; the adviser explains what work would make them coherent. It may suggest a commit message; actual commit authorization remains with the parent and `check-point`.
 
 When you decide to commit, invoke [check-point](check-point.md). Advice does not authorize a commit or push.
 
 ## Troubleshooting
 
-| Symptom | Next step |
-| --- | --- |
-| Reviewer definitions are missing or have unexpected model settings | Run `$review-standards setup reviewers`; inspect and authorize the proposed repair. |
-| Calibration is missing or stale | Follow the synthetic primary/audit calibration protocol; do not bypass readiness. |
-| The repository has never normalized or its marker is invalid | Audit, manually review decisions, then explicitly reconcile before bootstrapping again. |
-| A folder mapping or canonical link is invalid after an edit | Repair the current manifest or overlay, refresh the guide, and rerun preflight. Prior normalization does not need to be repeated. |
-| A local rule seems ignored | Check the file's longest folder assignment, whether its set contains the target standard, the exact section heading, and the overlay scope. |
-| A review reports findings despite passing tests | Inspect the cited rule; behavioral test success does not establish architectural or other standards compliance. |
-| Review is otherwise clean but formatting fails | Repair formatting setup or apply authorized fixes, then rerun the check and affected review validation. |
-| Bootstrap loads instructions but starts no reviewers | Check for the instructions-only profile or reported startup failures. Readiness and an actual task review are separate steps. |
+| Symptom                                                            | Next step                                                                                                                                   |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Reviewer definitions are missing or have unexpected model settings | Run `$review-standards setup reviewers`; inspect and authorize the proposed repair.                                                         |
+| Calibration is missing or stale                                    | Follow the synthetic primary/audit calibration protocol; do not bypass readiness.                                                           |
+| The repository has never normalized or its marker is invalid       | Audit, manually review decisions, then explicitly reconcile before bootstrapping again.                                                     |
+| A folder mapping or canonical link is invalid after an edit        | Repair the current manifest or overlay, refresh the guide, and rerun preflight. Prior normalization does not need to be repeated.           |
+| A local rule seems ignored                                         | Check the file's longest folder assignment, whether its set contains the target standard, the exact section heading, and the overlay scope. |
+| A review reports findings despite passing tests                    | Inspect the cited rule; behavioral test success does not establish architectural or other standards compliance.                             |
+| Review is otherwise clean but formatting fails                     | Repair formatting setup or apply authorized fixes, then rerun the check and affected review validation.                                     |
+| Bootstrap loads instructions but starts no reviewers               | Check for the instructions-only profile or reported startup failures. Readiness and an actual task review are separate steps.               |
 
 [Review skill reference](review-standards.md) · [Normalization guide](normalize-standards.md) · [Canonical governance](../documentation/standards/documentation.md) · [All skills](../README.md)

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.2",
+  "schemaVersion": "0.3",
   "id": "example-records-ux",
   "title": "Example Records UX",
   "revision": "1",
@@ -101,43 +101,9 @@
         "save-record",
         "retry-save"
       ],
-      "steps": [
-        {
-          "id": "confirm-visible-selection",
-          "actor": "User",
-          "action": "Ask the workspace to confirm the already-visible current selection.",
-          "actionRef": "confirm-current-selection",
-          "targetRef": "record-list",
-          "response": "The workspace repeats the name of the record that remains visibly selected."
-        },
-        {
-          "id": "open-current-record",
-          "actor": "User",
-          "action": "Open the selected record for editing.",
-          "actionRef": "open-record",
-          "targetRef": "record-list",
-          "response": "The selected record becomes editable without losing collection context."
-        },
-        {
-          "id": "save-current-record",
-          "actor": "User",
-          "action": "Save the corrected value.",
-          "actionRef": "save-record",
-          "targetRef": "record-field",
-          "response": "Progress and then the saved result appear in the workspace."
-        }
-      ],
       "outcome": "The corrected record remains visible as saved.",
-      "alternatives": [
-        {
-          "id": "save-failure",
-          "condition": "The save does not complete.",
-          "response": "The edited value remains visible with a failure result.",
-          "recovery": "The user can retry without re-entering the value.",
-          "status": "accepted"
-        }
-      ],
-      "questionRefs": []
+      "questionRefs": [],
+      "entryNodeRef": "confirm-visible-selection"
     }
   ],
   "surfaces": [
@@ -177,13 +143,6 @@
         "record-field",
         "save-status"
       ],
-      "states": [
-        "viewing",
-        "editing",
-        "saving",
-        "saved",
-        "failed"
-      ],
       "interactionFrameRefs": [
         "records-viewing",
         "records-editing",
@@ -191,7 +150,14 @@
         "records-saved",
         "records-failed"
       ],
-      "questionRefs": []
+      "questionRefs": [],
+      "stateRefs": [
+        "viewing",
+        "editing",
+        "saving",
+        "saved",
+        "failed"
+      ]
     }
   ],
   "components": [
@@ -208,13 +174,14 @@
       "capabilities": [
         "Show record identity and current selection."
       ],
-      "states": [
-        "available",
-        "selected"
+      "stateRefs": [
+        "record-list-available",
+        "record-list-selected"
       ],
-      "behaviorRequirements": [
-        "Selection remains visible when the record opens."
-      ]
+      "behaviorNodeRefs": [
+        "record-list-behavior-1"
+      ],
+      "entryBehaviorNodeRef": "record-list-behavior-1"
     },
     {
       "id": "record-field",
@@ -229,15 +196,16 @@
       "capabilities": [
         "Display and edit the current value."
       ],
-      "states": [
-        "current",
-        "edited",
-        "saving",
-        "failed"
+      "stateRefs": [
+        "record-field-current",
+        "record-field-edited",
+        "record-field-saving",
+        "record-field-failed"
       ],
-      "behaviorRequirements": [
-        "A failed save preserves the edited value."
-      ]
+      "behaviorNodeRefs": [
+        "record-field-behavior-1"
+      ],
+      "entryBehaviorNodeRef": "record-field-behavior-1"
     },
     {
       "id": "save-status",
@@ -252,14 +220,15 @@
       "capabilities": [
         "Show saving, saved, and failed outcomes."
       ],
-      "states": [
-        "saving",
-        "saved",
-        "failed"
+      "stateRefs": [
+        "save-status-saving",
+        "save-status-saved",
+        "save-status-failed"
       ],
-      "behaviorRequirements": [
-        "Failure identifies the retained edit and available recovery."
-      ]
+      "behaviorNodeRefs": [
+        "save-status-behavior-1"
+      ],
+      "entryBehaviorNodeRef": "save-status-behavior-1"
     }
   ],
   "actions": [
@@ -292,30 +261,22 @@
       },
       "persistence": "state-bound",
       "priority": "primary",
-      "applicableStates": [
-        {
-          "surfaceRef": "records-workspace",
-          "state": "viewing"
-        }
-      ],
-      "feedback": [
-        {
-          "id": "record-opened",
-          "phase": "success",
-          "description": "The record details become editable.",
-          "persistence": "state-bound"
-        }
-      ],
       "cancellation": {
         "mode": "not-applicable",
         "description": "Opening the record is an immediate navigation action."
       },
-      "recovery": [],
       "patternBasis": {
         "kind": "ordinary",
         "rationale": "Opening a selected list item is a familiar application interaction."
       },
-      "questionRefs": []
+      "questionRefs": [],
+      "applicableStateRefs": [
+        "viewing"
+      ],
+      "feedbackRefs": [
+        "record-opened"
+      ],
+      "recoveryRefs": []
     },
     {
       "id": "confirm-current-selection",
@@ -346,25 +307,17 @@
       },
       "persistence": "persistent",
       "priority": "secondary",
-      "applicableStates": [
-        {
-          "surfaceRef": "records-workspace",
-          "state": "viewing"
-        }
+      "applicableStateRefs": [
+        "viewing"
       ],
-      "feedback": [
-        {
-          "id": "current-selection-restated",
-          "phase": "success",
-          "description": "The workspace repeats the identity of the record that remains visibly selected.",
-          "persistence": "transient"
-        }
+      "feedbackRefs": [
+        "current-selection-restated"
       ],
       "cancellation": {
         "mode": "not-applicable",
         "description": "Restating the current selection is immediate."
       },
-      "recovery": [],
+      "recoveryRefs": [],
       "patternBasis": {
         "kind": "ordinary",
         "rationale": "A named confirmation command is mechanically familiar."
@@ -400,51 +353,26 @@
       },
       "persistence": "state-bound",
       "priority": "primary",
-      "applicableStates": [
-        {
-          "surfaceRef": "records-workspace",
-          "state": "editing"
-        }
-      ],
-      "feedback": [
-        {
-          "id": "save-started",
-          "phase": "progress",
-          "description": "The workspace identifies that saving is in progress.",
-          "persistence": "state-bound"
-        },
-        {
-          "id": "save-completed",
-          "phase": "success",
-          "description": "The workspace identifies the current value as saved.",
-          "persistence": "state-bound"
-        },
-        {
-          "id": "save-failed",
-          "phase": "failure",
-          "description": "The workspace identifies failure while preserving the edited value.",
-          "persistence": "state-bound"
-        }
-      ],
       "cancellation": {
         "mode": "unavailable",
         "description": "The bounded save is allowed to finish; failure preserves the edit for retry."
       },
-      "recovery": [
-        {
-          "id": "retry-preserved-save",
-          "condition": "The prior save failed.",
-          "response": "Keep the edited value and offer retry in the failed state.",
-          "actionRefs": [
-            "retry-save"
-          ]
-        }
-      ],
       "patternBasis": {
         "kind": "ordinary",
         "rationale": "A named save command with progress and retryable failure is a familiar form workflow."
       },
-      "questionRefs": []
+      "questionRefs": [],
+      "applicableStateRefs": [
+        "editing"
+      ],
+      "feedbackRefs": [
+        "save-started",
+        "save-completed",
+        "save-failed"
+      ],
+      "recoveryRefs": [
+        "retry-preserved-save"
+      ]
     },
     {
       "id": "retry-save",
@@ -477,30 +405,22 @@
       },
       "persistence": "state-bound",
       "priority": "contextual",
-      "applicableStates": [
-        {
-          "surfaceRef": "records-workspace",
-          "state": "failed"
-        }
-      ],
-      "feedback": [
-        {
-          "id": "retry-started",
-          "phase": "progress",
-          "description": "The workspace returns to saving feedback.",
-          "persistence": "state-bound"
-        }
-      ],
       "cancellation": {
         "mode": "not-applicable",
         "description": "Retry starts the same bounded save operation."
       },
-      "recovery": [],
       "patternBasis": {
         "kind": "ordinary",
         "rationale": "A retry command adjacent to a recoverable failure is a familiar recovery interaction."
       },
-      "questionRefs": []
+      "questionRefs": [],
+      "applicableStateRefs": [
+        "failed"
+      ],
+      "feedbackRefs": [
+        "retry-started"
+      ],
+      "recoveryRefs": []
     }
   ],
   "interactionFrames": [
@@ -511,7 +431,6 @@
       "purpose": "Show collection context and the primary entry into record editing.",
       "status": "accepted",
       "surfaceRef": "records-workspace",
-      "state": "viewing",
       "taskRefs": [
         "update-record"
       ],
@@ -577,7 +496,8 @@
           "open-record-affordance"
         ]
       },
-      "questionRefs": []
+      "questionRefs": [],
+      "stateRef": "viewing"
     },
     {
       "id": "records-editing",
@@ -586,7 +506,6 @@
       "purpose": "Keep the current value and primary save action together.",
       "status": "accepted",
       "surfaceRef": "records-workspace",
-      "state": "editing",
       "taskRefs": [
         "update-record"
       ],
@@ -640,7 +559,8 @@
           "save-record-affordance"
         ]
       },
-      "questionRefs": []
+      "questionRefs": [],
+      "stateRef": "editing"
     },
     {
       "id": "records-saving",
@@ -649,7 +569,6 @@
       "purpose": "Keep the edited value visible while save progress is communicated.",
       "status": "accepted",
       "surfaceRef": "records-workspace",
-      "state": "saving",
       "taskRefs": [
         "update-record"
       ],
@@ -690,7 +609,8 @@
         "entry": "Keep focus in the record details while saving is active.",
         "orderRefs": []
       },
-      "questionRefs": []
+      "questionRefs": [],
+      "stateRef": "saving"
     },
     {
       "id": "records-saved",
@@ -699,7 +619,6 @@
       "purpose": "Confirm completion while keeping the corrected record visible.",
       "status": "accepted",
       "surfaceRef": "records-workspace",
-      "state": "saved",
       "taskRefs": [
         "update-record"
       ],
@@ -740,7 +659,8 @@
         "entry": "Keep focus with the corrected record after completion.",
         "orderRefs": []
       },
-      "questionRefs": []
+      "questionRefs": [],
+      "stateRef": "saved"
     },
     {
       "id": "records-failed",
@@ -749,7 +669,6 @@
       "purpose": "Preserve the edit, explain failure, and expose one contextual recovery action.",
       "status": "accepted",
       "surfaceRef": "records-workspace",
-      "state": "failed",
       "taskRefs": [
         "update-record"
       ],
@@ -805,7 +724,8 @@
           "retry-save-affordance"
         ]
       },
-      "questionRefs": []
+      "questionRefs": [],
+      "stateRef": "failed"
     }
   ],
   "patternResearch": [],
@@ -864,5 +784,395 @@
       }
     ]
   },
-  "openQuestions": []
+  "openQuestions": [],
+  "productModelBinding": {
+    "id": "example-records",
+    "revision": 1,
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "materialSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "recordIndexSha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "useCaseRelations": [],
+  "flowNodes": [
+    {
+      "id": "confirm-visible-selection",
+      "kind": "step",
+      "ownerRef": "ux:use-case:update-record",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ],
+      "questionRefs": [],
+      "actor": "User",
+      "action": "Ask the workspace to confirm the already-visible current selection.",
+      "actionRef": "confirm-current-selection",
+      "targetRef": "ux:component:record-list",
+      "response": "The workspace repeats the name of the record that remains visibly selected."
+    },
+    {
+      "id": "open-current-record",
+      "actor": "User",
+      "action": "Open the selected record for editing.",
+      "actionRef": "open-record",
+      "targetRef": "ux:component:record-list",
+      "response": "The selected record becomes editable without losing collection context.",
+      "kind": "step",
+      "ownerRef": "ux:use-case:update-record",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ],
+      "questionRefs": []
+    },
+    {
+      "id": "save-current-record",
+      "actor": "User",
+      "action": "Save the corrected value.",
+      "actionRef": "save-record",
+      "targetRef": "ux:component:record-field",
+      "response": "Progress and then the saved result appear in the workspace.",
+      "kind": "step",
+      "ownerRef": "ux:use-case:update-record",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ],
+      "questionRefs": []
+    },
+    {
+      "id": "save-failure",
+      "kind": "alternative",
+      "ownerRef": "ux:use-case:update-record",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ],
+      "questionRefs": [],
+      "prompt": "The save does not complete.",
+      "response": "The edited value remains visible with a failure result. The user can retry without re-entering the value."
+    },
+    {
+      "id": "retry-current-record",
+      "kind": "step",
+      "ownerRef": "ux:use-case:update-record",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ],
+      "questionRefs": [],
+      "actor": "User",
+      "action": "Retry saving the preserved edit.",
+      "actionRef": "retry-save",
+      "targetRef": "ux:component:record-field",
+      "response": "The workspace confirms the saved value or preserves it for another retry."
+    },
+    {
+      "id": "record-list-behavior-1",
+      "kind": "component-behavior",
+      "ownerRef": "ux:component:record-list",
+      "componentRef": "record-list",
+      "statement": "Selection remains visible when the record opens.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ],
+      "questionRefs": []
+    },
+    {
+      "id": "record-field-behavior-1",
+      "kind": "component-behavior",
+      "ownerRef": "ux:component:record-field",
+      "componentRef": "record-field",
+      "statement": "A failed save preserves the edited value.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ],
+      "questionRefs": []
+    },
+    {
+      "id": "save-status-behavior-1",
+      "kind": "component-behavior",
+      "ownerRef": "ux:component:save-status",
+      "componentRef": "save-status",
+      "statement": "Failure identifies the retained edit and available recovery.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ],
+      "questionRefs": []
+    }
+  ],
+  "flowEdges": [
+    {
+      "id": "open-current-record-next",
+      "fromRef": "open-current-record",
+      "toRef": "ux:flow-node:save-current-record",
+      "kind": "next",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "save-failure-branch",
+      "fromRef": "save-current-record",
+      "toRef": "ux:flow-node:save-failure",
+      "kind": "branches-to",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ],
+      "condition": "The save does not complete.",
+      "order": 1
+    },
+    {
+      "id": "save-failure-retry",
+      "fromRef": "save-failure",
+      "toRef": "ux:flow-node:retry-current-record",
+      "kind": "next",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "confirm-selection-before-opening",
+      "fromRef": "confirm-visible-selection",
+      "toRef": "ux:flow-node:open-current-record",
+      "kind": "next",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    }
+  ],
+  "states": [
+    {
+      "id": "viewing",
+      "ownerRef": "ux:surface:records-workspace",
+      "name": "viewing",
+      "meaning": "Records workspace is viewing.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "editing",
+      "ownerRef": "ux:surface:records-workspace",
+      "name": "editing",
+      "meaning": "Records workspace is editing.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "saving",
+      "ownerRef": "ux:surface:records-workspace",
+      "name": "saving",
+      "meaning": "Records workspace is saving.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "saved",
+      "ownerRef": "ux:surface:records-workspace",
+      "name": "saved",
+      "meaning": "Records workspace is saved.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "failed",
+      "ownerRef": "ux:surface:records-workspace",
+      "name": "failed",
+      "meaning": "Records workspace is failed.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "record-list-available",
+      "ownerRef": "ux:component:record-list",
+      "name": "available",
+      "meaning": "Record list is available.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "record-list-selected",
+      "ownerRef": "ux:component:record-list",
+      "name": "selected",
+      "meaning": "Record list is selected.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "record-field-current",
+      "ownerRef": "ux:component:record-field",
+      "name": "current",
+      "meaning": "Record field is current.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "record-field-edited",
+      "ownerRef": "ux:component:record-field",
+      "name": "edited",
+      "meaning": "Record field is edited.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "record-field-saving",
+      "ownerRef": "ux:component:record-field",
+      "name": "saving",
+      "meaning": "Record field is saving.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "record-field-failed",
+      "ownerRef": "ux:component:record-field",
+      "name": "failed",
+      "meaning": "Record field is failed.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "save-status-saving",
+      "ownerRef": "ux:component:save-status",
+      "name": "saving",
+      "meaning": "Save status is saving.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "save-status-saved",
+      "ownerRef": "ux:component:save-status",
+      "name": "saved",
+      "meaning": "Save status is saved.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "save-status-failed",
+      "ownerRef": "ux:component:save-status",
+      "name": "failed",
+      "meaning": "Save status is failed.",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    }
+  ],
+  "feedback": [
+    {
+      "id": "record-opened",
+      "phase": "success",
+      "description": "The record details become editable.",
+      "persistence": "state-bound",
+      "actionRef": "open-record",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "save-started",
+      "phase": "progress",
+      "description": "The workspace identifies that saving is in progress.",
+      "persistence": "state-bound",
+      "actionRef": "save-record",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "save-completed",
+      "phase": "success",
+      "description": "The workspace identifies the current value as saved.",
+      "persistence": "state-bound",
+      "actionRef": "save-record",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "save-failed",
+      "phase": "failure",
+      "description": "The workspace identifies failure while preserving the edited value.",
+      "persistence": "state-bound",
+      "actionRef": "save-record",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "retry-started",
+      "phase": "progress",
+      "description": "The workspace returns to saving feedback.",
+      "persistence": "state-bound",
+      "actionRef": "retry-save",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    },
+    {
+      "id": "current-selection-restated",
+      "actionRef": "confirm-current-selection",
+      "phase": "success",
+      "description": "The workspace repeats the identity of the record that remains visibly selected.",
+      "persistence": "transient",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    }
+  ],
+  "recoveryPaths": [
+    {
+      "id": "retry-preserved-save",
+      "condition": "The prior save failed.",
+      "response": "Keep the edited value and offer retry in the failed state.",
+      "actionRefs": [
+        "retry-save"
+      ],
+      "ownerRef": "ux:action:save-record",
+      "returnNodeRef": "retry-current-record",
+      "status": "accepted",
+      "sourceRefs": [
+        "product"
+      ]
+    }
+  ],
+  "productRealizations": [],
+  "traceGaps": []
 }

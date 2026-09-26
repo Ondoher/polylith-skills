@@ -8,7 +8,7 @@
     "uxArtifact": {
       "id": "example-records-ux",
       "revision": "1",
-      "sha256": "5818c56048517db4d425b5a2d96fe5e382178d16ba1fd32c362866eb0f3e65a0"
+      "sha256": "814ea4d7c1f5d3094ac4adc5c49c550524556b46eb5a024bd28228c38ce77a51"
     },
     "scopeRefs": [
       "update-record"

@@ -11,8 +11,20 @@ test('prepared calibration binds reviewer effort, instructions and checker bytes
 		'skills/review-standards/scripts/review-ledger.mjs',
 	])
 		assert.match(request.inputs[file], /^[0-9a-f]{64}$/);
+	assert.equal(Object.hasOwn(request.inputs, 'agents/checkpoint-advisor.toml'), false);
 	const {fingerprint, ...payload} = request;
 	assert.equal(fingerprint, digest(payload));
+});
+
+test('calibration selects stable rule identities after Markdown table formatting', () => {
+	const rules = calibrationRequest()
+		.lanes.calibration.filter((entry) => entry.path === 'CaseA.jsx')
+		.map((entry) => entry.rule);
+	assert.deepEqual(
+		rules.map((rule) => rule.id),
+		['REACT-STRUCT-001', 'REACT-EVENT-001', 'REACT-007', 'REMVC-006'],
+	);
+	assert.match(rules[3].text, /\| Owner\s+\| Must own\s+\| Must not own\s+\|/);
 });
 
 test('calibration rejects tampered scope before processing reports', () => {

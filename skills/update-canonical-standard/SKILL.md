@@ -47,9 +47,9 @@ Format and check each edited Markdown file with the repository-local Prettier co
 
 1. For a canonical edit, run:
 
-   ```text
-   node <codex-root>/skills/review-standards/scripts/rule-inventory.mjs --check <codex-root>/documentation/standards
-   ```
+    ```text
+    node <codex-root>/skills/review-standards/scripts/rule-inventory.mjs --check <codex-root>/documentation/standards
+    ```
 
 2. Run the folder-standards helper for an affected path and confirm which entry supplied the promotion, whether it was removed or retained, and which canonical and local rules now govern that path.
 3. Run any focused tests for helpers or contracts changed with the standard.

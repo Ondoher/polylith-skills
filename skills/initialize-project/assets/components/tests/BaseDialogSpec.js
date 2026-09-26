@@ -3,27 +3,49 @@ import BaseDialog from '../BaseDialog.jsx';
 import {createTestHarness} from '../../testing/TestHarness.js';
 
 const translations = {
-	'dialog.title': 'Settings', 'dialog.changed': 'Changed title', 'dialog.description': 'Edit settings',
-	'action.cancel': 'Cancel', 'action.save': 'Save', 'action.extra': 'Extra', 'status.changed': 'Mode changed', 'common.close': 'Close dialog',
+	'dialog.title': 'Settings',
+	'dialog.changed': 'Changed title',
+	'dialog.description': 'Edit settings',
+	'action.cancel': 'Cancel',
+	'action.save': 'Save',
+	'action.extra': 'Extra',
+	'status.changed': 'Mode changed',
+	'common.close': 'Close dialog',
 	Close: 'Close',
 };
 const localize = {translate: (phrase) => translations[phrase] ?? ''};
 
 function Child({dialog}) {
-	return <div>
-		<input aria-label="Child input" />
-		<button type="button" onClick={() => dialog.setTitle('dialog.changed')}>Change title</button>
-		<button type="button" onClick={() => dialog.setActionState('save', {enabled: false})}>Disable save</button>
-		<button type="button" onClick={() => dialog.announce('status.changed')}>Announce</button>
-		<button type="button" onClick={() => dialog.submit()}>Submit</button>
-	</div>;
+	return (
+		<div>
+			<input aria-label="Child input" />
+			<button type="button" onClick={() => dialog.setTitle('dialog.changed')}>
+				Change title
+			</button>
+			<button type="button" onClick={() => dialog.setActionState('save', {enabled: false})}>
+				Disable save
+			</button>
+			<button type="button" onClick={() => dialog.announce('status.changed')}>
+				Announce
+			</button>
+			<button type="button" onClick={() => dialog.submit()}>
+				Submit
+			</button>
+		</div>
+	);
 }
 
 function FunctionChild(dialog) {
-	return <div>
-		<button type="button" onClick={() => dialog.setDescription('dialog.description')}>Set description</button>
-		<button type="button" onClick={() => dialog.setActionState('unknown', {enabled: false})}>Update unknown</button>
-	</div>;
+	return (
+		<div>
+			<button type="button" onClick={() => dialog.setDescription('dialog.description')}>
+				Set description
+			</button>
+			<button type="button" onClick={() => dialog.setActionState('unknown', {enabled: false})}>
+				Update unknown
+			</button>
+		</div>
+	);
 }
 
 function buttonByText(text) {
@@ -47,9 +69,21 @@ describe('BaseDialog', () => {
 
 	function render(props = {}) {
 		return harness.render(BaseDialog, {
-			open: true, localize: true, title: 'dialog.title', description: 'dialog.description', showClose: true,
-			closeLabel: 'common.close', onAction: pressed, onClose: closed, onCancel: cancelled, onConfirm: confirmed, resetToken: 1,
-			actions: [{id: 'cancel', label: 'action.cancel', intent: 'cancel'}, {id: 'save', label: 'action.save', priority: 'primary', intent: 'confirm'}],
+			open: true,
+			localize: true,
+			title: 'dialog.title',
+			description: 'dialog.description',
+			showClose: true,
+			closeLabel: 'common.close',
+			onAction: pressed,
+			onClose: closed,
+			onCancel: cancelled,
+			onConfirm: confirmed,
+			resetToken: 1,
+			actions: [
+				{id: 'cancel', label: 'action.cancel', intent: 'cancel'},
+				{id: 'save', label: 'action.save', priority: 'primary', intent: 'confirm'},
+			],
 			children: <Child />,
 			...props,
 		});
@@ -108,12 +142,14 @@ describe('BaseDialog', () => {
 
 	it('warns for invalid action configurations and hides requested actions', () => {
 		spyOn(console, 'warn');
-		render({actions: [
-			{id: 'save', label: 'action.save', priority: 'primary'},
-			{id: 'extra', label: 'action.extra', priority: 'primary'},
-			{id: 'save', label: 'action.cancel'},
-			{id: 'close', label: 'action.cancel', hidden: true},
-		]});
+		render({
+			actions: [
+				{id: 'save', label: 'action.save', priority: 'primary'},
+				{id: 'extra', label: 'action.extra', priority: 'primary'},
+				{id: 'save', label: 'action.cancel'},
+				{id: 'close', label: 'action.cancel', hidden: true},
+			],
+		});
 		expect(console.warn).toHaveBeenCalled();
 		expect(buttonByText('Extra')).toBeTruthy();
 		expect(buttonByText('Cancel')).toBeUndefined();
@@ -122,7 +158,10 @@ describe('BaseDialog', () => {
 	it('covers literal defaults, empty content, function children, and supplied ids', () => {
 		harness = createTestHarness().withContext({accessibilityEnabled: false});
 		const result = harness.render(BaseDialog, {
-			open: true, title: 'Literal title', titleId: 'provided-title', descriptionId: 'provided-description',
+			open: true,
+			title: 'Literal title',
+			titleId: 'provided-title',
+			descriptionId: 'provided-description',
 			children: FunctionChild,
 		});
 		const dialog = result.queryDocument('[role="dialog"]');
@@ -141,7 +180,11 @@ describe('BaseDialog', () => {
 	it('covers non-accessible disabled actions and pressed action states', () => {
 		harness = createTestHarness().withContext({accessibilityEnabled: false});
 		let result = harness.render(BaseDialog, {
-			open: true, title: 'Actions', showClose: true, onClose: closed, onAction: pressed,
+			open: true,
+			title: 'Actions',
+			showClose: true,
+			onClose: closed,
+			onAction: pressed,
 			actions: [
 				{id: 'disabled', label: 'Disabled', enabled: false},
 				{id: 'toggle-off', label: 'Toggle off', pressable: true, pressed: false},
@@ -151,14 +194,20 @@ describe('BaseDialog', () => {
 		expect(buttonByText('Disabled').disabled).toBeTrue();
 		expect(buttonByText('Toggle off').getAttribute('aria-pressed')).toBeNull();
 		harness.click(buttonByText('Toggle on'));
-		act(() => document.body.querySelector('[role="dialog"]').dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true})));
+		act(() =>
+			document.body
+				.querySelector('[role="dialog"]')
+				.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true})),
+		);
 		expect(result.queryDocument('[role="dialog"]')).toBeTruthy();
 		expect(closed).toHaveBeenCalledWith('escapeKeyDown');
 		expect(pressed).toHaveBeenCalledWith('close');
 		harness.unmount();
 		harness = createTestHarness().withContext({accessibilityEnabled: true});
 		result = harness.render(BaseDialog, {
-			open: true, title: 'Actions', actions: [
+			open: true,
+			title: 'Actions',
+			actions: [
 				{id: 'toggle-off', label: 'Toggle off', pressable: true, pressed: false},
 				{id: 'toggle-on', label: 'Toggle on', pressable: true, pressed: true},
 			],

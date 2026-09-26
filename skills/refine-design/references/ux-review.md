@@ -7,7 +7,7 @@ Run an independent qualitative UX review after the parent has structurally valid
 Use this order:
 
 1. A fresh `ux-planner`, or the parent with honest `parent-assessment` provenance when that planner is unavailable, produces the UX proposal.
-2. The parent reconciles owner decisions, verifies material research sources, validates references and invariants, persists `ux/ux-spec.json`, and confirms deterministic replay.
+2. The parent reconciles owner decisions and verifies material research sources, consolidates product-intent writeback and formatting, updates the model for any changed source, reconciles affected UX and exact bindings, persists `ux/ux-spec.json`, and confirms deterministic replay. Freeze these inputs before requesting review; follow [the efficient cycle](refinement-cycle.md).
 3. A fresh `ux-reviewer` assesses the exact saved UX revision and requested scope without editing it.
 4. UI work begins only when that reviewer returns `pass`.
 

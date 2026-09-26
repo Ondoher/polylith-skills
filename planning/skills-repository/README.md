@@ -1,6 +1,5 @@
 # Skills And Standards Repository
 
-
 This topic records the operating design for the dedicated `polylith-skills` repository. The repository is the versioned source for managed Codex skills, agents, canonical engineering standards, and portable developer documentation.
 
 ## Goals

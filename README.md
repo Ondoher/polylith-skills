@@ -8,23 +8,23 @@ The two setup skills live in `.agents/skills/` and can be used from this reposit
 
 1. Have Codex, Git, Node.js, and npm available. Clone the repository into a location you intend to keep:
 
-   ```sh
-   git clone git@github.com:Ondoher/polylith-skills.git
-   cd polylith-skills
-   ```
+    ```sh
+    git clone git@github.com:Ondoher/polylith-skills.git
+    cd polylith-skills
+    ```
 
 2. Open the checkout as your Codex workspace, or start Codex from that directory. Ask Codex:
 
-   ```text
-   Use $install-polylith-skills to install this repository's skills.
-   ```
+    ```text
+    Use $install-polylith-skills to install this repository's skills.
+    ```
 
 3. Review the installation plan and approve the disclosed changes. The installer links managed skills, agents, and documentation into your Codex home, adds a managed instructions block, restores locked skill dependencies, and checks the installation.
 4. Restart Codex if needed to discover the installed skills. Open the project you want to work on and invoke a skill by name, for example:
 
-   ```text
-   Use $refine-design to develop the product description in documentation/product-description.md.
-   ```
+    ```text
+    Use $refine-design to develop the product description in documentation/product-description.md.
+    ```
 
 These are prompts to Codex, not shell commands. The setup skills are repository-local; the installed skills become available to your other projects. Installation uses live links, so keep this checkout in place. Codex home is selected by `CODEX_HOME`, or defaults to `~/.codex`.
 
@@ -36,42 +36,42 @@ published changes first. Restart Codex when needed for discovery.
 
 ## Repository-local skills
 
-| Skill | What it does |
-| --- | --- |
-| [install-polylith-skills](docs/install-polylith-skills.md) | Installs the toolkit and inspects, repairs, updates, or relocates its live links. |
+| Skill                                                          | What it does                                                                                              |
+| -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| [install-polylith-skills](docs/install-polylith-skills.md)     | Installs the toolkit and inspects, repairs, updates, or relocates its live links.                         |
 | [uninstall-polylith-skills](docs/uninstall-polylith-skills.md) | Removes installer-owned links and instructions while preserving the checkout and unrelated configuration. |
 
 ## Installed skills
 
 ### Start and extend a project
 
-| Skill | What it does |
-| --- | --- |
-| [bootstrap](docs/bootstrap.md) | Loads repository instructions and, in the standard profile, synchronizes governance and starts eligible reviewers. |
-| [initialize-project](docs/initialize-project.md) | Creates the first application and development setup in an empty folder or fresh repository. |
-| [create-app](docs/create-app.md) | Adds a Polylith application to an established repository, including routes, builds, tests, and standards mappings. |
+| Skill                                            | What it does                                                                                                       |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| [bootstrap](docs/bootstrap.md)                   | Loads repository instructions and, in the standard profile, synchronizes governance and starts eligible reviewers. |
+| [initialize-project](docs/initialize-project.md) | Creates the first application and development setup in an empty folder or fresh repository.                        |
+| [create-app](docs/create-app.md)                 | Adds a Polylith application to an established repository, including routes, builds, tests, and standards mappings. |
 
 ### Develop and publish a product design
 
-| Skill | What it does |
-| --- | --- |
-| [attach-detail](docs/attach-detail.md) | Links an existing technical white paper from the product description with a checked relative path. |
-| [refine-detail](docs/refine-detail.md) | Researches and revises a linked technical white paper while accounting for all existing information. |
-| [refine-design](docs/refine-design.md) | Develops a product brief into persisted product, UX, and UI decisions with specialist consultation. |
-| [generate-prd](docs/generate-prd.md) | Plans a source-bound product-document collection and publishes its linked HTML pages from validated context. |
-| [generate-technical](docs/generate-technical.md) | Publishes a linked Markdown implementation guide from validated technical context. |
-| [reset-design](docs/reset-design.md) | Discards a product's derived design and rebuilds it from the current human-owned description. |
+| Skill                                            | What it does                                                                                                 |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| [attach-detail](docs/attach-detail.md)           | Links an existing technical white paper from the product description with a checked relative path.           |
+| [refine-detail](docs/refine-detail.md)           | Researches and revises a linked technical white paper while accounting for all existing information.         |
+| [refine-design](docs/refine-design.md)           | Develops a product brief into persisted product, UX, and UI decisions with specialist consultation.          |
+| [generate-prd](docs/generate-prd.md)             | Plans a source-bound product-document collection and publishes its linked HTML pages from validated context. |
+| [generate-technical](docs/generate-technical.md) | Publishes a linked Markdown implementation guide from validated technical context.                           |
+| [reset-design](docs/reset-design.md)             | Discards a product's derived design and rebuilds it from the current human-owned description.                |
 
 ### Maintain standards and checkpoint work
 
-| Skill | What it does |
-| --- | --- |
-| [normalize-standards](docs/normalize-standards.md) | Audits and reconciles folder standards mappings and local rules with canonical standards. |
-| [review-standards](docs/review-standards.md) | Coordinates specialist reviews and validates evidence against the rules assigned to each folder. |
-| [write-standards-guide](docs/write-standards-guide.md) | Generates or checks the repository's human-readable `STANDARDS.md`. |
-| [update-canonical-standard](docs/update-canonical-standard.md) | Promotes a local rule, or an explicitly supplied change, into a shared canonical standard. |
-| [update-standards](docs/update-standards.md) | Checkpoints the complete canonical repository and publishes it to GitHub so generated guide links show the latest standards. |
-| [check-point](docs/check-point.md) | Proposes a commit for the complete current repository state and creates it after explicit acceptance. |
+| Skill                                                          | What it does                                                                                                                 |
+| -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| [normalize-standards](docs/normalize-standards.md)             | Audits and reconciles folder standards mappings and local rules with canonical standards.                                    |
+| [review-standards](docs/review-standards.md)                   | Coordinates specialist reviews and validates evidence against the rules assigned to each folder.                             |
+| [write-standards-guide](docs/write-standards-guide.md)         | Generates or checks the repository's human-readable `STANDARDS.md`.                                                          |
+| [update-canonical-standard](docs/update-canonical-standard.md) | Promotes a local rule, or an explicitly supplied change, into a shared canonical standard.                                   |
+| [update-standards](docs/update-standards.md)                   | Checkpoints the complete canonical repository and publishes it to GitHub so generated guide links show the latest standards. |
+| [check-point](docs/check-point.md)                             | Proposes a commit for the complete current repository state and creates it after explicit acceptance.                        |
 
 ## How the pieces fit
 
@@ -112,3 +112,13 @@ and PRD publication tests. The Babel parser is a local development dependency
 for the React event-check tests. Test source files under scaffolding `assets/`
 are generated-project templates, exercised by scaffolding checks rather than
 executed directly in this repository.
+
+The root development dependencies also include pinned Prettier. Run
+`npm run format:check` for the read-only checkpoint formatting gate, or
+`npm run format` to apply the repository's formatting configuration. Exact-byte
+fixtures, sealed calibration evidence, vendored assets, generated lockfiles and
+temporary review artifacts are excluded in `.prettierignore`.
+
+Repository standards assignments and local rules live in
+[`agents/topics/standards/`](agents/topics/standards/manifest.md). The generated
+[`STANDARDS.md`](STANDARDS.md) is the developer reference.

@@ -2,12 +2,12 @@
 
 Owner-supplied repositories, inspected 2026-09-17, provide the initial Google Fonts candidate set for design-language Slice 3. These are references for exploration, not accepted Alexa font choices or a mandatory library.
 
-| Family | Repository / observed use | Declared weights and styles | Loading |
-| --- | --- | --- | --- |
-| Roboto | poly-gc-react general UI; modmod general UI | 100, 300, 400, 500, 700, 900; normal and italic | Local WOFF2/WOFF declarations, filenames identify v30 |
-| Merienda | poly-gc-react Mahjong UI via --mj-ui-font-family | 400, 700 | Google Fonts CSS import |
-| Comic Neue | music-notebook notebook text via --mn-font-notebook | 400, 700; normal and italic | @fontsource/comic-neue imports |
-| Gluten | poly-gc-react 3D asset font definition | 800 normal | Google-hosted TTF referenced by CSS |
+| Family     | Repository / observed use                           | Declared weights and styles                     | Loading                                               |
+| ---------- | --------------------------------------------------- | ----------------------------------------------- | ----------------------------------------------------- |
+| Roboto     | poly-gc-react general UI; modmod general UI         | 100, 300, 400, 500, 700, 900; normal and italic | Local WOFF2/WOFF declarations, filenames identify v30 |
+| Merienda   | poly-gc-react Mahjong UI via --mj-ui-font-family    | 400, 700                                        | Google Fonts CSS import                               |
+| Comic Neue | music-notebook notebook text via --mn-font-notebook | 400, 700; normal and italic                     | @fontsource/comic-neue imports                        |
+| Gluten     | poly-gc-react 3D asset font definition              | 800 normal                                      | Google-hosted TTF referenced by CSS                   |
 
 Weights above describe these repositories, not the families' full available ranges. The Gluten declaration belongs to the asset pipeline; it is not evidence of general application UI use. Music-notebook also declares Roboto in its application font stack; this inventory did not establish a corresponding Roboto asset load there. System fallback fonts and music-symbol fallback stacks are not counted as loaded Google Fonts.
 

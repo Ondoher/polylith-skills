@@ -14,7 +14,7 @@ the UI pass are development evidence, not publication inputs.
    immutable binding, without claiming a live-source check. Follow the
    consuming repository's instructions and formatting rules.
 2. Run `node scripts/prd-outline.mjs prepare --context <context.json> --output
-   <source-index.json>`. This validates the context and decodes its eligible
+<source-index.json>`. This validates the context and decodes its eligible
    product and artifact information into exact, source-referenced units. UX
    use-case steps and alternatives have child references and `parentRef`; the
    parent value omits those separately indexed fields. Keep the index beside
@@ -26,7 +26,7 @@ the UI pass are development evidence, not publication inputs.
    and producer must not prearrange the outline or infer document boundaries.
 4. Save the response as `outline.json`, then run
    `node scripts/prd-outline.mjs render --context <context.json> --outline
-   <outline.json> --output <outline.md>`. This recomputes the index from the
+<outline.json> --output <outline.md>`. This recomputes the index from the
    exact context and checks the binding, source coverage, duplicate placements,
    and response shape before writing a Markdown review view. Return specific
    diagnostics to the agent for correction rather than inventing placements.

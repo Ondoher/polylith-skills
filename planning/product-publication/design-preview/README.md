@@ -48,25 +48,25 @@ Fieldbook is fictional. Its content is intentionally more detailed than the
 repository's minimal Garden Log fixture and does not claim to derive from it.
 None of these decisions are Alexa requirements or reusable skill defaults.
 
-| ID | Illustrative fact or choice |
-| --- | --- |
-| F-01 | A gardener can record a dated, non-empty harvest note. |
-| F-02 | A successful save adds the entry to history and displays confirmation. |
-| F-03 | Empty or whitespace-only notes are rejected; the date remains available for correction. |
-| F-04 | Saved entries survive closing and reopening the application. |
-| F-05 | A failed save keeps the draft, discloses failure, and permits retry; it is not reported as saved. |
-| F-06 | Before saving, the gardener can review the current date/note and return to editing without losing them; review alone does not persist an entry. |
-| UX-01 | Harvests is the application area; recording occurs in its main region with the area navigation retained. |
-| UX-02 | New drafts start with today's date and an empty note; Review entry validates before advancing. Save entry opens confirmation; Save harvest in the dialog validates and saves the reviewed draft. |
-| UX-03 | Cancel discards the current unsaved draft and returns to history. |
-| UX-04 | Empty-note feedback appears under the field; failed persistence shows a message and Retry save. |
-| UX-05 | Review shows the current draft read-only. Edit details returns with values intact; returning to review rebuilds its summary. Save failure retains that summary with retry/edit/cancel available. |
-| UX-06 | The form opens a confirmation dialog. Back to review closes only that dialog and retains the draft; Save harvest confirms persistence. Retry after failure resubmits the reviewed draft without reopening confirmation. |
-| IO-01 | Harvest entry form: owns one draft and its edit/review/failure states; opens from history and exits on successful save or cancellation. |
-| UC-01 | Record a harvest: a local six-step use case owned by IO-01, including its supporting confirmation dialog, correction, return-to-edit/review, cancellation, and retry alternatives. |
-| UI-01 | Green actions, pale surfaces, typography, spacing, example controls, and sample content are invented for these illustrations. |
-| GAP-01 | Product metrics, platforms, accessibility targets, device sync, focus transitions, announcements, in-progress state/repeated-click handling, dialog dismissal by Escape/backdrop, and closing an unsaved draft remain unspecified. |
-| REPAIR-01 | An illustrative publication failure shows a missing-comp notice and repair instructions; it is not a detected fault in these files or a product behavior decision. |
+| ID        | Illustrative fact or choice                                                                                                                                                                                                        |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| F-01      | A gardener can record a dated, non-empty harvest note.                                                                                                                                                                             |
+| F-02      | A successful save adds the entry to history and displays confirmation.                                                                                                                                                             |
+| F-03      | Empty or whitespace-only notes are rejected; the date remains available for correction.                                                                                                                                            |
+| F-04      | Saved entries survive closing and reopening the application.                                                                                                                                                                       |
+| F-05      | A failed save keeps the draft, discloses failure, and permits retry; it is not reported as saved.                                                                                                                                  |
+| F-06      | Before saving, the gardener can review the current date/note and return to editing without losing them; review alone does not persist an entry.                                                                                    |
+| UX-01     | Harvests is the application area; recording occurs in its main region with the area navigation retained.                                                                                                                           |
+| UX-02     | New drafts start with today's date and an empty note; Review entry validates before advancing. Save entry opens confirmation; Save harvest in the dialog validates and saves the reviewed draft.                                   |
+| UX-03     | Cancel discards the current unsaved draft and returns to history.                                                                                                                                                                  |
+| UX-04     | Empty-note feedback appears under the field; failed persistence shows a message and Retry save.                                                                                                                                    |
+| UX-05     | Review shows the current draft read-only. Edit details returns with values intact; returning to review rebuilds its summary. Save failure retains that summary with retry/edit/cancel available.                                   |
+| UX-06     | The form opens a confirmation dialog. Back to review closes only that dialog and retains the draft; Save harvest confirms persistence. Retry after failure resubmits the reviewed draft without reopening confirmation.            |
+| IO-01     | Harvest entry form: owns one draft and its edit/review/failure states; opens from history and exits on successful save or cancellation.                                                                                            |
+| UC-01     | Record a harvest: a local six-step use case owned by IO-01, including its supporting confirmation dialog, correction, return-to-edit/review, cancellation, and retry alternatives.                                                 |
+| UI-01     | Green actions, pale surfaces, typography, spacing, example controls, and sample content are invented for these illustrations.                                                                                                      |
+| GAP-01    | Product metrics, platforms, accessibility targets, device sync, focus transitions, announcements, in-progress state/repeated-click handling, dialog dismissal by Escape/backdrop, and closing an unsaved draft remain unspecified. |
+| REPAIR-01 | An illustrative publication failure shows a missing-comp notice and repair instructions; it is not a detected fault in these files or a product behavior decision.                                                                 |
 
 Repeated sample content demonstrates cross-document linkage and a readable
 view of shared facts. It is not a production source-binding implementation.

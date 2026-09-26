@@ -1,19 +1,402 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fieldbook · Product requirements · Format proposal</title><link rel="stylesheet" href="reader.css"></head><body>
-<a class="skip" href="#main">Skip to content</a>
-<div class="proposal"><strong>DOCUMENT FORMAT · PROPOSAL 02</strong> Synthetic product content and illustrative UI. Review the format, not product decisions.</div>
-<header class="masthead"><div class="brand"><span>F</span> Fieldbook <small> / Product documents</small></div><nav class="tabs" aria-label="Product documents"><a href="prd.html" aria-current="page">Product requirements</a><a href="interactions.html">Interactions</a><a href="design-language.html">Design language <small>· proposed</small></a></nav></header>
-<div class="layout"><nav class="contents" aria-label="Product requirements contents"><p class="label">Product requirements</p><ul><li><a href="#overview" data-outline-ref="prd-overview"><span class="outline-number">1</span> <span class="outline-title">Product overview</span></a></li><li><a href="#users" data-outline-ref="prd-users"><span class="outline-number">2</span> <span class="outline-title">Users, goals, and success</span></a></li><li><a href="#scope" data-outline-ref="prd-scope"><span class="outline-number">3</span> <span class="outline-title">Scope and boundaries</span></a><ul><li><a href="#in-scope" data-outline-ref="prd-in-scope"><span class="outline-number">3.1</span> <span class="outline-title">In scope</span></a></li><li><a href="#out-of-scope" data-outline-ref="prd-out-of-scope"><span class="outline-number">3.2</span> <span class="outline-title">Outside this example's scope</span></a></li></ul></li><li><a href="#concepts" data-outline-ref="prd-concepts"><span class="outline-number">4</span> <span class="outline-title">Product concepts</span></a></li><li><a href="#requirements" data-outline-ref="prd-requirements"><span class="outline-number">5</span> <span class="outline-title">Functional requirements</span></a><ul><li><a href="#recording-harvests" data-outline-ref="prd-recording"><span class="outline-number">5.1</span> <span class="outline-title">Recording and returning to harvests</span></a><ul><li><a href="#req-01" data-outline-ref="requirement-record"><span class="outline-number">5.1.1</span> <span class="outline-title">Record a dated harvest</span></a></li><li><a href="#req-02" data-outline-ref="requirement-empty"><span class="outline-number">5.1.2</span> <span class="outline-title">Prevent empty entries</span></a></li><li><a href="#req-03" data-outline-ref="requirement-persist"><span class="outline-number">5.1.3</span> <span class="outline-title">Preserve saved entries</span></a></li></ul></li></ul></li><li><a href="#quality" data-outline-ref="prd-quality"><span class="outline-number">6</span> <span class="outline-title">Quality and constraints</span></a><ul><li><a href="#req-04" data-outline-ref="requirement-retry"><span class="outline-number">6.1</span> <span class="outline-title">Keep the draft when saving fails</span></a></li></ul></li><li><a href="#acceptance" data-outline-ref="prd-acceptance"><span class="outline-number">7</span> <span class="outline-title">Acceptance and dependencies</span></a></li><li><a href="#decisions" data-outline-ref="prd-decisions"><span class="outline-number">8</span> <span class="outline-title">Open decisions</span></a></li></ul><p class="aside-note">Section numbers follow the document hierarchy across pages. Requirement and use-case IDs remain independent.</p></nav>
-<main id="main"><p class="eyebrow">Fieldbook / Product definition</p><h1>Product requirements</h1><p class="lead">A dependable record of each harvest, ready to revisit throughout the growing season.</p><div class="meta"><span class="badge">Illustrative draft</span><span>Document revision 2</span><span>Format proposal 02</span></div>
-<section id="overview"><h2 data-outline-id="prd-overview"><span class="section-number">1</span> Product overview</h2><p>Gardeners need to record what they harvested and when, without turning a brief note into a bookkeeping task. Fieldbook gives each harvest a dated entry and preserves that entry for later reference.</p><p>The first release centers on recording and revisiting harvests. Its value depends on a simple promise: a note shown as saved remains available when the gardener returns.</p><div class="intro-panel"><h3>The product promise</h3><p>Capture a useful observation, know whether it was saved, and find it again later.</p></div></section>
-<section id="users" class="section"><h2 data-outline-id="prd-users"><span class="section-number">2</span> Users, goals, and success</h2><p>The primary user is a home gardener recording a harvest during or soon after working outdoors. The product supports a short recording task and a later review of those observations.</p><div class="table-wrap"><table><thead><tr><th>User goal</th><th>Expected outcome</th></tr></thead><tbody><tr><td>Record today's harvest</td><td>A dated, non-empty entry appears in the harvest history after saving succeeds.</td></tr><tr><td>Return to an earlier observation</td><td>Previously saved entries are available after reopening the application.</td></tr></tbody></table></div><p>No adoption or time-to-complete target is specified in this illustrative brief. Those measures remain an explicit <a href="#decision-01">open decision</a>.</p></section>
-<section id="scope" class="section"><h2 data-outline-id="prd-scope"><span class="section-number">3</span> Scope and boundaries</h2><div class="two"><div><h3 id="in-scope" data-outline-id="prd-in-scope"><span class="section-number">3.1</span> In scope</h3><ul><li>Record a dated harvest note.</li><li>Review saved harvest entries.</li><li>Reject empty submissions and recover from unsuccessful saves.</li></ul></div><div><h3 id="out-of-scope" data-outline-id="prd-out-of-scope"><span class="section-number">3.2</span> Outside this example's scope</h3><ul><li>Sharing or collaborative editing.</li><li>Harvest forecasts and recommendations.</li><li>Automatic weather or sensor data.</li></ul></div></div><p>The application is described for one gardener. Account, device-sync, and collaboration behavior are not implied by this example.</p></section>
-<section id="concepts" class="section"><h2 data-outline-id="prd-concepts"><span class="section-number">4</span> Product concepts</h2><dl class="concepts"><dt>Harvest entry</dt><dd>A dated observation recorded by the gardener.</dd><dt>Draft</dt><dd>The current entry before a save has succeeded.</dd><dt>Harvest history</dt><dd>The collection of entries that have been successfully saved.</dd></dl></section>
-<section id="requirements" class="section"><h2 data-outline-id="prd-requirements"><span class="section-number">5</span> Functional requirements</h2><h3 id="recording-harvests" data-outline-id="prd-recording"><span class="section-number">5.1</span> Recording and returning to harvests</h3><p>Recording must preserve the distinction between an entry being edited and one that is safely saved. The following requirements govern that boundary.</p>
-<article class="requirement" id="req-01"><p class="item-id">REQ-01</p><h4 data-outline-id="requirement-record"><span class="section-number">5.1.1</span> Record a dated harvest</h4><p class="statement">Fieldbook must let the gardener save a harvest entry containing a date and a non-empty note.</p><div class="criteria"><span class="label">Acceptance criteria</span><ol><li>Before saving, the gardener can review the date and note and return to edit without losing either value. Review alone creates no saved entry.</li><li>Saving a valid reviewed entry adds it to the harvest history with the reviewed date and note.</li><li>The interface reports success only after the save succeeds.</li></ol></div><p class="small-links">Interaction: <a href="record-harvest.html" data-section-ref="record-harvest">UC-01 · Record a harvest <span class="reference-number">(§1.2.1.1)</span></a></p><details><summary>Source and decision record</summary><p>Synthetic example facts F-01, F-02, and F-06 in <a href="README.md">the sample ledger</a>. Production output would bind the exact validated requirement and its criteria here.</p></details></article>
-<article class="requirement" id="req-02"><p class="item-id">REQ-02</p><h4 data-outline-id="requirement-empty"><span class="section-number">5.1.2</span> Prevent empty entries</h4><p class="statement">Fieldbook must reject a save when the harvest note is empty or contains only whitespace.</p><div class="criteria"><span class="label">Acceptance criteria</span><ol><li>An empty submission creates no saved entry.</li><li>The gardener can correct the note and try again without re-entering the date.</li></ol></div><p class="small-links">Interaction: <a href="record-harvest.html#empty-note">UC-01, branch 2a · Empty note</a></p></article>
-<article class="requirement" id="req-03"><p class="item-id">REQ-03</p><h4 data-outline-id="requirement-persist"><span class="section-number">5.1.3</span> Preserve saved entries</h4><p class="statement">Fieldbook must retain successfully saved harvest entries after the application is closed and reopened.</p><div class="criteria"><span class="label">Acceptance criteria</span><ol><li>Reopening the application shows the saved date and note without alteration.</li></ol></div><p class="small-links">Related flow: <a href="record-harvest.html#outcome" data-section-ref="harvest-outcome">Returning to harvest history <span class="reference-number">(§1.2.1.1.3)</span></a></p></article></section>
-<section id="quality" class="section"><h2 data-outline-id="prd-quality"><span class="section-number">6</span> Quality and constraints</h2><article class="requirement" id="req-04"><p class="item-id">REQ-04 · Reliability</p><h3 data-outline-id="requirement-retry"><span class="section-number">6.1</span> Keep the draft when saving fails</h3><p>If a save fails, Fieldbook must retain the entered date and note, disclose the failure, and let the gardener retry. The failed attempt must not be presented as a saved entry.</p><div class="criteria"><span class="label">Acceptance criterion</span><p>The draft remains available after a failed save, and retrying can complete that same entry.</p></div><p class="small-links">Interaction: <a href="record-harvest.html#save-failure">UC-01, branch 5a · Save failure</a></p></article><p>Accessibility targets, performance thresholds, and supported platforms are not specified in the sample. They must be resolved in product sources before being stated as accepted requirements.</p></section>
-<section id="acceptance" class="section"><h2 data-outline-id="prd-acceptance"><span class="section-number">7</span> Acceptance and dependencies</h2><p>The core scenario is complete when a gardener enters a harvest, reviews and corrects its details, saves it, sees confirmation, closes the application, and returns to the same saved entry. This connects the recording requirement to the persistence requirement.</p><p>Acceptance also exercises empty-note correction and a failed save followed by a successful retry. Detailed interface behavior is described in <a href="record-harvest.html" data-section-ref="record-harvest">Record a harvest <span class="reference-number">(§1.2.1.1)</span></a>. No external service dependency is specified in this sample.</p></section>
-<section id="decisions" class="section"><h2 data-outline-id="prd-decisions"><span class="section-number">8</span> Open decisions</h2><div class="table-wrap"><table><thead><tr><th>Question</th><th>Affected scope</th><th>Status</th></tr></thead><tbody><tr id="decision-01"><td>How will usability and adoption be measured?</td><td>Product success</td><td>Unspecified</td></tr><tr><td>Which platforms and accessibility targets apply?</td><td>Quality constraints</td><td>Unspecified</td></tr><tr><td>Should saving work across devices?</td><td>Persistence boundaries</td><td>Not decided</td></tr></tbody></table></div></section>
-<div class="end-nav"><a href="../document-design.md"><small>Review the proposal</small>Document design and revision rules</a><a href="interactions.html"><small>Read the interaction guide</small>Application structure and user goals →</a></div></main></div></body></html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Fieldbook · Product requirements · Format proposal</title>
+		<link rel="stylesheet" href="reader.css" />
+	</head>
+	<body>
+		<a class="skip" href="#main">Skip to content</a>
+		<div class="proposal">
+			<strong>DOCUMENT FORMAT · PROPOSAL 02</strong> Synthetic product content and illustrative UI. Review the
+			format, not product decisions.
+		</div>
+		<header class="masthead">
+			<div class="brand"><span>F</span> Fieldbook <small> / Product documents</small></div>
+			<nav class="tabs" aria-label="Product documents">
+				<a href="prd.html" aria-current="page">Product requirements</a
+				><a href="interactions.html">Interactions</a
+				><a href="design-language.html">Design language <small>· proposed</small></a>
+			</nav>
+		</header>
+		<div class="layout">
+			<nav class="contents" aria-label="Product requirements contents">
+				<p class="label">Product requirements</p>
+				<ul>
+					<li>
+						<a href="#overview" data-outline-ref="prd-overview"
+							><span class="outline-number">1</span>
+							<span class="outline-title">Product overview</span></a
+						>
+					</li>
+					<li>
+						<a href="#users" data-outline-ref="prd-users"
+							><span class="outline-number">2</span>
+							<span class="outline-title">Users, goals, and success</span></a
+						>
+					</li>
+					<li>
+						<a href="#scope" data-outline-ref="prd-scope"
+							><span class="outline-number">3</span>
+							<span class="outline-title">Scope and boundaries</span></a
+						>
+						<ul>
+							<li>
+								<a href="#in-scope" data-outline-ref="prd-in-scope"
+									><span class="outline-number">3.1</span>
+									<span class="outline-title">In scope</span></a
+								>
+							</li>
+							<li>
+								<a href="#out-of-scope" data-outline-ref="prd-out-of-scope"
+									><span class="outline-number">3.2</span>
+									<span class="outline-title">Outside this example's scope</span></a
+								>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#concepts" data-outline-ref="prd-concepts"
+							><span class="outline-number">4</span>
+							<span class="outline-title">Product concepts</span></a
+						>
+					</li>
+					<li>
+						<a href="#requirements" data-outline-ref="prd-requirements"
+							><span class="outline-number">5</span>
+							<span class="outline-title">Functional requirements</span></a
+						>
+						<ul>
+							<li>
+								<a href="#recording-harvests" data-outline-ref="prd-recording"
+									><span class="outline-number">5.1</span>
+									<span class="outline-title">Recording and returning to harvests</span></a
+								>
+								<ul>
+									<li>
+										<a href="#req-01" data-outline-ref="requirement-record"
+											><span class="outline-number">5.1.1</span>
+											<span class="outline-title">Record a dated harvest</span></a
+										>
+									</li>
+									<li>
+										<a href="#req-02" data-outline-ref="requirement-empty"
+											><span class="outline-number">5.1.2</span>
+											<span class="outline-title">Prevent empty entries</span></a
+										>
+									</li>
+									<li>
+										<a href="#req-03" data-outline-ref="requirement-persist"
+											><span class="outline-number">5.1.3</span>
+											<span class="outline-title">Preserve saved entries</span></a
+										>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#quality" data-outline-ref="prd-quality"
+							><span class="outline-number">6</span>
+							<span class="outline-title">Quality and constraints</span></a
+						>
+						<ul>
+							<li>
+								<a href="#req-04" data-outline-ref="requirement-retry"
+									><span class="outline-number">6.1</span>
+									<span class="outline-title">Keep the draft when saving fails</span></a
+								>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#acceptance" data-outline-ref="prd-acceptance"
+							><span class="outline-number">7</span>
+							<span class="outline-title">Acceptance and dependencies</span></a
+						>
+					</li>
+					<li>
+						<a href="#decisions" data-outline-ref="prd-decisions"
+							><span class="outline-number">8</span> <span class="outline-title">Open decisions</span></a
+						>
+					</li>
+				</ul>
+				<p class="aside-note">
+					Section numbers follow the document hierarchy across pages. Requirement and use-case IDs remain
+					independent.
+				</p>
+			</nav>
+			<main id="main">
+				<p class="eyebrow">Fieldbook / Product definition</p>
+				<h1>Product requirements</h1>
+				<p class="lead">A dependable record of each harvest, ready to revisit throughout the growing season.</p>
+				<div class="meta">
+					<span class="badge">Illustrative draft</span><span>Document revision 2</span
+					><span>Format proposal 02</span>
+				</div>
+				<section id="overview">
+					<h2 data-outline-id="prd-overview"><span class="section-number">1</span> Product overview</h2>
+					<p>
+						Gardeners need to record what they harvested and when, without turning a brief note into a
+						bookkeeping task. Fieldbook gives each harvest a dated entry and preserves that entry for later
+						reference.
+					</p>
+					<p>
+						The first release centers on recording and revisiting harvests. Its value depends on a simple
+						promise: a note shown as saved remains available when the gardener returns.
+					</p>
+					<div class="intro-panel">
+						<h3>The product promise</h3>
+						<p>Capture a useful observation, know whether it was saved, and find it again later.</p>
+					</div>
+				</section>
+				<section id="users" class="section">
+					<h2 data-outline-id="prd-users"><span class="section-number">2</span> Users, goals, and success</h2>
+					<p>
+						The primary user is a home gardener recording a harvest during or soon after working outdoors.
+						The product supports a short recording task and a later review of those observations.
+					</p>
+					<div class="table-wrap">
+						<table>
+							<thead>
+								<tr>
+									<th>User goal</th>
+									<th>Expected outcome</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Record today's harvest</td>
+									<td>
+										A dated, non-empty entry appears in the harvest history after saving succeeds.
+									</td>
+								</tr>
+								<tr>
+									<td>Return to an earlier observation</td>
+									<td>Previously saved entries are available after reopening the application.</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<p>
+						No adoption or time-to-complete target is specified in this illustrative brief. Those measures
+						remain an explicit <a href="#decision-01">open decision</a>.
+					</p>
+				</section>
+				<section id="scope" class="section">
+					<h2 data-outline-id="prd-scope"><span class="section-number">3</span> Scope and boundaries</h2>
+					<div class="two">
+						<div>
+							<h3 id="in-scope" data-outline-id="prd-in-scope">
+								<span class="section-number">3.1</span> In scope
+							</h3>
+							<ul>
+								<li>Record a dated harvest note.</li>
+								<li>Review saved harvest entries.</li>
+								<li>Reject empty submissions and recover from unsuccessful saves.</li>
+							</ul>
+						</div>
+						<div>
+							<h3 id="out-of-scope" data-outline-id="prd-out-of-scope">
+								<span class="section-number">3.2</span> Outside this example's scope
+							</h3>
+							<ul>
+								<li>Sharing or collaborative editing.</li>
+								<li>Harvest forecasts and recommendations.</li>
+								<li>Automatic weather or sensor data.</li>
+							</ul>
+						</div>
+					</div>
+					<p>
+						The application is described for one gardener. Account, device-sync, and collaboration behavior
+						are not implied by this example.
+					</p>
+				</section>
+				<section id="concepts" class="section">
+					<h2 data-outline-id="prd-concepts"><span class="section-number">4</span> Product concepts</h2>
+					<dl class="concepts">
+						<dt>Harvest entry</dt>
+						<dd>A dated observation recorded by the gardener.</dd>
+						<dt>Draft</dt>
+						<dd>The current entry before a save has succeeded.</dd>
+						<dt>Harvest history</dt>
+						<dd>The collection of entries that have been successfully saved.</dd>
+					</dl>
+				</section>
+				<section id="requirements" class="section">
+					<h2 data-outline-id="prd-requirements">
+						<span class="section-number">5</span> Functional requirements
+					</h2>
+					<h3 id="recording-harvests" data-outline-id="prd-recording">
+						<span class="section-number">5.1</span> Recording and returning to harvests
+					</h3>
+					<p>
+						Recording must preserve the distinction between an entry being edited and one that is safely
+						saved. The following requirements govern that boundary.
+					</p>
+					<article class="requirement" id="req-01">
+						<p class="item-id">REQ-01</p>
+						<h4 data-outline-id="requirement-record">
+							<span class="section-number">5.1.1</span> Record a dated harvest
+						</h4>
+						<p class="statement">
+							Fieldbook must let the gardener save a harvest entry containing a date and a non-empty note.
+						</p>
+						<div class="criteria">
+							<span class="label">Acceptance criteria</span>
+							<ol>
+								<li>
+									Before saving, the gardener can review the date and note and return to edit without
+									losing either value. Review alone creates no saved entry.
+								</li>
+								<li>
+									Saving a valid reviewed entry adds it to the harvest history with the reviewed date
+									and note.
+								</li>
+								<li>The interface reports success only after the save succeeds.</li>
+							</ol>
+						</div>
+						<p class="small-links">
+							Interaction:
+							<a href="record-harvest.html" data-section-ref="record-harvest"
+								>UC-01 · Record a harvest <span class="reference-number">(§1.2.1.1)</span></a
+							>
+						</p>
+						<details>
+							<summary>Source and decision record</summary>
+							<p>
+								Synthetic example facts F-01, F-02, and F-06 in
+								<a href="README.md">the sample ledger</a>. Production output would bind the exact
+								validated requirement and its criteria here.
+							</p>
+						</details>
+					</article>
+					<article class="requirement" id="req-02">
+						<p class="item-id">REQ-02</p>
+						<h4 data-outline-id="requirement-empty">
+							<span class="section-number">5.1.2</span> Prevent empty entries
+						</h4>
+						<p class="statement">
+							Fieldbook must reject a save when the harvest note is empty or contains only whitespace.
+						</p>
+						<div class="criteria">
+							<span class="label">Acceptance criteria</span>
+							<ol>
+								<li>An empty submission creates no saved entry.</li>
+								<li>The gardener can correct the note and try again without re-entering the date.</li>
+							</ol>
+						</div>
+						<p class="small-links">
+							Interaction: <a href="record-harvest.html#empty-note">UC-01, branch 2a · Empty note</a>
+						</p>
+					</article>
+					<article class="requirement" id="req-03">
+						<p class="item-id">REQ-03</p>
+						<h4 data-outline-id="requirement-persist">
+							<span class="section-number">5.1.3</span> Preserve saved entries
+						</h4>
+						<p class="statement">
+							Fieldbook must retain successfully saved harvest entries after the application is closed and
+							reopened.
+						</p>
+						<div class="criteria">
+							<span class="label">Acceptance criteria</span>
+							<ol>
+								<li>Reopening the application shows the saved date and note without alteration.</li>
+							</ol>
+						</div>
+						<p class="small-links">
+							Related flow:
+							<a href="record-harvest.html#outcome" data-section-ref="harvest-outcome"
+								>Returning to harvest history <span class="reference-number">(§1.2.1.1.3)</span></a
+							>
+						</p>
+					</article>
+				</section>
+				<section id="quality" class="section">
+					<h2 data-outline-id="prd-quality"><span class="section-number">6</span> Quality and constraints</h2>
+					<article class="requirement" id="req-04">
+						<p class="item-id">REQ-04 · Reliability</p>
+						<h3 data-outline-id="requirement-retry">
+							<span class="section-number">6.1</span> Keep the draft when saving fails
+						</h3>
+						<p>
+							If a save fails, Fieldbook must retain the entered date and note, disclose the failure, and
+							let the gardener retry. The failed attempt must not be presented as a saved entry.
+						</p>
+						<div class="criteria">
+							<span class="label">Acceptance criterion</span>
+							<p>
+								The draft remains available after a failed save, and retrying can complete that same
+								entry.
+							</p>
+						</div>
+						<p class="small-links">
+							Interaction: <a href="record-harvest.html#save-failure">UC-01, branch 5a · Save failure</a>
+						</p>
+					</article>
+					<p>
+						Accessibility targets, performance thresholds, and supported platforms are not specified in the
+						sample. They must be resolved in product sources before being stated as accepted requirements.
+					</p>
+				</section>
+				<section id="acceptance" class="section">
+					<h2 data-outline-id="prd-acceptance">
+						<span class="section-number">7</span> Acceptance and dependencies
+					</h2>
+					<p>
+						The core scenario is complete when a gardener enters a harvest, reviews and corrects its
+						details, saves it, sees confirmation, closes the application, and returns to the same saved
+						entry. This connects the recording requirement to the persistence requirement.
+					</p>
+					<p>
+						Acceptance also exercises empty-note correction and a failed save followed by a successful
+						retry. Detailed interface behavior is described in
+						<a href="record-harvest.html" data-section-ref="record-harvest"
+							>Record a harvest <span class="reference-number">(§1.2.1.1)</span></a
+						>. No external service dependency is specified in this sample.
+					</p>
+				</section>
+				<section id="decisions" class="section">
+					<h2 data-outline-id="prd-decisions"><span class="section-number">8</span> Open decisions</h2>
+					<div class="table-wrap">
+						<table>
+							<thead>
+								<tr>
+									<th>Question</th>
+									<th>Affected scope</th>
+									<th>Status</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr id="decision-01">
+									<td>How will usability and adoption be measured?</td>
+									<td>Product success</td>
+									<td>Unspecified</td>
+								</tr>
+								<tr>
+									<td>Which platforms and accessibility targets apply?</td>
+									<td>Quality constraints</td>
+									<td>Unspecified</td>
+								</tr>
+								<tr>
+									<td>Should saving work across devices?</td>
+									<td>Persistence boundaries</td>
+									<td>Not decided</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+				<div class="end-nav">
+					<a href="../document-design.md"
+						><small>Review the proposal</small>Document design and revision rules</a
+					><a href="interactions.html"
+						><small>Read the interaction guide</small>Application structure and user goals →</a
+					>
+				</div>
+			</main>
+		</div>
+	</body>
+</html>

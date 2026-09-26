@@ -56,11 +56,11 @@ sparse product may need one compact document; a developed product may need
 several focused documents. The following are content responsibilities, not a
 fixed document count or a prescribed set of titles:
 
-| Content responsibility | Includes |
-| --- | --- |
-| Product requirements | Goals, scope, product concepts, capabilities, rules, constraints, goal-level use cases, required outcomes, and acceptance criteria |
+| Content responsibility   | Includes                                                                                                                                              |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product requirements     | Goals, scope, product concepts, capabilities, rules, constraints, goal-level use cases, required outcomes, and acceptance criteria                    |
 | Experience and interface | Application organization, detailed interactions, screen comps, state transitions, feedback, dialogs, recovery, and shared visual/component references |
-| Technical design | Architecture, contracts, processing, technology decisions, technical evidence, and unresolved implementation questions |
+| Technical design         | Architecture, contracts, processing, technology decisions, technical evidence, and unresolved implementation questions                                |
 
 Requirements content remains a detailed statement of required product behavior,
 whether it has its own document or shares one with experience content. Use cases

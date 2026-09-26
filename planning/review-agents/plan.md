@@ -1,6 +1,5 @@
 # Review Agents Implementation Plan
 
-
 ## Current Direction
 
 The system uses folder-based standards applicability. Topic-based standards exclusions and topic-scoped overrides are removed.
@@ -17,7 +16,7 @@ The system uses folder-based standards applicability. Topic-based standards excl
 8. Replace topic-context fingerprint naming with review-context fingerprint naming while retaining topics as non-authoritative work context.
 9. Update normalization, guide generation, initialization, review orchestration, and reviewer definitions.
 10. Provide consumer normalization, attestation, and generated-guide workflows.
-11. Pin every reviewer lane and the checkpoint adviser to `gpt-5.6-terra`; use `medium` reasoning for architecture and privacy/security and `low` for the remaining roles, and make those pins part of infrastructure validation.
+11. Pin every standards-reviewer lane to `gpt-5.6-terra`; use `medium` reasoning for architecture, UI and privacy/security and `low` for contracts and verification. Validate those reviewer pins. Configure the independent checkpoint adviser with low reasoning, without reviewer eligibility or calibration prerequisites.
 
 ## Maintained verification
 

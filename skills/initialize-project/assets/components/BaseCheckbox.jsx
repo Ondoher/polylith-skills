@@ -17,7 +17,10 @@ export default class BaseCheckbox extends Component {
 	 *
 	 * @param {object} props - The initial React properties.
 	 */
-	constructor(props) { super(props); this.fallbackId = `checkbox-${nextCheckboxId++}`; }
+	constructor(props) {
+		super(props);
+		this.fallbackId = `checkbox-${nextCheckboxId++}`;
+	}
 	/**
 	 * Called by the component to resolve literal or localized display text.
 	 *
@@ -25,13 +28,17 @@ export default class BaseCheckbox extends Component {
 	 * @param {string} fallback - The text returned when the value is absent.
 	 * @returns {string} - The resolved checkbox text.
 	 */
-	resolve(value, fallback = '') { return resolveComponentText(this.context, this.props.localize ?? false, value, fallback); }
+	resolve(value, fallback = '') {
+		return resolveComponentText(this.context, this.props.localize ?? false, value, fallback);
+	}
 	/**
 	 * Called by the MUI input when its checked state changes.
 	 *
 	 * @param {React.ChangeEvent<HTMLInputElement>} event - The originating input event.
 	 */
-	handleChange(event) { this.props.onChange?.(event.target.checked, event); }
+	handleChange(event) {
+		this.props.onChange?.(event.target.checked, event);
+	}
 	/**
 	 * Called by the component to render the configured checkbox input.
 	 *
@@ -41,13 +48,35 @@ export default class BaseCheckbox extends Component {
 	 */
 	renderCheckbox(checkboxId, helperId) {
 		const {ariaLabel, checked = false, checkboxProps = {}} = this.props;
-		return <Checkbox {...checkboxProps} id={checkboxId} checked={checked} onChange={(event) => this.handleChange(event)} slotProps={{...checkboxProps.slotProps, input: {...checkboxProps.slotProps?.input, ...(this.context.accessibilityEnabled && helperId ? {'aria-describedby': helperId} : {}), ...(this.context.accessibilityEnabled && ariaLabel ? {'aria-label': this.resolve(ariaLabel)} : {})}}} />;
+		return (
+			<Checkbox
+				{...checkboxProps}
+				id={checkboxId}
+				checked={checked}
+				onChange={(event) => this.handleChange(event)}
+				slotProps={{
+					...checkboxProps.slotProps,
+					input: {
+						...checkboxProps.slotProps?.input,
+						...(this.context.accessibilityEnabled && helperId ? {'aria-describedby': helperId} : {}),
+						...(this.context.accessibilityEnabled && ariaLabel
+							? {'aria-label': this.resolve(ariaLabel)}
+							: {}),
+					},
+				}}
+			/>
+		);
 	}
 	/** Call this method to render the checkbox and its labels. */
 	render() {
 		const {id, label, helperText, ariaLabel, localize, checked, onChange, checkboxProps, ...props} = this.props;
 		const checkboxId = id || this.fallbackId;
 		const helperId = helperText ? `${checkboxId}-helper` : undefined;
-		return <FormControl {...props} fullWidth={props.fullWidth ?? true}><FormControlLabel label={this.resolve(label)} control={this.renderCheckbox(checkboxId, helperId)} />{helperText ? <FormHelperText id={helperId}>{this.resolve(helperText)}</FormHelperText> : null}</FormControl>;
+		return (
+			<FormControl {...props} fullWidth={props.fullWidth ?? true}>
+				<FormControlLabel label={this.resolve(label)} control={this.renderCheckbox(checkboxId, helperId)} />
+				{helperText ? <FormHelperText id={helperId}>{this.resolve(helperText)}</FormHelperText> : null}
+			</FormControl>
+		);
 	}
 }

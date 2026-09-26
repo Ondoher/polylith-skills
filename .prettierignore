@@ -1,0 +1,18 @@
+# Installed dependencies and temporary verification output.
+**/node_modules/
+/.codex-tmp/
+**/coverage/
+**/dist/
+
+# npm owns its generated lockfile formatting.
+**/package-lock.json
+
+# Exact-byte fixtures and sealed review evidence must retain their recorded bytes.
+**/fixtures/**
+skills/review-standards/calibration-record.json
+
+# Vendored fonts and icons are versioned assets, not authored source.
+skills/refine-design/assets/fonts/**
+skills/refine-design/assets/icons/**
+skills/generate-prd/assets/fonts/**
+skills/generate-prd/assets/icons/**

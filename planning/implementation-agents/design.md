@@ -1,6 +1,5 @@
 # Implementation Agents Design Discussion
 
-
 ## Status
 
 Product refinement, PRD publication, and the cataloged read-only specialist

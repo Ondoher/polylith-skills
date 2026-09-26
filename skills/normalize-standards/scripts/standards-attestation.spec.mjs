@@ -50,14 +50,24 @@ test('new durable marker requires explicit successful first normalization', (t) 
 	assert.match(result.stdout, /everNormalized is not true/);
 });
 
-
-test('first attestation includes host instructions and excludes independent nested repositories', (t) => {
+test('first attestation includes host instructions and excludes review artifacts and independent repositories', (t) => {
 	const repo = repository(t, {});
 	const standards = path.join(repo, 'agents', 'topics', 'standards');
 	const manifest = [
-		'# Folder Standards Manifest', '', '## Standards Sets', '', '### `base`', '',
-		'Extends: none', 'Standards:', '- [documentation.md](documentation.md) - governance', '',
-		'## Folder Assignments', '', '- `.` - `base` - host', '',
+		'# Folder Standards Manifest',
+		'',
+		'## Standards Sets',
+		'',
+		'### `base`',
+		'',
+		'Extends: none',
+		'Standards:',
+		'- [documentation.md](documentation.md) - governance',
+		'',
+		'## Folder Assignments',
+		'',
+		'- `.` - `base` - host',
+		'',
 	].join('\n');
 	writeFileSync(path.join(standards, 'manifest.md'), manifest);
 	writeFileSync(path.join(standards, 'overlay.md'), '# Repository Standards Overlay\n\nNone.\n');
@@ -67,6 +77,11 @@ test('first attestation includes host instructions and excludes independent nest
 	writeFileSync(path.join(repo, 'polylith.json'), '{}\n');
 	mkdirSync(path.join(repo, 'src'));
 	writeFileSync(path.join(repo, 'src', 'AGENTS.md'), '# Host subtree\n');
+	mkdirSync(path.join(repo, '.codex-tmp', 'review-standards'), {recursive: true});
+	writeFileSync(
+		path.join(repo, '.codex-tmp', 'review-standards', 'AGENTS.md'),
+		'# Temporary captured instructions\n',
+	);
 	for (const boundary of ['git-file', 'git-directory', 'polylith']) {
 		const child = path.join(repo, 'deployed-apps', boundary);
 		mkdirSync(child, {recursive: true});
@@ -79,5 +94,12 @@ test('first attestation includes host instructions and excludes independent nest
 	const paths = result.inputs.map(({path: inputPath}) => inputPath);
 	assert.ok(paths.includes('AGENTS.md'));
 	assert.ok(paths.includes('src/AGENTS.md'));
-	assert.equal(paths.some((inputPath) => inputPath.startsWith('deployed-apps/')), false);
+	assert.equal(
+		paths.some((inputPath) => inputPath.startsWith('.codex-tmp/')),
+		false,
+	);
+	assert.equal(
+		paths.some((inputPath) => inputPath.startsWith('deployed-apps/')),
+		false,
+	);
 });

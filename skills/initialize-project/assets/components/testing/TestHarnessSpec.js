@@ -4,7 +4,13 @@ import {createTestHarness} from '../TestHarness.js';
 
 class Probe extends React.Component {
 	static contextType = AppContext;
-	render() { return <button onClick={() => this.context.onPress?.()}>{`${this.props.label || 'initial'}:${this.context.locale}`}</button>; }
+	render() {
+		return (
+			<button
+				onClick={() => this.context.onPress?.()}
+			>{`${this.props.label || 'initial'}:${this.context.locale}`}</button>
+		);
+	}
 }
 
 describe('component TestHarness', () => {

@@ -62,7 +62,8 @@ export function inspectTarget(targetPath) {
 
 	if (workspaceFileCount > 1) {
 		for (const entry of readdirSync(target, {withFileTypes: true})) {
-			if (entry.isFile() && entry.name.endsWith(WORKSPACE_FILE_SUFFIX)) conflicts.push(path.join(target, entry.name));
+			if (entry.isFile() && entry.name.endsWith(WORKSPACE_FILE_SUFFIX))
+				conflicts.push(path.join(target, entry.name));
 		}
 	}
 
@@ -71,9 +72,10 @@ export function inspectTarget(targetPath) {
 		target,
 		conflicts,
 		protectedFiles,
-		reason: conflicts.length === 0
-			? 'Target is empty or contains only permitted fresh-repository files.'
-			: 'Target contains files or directories that initialization could overwrite.',
+		reason:
+			conflicts.length === 0
+				? 'Target is empty or contains only permitted fresh-repository files.'
+				: 'Target contains files or directories that initialization could overwrite.',
 	};
 }
 

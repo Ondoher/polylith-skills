@@ -2,7 +2,7 @@
 
 Implemented the requested ordinary text-field slice in schema 0.11: label, supplied value, helper and error text in default, focused, disabled and error states at 280px and 400px. The shared field-message pattern owns type, helper/error color expressions, gap/inset/message spacing and retain/replace policy. Fields reference it and supply content. This documents a reusable presentation pattern, not an implementation-class decision or new validation service.
 
- Existing font measurement/outline rendering and theme expressions are reused. Focus consumes the brand-mapped primary role; errors use the MUI semantic error role with visible Error text. Messages wrap and extend the sheet; invalid geometry or unwrappable words fail before publication.
+Existing font measurement/outline rendering and theme expressions are reused. Focus consumes the brand-mapped primary role; errors use the MUI semantic error role with visible Error text. Messages wrap and extend the sheet; invalid geometry or unwrappable words fail before publication.
 
 components.md now has Ordinary Text Field and Field Messages: Helper And Error sections. The fixture proposes retaining helper instructions before adding a corrective error. It leaves the 4px message gap as an explicit default. The duplicate-name example is supplied illustrative content, not an accepted Alexa constraint. Validation and announcement timing remain UX decisions. Stable description IDs, aria-describedby and aria-invalid are handoff guidance, not behaviors implemented by the SVG.
 

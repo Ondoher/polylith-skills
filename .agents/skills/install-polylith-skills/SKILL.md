@@ -9,9 +9,9 @@ Use the repository's deterministic installer rather than creating links or copyi
 
 1. Run the requested mode without `--apply` and inspect its JSON plan. Record the emitted `planDigest`:
 
-   ```text
-   node scripts/install-polylith-skills.mjs <mode>
-   ```
+    ```text
+    node scripts/install-polylith-skills.mjs <mode>
+    ```
 
 2. Explain every collision and user-level mutation. Obtain authorization immediately before rerunning a mutating mode; approval for one plan does not authorize a changed plan.
 3. Run the approved command with `--apply --expect-plan <planDigest>`. The installer must reject a missing or changed digest before reconciling Codex-home paths. If it reports `PLAN_CHANGED`, inspect and disclose the newly emitted plan and do not retry until that plan is authorized.

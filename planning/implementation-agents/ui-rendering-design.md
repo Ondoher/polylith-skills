@@ -1,14 +1,13 @@
 # Structured UI Rendering For Product Planning
 
-
 Status: implemented static HTML design. This document describes the current renderer architecture; earlier general SVG scene proposals are retired. SVG remains an asset format for icons and component-specific vector geometry.
 
 ## Pipeline And Ownership
 
-~~~text
+```text
 human description -> refine-design -> product model and specialty artifacts
 -> verified snapshot -> PRD context -> generate-prd -> static HTML review
-~~~
+```
 
 UX owns tasks, behavior, states, outcomes, cancellation, and recovery. UI owns hierarchy, geometry, typography, colors, component selection, and presentation accessibility. The UI designer returns structured JSON and does not write or render files. The parent validates and persists refinement artifacts and may render bounded inspection views. Final publication runs through generate-prd from a validated context. A behavior-changing UI idea returns to UX.
 

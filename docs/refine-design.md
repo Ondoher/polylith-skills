@@ -82,6 +82,25 @@ For a whole-product refinement, the skill runs both design passes: it persists U
 
 Concrete specialist choices incorporated by the workflow become accepted working decisions. You can revise them through the product description. Explicitly locked decisions have stronger protection: changing or unlocking them requires current, scope-specific owner authority. Unresolved gaps remain visible instead of being filled with invented requirements.
 
+## Avoiding repeated work
+
+The initial pass interprets the complete description once, then supplies UX with
+structured product authority and source evidence. Selected decisions return in
+one coordinated writeback before review. A writeback that changes the source
+still needs a correctly bound model update; unchanged source does not need another
+interpretation. Document organization remains a later `generate-prd` step.
+
+Small stage receipts under `product/<name>/runs/` record exact inputs, outputs,
+durations, specialist calls and repair needs. Resume checks compare current
+files before reusing work; owning validators still decide whether artifacts and
+reviews are current. Unavailable usage stays unknown. Publication assembly
+orders dependencies automatically and reports failed units while retaining
+successful independent work. These changes reduce repeated coordination; live
+latency and credit savings still need measurement during normal use.
+
+See [the refinement cycle](../skills/refine-design/references/refinement-cycle.md)
+for the stage contracts and helper commands.
+
 ## Output and handoff
 
 The workflow persists product and scoped design artifacts and can produce a self-contained PRD context package with validated data and declared resources. `generate-prd` consumes that package without reinterpreting your Markdown.

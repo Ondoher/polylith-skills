@@ -1,6 +1,5 @@
 # Implementation Planning Skill Proposal
 
-
 Status: deferred design preserved for future work. The owner has explicitly
 deferred implementation planning and coding until that stage is resumed. This
 records the intended boundary and output so they are not reinvented; it does

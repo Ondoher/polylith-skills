@@ -8,9 +8,9 @@ that same named root; detached copies are exports, not another canonical store.
 
 Run:
 
-~~~text
+```text
 node scripts/product-context.mjs --current <product-root/current.json> --consumer prd [--scope <record-id,...>]
-~~~
+```
 
 The command writes a self-contained detached context package at `contexts/prd/<material-sha256>/context.json` below the product artifact root, with declared binary resources under its sibling `artifact-resources/` directory. Repeating the same request against the same snapshot reuses identical bytes. The context JSON remains capped at 2 MiB (2,097,152 bytes); the producer checks its exact canonical persisted bytes before creating the package. Binary resource bytes are separate from that JSON budget.
 

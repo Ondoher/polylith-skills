@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
-import {mkdtempSync, readFileSync, writeFileSync, rmSync} from 'node:fs';
+import {mkdirSync, mkdtempSync, readFileSync, writeFileSync, rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {
@@ -10,6 +10,7 @@ import {
 	digest,
 	validateLedger,
 	effectiveRules,
+	infrastructure,
 	reviewArtifactPath,
 	reviewArtifactRoot,
 	safeFile,
@@ -17,15 +18,36 @@ import {
 	validateRequestIntegrity,
 } from './review-ledger.mjs';
 
+test('reviewer infrastructure is independent of a missing or invalid checkpoint adviser', (t) => {
+	const codex = mkdtempSync(path.join(tmpdir(), 'reviewer-infrastructure-'));
+	t.after(() => rmSync(codex, {recursive: true, force: true}));
+	const agents = path.join(codex, 'agents');
+	mkdirSync(agents);
+	for (const name of [
+		'architecture-reviewer',
+		'contracts-reviewer',
+		'ui-reviewer',
+		'verification-reviewer',
+		'privacy-security-reviewer',
+	]) {
+		writeFileSync(
+			path.join(agents, `${name}.toml`),
+			readFileSync(new URL(`../../../agents/${name}.toml`, import.meta.url)),
+		);
+	}
+	assert.doesNotThrow(() => infrastructure(codex));
+	writeFileSync(path.join(agents, 'checkpoint-advisor.toml'), 'independent adviser configuration');
+	assert.doesNotThrow(() => infrastructure(codex));
+	writeFileSync(path.join(agents, 'ui-reviewer.toml'), 'invalid reviewer configuration');
+	assert.throws(() => infrastructure(codex), /ui-reviewer: invalid model pin/);
+});
+
 test('formatting gates clean completion without hiding semantic findings', () => {
 	const ready = {status: 'READY'};
 	const notReady = {status: 'NOT_READY', stage: 'check'};
 	assert.equal(aggregateReviewStatus({'ui-reviewer': 'CLEAN'}, 'CLEAN', ready), 'CLEAN');
 	assert.equal(aggregateReviewStatus({'ui-reviewer': 'CLEAN'}, 'CLEAN', notReady), 'INCOMPLETE');
-	assert.equal(
-		aggregateReviewStatus({'ui-reviewer': 'FINDINGS_PRESENT'}, 'CLEAN', notReady),
-		'FINDINGS_PRESENT',
-	);
+	assert.equal(aggregateReviewStatus({'ui-reviewer': 'FINDINGS_PRESENT'}, 'CLEAN', notReady), 'FINDINGS_PRESENT');
 	assert.equal(aggregateReviewStatus({'ui-reviewer': 'INCOMPLETE'}, 'CLEAN', ready), 'INCOMPLETE');
 });
 
@@ -39,7 +61,10 @@ test('review artifact setup adds the narrow ignore and creates the repository-lo
 	assert.equal(root, path.join(repo, artifactDirectory));
 	assert.equal(readFileSync(path.join(repo, '.gitignore'), 'utf8'), 'node_modules/\n/.codex-tmp/\n');
 	assert.equal(reviewArtifactRoot(repo), root);
-	assert.equal(reviewArtifactPath(repo, path.join(root, 'session-1', 'baseline.json')), path.join(root, 'session-1', 'baseline.json'));
+	assert.equal(
+		reviewArtifactPath(repo, path.join(root, 'session-1', 'baseline.json')),
+		path.join(root, 'session-1', 'baseline.json'),
+	);
 	assert.throws(() => reviewArtifactPath(repo, path.join(repo, 'baseline.json')), /must be beneath/);
 });
 

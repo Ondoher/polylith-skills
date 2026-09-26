@@ -1,16 +1,357 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fieldbook · Design language · Proposed separate document</title><link rel="stylesheet" href="reader.css"></head><body>
-<a class="skip" href="#main">Skip to content</a><div class="proposal"><strong>DOCUMENT FORMAT · PROPOSAL 02</strong> Separate design-language publication is proposed. All values and specimens here are illustrative.</div>
-<header class="masthead"><div class="brand"><span>F</span> Fieldbook <small> / Product documents</small></div><nav class="tabs" aria-label="Product documents"><a href="prd.html">Product requirements</a><a href="interactions.html">Interactions</a><a href="design-language.html" aria-current="page">Design language <small>· proposed</small></a></nav></header>
-<div class="layout"><nav class="contents" aria-label="Design language contents"><p class="label">Design language</p><ul><li><a href="#direction" data-outline-ref="language-direction"><span class="outline-number">1</span> <span class="outline-title">Visual direction</span></a></li><li><a href="#typography" data-outline-ref="language-typography"><span class="outline-number">2</span> <span class="outline-title">Typography</span></a></li><li><a href="#color" data-outline-ref="language-color"><span class="outline-number">3</span> <span class="outline-title">Colors and theme</span></a></li><li><a href="#spacing" data-outline-ref="language-spacing"><span class="outline-number">4</span> <span class="outline-title">Spacing and layout</span></a></li><li><a href="#surfaces" data-outline-ref="language-surfaces"><span class="outline-number">5</span> <span class="outline-title">Shape and surfaces</span></a></li><li><a href="#icons" data-outline-ref="language-icons"><span class="outline-number">6</span> <span class="outline-title">Iconography</span></a></li><li><a href="#components" data-outline-ref="language-components"><span class="outline-number">7</span> <span class="outline-title">Basic component examples</span></a><ul><li><a href="#actions" data-outline-ref="language-actions"><span class="outline-number">7.1</span> <span class="outline-title">Actions</span></a></li><li><a href="#text-entry" data-outline-ref="language-text-entry"><span class="outline-number">7.2</span> <span class="outline-title">Text entry</span></a></li></ul></li><li><a href="#states" data-outline-ref="language-states"><span class="outline-number">8</span> <span class="outline-title">Shared states</span></a></li><li><a href="#gaps" data-outline-ref="language-gaps"><span class="outline-number">9</span> <span class="outline-title">Decisions and gaps</span></a></li></ul><p class="aside-note">Section numbers follow the document hierarchy across pages. Requirement and use-case IDs remain independent.</p></nav>
-<main id="main"><p class="eyebrow">Fieldbook / Shared visual reference</p><h1>Design language</h1><p class="lead">Calm surfaces, readable observations, and a clear next action. A reference for the visual decisions shared across the application.</p><div class="meta"><span class="badge proposed">Proposed separate document</span><span>Synthetic visual values</span><span>Format proposal 02</span></div>
-<section id="direction"><h2 data-outline-id="language-direction"><span class="section-number">1</span> Visual direction</h2><p>Fieldbook's sample interface uses warm pale surfaces and restrained green accents. The hierarchy gives the observation more attention than the surrounding controls. Borders distinguish editable fields, while feedback appears where it helps the gardener complete the task.</p><div class="prototype-note">The production document would publish the existing validated design-language source. This page demonstrates presentation only; none of its visual choices override a product's accepted theme.</div></section>
-<section id="typography" class="section"><h2 data-outline-id="language-typography"><span class="section-number">2</span> Typography</h2><div class="specimen"><div class="example-type">The small details worth keeping.</div><p class="no-margin">Six ripe tomatoes from the south bed.</p><span class="specimen-label">Representative heading and body text inside the product</span></div><div class="table-wrap"><table><thead><tr><th>Role</th><th>Sample specification</th><th>Use</th></tr></thead><tbody><tr><td>Interface family</td><td>Segoe UI, sans-serif</td><td>Product text and controls</td></tr><tr><td>Area heading</td><td>24px / 32px, semibold</td><td>Orient the gardener within an area</td></tr><tr><td>Body</td><td>16px / 24px, regular</td><td>Observations and explanations</td></tr><tr><td>Label</td><td>14px / 20px, semibold</td><td>Identify a control</td></tr></tbody></table></div><p>The publication reader has its own type scale. These values describe the sample product, not this document's navigation or title.</p></section>
-<section id="color" class="section"><h2 data-outline-id="language-color"><span class="section-number">3</span> Colors and theme</h2><p>Use colors by semantic role. The primary action shares one treatment across flows; error feedback combines color with a written explanation.</p><div class="swatch-grid"><div><div class="swatch" style="background:#2d684e"></div><strong>Primary action</strong><code>#2D684E</code></div><div><div class="swatch" style="background:#243b2d"></div><strong>Primary text</strong><code>#243B2D</code></div><div><div class="swatch" style="background:#f6f8f3"></div><strong>Subtle surface</strong><code>#F6F8F3</code></div><div><div class="swatch" style="background:#983d32"></div><strong>Error text</strong><code>#983D32</code></div></div><p><small>These illustrative swatches are not a complete palette or accessibility verification.</small></p></section>
-<section id="spacing" class="section"><h2 data-outline-id="language-spacing"><span class="section-number">4</span> Spacing and layout</h2><p>A small spacing scale gives field groups and action rows a consistent rhythm. Related labels and fields sit close together; separate tasks have more space between them.</p><div class="scale" aria-label="Illustrative spacing scale: 4, 8, 12, 16, 24, and 32 pixels"><div class="scale-item"><div class="scale-block" style="height:4px"></div>4</div><div class="scale-item"><div class="scale-block" style="height:8px"></div>8</div><div class="scale-item"><div class="scale-block" style="height:12px"></div>12</div><div class="scale-item"><div class="scale-block" style="height:16px"></div>16</div><div class="scale-item"><div class="scale-block" style="height:24px"></div>24</div><div class="scale-item"><div class="scale-block" style="height:32px"></div>32</div></div><p>Widths shown in specimens are examples. A particular screen's layout and responsive behavior belong to its composition specification.</p></section>
-<section id="surfaces" class="section"><h2 data-outline-id="language-surfaces"><span class="section-number">5</span> Shape and surfaces</h2><p>The sample uses modest corner rounding, thin boundaries, and quiet background changes. Surface distinction does most of the work; elevation is reserved for cases that need separation from underlying content.</p><div class="specimen-row"><div class="specimen"><strong>Grouped content</strong><br><small>A boundary without a heavy shadow</small></div><div class="app-frame"><div class="app-main"><strong>Primary workspace</strong><br><small>A clear, light surface</small></div></div></div></section>
-<section id="icons" class="section"><h2 data-outline-id="language-icons"><span class="section-number">6</span> Iconography</h2><p>No icon family or complete required-icon inventory is selected for this synthetic product. The plus sign in the example comp supplements the written Record harvest action; it is not an icon-system decision.</p></section>
-<section id="components" class="section"><h2 data-outline-id="language-components"><span class="section-number">7</span> Basic component examples</h2><h3 id="actions" data-outline-id="language-actions"><span class="section-number">7.1</span> Actions</h3><p>A filled primary action indicates the next committing step. A secondary action gives a clear alternative without competing for emphasis.</p><div class="specimen"><div class="specimen-row"><div><span class="mock-button">Save entry</span><span class="specimen-label">Primary</span></div><div><span class="mock-button secondary">Cancel</span><span class="specimen-label">Secondary</span></div></div></div><h3 style="margin-top:26px" id="text-entry" data-outline-id="language-text-entry"><span class="section-number">7.2</span> Text entry</h3><p>A visible label identifies the field. Supporting text explains the input when needed; a validation message identifies the correction.</p><div class="two"><div class="specimen"><span class="mock-label">Harvest note</span><div class="mock-input">First tomatoes from the south bed</div><div class="mock-helper">A detail you would like to remember.</div><span class="specimen-label">Ordinary state</span></div><div class="specimen"><span class="mock-label">Harvest note</span><div class="mock-input invalid"></div><div class="mock-error">Enter a harvest note before saving.</div><span class="specimen-label">Error state</span></div></div><p class="small-links">In context: <a href="record-harvest.html#draft-comp">the recording comp</a> and <a href="record-harvest.html#empty-note">empty-note correction</a>.</p></section>
-<section id="states" class="section"><h2 data-outline-id="language-states"><span class="section-number">8</span> Shared states</h2><div class="specimen"><div class="specimen-row"><div><span class="mock-button">Save entry</span><span class="specimen-label">Rest</span></div><div><span class="mock-button focus">Save entry</span><span class="specimen-label">Focus illustration</span></div><div><span class="mock-button disabled">Save entry</span><span class="specimen-label">Disabled illustration</span></div></div></div><p>The disabled specimen shows a visual treatment; it does not prescribe when a product action becomes disabled. That behavior must be specified in the relevant interaction.</p></section>
-<section id="gaps" class="section"><h2 data-outline-id="language-gaps"><span class="section-number">9</span> Decisions and gaps</h2><p>Every choice on this page is illustrative. A production reference distinguishes accepted values, proposals, disclosed defaults, and missing requirements.</p><div class="notice"><strong>Open questions in this sample</strong><p>Icon family, dark theme, select/dropdown specimens, hover/pressed treatment, motion, and contrast verification are not covered. Their absence does not authorize inferred design decisions.</p></div></section>
-<div class="end-nav"><a href="record-harvest.html" data-section-ref="record-harvest"><small>See the shared language in use</small>Record a harvest <span class="reference-number">(§1.2.1.1)</span></a><a href="../document-design.md#4-design-language-as-a-separate-document"><small>Review this document's scope</small>Separate-reference proposal →</a></div></main></div></body></html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Fieldbook · Design language · Proposed separate document</title>
+		<link rel="stylesheet" href="reader.css" />
+	</head>
+	<body>
+		<a class="skip" href="#main">Skip to content</a>
+		<div class="proposal">
+			<strong>DOCUMENT FORMAT · PROPOSAL 02</strong> Separate design-language publication is proposed. All values
+			and specimens here are illustrative.
+		</div>
+		<header class="masthead">
+			<div class="brand"><span>F</span> Fieldbook <small> / Product documents</small></div>
+			<nav class="tabs" aria-label="Product documents">
+				<a href="prd.html">Product requirements</a><a href="interactions.html">Interactions</a
+				><a href="design-language.html" aria-current="page">Design language <small>· proposed</small></a>
+			</nav>
+		</header>
+		<div class="layout">
+			<nav class="contents" aria-label="Design language contents">
+				<p class="label">Design language</p>
+				<ul>
+					<li>
+						<a href="#direction" data-outline-ref="language-direction"
+							><span class="outline-number">1</span>
+							<span class="outline-title">Visual direction</span></a
+						>
+					</li>
+					<li>
+						<a href="#typography" data-outline-ref="language-typography"
+							><span class="outline-number">2</span> <span class="outline-title">Typography</span></a
+						>
+					</li>
+					<li>
+						<a href="#color" data-outline-ref="language-color"
+							><span class="outline-number">3</span>
+							<span class="outline-title">Colors and theme</span></a
+						>
+					</li>
+					<li>
+						<a href="#spacing" data-outline-ref="language-spacing"
+							><span class="outline-number">4</span>
+							<span class="outline-title">Spacing and layout</span></a
+						>
+					</li>
+					<li>
+						<a href="#surfaces" data-outline-ref="language-surfaces"
+							><span class="outline-number">5</span>
+							<span class="outline-title">Shape and surfaces</span></a
+						>
+					</li>
+					<li>
+						<a href="#icons" data-outline-ref="language-icons"
+							><span class="outline-number">6</span> <span class="outline-title">Iconography</span></a
+						>
+					</li>
+					<li>
+						<a href="#components" data-outline-ref="language-components"
+							><span class="outline-number">7</span>
+							<span class="outline-title">Basic component examples</span></a
+						>
+						<ul>
+							<li>
+								<a href="#actions" data-outline-ref="language-actions"
+									><span class="outline-number">7.1</span>
+									<span class="outline-title">Actions</span></a
+								>
+							</li>
+							<li>
+								<a href="#text-entry" data-outline-ref="language-text-entry"
+									><span class="outline-number">7.2</span>
+									<span class="outline-title">Text entry</span></a
+								>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#states" data-outline-ref="language-states"
+							><span class="outline-number">8</span> <span class="outline-title">Shared states</span></a
+						>
+					</li>
+					<li>
+						<a href="#gaps" data-outline-ref="language-gaps"
+							><span class="outline-number">9</span>
+							<span class="outline-title">Decisions and gaps</span></a
+						>
+					</li>
+				</ul>
+				<p class="aside-note">
+					Section numbers follow the document hierarchy across pages. Requirement and use-case IDs remain
+					independent.
+				</p>
+			</nav>
+			<main id="main">
+				<p class="eyebrow">Fieldbook / Shared visual reference</p>
+				<h1>Design language</h1>
+				<p class="lead">
+					Calm surfaces, readable observations, and a clear next action. A reference for the visual decisions
+					shared across the application.
+				</p>
+				<div class="meta">
+					<span class="badge proposed">Proposed separate document</span><span>Synthetic visual values</span
+					><span>Format proposal 02</span>
+				</div>
+				<section id="direction">
+					<h2 data-outline-id="language-direction"><span class="section-number">1</span> Visual direction</h2>
+					<p>
+						Fieldbook's sample interface uses warm pale surfaces and restrained green accents. The hierarchy
+						gives the observation more attention than the surrounding controls. Borders distinguish editable
+						fields, while feedback appears where it helps the gardener complete the task.
+					</p>
+					<div class="prototype-note">
+						The production document would publish the existing validated design-language source. This page
+						demonstrates presentation only; none of its visual choices override a product's accepted theme.
+					</div>
+				</section>
+				<section id="typography" class="section">
+					<h2 data-outline-id="language-typography"><span class="section-number">2</span> Typography</h2>
+					<div class="specimen">
+						<div class="example-type">The small details worth keeping.</div>
+						<p class="no-margin">Six ripe tomatoes from the south bed.</p>
+						<span class="specimen-label">Representative heading and body text inside the product</span>
+					</div>
+					<div class="table-wrap">
+						<table>
+							<thead>
+								<tr>
+									<th>Role</th>
+									<th>Sample specification</th>
+									<th>Use</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Interface family</td>
+									<td>Segoe UI, sans-serif</td>
+									<td>Product text and controls</td>
+								</tr>
+								<tr>
+									<td>Area heading</td>
+									<td>24px / 32px, semibold</td>
+									<td>Orient the gardener within an area</td>
+								</tr>
+								<tr>
+									<td>Body</td>
+									<td>16px / 24px, regular</td>
+									<td>Observations and explanations</td>
+								</tr>
+								<tr>
+									<td>Label</td>
+									<td>14px / 20px, semibold</td>
+									<td>Identify a control</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<p>
+						The publication reader has its own type scale. These values describe the sample product, not
+						this document's navigation or title.
+					</p>
+				</section>
+				<section id="color" class="section">
+					<h2 data-outline-id="language-color"><span class="section-number">3</span> Colors and theme</h2>
+					<p>
+						Use colors by semantic role. The primary action shares one treatment across flows; error
+						feedback combines color with a written explanation.
+					</p>
+					<div class="swatch-grid">
+						<div>
+							<div class="swatch" style="background:#2d684e"></div>
+							<strong>Primary action</strong><code>#2D684E</code>
+						</div>
+						<div>
+							<div class="swatch" style="background:#243b2d"></div>
+							<strong>Primary text</strong><code>#243B2D</code>
+						</div>
+						<div>
+							<div class="swatch" style="background:#f6f8f3"></div>
+							<strong>Subtle surface</strong><code>#F6F8F3</code>
+						</div>
+						<div>
+							<div class="swatch" style="background:#983d32"></div>
+							<strong>Error text</strong><code>#983D32</code>
+						</div>
+					</div>
+					<p>
+						<small
+							>These illustrative swatches are not a complete palette or accessibility
+							verification.</small
+						>
+					</p>
+				</section>
+				<section id="spacing" class="section">
+					<h2 data-outline-id="language-spacing"><span class="section-number">4</span> Spacing and layout</h2>
+					<p>
+						A small spacing scale gives field groups and action rows a consistent rhythm. Related labels and
+						fields sit close together; separate tasks have more space between them.
+					</p>
+					<div class="scale" aria-label="Illustrative spacing scale: 4, 8, 12, 16, 24, and 32 pixels">
+						<div class="scale-item">
+							<div class="scale-block" style="height:4px"></div>
+							4
+						</div>
+						<div class="scale-item">
+							<div class="scale-block" style="height:8px"></div>
+							8
+						</div>
+						<div class="scale-item">
+							<div class="scale-block" style="height:12px"></div>
+							12
+						</div>
+						<div class="scale-item">
+							<div class="scale-block" style="height:16px"></div>
+							16
+						</div>
+						<div class="scale-item">
+							<div class="scale-block" style="height:24px"></div>
+							24
+						</div>
+						<div class="scale-item">
+							<div class="scale-block" style="height:32px"></div>
+							32
+						</div>
+					</div>
+					<p>
+						Widths shown in specimens are examples. A particular screen's layout and responsive behavior
+						belong to its composition specification.
+					</p>
+				</section>
+				<section id="surfaces" class="section">
+					<h2 data-outline-id="language-surfaces">
+						<span class="section-number">5</span> Shape and surfaces
+					</h2>
+					<p>
+						The sample uses modest corner rounding, thin boundaries, and quiet background changes. Surface
+						distinction does most of the work; elevation is reserved for cases that need separation from
+						underlying content.
+					</p>
+					<div class="specimen-row">
+						<div class="specimen">
+							<strong>Grouped content</strong><br /><small>A boundary without a heavy shadow</small>
+						</div>
+						<div class="app-frame">
+							<div class="app-main">
+								<strong>Primary workspace</strong><br /><small>A clear, light surface</small>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section id="icons" class="section">
+					<h2 data-outline-id="language-icons"><span class="section-number">6</span> Iconography</h2>
+					<p>
+						No icon family or complete required-icon inventory is selected for this synthetic product. The
+						plus sign in the example comp supplements the written Record harvest action; it is not an
+						icon-system decision.
+					</p>
+				</section>
+				<section id="components" class="section">
+					<h2 data-outline-id="language-components">
+						<span class="section-number">7</span> Basic component examples
+					</h2>
+					<h3 id="actions" data-outline-id="language-actions">
+						<span class="section-number">7.1</span> Actions
+					</h3>
+					<p>
+						A filled primary action indicates the next committing step. A secondary action gives a clear
+						alternative without competing for emphasis.
+					</p>
+					<div class="specimen">
+						<div class="specimen-row">
+							<div>
+								<span class="mock-button">Save entry</span><span class="specimen-label">Primary</span>
+							</div>
+							<div>
+								<span class="mock-button secondary">Cancel</span
+								><span class="specimen-label">Secondary</span>
+							</div>
+						</div>
+					</div>
+					<h3 style="margin-top:26px" id="text-entry" data-outline-id="language-text-entry">
+						<span class="section-number">7.2</span> Text entry
+					</h3>
+					<p>
+						A visible label identifies the field. Supporting text explains the input when needed; a
+						validation message identifies the correction.
+					</p>
+					<div class="two">
+						<div class="specimen">
+							<span class="mock-label">Harvest note</span>
+							<div class="mock-input">First tomatoes from the south bed</div>
+							<div class="mock-helper">A detail you would like to remember.</div>
+							<span class="specimen-label">Ordinary state</span>
+						</div>
+						<div class="specimen">
+							<span class="mock-label">Harvest note</span>
+							<div class="mock-input invalid"></div>
+							<div class="mock-error">Enter a harvest note before saving.</div>
+							<span class="specimen-label">Error state</span>
+						</div>
+					</div>
+					<p class="small-links">
+						In context: <a href="record-harvest.html#draft-comp">the recording comp</a> and
+						<a href="record-harvest.html#empty-note">empty-note correction</a>.
+					</p>
+				</section>
+				<section id="states" class="section">
+					<h2 data-outline-id="language-states"><span class="section-number">8</span> Shared states</h2>
+					<div class="specimen">
+						<div class="specimen-row">
+							<div>
+								<span class="mock-button">Save entry</span><span class="specimen-label">Rest</span>
+							</div>
+							<div>
+								<span class="mock-button focus">Save entry</span
+								><span class="specimen-label">Focus illustration</span>
+							</div>
+							<div>
+								<span class="mock-button disabled">Save entry</span
+								><span class="specimen-label">Disabled illustration</span>
+							</div>
+						</div>
+					</div>
+					<p>
+						The disabled specimen shows a visual treatment; it does not prescribe when a product action
+						becomes disabled. That behavior must be specified in the relevant interaction.
+					</p>
+				</section>
+				<section id="gaps" class="section">
+					<h2 data-outline-id="language-gaps"><span class="section-number">9</span> Decisions and gaps</h2>
+					<p>
+						Every choice on this page is illustrative. A production reference distinguishes accepted values,
+						proposals, disclosed defaults, and missing requirements.
+					</p>
+					<div class="notice">
+						<strong>Open questions in this sample</strong>
+						<p>
+							Icon family, dark theme, select/dropdown specimens, hover/pressed treatment, motion, and
+							contrast verification are not covered. Their absence does not authorize inferred design
+							decisions.
+						</p>
+					</div>
+				</section>
+				<div class="end-nav">
+					<a href="record-harvest.html" data-section-ref="record-harvest"
+						><small>See the shared language in use</small>Record a harvest
+						<span class="reference-number">(§1.2.1.1)</span></a
+					><a href="../document-design.md#4-design-language-as-a-separate-document"
+						><small>Review this document's scope</small>Separate-reference proposal →</a
+					>
+				</div>
+			</main>
+		</div>
+	</body>
+</html>

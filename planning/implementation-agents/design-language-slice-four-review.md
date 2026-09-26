@@ -24,7 +24,7 @@ The actual generated central SVG was opened in headless Chromium and visually in
 
 ## Review Artifact
 
- The [installed contract](../../skills/refine-design/references/design-language.md) documents the current bounded schema and catalog.
+The [installed contract](../../skills/refine-design/references/design-language.md) documents the current bounded schema and catalog.
 
 ## Limits And Next Slice
 

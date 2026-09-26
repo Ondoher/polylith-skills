@@ -19,11 +19,11 @@ The review stage illustrates the pattern; it is not a required product behavior.
 
 ## 1. The document set
 
-| Document | Reader's purpose | Primary content | Proposed path |
-| --- | --- | --- | --- |
-| Product requirements | Understand why the product exists, what it must do, its boundaries, and how success is judged | Purpose, users, outcomes, scope, concepts, requirements, rules, quality constraints, acceptance, dependencies, unresolved decisions | `documents/<product>/prd/` |
-| Interaction guide | Understand how someone completes each goal and what the interface does along every specified path | Application orientation, use cases, detailed steps, state changes, alternatives, dialogs, cancellation, recovery, inline comps | `documents/<product>/interactions/` |
-| Design language — proposed separate reference | Apply the same visual rules and ordinary components throughout the product | Visual direction, typography, color, layout, surfaces, icons, component specimens, shared states, decisions and gaps | `documents/<product>/design-language/` |
+| Document                                      | Reader's purpose                                                                                  | Primary content                                                                                                                     | Proposed path                          |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| Product requirements                          | Understand why the product exists, what it must do, its boundaries, and how success is judged     | Purpose, users, outcomes, scope, concepts, requirements, rules, quality constraints, acceptance, dependencies, unresolved decisions | `documents/<product>/prd/`             |
+| Interaction guide                             | Understand how someone completes each goal and what the interface does along every specified path | Application orientation, use cases, detailed steps, state changes, alternatives, dialogs, cancellation, recovery, inline comps      | `documents/<product>/interactions/`    |
+| Design language — proposed separate reference | Apply the same visual rules and ordinary components throughout the product                        | Visual direction, typography, color, layout, surfaces, icons, component specimens, shared states, decisions and gaps                | `documents/<product>/design-language/` |
 
 The existing technical guide stays separately owned by `generate-technical`.
 It may appear in collection navigation when a verified guide exists. It is not
@@ -47,16 +47,16 @@ Use this fixed top-level order. Product-specific headings belong inside these
 sections. The document is written in connected prose with requirements and
 comparison tables where they improve reading.
 
-| Order | Section | What readers should learn |
-| --- | --- | --- |
-| 1 | Product overview | Problem, intended benefit, current scope and maturity; concise orientation before any catalog |
-| 2 | Users, goals, and success | Primary user roles, their goals, intended outcomes, and supported measures of success |
-| 3 | Scope and boundaries | Included capabilities, explicit exclusions, assumptions, and external boundaries |
-| 4 | Product concepts | The vocabulary and domain concepts needed to interpret requirements |
-| 5 | Functional requirements | Required behavior grouped by stable product area, including applicable rules and local acceptance criteria |
-| 6 | Quality and constraints | Accepted accessibility, reliability, performance, privacy, platform, or other constraints relevant to this product |
-| 7 | Acceptance and dependencies | Cross-area acceptance scenarios, dependency effects, and links to detailed criteria; no copied checklist of every requirement |
-| 8 | Open decisions | Unresolved questions with the affected scope and actual decision status |
+| Order | Section                     | What readers should learn                                                                                                     |
+| ----- | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| 1     | Product overview            | Problem, intended benefit, current scope and maturity; concise orientation before any catalog                                 |
+| 2     | Users, goals, and success   | Primary user roles, their goals, intended outcomes, and supported measures of success                                         |
+| 3     | Scope and boundaries        | Included capabilities, explicit exclusions, assumptions, and external boundaries                                              |
+| 4     | Product concepts            | The vocabulary and domain concepts needed to interpret requirements                                                           |
+| 5     | Functional requirements     | Required behavior grouped by stable product area, including applicable rules and local acceptance criteria                    |
+| 6     | Quality and constraints     | Accepted accessibility, reliability, performance, privacy, platform, or other constraints relevant to this product            |
+| 7     | Acceptance and dependencies | Cross-area acceptance scenarios, dependency effects, and links to detailed criteria; no copied checklist of every requirement |
+| 8     | Open decisions              | Unresolved questions with the affected scope and actual decision status                                                       |
 
 Document metadata includes the product, document title, revision, and actual
 source status. Show an owner, release, date, priority, or metric only when that
@@ -139,14 +139,14 @@ This is the working scope for now and can be revisited explicitly later.
 The format supplies reusable page patterns, not a replacement information
 hierarchy:
 
-| Page pattern | What it presents |
-| --- | --- |
-| Application overview | Product orientation, major areas, shared shell/navigation, and a full-context comp when supplied |
-| Area overview | The area's purpose, layout, available activities, its place in the application, and the next subjects to read |
-| Interaction object | Identified object, responsibility, states, entry/exit boundaries, and its local use cases |
-| Local use-case detail | A way of using one identified object, with steps, visuals, alternatives, and outcomes |
-| Flow overview | A broader journey linking local use cases and explaining handoffs between their objects |
-| Shared interaction | Reused complex behavior, its meaningful states, and references to each invoking flow |
+| Page pattern          | What it presents                                                                                              |
+| --------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Application overview  | Product orientation, major areas, shared shell/navigation, and a full-context comp when supplied              |
+| Area overview         | The area's purpose, layout, available activities, its place in the application, and the next subjects to read |
+| Interaction object    | Identified object, responsibility, states, entry/exit boundaries, and its local use cases                     |
+| Local use-case detail | A way of using one identified object, with steps, visuals, alternatives, and outcomes                         |
+| Flow overview         | A broader journey linking local use cases and explaining handoffs between their objects                       |
+| Shared interaction    | Reused complex behavior, its meaningful states, and references to each invoking flow                          |
 
 The agent can place several patterns on a page or let a substantial pattern
 occupy a page. Reusable patterns do not automatically create page breaks.
@@ -229,14 +229,14 @@ alone must not rewrite canonical source IDs or semantic relationships.
 
 ### Use-case chapter pattern
 
-| Order | Part | Required treatment |
-| --- | --- | --- |
-| 1 | Goal and context | Human-readable title, stable use-case ID, owning interaction object's ID/name, actor, starting conditions, trigger, entry/exit boundaries, successful outcome, governing requirement links |
-| 2 | Flow overview | Brief reading map of the specified path and important branches; complex flows may include a diagram |
-| 3 | Main sequence | Numbered user actions and system responses with resulting state, feedback, and the appropriate inline comp |
-| 4 | Alternatives and recovery | Named divergence points, conditions, actions, system response, and rejoin or exit; cancellation and failure included when specified |
-| 5 | End states | What has changed, what persists, where the person ends up, and what happens after abandonment or failure |
-| 6 | Shared references and gaps | Contextual links to reused interactions and design rules; precise missing behavior or visuals |
+| Order | Part                       | Required treatment                                                                                                                                                                         |
+| ----- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1     | Goal and context           | Human-readable title, stable use-case ID, owning interaction object's ID/name, actor, starting conditions, trigger, entry/exit boundaries, successful outcome, governing requirement links |
+| 2     | Flow overview              | Brief reading map of the specified path and important branches; complex flows may include a diagram                                                                                        |
+| 3     | Main sequence              | Numbered user actions and system responses with resulting state, feedback, and the appropriate inline comp                                                                                 |
+| 4     | Alternatives and recovery  | Named divergence points, conditions, actions, system response, and rejoin or exit; cancellation and failure included when specified                                                        |
+| 5     | End states                 | What has changed, what persists, where the person ends up, and what happens after abandonment or failure                                                                                   |
+| 6     | Shared references and gaps | Contextual links to reused interactions and design rules; precise missing behavior or visuals                                                                                              |
 
 In the main sequence, show the actor's action and the system's response together.
 Put a branch marker beside the step where it diverges and link to that branch's
@@ -332,15 +332,15 @@ figures or hide essential content in closed disclosures.
 
 ## 6. Stable format with controlled variation
 
-| Persisted item | Stable across ordinary runs | How it changes |
-| --- | --- | --- |
-| Publication profile | Required document roles, selected optional reference, PRD section order, allowed content patterns | An explicit format revision |
-| Interaction section numbering | Decimal labels derived from the saved logical hierarchy, continuous across pages | Recompute after an accepted hierarchy revision; preserve stable section/use-case IDs and link targets |
-| Publication theme | Document typography, spacing, navigation, tables, figures and callouts | A theme revision with visual comparison |
-| Agent's hierarchy and page-break plan | Product-area identities, parent/child subjects, page paths, reading order, anchors | The structure agent's saved revision with old/new navigation diff |
-| Reader manuscript | Reviewed prose, criteria presentation, flow explanations, captions and source links | A bounded content patch tied to a request or source change |
-| Canonical product/UX/UI sources | Product facts, behavior, decisions, scene meaning | The existing refinement workflow |
-| Repair ledger and recovery placement | Affected stable IDs/revisions, gaps, fallback locations, user repair steps | A recorded failure or a validated repair; retain the accepted hierarchy separately |
+| Persisted item                        | Stable across ordinary runs                                                                       | How it changes                                                                                        |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Publication profile                   | Required document roles, selected optional reference, PRD section order, allowed content patterns | An explicit format revision                                                                           |
+| Interaction section numbering         | Decimal labels derived from the saved logical hierarchy, continuous across pages                  | Recompute after an accepted hierarchy revision; preserve stable section/use-case IDs and link targets |
+| Publication theme                     | Document typography, spacing, navigation, tables, figures and callouts                            | A theme revision with visual comparison                                                               |
+| Agent's hierarchy and page-break plan | Product-area identities, parent/child subjects, page paths, reading order, anchors                | The structure agent's saved revision with old/new navigation diff                                     |
+| Reader manuscript                     | Reviewed prose, criteria presentation, flow explanations, captions and source links               | A bounded content patch tied to a request or source change                                            |
+| Canonical product/UX/UI sources       | Product facts, behavior, decisions, scene meaning                                                 | The existing refinement workflow                                                                      |
+| Repair ledger and recovery placement  | Affected stable IDs/revisions, gaps, fallback locations, user repair steps                        | A recorded failure or a validated repair; retain the accepted hierarchy separately                    |
 
 Freeze structure, not the entire product vocabulary. Different products have
 different areas and use cases. The structure agent creates their hierarchy and

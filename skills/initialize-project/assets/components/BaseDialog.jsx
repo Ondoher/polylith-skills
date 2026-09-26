@@ -64,7 +64,7 @@ export default class BaseDialog extends Component {
 	 * @returns {string | undefined} - The description identifier.
 	 */
 	getDescriptionId(description) {
-		return description ? (this.props.descriptionId || `dialog-${this.instanceId}-description`) : undefined;
+		return description ? this.props.descriptionId || `dialog-${this.instanceId}-description` : undefined;
 	}
 
 	/**
@@ -92,7 +92,9 @@ export default class BaseDialog extends Component {
 	 * @param {object} patch - The action properties to merge.
 	 */
 	setActionState(id, patch) {
-		this.setState((state) => ({actions: state.actions.map((action) => action.id === id ? {...action, ...patch} : action)}));
+		this.setState((state) => ({
+			actions: state.actions.map((action) => (action.id === id ? {...action, ...patch} : action)),
+		}));
 	}
 
 	/**
@@ -133,7 +135,10 @@ export default class BaseDialog extends Component {
 			setDescription: (value) => this.setDescription(value),
 			setActionState: (id, patch) => this.setActionState(id, patch),
 			announce: (value) => this.announce(value),
-			submit: () => { this.props.onConfirm?.('submit'); this.props.onAction?.('submit'); },
+			submit: () => {
+				this.props.onConfirm?.('submit');
+				this.props.onAction?.('submit');
+			},
 		};
 	}
 
@@ -157,7 +162,15 @@ export default class BaseDialog extends Component {
 	renderCloseButton() {
 		if (!this.props.showClose) return null;
 		const closeLabel = this.props.closeLabel ?? (this.props.localize ? 'common.close' : 'Close');
-		return <IconButton type="button" aria-label={this.context.accessibilityEnabled ? this.resolve(closeLabel) : undefined} onClick={(event) => this.handleClose(event, 'closeButtonClick')}><CloseIcon /></IconButton>;
+		return (
+			<IconButton
+				type="button"
+				aria-label={this.context.accessibilityEnabled ? this.resolve(closeLabel) : undefined}
+				onClick={(event) => this.handleClose(event, 'closeButtonClick')}
+			>
+				<CloseIcon />
+			</IconButton>
+		);
 	}
 
 	/**
@@ -170,15 +183,21 @@ export default class BaseDialog extends Component {
 	renderAction(action, index) {
 		if (action.hidden) return null;
 		const disabled = action.enabled === false;
-		return <Button
-			key={action.id || `action-${index}`}
-			type="button"
-			variant={action.priority === 'primary' ? 'contained' : 'outlined'}
-			disabled={!this.context.accessibilityEnabled && disabled}
-			aria-disabled={this.context.accessibilityEnabled && disabled ? 'true' : undefined}
-			aria-pressed={this.context.accessibilityEnabled && action.pressable ? String(action.pressed === true) : undefined}
-			onClick={(event) => this.handleAction(action, event)}
-		>{this.resolve(action.label)}</Button>;
+		return (
+			<Button
+				key={action.id || `action-${index}`}
+				type="button"
+				variant={action.priority === 'primary' ? 'contained' : 'outlined'}
+				disabled={!this.context.accessibilityEnabled && disabled}
+				aria-disabled={this.context.accessibilityEnabled && disabled ? 'true' : undefined}
+				aria-pressed={
+					this.context.accessibilityEnabled && action.pressable ? String(action.pressed === true) : undefined
+				}
+				onClick={(event) => this.handleAction(action, event)}
+			>
+				{this.resolve(action.label)}
+			</Button>
+		);
 	}
 
 	/**
@@ -188,7 +207,9 @@ export default class BaseDialog extends Component {
 	 */
 	renderActions() {
 		const actions = normalizeActions(this.state.actions);
-		return actions.length ? <DialogActions>{actions.map((action, index) => this.renderAction(action, index))}</DialogActions> : null;
+		return actions.length ? (
+			<DialogActions>{actions.map((action, index) => this.renderAction(action, index))}</DialogActions>
+		) : null;
 	}
 
 	/**
@@ -197,17 +218,52 @@ export default class BaseDialog extends Component {
 	 * @returns {React.ReactNode} - The dialog presentation.
 	 */
 	render() {
-		const {open, title, description, actions, children, onAction, onClose, onCancel, onConfirm, localize, resetToken, showClose, closeLabel, titleId, descriptionId, ...props} = this.props;
+		const {
+			open,
+			title,
+			description,
+			actions,
+			children,
+			onAction,
+			onClose,
+			onCancel,
+			onConfirm,
+			localize,
+			resetToken,
+			showClose,
+			closeLabel,
+			titleId,
+			descriptionId,
+			...props
+		} = this.props;
 		const resolvedTitle = this.resolve(this.state.title);
 		const resolvedDescription = this.resolve(this.state.description);
 		const resolvedTitleId = this.getTitleId();
 		const resolvedDescriptionId = this.getDescriptionId(resolvedDescription);
 		return (
-			<Dialog {...props} open={open} onClose={this.handleClose} aria-labelledby={this.context.accessibilityEnabled ? resolvedTitleId : undefined} aria-describedby={this.context.accessibilityEnabled ? resolvedDescriptionId : undefined}>
-				<DialogTitle id={resolvedTitleId}>{resolvedTitle}{this.renderCloseButton()}</DialogTitle>
-				<DialogContent>{resolvedDescription ? <p id={resolvedDescriptionId}>{resolvedDescription}</p> : null}{this.renderChild()}</DialogContent>
+			<Dialog
+				{...props}
+				open={open}
+				onClose={this.handleClose}
+				aria-labelledby={this.context.accessibilityEnabled ? resolvedTitleId : undefined}
+				aria-describedby={this.context.accessibilityEnabled ? resolvedDescriptionId : undefined}
+			>
+				<DialogTitle id={resolvedTitleId}>
+					{resolvedTitle}
+					{this.renderCloseButton()}
+				</DialogTitle>
+				<DialogContent>
+					{resolvedDescription ? <p id={resolvedDescriptionId}>{resolvedDescription}</p> : null}
+					{this.renderChild()}
+				</DialogContent>
 				{this.renderActions()}
-				<div id={`dialog-${this.instanceId}-announcement`} className="screen-reader-only" aria-live={this.context.accessibilityEnabled ? 'polite' : undefined}>{this.resolve(this.state.announcement)}</div>
+				<div
+					id={`dialog-${this.instanceId}-announcement`}
+					className="screen-reader-only"
+					aria-live={this.context.accessibilityEnabled ? 'polite' : undefined}
+				>
+					{this.resolve(this.state.announcement)}
+				</div>
 			</Dialog>
 		);
 	}
@@ -235,8 +291,14 @@ function normalizeActions(actions) {
 	const ids = new Set();
 	let primary = false;
 	return actions.reduce((result, action) => {
-		if (!action.id || ids.has(action.id)) { console.warn('BaseDialog action ids must be present and unique.'); return result; }
-		if (action.id === 'close') { console.warn('BaseDialog action id "close" is reserved.'); return result; }
+		if (!action.id || ids.has(action.id)) {
+			console.warn('BaseDialog action ids must be present and unique.');
+			return result;
+		}
+		if (action.id === 'close') {
+			console.warn('BaseDialog action id "close" is reserved.');
+			return result;
+		}
 		ids.add(action.id);
 		if (action.priority === 'primary') {
 			if (primary) {

@@ -8,25 +8,25 @@ Read the current role design, compact system rules, supporting research, and rel
 
 The following traceability applies to the advisory role. Rows identify the requirement, behavior/prohibition, handoff, escalation and review concern; canonical rules remain at their original sources. Independent standards lanes named below are downstream concerns, not agents started by this review or evidence that their ledger review occurred.
 
-| Source | Required behavior and prohibited alternative | Owned output / escalation | Review concern / scenario |
-| --- | --- | --- | --- |
-| DOCUMENTATION-005 | Product topics supply context, not engineering overrides. | Labeled facts/proposals; flag conflicting authority. | Architecture; scope conflict. |
-| DOCUMENTATION-007 | Respect longest matching folder assignment for path-specific claims. | Supplied applicable constraints or applicability gap. | Architecture; supplied repository scope. |
-| DOCUMENTATION-009 | Preserve standards-set inheritance. | Do not claim applicability from a convenient subset. | Architecture; supplied repository scope. |
-| DOCUMENTATION-011 | Preserve matching ADD overlays. | Escalate missing overlay context. | Architecture; conflicting local rule scenario. |
-| DOCUMENTATION-012 | Preserve most-specific REPLACE precedence. | Report conflict rather than invent precedence. | Architecture; conflicting local rule scenario. |
-| ARCHITECTURE-003 | Keep capabilities with the owner of their meaning. | Major capability ownership, not class decomposition. | Architecture; local document app. |
-| ARCHITECTURE-007 | Identify one authority for each canonical fact. | Store/writer boundaries; domain detail to model. | Architecture/contracts; database warranted. |
-| ARCHITECTURE-008 | Recognize genuine ingress validation boundaries. | Trust/data handoff; do not specify repeated internal checks. | Contracts/privacy; runtime assumption. |
-| ARCHITECTURE-009 | Preserve policy, lifecycle and cleanup ownership. | System constraints; coding details downstream. | Architecture; cancellation. |
-| ARCHITECTURE-013 | Avoid ceremonial layers for small capabilities. | Proportional report; no invented files. | Architecture; minimal task. |
-| ARCHITECTURE-034 | Canonical rules remain in standards, not agent copies. | Guidance references and scoped constraints. | Architecture; scope conflict. |
-| ARCHITECTURE-035 | Product facts remain in project context. | Proposals to parent; no global product requirements. | Architecture; local document app. |
-| ARCHITECTURE-036 | Separate current facts, plans and evidence. | Labeled assumptions, options and limitations. | Architecture/verification; all cases. |
-| System role decision | Assessment-only; no writes, execution or specialist spawning. | Report to parent; implementation request becomes handoff. | Role safety; scope conflict. |
-| UX/contract ownership decisions | UX/owner control visible recovery; no silent rollback promise. | Feasibility constraints and owner questions. | UX/contracts; cancellation. |
-| Database preference | MongoDB when needed; no automatic database. | Options within accepted product constraints. | Architecture; local document and database cases. |
-| Efficiency decision | Focused context, bounded scope, honest available metrics. | Concise report; no speculative benchmark claims. | Verification; minimal task. |
+| Source                          | Required behavior and prohibited alternative                         | Owned output / escalation                                    | Review concern / scenario                        |
+| ------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------ |
+| DOCUMENTATION-005               | Product topics supply context, not engineering overrides.            | Labeled facts/proposals; flag conflicting authority.         | Architecture; scope conflict.                    |
+| DOCUMENTATION-007               | Respect longest matching folder assignment for path-specific claims. | Supplied applicable constraints or applicability gap.        | Architecture; supplied repository scope.         |
+| DOCUMENTATION-009               | Preserve standards-set inheritance.                                  | Do not claim applicability from a convenient subset.         | Architecture; supplied repository scope.         |
+| DOCUMENTATION-011               | Preserve matching ADD overlays.                                      | Escalate missing overlay context.                            | Architecture; conflicting local rule scenario.   |
+| DOCUMENTATION-012               | Preserve most-specific REPLACE precedence.                           | Report conflict rather than invent precedence.               | Architecture; conflicting local rule scenario.   |
+| ARCHITECTURE-003                | Keep capabilities with the owner of their meaning.                   | Major capability ownership, not class decomposition.         | Architecture; local document app.                |
+| ARCHITECTURE-007                | Identify one authority for each canonical fact.                      | Store/writer boundaries; domain detail to model.             | Architecture/contracts; database warranted.      |
+| ARCHITECTURE-008                | Recognize genuine ingress validation boundaries.                     | Trust/data handoff; do not specify repeated internal checks. | Contracts/privacy; runtime assumption.           |
+| ARCHITECTURE-009                | Preserve policy, lifecycle and cleanup ownership.                    | System constraints; coding details downstream.               | Architecture; cancellation.                      |
+| ARCHITECTURE-013                | Avoid ceremonial layers for small capabilities.                      | Proportional report; no invented files.                      | Architecture; minimal task.                      |
+| ARCHITECTURE-034                | Canonical rules remain in standards, not agent copies.               | Guidance references and scoped constraints.                  | Architecture; scope conflict.                    |
+| ARCHITECTURE-035                | Product facts remain in project context.                             | Proposals to parent; no global product requirements.         | Architecture; local document app.                |
+| ARCHITECTURE-036                | Separate current facts, plans and evidence.                          | Labeled assumptions, options and limitations.                | Architecture/verification; all cases.            |
+| System role decision            | Assessment-only; no writes, execution or specialist spawning.        | Report to parent; implementation request becomes handoff.    | Role safety; scope conflict.                     |
+| UX/contract ownership decisions | UX/owner control visible recovery; no silent rollback promise.       | Feasibility constraints and owner questions.                 | UX/contracts; cancellation.                      |
+| Database preference             | MongoDB when needed; no automatic database.                          | Options within accepted product constraints.                 | Architecture; local document and database cases. |
+| Efficiency decision             | Focused context, bounded scope, honest available metrics.            | Concise report; no speculative benchmark claims.             | Verification; minimal task.                      |
 
 Sources: [documentation](../../documentation/standards/documentation.md), [architecture](../../documentation/standards/architecture.md), [system role](design.md#system-architecture-planning-agent), [contract ownership](design.md#contract-design-ownership), [efficiency](design.md#efficiency-evaluation-before-deployment).
 

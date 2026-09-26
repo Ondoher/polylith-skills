@@ -1,12 +1,12 @@
 {
-  "name": "generate-prd-skill",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "test:composable": "node --test --test-isolation=none scripts/prd-outline.test.mjs scripts/prd-structure.test.mjs scripts/product-collection.test.mjs ../refine-design/scripts/product-composable.test.mjs ../refine-design/scripts/ux-composable.test.mjs",
-    "test": "node --test --test-isolation=none scripts/product-neutrality.test.mjs scripts/prd-outline.test.mjs scripts/prd-structure.test.mjs scripts/product-collection.test.mjs"
-  },
-  "dependencies": {
-    "fontkit": "2.0.4"
-  }
+	"name": "generate-prd-skill",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"test:composable": "node --test --test-isolation=none scripts/prd-outline.test.mjs scripts/prd-structure.test.mjs scripts/product-collection.test.mjs ../refine-design/scripts/product-composable.test.mjs ../refine-design/scripts/ux-composable.test.mjs",
+		"test": "node --test --test-isolation=none scripts/product-neutrality.test.mjs scripts/prd-outline.test.mjs scripts/prd-structure.test.mjs scripts/product-collection.test.mjs"
+	},
+	"dependencies": {
+		"fontkit": "2.0.4"
+	}
 }

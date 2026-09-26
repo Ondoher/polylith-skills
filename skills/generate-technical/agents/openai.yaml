@@ -1,6 +1,6 @@
 interface:
-  display_name: "Generate Technical Guide"
-  short_description: "Publish validated technical context as linked Markdown"
-  default_prompt: "Use $generate-technical to publish the persisted technical context as a linked Markdown guide."
+    display_name: 'Generate Technical Guide'
+    short_description: 'Publish validated technical context as linked Markdown'
+    default_prompt: 'Use $generate-technical to publish the persisted technical context as a linked Markdown guide.'
 policy:
-  allow_implicit_invocation: true
+    allow_implicit_invocation: true

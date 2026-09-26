@@ -10,16 +10,30 @@ import {resolveComponentText} from '../component-text.js';
 import {createTestHarness} from '../../testing/TestHarness.js';
 
 const phrases = {
-	'name.label': 'Name', 'name.helper': 'Enter a name', 'name.aria': 'Editable name',
-	'mode.label': 'Mode', 'mode.helper': 'Choose a mode', 'mode.major': 'Major', 'mode.minor': 'Minor',
-	'enabled.label': 'Enabled', 'enabled.helper': 'Turns the feature on',
-	'choice.label': 'Choice', 'choice.first': 'First', 'choice.second': 'Second',
+	'name.label': 'Name',
+	'name.helper': 'Enter a name',
+	'name.aria': 'Editable name',
+	'mode.label': 'Mode',
+	'mode.helper': 'Choose a mode',
+	'mode.major': 'Major',
+	'mode.minor': 'Minor',
+	'enabled.label': 'Enabled',
+	'enabled.helper': 'Turns the feature on',
+	'choice.label': 'Choice',
+	'choice.first': 'First',
+	'choice.second': 'Second',
 };
 const localize = {translate: (phrase) => phrases[phrase] ?? ''};
 
 class TextProbe extends React.Component {
 	static contextType = AppContext;
-	render() { return <span>{resolveComponentText(this.context, this.props.localize, this.props.value, this.props.fallback)}</span>; }
+	render() {
+		return (
+			<span>
+				{resolveComponentText(this.context, this.props.localize, this.props.value, this.props.fallback)}
+			</span>
+		);
+	}
 }
 
 describe('generated form controls', () => {
@@ -56,8 +70,15 @@ describe('generated form controls', () => {
 	it('renders localized concrete select options, helper wiring, disabled and error states', () => {
 		harness = createTestHarness().withContext({localize, localizationEnabled: true, accessibilityEnabled: true});
 		const result = harness.render(Select, {
-			label: 'mode.label', helperText: 'mode.helper', value: 'minor', error: true, disabled: true,
-			options: [{value: 'major', label: 'mode.major'}, {value: 'minor', label: 'mode.minor'}],
+			label: 'mode.label',
+			helperText: 'mode.helper',
+			value: 'minor',
+			error: true,
+			disabled: true,
+			options: [
+				{value: 'major', label: 'mode.major'},
+				{value: 'minor', label: 'mode.minor'},
+			],
 		});
 		const combobox = result.query('[role="combobox"]');
 		const helper = result.query('.MuiFormHelperText-root');
@@ -72,8 +93,14 @@ describe('generated form controls', () => {
 		const changed = jasmine.createSpy('changed');
 		harness = createTestHarness();
 		const result = harness.render(BaseSelect, {
-			label: 'Mode', value: 'major', onChange: changed, selectProps: {native: true},
-			options: [{value: 'major', label: 'Major'}, {value: 'minor', label: 'Minor'}],
+			label: 'Mode',
+			value: 'major',
+			onChange: changed,
+			selectProps: {native: true},
+			options: [
+				{value: 'major', label: 'Major'},
+				{value: 'minor', label: 'Minor'},
+			],
 		});
 		harness.input(result.query('select'), 'minor');
 		expect(changed).toHaveBeenCalled();
@@ -83,7 +110,12 @@ describe('generated form controls', () => {
 	it('wires localized checkbox helper text and reports boolean changes', () => {
 		const changed = jasmine.createSpy('changed');
 		harness = createTestHarness().withContext({localize, localizationEnabled: true, accessibilityEnabled: true});
-		const result = harness.render(BaseCheckbox, {localize: true, label: 'enabled.label', helperText: 'enabled.helper', onChange: changed});
+		const result = harness.render(BaseCheckbox, {
+			localize: true,
+			label: 'enabled.label',
+			helperText: 'enabled.helper',
+			onChange: changed,
+		});
 		const input = result.query('input[type="checkbox"]');
 		const helper = result.query('.MuiFormHelperText-root');
 		expect(result.container.textContent).toContain('Enabled');
@@ -96,8 +128,15 @@ describe('generated form controls', () => {
 		const changed = jasmine.createSpy('changed');
 		harness = createTestHarness().withContext({localize, localizationEnabled: true, accessibilityEnabled: true});
 		const result = harness.render(BaseRadioButtons, {
-			localize: true, label: 'choice.label', helperText: 'mode.helper', value: 'first', onChange: changed,
-			options: [{value: 'first', label: 'choice.first'}, {value: 'second', label: 'choice.second'}],
+			localize: true,
+			label: 'choice.label',
+			helperText: 'mode.helper',
+			value: 'first',
+			onChange: changed,
+			options: [
+				{value: 'first', label: 'choice.first'},
+				{value: 'second', label: 'choice.second'},
+			],
 		});
 		const group = result.query('[role="radiogroup"]');
 		expect(group.getAttribute('aria-labelledby')).toBeTruthy();
@@ -120,14 +159,22 @@ describe('generated form controls', () => {
 
 	it('covers empty and explicitly configured select states', () => {
 		harness = createTestHarness().withContext({accessibilityEnabled: false});
-		let result = harness.render(BaseSelect, {id: 'plain-select', label: 'Mode', ariaLabel: 'Ignored', fullWidth: false});
+		let result = harness.render(BaseSelect, {
+			id: 'plain-select',
+			label: 'Mode',
+			ariaLabel: 'Ignored',
+			fullWidth: false,
+		});
 		const combobox = result.query('[role="combobox"]');
 		expect(combobox.getAttribute('aria-label')).toBeNull();
 		expect(result.query('.MuiFormHelperText-root')).toBeNull();
 		harness.unmount();
 		harness = createTestHarness().withContext({accessibilityEnabled: true});
 		result = harness.render(BaseSelect, {
-			id: 'labelled-select', label: 'Mode', ariaLabel: 'Mode picker', value: '',
+			id: 'labelled-select',
+			label: 'Mode',
+			ariaLabel: 'Mode picker',
+			value: '',
 			options: [{value: 'disabled', label: 'Disabled', disabled: true}],
 		});
 		expect(result.query('[role="combobox"]').getAttribute('aria-label')).toBe('Mode picker');
@@ -135,7 +182,13 @@ describe('generated form controls', () => {
 
 	it('covers checkbox defaults, explicit slots, and no callback behavior', () => {
 		harness = createTestHarness().withContext({accessibilityEnabled: false});
-		let result = harness.render(BaseCheckbox, {id: 'plain-check', label: 'Check', ariaLabel: 'Ignored', checked: true, fullWidth: false});
+		let result = harness.render(BaseCheckbox, {
+			id: 'plain-check',
+			label: 'Check',
+			ariaLabel: 'Ignored',
+			checked: true,
+			fullWidth: false,
+		});
 		let input = result.query('input');
 		expect(input.checked).toBeTrue();
 		expect(input.getAttribute('aria-label')).toBeNull();
@@ -143,7 +196,9 @@ describe('generated form controls', () => {
 		harness.unmount();
 		harness = createTestHarness().withContext({accessibilityEnabled: true});
 		result = harness.render(BaseCheckbox, {
-			label: 'Check', ariaLabel: 'Explicit check', helperText: 'Help',
+			label: 'Check',
+			ariaLabel: 'Explicit check',
+			helperText: 'Help',
 			checkboxProps: {slotProps: {input: {'data-source': 'configured'}}},
 		});
 		input = result.query('input');
@@ -160,8 +215,14 @@ describe('generated form controls', () => {
 		harness.unmount();
 		harness = createTestHarness().withContext({accessibilityEnabled: true});
 		result = harness.render(BaseRadioButtons, {
-			label: 'Choice', ariaLabel: 'Choice group', row: true, value: 'one',
-			options: [{value: 'one', label: 'One'}, {value: 'two', label: 'Two', disabled: true}],
+			label: 'Choice',
+			ariaLabel: 'Choice group',
+			row: true,
+			value: 'one',
+			options: [
+				{value: 'one', label: 'One'},
+				{value: 'two', label: 'Two', disabled: true},
+			],
 		});
 		group = result.query('[role="radiogroup"]');
 		expect(group.getAttribute('aria-label')).toBe('Choice group');

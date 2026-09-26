@@ -12,15 +12,15 @@ The UX/UI reports remain proposals. Boundary operations, retention/save behavior
 
 The repository manifest assigns source paths to `browser`, inheriting `base`; `builds/alexa.json` uses `base`. No overlays or nested source instructions were found. The installed role contract, View guidance, and relevant canonical standards were available.
 
-| Owner and region | State inputs | Semantic outputs |
-|---|---|---|
-| Existing app shell | Controller-owned active page and not-found state | Existing page-selection intent |
-| Existing editor `PageView`, expanded | Controller snapshot, command availability, operation status | Relayed editor intentions |
-| Proposed `ClipWorkspace`, replacing starter presentation | View-projected workspace snapshot | Named callbacks through the page view |
-| Proposed `PlayerRegion` | Source identity, requested position, confirmed displayed-frame identity, playback status | Seek/playback requests; frame stepping only if accepted |
-| Proposed `ThumbnailTimeline` | Visible interval, scale, thumbnails, playhead and boundary projections | Viewport/zoom requests; boundary gestures only after UX agreement |
-| Proposed `SelectionDetails` | Boundary values, validation results, available commands | Controlled editing intentions if approved |
-| Proposed context/status regions | Selected source and relevant operation state | Only controller-supplied actions |
+| Owner and region                                         | State inputs                                                                             | Semantic outputs                                                  |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Existing app shell                                       | Controller-owned active page and not-found state                                         | Existing page-selection intent                                    |
+| Existing editor `PageView`, expanded                     | Controller snapshot, command availability, operation status                              | Relayed editor intentions                                         |
+| Proposed `ClipWorkspace`, replacing starter presentation | View-projected workspace snapshot                                                        | Named callbacks through the page view                             |
+| Proposed `PlayerRegion`                                  | Source identity, requested position, confirmed displayed-frame identity, playback status | Seek/playback requests; frame stepping only if accepted           |
+| Proposed `ThumbnailTimeline`                             | Visible interval, scale, thumbnails, playhead and boundary projections                   | Viewport/zoom requests; boundary gestures only after UX agreement |
+| Proposed `SelectionDetails`                              | Boundary values, validation results, available commands                                  | Controlled editing intentions if approved                         |
+| Proposed context/status regions                          | Selected source and relevant operation state                                             | Only controller-supplied actions                                  |
 
 Proposed components remain private under `features/editor/components`, with substantial components implemented as classes, purposeful render methods, named handlers, and stable semantic keys. The shell retains its existing `main` landmark and owns surrounding dimensions. Project navigation is conditional, not justification for adding a new application navigation system. This follows [React](../../documentation/standards/react.md) and [shell ownership](../../documentation/standards/app-shells.md).
 

@@ -5,7 +5,13 @@ import {createTestHarness} from '../../testing/TestHarness.js';
 
 describe('BaseText and Text', () => {
 	let harness;
-	const localize = {translate: jasmine.createSpy('translate').and.callFake((phrase, replacements, cardinal) => phrase === 'welcome' ? `Hello ${replacements.name}:${cardinal}` : '<strong>Trusted</strong>')};
+	const localize = {
+		translate: jasmine
+			.createSpy('translate')
+			.and.callFake((phrase, replacements, cardinal) =>
+				phrase === 'welcome' ? `Hello ${replacements.name}:${cardinal}` : '<strong>Trusted</strong>',
+			),
+	};
 	beforeEach(() => localize.translate.calls.reset());
 	afterEach(() => harness?.unmount());
 

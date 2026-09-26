@@ -4,7 +4,15 @@ import BaseHelperText from '../BaseHelperText.jsx';
 import BaseFormMessage from '../BaseFormMessage.jsx';
 import {createTestHarness} from '../../testing/TestHarness.js';
 
-const localize = {translate: (phrase) => ({'action.save': 'Save', 'action.save.aria': 'Save document', 'helper.error': 'Invalid value', 'message.saved': 'Saved.'})[phrase] ?? ''};
+const localize = {
+	translate: (phrase) =>
+		({
+			'action.save': 'Save',
+			'action.save.aria': 'Save document',
+			'helper.error': 'Invalid value',
+			'message.saved': 'Saved.',
+		})[phrase] ?? '',
+};
 
 describe('button and feedback components', () => {
 	let harness;
@@ -13,7 +21,14 @@ describe('button and feedback components', () => {
 	it('localizes button content, maps priority, and reports activation', () => {
 		const clicked = jasmine.createSpy('clicked');
 		harness = createTestHarness().withContext({localize, localizationEnabled: true, accessibilityEnabled: true});
-		const result = harness.render(BaseButton, {localize: true, label: 'action.save', ariaLabel: 'action.save.aria', priority: 'primary', selected: true, onClick: clicked});
+		const result = harness.render(BaseButton, {
+			localize: true,
+			label: 'action.save',
+			ariaLabel: 'action.save.aria',
+			priority: 'primary',
+			selected: true,
+			onClick: clicked,
+		});
 		const button = result.query('button');
 		expect(button.textContent).toBe('Save');
 		expect(button.getAttribute('aria-label')).toBe('Save document');
@@ -25,7 +40,12 @@ describe('button and feedback components', () => {
 
 	it('honors children, native disabled behavior, and optional aria defaults', () => {
 		harness = createTestHarness().withContext({accessibilityEnabled: false});
-		const result = harness.render(BaseButton, {label: 'ignored', ariaLabel: 'ignored', disabled: true, children: 'Child'});
+		const result = harness.render(BaseButton, {
+			label: 'ignored',
+			ariaLabel: 'ignored',
+			disabled: true,
+			children: 'Child',
+		});
 		const button = result.query('button');
 		expect(button.textContent).toBe('Child');
 		expect(button.disabled).toBeTrue();
@@ -40,7 +60,12 @@ describe('button and feedback components', () => {
 
 	it('suppresses empty helper text and applies accessible error semantics only when enabled', () => {
 		harness = createTestHarness().withContext({localize, localizationEnabled: true, accessibilityEnabled: true});
-		let result = harness.render(BaseHelperText, {localize: true, label: 'helper.error', status: 'error', id: 'error-help'});
+		let result = harness.render(BaseHelperText, {
+			localize: true,
+			label: 'helper.error',
+			status: 'error',
+			id: 'error-help',
+		});
 		const helper = result.query('#error-help');
 		expect(helper.textContent).toBe('Invalid value');
 		expect(helper.getAttribute('role')).toBe('alert');

@@ -98,15 +98,15 @@ needed to evaluate this format proposal.
 
 ## B. Define the composition and revision contract
 
-| Artifact | Responsibility |
-| --- | --- |
-| Context and source index | Product/UX/UI meaning, references, relations, current visuals, and explicit gaps |
-| Outline, weights, and page-break plan | Structure agent's hierarchy, reading order, placements, and justified boundaries |
-| Versioned publication profile | Required document roles, chosen design-language placement, PRD section order, allowed page/content patterns |
-| Reader manuscript | Saved prose, requirement presentation, flow explanations, captions, and exact sources on the planned pages |
-| Product publication baseline | Selected revisions, stable IDs/paths, artifact hashes, profile/theme versions, source bindings |
+| Artifact                                  | Responsibility                                                                                                                |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Context and source index                  | Product/UX/UI meaning, references, relations, current visuals, and explicit gaps                                              |
+| Outline, weights, and page-break plan     | Structure agent's hierarchy, reading order, placements, and justified boundaries                                              |
+| Versioned publication profile             | Required document roles, chosen design-language placement, PRD section order, allowed page/content patterns                   |
+| Reader manuscript                         | Saved prose, requirement presentation, flow explanations, captions, and exact sources on the planned pages                    |
+| Product publication baseline              | Selected revisions, stable IDs/paths, artifact hashes, profile/theme versions, source bindings                                |
 | Repair ledger and effective placement map | Needs-repair markers keyed by stable ID/revision, failed dependencies, fallback locations, user actions and resolution checks |
-| Change report | Added/changed/retired facts, affected pages/figures, text and navigation diffs, unresolved coverage and repairs |
+| Change report                             | Added/changed/retired facts, affected pages/figures, text and navigation diffs, unresolved coverage and repairs               |
 
 Define compose, revise, and render responsibilities explicitly. Reuse the
 `document-structure` agent for hierarchy and page breaks. A bounded composition
@@ -227,23 +227,23 @@ Comprehensive unrelated failure-case generation remains separate follow-up work.
 The scoped failure/recovery cases below are required by the owner's resilience
 requirement and must accompany these implementation slices.
 
-| Check | Evidence |
-| --- | --- |
-| Recognizable PRD | Purpose, scope, requirements, criteria, and decisions are understandable without source JSON |
-| Hierarchy preserved | Application areas, flows, and use cases follow the agent's hierarchy and page boundaries |
-| Decimal numbering | Roots and each parent's children start at 1 with no gaps; headings/navigation/references agree across pages; re-pagination preserves numbering, and reorganization/removal recomputes consecutive labels while preserving stable IDs/links |
-| Independent data identity | Moving a referenced use case to another parent/page changes its outline label and publication mapping while preserving its ID and semantic references; generated links resolve its new location |
-| Complete interaction | Main path, meaningful branch, failure/recovery, and outcome are readable with their comps |
-| Local use-case scope | Each case names one stable owning object; supporting dialogs can remain within it with explicit return/exit behavior; broader journeys link independent local cases; reorganization preserves ownership |
-| Honest visuals | Wireframes, proposed/accepted comps, missing scenes, and partial coverage are distinguishable |
-| Component fidelity | Ordinary controls reuse the shared templates, including MUI outlined labels; focus/state colors resolve from the current product's theme without unrelated branding |
-| Semantic coverage | Eligible sources are accounted for; conditions, alternatives, and status survive composition |
-| Resilient continuation | Invalid record, missing UI handoff/comp, stale reference, cycle, orphan subtree, agent timeout, render failure, and delivery failure leave independent work usable and finish with repair status/instructions |
-| Hierarchy recovery | Failed down/across paths ascend to remaining work; valid descendants survive a broken parent; fallback placements retain stable IDs and produce consecutive numbers/valid links |
-| Repair cycle | Corrected input resolves its issue only after validation; intended placement returns and unrelated content is unchanged; no usable content produces an honest scaffold/report |
-| Stable revision | Replay, bounded changes, new-session continuation, and version upgrades preserve their stated invariants |
-| Safe publication | Links/assets/receipts validate; only owned product output is replaced |
-| Readability | Desktop/narrow screenshots, keyboard navigation, and print checks cover the selected patterns |
+| Check                     | Evidence                                                                                                                                                                                                                                   |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Recognizable PRD          | Purpose, scope, requirements, criteria, and decisions are understandable without source JSON                                                                                                                                               |
+| Hierarchy preserved       | Application areas, flows, and use cases follow the agent's hierarchy and page boundaries                                                                                                                                                   |
+| Decimal numbering         | Roots and each parent's children start at 1 with no gaps; headings/navigation/references agree across pages; re-pagination preserves numbering, and reorganization/removal recomputes consecutive labels while preserving stable IDs/links |
+| Independent data identity | Moving a referenced use case to another parent/page changes its outline label and publication mapping while preserving its ID and semantic references; generated links resolve its new location                                            |
+| Complete interaction      | Main path, meaningful branch, failure/recovery, and outcome are readable with their comps                                                                                                                                                  |
+| Local use-case scope      | Each case names one stable owning object; supporting dialogs can remain within it with explicit return/exit behavior; broader journeys link independent local cases; reorganization preserves ownership                                    |
+| Honest visuals            | Wireframes, proposed/accepted comps, missing scenes, and partial coverage are distinguishable                                                                                                                                              |
+| Component fidelity        | Ordinary controls reuse the shared templates, including MUI outlined labels; focus/state colors resolve from the current product's theme without unrelated branding                                                                        |
+| Semantic coverage         | Eligible sources are accounted for; conditions, alternatives, and status survive composition                                                                                                                                               |
+| Resilient continuation    | Invalid record, missing UI handoff/comp, stale reference, cycle, orphan subtree, agent timeout, render failure, and delivery failure leave independent work usable and finish with repair status/instructions                              |
+| Hierarchy recovery        | Failed down/across paths ascend to remaining work; valid descendants survive a broken parent; fallback placements retain stable IDs and produce consecutive numbers/valid links                                                            |
+| Repair cycle              | Corrected input resolves its issue only after validation; intended placement returns and unrelated content is unchanged; no usable content produces an honest scaffold/report                                                              |
+| Stable revision           | Replay, bounded changes, new-session continuation, and version upgrades preserve their stated invariants                                                                                                                                   |
+| Safe publication          | Links/assets/receipts validate; only owned product output is replaced                                                                                                                                                                      |
+| Readability               | Desktop/narrow screenshots, keyboard navigation, and print checks cover the selected patterns                                                                                                                                              |
 
 Use sparse and developed unrelated synthetic products. Then trial Alexa with
 current inputs in its authorized consuming-repository scope. Complete its

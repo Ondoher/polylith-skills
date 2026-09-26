@@ -6,8 +6,10 @@ source references are relative, and review subject hashes bind to the sanitized
 files. Captured prompts, agent identities, invocation logs, and historical
 provenance manifests are deliberately excluded.
 
-- `checkout-a.json` and `checkout-b.json` exercise material equivalence despite
-  differences in explanatory prose. Their source is `checkout-description.md`.
+- `checkout-a.json` and `checkout-b.json` retain two independent descriptions of
+  checkout. Their current flow graphs expose different alternative coverage:
+  the second explicitly includes unavailable choices. Their source is
+  `checkout-description.md`.
 - `records-coherent.json` and `records-cluttered.json` exercise review validation
   against `product-description.md`. The latter includes a redundant action.
 - `review-coherent.json` and `review-cluttered.json` are expected test results,

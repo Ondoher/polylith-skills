@@ -10,9 +10,9 @@ Use the repository installer's ownership-aware `unlink` mode. Do not remove glob
 1. Resolve the repository root containing this skill and the active Codex home from `CODEX_HOME`, or use `~/.codex` when it is unset.
 2. Run the exact uninstall plan without `--apply`:
 
-   ```text
-   node scripts/install-polylith-skills.mjs unlink --repository <repository-root> --codex-home <codex-home>
-   ```
+    ```text
+    node scripts/install-polylith-skills.mjs unlink --repository <repository-root> --codex-home <codex-home>
+    ```
 
 3. Inspect and explain every planned removal and record the emitted `planDigest`. The plan may remove only links recorded by `.polylith-skills-installation.json` that still target this repository and the unchanged block delimited by `<!-- BEGIN POLYLITH SKILLS MANAGED BLOCK -->` and `<!-- END POLYLITH SKILLS MANAGED BLOCK -->` in `AGENTS.md`. Text outside the block is user-owned and is not bound into the plan digest. Treat a changed path, changed managed block, malformed state, missing ownership evidence, or unrelated target as a blocking collision.
 4. When the user requested uninstallation and did not limit the request to a dry run, that request authorizes the unchanged disclosed plan. Rerun it with `--apply --expect-plan <planDigest>`, subject to normal filesystem and sandbox approval enforcement. The installer must reject a missing or changed digest. If it reports `PLAN_CHANGED`, inspect and disclose the newly emitted plan and do not retry until that plan is authorized.

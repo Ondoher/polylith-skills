@@ -8,4 +8,4 @@ Verification: full design-language suite passed 96/96 tests, including four new 
 
 Both 280px and 400px SVGs were inspected through headless Chrome screenshots. Menu placement, state separation, disabled option and error wrapping render without clipping. No interactive keyboard/accessibility evaluation, VS Code preview or live UI-designer invocation was performed. Specimens are illustrative, not accepted Alexa requirements or pixel-perfect MUI captures.
 
- Deferred: search, multi-selection, empty/loading lists, large-menu scrolling simulation, combined states and full comps. Runtime behavior is a documented handoff requirement.
+Deferred: search, multi-selection, empty/loading lists, large-menu scrolling simulation, combined states and full comps. Runtime behavior is a documented handoff requirement.

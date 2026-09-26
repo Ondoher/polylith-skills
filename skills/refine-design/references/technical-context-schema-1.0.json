@@ -1,2409 +1,2082 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://codex.local/refine-design/technical-context-schema-1.0.json",
-  "title": "Technical preparation 1.0 and context 2.0",
-  "oneOf": [
-    {
-      "$ref": "#/$defs/technicalContext"
-    },
-    {
-      "$ref": "#/$defs/preparationInput"
-    },
-    {
-      "$ref": "#/$defs/technicalPayload"
-    },
-    {
-      "$ref": "#/$defs/technicalEvidence"
-    },
-    {
-      "$ref": "#/$defs/repositoryBaseline"
-    }
-  ],
-  "$defs": {
-    "id": {
-      "type": "string",
-      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
-      "maxLength": 80
-    },
-    "text": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 32768,
-      "pattern": "^[^\\u0000]+$"
-    },
-    "sha256": {
-      "type": "string",
-      "pattern": "^[0-9a-f]{64}$"
-    },
-    "revision": {
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 9007199254740991
-    },
-    "owner": {
-      "enum": [
-        "product",
-        "ux",
-        "ui",
-        "system-architecture",
-        "data-model",
-        "controller",
-        "technical-documentation",
-        "implementation-planning",
-        "testing",
-        "coding"
-      ]
-    },
-    "consumer": {
-      "enum": [
-        "prd",
-        "ux",
-        "ui",
-        "system-architecture",
-        "data-model",
-        "controller",
-        "technical-documentation",
-        "implementation-planning",
-        "testing",
-        "coding"
-      ]
-    },
-    "productStatus": {
-      "enum": [
-        "accepted",
-        "partial",
-        "locked"
-      ]
-    },
-    "recordStatus": {
-      "enum": [
-        "accepted",
-        "locked"
-      ]
-    },
-    "artifactStatus": {
-      "enum": [
-        "accepted",
-        "partial",
-        "locked",
-        "superseded"
-      ]
-    },
-    "consumableArtifactStatus": {
-      "enum": [
-        "accepted",
-        "partial",
-        "locked"
-      ]
-    },
-    "refs": {
-      "type": "array",
-      "maxItems": 10000,
-      "uniqueItems": true,
-      "items": {
-        "$ref": "#/$defs/id"
-      }
-    },
-    "recordDependency": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "materialSha256"
-      ],
-      "properties": {
-        "id": {
-          "$ref": "#/$defs/id"
-        },
-        "materialSha256": {
-          "$ref": "#/$defs/sha256"
-        }
-      }
-    },
-    "artifactDependency": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "revision",
-        "materialSha256"
-      ],
-      "properties": {
-        "id": {
-          "$ref": "#/$defs/id"
-        },
-        "revision": {
-          "$ref": "#/$defs/revision"
-        },
-        "materialSha256": {
-          "$ref": "#/$defs/sha256"
-        }
-      }
-    },
-    "artifactHistory": {
-      "oneOf": [
-        {
-          "properties": {
-            "revision": {
-              "const": 1
-            },
-            "status": {
-              "enum": [
-                "accepted",
-                "partial",
-                "locked"
-              ]
-            },
-            "change": {
-              "properties": {
-                "kind": {
-                  "const": "added"
-                },
-                "previousRevision": {
-                  "type": "null"
-                },
-                "previousMaterialSha256": {
-                  "type": "null"
-                }
-              }
-            }
-          }
-        },
-        {
-          "properties": {
-            "revision": {
-              "type": "integer",
-              "minimum": 2,
-              "maximum": 9007199254740991
-            },
-            "status": {
-              "enum": [
-                "accepted",
-                "partial",
-                "locked"
-              ]
-            },
-            "change": {
-              "properties": {
-                "kind": {
-                  "const": "unchanged"
-                },
-                "previousRevision": {
-                  "$ref": "#/$defs/revision"
-                },
-                "previousMaterialSha256": {
-                  "$ref": "#/$defs/sha256"
-                }
-              }
-            }
-          }
-        },
-        {
-          "properties": {
-            "revision": {
-              "type": "integer",
-              "minimum": 2,
-              "maximum": 9007199254740991
-            },
-            "status": {
-              "enum": [
-                "accepted",
-                "partial",
-                "locked"
-              ]
-            },
-            "change": {
-              "properties": {
-                "kind": {
-                  "const": "modified"
-                },
-                "previousRevision": {
-                  "$ref": "#/$defs/revision"
-                },
-                "previousMaterialSha256": {
-                  "$ref": "#/$defs/sha256"
-                }
-              }
-            }
-          }
-        },
-        {
-          "properties": {
-            "revision": {
-              "type": "integer",
-              "minimum": 2,
-              "maximum": 9007199254740991
-            },
-            "status": {
-              "const": "superseded"
-            },
-            "change": {
-              "properties": {
-                "kind": {
-                  "const": "superseded"
-                },
-                "previousRevision": {
-                  "$ref": "#/$defs/revision"
-                },
-                "previousMaterialSha256": {
-                  "$ref": "#/$defs/sha256"
-                }
-              }
-            }
-          }
-        }
-      ]
-    },
-    "artifact": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "schemaVersion",
-        "kind",
-        "id",
-        "artifactKind",
-        "owner",
-        "artifactSchemaVersion",
-        "revision",
-        "status",
-        "consumerDomains",
-        "scopeRefs",
-        "coverageRefs",
-        "gapRefs",
-        "lockRefs",
-        "recordDependencies",
-        "artifactDependencies",
-        "producer",
-        "resources",
-        "payload",
-        "materialSha256",
-        "change"
-      ],
-      "properties": {
-        "schemaVersion": {
-          "const": "1.0"
-        },
-        "kind": {
-          "const": "product-artifact"
-        },
-        "id": {
-          "$ref": "#/$defs/id"
-        },
-        "artifactKind": {
-          "$ref": "#/$defs/id"
-        },
-        "owner": {
-          "$ref": "#/$defs/owner"
-        },
-        "artifactSchemaVersion": {
-          "type": "string",
-          "pattern": "^[0-9]+\\.[0-9]+(?:\\.[0-9]+)?(?:-[a-z0-9.-]+)?$",
-          "maxLength": 64
-        },
-        "revision": {
-          "$ref": "#/$defs/revision"
-        },
-        "status": {
-          "$ref": "#/$defs/consumableArtifactStatus"
-        },
-        "consumerDomains": {
-          "type": "array",
-          "minItems": 1,
-          "maxItems": 10,
-          "uniqueItems": true,
-          "items": {
-            "$ref": "#/$defs/consumer"
-          }
-        },
-        "scopeRefs": {
-          "type": "array",
-          "minItems": 1,
-          "maxItems": 10000,
-          "uniqueItems": true,
-          "items": {
-            "$ref": "#/$defs/id"
-          }
-        },
-        "coverageRefs": {
-          "$ref": "#/$defs/refs"
-        },
-        "gapRefs": {
-          "$ref": "#/$defs/refs"
-        },
-        "lockRefs": {
-          "$ref": "#/$defs/refs"
-        },
-        "recordDependencies": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "$ref": "#/$defs/recordDependency"
-          }
-        },
-        "artifactDependencies": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "$ref": "#/$defs/artifactDependency"
-          }
-        },
-        "producer": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "id",
-            "contractVersion",
-            "method"
-          ],
-          "properties": {
-            "id": {
-              "$ref": "#/$defs/id"
-            },
-            "contractVersion": {
-              "type": "string",
-              "pattern": "^[0-9]+\\.[0-9]+(?:\\.[0-9]+)?(?:-[a-z0-9.-]+)?$",
-              "maxLength": 64
-            },
-            "method": {
-              "$ref": "#/$defs/id"
-            }
-          }
-        },
-        "payload": {},
-        "materialSha256": {
-          "$ref": "#/$defs/sha256"
-        },
-        "change": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "kind",
-            "previousRevision",
-            "previousMaterialSha256"
-          ],
-          "properties": {
-            "kind": {
-              "enum": [
-                "added",
-                "unchanged",
-                "modified",
-                "superseded"
-              ]
-            },
-            "previousRevision": {
-              "oneOf": [
-                {
-                  "type": "null"
-                },
-                {
-                  "$ref": "#/$defs/revision"
-                }
-              ]
-            },
-            "previousMaterialSha256": {
-              "oneOf": [
-                {
-                  "type": "null"
-                },
-                {
-                  "$ref": "#/$defs/sha256"
-                }
-              ]
-            }
-          }
-        },
-        "resources": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "$ref": "#/$defs/resourceDescriptor"
-          }
-        }
-      },
-      "allOf": [
-        {
-          "$ref": "#/$defs/artifactHistory"
-        }
-      ]
-    },
-    "resourceDescriptor": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "logicalPath",
-        "path",
-        "mediaType",
-        "byteLength",
-        "sha256"
-      ],
-      "properties": {
-        "id": {
-          "type": "string",
-          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
-          "maxLength": 80
-        },
-        "logicalPath": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 1024
-        },
-        "path": {
-          "type": "string",
-          "pattern": "^artifact-resources/[a-f0-9]{64}\\.(?:png|jpg|webp|svg)$"
-        },
-        "mediaType": {
-          "enum": [
-            "image/png",
-            "image/jpeg",
-            "image/webp",
-            "image/svg+xml"
-          ]
-        },
-        "byteLength": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 20971520
-        },
-        "sha256": {
-          "type": "string",
-          "pattern": "^[a-f0-9]{64}$"
-        }
-      }
-    },
-    "technicalPayload": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "schemaVersion",
-        "evidenceDependencies",
-        "records"
-      ],
-      "properties": {
-        "schemaVersion": {
-          "const": "1.0"
-        },
-        "evidenceDependencies": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "id",
-              "materialSha256"
-            ],
-            "properties": {
-              "id": {
-                "$ref": "#/$defs/id"
-              },
-              "materialSha256": {
-                "$ref": "#/$defs/sha256"
-              }
-            }
-          }
-        },
-        "records": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "oneOf": [
-              {
-                "type": "object",
-                "additionalProperties": false,
-                "required": [
-                  "id",
-                  "kind",
-                  "title",
-                  "summary",
-                  "owner",
-                  "scopeRefs",
-                  "productRefs",
-                  "artifactRefs",
-                  "dependsOn",
-                  "evidenceRefs",
-                  "status",
-                  "details"
-                ],
-                "properties": {
-                  "id": {
-                    "$ref": "#/$defs/id"
-                  },
-                  "kind": {
-                    "const": "fact"
-                  },
-                  "title": {
-                    "$ref": "#/$defs/text"
-                  },
-                  "summary": {
-                    "$ref": "#/$defs/text"
-                  },
-                  "owner": {
-                    "$ref": "#/$defs/owner"
-                  },
-                  "scopeRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "productRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "artifactRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "dependsOn": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "evidenceRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "status": {
-                    "enum": [
-                      "observed"
-                    ]
-                  },
-                  "details": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "claim",
-                      "limits"
-                    ],
-                    "properties": {
-                      "claim": {
-                        "$ref": "#/$defs/text"
-                      },
-                      "limits": {
-                        "$ref": "#/$defs/text"
-                      },
-                      "discussion": {
-                        "type": "array",
-                        "maxItems": 32,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                "type": "object",
-                "additionalProperties": false,
-                "required": [
-                  "id",
-                  "kind",
-                  "title",
-                  "summary",
-                  "owner",
-                  "scopeRefs",
-                  "productRefs",
-                  "artifactRefs",
-                  "dependsOn",
-                  "evidenceRefs",
-                  "status",
-                  "details"
-                ],
-                "properties": {
-                  "id": {
-                    "$ref": "#/$defs/id"
-                  },
-                  "kind": {
-                    "const": "boundary"
-                  },
-                  "title": {
-                    "$ref": "#/$defs/text"
-                  },
-                  "summary": {
-                    "$ref": "#/$defs/text"
-                  },
-                  "owner": {
-                    "$ref": "#/$defs/owner"
-                  },
-                  "scopeRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "productRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "artifactRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "dependsOn": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "evidenceRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "status": {
-                    "enum": [
-                      "accepted",
-                      "conditional",
-                      "superseded"
-                    ]
-                  },
-                  "details": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "responsibility",
-                      "consumers",
-                      "exchanges",
-                      "lifecycle",
-                      "failureBehavior",
-                      "decisionRefs"
-                    ],
-                    "properties": {
-                      "responsibility": {
-                        "$ref": "#/$defs/text"
-                      },
-                      "consumers": {
-                        "type": "array",
-                        "maxItems": 10000,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      },
-                      "exchanges": {
-                        "type": "array",
-                        "maxItems": 10000,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      },
-                      "lifecycle": {
-                        "$ref": "#/$defs/text"
-                      },
-                      "failureBehavior": {
-                        "$ref": "#/$defs/text"
-                      },
-                      "decisionRefs": {
-                        "$ref": "#/$defs/refs"
-                      },
-                      "discussion": {
-                        "type": "array",
-                        "maxItems": 32,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                "type": "object",
-                "additionalProperties": false,
-                "required": [
-                  "id",
-                  "kind",
-                  "title",
-                  "summary",
-                  "owner",
-                  "scopeRefs",
-                  "productRefs",
-                  "artifactRefs",
-                  "dependsOn",
-                  "evidenceRefs",
-                  "status",
-                  "details"
-                ],
-                "properties": {
-                  "id": {
-                    "$ref": "#/$defs/id"
-                  },
-                  "kind": {
-                    "const": "flow"
-                  },
-                  "title": {
-                    "$ref": "#/$defs/text"
-                  },
-                  "summary": {
-                    "$ref": "#/$defs/text"
-                  },
-                  "owner": {
-                    "$ref": "#/$defs/owner"
-                  },
-                  "scopeRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "productRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "artifactRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "dependsOn": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "evidenceRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "status": {
-                    "enum": [
-                      "accepted",
-                      "conditional",
-                      "superseded"
-                    ]
-                  },
-                  "details": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "trigger",
-                      "preconditions",
-                      "steps",
-                      "success",
-                      "failure",
-                      "cancellation",
-                      "retry",
-                      "guarantees",
-                      "limits",
-                      "verification",
-                      "decisionRefs"
-                    ],
-                    "properties": {
-                      "trigger": {
-                        "$ref": "#/$defs/text"
-                      },
-                      "preconditions": {
-                        "type": "array",
-                        "maxItems": 10000,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      },
-                      "steps": {
-                        "type": "array",
-                        "maxItems": 10000,
-                        "items": {
-                          "type": "object",
-                          "additionalProperties": false,
-                          "required": [
-                            "ownerRef",
-                            "action",
-                            "result"
-                          ],
-                          "properties": {
-                            "ownerRef": {
-                              "$ref": "#/$defs/id"
-                            },
-                            "action": {
-                              "$ref": "#/$defs/text"
-                            },
-                            "result": {
-                              "$ref": "#/$defs/text"
-                            }
-                          }
-                        }
-                      },
-                      "success": {
-                        "type": "array",
-                        "maxItems": 10000,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      },
-                      "failure": {
-                        "type": "array",
-                        "maxItems": 10000,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      },
-                      "cancellation": {
-                        "$ref": "#/$defs/text"
-                      },
-                      "retry": {
-                        "$ref": "#/$defs/text"
-                      },
-                      "guarantees": {
-                        "type": "array",
-                        "maxItems": 10000,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      },
-                      "limits": {
-                        "type": "array",
-                        "maxItems": 10000,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      },
-                      "verification": {
-                        "type": "array",
-                        "maxItems": 10000,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      },
-                      "decisionRefs": {
-                        "$ref": "#/$defs/refs"
-                      },
-                      "discussion": {
-                        "type": "array",
-                        "maxItems": 32,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                "type": "object",
-                "additionalProperties": false,
-                "required": [
-                  "id",
-                  "kind",
-                  "title",
-                  "summary",
-                  "owner",
-                  "scopeRefs",
-                  "productRefs",
-                  "artifactRefs",
-                  "dependsOn",
-                  "evidenceRefs",
-                  "status",
-                  "details"
-                ],
-                "properties": {
-                  "id": {
-                    "$ref": "#/$defs/id"
-                  },
-                  "kind": {
-                    "const": "decision"
-                  },
-                  "title": {
-                    "$ref": "#/$defs/text"
-                  },
-                  "summary": {
-                    "$ref": "#/$defs/text"
-                  },
-                  "owner": {
-                    "$ref": "#/$defs/owner"
-                  },
-                  "scopeRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "productRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "artifactRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "dependsOn": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "evidenceRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "status": {
-                    "enum": [
-                      "accepted",
-                      "proposed",
-                      "conditional",
-                      "superseded"
-                    ]
-                  },
-                  "details": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "context",
-                      "choice",
-                      "alternatives",
-                      "consequences",
-                      "authority",
-                      "supersedes"
-                    ],
-                    "properties": {
-                      "context": {
-                        "$ref": "#/$defs/text"
-                      },
-                      "choice": {
-                        "$ref": "#/$defs/text"
-                      },
-                      "alternatives": {
-                        "type": "array",
-                        "maxItems": 10000,
-                        "items": {
-                          "type": "object",
-                          "additionalProperties": false,
-                          "required": [
-                            "option",
-                            "disposition",
-                            "reason"
-                          ],
-                          "properties": {
-                            "option": {
-                              "$ref": "#/$defs/text"
-                            },
-                            "disposition": {
-                              "enum": [
-                                "declined",
-                                "unselected"
-                              ]
-                            },
-                            "reason": {
-                              "$ref": "#/$defs/text"
-                            }
-                          }
-                        }
-                      },
-                      "consequences": {
-                        "type": "array",
-                        "maxItems": 10000,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      },
-                      "authority": {
-                        "type": "object",
-                        "additionalProperties": false,
-                        "required": [
-                          "actor",
-                          "basis",
-                          "evidenceRef"
-                        ],
-                        "properties": {
-                          "actor": {
-                            "enum": [
-                              "parent",
-                              "owner"
-                            ]
-                          },
-                          "basis": {
-                            "$ref": "#/$defs/text"
-                          },
-                          "evidenceRef": {
-                            "$ref": "#/$defs/id"
-                          }
-                        }
-                      },
-                      "supersedes": {
-                        "$ref": "#/$defs/refs"
-                      },
-                      "discussion": {
-                        "type": "array",
-                        "maxItems": 32,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                "type": "object",
-                "additionalProperties": false,
-                "required": [
-                  "id",
-                  "kind",
-                  "title",
-                  "summary",
-                  "owner",
-                  "scopeRefs",
-                  "productRefs",
-                  "artifactRefs",
-                  "dependsOn",
-                  "evidenceRefs",
-                  "status",
-                  "details"
-                ],
-                "properties": {
-                  "id": {
-                    "$ref": "#/$defs/id"
-                  },
-                  "kind": {
-                    "const": "gap"
-                  },
-                  "title": {
-                    "$ref": "#/$defs/text"
-                  },
-                  "summary": {
-                    "$ref": "#/$defs/text"
-                  },
-                  "owner": {
-                    "$ref": "#/$defs/owner"
-                  },
-                  "scopeRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "productRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "artifactRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "dependsOn": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "evidenceRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "status": {
-                    "enum": [
-                      "unresolved",
-                      "resolved"
-                    ]
-                  },
-                  "details": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "question",
-                      "category",
-                      "affectedRefs",
-                      "resolutionCriteria",
-                      "resolutionRefs"
-                    ],
-                    "properties": {
-                      "question": {
-                        "$ref": "#/$defs/text"
-                      },
-                      "category": {
-                        "enum": [
-                          "product",
-                          "technical",
-                          "evidence"
-                        ]
-                      },
-                      "affectedRefs": {
-                        "$ref": "#/$defs/refs"
-                      },
-                      "resolutionCriteria": {
-                        "type": "array",
-                        "maxItems": 10000,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      },
-                      "resolutionRefs": {
-                        "$ref": "#/$defs/refs"
-                      },
-                      "discussion": {
-                        "type": "array",
-                        "maxItems": 32,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                "type": "object",
-                "additionalProperties": false,
-                "required": [
-                  "id",
-                  "kind",
-                  "title",
-                  "summary",
-                  "owner",
-                  "scopeRefs",
-                  "productRefs",
-                  "artifactRefs",
-                  "dependsOn",
-                  "evidenceRefs",
-                  "status",
-                  "details"
-                ],
-                "properties": {
-                  "id": {
-                    "$ref": "#/$defs/id"
-                  },
-                  "kind": {
-                    "const": "contract"
-                  },
-                  "title": {
-                    "$ref": "#/$defs/text"
-                  },
-                  "summary": {
-                    "$ref": "#/$defs/text"
-                  },
-                  "owner": {
-                    "$ref": "#/$defs/owner"
-                  },
-                  "scopeRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "productRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "artifactRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "dependsOn": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "evidenceRefs": {
-                    "$ref": "#/$defs/refs"
-                  },
-                  "status": {
-                    "enum": [
-                      "accepted",
-                      "conditional",
-                      "superseded"
-                    ]
-                  },
-                  "details": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "ownerRef",
-                      "participantRefs",
-                      "flowRefs",
-                      "input",
-                      "result",
-                      "invariants",
-                      "failure",
-                      "lifecycle"
-                    ],
-                    "properties": {
-                      "ownerRef": {
-                        "$ref": "#/$defs/id"
-                      },
-                      "participantRefs": {
-                        "$ref": "#/$defs/refs"
-                      },
-                      "flowRefs": {
-                        "$ref": "#/$defs/refs"
-                      },
-                      "input": {
-                        "type": "array",
-                        "maxItems": 100,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      },
-                      "result": {
-                        "type": "array",
-                        "maxItems": 100,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      },
-                      "invariants": {
-                        "type": "array",
-                        "maxItems": 100,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      },
-                      "failure": {
-                        "type": "array",
-                        "maxItems": 100,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      },
-                      "lifecycle": {
-                        "$ref": "#/$defs/text"
-                      },
-                      "discussion": {
-                        "type": "array",
-                        "maxItems": 32,
-                        "items": {
-                          "$ref": "#/$defs/text"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        }
-      }
-    },
-    "technicalEvidence": {
-      "oneOf": [
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "id",
-            "kind",
-            "summary",
-            "binding",
-            "sourceFiles"
-          ],
-          "properties": {
-            "id": {
-              "$ref": "#/$defs/id"
-            },
-            "kind": {
-              "const": "repository"
-            },
-            "summary": {
-              "$ref": "#/$defs/text"
-            },
-            "binding": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "baselineId",
-                "baselineSha256",
-                "paths",
-                "locator",
-                "observationSha256"
-              ],
-              "properties": {
-                "baselineId": {
-                  "$ref": "#/$defs/id"
-                },
-                "baselineSha256": {
-                  "$ref": "#/$defs/sha256"
-                },
-                "paths": {
-                  "type": "array",
-                  "maxItems": 10000,
-                  "items": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 32768
-                  }
-                },
-                "locator": {
-                  "$ref": "#/$defs/text"
-                },
-                "observationSha256": {
-                  "$ref": "#/$defs/sha256"
-                }
-              }
-            },
-            "sourceFiles": {
-              "type": "array",
-              "maxItems": 10000,
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "required": [
-                  "path",
-                  "sha256"
-                ],
-                "properties": {
-                  "path": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 32768
-                  },
-                  "sha256": {
-                    "$ref": "#/$defs/sha256"
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "id",
-            "kind",
-            "summary",
-            "binding",
-            "sourceFiles"
-          ],
-          "properties": {
-            "id": {
-              "$ref": "#/$defs/id"
-            },
-            "kind": {
-              "const": "assessment"
-            },
-            "summary": {
-              "$ref": "#/$defs/text"
-            },
-            "binding": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "role",
-                "question",
-                "reportSha256",
-                "inputRefs",
-                "disposition",
-                "rationale"
-              ],
-              "properties": {
-                "role": {
-                  "$ref": "#/$defs/text"
-                },
-                "question": {
-                  "$ref": "#/$defs/text"
-                },
-                "reportSha256": {
-                  "$ref": "#/$defs/sha256"
-                },
-                "inputRefs": {
-                  "$ref": "#/$defs/refs"
-                },
-                "disposition": {
-                  "enum": [
-                    "accepted",
-                    "conditional",
-                    "declined"
-                  ]
-                },
-                "rationale": {
-                  "$ref": "#/$defs/text"
-                }
-              }
-            },
-            "sourceFiles": {
-              "type": "array",
-              "maxItems": 10000,
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "required": [
-                  "path",
-                  "sha256"
-                ],
-                "properties": {
-                  "path": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 32768
-                  },
-                  "sha256": {
-                    "$ref": "#/$defs/sha256"
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "id",
-            "kind",
-            "summary",
-            "binding",
-            "sourceFiles"
-          ],
-          "properties": {
-            "id": {
-              "$ref": "#/$defs/id"
-            },
-            "kind": {
-              "const": "authority"
-            },
-            "summary": {
-              "$ref": "#/$defs/text"
-            },
-            "binding": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "actor",
-                "scopeRefs",
-                "instruction",
-                "receiptSha256"
-              ],
-              "properties": {
-                "actor": {
-                  "enum": [
-                    "parent",
-                    "owner"
-                  ]
-                },
-                "scopeRefs": {
-                  "$ref": "#/$defs/refs"
-                },
-                "instruction": {
-                  "$ref": "#/$defs/text"
-                },
-                "receiptSha256": {
-                  "$ref": "#/$defs/sha256"
-                }
-              }
-            },
-            "sourceFiles": {
-              "type": "array",
-              "maxItems": 10000,
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "required": [
-                  "path",
-                  "sha256"
-                ],
-                "properties": {
-                  "path": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 32768
-                  },
-                  "sha256": {
-                    "$ref": "#/$defs/sha256"
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "id",
-            "kind",
-            "summary",
-            "binding",
-            "sourceFiles"
-          ],
-          "properties": {
-            "id": {
-              "$ref": "#/$defs/id"
-            },
-            "kind": {
-              "const": "standard"
-            },
-            "summary": {
-              "$ref": "#/$defs/text"
-            },
-            "binding": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "standardId",
-                "section",
-                "sha256",
-                "applicabilitySha256"
-              ],
-              "properties": {
-                "standardId": {
-                  "$ref": "#/$defs/text"
-                },
-                "section": {
-                  "$ref": "#/$defs/text"
-                },
-                "sha256": {
-                  "$ref": "#/$defs/sha256"
-                },
-                "applicabilitySha256": {
-                  "$ref": "#/$defs/sha256"
-                }
-              }
-            },
-            "sourceFiles": {
-              "type": "array",
-              "maxItems": 10000,
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "required": [
-                  "path",
-                  "sha256"
-                ],
-                "properties": {
-                  "path": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 32768
-                  },
-                  "sha256": {
-                    "$ref": "#/$defs/sha256"
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "id",
-            "kind",
-            "summary",
-            "binding",
-            "sourceFiles"
-          ],
-          "properties": {
-            "id": {
-              "$ref": "#/$defs/id"
-            },
-            "kind": {
-              "const": "research"
-            },
-            "summary": {
-              "$ref": "#/$defs/text"
-            },
-            "binding": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "url",
-                "retrievedAt",
-                "claim",
-                "sourceSha256",
-                "recheckWhen"
-              ],
-              "properties": {
-                "url": {
-                  "$ref": "#/$defs/text"
-                },
-                "retrievedAt": {
-                  "$ref": "#/$defs/text"
-                },
-                "claim": {
-                  "$ref": "#/$defs/text"
-                },
-                "sourceSha256": {
-                  "$ref": "#/$defs/sha256"
-                },
-                "recheckWhen": {
-                  "$ref": "#/$defs/text"
-                }
-              }
-            },
-            "sourceFiles": {
-              "type": "array",
-              "maxItems": 10000,
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "required": [
-                  "path",
-                  "sha256"
-                ],
-                "properties": {
-                  "path": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 32768
-                  },
-                  "sha256": {
-                    "$ref": "#/$defs/sha256"
-                  }
-                }
-              }
-            }
-          }
-        }
-      ]
-    },
-    "repositoryBaseline": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "repositoryId",
-        "head",
-        "indexSha256",
-        "changes",
-        "observations",
-        "materialSha256"
-      ],
-      "properties": {
-        "id": {
-          "$ref": "#/$defs/id"
-        },
-        "repositoryId": {
-          "$ref": "#/$defs/id"
-        },
-        "head": {
-          "anyOf": [
-            {
-              "type": "string",
-              "pattern": "^[0-9a-f]{40,64}$"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "indexSha256": {
-          "$ref": "#/$defs/sha256"
-        },
-        "changes": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "path",
-              "indexStatus",
-              "worktreeStatus",
-              "indexObjectId",
-              "workingSha256",
-              "mode"
-            ],
-            "properties": {
-              "path": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 32768
-              },
-              "indexStatus": {
-                "enum": [
-                  " ",
-                  "M",
-                  "A",
-                  "D",
-                  "R",
-                  "C",
-                  "U",
-                  "?",
-                  "!"
-                ]
-              },
-              "worktreeStatus": {
-                "enum": [
-                  " ",
-                  "M",
-                  "A",
-                  "D",
-                  "R",
-                  "C",
-                  "U",
-                  "?",
-                  "!"
-                ]
-              },
-              "indexObjectId": {
-                "anyOf": [
-                  {
-                    "type": "string",
-                    "pattern": "^[0-9a-f]{40,64}$"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              },
-              "workingSha256": {
-                "anyOf": [
-                  {
-                    "$ref": "#/$defs/sha256"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              },
-              "mode": {
-                "anyOf": [
-                  {
-                    "enum": [
-                      "100644",
-                      "100755",
-                      "120000",
-                      "160000"
-                    ]
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "observations": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "path",
-              "workingSha256",
-              "mode"
-            ],
-            "properties": {
-              "path": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 32768
-              },
-              "workingSha256": {
-                "anyOf": [
-                  {
-                    "$ref": "#/$defs/sha256"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              },
-              "mode": {
-                "anyOf": [
-                  {
-                    "enum": [
-                      "100644",
-                      "100755",
-                      "120000"
-                    ]
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "materialSha256": {
-          "$ref": "#/$defs/sha256"
-        }
-      }
-    },
-    "technicalContext": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "schemaVersion",
-        "contextId",
-        "consumer",
-        "sourceSnapshot",
-        "productModel",
-        "scopeRefs",
-        "product",
-        "capabilities",
-        "goals",
-        "requirements",
-        "rules",
-        "gaps",
-        "artifacts",
-        "locks",
-        "exclusions",
-        "provenance",
-        "materialSha256",
-        "evidence",
-        "repositoryBaselines"
-      ],
-      "properties": {
-        "schemaVersion": {
-          "const": "2.0"
-        },
-        "contextId": {
-          "type": "string",
-          "pattern": "^technical-context-[0-9a-f]{12}$"
-        },
-        "consumer": {
-          "const": "technical"
-        },
-        "sourceSnapshot": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "id",
-            "revision",
-            "sha256"
-          ],
-          "properties": {
-            "id": {
-              "$ref": "#/$defs/id"
-            },
-            "revision": {
-              "$ref": "#/$defs/revision"
-            },
-            "sha256": {
-              "$ref": "#/$defs/sha256"
-            }
-          }
-        },
-        "productModel": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "id",
-            "revision",
-            "status",
-            "sha256",
-            "materialSha256"
-          ],
-          "properties": {
-            "id": {
-              "$ref": "#/$defs/id"
-            },
-            "revision": {
-              "$ref": "#/$defs/revision"
-            },
-            "status": {
-              "$ref": "#/$defs/productStatus"
-            },
-            "sha256": {
-              "$ref": "#/$defs/sha256"
-            },
-            "materialSha256": {
-              "$ref": "#/$defs/sha256"
-            }
-          }
-        },
-        "scopeRefs": {
-          "$ref": "#/$defs/refs"
-        },
-        "product": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "id",
-            "name",
-            "status",
-            "owner",
-            "materialSha256",
-            "purpose",
-            "users"
-          ],
-          "properties": {
-            "id": {
-              "$ref": "#/$defs/id"
-            },
-            "name": {
-              "$ref": "#/$defs/text"
-            },
-            "status": {
-              "$ref": "#/$defs/productStatus"
-            },
-            "owner": {
-              "$ref": "#/$defs/owner"
-            },
-            "materialSha256": {
-              "$ref": "#/$defs/sha256"
-            },
-            "purpose": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "id",
-                "summary",
-                "status",
-                "owner",
-                "materialSha256"
-              ],
-              "properties": {
-                "id": {
-                  "$ref": "#/$defs/id"
-                },
-                "summary": {
-                  "$ref": "#/$defs/text"
-                },
-                "status": {
-                  "$ref": "#/$defs/recordStatus"
-                },
-                "owner": {
-                  "$ref": "#/$defs/owner"
-                },
-                "materialSha256": {
-                  "$ref": "#/$defs/sha256"
-                }
-              }
-            },
-            "users": {
-              "type": "array",
-              "maxItems": 10000,
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "required": [
-                  "id",
-                  "name",
-                  "description",
-                  "status",
-                  "owner",
-                  "materialSha256"
-                ],
-                "properties": {
-                  "id": {
-                    "$ref": "#/$defs/id"
-                  },
-                  "name": {
-                    "$ref": "#/$defs/text"
-                  },
-                  "description": {
-                    "$ref": "#/$defs/text"
-                  },
-                  "status": {
-                    "$ref": "#/$defs/recordStatus"
-                  },
-                  "owner": {
-                    "$ref": "#/$defs/owner"
-                  },
-                  "materialSha256": {
-                    "$ref": "#/$defs/sha256"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "capabilities": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "id",
-              "status",
-              "owner",
-              "materialSha256",
-              "name",
-              "summary"
-            ],
-            "properties": {
-              "id": {
-                "$ref": "#/$defs/id"
-              },
-              "status": {
-                "$ref": "#/$defs/recordStatus"
-              },
-              "owner": {
-                "$ref": "#/$defs/owner"
-              },
-              "materialSha256": {
-                "$ref": "#/$defs/sha256"
-              },
-              "name": {
-                "$ref": "#/$defs/text"
-              },
-              "summary": {
-                "$ref": "#/$defs/text"
-              }
-            }
-          }
-        },
-        "gaps": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "id",
-              "kind",
-              "question",
-              "impact",
-              "status",
-              "owner",
-              "materialSha256",
-              "affectsRefs"
-            ],
-            "properties": {
-              "id": {
-                "$ref": "#/$defs/id"
-              },
-              "kind": {
-                "enum": [
-                  "open-question",
-                  "missing-requirement",
-                  "ambiguity",
-                  "conflict"
-                ]
-              },
-              "question": {
-                "$ref": "#/$defs/text"
-              },
-              "impact": {
-                "$ref": "#/$defs/text"
-              },
-              "status": {
-                "enum": [
-                  "unresolved",
-                  "locked"
-                ]
-              },
-              "owner": {
-                "$ref": "#/$defs/owner"
-              },
-              "materialSha256": {
-                "$ref": "#/$defs/sha256"
-              },
-              "affectsRefs": {
-                "$ref": "#/$defs/refs"
-              }
-            }
-          }
-        },
-        "artifacts": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "$ref": "#/$defs/artifact"
-          }
-        },
-        "locks": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "ref",
-              "kind",
-              "owner"
-            ],
-            "properties": {
-              "ref": {
-                "$ref": "#/$defs/id"
-              },
-              "kind": {
-                "enum": [
-                  "product",
-                  "purpose",
-                  "user",
-                  "capability",
-                  "gap",
-                  "artifact",
-                  "goal",
-                  "requirement",
-                  "rule"
-                ]
-              },
-              "owner": {
-                "$ref": "#/$defs/owner"
-              }
-            }
-          }
-        },
-        "exclusions": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "id",
-              "artifactKind",
-              "revision",
-              "status",
-              "outcome",
-              "materialSha256",
-              "reasons"
-            ],
-            "properties": {
-              "id": {
-                "$ref": "#/$defs/id"
-              },
-              "artifactKind": {
-                "$ref": "#/$defs/id"
-              },
-              "revision": {
-                "$ref": "#/$defs/revision"
-              },
-              "status": {
-                "$ref": "#/$defs/artifactStatus"
-              },
-              "outcome": {
-                "enum": [
-                  "stale",
-                  "locked-conflict",
-                  "superseded"
-                ]
-              },
-              "materialSha256": {
-                "$ref": "#/$defs/sha256"
-              },
-              "reasons": {
-                "type": "array",
-                "maxItems": 10000,
-                "uniqueItems": true,
-                "items": {
-                  "$ref": "#/$defs/text"
-                }
-              }
-            }
-          }
-        },
-        "provenance": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "sourceId",
-            "sourceRevision",
-            "sourceSha256"
-          ],
-          "properties": {
-            "sourceId": {
-              "$ref": "#/$defs/id"
-            },
-            "sourceRevision": {
-              "$ref": "#/$defs/revision"
-            },
-            "sourceSha256": {
-              "$ref": "#/$defs/sha256"
-            }
-          }
-        },
-        "materialSha256": {
-          "$ref": "#/$defs/sha256"
-        },
-        "goals": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "id",
-              "status",
-              "owner",
-              "materialSha256",
-              "statement",
-              "desiredOutcome",
-              "capabilityRefs",
-              "userRefs"
-            ],
-            "properties": {
-              "id": {
-                "$ref": "#/$defs/id"
-              },
-              "status": {
-                "$ref": "#/$defs/recordStatus"
-              },
-              "owner": {
-                "$ref": "#/$defs/owner"
-              },
-              "materialSha256": {
-                "$ref": "#/$defs/sha256"
-              },
-              "statement": {
-                "$ref": "#/$defs/text"
-              },
-              "desiredOutcome": {
-                "$ref": "#/$defs/text"
-              },
-              "capabilityRefs": {
-                "$ref": "#/$defs/refs"
-              },
-              "userRefs": {
-                "$ref": "#/$defs/refs"
-              }
-            }
-          }
-        },
-        "requirements": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "id",
-              "status",
-              "owner",
-              "materialSha256",
-              "kind",
-              "statement",
-              "capabilityRefs",
-              "goalRefs"
-            ],
-            "properties": {
-              "id": {
-                "$ref": "#/$defs/id"
-              },
-              "status": {
-                "$ref": "#/$defs/recordStatus"
-              },
-              "owner": {
-                "$ref": "#/$defs/owner"
-              },
-              "materialSha256": {
-                "$ref": "#/$defs/sha256"
-              },
-              "kind": {
-                "enum": [
-                  "behavior",
-                  "quality",
-                  "scope"
-                ]
-              },
-              "statement": {
-                "$ref": "#/$defs/text"
-              },
-              "capabilityRefs": {
-                "$ref": "#/$defs/refs"
-              },
-              "goalRefs": {
-                "$ref": "#/$defs/refs"
-              }
-            }
-          }
-        },
-        "rules": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "id",
-              "status",
-              "owner",
-              "materialSha256",
-              "kind",
-              "statement",
-              "appliesToRefs"
-            ],
-            "properties": {
-              "id": {
-                "$ref": "#/$defs/id"
-              },
-              "status": {
-                "$ref": "#/$defs/recordStatus"
-              },
-              "owner": {
-                "$ref": "#/$defs/owner"
-              },
-              "materialSha256": {
-                "$ref": "#/$defs/sha256"
-              },
-              "kind": {
-                "enum": [
-                  "policy",
-                  "invariant",
-                  "constraint"
-                ]
-              },
-              "statement": {
-                "$ref": "#/$defs/text"
-              },
-              "appliesToRefs": {
-                "$ref": "#/$defs/refs"
-              }
-            }
-          }
-        },
-        "evidence": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "$ref": "#/$defs/technicalEvidence"
-          }
-        },
-        "repositoryBaselines": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "$ref": "#/$defs/repositoryBaseline"
-          }
-        },
-        "whitePapers": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "claimId",
-              "title",
-              "summary",
-              "path",
-              "sha256",
-              "sourceSha256",
-              "researchStatus",
-              "researchReportSha256"
-            ],
-            "properties": {
-              "claimId": {
-                "$ref": "#/$defs/id"
-              },
-              "title": {
-                "$ref": "#/$defs/text"
-              },
-              "summary": {
-                "$ref": "#/$defs/text"
-              },
-              "path": {
-                "type": "string",
-                "minLength": 1
-              },
-              "sha256": {
-                "$ref": "#/$defs/sha256"
-              },
-              "sourceSha256": {
-                "$ref": "#/$defs/sha256"
-              },
-              "researchStatus": {
-                "enum": [
-                  "current",
-                  "stale",
-                  "unassessed"
-                ]
-              },
-              "researchReportSha256": {
-                "anyOf": [
-                  {
-                    "$ref": "#/$defs/sha256"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      }
-    },
-    "preparationInput": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "proposal",
-        "evidence",
-        "repositoryBaselines"
-      ],
-      "properties": {
-        "proposal": {
-          "allOf": [
-            {
-              "$ref": "product-artifact-schema-1.0.json#/$defs/proposal"
-            },
-            {
-              "properties": {
-                "artifactKind": {
-                  "const": "technical-design"
-                },
-                "owner": {
-                  "const": "technical-documentation"
-                },
-                "consumerDomains": {
-                  "const": [
-                    "technical-documentation"
-                  ]
-                },
-                "artifactSchemaVersion": {
-                  "const": "1.0"
-                },
-                "resources": {
-                  "const": []
-                },
-                "payload": {
-                  "$ref": "#/$defs/technicalPayload"
-                }
-              }
-            }
-          ]
-        },
-        "evidence": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "$ref": "#/$defs/technicalEvidence"
-          }
-        },
-        "repositoryBaselines": {
-          "type": "array",
-          "maxItems": 10000,
-          "items": {
-            "$ref": "#/$defs/repositoryBaseline"
-          }
-        }
-      }
-    }
-  }
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://codex.local/refine-design/technical-context-schema-1.0.json",
+	"title": "Technical preparation 1.0 and context 2.0",
+	"oneOf": [
+		{
+			"$ref": "#/$defs/technicalContext"
+		},
+		{
+			"$ref": "#/$defs/preparationInput"
+		},
+		{
+			"$ref": "#/$defs/technicalPayload"
+		},
+		{
+			"$ref": "#/$defs/technicalEvidence"
+		},
+		{
+			"$ref": "#/$defs/repositoryBaseline"
+		}
+	],
+	"$defs": {
+		"id": {
+			"type": "string",
+			"pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+			"maxLength": 80
+		},
+		"text": {
+			"type": "string",
+			"minLength": 1,
+			"maxLength": 32768,
+			"pattern": "^[^\\u0000]+$"
+		},
+		"sha256": {
+			"type": "string",
+			"pattern": "^[0-9a-f]{64}$"
+		},
+		"revision": {
+			"type": "integer",
+			"minimum": 1,
+			"maximum": 9007199254740991
+		},
+		"owner": {
+			"enum": [
+				"product",
+				"ux",
+				"ui",
+				"system-architecture",
+				"data-model",
+				"controller",
+				"technical-documentation",
+				"implementation-planning",
+				"testing",
+				"coding"
+			]
+		},
+		"consumer": {
+			"enum": [
+				"prd",
+				"ux",
+				"ui",
+				"system-architecture",
+				"data-model",
+				"controller",
+				"technical-documentation",
+				"implementation-planning",
+				"testing",
+				"coding"
+			]
+		},
+		"productStatus": {
+			"enum": ["accepted", "partial", "locked"]
+		},
+		"recordStatus": {
+			"enum": ["accepted", "locked"]
+		},
+		"artifactStatus": {
+			"enum": ["accepted", "partial", "locked", "superseded"]
+		},
+		"consumableArtifactStatus": {
+			"enum": ["accepted", "partial", "locked"]
+		},
+		"refs": {
+			"type": "array",
+			"maxItems": 10000,
+			"uniqueItems": true,
+			"items": {
+				"$ref": "#/$defs/id"
+			}
+		},
+		"recordDependency": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["id", "materialSha256"],
+			"properties": {
+				"id": {
+					"$ref": "#/$defs/id"
+				},
+				"materialSha256": {
+					"$ref": "#/$defs/sha256"
+				}
+			}
+		},
+		"artifactDependency": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["id", "revision", "materialSha256"],
+			"properties": {
+				"id": {
+					"$ref": "#/$defs/id"
+				},
+				"revision": {
+					"$ref": "#/$defs/revision"
+				},
+				"materialSha256": {
+					"$ref": "#/$defs/sha256"
+				}
+			}
+		},
+		"artifactHistory": {
+			"oneOf": [
+				{
+					"properties": {
+						"revision": {
+							"const": 1
+						},
+						"status": {
+							"enum": ["accepted", "partial", "locked"]
+						},
+						"change": {
+							"properties": {
+								"kind": {
+									"const": "added"
+								},
+								"previousRevision": {
+									"type": "null"
+								},
+								"previousMaterialSha256": {
+									"type": "null"
+								}
+							}
+						}
+					}
+				},
+				{
+					"properties": {
+						"revision": {
+							"type": "integer",
+							"minimum": 2,
+							"maximum": 9007199254740991
+						},
+						"status": {
+							"enum": ["accepted", "partial", "locked"]
+						},
+						"change": {
+							"properties": {
+								"kind": {
+									"const": "unchanged"
+								},
+								"previousRevision": {
+									"$ref": "#/$defs/revision"
+								},
+								"previousMaterialSha256": {
+									"$ref": "#/$defs/sha256"
+								}
+							}
+						}
+					}
+				},
+				{
+					"properties": {
+						"revision": {
+							"type": "integer",
+							"minimum": 2,
+							"maximum": 9007199254740991
+						},
+						"status": {
+							"enum": ["accepted", "partial", "locked"]
+						},
+						"change": {
+							"properties": {
+								"kind": {
+									"const": "modified"
+								},
+								"previousRevision": {
+									"$ref": "#/$defs/revision"
+								},
+								"previousMaterialSha256": {
+									"$ref": "#/$defs/sha256"
+								}
+							}
+						}
+					}
+				},
+				{
+					"properties": {
+						"revision": {
+							"type": "integer",
+							"minimum": 2,
+							"maximum": 9007199254740991
+						},
+						"status": {
+							"const": "superseded"
+						},
+						"change": {
+							"properties": {
+								"kind": {
+									"const": "superseded"
+								},
+								"previousRevision": {
+									"$ref": "#/$defs/revision"
+								},
+								"previousMaterialSha256": {
+									"$ref": "#/$defs/sha256"
+								}
+							}
+						}
+					}
+				}
+			]
+		},
+		"artifact": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": [
+				"schemaVersion",
+				"kind",
+				"id",
+				"artifactKind",
+				"owner",
+				"artifactSchemaVersion",
+				"revision",
+				"status",
+				"consumerDomains",
+				"scopeRefs",
+				"coverageRefs",
+				"gapRefs",
+				"lockRefs",
+				"recordDependencies",
+				"artifactDependencies",
+				"producer",
+				"resources",
+				"payload",
+				"materialSha256",
+				"change"
+			],
+			"properties": {
+				"schemaVersion": {
+					"const": "1.0"
+				},
+				"kind": {
+					"const": "product-artifact"
+				},
+				"id": {
+					"$ref": "#/$defs/id"
+				},
+				"artifactKind": {
+					"$ref": "#/$defs/id"
+				},
+				"owner": {
+					"$ref": "#/$defs/owner"
+				},
+				"artifactSchemaVersion": {
+					"type": "string",
+					"pattern": "^[0-9]+\\.[0-9]+(?:\\.[0-9]+)?(?:-[a-z0-9.-]+)?$",
+					"maxLength": 64
+				},
+				"revision": {
+					"$ref": "#/$defs/revision"
+				},
+				"status": {
+					"$ref": "#/$defs/consumableArtifactStatus"
+				},
+				"consumerDomains": {
+					"type": "array",
+					"minItems": 1,
+					"maxItems": 10,
+					"uniqueItems": true,
+					"items": {
+						"$ref": "#/$defs/consumer"
+					}
+				},
+				"scopeRefs": {
+					"type": "array",
+					"minItems": 1,
+					"maxItems": 10000,
+					"uniqueItems": true,
+					"items": {
+						"$ref": "#/$defs/id"
+					}
+				},
+				"coverageRefs": {
+					"$ref": "#/$defs/refs"
+				},
+				"gapRefs": {
+					"$ref": "#/$defs/refs"
+				},
+				"lockRefs": {
+					"$ref": "#/$defs/refs"
+				},
+				"recordDependencies": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"$ref": "#/$defs/recordDependency"
+					}
+				},
+				"artifactDependencies": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"$ref": "#/$defs/artifactDependency"
+					}
+				},
+				"producer": {
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["id", "contractVersion", "method"],
+					"properties": {
+						"id": {
+							"$ref": "#/$defs/id"
+						},
+						"contractVersion": {
+							"type": "string",
+							"pattern": "^[0-9]+\\.[0-9]+(?:\\.[0-9]+)?(?:-[a-z0-9.-]+)?$",
+							"maxLength": 64
+						},
+						"method": {
+							"$ref": "#/$defs/id"
+						}
+					}
+				},
+				"payload": {},
+				"materialSha256": {
+					"$ref": "#/$defs/sha256"
+				},
+				"change": {
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["kind", "previousRevision", "previousMaterialSha256"],
+					"properties": {
+						"kind": {
+							"enum": ["added", "unchanged", "modified", "superseded"]
+						},
+						"previousRevision": {
+							"oneOf": [
+								{
+									"type": "null"
+								},
+								{
+									"$ref": "#/$defs/revision"
+								}
+							]
+						},
+						"previousMaterialSha256": {
+							"oneOf": [
+								{
+									"type": "null"
+								},
+								{
+									"$ref": "#/$defs/sha256"
+								}
+							]
+						}
+					}
+				},
+				"resources": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"$ref": "#/$defs/resourceDescriptor"
+					}
+				}
+			},
+			"allOf": [
+				{
+					"$ref": "#/$defs/artifactHistory"
+				}
+			]
+		},
+		"resourceDescriptor": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["id", "logicalPath", "path", "mediaType", "byteLength", "sha256"],
+			"properties": {
+				"id": {
+					"type": "string",
+					"pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+					"maxLength": 80
+				},
+				"logicalPath": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 1024
+				},
+				"path": {
+					"type": "string",
+					"pattern": "^artifact-resources/[a-f0-9]{64}\\.(?:png|jpg|webp|svg)$"
+				},
+				"mediaType": {
+					"enum": ["image/png", "image/jpeg", "image/webp", "image/svg+xml"]
+				},
+				"byteLength": {
+					"type": "integer",
+					"minimum": 1,
+					"maximum": 20971520
+				},
+				"sha256": {
+					"type": "string",
+					"pattern": "^[a-f0-9]{64}$"
+				}
+			}
+		},
+		"technicalPayload": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["schemaVersion", "evidenceDependencies", "records"],
+			"properties": {
+				"schemaVersion": {
+					"const": "1.0"
+				},
+				"evidenceDependencies": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"required": ["id", "materialSha256"],
+						"properties": {
+							"id": {
+								"$ref": "#/$defs/id"
+							},
+							"materialSha256": {
+								"$ref": "#/$defs/sha256"
+							}
+						}
+					}
+				},
+				"records": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"oneOf": [
+							{
+								"type": "object",
+								"additionalProperties": false,
+								"required": [
+									"id",
+									"kind",
+									"title",
+									"summary",
+									"owner",
+									"scopeRefs",
+									"productRefs",
+									"artifactRefs",
+									"dependsOn",
+									"evidenceRefs",
+									"status",
+									"details"
+								],
+								"properties": {
+									"id": {
+										"$ref": "#/$defs/id"
+									},
+									"kind": {
+										"const": "fact"
+									},
+									"title": {
+										"$ref": "#/$defs/text"
+									},
+									"summary": {
+										"$ref": "#/$defs/text"
+									},
+									"owner": {
+										"$ref": "#/$defs/owner"
+									},
+									"scopeRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"productRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"artifactRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"dependsOn": {
+										"$ref": "#/$defs/refs"
+									},
+									"evidenceRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"status": {
+										"enum": ["observed"]
+									},
+									"details": {
+										"type": "object",
+										"additionalProperties": false,
+										"required": ["claim", "limits"],
+										"properties": {
+											"claim": {
+												"$ref": "#/$defs/text"
+											},
+											"limits": {
+												"$ref": "#/$defs/text"
+											},
+											"discussion": {
+												"type": "array",
+												"maxItems": 32,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											}
+										}
+									}
+								}
+							},
+							{
+								"type": "object",
+								"additionalProperties": false,
+								"required": [
+									"id",
+									"kind",
+									"title",
+									"summary",
+									"owner",
+									"scopeRefs",
+									"productRefs",
+									"artifactRefs",
+									"dependsOn",
+									"evidenceRefs",
+									"status",
+									"details"
+								],
+								"properties": {
+									"id": {
+										"$ref": "#/$defs/id"
+									},
+									"kind": {
+										"const": "boundary"
+									},
+									"title": {
+										"$ref": "#/$defs/text"
+									},
+									"summary": {
+										"$ref": "#/$defs/text"
+									},
+									"owner": {
+										"$ref": "#/$defs/owner"
+									},
+									"scopeRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"productRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"artifactRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"dependsOn": {
+										"$ref": "#/$defs/refs"
+									},
+									"evidenceRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"status": {
+										"enum": ["accepted", "conditional", "superseded"]
+									},
+									"details": {
+										"type": "object",
+										"additionalProperties": false,
+										"required": [
+											"responsibility",
+											"consumers",
+											"exchanges",
+											"lifecycle",
+											"failureBehavior",
+											"decisionRefs"
+										],
+										"properties": {
+											"responsibility": {
+												"$ref": "#/$defs/text"
+											},
+											"consumers": {
+												"type": "array",
+												"maxItems": 10000,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											},
+											"exchanges": {
+												"type": "array",
+												"maxItems": 10000,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											},
+											"lifecycle": {
+												"$ref": "#/$defs/text"
+											},
+											"failureBehavior": {
+												"$ref": "#/$defs/text"
+											},
+											"decisionRefs": {
+												"$ref": "#/$defs/refs"
+											},
+											"discussion": {
+												"type": "array",
+												"maxItems": 32,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											}
+										}
+									}
+								}
+							},
+							{
+								"type": "object",
+								"additionalProperties": false,
+								"required": [
+									"id",
+									"kind",
+									"title",
+									"summary",
+									"owner",
+									"scopeRefs",
+									"productRefs",
+									"artifactRefs",
+									"dependsOn",
+									"evidenceRefs",
+									"status",
+									"details"
+								],
+								"properties": {
+									"id": {
+										"$ref": "#/$defs/id"
+									},
+									"kind": {
+										"const": "flow"
+									},
+									"title": {
+										"$ref": "#/$defs/text"
+									},
+									"summary": {
+										"$ref": "#/$defs/text"
+									},
+									"owner": {
+										"$ref": "#/$defs/owner"
+									},
+									"scopeRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"productRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"artifactRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"dependsOn": {
+										"$ref": "#/$defs/refs"
+									},
+									"evidenceRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"status": {
+										"enum": ["accepted", "conditional", "superseded"]
+									},
+									"details": {
+										"type": "object",
+										"additionalProperties": false,
+										"required": [
+											"trigger",
+											"preconditions",
+											"steps",
+											"success",
+											"failure",
+											"cancellation",
+											"retry",
+											"guarantees",
+											"limits",
+											"verification",
+											"decisionRefs"
+										],
+										"properties": {
+											"trigger": {
+												"$ref": "#/$defs/text"
+											},
+											"preconditions": {
+												"type": "array",
+												"maxItems": 10000,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											},
+											"steps": {
+												"type": "array",
+												"maxItems": 10000,
+												"items": {
+													"type": "object",
+													"additionalProperties": false,
+													"required": ["ownerRef", "action", "result"],
+													"properties": {
+														"ownerRef": {
+															"$ref": "#/$defs/id"
+														},
+														"action": {
+															"$ref": "#/$defs/text"
+														},
+														"result": {
+															"$ref": "#/$defs/text"
+														}
+													}
+												}
+											},
+											"success": {
+												"type": "array",
+												"maxItems": 10000,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											},
+											"failure": {
+												"type": "array",
+												"maxItems": 10000,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											},
+											"cancellation": {
+												"$ref": "#/$defs/text"
+											},
+											"retry": {
+												"$ref": "#/$defs/text"
+											},
+											"guarantees": {
+												"type": "array",
+												"maxItems": 10000,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											},
+											"limits": {
+												"type": "array",
+												"maxItems": 10000,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											},
+											"verification": {
+												"type": "array",
+												"maxItems": 10000,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											},
+											"decisionRefs": {
+												"$ref": "#/$defs/refs"
+											},
+											"discussion": {
+												"type": "array",
+												"maxItems": 32,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											}
+										}
+									}
+								}
+							},
+							{
+								"type": "object",
+								"additionalProperties": false,
+								"required": [
+									"id",
+									"kind",
+									"title",
+									"summary",
+									"owner",
+									"scopeRefs",
+									"productRefs",
+									"artifactRefs",
+									"dependsOn",
+									"evidenceRefs",
+									"status",
+									"details"
+								],
+								"properties": {
+									"id": {
+										"$ref": "#/$defs/id"
+									},
+									"kind": {
+										"const": "decision"
+									},
+									"title": {
+										"$ref": "#/$defs/text"
+									},
+									"summary": {
+										"$ref": "#/$defs/text"
+									},
+									"owner": {
+										"$ref": "#/$defs/owner"
+									},
+									"scopeRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"productRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"artifactRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"dependsOn": {
+										"$ref": "#/$defs/refs"
+									},
+									"evidenceRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"status": {
+										"enum": ["accepted", "proposed", "conditional", "superseded"]
+									},
+									"details": {
+										"type": "object",
+										"additionalProperties": false,
+										"required": [
+											"context",
+											"choice",
+											"alternatives",
+											"consequences",
+											"authority",
+											"supersedes"
+										],
+										"properties": {
+											"context": {
+												"$ref": "#/$defs/text"
+											},
+											"choice": {
+												"$ref": "#/$defs/text"
+											},
+											"alternatives": {
+												"type": "array",
+												"maxItems": 10000,
+												"items": {
+													"type": "object",
+													"additionalProperties": false,
+													"required": ["option", "disposition", "reason"],
+													"properties": {
+														"option": {
+															"$ref": "#/$defs/text"
+														},
+														"disposition": {
+															"enum": ["declined", "unselected"]
+														},
+														"reason": {
+															"$ref": "#/$defs/text"
+														}
+													}
+												}
+											},
+											"consequences": {
+												"type": "array",
+												"maxItems": 10000,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											},
+											"authority": {
+												"type": "object",
+												"additionalProperties": false,
+												"required": ["actor", "basis", "evidenceRef"],
+												"properties": {
+													"actor": {
+														"enum": ["parent", "owner"]
+													},
+													"basis": {
+														"$ref": "#/$defs/text"
+													},
+													"evidenceRef": {
+														"$ref": "#/$defs/id"
+													}
+												}
+											},
+											"supersedes": {
+												"$ref": "#/$defs/refs"
+											},
+											"discussion": {
+												"type": "array",
+												"maxItems": 32,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											}
+										}
+									}
+								}
+							},
+							{
+								"type": "object",
+								"additionalProperties": false,
+								"required": [
+									"id",
+									"kind",
+									"title",
+									"summary",
+									"owner",
+									"scopeRefs",
+									"productRefs",
+									"artifactRefs",
+									"dependsOn",
+									"evidenceRefs",
+									"status",
+									"details"
+								],
+								"properties": {
+									"id": {
+										"$ref": "#/$defs/id"
+									},
+									"kind": {
+										"const": "gap"
+									},
+									"title": {
+										"$ref": "#/$defs/text"
+									},
+									"summary": {
+										"$ref": "#/$defs/text"
+									},
+									"owner": {
+										"$ref": "#/$defs/owner"
+									},
+									"scopeRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"productRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"artifactRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"dependsOn": {
+										"$ref": "#/$defs/refs"
+									},
+									"evidenceRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"status": {
+										"enum": ["unresolved", "resolved"]
+									},
+									"details": {
+										"type": "object",
+										"additionalProperties": false,
+										"required": [
+											"question",
+											"category",
+											"affectedRefs",
+											"resolutionCriteria",
+											"resolutionRefs"
+										],
+										"properties": {
+											"question": {
+												"$ref": "#/$defs/text"
+											},
+											"category": {
+												"enum": ["product", "technical", "evidence"]
+											},
+											"affectedRefs": {
+												"$ref": "#/$defs/refs"
+											},
+											"resolutionCriteria": {
+												"type": "array",
+												"maxItems": 10000,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											},
+											"resolutionRefs": {
+												"$ref": "#/$defs/refs"
+											},
+											"discussion": {
+												"type": "array",
+												"maxItems": 32,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											}
+										}
+									}
+								}
+							},
+							{
+								"type": "object",
+								"additionalProperties": false,
+								"required": [
+									"id",
+									"kind",
+									"title",
+									"summary",
+									"owner",
+									"scopeRefs",
+									"productRefs",
+									"artifactRefs",
+									"dependsOn",
+									"evidenceRefs",
+									"status",
+									"details"
+								],
+								"properties": {
+									"id": {
+										"$ref": "#/$defs/id"
+									},
+									"kind": {
+										"const": "contract"
+									},
+									"title": {
+										"$ref": "#/$defs/text"
+									},
+									"summary": {
+										"$ref": "#/$defs/text"
+									},
+									"owner": {
+										"$ref": "#/$defs/owner"
+									},
+									"scopeRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"productRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"artifactRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"dependsOn": {
+										"$ref": "#/$defs/refs"
+									},
+									"evidenceRefs": {
+										"$ref": "#/$defs/refs"
+									},
+									"status": {
+										"enum": ["accepted", "conditional", "superseded"]
+									},
+									"details": {
+										"type": "object",
+										"additionalProperties": false,
+										"required": [
+											"ownerRef",
+											"participantRefs",
+											"flowRefs",
+											"input",
+											"result",
+											"invariants",
+											"failure",
+											"lifecycle"
+										],
+										"properties": {
+											"ownerRef": {
+												"$ref": "#/$defs/id"
+											},
+											"participantRefs": {
+												"$ref": "#/$defs/refs"
+											},
+											"flowRefs": {
+												"$ref": "#/$defs/refs"
+											},
+											"input": {
+												"type": "array",
+												"maxItems": 100,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											},
+											"result": {
+												"type": "array",
+												"maxItems": 100,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											},
+											"invariants": {
+												"type": "array",
+												"maxItems": 100,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											},
+											"failure": {
+												"type": "array",
+												"maxItems": 100,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											},
+											"lifecycle": {
+												"$ref": "#/$defs/text"
+											},
+											"discussion": {
+												"type": "array",
+												"maxItems": 32,
+												"items": {
+													"$ref": "#/$defs/text"
+												}
+											}
+										}
+									}
+								}
+							}
+						]
+					}
+				}
+			}
+		},
+		"technicalEvidence": {
+			"oneOf": [
+				{
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["id", "kind", "summary", "binding", "sourceFiles"],
+					"properties": {
+						"id": {
+							"$ref": "#/$defs/id"
+						},
+						"kind": {
+							"const": "repository"
+						},
+						"summary": {
+							"$ref": "#/$defs/text"
+						},
+						"binding": {
+							"type": "object",
+							"additionalProperties": false,
+							"required": ["baselineId", "baselineSha256", "paths", "locator", "observationSha256"],
+							"properties": {
+								"baselineId": {
+									"$ref": "#/$defs/id"
+								},
+								"baselineSha256": {
+									"$ref": "#/$defs/sha256"
+								},
+								"paths": {
+									"type": "array",
+									"maxItems": 10000,
+									"items": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 32768
+									}
+								},
+								"locator": {
+									"$ref": "#/$defs/text"
+								},
+								"observationSha256": {
+									"$ref": "#/$defs/sha256"
+								}
+							}
+						},
+						"sourceFiles": {
+							"type": "array",
+							"maxItems": 10000,
+							"items": {
+								"type": "object",
+								"additionalProperties": false,
+								"required": ["path", "sha256"],
+								"properties": {
+									"path": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 32768
+									},
+									"sha256": {
+										"$ref": "#/$defs/sha256"
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["id", "kind", "summary", "binding", "sourceFiles"],
+					"properties": {
+						"id": {
+							"$ref": "#/$defs/id"
+						},
+						"kind": {
+							"const": "assessment"
+						},
+						"summary": {
+							"$ref": "#/$defs/text"
+						},
+						"binding": {
+							"type": "object",
+							"additionalProperties": false,
+							"required": ["role", "question", "reportSha256", "inputRefs", "disposition", "rationale"],
+							"properties": {
+								"role": {
+									"$ref": "#/$defs/text"
+								},
+								"question": {
+									"$ref": "#/$defs/text"
+								},
+								"reportSha256": {
+									"$ref": "#/$defs/sha256"
+								},
+								"inputRefs": {
+									"$ref": "#/$defs/refs"
+								},
+								"disposition": {
+									"enum": ["accepted", "conditional", "declined"]
+								},
+								"rationale": {
+									"$ref": "#/$defs/text"
+								}
+							}
+						},
+						"sourceFiles": {
+							"type": "array",
+							"maxItems": 10000,
+							"items": {
+								"type": "object",
+								"additionalProperties": false,
+								"required": ["path", "sha256"],
+								"properties": {
+									"path": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 32768
+									},
+									"sha256": {
+										"$ref": "#/$defs/sha256"
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["id", "kind", "summary", "binding", "sourceFiles"],
+					"properties": {
+						"id": {
+							"$ref": "#/$defs/id"
+						},
+						"kind": {
+							"const": "authority"
+						},
+						"summary": {
+							"$ref": "#/$defs/text"
+						},
+						"binding": {
+							"type": "object",
+							"additionalProperties": false,
+							"required": ["actor", "scopeRefs", "instruction", "receiptSha256"],
+							"properties": {
+								"actor": {
+									"enum": ["parent", "owner"]
+								},
+								"scopeRefs": {
+									"$ref": "#/$defs/refs"
+								},
+								"instruction": {
+									"$ref": "#/$defs/text"
+								},
+								"receiptSha256": {
+									"$ref": "#/$defs/sha256"
+								}
+							}
+						},
+						"sourceFiles": {
+							"type": "array",
+							"maxItems": 10000,
+							"items": {
+								"type": "object",
+								"additionalProperties": false,
+								"required": ["path", "sha256"],
+								"properties": {
+									"path": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 32768
+									},
+									"sha256": {
+										"$ref": "#/$defs/sha256"
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["id", "kind", "summary", "binding", "sourceFiles"],
+					"properties": {
+						"id": {
+							"$ref": "#/$defs/id"
+						},
+						"kind": {
+							"const": "standard"
+						},
+						"summary": {
+							"$ref": "#/$defs/text"
+						},
+						"binding": {
+							"type": "object",
+							"additionalProperties": false,
+							"required": ["standardId", "section", "sha256", "applicabilitySha256"],
+							"properties": {
+								"standardId": {
+									"$ref": "#/$defs/text"
+								},
+								"section": {
+									"$ref": "#/$defs/text"
+								},
+								"sha256": {
+									"$ref": "#/$defs/sha256"
+								},
+								"applicabilitySha256": {
+									"$ref": "#/$defs/sha256"
+								}
+							}
+						},
+						"sourceFiles": {
+							"type": "array",
+							"maxItems": 10000,
+							"items": {
+								"type": "object",
+								"additionalProperties": false,
+								"required": ["path", "sha256"],
+								"properties": {
+									"path": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 32768
+									},
+									"sha256": {
+										"$ref": "#/$defs/sha256"
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["id", "kind", "summary", "binding", "sourceFiles"],
+					"properties": {
+						"id": {
+							"$ref": "#/$defs/id"
+						},
+						"kind": {
+							"const": "research"
+						},
+						"summary": {
+							"$ref": "#/$defs/text"
+						},
+						"binding": {
+							"type": "object",
+							"additionalProperties": false,
+							"required": ["url", "retrievedAt", "claim", "sourceSha256", "recheckWhen"],
+							"properties": {
+								"url": {
+									"$ref": "#/$defs/text"
+								},
+								"retrievedAt": {
+									"$ref": "#/$defs/text"
+								},
+								"claim": {
+									"$ref": "#/$defs/text"
+								},
+								"sourceSha256": {
+									"$ref": "#/$defs/sha256"
+								},
+								"recheckWhen": {
+									"$ref": "#/$defs/text"
+								}
+							}
+						},
+						"sourceFiles": {
+							"type": "array",
+							"maxItems": 10000,
+							"items": {
+								"type": "object",
+								"additionalProperties": false,
+								"required": ["path", "sha256"],
+								"properties": {
+									"path": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 32768
+									},
+									"sha256": {
+										"$ref": "#/$defs/sha256"
+									}
+								}
+							}
+						}
+					}
+				}
+			]
+		},
+		"repositoryBaseline": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["id", "repositoryId", "head", "indexSha256", "changes", "observations", "materialSha256"],
+			"properties": {
+				"id": {
+					"$ref": "#/$defs/id"
+				},
+				"repositoryId": {
+					"$ref": "#/$defs/id"
+				},
+				"head": {
+					"anyOf": [
+						{
+							"type": "string",
+							"pattern": "^[0-9a-f]{40,64}$"
+						},
+						{
+							"type": "null"
+						}
+					]
+				},
+				"indexSha256": {
+					"$ref": "#/$defs/sha256"
+				},
+				"changes": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"required": ["path", "indexStatus", "worktreeStatus", "indexObjectId", "workingSha256", "mode"],
+						"properties": {
+							"path": {
+								"type": "string",
+								"minLength": 1,
+								"maxLength": 32768
+							},
+							"indexStatus": {
+								"enum": [" ", "M", "A", "D", "R", "C", "U", "?", "!"]
+							},
+							"worktreeStatus": {
+								"enum": [" ", "M", "A", "D", "R", "C", "U", "?", "!"]
+							},
+							"indexObjectId": {
+								"anyOf": [
+									{
+										"type": "string",
+										"pattern": "^[0-9a-f]{40,64}$"
+									},
+									{
+										"type": "null"
+									}
+								]
+							},
+							"workingSha256": {
+								"anyOf": [
+									{
+										"$ref": "#/$defs/sha256"
+									},
+									{
+										"type": "null"
+									}
+								]
+							},
+							"mode": {
+								"anyOf": [
+									{
+										"enum": ["100644", "100755", "120000", "160000"]
+									},
+									{
+										"type": "null"
+									}
+								]
+							}
+						}
+					}
+				},
+				"observations": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"required": ["path", "workingSha256", "mode"],
+						"properties": {
+							"path": {
+								"type": "string",
+								"minLength": 1,
+								"maxLength": 32768
+							},
+							"workingSha256": {
+								"anyOf": [
+									{
+										"$ref": "#/$defs/sha256"
+									},
+									{
+										"type": "null"
+									}
+								]
+							},
+							"mode": {
+								"anyOf": [
+									{
+										"enum": ["100644", "100755", "120000"]
+									},
+									{
+										"type": "null"
+									}
+								]
+							}
+						}
+					}
+				},
+				"materialSha256": {
+					"$ref": "#/$defs/sha256"
+				}
+			}
+		},
+		"technicalContext": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": [
+				"schemaVersion",
+				"contextId",
+				"consumer",
+				"sourceSnapshot",
+				"productModel",
+				"scopeRefs",
+				"product",
+				"capabilities",
+				"goals",
+				"requirements",
+				"rules",
+				"gaps",
+				"artifacts",
+				"locks",
+				"exclusions",
+				"provenance",
+				"materialSha256",
+				"evidence",
+				"repositoryBaselines"
+			],
+			"properties": {
+				"schemaVersion": {
+					"const": "2.0"
+				},
+				"contextId": {
+					"type": "string",
+					"pattern": "^technical-context-[0-9a-f]{12}$"
+				},
+				"consumer": {
+					"const": "technical"
+				},
+				"sourceSnapshot": {
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["id", "revision", "sha256"],
+					"properties": {
+						"id": {
+							"$ref": "#/$defs/id"
+						},
+						"revision": {
+							"$ref": "#/$defs/revision"
+						},
+						"sha256": {
+							"$ref": "#/$defs/sha256"
+						}
+					}
+				},
+				"productModel": {
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["id", "revision", "status", "sha256", "materialSha256"],
+					"properties": {
+						"id": {
+							"$ref": "#/$defs/id"
+						},
+						"revision": {
+							"$ref": "#/$defs/revision"
+						},
+						"status": {
+							"$ref": "#/$defs/productStatus"
+						},
+						"sha256": {
+							"$ref": "#/$defs/sha256"
+						},
+						"materialSha256": {
+							"$ref": "#/$defs/sha256"
+						}
+					}
+				},
+				"scopeRefs": {
+					"$ref": "#/$defs/refs"
+				},
+				"product": {
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["id", "name", "status", "owner", "materialSha256", "purpose", "users"],
+					"properties": {
+						"id": {
+							"$ref": "#/$defs/id"
+						},
+						"name": {
+							"$ref": "#/$defs/text"
+						},
+						"status": {
+							"$ref": "#/$defs/productStatus"
+						},
+						"owner": {
+							"$ref": "#/$defs/owner"
+						},
+						"materialSha256": {
+							"$ref": "#/$defs/sha256"
+						},
+						"purpose": {
+							"type": "object",
+							"additionalProperties": false,
+							"required": ["id", "summary", "status", "owner", "materialSha256"],
+							"properties": {
+								"id": {
+									"$ref": "#/$defs/id"
+								},
+								"summary": {
+									"$ref": "#/$defs/text"
+								},
+								"status": {
+									"$ref": "#/$defs/recordStatus"
+								},
+								"owner": {
+									"$ref": "#/$defs/owner"
+								},
+								"materialSha256": {
+									"$ref": "#/$defs/sha256"
+								}
+							}
+						},
+						"users": {
+							"type": "array",
+							"maxItems": 10000,
+							"items": {
+								"type": "object",
+								"additionalProperties": false,
+								"required": ["id", "name", "description", "status", "owner", "materialSha256"],
+								"properties": {
+									"id": {
+										"$ref": "#/$defs/id"
+									},
+									"name": {
+										"$ref": "#/$defs/text"
+									},
+									"description": {
+										"$ref": "#/$defs/text"
+									},
+									"status": {
+										"$ref": "#/$defs/recordStatus"
+									},
+									"owner": {
+										"$ref": "#/$defs/owner"
+									},
+									"materialSha256": {
+										"$ref": "#/$defs/sha256"
+									}
+								}
+							}
+						}
+					}
+				},
+				"capabilities": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"required": ["id", "status", "owner", "materialSha256", "name", "summary"],
+						"properties": {
+							"id": {
+								"$ref": "#/$defs/id"
+							},
+							"status": {
+								"$ref": "#/$defs/recordStatus"
+							},
+							"owner": {
+								"$ref": "#/$defs/owner"
+							},
+							"materialSha256": {
+								"$ref": "#/$defs/sha256"
+							},
+							"name": {
+								"$ref": "#/$defs/text"
+							},
+							"summary": {
+								"$ref": "#/$defs/text"
+							}
+						}
+					}
+				},
+				"gaps": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"required": [
+							"id",
+							"kind",
+							"question",
+							"impact",
+							"status",
+							"owner",
+							"materialSha256",
+							"affectsRefs"
+						],
+						"properties": {
+							"id": {
+								"$ref": "#/$defs/id"
+							},
+							"kind": {
+								"enum": ["open-question", "missing-requirement", "ambiguity", "conflict"]
+							},
+							"question": {
+								"$ref": "#/$defs/text"
+							},
+							"impact": {
+								"$ref": "#/$defs/text"
+							},
+							"status": {
+								"enum": ["unresolved", "locked"]
+							},
+							"owner": {
+								"$ref": "#/$defs/owner"
+							},
+							"materialSha256": {
+								"$ref": "#/$defs/sha256"
+							},
+							"affectsRefs": {
+								"$ref": "#/$defs/refs"
+							}
+						}
+					}
+				},
+				"artifacts": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"$ref": "#/$defs/artifact"
+					}
+				},
+				"locks": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"required": ["ref", "kind", "owner"],
+						"properties": {
+							"ref": {
+								"$ref": "#/$defs/id"
+							},
+							"kind": {
+								"enum": [
+									"product",
+									"purpose",
+									"user",
+									"capability",
+									"gap",
+									"artifact",
+									"goal",
+									"requirement",
+									"rule"
+								]
+							},
+							"owner": {
+								"$ref": "#/$defs/owner"
+							}
+						}
+					}
+				},
+				"exclusions": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"required": [
+							"id",
+							"artifactKind",
+							"revision",
+							"status",
+							"outcome",
+							"materialSha256",
+							"reasons"
+						],
+						"properties": {
+							"id": {
+								"$ref": "#/$defs/id"
+							},
+							"artifactKind": {
+								"$ref": "#/$defs/id"
+							},
+							"revision": {
+								"$ref": "#/$defs/revision"
+							},
+							"status": {
+								"$ref": "#/$defs/artifactStatus"
+							},
+							"outcome": {
+								"enum": ["stale", "locked-conflict", "superseded"]
+							},
+							"materialSha256": {
+								"$ref": "#/$defs/sha256"
+							},
+							"reasons": {
+								"type": "array",
+								"maxItems": 10000,
+								"uniqueItems": true,
+								"items": {
+									"$ref": "#/$defs/text"
+								}
+							}
+						}
+					}
+				},
+				"provenance": {
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["sourceId", "sourceRevision", "sourceSha256"],
+					"properties": {
+						"sourceId": {
+							"$ref": "#/$defs/id"
+						},
+						"sourceRevision": {
+							"$ref": "#/$defs/revision"
+						},
+						"sourceSha256": {
+							"$ref": "#/$defs/sha256"
+						}
+					}
+				},
+				"materialSha256": {
+					"$ref": "#/$defs/sha256"
+				},
+				"goals": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"required": [
+							"id",
+							"status",
+							"owner",
+							"materialSha256",
+							"statement",
+							"desiredOutcome",
+							"capabilityRefs",
+							"userRefs"
+						],
+						"properties": {
+							"id": {
+								"$ref": "#/$defs/id"
+							},
+							"status": {
+								"$ref": "#/$defs/recordStatus"
+							},
+							"owner": {
+								"$ref": "#/$defs/owner"
+							},
+							"materialSha256": {
+								"$ref": "#/$defs/sha256"
+							},
+							"statement": {
+								"$ref": "#/$defs/text"
+							},
+							"desiredOutcome": {
+								"$ref": "#/$defs/text"
+							},
+							"capabilityRefs": {
+								"$ref": "#/$defs/refs"
+							},
+							"userRefs": {
+								"$ref": "#/$defs/refs"
+							}
+						}
+					}
+				},
+				"requirements": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"required": [
+							"id",
+							"status",
+							"owner",
+							"materialSha256",
+							"kind",
+							"statement",
+							"capabilityRefs",
+							"goalRefs"
+						],
+						"properties": {
+							"id": {
+								"$ref": "#/$defs/id"
+							},
+							"status": {
+								"$ref": "#/$defs/recordStatus"
+							},
+							"owner": {
+								"$ref": "#/$defs/owner"
+							},
+							"materialSha256": {
+								"$ref": "#/$defs/sha256"
+							},
+							"kind": {
+								"enum": ["behavior", "quality", "scope"]
+							},
+							"statement": {
+								"$ref": "#/$defs/text"
+							},
+							"capabilityRefs": {
+								"$ref": "#/$defs/refs"
+							},
+							"goalRefs": {
+								"$ref": "#/$defs/refs"
+							}
+						}
+					}
+				},
+				"rules": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"required": ["id", "status", "owner", "materialSha256", "kind", "statement", "appliesToRefs"],
+						"properties": {
+							"id": {
+								"$ref": "#/$defs/id"
+							},
+							"status": {
+								"$ref": "#/$defs/recordStatus"
+							},
+							"owner": {
+								"$ref": "#/$defs/owner"
+							},
+							"materialSha256": {
+								"$ref": "#/$defs/sha256"
+							},
+							"kind": {
+								"enum": ["policy", "invariant", "constraint"]
+							},
+							"statement": {
+								"$ref": "#/$defs/text"
+							},
+							"appliesToRefs": {
+								"$ref": "#/$defs/refs"
+							}
+						}
+					}
+				},
+				"evidence": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"$ref": "#/$defs/technicalEvidence"
+					}
+				},
+				"repositoryBaselines": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"$ref": "#/$defs/repositoryBaseline"
+					}
+				},
+				"whitePapers": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"required": [
+							"claimId",
+							"title",
+							"summary",
+							"path",
+							"sha256",
+							"sourceSha256",
+							"researchStatus",
+							"researchReportSha256"
+						],
+						"properties": {
+							"claimId": {
+								"$ref": "#/$defs/id"
+							},
+							"title": {
+								"$ref": "#/$defs/text"
+							},
+							"summary": {
+								"$ref": "#/$defs/text"
+							},
+							"path": {
+								"type": "string",
+								"minLength": 1
+							},
+							"sha256": {
+								"$ref": "#/$defs/sha256"
+							},
+							"sourceSha256": {
+								"$ref": "#/$defs/sha256"
+							},
+							"researchStatus": {
+								"enum": ["current", "stale", "unassessed"]
+							},
+							"researchReportSha256": {
+								"anyOf": [
+									{
+										"$ref": "#/$defs/sha256"
+									},
+									{
+										"type": "null"
+									}
+								]
+							}
+						}
+					}
+				}
+			}
+		},
+		"preparationInput": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["proposal", "evidence", "repositoryBaselines"],
+			"properties": {
+				"proposal": {
+					"allOf": [
+						{
+							"$ref": "product-artifact-schema-1.0.json#/$defs/proposal"
+						},
+						{
+							"properties": {
+								"artifactKind": {
+									"const": "technical-design"
+								},
+								"owner": {
+									"const": "technical-documentation"
+								},
+								"consumerDomains": {
+									"const": ["technical-documentation"]
+								},
+								"artifactSchemaVersion": {
+									"const": "1.0"
+								},
+								"resources": {
+									"const": []
+								},
+								"payload": {
+									"$ref": "#/$defs/technicalPayload"
+								}
+							}
+						}
+					]
+				},
+				"evidence": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"$ref": "#/$defs/technicalEvidence"
+					}
+				},
+				"repositoryBaselines": {
+					"type": "array",
+					"maxItems": 10000,
+					"items": {
+						"$ref": "#/$defs/repositoryBaseline"
+					}
+				}
+			}
+		}
+	}
 }

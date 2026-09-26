@@ -18,7 +18,10 @@ export default class BaseSelect extends Component {
 	 *
 	 * @param {object} props - The initial React properties.
 	 */
-	constructor(props) { super(props); this.fallbackId = `select-${nextSelectId++}`; }
+	constructor(props) {
+		super(props);
+		this.fallbackId = `select-${nextSelectId++}`;
+	}
 	/**
 	 * Called by the component to resolve display text.
 	 *
@@ -26,32 +29,74 @@ export default class BaseSelect extends Component {
 	 * @param {string} fallback - The absent-value fallback.
 	 * @returns {string} - The resolved text.
 	 */
-	resolve(value, fallback = '') { return resolveComponentText(this.context, this.props.localize ?? false, value, fallback); }
+	resolve(value, fallback = '') {
+		return resolveComponentText(this.context, this.props.localize ?? false, value, fallback);
+	}
 	/**
 	 * Called by MUI when the selected value changes.
 	 *
 	 * @param {unknown} event - The originating MUI event.
 	 * @param {React.ReactNode} child - The selected option element.
 	 */
-	handleChange(event, child) { this.props.onChange?.(event.target.value, event, child); }
+	handleChange(event, child) {
+		this.props.onChange?.(event.target.value, event, child);
+	}
 	/**
 	 * Called by the select to render one native or MUI option.
 	 *
 	 * @param {object} option - The option configuration.
 	 * @returns {React.ReactNode} - The rendered option.
 	 */
-	renderOption(option) { return this.props.selectProps?.native ? <option key={option.value} value={option.value} disabled={option.disabled}>{this.resolve(option.label)}</option> : <MenuItem key={option.value} value={option.value} disabled={option.disabled}>{this.resolve(option.label)}</MenuItem>; }
+	renderOption(option) {
+		return this.props.selectProps?.native ? (
+			<option key={option.value} value={option.value} disabled={option.disabled}>
+				{this.resolve(option.label)}
+			</option>
+		) : (
+			<MenuItem key={option.value} value={option.value} disabled={option.disabled}>
+				{this.resolve(option.label)}
+			</MenuItem>
+		);
+	}
 	/**
 	 * Call this method to render the configured select.
 	 *
 	 * @returns {React.ReactNode} - The select presentation.
 	 */
 	render() {
-		const {id, label, helperText, ariaLabel, localize, options = [], onChange, selectProps = {}, value = '', ...props} = this.props;
+		const {
+			id,
+			label,
+			helperText,
+			ariaLabel,
+			localize,
+			options = [],
+			onChange,
+			selectProps = {},
+			value = '',
+			...props
+		} = this.props;
 		const selectId = id || this.fallbackId;
 		const labelId = `${selectId}-label`;
 		const helperId = helperText ? `${selectId}-helper` : undefined;
 		const resolvedLabel = this.resolve(label);
-		return <FormControl {...props} fullWidth={props.fullWidth ?? true}><InputLabel id={labelId}>{resolvedLabel}</InputLabel><MuiSelect {...selectProps} id={selectId} label={resolvedLabel} labelId={labelId} value={value} onChange={(event, child) => this.handleChange(event, child)} aria-describedby={this.context.accessibilityEnabled ? helperId : undefined} aria-label={this.context.accessibilityEnabled && ariaLabel ? this.resolve(ariaLabel) : undefined}>{options.map((option) => this.renderOption(option))}</MuiSelect>{helperText ? <FormHelperText id={helperId}>{this.resolve(helperText)}</FormHelperText> : null}</FormControl>;
+		return (
+			<FormControl {...props} fullWidth={props.fullWidth ?? true}>
+				<InputLabel id={labelId}>{resolvedLabel}</InputLabel>
+				<MuiSelect
+					{...selectProps}
+					id={selectId}
+					label={resolvedLabel}
+					labelId={labelId}
+					value={value}
+					onChange={(event, child) => this.handleChange(event, child)}
+					aria-describedby={this.context.accessibilityEnabled ? helperId : undefined}
+					aria-label={this.context.accessibilityEnabled && ariaLabel ? this.resolve(ariaLabel) : undefined}
+				>
+					{options.map((option) => this.renderOption(option))}
+				</MuiSelect>
+				{helperText ? <FormHelperText id={helperId}>{this.resolve(helperText)}</FormHelperText> : null}
+			</FormControl>
+		);
 	}
 }

@@ -20,6 +20,8 @@ Orchestrate standards reviewers without allowing reviewer threads to edit files 
 
 Ordinary installation does not activate reviewers. Bootstrap and review may be invoked by `AGENTS.md`. The checkpoint adviser additionally requires an explicit engineer request or a bootstrap instruction naming it.
 
+For checkpoint-adviser modes, go directly to [Checkpoint Adviser](#checkpoint-adviser). Its only decision criterion is whether the current changes form a reasonable unit of functionality. Reviewer setup, eligibility, formatting, calibration, normalization, fingerprint and evidence-ledger requirements below apply to standards reviews, not checkpoint advice. When both are requested, initialize the adviser independently even if standards review is blocked.
+
 ## Load Authority And Resolve Paths
 
 Resolve the Codex and repository roots. Read applicable `AGENTS.md`, work-context topics, `agents/topics/standards/manifest.md`, `agents/topics/standards/overlay.md`, and only the canonical standards required by the resolved paths and lanes.
@@ -44,13 +46,13 @@ Map every review-unit path independently. Group files by reviewer lane and appli
 
 ## Reviewer Infrastructure Gate
 
-Before repository eligibility checks, verify that the skill helpers and these global read-only definitions exist and identify their expected roles: `architecture-reviewer.toml`, `contracts-reviewer.toml`, `ui-reviewer.toml`, `verification-reviewer.toml`, `privacy-security-reviewer.toml`, and `checkpoint-advisor.toml`. Every definition must pin `model = "gpt-5.6-terra"`. Architecture, UI, and privacy/security must pin `model_reasoning_effort = "medium"`; contracts, verification, and checkpoint advice must pin `model_reasoning_effort = "low"`. Do not inherit either setting from the parent session. Missing, invalid, or differently configured infrastructure blocks startup. Validate these pins with the `infrastructure` function used by `review-ledger.mjs`; cached runtime roles must also use the requested effort.
+Before repository eligibility checks, verify that the skill helpers and these global read-only definitions exist and identify their expected roles: `architecture-reviewer.toml`, `contracts-reviewer.toml`, `ui-reviewer.toml`, `verification-reviewer.toml`, and `privacy-security-reviewer.toml`. Every definition must pin `model = "gpt-5.6-terra"`. Architecture, UI, and privacy/security must pin `model_reasoning_effort = "medium"`; contracts and verification must pin `model_reasoning_effort = "low"`. Do not inherit either setting from the parent session. Missing, invalid, or differently configured infrastructure blocks reviewer startup. Validate these pins with the `infrastructure` function used by `review-ledger.mjs`; cached runtime roles must also use the requested effort.
 
 `setup reviewers` inventories and proposes exact repairs, including the required model and reasoning pins. Obtain explicit authorization before writing outside the repository. Definitions contain durable role contracts, never copied repository standards. Validate them after installation.
 
 ## Startup Eligibility Gates
 
-Before spawning any reviewer or checkpoint adviser:
+Before spawning a standards reviewer:
 
 Run `node <this-skill>/scripts/reviewer-calibration.mjs readiness` first. Missing or stale recorded calibration blocks startup. Setup calibration agents may run solely against synthetic fixtures to repair this gate; they cannot issue repository-compliance results.
 
@@ -60,13 +62,13 @@ Run `node <this-skill>/scripts/reviewer-calibration.mjs readiness` first. Missin
 4. Run `write-standards-guide` in write mode. The review workflow has standing authority to create or refresh only root `STANDARDS.md` from current repository and canonical hashes.
 5. Run `node <this-skill>/scripts/review-ledger.mjs setup-artifact-root --repo <repository-root>`. The review workflow has standing authority to create `/.codex-tmp/` and, when it is not already ignored, append the exact `/.codex-tmp/` entry to the root `.gitignore`. Do not make any other repository edit under this authority.
 
-Any startup-gate failure blocks the entire run. There is no bypass. Directly requested reviewers repeat the startup gates before inspection.
+Any startup-gate failure blocks the standards-review run. There is no bypass for standards reviewers. Checkpoint advice remains independent. Directly requested reviewers repeat the startup gates before inspection.
 
 ## Formatting Diagnostic And Completion Gate
 
 During bootstrap and topic refresh, run `node <this-skill>/scripts/format-preflight.mjs --repo <repository-root>`. When setup is valid, also run `npm run format:check` from the repository root with `NPM_CONFIG_OFFLINE=false` and applicable trust-store instructions. Report either failure as a formatting warning and continue starting reviewers and the opted-in checkpoint adviser.
 
-Formatting does not block reviewer inspection, evidence preparation, findings, or readiness. It is required only for a final aggregate `CLEAN` result and for `CHECKPOINT_RECOMMENDED` or `CHECKPOINT_URGENT`. `review-ledger.mjs prepare` diagnoses formatting without failing. `review-ledger.mjs validate` records formatting state; when semantic review is otherwise clean, formatting failure changes the aggregate result to `INCOMPLETE`. When validated review findings exist, retain `FINDINGS_PRESENT` and report the formatting failure separately.
+Formatting does not block reviewer inspection, evidence preparation, findings, or readiness. It is required for a final aggregate `CLEAN` standards-review result. `review-ledger.mjs prepare` diagnoses formatting without failing. `review-ledger.mjs validate` records formatting state; when semantic review is otherwise clean, formatting failure changes the aggregate result to `INCOMPLETE`. When validated review findings exist, retain `FINDINGS_PRESENT` and report the formatting failure separately. Formatting has no effect on checkpoint-adviser eligibility or recommendations.
 
 At task start, create a unique evidence directory with `review-ledger.mjs create-session --repo <repository-root>`. It performs the same narrow ignore/root repair when necessary. Store the baseline, generated request, primary reports, audit reports, and optional validation result only beneath that returned repository-local `.codex-tmp/review-standards/session-*` directory. Never place review artifacts outside the current repository or elsewhere in the working tree. The helpers reject other artifact paths. Specialist reviewer threads remain read-only; the parent orchestrator owns this setup mutation and artifact persistence.
 
@@ -120,13 +122,15 @@ There is no filesystem watcher. Lifecycle behavior is event-driven by the parent
 
 ## Checkpoint Adviser
 
-The adviser returns exactly `NOT_READY`, `CHECKPOINT_RECOMMENDED`, or `CHECKPOINT_URGENT`, with reasoning, semantic scope, blockers or unrelated changes, verification evidence, and repository fingerprint. It evaluates the complete repository state because `$check-point` stages all changes. It never invokes `$check-point`, drafts the final message, stages, commits, or requests Git-write approval.
+The adviser judges only whether the current repository changes form a reasonable unit of functionality worth checkpointing. A coherent intermediate implementation step can be a useful checkpoint. Inspect the complete repository state because `$check-point` stages all changes, and supply the task intent and useful existing context.
 
-At initialization it may run startup eligibility helpers and receive formatting diagnostics without blocking activation. At each checkpoint evaluation it must run the formatting preflight and `format:check`; either failure returns `NOT_READY`. It inspects existing evidence but does not run builds, tests, generators, installers, or other commands that can write files.
+Use a fresh instance with the current `checkpoint-advisor` instructions. Its configured model is `gpt-5.6-terra` with low reasoning. If the runtime role caches older gate instructions, use a fresh default agent with those settings and the current definition. Do not require reviewer preflight, standards mapping, normalization, calibration, formatting checks, passing tests, review ledgers or context fingerprints. Do not block advice on failures in those systems.
 
-One-shot `evaluate` ends after its result. Monitoring consults it after coherent slices, relevant verification, context transitions, before risky work, and before final handoff, suppressing duplicate advice for an unchanged fingerprint.
+The adviser returns `CHECKPOINT_RECOMMENDED`, `CHECKPOINT_URGENT`, or `NOT_READY` with a concise functional reason and scope. `NOT_READY` means the changes do not yet form a reasonable unit, not that a procedural check is missing. It may suggest a commit message. The parent handles the separately authorized commit through `$check-point`; an adviser recommendation is advice, not a standards-compliance result or commit authorization.
 
-Track `inactive`, `active`, `suspended`, `restarting`, or `blocked`. Suspension interrupts and invalidates an in-flight adviser and ignores events without queueing. Restart is valid only after suspension in this session: rerun gates, reload durable context and folder mappings, create a fresh thread, and evaluate immediately. Status reports state without spawning. Session suspension does not alter durable bootstrap opt-in.
+One-shot `evaluate` ends after its result. Monitoring consults it after coherent slices, relevant verification, context transitions, before risky work, and before final handoff, suppressing duplicate advice when the repository state has not changed.
+
+Track `inactive`, `active`, `suspended`, or `restarting`. Suspension interrupts an in-flight adviser and ignores events without queueing. Restart creates a fresh thread with the current adviser instructions and task context, then evaluates immediately. Status reports state without spawning. Session suspension does not alter durable bootstrap opt-in. Updated adviser instructions also require a fresh instance; existing agents retain their earlier role instructions.
 
 ## Finding Contract
 

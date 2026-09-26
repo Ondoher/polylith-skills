@@ -107,16 +107,16 @@ source identities remain unchanged when recovery changes displayed numbering.
 
 ## Fallbacks and user repair
 
-| Failure | Continue with | Explain how to repair |
-| --- | --- | --- |
-| Missing or invalid record | Valid independent records/fields; local placeholder for the unavailable material | Identify the source and failed condition; restore or correct it, then rebuild the affected context |
-| Missing UI handoff or all scenes | PRD and available interaction text, with explicit visual-coverage gaps | Complete/repair the upstream UI handoff and refresh the context |
-| Missing or unreadable comp | Flow text, remaining comps, and an inline missing-figure notice | Restore the referenced resource or regenerate its scene, then refresh bindings |
-| Stale source binding | Valid current independent material; mark the dependent passage unavailable | Refresh the upstream context and revise affected manuscript blocks; do not merely replace a digest |
-| Broken hierarchy, missing parent, or cycle | Usable children/siblings, ancestor fallback, and provisional recovered material | Repair the identified edge or ask the structure agent to revise the affected hierarchy/page plan |
-| Agent failure or incomplete response | Valid response portions, still-valid baseline content, or a labeled minimal scaffold | Retry the bounded failed assignment after addressing its reported input/tool problem |
-| A block or page cannot render | Safe escaped text and a notice; a minimal HTML/text page if its template fails | Correct the identified manuscript/template issue and render the affected page again |
-| Destination or receipt conflict | Preserve existing files; finish an independent preview/report and other safe work | Resolve the destination ownership/conflict or select an authorized output location, then retry delivery |
+| Failure                                    | Continue with                                                                        | Explain how to repair                                                                                   |
+| ------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| Missing or invalid record                  | Valid independent records/fields; local placeholder for the unavailable material     | Identify the source and failed condition; restore or correct it, then rebuild the affected context      |
+| Missing UI handoff or all scenes           | PRD and available interaction text, with explicit visual-coverage gaps               | Complete/repair the upstream UI handoff and refresh the context                                         |
+| Missing or unreadable comp                 | Flow text, remaining comps, and an inline missing-figure notice                      | Restore the referenced resource or regenerate its scene, then refresh bindings                          |
+| Stale source binding                       | Valid current independent material; mark the dependent passage unavailable           | Refresh the upstream context and revise affected manuscript blocks; do not merely replace a digest      |
+| Broken hierarchy, missing parent, or cycle | Usable children/siblings, ancestor fallback, and provisional recovered material      | Repair the identified edge or ask the structure agent to revise the affected hierarchy/page plan        |
+| Agent failure or incomplete response       | Valid response portions, still-valid baseline content, or a labeled minimal scaffold | Retry the bounded failed assignment after addressing its reported input/tool problem                    |
+| A block or page cannot render              | Safe escaped text and a notice; a minimal HTML/text page if its template fails       | Correct the identified manuscript/template issue and render the affected page again                     |
+| Destination or receipt conflict            | Preserve existing files; finish an independent preview/report and other safe work    | Resolve the destination ownership/conflict or select an authorized output location, then retry delivery |
 
 Do not promise recovery of facts that cannot be established. The fallback can
 be an explicit gap, not an invented requirement, flow, comp, or design choice.

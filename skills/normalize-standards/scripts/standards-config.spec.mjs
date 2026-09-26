@@ -96,17 +96,60 @@ Reason: Old model.
 	assert.throws(() => standardsForPath(parseManifest(manifestText.replace('src/', 'src/**/')), 'src/a.js'));
 });
 
-
 test('resolves each section independently without dropping equally scoped replacements', () => {
 	const entries = [
-		{operation: 'REPLACE', standard: 'testing.md', target: 'testing.md#Coverage', kind: 'repository', folder: '.', rule: 'root'},
-		{operation: 'REPLACE', standard: 'testing.md', target: 'testing.md#Coverage', kind: 'folder', folder: 'src/', rule: 'source'},
-		{operation: 'REPLACE', standard: 'testing.md', target: 'testing.md#Runner', kind: 'folder', folder: 'src/', rule: 'runner'},
-		{operation: 'REPLACE', standard: 'testing.md', target: 'testing.md#Coverage', kind: 'folder', folder: 'src/features/', rule: 'feature'},
-		{operation: 'REPLACE', standard: 'react.md', target: 'react.md#Shape', kind: 'folder', folder: 'src/', rule: 'unrelated'},
+		{
+			operation: 'REPLACE',
+			standard: 'testing.md',
+			target: 'testing.md#Coverage',
+			kind: 'repository',
+			folder: '.',
+			rule: 'root',
+		},
+		{
+			operation: 'REPLACE',
+			standard: 'testing.md',
+			target: 'testing.md#Coverage',
+			kind: 'folder',
+			folder: 'src/',
+			rule: 'source',
+		},
+		{
+			operation: 'REPLACE',
+			standard: 'testing.md',
+			target: 'testing.md#Runner',
+			kind: 'folder',
+			folder: 'src/',
+			rule: 'runner',
+		},
+		{
+			operation: 'REPLACE',
+			standard: 'testing.md',
+			target: 'testing.md#Coverage',
+			kind: 'folder',
+			folder: 'src/features/',
+			rule: 'feature',
+		},
+		{
+			operation: 'REPLACE',
+			standard: 'react.md',
+			target: 'react.md#Shape',
+			kind: 'folder',
+			folder: 'src/',
+			rule: 'unrelated',
+		},
 	];
-	assert.deepEqual(overlayForPath(entries, 'src/view.jsx', 'testing.md').replacements.map(({rule}) => rule), ['source', 'runner']);
-	assert.deepEqual(overlayForPath(entries, 'src/features/view.jsx', 'testing.md').replacements.map(({rule}) => rule), ['feature', 'runner']);
-	assert.deepEqual(overlayForPath(entries, 'server/main.js', 'testing.md').replacements.map(({rule}) => rule), ['root']);
+	assert.deepEqual(
+		overlayForPath(entries, 'src/view.jsx', 'testing.md').replacements.map(({rule}) => rule),
+		['source', 'runner'],
+	);
+	assert.deepEqual(
+		overlayForPath(entries, 'src/features/view.jsx', 'testing.md').replacements.map(({rule}) => rule),
+		['feature', 'runner'],
+	);
+	assert.deepEqual(
+		overlayForPath(entries, 'server/main.js', 'testing.md').replacements.map(({rule}) => rule),
+		['root'],
+	);
 	assert.deepEqual(overlayForPath(entries, 'server/main.js', 'react.md').replacements, []);
 });

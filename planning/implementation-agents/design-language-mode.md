@@ -46,15 +46,15 @@ Preserve product-specific needs such as frame/time readability, dense editing su
 
 ### 3. Propose Concrete Foundations
 
-| Category | Required first-pass detail |
-| --- | --- |
-| Typography | Font families/fallbacks, semantic text roles, sizes, weights, line heights and relevant letter spacing; numeric treatment where needed. Prefer Google Fonts for new proposals. |
-| Color and branding | Semantic text/surface/action/status/focus/selection roles with proposed values; separate branding roles for app identity. Describe the chosen theme scope without requiring multiple themes. |
-| Iconography | Central inventory of required icons, semantic meaning, selected asset/family, style and size conventions, and proposal/acceptance status; a shared SVG review sheet. |
-| Spacing and density | Named spacing scale, container padding, component/group gaps, and intended density. |
-| Layout conventions | Grid-led region layout, alignment, grouping, small Flex groups where appropriate, and relevant resizing/overflow guidance. |
-| Component metrics | Relevant heights, padding, icon dimensions, hit areas, borders, radii and elevation, grounded in the initial MUI/base-component set. |
-| States and accessibility | Shared visible focus, disabled, selected, error and loading treatment; contrast/non-color cues, text scaling and keyboard/focus expectations appropriate to this scope. |
+| Category                 | Required first-pass detail                                                                                                                                                                   |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Typography               | Font families/fallbacks, semantic text roles, sizes, weights, line heights and relevant letter spacing; numeric treatment where needed. Prefer Google Fonts for new proposals.               |
+| Color and branding       | Semantic text/surface/action/status/focus/selection roles with proposed values; separate branding roles for app identity. Describe the chosen theme scope without requiring multiple themes. |
+| Iconography              | Central inventory of required icons, semantic meaning, selected asset/family, style and size conventions, and proposal/acceptance status; a shared SVG review sheet.                         |
+| Spacing and density      | Named spacing scale, container padding, component/group gaps, and intended density.                                                                                                          |
+| Layout conventions       | Grid-led region layout, alignment, grouping, small Flex groups where appropriate, and relevant resizing/overflow guidance.                                                                   |
+| Component metrics        | Relevant heights, padding, icon dimensions, hit areas, borders, radii and elevation, grounded in the initial MUI/base-component set.                                                         |
+| States and accessibility | Shared visible focus, disabled, selected, error and loading treatment; contrast/non-color cues, text scaling and keyboard/focus expectations appropriate to this scope.                      |
 
 For each meaningful value, give a stable semantic name, value/unit, intended use, status and source or rationale. Keep shared values centralized; components reference them rather than duplicating divergent values. Explain product-facing roles in the main tables. Exact MUI/CSS mappings may appear in a compact implementation-handoff section when verified; do not invent framework variable names.
 
@@ -68,12 +68,12 @@ Application themes likewise form named reusable combinations of palette mappings
 
 Owner decision, 2026-09-17: adopt the additional design categories identified through Atlassian's foundations, while retaining our existing document sections and engineering rules. The accepted change is coverage, not Atlassian's metrics, visual identity, assets or implementation APIs.
 
-| Existing document section | Decisions to cover |
-| --- | --- |
-| Spacing And Layout | Reusable spacing scale; density; internal padding, group gaps and region separation; optical alignment; shared alignment; fluid versus bounded regions; resizing, wrapping and overflow. |
-| Shape And Surfaces | Radius families and intended uses; border width/color roles for separation and interaction; surface hierarchy; coordinated elevation/background/shadow treatment across supported themes. |
-| Iconography | Recognizable meanings; consistent family/style; glyph sizes, optical alignment with text and distinct activation areas; existing central asset inventory and source preference. |
-| Shared States | Apply the shared border, focus, surface and icon conventions to relevant states; keep focus and selection distinct. |
+| Existing document section | Decisions to cover                                                                                                                                                                        |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Spacing And Layout        | Reusable spacing scale; density; internal padding, group gaps and region separation; optical alignment; shared alignment; fluid versus bounded regions; resizing, wrapping and overflow.  |
+| Shape And Surfaces        | Radius families and intended uses; border width/color roles for separation and interaction; surface hierarchy; coordinated elevation/background/shadow treatment across supported themes. |
+| Iconography               | Recognizable meanings; consistent family/style; glyph sizes, optical alignment with text and distinct activation areas; existing central asset inventory and source preference.           |
+| Shared States             | Apply the shared border, focus, surface and icon conventions to relevant states; keep focus and selection distinct.                                                                       |
 
 For each relevant category, record app-specific choices and their acceptance status, a small annotated specimen when supported and useful, and unresolved requirements. Rendering defaults remain explicitly provisional. Mark a category not applicable with a reason when appropriate; omission must not imply a completed decision. Existing typography and color/theme coverage continues unchanged.
 
@@ -116,6 +116,7 @@ A computable derived color does not require an independently specified value. Wh
 Include an explicit missing-requirements table: missing decision, affected values/components, provisional rendering default if any, default source, decision owner and downstream impact. Fonts, padding and line spacing may use recorded defaults to enable previews; they remain missing requirements until decided.
 
 Distinguish:
+
 - Accepted decisions.
 - Proposed product choices awaiting review.
 - Provisional defaults used only to permit rendering.

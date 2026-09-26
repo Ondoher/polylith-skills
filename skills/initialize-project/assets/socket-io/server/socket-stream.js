@@ -65,7 +65,13 @@ export class SocketStreamService extends Service {
 		const normalized = this.normalizeNamespace(name);
 		let entry = this.namespaces.get(normalized);
 		if (!entry) {
-			entry = {name: normalized, namespace: null, connectionListener: null, handlers: new Map(), sockets: new Set()};
+			entry = {
+				name: normalized,
+				namespace: null,
+				connectionListener: null,
+				handlers: new Map(),
+				sockets: new Set(),
+			};
 			this.namespaces.set(normalized, entry);
 			if (this.io) this.materialize(entry);
 		}
@@ -152,7 +158,13 @@ export class SocketStreamService extends Service {
 				return;
 			}
 			try {
-				const baseContext = {clientId: state.clientId, namespace: entry.name, event, data: envelope.data, system: envelope.system};
+				const baseContext = {
+					clientId: state.clientId,
+					namespace: entry.name,
+					event,
+					data: envelope.data,
+					system: envelope.system,
+				};
 				const context = await this.prepareContext(baseContext);
 				if (!isRecord(context)) throw new TypeError('Socket.IO prepareContext must return a request context.');
 				const result = await handler(context);
@@ -189,7 +201,10 @@ export class SocketStreamService extends Service {
 	/** Called after a feature handler to validate its result and add system metadata. @param {unknown} result - The feature-owned handler result. @param {SocketRequestContext} context - The completed request context. @returns {object} - The acknowledged response envelope. */
 	normalizeResult(result, context) {
 		const system = this.getSystemData(context);
-		if (!isRecord(system)) { console.error('Invalid Socket.IO outbound system metadata.'); return this.failure('socket.invalid_response'); }
+		if (!isRecord(system)) {
+			console.error('Invalid Socket.IO outbound system metadata.');
+			return this.failure('socket.invalid_response');
+		}
 		if (!isRecord(result) || typeof result.success !== 'boolean') {
 			console.error(`Invalid Socket.IO handler response: ${context.namespace}:${context.event}`);
 			return this.failure('socket.invalid_response', system);
@@ -209,7 +224,10 @@ export class SocketStreamService extends Service {
 	/** Called by outgoing operations to wrap application data without modifying it. @param {unknown} data - The feature-owned payload. @param {object} context - The outgoing event context. @returns {SocketEnvelope} - The transport envelope. */
 	createEnvelope(data, context) {
 		const system = this.getSystemData(context);
-		if (!isRecord(system)) { console.error('Invalid Socket.IO outbound system metadata.'); return null; }
+		if (!isRecord(system)) {
+			console.error('Invalid Socket.IO outbound system metadata.');
+			return null;
+		}
 		return {data, system};
 	}
 
@@ -217,7 +235,9 @@ export class SocketStreamService extends Service {
 	send(name, clientId, event, data) {
 		const entry = this.namespaces.get(this.normalizeNamespace(name));
 		const client = this.clients.get(clientId);
-		const socket = [...(client?.sockets ?? [])].find((candidate) => this.socketStates.get(candidate)?.namespace === entry?.name);
+		const socket = [...(client?.sockets ?? [])].find(
+			(candidate) => this.socketStates.get(candidate)?.namespace === entry?.name,
+		);
 		if (!socket) {
 			console.warn(`Socket.IO client is not connected: ${clientId}:${entry?.name ?? name}`);
 			return false;
@@ -264,7 +284,8 @@ export class SocketStreamService extends Service {
 		if (this.io && this.rootConnectionListener) this.io.off('connection', this.rootConnectionListener);
 		for (const socket of [...this.socketStates.keys()]) this.detachSocket(socket, 'transport-closed');
 		for (const entry of this.namespaces.values()) {
-			if (entry.namespace && entry.connectionListener) entry.namespace.off('connection', entry.connectionListener);
+			if (entry.namespace && entry.connectionListener)
+				entry.namespace.off('connection', entry.connectionListener);
 			entry.namespace = null;
 			entry.connectionListener = null;
 			entry.sockets.clear();
@@ -295,7 +316,12 @@ function isEnvelope(value) {
 function isReason(value) {
 	if (!isRecord(value) || typeof value.phrase !== 'string') return false;
 	if (value.replacements === undefined) return true;
-	return isRecord(value.replacements) && Object.values(value.replacements).every((item) => typeof item === 'string' || typeof item === 'number' && Number.isFinite(item));
+	return (
+		isRecord(value.replacements) &&
+		Object.values(value.replacements).every(
+			(item) => typeof item === 'string' || (typeof item === 'number' && Number.isFinite(item)),
+		)
+	);
 }
 
 new SocketStreamService();

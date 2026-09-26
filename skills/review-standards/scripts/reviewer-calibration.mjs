@@ -11,9 +11,9 @@ const codex = path.resolve(skill, '../..');
 const root = path.join(skill, 'fixtures');
 const read = (file) => readFileSync(file, 'utf8');
 const rulesFor = (name) => parseRules(read(path.join(codex, 'documentation/standards', name)), name);
-const ruleNamed = (rules, text) => {
-	const matches = rules.filter((rule) => rule.text.includes(text));
-	if (matches.length !== 1) throw new Error(`Calibration rule selector must identify exactly one block: ${text}`);
+const ruleIdentified = (rules, id) => {
+	const matches = rules.filter((rule) => rule.id === id);
+	if (matches.length !== 1) throw new Error(`Calibration rule selector must identify exactly one block: ${id}`);
 	return matches[0];
 };
 
@@ -32,10 +32,10 @@ export function calibrationRequest() {
 	const remvc = rulesFor('remvc.md');
 	const architecturalRules = [...remvc, ...rulesFor('polylith.md'), ...rulesFor('architecture.md')];
 	const rules = [
-		ruleNamed(react, 'Break a large render'),
-		ruleNamed(react, 'Do not use inline event callbacks'),
-		ruleNamed(react, 'Components do not reach directly into models'),
-		ruleNamed(remvc, '| Owner | Must own | Must not own |'),
+		ruleIdentified(react, 'REACT-STRUCT-001'),
+		ruleIdentified(react, 'REACT-EVENT-001'),
+		ruleIdentified(react, 'REACT-007'),
+		ruleIdentified(remvc, 'REMVC-006'),
 	];
 	const originalCases = ['CaseA.jsx', 'CaseB.js', 'CaseC.js', 'CaseD.jsx'];
 	const files = Object.fromEntries(
@@ -120,7 +120,7 @@ function calibrationInputs() {
 		'skills/review-standards/references/evidence-ledger.md',
 		...readdirSync(path.join(codex, 'agents'))
 			.filter((file) =>
-				/^(architecture-reviewer|contracts-reviewer|ui-reviewer|verification-reviewer|privacy-security-reviewer|checkpoint-advisor)\.toml$/.test(
+				/^(architecture-reviewer|contracts-reviewer|ui-reviewer|verification-reviewer|privacy-security-reviewer)\.toml$/.test(
 					file,
 				),
 			)

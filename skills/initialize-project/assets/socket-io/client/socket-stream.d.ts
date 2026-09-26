@@ -9,7 +9,12 @@ interface SocketStreamService extends EventBus {
 	/** Call this method to emit an immutable data envelope without acknowledgement. @param name - The namespace name. @param event - The event name. @param data - The application payload. @returns - Whether the event was emitted. */
 	send<T>(name: string, event: string, data: T): boolean;
 	/** Call this method to emit an acknowledged request. @param name - The namespace name. @param event - The event name. @param data - The request payload. @param options - Optional timeout configuration. @returns - The response envelope. */
-	request<TRequest, TResponse>(name: string, event: string, data: TRequest, options?: SocketRequestOptions): Promise<SocketResponse<TResponse>>;
+	request<TRequest, TResponse>(
+		name: string,
+		event: string,
+		data: TRequest,
+		options?: SocketRequestOptions,
+	): Promise<SocketResponse<TResponse>>;
 	/** Call this method to disconnect and forget one namespace. @param name - The namespace name. @returns - Whether a namespace was closed. */
 	closeNamespace(name: string): boolean;
 	/** Call this method to disconnect and forget every namespace. */

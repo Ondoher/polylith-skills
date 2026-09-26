@@ -1,6 +1,5 @@
 # Review Agents Design
 
-
 ## Goals
 
 The review-agent system provides consistent, standards-driven review across repositories while preserving repository-specific decisions. It:
@@ -111,7 +110,7 @@ The repository root must provide:
 
 Bootstrap and topic refresh diagnose these requirements but do not block reviewer or opted-in checkpoint-adviser startup when they fail. Task review and evidence preparation also proceed so concrete findings are not lost behind formatting noise.
 
-A final aggregate result may be `CLEAN` only when all six requirements pass. The checkpoint adviser returns `NOT_READY` when they fail. When semantic findings exist, validation retains `FINDINGS_PRESENT` and reports formatting separately; when semantic review is otherwise clean, formatting failure makes the result `INCOMPLETE`.
+A final aggregate result may be `CLEAN` only when all six requirements pass. Checkpoint advice is independent of formatting. When semantic findings exist, validation retains `FINDINGS_PRESENT` and reports formatting separately; when semantic review is otherwise clean, formatting failure makes the result `INCOMPLETE`.
 
 Setup and repository formatting require separate engineer authorization. Reviewers remain read-only and never perform remediation.
 
@@ -138,7 +137,7 @@ Reviewers may inspect full files and read-only Git state, but findings are attri
 
 ## Reviewer Lanes
 
-All reviewer lanes and the checkpoint adviser run on `gpt-5.6-terra`. Architecture, UI, and privacy/security use `medium` reasoning effort; contracts, verification, and checkpoint advice use `low`. Model and reasoning settings are pinned rather than inherited from the parent session. A missing or different pin is invalid reviewer infrastructure and blocks startup. Each audit runs in a separate instance with the same lane settings. Already-created agents retain their original settings and must be replaced when their configured effort changes.
+All reviewer lanes run on `gpt-5.6-terra`. Architecture, UI, and privacy/security use `medium` reasoning effort; contracts and verification use `low`. Model and reasoning settings are pinned rather than inherited from the parent session. A missing or different pin is invalid reviewer infrastructure and blocks standards-review startup. The independent checkpoint adviser is configured with `gpt-5.6-terra` and low reasoning; it is excluded from reviewer infrastructure validation and calibration. Each audit runs in a separate instance with the same lane settings. Already-created agents retain their original settings and must be replaced when their configured effort changes.
 
 ### Coverage contract
 
@@ -178,7 +177,7 @@ Standard bootstrap synchronizes an eligible clean governance checkout and reload
 2. Builds the reviewer roster from the union of standards actually assigned to repository folders.
 3. Records the baseline and configuration fingerprints.
 4. Starts each applicable reviewer and waits for readiness.
-5. Starts the checkpoint adviser only when repository instructions explicitly opt in.
+5. Starts the checkpoint adviser when explicitly requested or opted in through repository instructions, independently of reviewer eligibility.
 
 Initialization is not a repository-wide audit. Reviewers remain addressable, but their memory is a cache; later requests always supply durable paths and fingerprints.
 
@@ -217,21 +216,23 @@ The parent deduplicates by standard, file, symbol/location, and violation kind, 
 
 ## Checkpoint Adviser
 
-`checkpoint-advisor` is optional and read-only. It reports exactly `NOT_READY`, `CHECKPOINT_RECOMMENDED`, or `CHECKPOINT_URGENT`. It evaluates the complete repository state, semantic coherence, verification evidence, unresolved findings, unrelated changes, and next-operation risk.
+`checkpoint-advisor` is optional and read-only. It reports `NOT_READY`, `CHECKPOINT_RECOMMENDED`, or `CHECKPOINT_URGENT` solely from whether the complete proposed checkpoint forms a reasonable unit of functionality. A coherent intermediate step can be worth preserving. Tests, formatting, standards review, normalization, calibration and fingerprints are not prerequisites; known issues matter only through their effect on functional coherence.
 
-It never invokes `$check-point`, drafts the final commit message, stages, commits, or requests Git-write approval. Activation requires an explicit engineer request or repository bootstrap instruction.
+It provides advice and may suggest a commit message. The parent handles separately authorized staging and committing through `$check-point`. Activation requires an explicit engineer request or repository bootstrap instruction.
 
-Monitoring is event-driven after coherent slices, relevant verification, context transitions, before risky work, and before final handoff. Duplicate advice for an unchanged repository fingerprint is suppressed.
+Monitoring is event-driven after coherent slices, relevant verification, context transitions, before risky work, and before final handoff. Duplicate advice for unchanged repository state is suppressed; no fingerprint helper is required.
 
-Session states are `inactive`, `active`, `suspended`, `restarting`, and `blocked`. Restart after suspension reruns gates, reloads current folder mappings and context, creates a fresh thread, and evaluates immediately.
+Session states are `inactive`, `active`, `suspended`, and `restarting`. Restart loads the current adviser definition and task context into a fresh thread, then evaluates immediately without reviewer preflight. Changed adviser instructions also require a fresh instance.
 
 ## Failure Behavior
+
+These failures govern standards review. They do not block checkpoint advice.
 
 - Missing reviewer infrastructure: report `$review-standards setup reviewers`.
 - Missing or structurally invalid ever-normalized marker: block before agent startup and require first normalization.
 - Invalid set, folder assignment, or overlay: block because current standards cannot be resolved; repair the configuration directly without renewed normalization.
 - Capability absent from a file's assigned set: follow the declared set; reviewers do not infer or force a broader selection.
-- Missing or failing formatting: warn at startup, continue review, prevent aggregate `CLEAN`, and make checkpoint advice `NOT_READY`.
+- Missing or failing formatting: warn at startup, continue review, prevent aggregate `CLEAN`, without affecting checkpoint advice.
 - Broken canonical link: block affected review.
 - Ambiguous review unit: require the parent to define it.
 - Reviewer failure or stale result: report the missing lane; never claim clean.

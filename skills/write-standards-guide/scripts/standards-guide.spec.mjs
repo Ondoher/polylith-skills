@@ -21,11 +21,20 @@ test('guide publishes GitHub links while hashing local standards and preserving 
 	const canonicalDirectory = path.join(codex, 'documentation', 'standards');
 	mkdirSync(standardsDirectory, {recursive: true});
 	mkdirSync(canonicalDirectory, {recursive: true});
-	writeFileSync(path.join(repo, 'package.json'), JSON.stringify({devDependencies: {prettier: '3.9.6'}, prettier: {printWidth: 120}}));
+	writeFileSync(
+		path.join(repo, 'package.json'),
+		JSON.stringify({devDependencies: {prettier: '3.9.6'}, prettier: {printWidth: 120}}),
+	);
 	const formatter = path.join(repo, 'node_modules', 'prettier', 'bin', 'prettier.cjs');
 	mkdirSync(path.dirname(formatter), {recursive: true});
-	writeFileSync(path.join(repo, 'node_modules', 'prettier', 'package.json'), JSON.stringify({name: 'prettier', bin: './bin/prettier.cjs'}));
-	writeFileSync(formatter, "const fs = require('node:fs'); process.stdout.write(fs.readFileSync(0, 'utf8') + '<!-- formatted locally -->\\n');\n");
+	writeFileSync(
+		path.join(repo, 'node_modules', 'prettier', 'package.json'),
+		JSON.stringify({name: 'prettier', bin: './bin/prettier.cjs'}),
+	);
+	writeFileSync(
+		formatter,
+		"const fs = require('node:fs'); process.stdout.write(fs.readFileSync(0, 'utf8') + '<!-- formatted locally -->\\n');\n",
+	);
 	const metadata = path.join(codex, 'governance.json');
 	writeFileSync(metadata, JSON.stringify(governance()));
 	const canonical = path.join(canonicalDirectory, 'documentation.md');
@@ -56,16 +65,20 @@ test('guide publishes GitHub links while hashing local standards and preserving 
 	const first = await run();
 	const firstGuide = readFileSync(path.join(repo, 'STANDARDS.md'), 'utf8');
 	assert.match(firstGuide, /<!-- formatted locally -->\n$/);
-	assert.equal((firstGuide.match(/https:\/\/github.com\/example\/standards\/blob\/main\/documentation\/standards\/documentation.md/g) ?? []).length, 2);
+	assert.equal(
+		(
+			firstGuide.match(
+				/https:\/\/github.com\/example\/standards\/blob\/main\/documentation\/standards\/documentation.md/g,
+			) ?? []
+		).length,
+		2,
+	);
 	assert.ok(firstGuide.includes('(./agents/topics/standards/manifest.md)'));
 	assert.ok(!firstGuide.includes('../codex'));
 	assert.ok(!firstGuide.includes(codex));
 	assert.equal((await buildGuide({repo, codex_root: codex})).content, firstGuide);
 	assert.match(firstGuide, /Do not modify this file directly/);
-	assert.match(
-		firstGuide,
-		/Use \$write-standards-guide to update this repository's generated STANDARDS\.md now\./,
-	);
+	assert.match(firstGuide, /Use \$write-standards-guide to update this repository's generated STANDARDS\.md now\./);
 	writeFileSync(overlayFile, '# Repository Standards Overlay\n\nNone.\n\n');
 	const local = await run();
 	assert.notEqual(local.localOverlayFingerprint, first.localOverlayFingerprint);
@@ -74,9 +87,16 @@ test('guide publishes GitHub links while hashing local standards and preserving 
 	assert.notEqual(canonicalChange.canonicalFingerprint, local.canonicalFingerprint);
 	assert.notEqual(readFileSync(path.join(repo, 'STANDARDS.md'), 'utf8'), firstGuide);
 	assert.equal(readFileSync(markerFile, 'utf8'), marker);
-	writeFileSync(overlayFile, '# Repository Standards Overlay\n\n## ADD: Local evidence\n\nExtends: documentation.md#Rule\nScope: repository\nRule: Record evidence.\nReason: Local audit needs.\n');
+	writeFileSync(
+		overlayFile,
+		'# Repository Standards Overlay\n\n## ADD: Local evidence\n\nExtends: documentation.md#Rule\nScope: repository\nRule: Record evidence.\nReason: Local audit needs.\n',
+	);
 	const overlayChange = await run();
-	assert.ok(overlayChange.content.includes('https://github.com/example/standards/blob/main/documentation/standards/documentation.md#rule'));
+	assert.ok(
+		overlayChange.content.includes(
+			'https://github.com/example/standards/blob/main/documentation/standards/documentation.md#rule',
+		),
+	);
 	writeFileSync(metadata, JSON.stringify(governance('https://github.com/example/standards.git', 'release/docs')));
 	const moved = await run();
 	assert.notEqual(moved.sourceFingerprint, overlayChange.sourceFingerprint);
@@ -90,7 +110,13 @@ test('guide publishes GitHub links while hashing local standards and preserving 
 	assert.equal(relocated.canonicalFingerprint, moved.canonicalFingerprint);
 	assert.ok(relocated.content.includes('https://github.com/another/policy/blob/'));
 	const originalManifest = readFileSync(path.join(standardsDirectory, 'manifest.md'), 'utf8');
-	writeFileSync(path.join(standardsDirectory, 'manifest.md'), originalManifest.replace(link, 'https://github.com/example/standards/blob/main/documentation/standards/documentation.md'));
+	writeFileSync(
+		path.join(standardsDirectory, 'manifest.md'),
+		originalManifest.replace(
+			link,
+			'https://github.com/example/standards/blob/main/documentation/standards/documentation.md',
+		),
+	);
 	await assert.rejects(buildGuide({repo, codex_root: codex}), /local canonical link/);
 	assert.equal(readFileSync(path.join(repo, 'STANDARDS.md'), 'utf8'), relocated.content);
 });
@@ -103,15 +129,26 @@ test('publication follows linked documentation to its owning checkout and suppor
 	const codex = path.join(root, 'codex');
 	mkdirSync(canonical, {recursive: true});
 	mkdirSync(codex);
-	symlinkSync(path.join(checkout, 'documentation'), path.join(codex, 'documentation'), process.platform === 'win32' ? 'junction' : 'dir');
+	symlinkSync(
+		path.join(checkout, 'documentation'),
+		path.join(codex, 'documentation'),
+		process.platform === 'win32' ? 'junction' : 'dir',
+	);
 	// A Codex-home manifest must not override the physical source's authority.
 	writeFileSync(path.join(codex, 'governance.json'), JSON.stringify(governance('https://github.com/wrong/repo')));
 	const {realpath} = await import('node:fs/promises');
 	const physical = await realpath(path.join(codex, 'documentation', 'standards'));
-	for (const remote of ['git@github.com:example/standards.git', 'https://github.com/example/standards', 'ssh://git@github.com/example/standards.git']) {
+	for (const remote of [
+		'git@github.com:example/standards.git',
+		'https://github.com/example/standards',
+		'ssh://git@github.com/example/standards.git',
+	]) {
 		writeFileSync(path.join(checkout, 'governance.json'), JSON.stringify(governance(remote)));
 		const target = await publicationTarget(physical);
-		assert.equal(standardUrl(target, 'testing.md', 'Durable Test Principles'), 'https://github.com/example/standards/blob/main/documentation/standards/testing.md#durable-test-principles');
+		assert.equal(
+			standardUrl(target, 'testing.md', 'Durable Test Principles'),
+			'https://github.com/example/standards/blob/main/documentation/standards/testing.md#durable-test-principles',
+		);
 	}
 });
 
@@ -121,7 +158,12 @@ test('publication rejects missing or invalid authority instead of emitting local
 	const canonical = path.join(root, 'documentation', 'standards');
 	mkdirSync(canonical, {recursive: true});
 	await assert.rejects(publicationTarget(canonical), /Cannot find governance.json/);
-	for (const remote of ['https://other.example/example/standards', 'https://github.com/example/standards?token=secret', 'https://user:secret@github.com/example/standards', 'git@github.com:example/../other']) {
+	for (const remote of [
+		'https://other.example/example/standards',
+		'https://github.com/example/standards?token=secret',
+		'https://user:secret@github.com/example/standards',
+		'git@github.com:example/../other',
+	]) {
 		writeFileSync(path.join(root, 'governance.json'), JSON.stringify(governance(remote)));
 		await assert.rejects(publicationTarget(canonical), /GitHub canonicalRemote/);
 	}

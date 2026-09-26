@@ -1,6 +1,5 @@
 # UX To UI Pipeline Format
 
-
 Status: greenfield structured handoff. UX, UI composition, and component design use schema 0.2. There is no schema 0.1 compatibility or migration path. Static HTML remains the review output; JSON remains the validated source.
 
 ## Authority Flow

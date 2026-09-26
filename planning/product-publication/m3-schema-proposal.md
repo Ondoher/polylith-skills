@@ -20,11 +20,11 @@ Keep the existing lexical IDs of surviving records. Within a product model,
 IDs remain unique across all semantic record kinds. Existing internal UX IDs
 remain stable, while external references gain a kind-qualified address:
 
-| Address | Meaning |
-| --- | --- |
-| `product:<id>` | One record in the bound product model; its kind comes from `recordIndex`. This preserves current product references. |
-| `ux:<kind>:<id>` | One record in the bound UX artifact, such as `ux:use-case:export-video` or `ux:state:export-canceling`. |
-| `ui:scene:<id>` | One scene in the bound UI artifact. Its publication state is checked separately. |
+| Address          | Meaning                                                                                                              |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `product:<id>`   | One record in the bound product model; its kind comes from `recordIndex`. This preserves current product references. |
+| `ux:<kind>:<id>` | One record in the bound UX artifact, such as `ux:use-case:export-video` or `ux:state:export-canceling`.              |
+| `ui:scene:<id>`  | One scene in the bound UI artifact. Its publication state is checked separately.                                     |
 
 An ID names semantic identity, not an array offset, Markdown heading, page,
 file, implementation unit, or artifact revision. References resolve only
@@ -322,12 +322,12 @@ type UIComposition03 = Omit<ExistingUIComposition,
 };
 ```
 
-| Relation | Product source | UX target |
-| --- | --- | --- |
-| `pursues` | Goal | Use case |
-| `realizes` | Requirement | Use case, flow node, action, state, or feedback |
-| `constrains` | Rule | Use case, flow node, action, or state |
-| `exposes-gap` | Unresolved product gap | Open UX question |
+| Relation      | Product source         | UX target                                       |
+| ------------- | ---------------------- | ----------------------------------------------- |
+| `pursues`     | Goal                   | Use case                                        |
+| `realizes`    | Requirement            | Use case, flow node, action, state, or feedback |
+| `constrains`  | Rule                   | Use case, flow node, action, or state           |
+| `exposes-gap` | Unresolved product gap | Open UX question                                |
 
 `exposes-gap` does not resolve the product gap. A product requirement consumed
 by UX needs a valid realization or an explicit trace gap. A technical-only

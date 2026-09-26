@@ -83,7 +83,7 @@ async function validateFolder(repoReal, folder, description) {
 	}
 }
 
-const ignoredDirectoryNames = new Set(['.git', 'node_modules', 'coverage', 'dist', 'build']);
+const ignoredDirectoryNames = new Set(['.git', '.codex-tmp', 'node_modules', 'coverage', 'dist', 'build']);
 
 async function walkFiles(root, current, accept, files) {
 	let entries;
@@ -94,7 +94,10 @@ async function walkFiles(root, current, accept, files) {
 		throw error;
 	}
 	// Nested checkouts and Polylith repositories own their own instructions.
-	if (current !== root && entries.some((entry) => entry.name === '.git' || (entry.name === 'polylith.json' && entry.isFile()))) {
+	if (
+		current !== root &&
+		entries.some((entry) => entry.name === '.git' || (entry.name === 'polylith.json' && entry.isFile()))
+	) {
 		return;
 	}
 	for (const entry of entries) {

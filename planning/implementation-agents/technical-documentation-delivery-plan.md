@@ -49,7 +49,7 @@ documents remain the subsequent milestone.
 
 Choose one product with an accepted product model and verified snapshot, plus a
 repository whose current source can be inspected. In that product repository,
-prepare a *provisional* linked-Markdown draft covering the overview, system
+prepare a _provisional_ linked-Markdown draft covering the overview, system
 boundaries, one or two critical flows, decisions/gaps, and handoff. Ask the
 system architect one bounded assessment question; involve the Polylith architect
 only if mapping those boundaries to application structure changes the guide.
@@ -126,7 +126,6 @@ positive path also exercises the resolver CLI.
 Skill metadata validation and repository whitespace checks passed. Reusable tests
 use a temporary synthetic repository, not the working product's design data.
 The next implementation boundary was milestone 4, the Markdown publisher.
-
 
 ## 4. Publish the general guide
 

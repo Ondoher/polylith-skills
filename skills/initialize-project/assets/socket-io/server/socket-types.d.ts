@@ -12,7 +12,13 @@ interface SocketEnvelope<T = unknown> {
 /** Feature-owned result returned by a server request handler. */
 type SocketHandlerResult<T = unknown> =
 	| {readonly success: true; readonly data: T}
-	| {readonly success: false; readonly reason: {readonly phrase: string; readonly replacements?: Readonly<Record<string, string | number>>}};
+	| {
+			readonly success: false;
+			readonly reason: {
+				readonly phrase: string;
+				readonly replacements?: Readonly<Record<string, string | number>>;
+			};
+	  };
 
 /** Request context prepared centrally before a feature handler runs. */
 interface SocketRequestContext<T = unknown> {

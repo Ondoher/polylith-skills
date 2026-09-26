@@ -16,6 +16,10 @@ export default class BaseFormMessage extends Component {
 		const {label, localize = false, children, type = 'info', ...props} = this.props;
 		const content = children ?? resolveComponentText(this.context, localize, label);
 		if (!content) return null;
-		return <Alert {...props} severity={props.severity || type} variant={props.variant || 'outlined'}>{content}</Alert>;
+		return (
+			<Alert {...props} severity={props.severity || type} variant={props.variant || 'outlined'}>
+				{content}
+			</Alert>
+		);
 	}
 }

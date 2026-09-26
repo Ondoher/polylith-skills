@@ -4,13 +4,13 @@
 
 The current chain is:
 
-~~~text
+```text
 human description
 -> refine-design semantic interpretation
 -> immutable product model and specialty artifacts
 -> verified snapshot and PRD context
 -> generate-prd static HTML publication
-~~~
+```
 
 The source description remains human-owned. Refinement owns interpretation,
 design decisions, dependency impact, locks, provenance, and context production.
@@ -24,13 +24,13 @@ human inputs and rebuilds derived design through the same location contract.
 
 ## Current artifacts and contracts
 
-| Layer | Current role |
-| --- | --- |
-| Product model | Stable product records, typed meaning, locks, dependencies, and source traceability. |
-| Specialty artifact | Independently versioned UX, visual, UI, component, and other supported structured decisions. |
-| Snapshot | Exact model/artifact bindings, lifecycle states, and dependency graph. |
-| PRD context | Validated frozen publication input with scoped records, included artifacts, gaps, locks, and exclusions. |
-| Publication | Compact model review or full manifest-selected design site, with generated-file and resource receipts. |
+| Layer              | Current role                                                                                             |
+| ------------------ | -------------------------------------------------------------------------------------------------------- |
+| Product model      | Stable product records, typed meaning, locks, dependencies, and source traceability.                     |
+| Specialty artifact | Independently versioned UX, visual, UI, component, and other supported structured decisions.             |
+| Snapshot           | Exact model/artifact bindings, lifecycle states, and dependency graph.                                   |
+| PRD context        | Validated frozen publication input with scoped records, included artifacts, gaps, locks, and exclusions. |
+| Publication        | Compact model review or full manifest-selected design site, with generated-file and resource receipts.   |
 
 The [refinement skill](../../skills/refine-design/SKILL.md#greenfield-artifact-policy)
 owns current schema versions. The [context contract](../../skills/refine-design/references/product-context.md)
@@ -152,7 +152,6 @@ contracts more explicit.
 After these future checks, remove any remaining downstream
 raw-product-description paths in the planning/coding workflow, update global
 coding documentation, and run product-neutral workflow evaluations. Use an unrelated product as a withheld full-chain test, with its evidence retained in the product repository.
-
 
 ## Verification expectations
 

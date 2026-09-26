@@ -65,7 +65,10 @@ export function reviewArtifactPath(repo, file) {
 	const root = reviewArtifactRoot(repo);
 	const candidate = path.resolve(file);
 	const relation = path.relative(root, candidate);
-	required(relation && !relation.startsWith('..') && !path.isAbsolute(relation), `Review artifact must be beneath ${root}`);
+	required(
+		relation && !relation.startsWith('..') && !path.isAbsolute(relation),
+		`Review artifact must be beneath ${root}`,
+	);
 	return candidate;
 }
 
@@ -130,7 +133,7 @@ export function snapshot(repo) {
 }
 
 export function infrastructure(codex) {
-	for (const name of [...new Set(Object.values(owners).flat()), 'checkpoint-advisor']) {
+	for (const name of new Set(Object.values(owners).flat())) {
 		const definition = read(path.join(codex, 'agents', `${name}.toml`));
 		const effort = ['architecture-reviewer', 'privacy-security-reviewer', 'ui-reviewer'].includes(name)
 			? 'medium'
@@ -457,12 +460,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
 			const formatting = formattingStatus(repo, realpathSync(args['codex-root']));
 			if (formatting.status !== 'READY')
 				process.stderr.write(`${JSON.stringify({warning: 'FORMATTING_NOT_READY', formatting})}\n`);
-			result = buildRequest(
-				repo,
-				realpathSync(args['codex-root']),
-				json(args.baseline),
-				args.paths,
-			);
+			result = buildRequest(repo, realpathSync(args['codex-root']), json(args.baseline), args.paths);
 		} else if (mode === 'validate') {
 			required(args.request && args.reports, 'validate requires --request and --reports');
 			const supplied = json(args.request);
@@ -534,10 +532,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
 			refreshStandardsGuide(repo, path.resolve(directory, '../../..'));
 			const root = setupReviewArtifactRoot(repo);
 			result = {root: mkdtempSync(path.join(root, 'session-'))};
-		} else
-			throw new Error(
-				'Modes: artifact-root, setup-artifact-root, create-session, capture, prepare, validate',
-			);
+		} else throw new Error('Modes: artifact-root, setup-artifact-root, create-session, capture, prepare, validate');
 		if (args.out) writeFileSync(args.out, `${JSON.stringify(result, null, 2)}\n`, {flag: 'wx'});
 		process.stdout.write(
 			`${JSON.stringify(args.out ? {ok: true, out: args.out, fingerprint: result.fingerprint} : result, null, 2)}\n`,

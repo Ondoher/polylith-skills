@@ -12,7 +12,7 @@ import {publicationTarget, standardUrl} from './publication-links.mjs';
 const generatedWarning = [
 	'> **Generated developer reference.** Do not modify this file directly or use it as standards authority.',
 	'>',
-	'> To update it now, tell Codex: `Use $write-standards-guide to update this repository\'s generated STANDARDS.md now.`',
+	"> To update it now, tell Codex: `Use $write-standards-guide to update this repository's generated STANDARDS.md now.`",
 ].join('\n');
 const sha256 = (value) => createHash('sha256').update(value).digest('hex');
 const fail = (message) => {
@@ -169,7 +169,12 @@ export async function buildGuide(args) {
 	)}`;
 	const sourceFingerprint = `sha256:${sha256(
 		Buffer.from(
-			JSON.stringify({repositoryConfigurationFingerprint, localOverlayFingerprint, canonicalFingerprint, publication}),
+			JSON.stringify({
+				repositoryConfigurationFingerprint,
+				localOverlayFingerprint,
+				canonicalFingerprint,
+				publication,
+			}),
 			'utf8',
 		),
 	)}`;
@@ -201,9 +206,7 @@ export async function buildGuide(args) {
 	for (const [name, set] of manifest.sets) {
 		lines.push(`### \`${name}\``, '', `Extends: \`${set.extends ?? 'none'}\``, '', 'Adds:', '');
 		for (const standard of set.standards) {
-			lines.push(
-				`- [\`${standard.name}\`](${standardUrl(publication, standard.name)}) — ${standard.reason}`,
-			);
+			lines.push(`- [\`${standard.name}\`](${standardUrl(publication, standard.name)}) — ${standard.reason}`);
 		}
 		if (!set.standards.length) lines.push('- None.');
 		lines.push('');

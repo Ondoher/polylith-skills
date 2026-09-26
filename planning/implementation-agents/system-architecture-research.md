@@ -18,7 +18,7 @@ Before adopting database-specific assessment guidance, research MongoDB's own do
 
 ## 1. Boundaries That Contain Change
 
-Source: David L. Parnas, *On the Criteria To Be Used in Decomposing Systems into Modules*, CACM 15(12), December 1972. [Original paper transcription](https://www.cs.lafayette.edu/~gexia/cs301/resources/parnas.html), sections on decomposition criteria and efficiency; [publication identity](https://doi.org/10.1145/361598.361623). Evidence: original architectural argument with worked decompositions.
+Source: David L. Parnas, _On the Criteria To Be Used in Decomposing Systems into Modules_, CACM 15(12), December 1972. [Original paper transcription](https://www.cs.lafayette.edu/~gexia/cs301/resources/parnas.html), sections on decomposition criteria and efficiency; [publication identity](https://doi.org/10.1145/361598.361623). Evidence: original architectural argument with worked decompositions.
 
 Finding: decomposition around hidden design decisions can localize change better than simply following processing steps. The paper also discusses costs associated with implementation boundaries.
 
@@ -88,7 +88,7 @@ Limit: adopt the RFC representation only when it fits an HTTP boundary. Internal
 
 ## 8. Small Mechanisms And Narrow Privileges
 
-Source: Jerome H. Saltzer and Michael D. Schroeder, *The Protection of Information in Computer Systems*, Proceedings of the IEEE, September 1975; author-hosted [Basic Principles of Information Protection](https://web.mit.edu/Saltzer/www/publications/protection/Basic.html), design principles. Evidence: original security design synthesis.
+Source: Jerome H. Saltzer and Michael D. Schroeder, _The Protection of Information in Computer Systems_, Proceedings of the IEEE, September 1975; author-hosted [Basic Principles of Information Protection](https://web.mit.edu/Saltzer/www/publications/protection/Basic.html), design principles. Evidence: original security design synthesis.
 
 Finding: economy of mechanism, fail-safe defaults, and least privilege support understandable protection boundaries and constrained authority.
 

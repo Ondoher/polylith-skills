@@ -52,9 +52,9 @@ The first architecture agent targets Polylith apps. Shared reasoning includes ow
 - **Request the state assessment:** the model agent leads analysis of authoritative domain state, drafts, derived values, persistence, mutations, lifetime, and change propagation, with controller input on workflow/session state and view input on transient presentation state. Architecture uses that assessment to define service boundaries and cross-feature contracts and resolves ownership across boundaries; it does not duplicate the specialist analysis. See the [state assessment decision](design.md#state-assessment-ownership).
 - **Coordinate specialist-owned contracts:** specialists propose operations, inputs/results, failures, cancellation, ordering/concurrency, lifecycle, notifications, and cleanup for their capabilities. Architecture resolves cross-feature boundaries and disagreements. Derive user-visible failure, cancellation, recovery, and preservation-of-work behavior from agreed UX; return feasibility conflicts and missing product choices for resolution before dependent work. Leave private implementation choices to their owners. The owning specialist identifies affected consumers and coordinates updates before implementation; JSDoc-backed type checking then verifies structural compatibility, while behavioral tests cover semantics. See [contract design ownership](design.md#contract-design-ownership) and [contract change impact](design.md#contract-change-impact-before-implementation).
 - **Choose integration by relationship:** architecture guides the choice using specialists' proposed contracts, rather than preferring one mechanism everywhere:
-  - Direct service lookup fits a capability needing another capability to perform an operation.
-  - A contribution registry fits independently included features supplying options or behavior to a host, such as pages or commands. The registry has a coherent functional purpose rather than collecting unrelated objects.
-  - Events fit announcing something that happened so interested consumers can respond. Do not disguise a required operation as an event.
+    - Direct service lookup fits a capability needing another capability to perform an operation.
+    - A contribution registry fits independently included features supplying options or behavior to a host, such as pages or commands. The registry has a coherent functional purpose rather than collecting unrelated objects.
+    - Events fit announcing something that happened so interested consumers can respond. Do not disguise a required operation as an event.
 - **Consume the system design:** use the runtime/process, deployment, host, trust, communication, and major resource boundaries established by [system architecture planning](design.md#system-architecture-planning-agent). Request an upstream assessment when boundaries are missing or need to change; do not silently decide them within coding architecture. Coordinate UX tradeoffs with the owner and avoid cloud abstractions without a product need.
 - **Exercise relevant changes and failures:** specialists assess local behavior; coding architecture checks cross-service effects; UX guides visible recovery; system architecture handles cross-runtime failures. Consider absence, substitution, interruption, stale results, dependencies failing after startup, and owned-resource release where the task creates those risks. Identify the actual mechanism and verification needs rather than assuming framework support. See [failure assessment and current Polylith limits](design.md#change-and-failure-assessment): there is no stop workflow or service dependency management, and singletons persist for the app lifetime. Do not infer hot replacement, automatic teardown, or dependency ordering from registration. Avoid unrelated checklist scenarios.
 - **Hand off structure:** provide scope/ownership boundaries and relevant system/UX decisions, specialist-agreed contracts and affected consumers, dependencies/sequence, proposed specialist work and shared files, verification needs, framework gaps, and open decisions. Scale the handoff to the task. The orchestrator retains scheduling and exclusive file assignments. See the [architecture handoff decision](design.md#architecture-handoff).
@@ -78,12 +78,12 @@ Output a small responsibility map with the reason for each proposed boundary and
 
 An illustrative draft-record workflow prompts these questions:
 
-| Behavior | Ownership question |
-| --- | --- |
-| Begin editing | Who creates and owns the provisional state? |
-| Change a field | Who validates the draft and derives dependent values? |
-| Commit the record | Who owns durable mutation and reports the result? |
-| Discard the edit | Who coordinates cleanup without losing unrelated work? |
+| Behavior                    | Ownership question                                            |
+| --------------------------- | ------------------------------------------------------------- |
+| Begin editing               | Who creates and owns the provisional state?                   |
+| Change a field              | Who validates the draft and derives dependent values?         |
+| Commit the record           | Who owns durable mutation and reports the result?             |
+| Discard the edit            | Who coordinates cleanup without losing unrelated work?        |
 | Filter the surrounding list | Is this presentation state, session state, or a domain query? |
 
 These are questions to resolve, not five predetermined services or approved product architecture.

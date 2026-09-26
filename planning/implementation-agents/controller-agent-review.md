@@ -6,17 +6,17 @@ Scope: the owner's request to create the controller assessment capability. Autho
 
 Reviewed the existing controller guidance, responsibility inventory, shared specialist response and resource/lifecycle constraints before defining the role.
 
-| Authority | Required behavior and handoff | Scenario / downstream concern |
-| --- | --- | --- |
-| DOCUMENTATION mapping/overlay governance | Resolve selected paths; preserve inheritance and overrides; flag missing applicability. | All scoped assessments; architecture. |
-| REMVC-006/007/009 and registry ownership decisions | Consumer-owned dependencies, correct app/installation lookup, implemented capability calls. | Optional dependency/cross-feature navigation; architecture/contracts. |
-| REMVC-017/019/020/021 | Model authority versus controller sessions; intent translation, transitions and stale-state invalidation. | Save, seek, repeated sessions; architecture/contracts. |
-| REMVC-022 through 025 | View projection and controller workflow remain distinct; mounting does not trigger unrelated work. | View creation; UI/architecture. |
-| TYPES-003/007; CODE-CONVENTIONS-019 | Canonical contract and consumer impact, no unsolicited compatibility layer. | Changed async result; contracts. |
-| TESTING-042 | Isolated controller proof with narrow fakes versus actual registry/wiring proof. | Verification handoff; verification. |
-| TESTING-043 through 049 and framework/deferred notes | Report lifecycle/test-seam discrepancies; no invented stop hook or construction policy. | Session release; architecture/verification. |
-| UX/model/system authority | UX supplies intent, services define effects/guarantees, controller coordinates. | Cancel/retry/missing contracts; contracts/UX. |
-| Assessment/evaluation and efficiency decisions | Same bounded orchestrator contract, no writes/delegation, no-work response when appropriate. | Embedded instruction/visual-only cases. |
+| Authority                                            | Required behavior and handoff                                                                             | Scenario / downstream concern                                         |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| DOCUMENTATION mapping/overlay governance             | Resolve selected paths; preserve inheritance and overrides; flag missing applicability.                   | All scoped assessments; architecture.                                 |
+| REMVC-006/007/009 and registry ownership decisions   | Consumer-owned dependencies, correct app/installation lookup, implemented capability calls.               | Optional dependency/cross-feature navigation; architecture/contracts. |
+| REMVC-017/019/020/021                                | Model authority versus controller sessions; intent translation, transitions and stale-state invalidation. | Save, seek, repeated sessions; architecture/contracts.                |
+| REMVC-022 through 025                                | View projection and controller workflow remain distinct; mounting does not trigger unrelated work.        | View creation; UI/architecture.                                       |
+| TYPES-003/007; CODE-CONVENTIONS-019                  | Canonical contract and consumer impact, no unsolicited compatibility layer.                               | Changed async result; contracts.                                      |
+| TESTING-042                                          | Isolated controller proof with narrow fakes versus actual registry/wiring proof.                          | Verification handoff; verification.                                   |
+| TESTING-043 through 049 and framework/deferred notes | Report lifecycle/test-seam discrepancies; no invented stop hook or construction policy.                   | Session release; architecture/verification.                           |
+| UX/model/system authority                            | UX supplies intent, services define effects/guarantees, controller coordinates.                           | Cancel/retry/missing contracts; contracts/UX.                         |
+| Assessment/evaluation and efficiency decisions       | Same bounded orchestrator contract, no writes/delegation, no-work response when appropriate.              | Embedded instruction/visual-only cases.                               |
 
 Sources: [documentation](../../documentation/standards/documentation.md), [ReMVC](../../documentation/standards/remvc.md), [types](../../documentation/standards/types.md), [code conventions](../../documentation/standards/code-conventions.md), [testing](../../documentation/standards/testing.md), [controller design](design.md#controller-agent), [controller guidance](coding-guidance.md#controller).
 

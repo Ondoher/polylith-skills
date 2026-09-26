@@ -22,7 +22,7 @@ A headless Chromium harness loaded the generated SVGs as image elements without 
 
 ## Review Artifact
 
- The complete JSON contract and installation requirement are in [the installed reference](../../skills/refine-design/references/design-language.md).
+The complete JSON contract and installation requirement are in [the installed reference](../../skills/refine-design/references/design-language.md).
 
 ## Limits And Next Slice
 

@@ -13,6 +13,7 @@ Parent evaluation of the actual answers: all six meet the scenario rubric. They 
 The raw CLI JSONL and stderr remain in the temporary evidence directory recorded during the run; durable answer text is below. No application source/configuration/test files were changed.
 
 ## Returned Output
+
 The `system-architect` role was actually spawned, exactly once, with fresh context. Its output follows unchanged:
 
 1. Preserve the agreed JSON file. Assess UI versus privileged filesystem ownership, document authority, IPC purposes, untrusted document input, save completion, concurrent access, interruption, and major resource use. Add a worker process only for a concrete responsiveness or isolation need. Distant cloud possibilities do not justify a server or database.

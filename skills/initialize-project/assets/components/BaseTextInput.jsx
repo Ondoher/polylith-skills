@@ -45,7 +45,13 @@ export default class BaseTextInput extends Component {
 				label={this.resolve(label)}
 				helperText={this.resolve(helperText) || undefined}
 				fullWidth={props.fullWidth ?? true}
-				slotProps={{...slotProps, htmlInput: {...slotProps?.htmlInput, ...(resolvedAriaLabel ? {'aria-label': resolvedAriaLabel} : {})}}}
+				slotProps={{
+					...slotProps,
+					htmlInput: {
+						...slotProps?.htmlInput,
+						...(resolvedAriaLabel ? {'aria-label': resolvedAriaLabel} : {}),
+					},
+				}}
 			/>
 		);
 	}

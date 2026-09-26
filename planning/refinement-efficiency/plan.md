@@ -1,6 +1,9 @@
 # Refinement efficiency: autonomous execution plan
 
-Status, 2026-09-26: execution plan prepared; implementation has not started.
+Status, 2026-09-26: implementation delivered with focused local verification.
+The required package gate remains blocked by inherited obsolete-schema tests;
+checkpoint advice is blocked by repository eligibility. Live performance is
+not yet measured. See the execution evidence below.
 This work takes priority over further product-document format refinement.
 The owner expects to be AFK, delegates routine decisions to the assistant's
 judgment, and wants credit use minimized. Progress does not depend on answers
@@ -32,14 +35,14 @@ gaps from successfully validated design rather than bypassing a failed gate.
 
 ## Evidence already available
 
-| Current behavior | Consequence and response |
-| --- | --- |
-| [Product-model contract](../../skills/refine-design/references/product-model.md) calls for one interpretation and structured downstream inputs, while [UX inputs](../../skills/refine-design/references/ux-design.md) require the entire description again | Reconcile the instructions and supply UX with complete structured product authority plus relevant source evidence |
-| [Description contract](../../skills/refine-design/references/product-description.md) requires full prose synthesis and incorporation of selected decisions | Collect decisions and perform one coordinated writeback before review, rather than editorial updates between dependent stages |
-| [UX review](../../skills/refine-design/references/ux-review.md) binds exact description and UX bytes | Finish formatting and authoritative bindings before requesting review; any later source change still invalidates the receipt |
-| [Composable handoff helpers](../../skills/refine-design/scripts/composable-handoff.mjs) gather use-case dependencies and identify affected cases | Reuse or adapt their graph traversal rather than introducing a second semantic parser; they are currently implementation handoffs, not ready-made planner inputs |
-| Model material digests and [impact assessment](../../skills/refine-design/scripts/refinement-impact.mjs) already distinguish material changes | Preserve unaffected decisions and identify actual dependencies instead of treating every revision as a full redesign |
-| [Publication producer](../../skills/refine-design/references/product-publication.md) packages each artifact in dependency order | Automate mechanical coordination while preserving exact validation and serial snapshot commits |
+| Current behavior                                                                                                                                                                                                                                           | Consequence and response                                                                                                                                         |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Product-model contract](../../skills/refine-design/references/product-model.md) calls for one interpretation and structured downstream inputs, while [UX inputs](../../skills/refine-design/references/ux-design.md) require the entire description again | Reconcile the instructions and supply UX with complete structured product authority plus relevant source evidence                                                |
+| [Description contract](../../skills/refine-design/references/product-description.md) requires full prose synthesis and incorporation of selected decisions                                                                                                 | Collect decisions and perform one coordinated writeback before review, rather than editorial updates between dependent stages                                    |
+| [UX review](../../skills/refine-design/references/ux-review.md) binds exact description and UX bytes                                                                                                                                                       | Finish formatting and authoritative bindings before requesting review; any later source change still invalidates the receipt                                     |
+| [Composable handoff helpers](../../skills/refine-design/scripts/composable-handoff.mjs) gather use-case dependencies and identify affected cases                                                                                                           | Reuse or adapt their graph traversal rather than introducing a second semantic parser; they are currently implementation handoffs, not ready-made planner inputs |
+| Model material digests and [impact assessment](../../skills/refine-design/scripts/refinement-impact.mjs) already distinguish material changes                                                                                                              | Preserve unaffected decisions and identify actual dependencies instead of treating every revision as a full redesign                                             |
+| [Publication producer](../../skills/refine-design/references/product-publication.md) packages each artifact in dependency order                                                                                                                            | Automate mechanical coordination while preserving exact validation and serial snapshot commits                                                                   |
 
 These are process/code findings, not timing measurements. Do not re-run the
 old pipeline merely to manufacture a baseline. Reuse existing evidence when
@@ -47,22 +50,23 @@ its input, scope, and provenance are actually comparable.
 
 ## Decisions to make without waiting for the owner
 
-| Question encountered | Default decision |
-| --- | --- |
-| Several plausible implementation approaches | Choose the smallest reversible change using existing contracts/helpers; record the reason and practical limitation |
-| Whether a whole document needs rereading | Interpretation consumes the complete human input once; later design uses structured authority and retrieves source evidence as needed. Independent review still checks the original intent |
-| Whether two claims mean the same thing | Retain explicit identities and provenance; use bounded semantic reconciliation for ambiguity. Do not guess equality from wording, headings, or hashes |
-| Missing product decision or conflicting evidence | Record a gap or repair need and continue independent work; do not manufacture accepted behavior or a passing review |
-| Whether to reorganize product prose | Consolidate authorized decisions and format once before review. Avoid cosmetic restructuring that has no effect on the requested refinement |
-| Whether to run another specialist | Default to no additional consultation. Use an existing named role only for a bounded unresolved question that materially affects the result |
-| Whether a failure requires a full restart | Resume the smallest affected stage from saved inputs; revalidate its dependencies. Preserve unrelated content |
-| Whether to add a dependency or change a canonical schema | Prefer existing tools and current formats. If unavoidable, isolate and document the need rather than expanding this work into a migration or framework |
-| Whether to run an expensive experiment | Run it only when a stated uncertainty would change the implementation decision and local evidence cannot answer it |
+| Question encountered                                     | Default decision                                                                                                                                                                           |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Several plausible implementation approaches              | Choose the smallest reversible change using existing contracts/helpers; record the reason and practical limitation                                                                         |
+| Whether a whole document needs rereading                 | Interpretation consumes the complete human input once; later design uses structured authority and retrieves source evidence as needed. Independent review still checks the original intent |
+| Whether two claims mean the same thing                   | Retain explicit identities and provenance; use bounded semantic reconciliation for ambiguity. Do not guess equality from wording, headings, or hashes                                      |
+| Missing product decision or conflicting evidence         | Record a gap or repair need and continue independent work; do not manufacture accepted behavior or a passing review                                                                        |
+| Whether to reorganize product prose                      | Consolidate authorized decisions and format once before review. Avoid cosmetic restructuring that has no effect on the requested refinement                                                |
+| Whether to run another specialist                        | Default to no additional consultation. Use an existing named role only for a bounded unresolved question that materially affects the result                                                |
+| Whether a failure requires a full restart                | Resume the smallest affected stage from saved inputs; revalidate its dependencies. Preserve unrelated content                                                                              |
+| Whether to add a dependency or change a canonical schema | Prefer existing tools and current formats. If unavoidable, isolate and document the need rather than expanding this work into a migration or framework                                     |
+| Whether to run an expensive experiment                   | Run it only when a stated uncertainty would change the implementation decision and local evidence cannot answer it                                                                         |
 
-Preserve the existing mixed working tree. Inspect relevant diffs before editing;
-do not reset, stage, or commit unrelated work. Progress checkpoints are saved
-records, not automatic Git commits. Installation, pushing, external publication,
-and mutation of a consuming product are not part of this repository plan.
+The starting repository state was saved in checkpoint `f0d4ef9`; its working
+tree was clean. Inspect current diffs before editing and preserve any subsequent
+owner changes. Use the checkpoint adviser and standing commit authorization
+below during execution. Installation, pushing, external publication, and
+mutation of a consuming product are not part of this repository plan.
 
 The installed `refine-design` skill currently points into this checkout through
 a junction. Source edits can therefore affect later invocations without an
@@ -215,6 +219,8 @@ without a comparable baseline and equivalent delivered scope.
 
 - Use one primary agent for repository work; avoid exploratory agent fan-out,
   repeated specialist consensus, and agent-written restatements of saved facts.
+  The owner-requested checkpoint adviser is a separate, bounded consultation
+  at meaningful commit boundaries, not another product-design evaluation.
 - Start no paid baseline replay, broad benchmark matrix, or model comparison.
 - Load narrow references once and retain a concise working record. Batch
   independent reads/checks; use targeted repair rather than complete regeneration.
@@ -231,23 +237,259 @@ No numeric credit/token budget was supplied. These operational limits bound
 discretionary work; they do not promise a particular bill or remove required
 validation. Expand evaluation only on new owner direction.
 
+## Checkpoint advice and standing commit authorization
+
+The owner explicitly requested the checkpoint adviser during execution and
+preapproved the suggested commit messages for this plan. This is standing
+authorization for successive in-scope checkpoints; do not wait for another
+message approval before each commit.
+
+At execution startup, activate checkpoint-adviser monitoring through
+`review-standards`, following its infrastructure, calibration, standards, and
+formatting/evidence requirements. Use its configured adviser role and model.
+Do not spawn the adviser outside that lifecycle or activate unrelated reviewers
+solely because checkpoint advice was requested.
+
+Request advice after a coherent, verified implementation slice, before a risky
+structural step, and at final handoff when changes remain. Milestones A, B, and
+C/D are candidate boundaries, not a required commit count. Combine small changes
+when they form one useful checkpoint. Reuse the adviser session; do not poll or
+repeat a consultation when the repository and verification evidence are unchanged.
+
+For `CHECKPOINT_RECOMMENDED` or `CHECKPOINT_URGENT`, the primary agent inspects the
+complete repository state, prepares and displays the concrete commit message,
+and runs `check-point` under the owner's standing preapproval. The adviser stays
+read-only; it does not draft the final message, stage, or commit. Preserve the
+checkpoint workflow's snapshot, scope, validation, and post-commit checks.
+Routine in-scope changes can be re-inspected and the message updated under the
+same authorization. Unexpected unrelated changes or material file concerns
+require resolving the scope or concern before committing the complete state.
+
+For `NOT_READY`, address the stated blocker within scope and consult again only
+after relevant evidence changes. If adviser startup is blocked, record the exact
+failed requirement and continue independent implementation; do not bypass its
+gates or claim that parent judgment is adviser approval. Standing message
+preapproval does not authorize unrelated infrastructure setup or publishing.
+
 ## Progress and handoff
 
 Update this table at meaningful checkpoints. Record the decision, changed paths,
-checks with results, remaining issue, and next concrete action. Do not create
-long transcripts or duplicate the implementation in this plan.
+checks with results, adviser recommendation and snapshot fingerprint, commit
+hash when created, remaining issue, and next concrete action. Do not create long
+transcripts or duplicate the implementation in this plan.
 
-| Milestone | State | Evidence / next action |
-| --- | --- | --- |
-| Plan and current-process inspection | Complete | Source findings linked above; no implementation or live evaluation performed |
-| A. Instruction/stage alignment | Pending | Start with the once-only interpretation versus full-description UX input conflict |
-| B. Run evidence and resume | Pending | Reuse existing report infrastructure where possible |
-| C. Structured inputs and assembly | Pending | Keep canonical outputs and integrity checks; implement only proven mappings |
-| D. Local verification | Pending | Reuse fixtures; add targeted behavior cases |
-| E. Conditional live evaluation | Not scheduled | Maximum one candidate evaluation; no baseline replay |
+| Milestone                           | State                                     | Evidence / next action                                                                                                                                                      |
+| ----------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Plan and current-process inspection | Complete                                  | Source findings linked above; implementation results recorded below                                                                                                         |
+| Initial repository checkpoint       | Complete                                  | `f0d4ef9`; clean working tree after commit; owner subsequently authorized adviser-triggered commits and their suggested messages during plan execution                      |
+| A. Instruction/stage alignment      | Complete                                  | Skill, product-description/UX/review/publication contracts, planner/designer instructions and user guide now share the pre-review freeze sequence                           |
+| B. Run evidence and resume          | Complete                                  | `refinement-run.mjs`: immutable stage receipts, exact file checks, request/contract invalidation, observed durations/counts and explicit unknown usage                      |
+| C. Structured inputs and assembly   | Complete within selected scope            | `refinement-input.mjs` and `refinement-assembly.mjs`; full structured authority retained, existing graph and validators reused; changed prose still requires interpretation |
+| D. Local verification               | Focused checks pass; package gate blocked | 18 current-schema checks pass, including 11 new efficiency cases; required design command fails in its fast gate on inherited fixtures/expectations                         |
+| E. Conditional live evaluation      | Deferred to ordinary use                  | No authorized consuming-product input in this task and no paid trial; no measured latency/credit claim                                                                      |
+| Checkpoint adviser                  | Active; commit NOT_READY                  | Setup and formatting restored; adviser evaluated complete state. Missing validated repository review and inherited package failures remain; see follow-up below             |
 
 Final handoff states what repetition was actually removed, which contracts and
 helpers changed, what local checks passed, any live evidence and its limits,
-remaining repair/deferred work, and the next useful action. Distinguish reduced
+remaining repair/deferred work, commits created and any uncommitted changes,
+and the next useful action. Distinguish reduced
 mechanical work from demonstrated end-to-end performance. Preserve the product
 publication samples and their outstanding implementation plan for later work.
+
+## Execution evidence, 2026-09-26
+
+### Changes and decisions
+
+- [Stage contract](../../skills/refine-design/references/refinement-cycle.md):
+  capture complete source meaning once per changed source, plan from structured
+  authority, consolidate decisions and formatting before review, preserve exact
+  review bindings, then compose UI and assemble. Removed mandatory repeated
+  editorial synthesis and the planner's second general prose interpretation.
+  Corrected directly encountered obsolete review/design-language versions and
+  publication ownership guidance; no document samples or renderers changed.
+- [Planner input](../../skills/refine-design/scripts/refinement-input.mjs):
+  verify the live source against the store, derive exact model/UX bindings and
+  existing use-case handoffs, retrieve requested exact source-claim excerpts.
+  Retain the entire structured model for global rules, unclassified content,
+  gaps, locks and identity history. This deliberately does not claim aggressive
+  token pruning; narrowing authority before measuring its adequacy is deferred.
+- [Run evidence](../../skills/refine-design/scripts/refinement-run.mjs): one
+  small receipt helper because existing publication reports describe artifacts,
+  not specialist calls or pre-review stage inputs. Receipts are not canonical
+  design authority and cannot replace review or owning validators. No telemetry
+  service, prompts, automatic agent runner or credit estimates were added.
+- [Assembly](../../skills/refine-design/scripts/refinement-assembly.mjs): sort
+  explicit existing requests, commit serially with current bindings, return
+  compact context identity, and retain independent successes after a failure.
+  Failed/ambiguous units and dependency cycles have repair messages; dependents
+  cannot fall back silently to an older requested artifact. Retries are caller
+  decisions, not a loop. Lock changes remain outside the automatic assembler.
+- The prose-writeback shortcut is deferred: arbitrary Markdown rewrites have
+  no verified patch-to-claim mapping. Actual source changes still use the full
+  current model proposal and preserve unchanged material identity. This is the
+  explicitly allowed fallback in milestone C, not a claimed eliminated cost.
+
+### Verification
+
+- Current-schema suite: **18 passed, 0 failed** with
+  `node --test --test-isolation=none skills/refine-design/scripts/refinement-efficiency.test.mjs skills/refine-design/scripts/product-composable.test.mjs skills/refine-design/scripts/ux-composable.test.mjs skills/generate-prd/scripts/prd-outline.test.mjs`.
+  The 11 efficiency cases cover six activity areas/22 requirements, a late
+  cross-cutting rule and unclassified material, a two-step local use case with
+  a supporting dialog, exact replay, changed-source writeback, selective impact,
+  stale review, current locks, invalid identities, dependency cycles and finite
+  recovery. Saved proposals and synthetic review data are explicitly fixtures,
+  not claims of fresh specialist review or measured product quality.
+- The reusable current UX fixture was extracted from the test module so new
+  tests can share it without importing and executing another test file.
+  `test:efficiency` runs the focused cases; the fast package gate also includes
+  them. No existing failing tests were removed or weakened.
+- Positive CLI smoke: planner input, stage receipt persistence/reuse checking,
+  and publication assembly all succeeded with a temporary synthetic product.
+- Skill-creator `quick_validate.py skills/refine-design`: passed.
+- `git diff --check`: passed.
+- Baseline `npm --prefix skills/refine-design test` already failed before the
+  implementation, principally at product-model 1.0 fixtures rejected by 2.0.
+  The required `npm --prefix skills/refine-design run test:design` was run with
+  fixture subprocess permission: **32 passed, 83 failed** at that point, with
+  obsolete-schema inputs and expectations still failing. Its `&&` chain did
+  not reach the additional design smoke. The last two efficiency cases were
+  subsequently covered by the 18-pass focused run above. Broad fixture/schema
+  reconciliation is a separate outstanding verification task; the package is
+  not reported green.
+
+### Initial checkpoint blockers and remaining work
+
+Checkpoint startup used `review-standards` as requested. The installed reviewer
+infrastructure and recorded calibration passed. `standards-attestation.mjs`
+reported missing `agents/topics/standards/normalization.json`; the folder helper
+reported missing `agents/topics/standards/manifest.md`. Formatting preflight
+reported no direct root Prettier dependency, no installed local Prettier, and no
+required root `format:check` script. No repository normalization, installation,
+formatting setup, reviewer startup, or adviser evaluation was performed after
+those failures. These are distinct from the old test-fixture failures.
+
+The [review-standards rule](../../skills/review-standards/SKILL.md#startup-eligibility-gates)
+states: "Any startup-gate failure blocks the entire run. There is no bypass."
+As this plan specified, independent implementation continued. No execution
+commits were created; `f0d4ef9` remains the initial checkpoint and these changes
+remain in the working tree. The owner's standing commit-message preapproval is
+preserved for when adviser eligibility is restored. No push was attempted.
+
+Next useful work is to reconcile the inherited test fixtures with current
+schemas. The later authorized setup below restores adviser startup. Then use the next ordinary
+product refinement to collect stage durations, calls, usage when available, and
+quality evidence. No paid baseline, benchmark, fresh design-agent trial or live
+product mutation was used here; **locally verified, live performance not yet
+measured**. Publication-format work remains deferred.
+
+### Authorized checkpoint setup follow-up, 2026-09-26
+
+The owner authorized installing Prettier and the actions needed to clear the
+checkpoint setup gate. Prettier 3.9.6 is pinned at the root, with canonical
+configuration and `format` / `format:check` scripts. The first formatting pass
+covered 329 files. Dependency trees, vendored assets, exact-byte fixtures,
+sealed calibration evidence, lockfiles and review scratch data retain their
+existing bytes. Earlier refinement edits remain in the working tree.
+
+The [standards reconciliation](../../agents/topics/standards/reconciliation.md)
+records the folder assignments, two narrow tooling conventions, and the first
+normalization marker. The generated [standards guide](../../STANDARDS.md) is
+current. No checkpoint rule was disabled.
+
+Two setup defects were repaired: calibration now selects permanent rule IDs
+instead of Markdown table spacing, and initial attestation discovery excludes
+`.codex-tmp` instruction captures while retaining real subtree instructions.
+The helper changes have regression coverage. Formatting preserved the parsed
+JavaScript/JSON content of 242 of 246 checked files, allowing for JSX layout
+whitespace; the other four contain those two explicit fixes and their tests.
+All 963 canonical rule IDs and their order were preserved.
+
+Verification: 168 tooling tests passed; 21 focused normalization/refinement
+checks passed; formatting setup and the root formatting check passed; the
+complete startup preflight returned `READY`. The renewed synthetic calibration
+passed 32 obligations, detecting 14 seeded violations with independent audit.
+The prior calibration record is preserved under the ignored review session.
+This is reviewer readiness evidence, not a repository-compliance review.
+
+Calibration fingerprint:
+`2b66b9bb40e9a1b8a4b919f66c26008a2ee8948d28879bd586a5bbb0ff62d0d6`.
+
+The inherited broad package failures have not been repaired or represented as
+passing. No new commit or push has occurred during setup. The adviser evaluated these
+restored prerequisites under the owner's existing authorization.
+
+Adviser result: `NOT_READY`. Startup and formatting are restored, but no current
+exit-0 repository `review-ledger.mjs validate` result with aggregate `CLEAN`
+exists. The earlier broad package failures also remain unresolved. The adviser
+inspected 352 changed/new files with no staged changes and confirmed folder
+resolution, durable normalization, formatting setup and the root format check.
+No checkpoint recommendation or commit was fabricated from calibration.
+
+Evaluated repository fingerprint:
+`6a9d348f96543d517f985c4b04a1ff59d2f55a3e60f32b9ed535b8c882a60ad8`.
+Evaluated review-context fingerprint:
+`sha256:cfe0a993bc55253b0a1e3f27f9b837faaaa6fab72206ff9ac8ff2283f50310ef`.
+These identify the evaluation before this status entry was appended, not a
+post-edit compliance certificate. Next: repair the inherited package fixtures,
+then obtain the required task primary/audit evidence and reevaluate a checkpoint.
+The formatting and normalization setup need not be repeated.
+
+### Package test repair, 2026-09-26
+
+The inherited test failures are repaired. Product-model fixtures now use schema
+2.0, and UX, UI and component fixtures use their current 0.3 contracts, including
+flat flow records, owned state references and exact artifact bindings. Negative
+tests still reject obsolete schemas, stale bindings and invalid ownership, and
+verify that rejected inputs preserve previously published output. Saved review
+fixtures remain explicitly synthetic expected results with updated source hashes.
+
+The repaired tests exposed three runtime defects: component validation still
+read the removed UX `states` property; step targets no longer checked that their
+surface matched the action; and interaction comparison collapsed distinct named
+states into the same value. Those consumers are corrected. Shared component and
+UX validators are identical in refine-design and generate-prd. The checkout
+fixtures now expose their actual difference in alternative coverage instead of
+passing because the comparator ignored their obsolete nested records.
+
+Verification: root `npm test` passed all 489 tests with zero failures or skips.
+The explicit `test:composable` tier passed all 7 tests. Root `format:check` and
+`git diff --check` passed. This used local automated tests; no paid product
+refinement, benchmark or fresh design-agent trial was run.
+
+Checkpoint approval remains pending independently of the repaired tests.
+Calibration readiness passes, but review preparation returns `INCOMPLETE`:
+`review-context-fingerprint.mjs` rejects the installed managed link for
+`agents/architecture-reviewer.toml` as outside the Codex root. Formatting passes
+on the final preparation attempt. No repository primary/audit review or new
+checkpoint recommendation was produced, and no commit or push was made. The
+remaining checkpoint work is to repair managed-link resolution, obtain current
+primary/audit evidence, and reevaluate with the existing commit preapproval.
+
+Local verification logs and review preparation evidence are retained under
+the ignored `.codex-tmp/` directory; the task baseline is in
+`review-standards/session-K8bku6/` beneath that directory.
+
+### Checkpoint adviser simplification, 2026-09-26
+
+The owner replaced the adviser's readiness prerequisites with one criterion:
+whether the current changes form a reasonable unit of functionality. A coherent
+intermediate step may be worth checkpointing. Formatting, test results,
+normalization, calibration, standards-review ledgers and context fingerprints
+are no longer adviser prerequisites. Known defects inform functional judgment
+instead of creating automatic vetoes. The separate commit workflow still handles
+commit authorization and Git writes.
+
+The agent definition, review and bootstrap orchestration, managed global
+instructions, and supporting documentation now agree. The installer applied the
+reviewed managed-block update and reports a healthy installation. A fresh adviser
+recommended a coherent synthetic feature despite missing checks and rejected an
+inconsistent API migration despite green checks. All 169 tooling tests passed.
+The earlier review-context fingerprint error remains a separate standards-review
+issue and no longer prevents checkpoint advice.
+
+The separate standards-review calibration was refreshed with a fresh primary
+review and independent audit: all 32 obligations validated, all 14 seeded
+violations were detected, and readiness passes. The previous record is preserved
+in ignored session `review-standards/session-QdA2l3/`. Checkpoint-adviser files are
+excluded from the new calibration inputs, so later adviser edits do not require
+another standards-review calibration.

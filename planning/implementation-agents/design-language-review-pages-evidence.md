@@ -7,4 +7,3 @@ Alexa was migrated from the foundation-only single document. The index is 28 lin
 108/108 design-language regression tests passed, including five new tests for empty starts, legacy migration and preserved notes, edited/missing/unowned output protection, layout-page selection and full-catalog migration. Skill validation, role TOML parsing and generated Alexa links passed. A Windows shell encoding issue in display separators was corrected and the actual Alexa output rerendered successfully. Markdown structure and links were inspected; no claim of a VS Code visual preview is made.
 
 The component reference retains its existing detailed state-sheet content for this first pass. Further simplification can follow user review. Color/type pages lead with reviewable visuals and values; detailed default sources and decisions are separate. No design values were accepted by this format change.
-

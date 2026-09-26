@@ -18,7 +18,7 @@ When installation state exists, bootstrap validates the governance checkout and 
 
 It then delegates reviewer startup to `review-standards`. Startup depends on valid reviewer infrastructure and calibration, completed initial standards normalization, and valid current folder mappings. Eligible reviewers load their context before bootstrap reports readiness. Bootstrap also refreshes the generated `STANDARDS.md`.
 
-Formatting problems do not prevent reviewer startup, but prevent a final clean review or positive checkpoint recommendation. The checkpoint adviser starts only when bootstrap instructions explicitly request it.
+Formatting problems do not prevent reviewer startup, but prevent a final clean standards review. When bootstrap instructions explicitly request the checkpoint adviser, it starts independently of reviewer eligibility and judges whether the current changes form a reasonable unit of functionality.
 
 ## Instructions-only profile
 

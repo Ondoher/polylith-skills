@@ -14,12 +14,22 @@ function fixture(t, linked = true) {
 	const repo = path.join(root, 'repo');
 	const codex = path.join(root, 'codex');
 	const documentation = linked ? path.join(root, 'governance', 'documentation') : path.join(codex, 'documentation');
-	for (const directory of [repo, codex, path.join(documentation, 'standards')]) mkdirSync(directory, {recursive: true});
-	if (linked) symlinkSync(documentation, path.join(codex, 'documentation'), process.platform === 'win32' ? 'junction' : 'dir');
+	for (const directory of [repo, codex, path.join(documentation, 'standards')])
+		mkdirSync(directory, {recursive: true});
+	if (linked)
+		symlinkSync(
+			documentation,
+			path.join(codex, 'documentation'),
+			process.platform === 'win32' ? 'junction' : 'dir',
+		);
 	writeFileSync(path.join(repo, 'AGENTS.md'), 'Repository instructions');
 	writeFileSync(path.join(documentation, 'standards', 'architecture.md'), 'Canonical rules');
 	const run = (...inputs) => {
-		const result = spawnSync(process.execPath, [script, '--lane', 'architecture-reviewer', '--repo', repo, '--codex-root', codex, ...inputs], {encoding: 'utf8'});
+		const result = spawnSync(
+			process.execPath,
+			[script, '--lane', 'architecture-reviewer', '--repo', repo, '--codex-root', codex, ...inputs],
+			{encoding: 'utf8'},
+		);
 		assert.ifError(result.error);
 		return {status: result.status, ...JSON.parse(result.stdout)};
 	};
@@ -27,7 +37,7 @@ function fixture(t, linked = true) {
 }
 
 for (const linked of [false, true]) {
-	test(`fingerprints ${linked ? 'linked' : 'local'} documentation and detects changed canonical bytes`, t => {
+	test(`fingerprints ${linked ? 'linked' : 'local'} documentation and detects changed canonical bytes`, (t) => {
 		const {documentation, run} = fixture(t, linked);
 		const inputs = ['--repo-input', 'AGENTS.md', '--codex-input', 'documentation/standards/architecture.md'];
 		const first = run(...inputs);
@@ -40,11 +50,15 @@ for (const linked of [false, true]) {
 	});
 }
 
-test('linked documentation does not permit traversal, nested escapes, or other root escapes', t => {
+test('linked documentation does not permit traversal, nested escapes, or other root escapes', (t) => {
 	const {repo, codex, documentation, run} = fixture(t);
 	writeFileSync(path.join(path.dirname(documentation), 'outside.md'), 'Outside authority');
 	for (const parent of [repo, codex, documentation]) {
-		symlinkSync(path.dirname(documentation), path.join(parent, 'escape'), process.platform === 'win32' ? 'junction' : 'dir');
+		symlinkSync(
+			path.dirname(documentation),
+			path.join(parent, 'escape'),
+			process.platform === 'win32' ? 'junction' : 'dir',
+		);
 	}
 	for (const inputs of [
 		['--codex-input', 'documentation/../AGENTS.md'],

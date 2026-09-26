@@ -18,18 +18,18 @@ The UX reviewer therefore:
 
 The role contract was checked against the active [interaction-architecture plan](ux-interaction-architecture-plan.md), [UX planner contract](ux-planner.md), [UX guidance](ux-guidance.md), [shared research guidance](research-guidance.md), [single-source review gate](../../skills/refine-design/references/ux-review.md), and [product-neutral evaluation cases](ux-reviewer-evaluation.md).
 
-| Required property | Contract behavior | Failure handling |
-| --- | --- | --- |
-| Independent qualitative judgment | Fresh instance reviews full in-scope tasks and semantic handoff after structural validation. | Missing or unreviewable scope produces blocking `revise`. |
-| Product authority | Goals, terminology, accepted decisions, expert density, and locks remain authoritative. | Silent override or lock change is blocking. |
-| Layout neutrality | Multiple arrangements may pass; no exact control inventory, count, wording, geometry, or scene tree is prescribed. | Taste-only findings are invalid. |
-| Task coherence | Entry, canonical route, outcome, alternatives, and recovery are inspected per primary task. | Dead ends and missing consequential behavior are blocking. |
-| Action pruning | Duplicate persistent affordances and redundant explanation are challenged; justified contextual access and alternate inputs remain. | Findings identify task consequence and smallest semantic remedy. |
-| Research gate | Unfamiliar, complex, unsupported, and conflicting patterns need source-checked evidence; ordinary patterns do not need ceremony. | Missing evidence or false `ordinary` classification is blocking. |
-| Honest novelty | `novel` requires `no-suitable-precedent`, explicit uncertainty, conservative selection, and bounded evaluation. | Unsupported novelty is revised; documented novelty is not rejected automatically. |
-| Accessibility scope | Ordinary semantics, keyboard, focus, and applicable specialized alternatives are assessed without conformance claims. | Missing applicable baseline behavior is blocking or advisory by task impact. |
-| UX/UI boundary | UX settles behavior and information priority; UI owns detailed visual realization. | Unjustified styling mandates and silent UI behavior additions are rejected. |
-| Read-only authority | No file, code, Git, connector, message, elevation, or delegation mutations. | Return findings only. |
+| Required property                | Contract behavior                                                                                                                   | Failure handling                                                                  |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Independent qualitative judgment | Fresh instance reviews full in-scope tasks and semantic handoff after structural validation.                                        | Missing or unreviewable scope produces blocking `revise`.                         |
+| Product authority                | Goals, terminology, accepted decisions, expert density, and locks remain authoritative.                                             | Silent override or lock change is blocking.                                       |
+| Layout neutrality                | Multiple arrangements may pass; no exact control inventory, count, wording, geometry, or scene tree is prescribed.                  | Taste-only findings are invalid.                                                  |
+| Task coherence                   | Entry, canonical route, outcome, alternatives, and recovery are inspected per primary task.                                         | Dead ends and missing consequential behavior are blocking.                        |
+| Action pruning                   | Duplicate persistent affordances and redundant explanation are challenged; justified contextual access and alternate inputs remain. | Findings identify task consequence and smallest semantic remedy.                  |
+| Research gate                    | Unfamiliar, complex, unsupported, and conflicting patterns need source-checked evidence; ordinary patterns do not need ceremony.    | Missing evidence or false `ordinary` classification is blocking.                  |
+| Honest novelty                   | `novel` requires `no-suitable-precedent`, explicit uncertainty, conservative selection, and bounded evaluation.                     | Unsupported novelty is revised; documented novelty is not rejected automatically. |
+| Accessibility scope              | Ordinary semantics, keyboard, focus, and applicable specialized alternatives are assessed without conformance claims.               | Missing applicable baseline behavior is blocking or advisory by task impact.      |
+| UX/UI boundary                   | UX settles behavior and information priority; UI owns detailed visual realization.                                                  | Unjustified styling mandates and silent UI behavior additions are rejected.       |
+| Read-only authority              | No file, code, Git, connector, message, elevation, or delegation mutations.                                                         | Return findings only.                                                             |
 
 ## Output Review
 

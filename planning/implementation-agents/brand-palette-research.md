@@ -10,15 +10,15 @@ The initial demonstration uses modmod's magenta mapped to primary actions, while
 
 ## Findings From Primary Sources
 
-| Category | Finding | Source |
-| --- | --- | --- |
-| Brand identity | IBM uses a core blue family, supporting families and neutrals, with guidance on combinations and emphasis. Its palette includes light-to-dark steps. The exact number of families, tones and permitted combinations is IBM-specific. | [IBM Design Language: Color](https://www.ibm.com/design/language/color/) |
-| Roles and themes | Carbon separates available colors from role-based tokens. Theme values change, while the role's meaning stays stable. | [Carbon color overview](https://carbondesignsystem.com/elements/color/overview/) |
-| Derivation | Google's documented dynamic-color process builds tonal families from source colors, then maps them into schemes. It illustrates reproducible generation; it does not establish a requirement for our app to use dynamic color or Google's complete palette size. | [Android dynamic colors](https://developer.android.com/develop/ui/views/theming/dynamic-colors) |
-| Semantic use | Atlassian distinguishes role, emphasis and interaction state in its tokens. Brand, neutral and feedback meanings are distinct; an arbitrary accent should not replace a meaningful status role. | [Atlassian color foundations](https://atlassian.design/foundations/color/) |
-| MUI integration | MUI's primary/secondary palette entries support main, light, dark and contrastText values; it also defines feedback roles, custom colors and scheme-specific values. These are useful implementation destinations, not a complete brand specification. | [MUI palette](https://mui.com/material-ui/customization/palette/) |
-| CSS integration | MUI exposes theme values as CSS custom properties. Our eventual mappings should consume those shared values under the existing CSS-owned styling rules. | [MUI CSS theme variables](https://mui.com/material-ui/customization/css-theme-variables/usage/) |
-| Pairing and contrast | Contrast is assessed between foreground and background, not by approving an isolated swatch. Ordinary text generally needs 4.5:1; large text has a 3:1 criterion. The logo exception does not exempt general branded UI text. | [W3C contrast minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) |
+| Category             | Finding                                                                                                                                                                                                                                                          | Source                                                                                          |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Brand identity       | IBM uses a core blue family, supporting families and neutrals, with guidance on combinations and emphasis. Its palette includes light-to-dark steps. The exact number of families, tones and permitted combinations is IBM-specific.                             | [IBM Design Language: Color](https://www.ibm.com/design/language/color/)                        |
+| Roles and themes     | Carbon separates available colors from role-based tokens. Theme values change, while the role's meaning stays stable.                                                                                                                                            | [Carbon color overview](https://carbondesignsystem.com/elements/color/overview/)                |
+| Derivation           | Google's documented dynamic-color process builds tonal families from source colors, then maps them into schemes. It illustrates reproducible generation; it does not establish a requirement for our app to use dynamic color or Google's complete palette size. | [Android dynamic colors](https://developer.android.com/develop/ui/views/theming/dynamic-colors) |
+| Semantic use         | Atlassian distinguishes role, emphasis and interaction state in its tokens. Brand, neutral and feedback meanings are distinct; an arbitrary accent should not replace a meaningful status role.                                                                  | [Atlassian color foundations](https://atlassian.design/foundations/color/)                      |
+| MUI integration      | MUI's primary/secondary palette entries support main, light, dark and contrastText values; it also defines feedback roles, custom colors and scheme-specific values. These are useful implementation destinations, not a complete brand specification.           | [MUI palette](https://mui.com/material-ui/customization/palette/)                               |
+| CSS integration      | MUI exposes theme values as CSS custom properties. Our eventual mappings should consume those shared values under the existing CSS-owned styling rules.                                                                                                          | [MUI CSS theme variables](https://mui.com/material-ui/customization/css-theme-variables/usage/) |
+| Pairing and contrast | Contrast is assessed between foreground and background, not by approving an isolated swatch. Ordinary text generally needs 4.5:1; large text has a 3:1 criterion. The logo exception does not exempt general branded UI text.                                    | [W3C contrast minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)       |
 
 These sources support a palette -> role mapping -> usage structure. The following compact model is our synthesis, not a universal standard or a requirement to copy a particular design system.
 
@@ -41,11 +41,11 @@ Do not impose a universal number of colors, a fixed percentage rule or a claim t
 
 Use three layers of references:
 
-| Layer | Example names (illustrative) | Responsibility |
-| --- | --- | --- |
-| Palette family and steps | brand.core.soft, brand.core.base, brand.core.strong, neutral.canvas | Available color values and their provenance |
-| Applied role mappings | action.primary.background, identity.header.background, selection.background, text.on-brand | Intended use and foreground/background pairing in a selected scheme |
-| Component or surface treatment | primary action default/hover, outlined action, selected navigation, branded header | How shared roles are combined in a particular context |
+| Layer                          | Example names (illustrative)                                                               | Responsibility                                                      |
+| ------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| Palette family and steps       | brand.core.soft, brand.core.base, brand.core.strong, neutral.canvas                        | Available color values and their provenance                         |
+| Applied role mappings          | action.primary.background, identity.header.background, selection.background, text.on-brand | Intended use and foreground/background pairing in a selected scheme |
+| Component or surface treatment | primary action default/hover, outlined action, selected navigation, branded header         | How shared roles are combined in a particular context               |
 
 For example, the same core family might provide a strong primary-action background, a pale selected-region background and a border treatment. Those uses reference different members of the family and have independently checked foreground pairings. A header can have its own identity role when it does not fit an ordinary action/surface role. This preserves the owner's earlier requirement for app-identity colors.
 
@@ -78,6 +78,7 @@ This adds a design direction, not an implemented theme engine. Define supported 
 Owner direction: a color that can be determined from another value through an established derivation does not require a separately specified literal color. For example, a disabled treatment may follow the selected theme or component convention.
 
 Distinguish three cases in future contracts:
+
 - An explicit color value.
 - A derived value with a base reference and a known rule.
 - An unspecified value for which neither a literal nor a sufficient derivation has been established.

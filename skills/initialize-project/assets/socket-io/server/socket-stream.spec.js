@@ -67,8 +67,14 @@ test('tracks root and namespace sockets until the final disconnect', () => {
 	assert.equal(stream.clients.get('client-1').sockets.size, 1);
 	root.receive('disconnect', 'root closed');
 	assert.equal(stream.clients.has('client-1'), false);
-	assert.deepEqual(connected, [['client', 'client-1'], ['namespace', '/{{SLUG}}/documents', 'client-1']]);
-	assert.deepEqual(disconnected, [['namespace', '/{{SLUG}}/documents', 'client-1', 'feature closed'], ['client', 'client-1', 'root closed']]);
+	assert.deepEqual(connected, [
+		['client', 'client-1'],
+		['namespace', '/{{SLUG}}/documents', 'client-1'],
+	]);
+	assert.deepEqual(disconnected, [
+		['namespace', '/{{SLUG}}/documents', 'client-1', 'feature closed'],
+		['client', 'client-1', 'root closed'],
+	]);
 	const fallback = new SocketMock('fallback');
 	fallback.conn = null;
 	io.receive('connection', fallback);
@@ -100,7 +106,9 @@ test('registers, unregisters, and binds handlers for existing and future sockets
 	const future = new SocketMock('future', 'client-2');
 	io.namespaces.get('/{{SLUG}}/future').receive('connection', future);
 	let response;
-	future.receive('load', {data: {id: 1}, system: {}}, (value) => { response = value; });
+	future.receive('load', {data: {id: 1}, system: {}}, (value) => {
+		response = value;
+	});
 	await settle();
 	assert.deepEqual(response, {success: true, data: {id: 1}, system: {}});
 	stream.close();
@@ -112,32 +120,72 @@ test('validates request envelopes and normalizes every handler result', async (c
 	const errors = [];
 	context.mock.method(console, 'error', (...args) => errors.push(args));
 	stream.register('documents', 'invalid-request', () => ({success: true, data: {}}));
-	stream.register('documents', 'throws', () => { throw new Error('failed'); });
+	stream.register('documents', 'throws', () => {
+		throw new Error('failed');
+	});
 	stream.register('documents', 'invalid-result', () => null);
 	stream.register('documents', 'invalid-success', () => ({success: true}));
 	stream.register('documents', 'invalid-failure', () => ({success: false, reason: null}));
-	stream.register('documents', 'invalid-replacements', () => ({success: false, reason: {phrase: 'bad', replacements: {value: Infinity}}}));
+	stream.register('documents', 'invalid-replacements', () => ({
+		success: false,
+		reason: {phrase: 'bad', replacements: {value: Infinity}},
+	}));
 	stream.register('documents', 'invalid-context', () => ({success: true, data: {}}));
 	stream.register('documents', 'failure', () => ({success: false, reason: {phrase: 'documents.denied'}}));
 	const prepareContext = stream.prepareContext.bind(stream);
-	stream.prepareContext = (value) => value.event === 'invalid-context' ? null : prepareContext(value);
+	stream.prepareContext = (value) => (value.event === 'invalid-context' ? null : prepareContext(value));
 	stream.setup(io);
 	const socket = new SocketMock('feature', 'client-1');
 	io.namespaces.get('/{{SLUG}}/documents').receive('connection', socket);
 	const responses = [];
-	for (const invalid of [null, [], {}, {data: 1}, {data: 1, system: []}]) socket.receive('invalid-request', invalid, (value) => responses.push(value));
+	for (const invalid of [null, [], {}, {data: 1}, {data: 1, system: []}])
+		socket.receive('invalid-request', invalid, (value) => responses.push(value));
 	socket.receive('invalid-request', {data: {}, system: {}});
-	for (const event of ['throws', 'invalid-result', 'invalid-success', 'invalid-failure', 'invalid-replacements', 'invalid-context', 'failure']) socket.receive(event, {data: {}, system: {}}, (value) => responses.push(value));
+	for (const event of [
+		'throws',
+		'invalid-result',
+		'invalid-success',
+		'invalid-failure',
+		'invalid-replacements',
+		'invalid-context',
+		'failure',
+	])
+		socket.receive(event, {data: {}, system: {}}, (value) => responses.push(value));
 	await settle();
-	assert.equal(errors.some(([message]) => String(message).includes('Invalid Socket.IO request envelope')), true);
-	assert.equal(errors.some(([message]) => String(message).includes('Socket.IO handler failed')), true);
-	assert.equal(errors.some(([message]) => String(message).includes('Invalid Socket.IO handler response')), true);
-	assert.equal(responses.some((value) => value.reason?.phrase === 'socket.invalid_request'), true);
-	assert.equal(responses.some((value) => value.reason?.phrase === 'socket.server_error'), true);
-	assert.equal(responses.some((value) => value.reason?.phrase === 'socket.invalid_response'), true);
-	assert.equal(responses.some((value) => value.reason?.phrase === 'documents.denied'), true);
+	assert.equal(
+		errors.some(([message]) => String(message).includes('Invalid Socket.IO request envelope')),
+		true,
+	);
+	assert.equal(
+		errors.some(([message]) => String(message).includes('Socket.IO handler failed')),
+		true,
+	);
+	assert.equal(
+		errors.some(([message]) => String(message).includes('Invalid Socket.IO handler response')),
+		true,
+	);
+	assert.equal(
+		responses.some((value) => value.reason?.phrase === 'socket.invalid_request'),
+		true,
+	);
+	assert.equal(
+		responses.some((value) => value.reason?.phrase === 'socket.server_error'),
+		true,
+	);
+	assert.equal(
+		responses.some((value) => value.reason?.phrase === 'socket.invalid_response'),
+		true,
+	);
+	assert.equal(
+		responses.some((value) => value.reason?.phrase === 'documents.denied'),
+		true,
+	);
 	assert.deepEqual(stream.failure('custom'), {success: false, reason: {phrase: 'custom'}, system: {}});
-	assert.deepEqual(stream.failure('custom', {token: 1}), {success: false, reason: {phrase: 'custom'}, system: {token: 1}});
+	assert.deepEqual(stream.failure('custom', {token: 1}), {
+		success: false,
+		reason: {phrase: 'custom'},
+		system: {token: 1},
+	});
 	stream.close();
 });
 
@@ -158,12 +206,19 @@ test('sends and broadcasts immutable envelopes with connection diagnostics', (co
 	assert.equal(stream.send('documents', 'client-1', 'changed', data), true);
 	assert.deepEqual(socket.emissions[0], {event: 'changed', data: {data, system: {}}});
 	assert.equal(stream.broadcast('documents', 'changed', data), true);
-	assert.deepEqual(io.namespaces.get('/{{SLUG}}/documents').emissions[0], {event: 'changed', data: {data, system: {}}});
+	assert.deepEqual(io.namespaces.get('/{{SLUG}}/documents').emissions[0], {
+		event: 'changed',
+		data: {data, system: {}},
+	});
 	assert.equal(warnings.length, 2);
 	context.mock.method(stream, 'getSystemData', () => null);
 	assert.equal(stream.send('documents', 'client-1', 'changed', data), false);
 	assert.equal(stream.broadcast('documents', 'changed', data), false);
-	assert.deepEqual(stream.normalizeResult({success: true, data}, {namespace: 'documents', event: 'changed'}), {success: false, reason: {phrase: 'socket.invalid_response'}, system: {}});
+	assert.deepEqual(stream.normalizeResult({success: true, data}, {namespace: 'documents', event: 'changed'}), {
+		success: false,
+		reason: {phrase: 'socket.invalid_response'},
+		system: {},
+	});
 	stream.close();
 });
 

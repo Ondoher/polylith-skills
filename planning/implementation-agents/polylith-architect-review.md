@@ -6,15 +6,15 @@ Date: 2026-09-16. The owner authorized leaving unresolved questions open and eva
 
 The [preparation matrix and twelve scenario walkthroughs](polylith-architect-preparation.md) supply the initial traceability. The final [role contract](polylith-architect.md) and installed prompt have been checked against those boundaries by the authoring parent. This is not independent compliance review.
 
-| Review concern | Required output or constraint | Independent reviewer relevance |
-| --- | --- | --- |
-| Product/system/specialist authority | Conditional proposals, explicit conflicting reports and targeted upstream questions; no invented acceptance. | Architecture/contracts. |
-| Natural ownership, privacy, reuse and removal | Grounded responsibility map, boundary rationale and whole-artifact promotion; no service-per-noun or feature-internal imports. | Architecture/UI. |
-| Registry, contribution, event and lifecycle | Scoped dependency/contract map; async local start, serial ready, explicit owned-resource release. | Architecture/contracts. |
-| Contract change and partial evidence | Affected consumers and semantic guarantees before type checking; missing specialist inputs visible. | Contracts/verification. |
-| Host/trust/resource boundaries | Do not infer Electron capability exposure or direct filesystem access from application registry design. | Privacy/security/architecture. |
-| Build and verification | Inclusion versus activation, feature-owned asset/test contributions, narrow proof levels and early coherent review opportunities. | Architecture/verification. |
-| Read-only assessment and orchestration separation | Text report only, no delegates/writes/execution, proposed slices rather than writer assignments. | Scope/verification. |
+| Review concern                                    | Required output or constraint                                                                                                     | Independent reviewer relevance |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| Product/system/specialist authority               | Conditional proposals, explicit conflicting reports and targeted upstream questions; no invented acceptance.                      | Architecture/contracts.        |
+| Natural ownership, privacy, reuse and removal     | Grounded responsibility map, boundary rationale and whole-artifact promotion; no service-per-noun or feature-internal imports.    | Architecture/UI.               |
+| Registry, contribution, event and lifecycle       | Scoped dependency/contract map; async local start, serial ready, explicit owned-resource release.                                 | Architecture/contracts.        |
+| Contract change and partial evidence              | Affected consumers and semantic guarantees before type checking; missing specialist inputs visible.                               | Contracts/verification.        |
+| Host/trust/resource boundaries                    | Do not infer Electron capability exposure or direct filesystem access from application registry design.                           | Privacy/security/architecture. |
+| Build and verification                            | Inclusion versus activation, feature-owned asset/test contributions, narrow proof levels and early coherent review opportunities. | Architecture/verification.     |
+| Read-only assessment and orchestration separation | Text report only, no delegates/writes/execution, proposed slices rather than writer assignments.                                  | Scope/verification.            |
 
 The prompt preserves each preparation scenario, including useful incomplete-input analysis, no-work triage, private collaborator uncertainty, UI/domain reuse distinctions, required versus optional dependencies, late results, loadables, consumer impact, upstream boundaries, deferred test assessment and embedded write requests. These are static walkthroughs, not twelve independently executed evaluations.
 

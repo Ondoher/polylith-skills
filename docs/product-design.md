@@ -4,14 +4,14 @@ The product-design workflow turns human intent into durable requirements, intera
 
 These skills own different parts of that work:
 
-| Skill | Use it when | Main result |
-| --- | --- | --- |
-| [attach-detail](attach-detail.md) | An existing authored technical white paper needs a link from the product description. | One checked relative link in the human-owned description. |
-| [refine-detail](refine-detail.md) | A linked white paper needs research, clarification, or an information-preserving revision. | An improved authored paper with sourced findings and a checked revision ledger. |
-| [refine-design](refine-design.md) | You want to develop or revise product, UX, UI, or bounded architecture decisions. | Current product and design artifacts, with a context package ready for publication when requested. |
-| [generate-prd](generate-prd.md) | The current UI pass and its source-bound publication context are ready. | A source-bound outline for review, or a deterministic HTML publication and integrity receipt. |
-| [generate-technical](generate-technical.md) | Reconciled technical context is ready for developers and coding agents. | A linked Markdown architecture guide and publication receipt. |
-| [reset-design](reset-design.md) | You explicitly want to discard the complete derived design and rebuild from the current human description. | A fresh product/design history, reset evidence, and optionally a new PRD. |
+| Skill                                       | Use it when                                                                                                | Main result                                                                                        |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| [attach-detail](attach-detail.md)           | An existing authored technical white paper needs a link from the product description.                      | One checked relative link in the human-owned description.                                          |
+| [refine-detail](refine-detail.md)           | A linked white paper needs research, clarification, or an information-preserving revision.                 | An improved authored paper with sourced findings and a checked revision ledger.                    |
+| [refine-design](refine-design.md)           | You want to develop or revise product, UX, UI, or bounded architecture decisions.                          | Current product and design artifacts, with a context package ready for publication when requested. |
+| [generate-prd](generate-prd.md)             | The current UI pass and its source-bound publication context are ready.                                    | A source-bound outline for review, or a deterministic HTML publication and integrity receipt.      |
+| [generate-technical](generate-technical.md) | Reconciled technical context is ready for developers and coding agents.                                    | A linked Markdown architecture guide and publication receipt.                                      |
+| [reset-design](reset-design.md)             | You explicitly want to discard the complete derived design and rebuild from the current human description. | A fresh product/design history, reset evidence, and optionally a new PRD.                          |
 
 These skills plan and document a product. They do not implement its application code. Project scaffolding belongs to `initialize-project` and `create-app`; code compliance belongs to the separate [review-agent workflow](review-agents.md).
 
@@ -21,19 +21,19 @@ The **parent** in the flows below is the main assistant running the skill. It sc
 
 Specialists receive bounded assignments and return assessments or structured proposals. They do not write the product files, render the final artifacts, implement code, or independently commission other agents. Cross-specialty questions return through the parent.
 
-| Agent or participant | Responsibility | Typical contribution |
-| --- | --- | --- |
-| Product owner | Intent, requirements, constraints, and explicit lock/reset authority | A description, correction, reference, unresolved choice, or instruction to protect a decision. |
-| Parent assistant | Scope, semantic interpretation, specialist coordination, synthesis, and artifact operations | A current product model, validated design records, checked research, and an honest handoff. |
-| `ux-planner` | Tasks, journeys, surfaces, actions, interaction states, feedback, cancellation, recovery, and removing unnecessary steps | A structured UX proposal and semantic wireframes describing what users can do and what happens. |
-| `ux-reviewer` | Independent product-design review of the saved UX and requested scope | A `pass` or `revise` receipt covering coherence, action economy, recovery, accessibility baseline, research, and UI handoff. |
-| `ui-designer` | Visual foundations, presentation, hierarchy, layout, component states, and visual accessibility | Structured design-language, whole-product composition, or specialized-component proposals. |
-| `system-architect` | Runtime and host boundaries, storage, APIs, trust, resources, and failure tradeoffs | Technical feasibility, architectural options, and missing guarantees relevant to the requested decision. |
-| `technical-researcher` | One linked technical paper and bounded ambiguous questions | Read-only primary-source findings, alternatives, evidence limits, and an advisory revision proposal. |
-| `polylith-architect` | Feature, shared-capability, service, and registry boundaries when they matter | A provisional structural map tied to current product and repository evidence. |
-| `model-agent` | Domain meaning, authoritative state, invariants, operations, and persistence/transport contracts | Read-only assessment of the guarantees the product or architecture needs. |
-| `controller-agent` | Workflow coordination, sessions, races, cancellation/retry, resource ownership, and view-facing contracts | Read-only assessment of how operations and lifecycle transitions should be coordinated. |
-| Independent UI-design assessment agent during reset | Qualitative review of fresh rendered surfaces and component states | A `pass` or `revise` assessment against the UI-design review contract, separate from the producing designer. |
+| Agent or participant                                | Responsibility                                                                                                           | Typical contribution                                                                                                         |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| Product owner                                       | Intent, requirements, constraints, and explicit lock/reset authority                                                     | A description, correction, reference, unresolved choice, or instruction to protect a decision.                               |
+| Parent assistant                                    | Scope, semantic interpretation, specialist coordination, synthesis, and artifact operations                              | A current product model, validated design records, checked research, and an honest handoff.                                  |
+| `ux-planner`                                        | Tasks, journeys, surfaces, actions, interaction states, feedback, cancellation, recovery, and removing unnecessary steps | A structured UX proposal and semantic wireframes describing what users can do and what happens.                              |
+| `ux-reviewer`                                       | Independent product-design review of the saved UX and requested scope                                                    | A `pass` or `revise` receipt covering coherence, action economy, recovery, accessibility baseline, research, and UI handoff. |
+| `ui-designer`                                       | Visual foundations, presentation, hierarchy, layout, component states, and visual accessibility                          | Structured design-language, whole-product composition, or specialized-component proposals.                                   |
+| `system-architect`                                  | Runtime and host boundaries, storage, APIs, trust, resources, and failure tradeoffs                                      | Technical feasibility, architectural options, and missing guarantees relevant to the requested decision.                     |
+| `technical-researcher`                              | One linked technical paper and bounded ambiguous questions                                                               | Read-only primary-source findings, alternatives, evidence limits, and an advisory revision proposal.                         |
+| `polylith-architect`                                | Feature, shared-capability, service, and registry boundaries when they matter                                            | A provisional structural map tied to current product and repository evidence.                                                |
+| `model-agent`                                       | Domain meaning, authoritative state, invariants, operations, and persistence/transport contracts                         | Read-only assessment of the guarantees the product or architecture needs.                                                    |
+| `controller-agent`                                  | Workflow coordination, sessions, races, cancellation/retry, resource ownership, and view-facing contracts                | Read-only assessment of how operations and lifecycle transitions should be coordinated.                                      |
+| Independent UI-design assessment agent during reset | Qualitative review of fresh rendered surfaces and component states                                                       | A `pass` or `revise` assessment against the UI-design review contract, separate from the producing designer.                 |
 
 The last row describes a fresh assessment assignment, not an additional installed role named `ui-designer-reviewer`. It uses the [UI-design assessment contract](../planning/implementation-agents/ui-designer-review.md). It is also distinct from `ui-reviewer`, the engineering standards reviewer.
 
@@ -100,12 +100,12 @@ The description remains readable Markdown. The parent interprets it into a struc
 
 This supports incremental work. A change to cancellation behavior can invalidate affected UX, UI, and controller advice without reopening unrelated typography. A wording-only change may require rebinding evidence without changing the material design. Prior artifacts remain auditable, while stale or locked-conflict payloads are excluded from downstream context.
 
-| Decision state | What it means for you |
-| --- | --- |
-| Accepted working decision | A concrete choice has been incorporated. Ordinary refinement can revisit it; a separate approval click is not required for every selected specialist recommendation. |
-| Unselected alternative or unresolved gap | No usable choice has been adopted. The workflow records the uncertainty instead of pretending the design is complete. |
-| Locked decision | You explicitly protected a named scope. Ordinary refinement cannot change its content or dependency bindings without current authority for that scope. |
-| Stale or locked-conflict artifact | An upstream change affects the artifact. It must be reassessed, or the lock conflict resolved, before dependent work can rely on it. |
+| Decision state                           | What it means for you                                                                                                                                                |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Accepted working decision                | A concrete choice has been incorporated. Ordinary refinement can revisit it; a separate approval click is not required for every selected specialist recommendation. |
+| Unselected alternative or unresolved gap | No usable choice has been adopted. The workflow records the uncertainty instead of pretending the design is complete.                                                |
+| Locked decision                          | You explicitly protected a named scope. Ordinary refinement cannot change its content or dependency bindings without current authority for that scope.               |
+| Stale or locked-conflict artifact        | An upstream change affects the artifact. It must be reassessed, or the lock conflict resolved, before dependent work can rely on it.                                 |
 
 A human edit to the description takes precedence over conflicting derived working choices. A lock conflict is reported and preserved rather than silently resolved. Only an explicit whole-design reset authorizes discarding the targeted accepted and locked derived history together.
 
@@ -412,17 +412,17 @@ The research role advises; the parent owns evidence checks and the edit. Consult
 
 ## Choose the next useful action
 
-| Situation | Next action |
-| --- | --- |
-| You have rough notes or a new product idea | Start a bounded `refine-design product` request. |
-| A workflow feels cumbersome | Refine that UX scope, then obtain a fresh independent UX review before updating dependent UI. |
-| Colors, type, or ordinary control treatment need direction | Refine the design language; preserve product behavior. |
-| A specialized control is still a labeled placeholder | Request component-mode design through refinement, including research and representative states. |
-| A technical guarantee affects a product promise | Use a bounded architecture consultation and return product implications to their owner. |
-| A technical issue needs a researched, authored treatment | Link the existing paper with `attach-detail`, then use `refine-detail` for one bounded question. |
-| The current UI pass and its available scenes are ready to share as HTML | Resolve the current PRD context and invoke `generate-prd`. |
-| An input change reaches a locked design | Identify the conflict and explicitly decide whether that named lock should change. |
-| You want all derived choices reconsidered without old-design influence | Explicitly request `reset-design` for the complete named product scope. |
+| Situation                                                               | Next action                                                                                      |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| You have rough notes or a new product idea                              | Start a bounded `refine-design product` request.                                                 |
+| A workflow feels cumbersome                                             | Refine that UX scope, then obtain a fresh independent UX review before updating dependent UI.    |
+| Colors, type, or ordinary control treatment need direction              | Refine the design language; preserve product behavior.                                           |
+| A specialized control is still a labeled placeholder                    | Request component-mode design through refinement, including research and representative states.  |
+| A technical guarantee affects a product promise                         | Use a bounded architecture consultation and return product implications to their owner.          |
+| A technical issue needs a researched, authored treatment                | Link the existing paper with `attach-detail`, then use `refine-detail` for one bounded question. |
+| The current UI pass and its available scenes are ready to share as HTML | Resolve the current PRD context and invoke `generate-prd`.                                       |
+| An input change reaches a locked design                                 | Identify the conflict and explicitly decide whether that named lock should change.               |
+| You want all derived choices reconsidered without old-design influence  | Explicitly request `reset-design` for the complete named product scope.                          |
 
 The design gates and engineering review gates serve different purposes. A UX pass or credible comp does not certify implementation compliance, and a standards-clean code review does not establish that the product design is useful. Use both at the stage where they can evaluate actual evidence.
 

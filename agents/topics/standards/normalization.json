@@ -1,0 +1,108 @@
+{
+	"schemaVersion": 2,
+	"status": "normalized",
+	"everNormalized": true,
+	"manifest": "agents/topics/standards/manifest.md",
+	"normalizedAt": "2026-09-26T19:46:12.665Z",
+	"repositoryStandardsFingerprint": "sha256:1c4e9a928f2eae7e7ce835c2231e3400d76b5618b0adbb651333df2bb4b795e0",
+	"pendingDivergences": 0,
+	"deferredDivergences": 0,
+	"inputs": [
+		{
+			"path": "AGENTS.md",
+			"sha256": "9a5e63875a6b0111185735b040975f2aff85fc58cebd20b24ac076ca2f2661e0"
+		},
+		{
+			"path": "agents/topics/standards/manifest.md",
+			"sha256": "cb95264e276658dcefef7a41a7bce890edea4c8741c2160425e1602b8b131ceb"
+		},
+		{
+			"path": "agents/topics/standards/overlay.md",
+			"sha256": "0cd23bf5c1aa033f890f9cc0ac9ef50fc6a341f8544291f922d6bd2c3fe596ab"
+		},
+		{
+			"path": "codex-home/AGENTS.md",
+			"sha256": "efa685b3652c8848fd8685ef5732a1cfb58728fda041dbf3568c700c397f32aa"
+		},
+		{
+			"path": "documentation/standards/accessibility.md",
+			"sha256": "c265be09d8ebf4bcab1884cec41d2b9a445f1807ce30cd237d63213a6cb233b0"
+		},
+		{
+			"path": "documentation/standards/app-shells.md",
+			"sha256": "504cae39daed3898a840786a4dd83be803c8ce509d8216fc49fe064143b4af93"
+		},
+		{
+			"path": "documentation/standards/architecture.md",
+			"sha256": "371397d60b7f16da397d604177df45abe46e935003b2fbad9923151c52d0507d"
+		},
+		{
+			"path": "documentation/standards/base-components.md",
+			"sha256": "a57fe8bf5bf9ba6082a98b82abc5c3be8e43b3ee79dcd9933ffc855def43b643"
+		},
+		{
+			"path": "documentation/standards/code-conventions.md",
+			"sha256": "feb92409ce3c35265fa7bd49898bd3888d596ecffa75e34265aa35a996985ae8"
+		},
+		{
+			"path": "documentation/standards/data-persistence.md",
+			"sha256": "5b65e41c491dcfdc6b65e7854799491a24a0e11dce0ebd05b77f1e815a56e1e1"
+		},
+		{
+			"path": "documentation/standards/documentation.md",
+			"sha256": "9b3313a8caab19c46310aa07718778a52e6627dc47fa3df1a674dc5f019823b5"
+		},
+		{
+			"path": "documentation/standards/jsdoc.md",
+			"sha256": "35045d94d7d560fecb2096374d790bb3f1a85b002fb410c97f8f8b2fde56e151"
+		},
+		{
+			"path": "documentation/standards/local-https.md",
+			"sha256": "29fdd37ed39c880ffafa8da33c26244d1b9f5ada47ff172a9cfd8c8099c0caba"
+		},
+		{
+			"path": "documentation/standards/localization.md",
+			"sha256": "a47ea61a8964f6043098c3b6205c08424ec4f60b71751a9783ca046616a37821"
+		},
+		{
+			"path": "documentation/standards/mui.md",
+			"sha256": "4655bb7bcadaeb35690689601dc2eb8c8e0697c4c84ee51f3479c05402a33966"
+		},
+		{
+			"path": "documentation/standards/polylith.md",
+			"sha256": "aaa5eea60655b3ff26019eba6aa77f3645c04e7daca8209fd5af64a9a071a4ab"
+		},
+		{
+			"path": "documentation/standards/project-foundation.md",
+			"sha256": "7d8b634c77d103004e9de90c16071dae28bd0c7a73de2489cc222100130d3683"
+		},
+		{
+			"path": "documentation/standards/react.md",
+			"sha256": "68b415d3d8745bf341720e4af06b8c8b34b0ecfb96dc690737808ab06aa0ecc6"
+		},
+		{
+			"path": "documentation/standards/README.md",
+			"sha256": "f9b3791e316bcd4cab14a2c4ff500df61ff119719baba7b26f9788bfc1cb61eb"
+		},
+		{
+			"path": "documentation/standards/remvc.md",
+			"sha256": "dbf2e39d6a4bdaecb2f296c2c400cfff3bfe1b8e327b4ed0371963cd8d43cee8"
+		},
+		{
+			"path": "documentation/standards/server.md",
+			"sha256": "5b35d448ae0db20237b98cc39876281575d5e8f38ae40f136d9ddebe9e686dd0"
+		},
+		{
+			"path": "documentation/standards/socket-io.md",
+			"sha256": "1402a0059d2162565c1437a24baca904b7eb550aec5780586542ad1b8de0ce82"
+		},
+		{
+			"path": "documentation/standards/testing.md",
+			"sha256": "8969f4542dd37370f79ff9db265d0c56c3fdb141973c234f22de88eafecc6b02"
+		},
+		{
+			"path": "documentation/standards/types.md",
+			"sha256": "0dd61df548b621e6cbe8026522e6cea3db6f8dffd5589d16bdc3f4f31dbcc35b"
+		}
+	]
+}

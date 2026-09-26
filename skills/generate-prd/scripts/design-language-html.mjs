@@ -19,44 +19,48 @@ const ASSET_ROOT = new URL('../assets/', import.meta.url);
 export const DESIGN_LANGUAGE_HTML_MARKER = TEXT_MARKER;
 
 function fail(message) {
-    throw new Error(message);
+	throw new Error(message);
 }
 
 function escapeHtml(value) {
-    return String(value).replace(/[&<>"']/g, (character) => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;',
-    })[character]);
+	return String(value).replace(
+		/[&<>"']/g,
+		(character) =>
+			({
+				'&': '&amp;',
+				'<': '&lt;',
+				'>': '&gt;',
+				'"': '&quot;',
+				"'": '&#39;',
+			})[character],
+	);
 }
 
 function cssIdentifier(value) {
-    if (typeof value !== 'string' || !/^[a-z][a-z0-9-]*$/.test(value)) fail(`Unsafe CSS identifier: ${value}`);
-    return value;
+	if (typeof value !== 'string' || !/^[a-z][a-z0-9-]*$/.test(value)) fail(`Unsafe CSS identifier: ${value}`);
+	return value;
 }
 
 function sourceHash(source) {
-    return createHash('sha256').update(source).digest('hex');
+	return createHash('sha256').update(source).digest('hex');
 }
 
 function roleValue(document, roleId) {
-    return resolveThemeValue(document, `role:${roleId}`).value;
+	return resolveThemeValue(document, `role:${roleId}`).value;
 }
 
 function fontAsset(fontId) {
-    const asset = fontCatalog.find((candidate) => candidate.id === fontId);
-    if (!asset) fail(`Unsupported bundled font: ${fontId}`);
-    return asset;
+	const asset = fontCatalog.find((candidate) => candidate.id === fontId);
+	if (!asset) fail(`Unsupported bundled font: ${fontId}`);
+	return asset;
 }
 
 function pageTitle(document, title) {
-    return title ?? `${document.theme.name} Design Language`;
+	return title ?? `${document.theme.name} Design Language`;
 }
 
 function renderSiteNavigation() {
-    return `<nav class="rd-site-nav" aria-label="Product requirements pages">
+	return `<nav class="rd-site-nav" aria-label="Product requirements pages">
         <a href="../index.html">Product requirements</a>
         <span aria-current="page">Design language</span>
         <a href="../components/index.html">Component states</a>
@@ -64,17 +68,25 @@ function renderSiteNavigation() {
 }
 
 function loadReviewLayout(sourcePath, explicitPath) {
-    const layoutPath = path.resolve(explicitPath ?? path.join(path.dirname(sourcePath), 'review-layout.json'));
-    let source;
-    try { source = fs.readFileSync(layoutPath, 'utf8'); } catch { fail(`Review-layout source is missing: ${layoutPath}`); }
-    let layout;
-    try { layout = JSON.parse(source); } catch { fail('Review-layout source is not valid JSON'); }
-    return {layout: validateReviewConfig(layout), layoutPath, source};
+	const layoutPath = path.resolve(explicitPath ?? path.join(path.dirname(sourcePath), 'review-layout.json'));
+	let source;
+	try {
+		source = fs.readFileSync(layoutPath, 'utf8');
+	} catch {
+		fail(`Review-layout source is missing: ${layoutPath}`);
+	}
+	let layout;
+	try {
+		layout = JSON.parse(source);
+	} catch {
+		fail('Review-layout source is not valid JSON');
+	}
+	return {layout: validateReviewConfig(layout), layoutPath, source};
 }
 
 function renderColorCard(member, identityMembers) {
-    const identity = identityMembers.has(member.id) ? '<span class="rd-tag">Brand</span>' : '';
-    return `<article class="rd-color-card">
+	const identity = identityMembers.has(member.id) ? '<span class="rd-tag">Brand</span>' : '';
+	return `<article class="rd-color-card">
         <div class="rd-swatch rd-swatch--${cssIdentifier(member.id)}" aria-label="${escapeHtml(member.name)}: ${escapeHtml(member.value)}"></div>
         <div class="rd-color-card__content">
             <div class="rd-card-heading"><h3>${escapeHtml(member.name)}</h3>${identity}</div>
@@ -85,8 +97,8 @@ function renderColorCard(member, identityMembers) {
 }
 
 function renderRoleCard(document, role) {
-    const resolved = resolveThemeValue(document, `role:${role.id}`);
-    return `<article class="rd-role-card">
+	const resolved = resolveThemeValue(document, `role:${role.id}`);
+	return `<article class="rd-role-card">
         <div class="rd-role-card__swatch rd-role-card__swatch--${cssIdentifier(role.id)}" aria-hidden="true"></div>
         <div>
             <div class="rd-card-heading"><h3>${escapeHtml(role.name)}</h3></div>
@@ -97,10 +109,10 @@ function renderRoleCard(document, role) {
 }
 
 function renderTypeCard(document, role) {
-    const metrics = resolvedType(document, role);
-    const font = fontAsset(metrics.fontId);
-    const samples = role.sampleLines.map((line) => `<span>${escapeHtml(line)}</span>`).join('');
-    return `<article class="rd-type-card">
+	const metrics = resolvedType(document, role);
+	const font = fontAsset(metrics.fontId);
+	const samples = role.sampleLines.map((line) => `<span>${escapeHtml(line)}</span>`).join('');
+	return `<article class="rd-type-card">
         <div class="rd-card-heading"><h3>${escapeHtml(role.name)}</h3></div>
         <div class="rd-type-specimen"><p class="rd-type-sample rd-type--${cssIdentifier(role.id)}">${samples}</p></div>
         <p class="rd-code">${escapeHtml(font.family)} · ${metrics.sizePx}px / ${metrics.lineHeightPx}px · ${metrics.weight} · ${escapeHtml(role.style)} · role:${escapeHtml(role.colorRole)}</p>
@@ -109,31 +121,73 @@ function renderTypeCard(document, role) {
 }
 
 function sharedTypeTreatments(document) {
-    const treatments = new Map();
-    for (const role of document.typography.roles) {
-        const metrics = resolvedType(document, role);
-        const key = [metrics.fontId, metrics.sizePx, metrics.lineHeightPx, metrics.weight, role.style, role.colorRole].join('|');
-        const roles = treatments.get(key) ?? [];
-        roles.push(role.name);
-        treatments.set(key, roles);
-    }
-    return [...treatments.values()].filter((roles) => roles.length > 1);
+	const treatments = new Map();
+	for (const role of document.typography.roles) {
+		const metrics = resolvedType(document, role);
+		const key = [
+			metrics.fontId,
+			metrics.sizePx,
+			metrics.lineHeightPx,
+			metrics.weight,
+			role.style,
+			role.colorRole,
+		].join('|');
+		const roles = treatments.get(key) ?? [];
+		roles.push(role.name);
+		treatments.set(key, roles);
+	}
+	return [...treatments.values()].filter((roles) => roles.length > 1);
 }
 
 function componentInventory(document) {
-    return [
-        {name: 'Primary command button', kind: 'Standard', template: document.button.template, coverage: 'Contained command with default, hover, pressed, focus, disabled, and loading states.'},
-        {name: 'Button variants', kind: 'Standard', template: document.buttonVariants.template, coverage: 'Contained, outlined, text, and icon-only command treatments.'},
-        {name: 'Text field', kind: 'Standard', template: document.textField.template, coverage: 'Label, value, helper, retained error, focus, and disabled treatments.'},
-        {name: 'Field feedback', kind: 'Pattern', template: document.fieldMessages.template, coverage: 'One helper and error region shared by ordinary and composite inputs.'},
-        {name: 'Checkbox group', kind: 'Standard', template: document.compositeInput.template, coverage: 'Grouped choices with one label and one shared feedback region.'},
-        {name: 'Select', kind: 'Standard', template: document.selectInput.template, coverage: 'Single selection, menu options, active/selected states, helper, error, and unavailable option.'},
-        {name: 'Embedded-action field', kind: 'Pattern', template: document.password.template, coverage: 'Password example demonstrates an icon button embedded inside a field.'},
-    ];
+	return [
+		{
+			name: 'Primary command button',
+			kind: 'Standard',
+			template: document.button.template,
+			coverage: 'Contained command with default, hover, pressed, focus, disabled, and loading states.',
+		},
+		{
+			name: 'Button variants',
+			kind: 'Standard',
+			template: document.buttonVariants.template,
+			coverage: 'Contained, outlined, text, and icon-only command treatments.',
+		},
+		{
+			name: 'Text field',
+			kind: 'Standard',
+			template: document.textField.template,
+			coverage: 'Label, value, helper, retained error, focus, and disabled treatments.',
+		},
+		{
+			name: 'Field feedback',
+			kind: 'Pattern',
+			template: document.fieldMessages.template,
+			coverage: 'One helper and error region shared by ordinary and composite inputs.',
+		},
+		{
+			name: 'Checkbox group',
+			kind: 'Standard',
+			template: document.compositeInput.template,
+			coverage: 'Grouped choices with one label and one shared feedback region.',
+		},
+		{
+			name: 'Select',
+			kind: 'Standard',
+			template: document.selectInput.template,
+			coverage: 'Single selection, menu options, active/selected states, helper, error, and unavailable option.',
+		},
+		{
+			name: 'Embedded-action field',
+			kind: 'Pattern',
+			template: document.password.template,
+			coverage: 'Password example demonstrates an icon button embedded inside a field.',
+		},
+	];
 }
 
 function renderInventoryItem(item) {
-    return `<article class="rd-inventory-card">
+	return `<article class="rd-inventory-card">
         <div class="rd-card-heading"><h3>${escapeHtml(item.name)}</h3></div>
         <p><span class="rd-tag">${escapeHtml(item.kind)}</span></p>
         <p>${escapeHtml(item.coverage)}</p>
@@ -142,72 +196,86 @@ function renderInventoryItem(item) {
 }
 
 function controlIcon(document, iconId) {
-    const icon = document.icons.find((candidate) => candidate.id === iconId);
-    if (!icon) fail(`Unknown control icon: ${iconId}`);
-    const geometry = iconGeometry(icon);
-    if (!geometry) return '<span class="rd-control-icon rd-control-icon--missing" aria-hidden="true">?</span>';
-    const paths = geometry.paths.map((item) => `<path d="${escapeHtml(item.d)}" opacity="${item.opacity}"></path>`).join('');
-    return `<svg class="rd-control-icon" viewBox="0 0 24 24" aria-hidden="true">${paths}</svg>`;
+	const icon = document.icons.find((candidate) => candidate.id === iconId);
+	if (!icon) fail(`Unknown control icon: ${iconId}`);
+	const geometry = iconGeometry(icon);
+	if (!geometry) return '<span class="rd-control-icon rd-control-icon--missing" aria-hidden="true">?</span>';
+	const paths = geometry.paths
+		.map((item) => `<path d="${escapeHtml(item.d)}" opacity="${item.opacity}"></path>`)
+		.join('');
+	return `<svg class="rd-control-icon" viewBox="0 0 24 24" aria-hidden="true">${paths}</svg>`;
 }
 
 const REDLINE_PLACEMENTS = new Map([
-    ['padding-inline-start', 'horizontal'],
-    ['padding-inline-end', 'horizontal'],
-    ['inset-inline-before', 'horizontal'],
-    ['inset-inline-after', 'horizontal'],
-    ['gap-inline-before', 'horizontal'],
-    ['gap-block-before', 'vertical'],
-    ['gap-block-before-end', 'vertical'],
-    ['gap-block-after', 'vertical'],
-    ['gap-block-after-end', 'vertical'],
-    ['size-block-before', 'vertical'],
-    ['size-block-after', 'vertical'],
+	['padding-inline-start', 'horizontal'],
+	['padding-inline-end', 'horizontal'],
+	['inset-inline-before', 'horizontal'],
+	['inset-inline-after', 'horizontal'],
+	['gap-inline-before', 'horizontal'],
+	['gap-block-before', 'vertical'],
+	['gap-block-before-end', 'vertical'],
+	['gap-block-after', 'vertical'],
+	['gap-block-after-end', 'vertical'],
+	['size-block-before', 'vertical'],
+	['size-block-after', 'vertical'],
 ]);
 
 function redlineMetrics(document, reviewLayout) {
-    return new Map([
-        ['region-padding', {value: reviewLayout.spacing.regionPadding, cssVariable: '--rd-layout-region-padding'}],
-        ['region-gap', {value: reviewLayout.spacing.regionGap, cssVariable: '--rd-layout-region-gap'}],
-        ['group-gap', {value: reviewLayout.spacing.groupGap, cssVariable: '--rd-layout-group-gap'}],
-        ['field-gap', {value: reviewLayout.spacing.fieldGap, cssVariable: '--rd-layout-field-gap'}],
-        ['helper-gap', {value: reviewLayout.spacing.helperGap, cssVariable: '--rd-layout-helper-gap'}],
-        ['field-height', {value: reviewLayout.layout.fieldHeight, cssVariable: '--rd-control-field-height'}],
-        ['field-padding-x', {value: reviewLayout.layout.fieldPaddingX, cssVariable: '--rd-control-field-padding-x'}],
-        ['button-height', {value: reviewLayout.layout.buttonHeight, cssVariable: '--rd-control-button-height'}],
-        ['button-padding-x', {value: reviewLayout.layout.buttonPaddingX, cssVariable: '--rd-control-button-padding-x'}],
-        ['select-height', {value: document.selectInput.metrics.height, cssVariable: '--rd-control-select-height'}],
-        ['select-padding-x', {value: document.selectInput.metrics.paddingX, cssVariable: '--rd-control-select-padding-x'}],
-        ['choice-padding', {value: document.compositeInput.metrics.padding, cssVariable: '--rd-control-choice-padding'}],
-        ['choice-option-gap', {value: document.compositeInput.metrics.optionGap, cssVariable: '--rd-control-choice-option-gap'}],
-        ['choice-row-gap', {value: document.compositeInput.metrics.rowGap, cssVariable: '--rd-control-choice-row-gap'}],
-    ]);
+	return new Map([
+		['region-padding', {value: reviewLayout.spacing.regionPadding, cssVariable: '--rd-layout-region-padding'}],
+		['region-gap', {value: reviewLayout.spacing.regionGap, cssVariable: '--rd-layout-region-gap'}],
+		['group-gap', {value: reviewLayout.spacing.groupGap, cssVariable: '--rd-layout-group-gap'}],
+		['field-gap', {value: reviewLayout.spacing.fieldGap, cssVariable: '--rd-layout-field-gap'}],
+		['helper-gap', {value: reviewLayout.spacing.helperGap, cssVariable: '--rd-layout-helper-gap'}],
+		['field-height', {value: reviewLayout.layout.fieldHeight, cssVariable: '--rd-control-field-height'}],
+		['field-padding-x', {value: reviewLayout.layout.fieldPaddingX, cssVariable: '--rd-control-field-padding-x'}],
+		['button-height', {value: reviewLayout.layout.buttonHeight, cssVariable: '--rd-control-button-height'}],
+		['button-padding-x', {value: reviewLayout.layout.buttonPaddingX, cssVariable: '--rd-control-button-padding-x'}],
+		['select-height', {value: document.selectInput.metrics.height, cssVariable: '--rd-control-select-height'}],
+		[
+			'select-padding-x',
+			{value: document.selectInput.metrics.paddingX, cssVariable: '--rd-control-select-padding-x'},
+		],
+		[
+			'choice-padding',
+			{value: document.compositeInput.metrics.padding, cssVariable: '--rd-control-choice-padding'},
+		],
+		[
+			'choice-option-gap',
+			{value: document.compositeInput.metrics.optionGap, cssVariable: '--rd-control-choice-option-gap'},
+		],
+		['choice-row-gap', {value: document.compositeInput.metrics.rowGap, cssVariable: '--rd-control-choice-row-gap'}],
+	]);
 }
 
 function createRedlineRenderer(document, reviewLayout) {
-    const metrics = redlineMetrics(document, reviewLayout);
-    return (metricId, label, placement, labelSide = 'after') => {
-        const metric = metrics.get(metricId);
-        if (!metric) fail(`Unknown redline metric: ${metricId}`);
-        if (!Number.isFinite(metric.value) || metric.value <= 0) fail(`Invalid redline metric: ${metricId}`);
-        const orientation = REDLINE_PLACEMENTS.get(placement);
-        if (!orientation) fail(`Unknown redline placement: ${placement}`);
-        if (!['after', 'before', 'above', 'below'].includes(labelSide)) fail(`Unknown redline label side: ${labelSide}`);
-        const description = `${metric.value}px ${label}`;
-        return `<span class="rd-redline rd-redline--${orientation} rd-redline-placement--${placement} rd-redline-label--${labelSide} rd-redline-metric--${cssIdentifier(metricId)}" data-redline-label="${escapeHtml(description)}" role="img" aria-label="${escapeHtml(description)}"></span>`;
-    };
+	const metrics = redlineMetrics(document, reviewLayout);
+	return (metricId, label, placement, labelSide = 'after') => {
+		const metric = metrics.get(metricId);
+		if (!metric) fail(`Unknown redline metric: ${metricId}`);
+		if (!Number.isFinite(metric.value) || metric.value <= 0) fail(`Invalid redline metric: ${metricId}`);
+		const orientation = REDLINE_PLACEMENTS.get(placement);
+		if (!orientation) fail(`Unknown redline placement: ${placement}`);
+		if (!['after', 'before', 'above', 'below'].includes(labelSide))
+			fail(`Unknown redline label side: ${labelSide}`);
+		const description = `${metric.value}px ${label}`;
+		return `<span class="rd-redline rd-redline--${orientation} rd-redline-placement--${placement} rd-redline-label--${labelSide} rd-redline-metric--${cssIdentifier(metricId)}" data-redline-label="${escapeHtml(description)}" role="img" aria-label="${escapeHtml(description)}"></span>`;
+	};
 }
 
 function renderControlLayouts(document, reviewLayout) {
-    const text = document.textField;
-    const select = document.selectInput;
-    const group = document.compositeInput;
-    const mark = createRedlineRenderer(document, reviewLayout);
-    const optionMarkup = group.options.map((option, index) => {
-        const optionGap = index === 0 ? mark('choice-option-gap', 'option gap', 'gap-inline-before', 'above') : '';
-        const rowGap = index === 2 ? mark('choice-row-gap', 'row gap', 'gap-block-before', 'after') : '';
-        return `<label><input type="checkbox"${group.selectedIds.includes(option.id) ? ' checked' : ''}><span class="rd-demo-option-text">${escapeHtml(option.label)}${optionGap}</span>${rowGap}</label>`;
-    }).join('');
-    return `<div class="rd-control-layouts">
+	const text = document.textField;
+	const select = document.selectInput;
+	const group = document.compositeInput;
+	const mark = createRedlineRenderer(document, reviewLayout);
+	const optionMarkup = group.options
+		.map((option, index) => {
+			const optionGap = index === 0 ? mark('choice-option-gap', 'option gap', 'gap-inline-before', 'above') : '';
+			const rowGap = index === 2 ? mark('choice-row-gap', 'row gap', 'gap-block-before', 'after') : '';
+			return `<label><input type="checkbox"${group.selectedIds.includes(option.id) ? ' checked' : ''}><span class="rd-demo-option-text">${escapeHtml(option.label)}${optionGap}</span>${rowGap}</label>`;
+		})
+		.join('');
+	return `<div class="rd-control-layouts">
         <figure class="rd-control-layout">
             <figcaption><h3>Action group</h3><p>Compact commands use Flexbox and content-sized widths.</p></figcaption>
             <div class="rd-control-layout__body">
@@ -248,13 +316,13 @@ function renderControlLayouts(document, reviewLayout) {
 }
 
 function renderIcon(document, icon) {
-    const geometry = iconGeometry(icon);
-    const drawing = geometry
-        ? geometry.paths.map((item) => `<path d="${escapeHtml(item.d)}" opacity="${item.opacity}"></path>`).join('')
-        : '<rect x="2" y="2" width="20" height="20" rx="3"></rect><path d="M9 9a3 3 0 1 1 4.8 2.4c-1.2.9-1.8 1.4-1.8 2.6M12 18h.01"></path>';
-    const asset = icon.asset ? `${icon.asset.name} · ${icon.asset.variant}` : 'Asset still unspecified';
-    const missingClass = geometry ? '' : ' rd-icon--missing';
-    return `<article class="rd-icon-card">
+	const geometry = iconGeometry(icon);
+	const drawing = geometry
+		? geometry.paths.map((item) => `<path d="${escapeHtml(item.d)}" opacity="${item.opacity}"></path>`).join('')
+		: '<rect x="2" y="2" width="20" height="20" rx="3"></rect><path d="M9 9a3 3 0 1 1 4.8 2.4c-1.2.9-1.8 1.4-1.8 2.6M12 18h.01"></path>';
+	const asset = icon.asset ? `${icon.asset.name} · ${icon.asset.variant}` : 'Asset still unspecified';
+	const missingClass = geometry ? '' : ' rd-icon--missing';
+	return `<article class="rd-icon-card">
         <svg class="rd-icon rd-icon--${cssIdentifier(icon.id)}${missingClass}" viewBox="0 0 24 24" role="img" aria-label="${escapeHtml(icon.accessibleLabel)}">${drawing}</svg>
         <div>
             <div class="rd-card-heading"><h3>${escapeHtml(icon.name)}</h3></div>
@@ -265,21 +333,23 @@ function renderIcon(document, icon) {
 }
 
 function metricGroups(document) {
-    return [
-        ['Primary command', document.button.metrics],
-        ['Text field', document.textField.metrics],
-        ['Select', document.selectInput.metrics],
-        ['Shared field messages', document.fieldMessages.metrics],
-    ];
+	return [
+		['Primary command', document.button.metrics],
+		['Text field', document.textField.metrics],
+		['Select', document.selectInput.metrics],
+		['Shared field messages', document.fieldMessages.metrics],
+	];
 }
 
 function renderMetricGroup([name, metrics]) {
-    const values = Object.entries(metrics).map(([key, value]) => `<div><dt>${escapeHtml(key)}</dt><dd>${escapeHtml(value)}px</dd></div>`).join('');
-    return `<article class="rd-metric-card"><h3>${escapeHtml(name)}</h3><dl>${values}</dl></article>`;
+	const values = Object.entries(metrics)
+		.map(([key, value]) => `<div><dt>${escapeHtml(key)}</dt><dd>${escapeHtml(value)}px</dd></div>`)
+		.join('');
+	return `<article class="rd-metric-card"><h3>${escapeHtml(name)}</h3><dl>${values}</dl></article>`;
 }
 
 function renderRequirement(requirement) {
-    return `<li>
+	return `<li>
         <div class="rd-list-heading"><strong>${escapeHtml(requirement.target)}</strong><span>${escapeHtml(requirement.decisionOwner)}</span></div>
         <p>${escapeHtml(requirement.description)}</p>
         <p class="rd-code">Fallback: ${escapeHtml(requirement.renderFallback.value)} · ${escapeHtml(requirement.renderFallback.source)}</p>
@@ -288,19 +358,20 @@ function renderRequirement(requirement) {
 
 /** Render the first static design-language review page from a saved schema 0.14 document. */
 export function renderDesignLanguageHtml(document, options = {}) {
-    validate(document, true);
-    if (document.schemaVersion !== '0.14') fail('The HTML design-language publisher currently requires saved schema 0.14 data');
-    const reviewLayout = validateReviewConfig(options.layout);
-    const title = pageTitle(document, options.title);
-    const identityMembers = new Set(document.identityPalette.memberIds);
-    const brandMembers = document.palette.members.filter((member) => identityMembers.has(member.id));
-    const supportingMembers = document.palette.members.filter((member) => !identityMembers.has(member.id));
-    const spacing = reviewLayout.spacing.scale;
-    const missing = document.unspecifiedRequirements;
-    const questions = document.openQuestions;
-    const mark = createRedlineRenderer(document, reviewLayout);
-    const siteNavigation = options.siteNavigation ? renderSiteNavigation() : '';
-    return `<!doctype html>
+	validate(document, true);
+	if (document.schemaVersion !== '0.14')
+		fail('The HTML design-language publisher currently requires saved schema 0.14 data');
+	const reviewLayout = validateReviewConfig(options.layout);
+	const title = pageTitle(document, options.title);
+	const identityMembers = new Set(document.identityPalette.memberIds);
+	const brandMembers = document.palette.members.filter((member) => identityMembers.has(member.id));
+	const supportingMembers = document.palette.members.filter((member) => !identityMembers.has(member.id));
+	const spacing = reviewLayout.spacing.scale;
+	const missing = document.unspecifiedRequirements;
+	const questions = document.openQuestions;
+	const mark = createRedlineRenderer(document, reviewLayout);
+	const siteNavigation = options.siteNavigation ? renderSiteNavigation() : '';
+	return `<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -356,7 +427,12 @@ export function renderDesignLanguageHtml(document, options = {}) {
         </section>
         <section id="typography" class="rd-section">
             <div class="rd-section-heading"><p class="rd-section-number">03</p><div><h2>Typography</h2><p>Google Fonts are bundled locally so the review remains stable and works offline.</p></div></div>
-            ${sharedTypeTreatments(document).map((roles) => `<p class="rd-shared-treatment"><strong>Shared treatment:</strong> ${escapeHtml(roles.join(', '))} currently use identical visual properties; their distinction is semantic.</p>`).join('')}
+            ${sharedTypeTreatments(document)
+				.map(
+					(roles) =>
+						`<p class="rd-shared-treatment"><strong>Shared treatment:</strong> ${escapeHtml(roles.join(', '))} currently use identical visual properties; their distinction is semantic.</p>`,
+				)
+				.join('')}
             <div class="rd-type-grid">${document.typography.roles.map((role) => renderTypeCard(document, role)).join('')}</div>
         </section>
         <section id="layout" class="rd-section">
@@ -396,33 +472,82 @@ export function renderDesignLanguageHtml(document, options = {}) {
 
 /** Render shared CSS plus source-derived color, type and icon classes. */
 export function renderDesignLanguageCss(document, layoutInput) {
-    validate(document, true);
-    if (document.schemaVersion !== '0.14') fail('The HTML design-language publisher currently requires saved schema 0.14 data');
-    const reviewLayout = validateReviewConfig(layoutInput);
-    const fonts = [...new Set(document.typography.roles.map((role) => resolvedType(document, role).fontId))]
-        .map((fontId) => fontAsset(fontId));
-    const fontFaces = fonts.map((font) => `@font-face { font-family: '${font.family}'; src: url('./fonts/${font.file}') format('truetype'); font-style: normal; font-weight: 100 900; font-display: swap; }`).join('\n');
-    const paletteVariables = document.palette.members.map((member) => `    --rd-color-member-${cssIdentifier(member.id)}: ${member.value};`).join('\n');
-    const roleVariables = document.theme.roles.map((role) => `    --rd-color-${cssIdentifier(role.id)}: ${roleValue(document, role.id)};`).join('\n');
-    const buttonVariables = Object.entries({contained: document.button.states, ...document.buttonVariants.states})
-        .flatMap(([variant, states]) => Object.entries(states).flatMap(([state, colors]) => Object.entries(colors)
-            .map(([part, expression]) => `    --rd-button-${variant}-${state}-${part}: ${resolveButtonColor(document, expression).value};`))).join('\n');
-    const fieldVariables = Object.entries(document.textField.colors)
-        .map(([part, expression]) => `    --rd-field-${part}: ${resolveButtonColor(document, expression).value};`).join('\n');
-    const selectVariables = Object.entries(document.selectInput.colors)
-        .map(([part, expression]) => `    --rd-select-${part}: ${resolveButtonColor(document, expression).value};`).join('\n');
-    const typeVariables = document.typography.roles.map((role) => {
-        const type = resolvedType(document, role);
-        const font = fontAsset(type.fontId);
-        return `    --rd-type-${cssIdentifier(role.id)}-family: '${font.family}', sans-serif;\n    --rd-type-${cssIdentifier(role.id)}-size: ${type.sizePx}px;\n    --rd-type-${cssIdentifier(role.id)}-line: ${type.lineHeightPx}px;\n    --rd-type-${cssIdentifier(role.id)}-weight: ${type.weight};\n    --rd-type-${cssIdentifier(role.id)}-style: ${role.style};`;
-    }).join('\n');
-    const swatches = document.palette.members.map((member) => `.rd-swatch--${cssIdentifier(member.id)} { background: var(--rd-color-member-${cssIdentifier(member.id)}); }`).join('\n');
-    const roleSwatches = document.theme.roles.map((role) => `.rd-role-card__swatch--${cssIdentifier(role.id)} { background: var(--rd-color-${cssIdentifier(role.id)}); }`).join('\n');
-    const typeClasses = document.typography.roles.map((role) => `.rd-type--${cssIdentifier(role.id)} { color: var(--rd-color-${cssIdentifier(role.colorRole)}); font-family: var(--rd-type-${cssIdentifier(role.id)}-family); font-size: var(--rd-type-${cssIdentifier(role.id)}-size); font-style: var(--rd-type-${cssIdentifier(role.id)}-style); font-weight: var(--rd-type-${cssIdentifier(role.id)}-weight); line-height: var(--rd-type-${cssIdentifier(role.id)}-line); }`).join('\n');
-    const iconClasses = document.icons.map((icon) => `.rd-icon--${cssIdentifier(icon.id)} { color: var(--rd-color-${cssIdentifier(icon.colorRole)}); width: ${icon.sizePx}px; height: ${icon.sizePx}px; }`).join('\n');
-    const spacingClasses = reviewLayout.spacing.scale.map((value) => `.rd-space-demo--${value} { width: ${value}px; }`).join('\n');
-    const redlineClasses = [...redlineMetrics(document, reviewLayout)].map(([metricId, metric]) => `.rd-redline-metric--${cssIdentifier(metricId)} { --rd-redline-length: var(${metric.cssVariable}); }`).join('\n');
-    return `/* ${TEXT_MARKER} */
+	validate(document, true);
+	if (document.schemaVersion !== '0.14')
+		fail('The HTML design-language publisher currently requires saved schema 0.14 data');
+	const reviewLayout = validateReviewConfig(layoutInput);
+	const fonts = [...new Set(document.typography.roles.map((role) => resolvedType(document, role).fontId))].map(
+		(fontId) => fontAsset(fontId),
+	);
+	const fontFaces = fonts
+		.map(
+			(font) =>
+				`@font-face { font-family: '${font.family}'; src: url('./fonts/${font.file}') format('truetype'); font-style: normal; font-weight: 100 900; font-display: swap; }`,
+		)
+		.join('\n');
+	const paletteVariables = document.palette.members
+		.map((member) => `    --rd-color-member-${cssIdentifier(member.id)}: ${member.value};`)
+		.join('\n');
+	const roleVariables = document.theme.roles
+		.map((role) => `    --rd-color-${cssIdentifier(role.id)}: ${roleValue(document, role.id)};`)
+		.join('\n');
+	const buttonVariables = Object.entries({contained: document.button.states, ...document.buttonVariants.states})
+		.flatMap(([variant, states]) =>
+			Object.entries(states).flatMap(([state, colors]) =>
+				Object.entries(colors).map(
+					([part, expression]) =>
+						`    --rd-button-${variant}-${state}-${part}: ${resolveButtonColor(document, expression).value};`,
+				),
+			),
+		)
+		.join('\n');
+	const fieldVariables = Object.entries(document.textField.colors)
+		.map(([part, expression]) => `    --rd-field-${part}: ${resolveButtonColor(document, expression).value};`)
+		.join('\n');
+	const selectVariables = Object.entries(document.selectInput.colors)
+		.map(([part, expression]) => `    --rd-select-${part}: ${resolveButtonColor(document, expression).value};`)
+		.join('\n');
+	const typeVariables = document.typography.roles
+		.map((role) => {
+			const type = resolvedType(document, role);
+			const font = fontAsset(type.fontId);
+			return `    --rd-type-${cssIdentifier(role.id)}-family: '${font.family}', sans-serif;\n    --rd-type-${cssIdentifier(role.id)}-size: ${type.sizePx}px;\n    --rd-type-${cssIdentifier(role.id)}-line: ${type.lineHeightPx}px;\n    --rd-type-${cssIdentifier(role.id)}-weight: ${type.weight};\n    --rd-type-${cssIdentifier(role.id)}-style: ${role.style};`;
+		})
+		.join('\n');
+	const swatches = document.palette.members
+		.map(
+			(member) =>
+				`.rd-swatch--${cssIdentifier(member.id)} { background: var(--rd-color-member-${cssIdentifier(member.id)}); }`,
+		)
+		.join('\n');
+	const roleSwatches = document.theme.roles
+		.map(
+			(role) =>
+				`.rd-role-card__swatch--${cssIdentifier(role.id)} { background: var(--rd-color-${cssIdentifier(role.id)}); }`,
+		)
+		.join('\n');
+	const typeClasses = document.typography.roles
+		.map(
+			(role) =>
+				`.rd-type--${cssIdentifier(role.id)} { color: var(--rd-color-${cssIdentifier(role.colorRole)}); font-family: var(--rd-type-${cssIdentifier(role.id)}-family); font-size: var(--rd-type-${cssIdentifier(role.id)}-size); font-style: var(--rd-type-${cssIdentifier(role.id)}-style); font-weight: var(--rd-type-${cssIdentifier(role.id)}-weight); line-height: var(--rd-type-${cssIdentifier(role.id)}-line); }`,
+		)
+		.join('\n');
+	const iconClasses = document.icons
+		.map(
+			(icon) =>
+				`.rd-icon--${cssIdentifier(icon.id)} { color: var(--rd-color-${cssIdentifier(icon.colorRole)}); width: ${icon.sizePx}px; height: ${icon.sizePx}px; }`,
+		)
+		.join('\n');
+	const spacingClasses = reviewLayout.spacing.scale
+		.map((value) => `.rd-space-demo--${value} { width: ${value}px; }`)
+		.join('\n');
+	const redlineClasses = [...redlineMetrics(document, reviewLayout)]
+		.map(
+			([metricId, metric]) =>
+				`.rd-redline-metric--${cssIdentifier(metricId)} { --rd-redline-length: var(${metric.cssVariable}); }`,
+		)
+		.join('\n');
+	return `/* ${TEXT_MARKER} */
 ${fontFaces}
 :root {
 ${paletteVariables}
@@ -641,128 +766,146 @@ ${redlineClasses}
 
 /** Build the shared theme CSS and bundled font files required by generated review pages. */
 export function buildDesignLanguageAssetOutputs(document, layoutInput = createDefaultReviewConfig()) {
-    const css = renderDesignLanguageCss(document, layoutInput);
-    const usedFonts = [...new Set(document.typography.roles.map((role) => resolvedType(document, role).fontId))].map(fontAsset);
-    const outputs = new Map([['assets/prd.css', css]]);
-    for (const font of usedFonts) {
-        outputs.set(`assets/fonts/${font.file}`, fs.readFileSync(new URL(`fonts/${font.file}`, ASSET_ROOT)));
-        outputs.set(`assets/fonts/${font.license}`, fs.readFileSync(new URL(`fonts/${font.license}`, ASSET_ROOT)));
-    }
-    return outputs;
+	const css = renderDesignLanguageCss(document, layoutInput);
+	const usedFonts = [...new Set(document.typography.roles.map((role) => resolvedType(document, role).fontId))].map(
+		fontAsset,
+	);
+	const outputs = new Map([['assets/prd.css', css]]);
+	for (const font of usedFonts) {
+		outputs.set(`assets/fonts/${font.file}`, fs.readFileSync(new URL(`fonts/${font.file}`, ASSET_ROOT)));
+		outputs.set(`assets/fonts/${font.license}`, fs.readFileSync(new URL(`fonts/${font.license}`, ASSET_ROOT)));
+	}
+	return outputs;
 }
 
 function assertSafeOutputPath(outputRoot, relativePath) {
-    const root = path.resolve(outputRoot);
-    const target = path.resolve(root, relativePath);
-    if (target !== root && !target.startsWith(`${root}${path.sep}`)) fail(`Output escapes destination: ${relativePath}`);
-    if (fs.existsSync(root) && fs.lstatSync(root).isSymbolicLink()) fail(`Refusing linked output root: ${root}`);
-    let current = root;
-    for (const part of path.relative(root, target).split(path.sep).slice(0, -1)) {
-        current = path.join(current, part);
-        if (fs.existsSync(current) && fs.lstatSync(current).isSymbolicLink()) fail(`Refusing linked output path: ${current}`);
-    }
-    if (fs.existsSync(target) && fs.lstatSync(target).isSymbolicLink()) fail(`Refusing linked output file: ${target}`);
-    return target;
+	const root = path.resolve(outputRoot);
+	const target = path.resolve(root, relativePath);
+	if (target !== root && !target.startsWith(`${root}${path.sep}`))
+		fail(`Output escapes destination: ${relativePath}`);
+	if (fs.existsSync(root) && fs.lstatSync(root).isSymbolicLink()) fail(`Refusing linked output root: ${root}`);
+	let current = root;
+	for (const part of path.relative(root, target).split(path.sep).slice(0, -1)) {
+		current = path.join(current, part);
+		if (fs.existsSync(current) && fs.lstatSync(current).isSymbolicLink())
+			fail(`Refusing linked output path: ${current}`);
+	}
+	if (fs.existsSync(target) && fs.lstatSync(target).isSymbolicLink()) fail(`Refusing linked output file: ${target}`);
+	return target;
 }
 
 function assertOwnedOutput(target, relativePath, content) {
-    if (!fs.existsSync(target)) return;
-    const existing = fs.readFileSync(target);
-    if (relativePath.startsWith('assets/fonts/')) {
-        if (!existing.equals(content)) fail(`Refusing to replace a different font asset: ${relativePath}`);
-        return;
-    }
-    const text = existing.toString('utf8');
-    if (relativePath.endsWith('render-report.json')) {
-        let report;
-        try { report = JSON.parse(text); } catch { fail('Refusing to overwrite an unowned render report'); }
-        if (report.generator !== GENERATOR) fail('Refusing to overwrite an unowned render report');
-        return;
-    }
-    if (!text.includes(TEXT_MARKER)) fail(`Refusing to overwrite an unowned generated file: ${relativePath}`);
+	if (!fs.existsSync(target)) return;
+	const existing = fs.readFileSync(target);
+	if (relativePath.startsWith('assets/fonts/')) {
+		if (!existing.equals(content)) fail(`Refusing to replace a different font asset: ${relativePath}`);
+		return;
+	}
+	const text = existing.toString('utf8');
+	if (relativePath.endsWith('render-report.json')) {
+		let report;
+		try {
+			report = JSON.parse(text);
+		} catch {
+			fail('Refusing to overwrite an unowned render report');
+		}
+		if (report.generator !== GENERATOR) fail('Refusing to overwrite an unowned render report');
+		return;
+	}
+	if (!text.includes(TEXT_MARKER)) fail(`Refusing to overwrite an unowned generated file: ${relativePath}`);
 }
 
 function publishFiles(outputRoot, outputs) {
-    const planned = [...outputs].map(([relativePath, content]) => {
-        const target = assertSafeOutputPath(outputRoot, relativePath);
-        const buffer = Buffer.isBuffer(content) ? content : Buffer.from(content, 'utf8');
-        assertOwnedOutput(target, relativePath, buffer);
-        return {target, buffer};
-    });
-    for (const {target} of planned) fs.mkdirSync(path.dirname(target), {recursive: true});
-    for (const {target, buffer} of planned) fs.writeFileSync(target, buffer);
+	const planned = [...outputs].map(([relativePath, content]) => {
+		const target = assertSafeOutputPath(outputRoot, relativePath);
+		const buffer = Buffer.isBuffer(content) ? content : Buffer.from(content, 'utf8');
+		assertOwnedOutput(target, relativePath, buffer);
+		return {target, buffer};
+	});
+	for (const {target} of planned) fs.mkdirSync(path.dirname(target), {recursive: true});
+	for (const {target, buffer} of planned) fs.writeFileSync(target, buffer);
 }
 
 /** Validate and publish the static design-language section without modifying its source document. */
 export function publishDesignLanguageHtml(sourceFile, outputRoot, options = {}) {
-    const sourcePath = path.resolve(sourceFile);
-    const source = fs.readFileSync(sourcePath, 'utf8');
-    let document;
-    try { document = JSON.parse(source); } catch { fail('Design-language source is not valid JSON'); }
-    validate(document, true);
-    if (document.schemaVersion !== '0.14') fail('The HTML design-language publisher requires saved schema 0.14 data');
-    const layoutRecord = loadReviewLayout(sourcePath, options.layoutFile);
-    const html = renderDesignLanguageHtml(document, {...options, layout: layoutRecord.layout});
-    const outputs = new Map([
-        ['design-language/index.html', html],
-        ...buildDesignLanguageAssetOutputs(document, layoutRecord.layout),
-    ]);
-    const reportPath = options.reportPath ?? 'render-report.json';
-    if (!/^(?:design-language\/)?render-report\.json$/.test(reportPath)) fail('Unsupported design-language report path');
-    const files = [...outputs.keys(), reportPath];
-    const report = {
-        generator: GENERATOR,
-        rendererVersion: VERSION,
-        source: {
-            id: document.id,
-            schemaVersion: document.schemaVersion,
-            revision: document.revision,
-            sha256: sourceHash(source),
-            label: options.sourceLabel ?? path.basename(sourcePath),
-            layout: {
-                version: layoutRecord.layout.version,
-                sha256: sourceHash(layoutRecord.source),
-                label: options.layoutLabel ?? path.basename(layoutRecord.layoutPath),
-            },
-        },
-        designState: document.status ?? 'accepted',
-        outcome: document.unspecifiedRequirements.length || document.openQuestions.length ? 'partial' : 'complete',
-        counts: {
-            paletteMembers: document.palette.members.length,
-            themeRoles: document.theme.roles.length,
-            typographyRoles: document.typography.roles.length,
-            standardComponents: componentInventory(document).length,
-            icons: document.icons.length,
-            missingRequirements: document.unspecifiedRequirements.length,
-            openQuestions: document.openQuestions.length,
-        },
-        files,
-    };
-    outputs.set(reportPath, `${JSON.stringify(report, null, 2)}\n`);
-    publishFiles(outputRoot, outputs);
-    return {...report, outputRoot: path.resolve(outputRoot)};
+	const sourcePath = path.resolve(sourceFile);
+	const source = fs.readFileSync(sourcePath, 'utf8');
+	let document;
+	try {
+		document = JSON.parse(source);
+	} catch {
+		fail('Design-language source is not valid JSON');
+	}
+	validate(document, true);
+	if (document.schemaVersion !== '0.14') fail('The HTML design-language publisher requires saved schema 0.14 data');
+	const layoutRecord = loadReviewLayout(sourcePath, options.layoutFile);
+	const html = renderDesignLanguageHtml(document, {...options, layout: layoutRecord.layout});
+	const outputs = new Map([
+		['design-language/index.html', html],
+		...buildDesignLanguageAssetOutputs(document, layoutRecord.layout),
+	]);
+	const reportPath = options.reportPath ?? 'render-report.json';
+	if (!/^(?:design-language\/)?render-report\.json$/.test(reportPath))
+		fail('Unsupported design-language report path');
+	const files = [...outputs.keys(), reportPath];
+	const report = {
+		generator: GENERATOR,
+		rendererVersion: VERSION,
+		source: {
+			id: document.id,
+			schemaVersion: document.schemaVersion,
+			revision: document.revision,
+			sha256: sourceHash(source),
+			label: options.sourceLabel ?? path.basename(sourcePath),
+			layout: {
+				version: layoutRecord.layout.version,
+				sha256: sourceHash(layoutRecord.source),
+				label: options.layoutLabel ?? path.basename(layoutRecord.layoutPath),
+			},
+		},
+		designState: document.status ?? 'accepted',
+		outcome: document.unspecifiedRequirements.length || document.openQuestions.length ? 'partial' : 'complete',
+		counts: {
+			paletteMembers: document.palette.members.length,
+			themeRoles: document.theme.roles.length,
+			typographyRoles: document.typography.roles.length,
+			standardComponents: componentInventory(document).length,
+			icons: document.icons.length,
+			missingRequirements: document.unspecifiedRequirements.length,
+			openQuestions: document.openQuestions.length,
+		},
+		files,
+	};
+	outputs.set(reportPath, `${JSON.stringify(report, null, 2)}\n`);
+	publishFiles(outputRoot, outputs);
+	return {...report, outputRoot: path.resolve(outputRoot)};
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-    try {
-        const [sourceFile, outputRoot, ...args] = process.argv.slice(2);
-        if (!sourceFile || !outputRoot) fail('Usage: node design-language-html.mjs <design-language.json> <output-root> [--layout <review-layout.json>] [--title <title>] [--source-label <label>] [--layout-label <label>] [--site-navigation true] [--report-path <path>]');
-        const options = {};
-        for (let index = 0; index < args.length; index += 2) {
-            const flag = args[index];
-            const value = args[index + 1];
-            if (!value) fail(`Missing value for ${flag}`);
-            if (flag === '--title') options.title = value;
-            else if (flag === '--source-label') options.sourceLabel = value;
-            else if (flag === '--layout') options.layoutFile = value;
-            else if (flag === '--layout-label') options.layoutLabel = value;
-            else if (flag === '--site-navigation' && value === 'true') options.siteNavigation = true;
-            else if (flag === '--report-path') options.reportPath = value;
-            else fail(`Unknown option: ${flag}`);
-        }
-        process.stdout.write(`${JSON.stringify(publishDesignLanguageHtml(sourceFile, outputRoot, options), null, 2)}\n`);
-    } catch (error) {
-        process.stderr.write(`${error.message}\n`);
-        process.exitCode = 1;
-    }
+	try {
+		const [sourceFile, outputRoot, ...args] = process.argv.slice(2);
+		if (!sourceFile || !outputRoot)
+			fail(
+				'Usage: node design-language-html.mjs <design-language.json> <output-root> [--layout <review-layout.json>] [--title <title>] [--source-label <label>] [--layout-label <label>] [--site-navigation true] [--report-path <path>]',
+			);
+		const options = {};
+		for (let index = 0; index < args.length; index += 2) {
+			const flag = args[index];
+			const value = args[index + 1];
+			if (!value) fail(`Missing value for ${flag}`);
+			if (flag === '--title') options.title = value;
+			else if (flag === '--source-label') options.sourceLabel = value;
+			else if (flag === '--layout') options.layoutFile = value;
+			else if (flag === '--layout-label') options.layoutLabel = value;
+			else if (flag === '--site-navigation' && value === 'true') options.siteNavigation = true;
+			else if (flag === '--report-path') options.reportPath = value;
+			else fail(`Unknown option: ${flag}`);
+		}
+		process.stdout.write(
+			`${JSON.stringify(publishDesignLanguageHtml(sourceFile, outputRoot, options), null, 2)}\n`,
+		);
+	} catch (error) {
+		process.stderr.write(`${error.message}\n`);
+		process.exitCode = 1;
+	}
 }

@@ -1,6 +1,5 @@
 # Application Scaffolding
 
-
 This topic records the design and implementation of the global `initialize-project` and `create-app` skills. Polylith 1.3.0 completed the release gate for the refined deployment-entry contract used by both workflows.
 
 ## Authority And Release Gate

@@ -6,17 +6,17 @@ Scope: owner-requested creation of the model agent's assessment part. Authoring-
 
 Reviewed the ten existing [model guidance rules](coding-guidance.md#model), model ownership, shared specialist response and isolated evaluation conditions. Canonical documents retain authority; the role loads applicable task obligations rather than a universal server/database rule set.
 
-| Source | Role behavior and handoff | Relevant case / downstream concern |
-| --- | --- | --- |
-| DOCUMENTATION mapping/overlay governance | Resolve actual paths; report missing applicability rather than claim compliance. | JSON applicability; architecture review. |
-| REMVC-006, 012 through 020 | Preserve model authority, proportionate capabilities and controller/view boundaries. | State classification; architecture/contracts. |
-| CODE-CONVENTIONS-017/018 | Validate genuine ingress; no invented canonical values or recovery policy. | Missing source/malformed document; contracts/privacy. |
-| DATA-PERSISTENCE-001/002 | Database obligations depend on applicability; JSON does not imply database infrastructure. | Local project; architecture/privacy. |
-| TYPES-003/007; CODE-CONVENTIONS-019 | Single current contract and explicit consumer impact; no unsolicited compatibility layer. | Changed service result; contracts/verification. |
-| TESTING-042 | Separate isolated behavior from real integration evidence; no test authorship. | Contract and lifecycle cases; verification. |
+| Source                                           | Role behavior and handoff                                                                                                          | Relevant case / downstream concern                      |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| DOCUMENTATION mapping/overlay governance         | Resolve actual paths; report missing applicability rather than claim compliance.                                                   | JSON applicability; architecture review.                |
+| REMVC-006, 012 through 020                       | Preserve model authority, proportionate capabilities and controller/view boundaries.                                               | State classification; architecture/contracts.           |
+| CODE-CONVENTIONS-017/018                         | Validate genuine ingress; no invented canonical values or recovery policy.                                                         | Missing source/malformed document; contracts/privacy.   |
+| DATA-PERSISTENCE-001/002                         | Database obligations depend on applicability; JSON does not imply database infrastructure.                                         | Local project; architecture/privacy.                    |
+| TYPES-003/007; CODE-CONVENTIONS-019              | Single current contract and explicit consumer impact; no unsolicited compatibility layer.                                          | Changed service result; contracts/verification.         |
+| TESTING-042                                      | Separate isolated behavior from real integration evidence; no test authorship.                                                     | Contract and lifecycle cases; verification.             |
 | TESTING-043 through 049 and deferred topic notes | Flag shutdown wording/framework mismatch and newer test-seam guidance versus deferred decision; do not invent policy or implement. | Collaborator/lifecycle case; architecture/verification. |
-| Owner/UX/system boundaries | Return missing product semantics and unverified guarantees to their owners. | Shared edits, frame semantics, cancellation. |
-| Assessment/evaluation and efficiency decisions | Named read-only role, no delegation or implementation transition; concise evidence-bearing handoff. | Scope conflict/no-work cases. |
+| Owner/UX/system boundaries                       | Return missing product semantics and unverified guarantees to their owners.                                                        | Shared edits, frame semantics, cancellation.            |
+| Assessment/evaluation and efficiency decisions   | Named read-only role, no delegation or implementation transition; concise evidence-bearing handoff.                                | Scope conflict/no-work cases.                           |
 
 Sources: [documentation](../../documentation/standards/documentation.md), [ReMVC](../../documentation/standards/remvc.md), [code conventions](../../documentation/standards/code-conventions.md), [persistence](../../documentation/standards/data-persistence.md), [types](../../documentation/standards/types.md), [testing](../../documentation/standards/testing.md), [role design](design.md#model-agent).
 

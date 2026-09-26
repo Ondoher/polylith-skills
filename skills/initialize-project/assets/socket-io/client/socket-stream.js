@@ -80,7 +80,10 @@ export class SocketStreamService extends Service {
 	/** Called by outgoing operations to wrap application data without modifying it. @param {unknown} data - The feature-owned payload. @returns {SocketEnvelope} - The transport envelope. */
 	createEnvelope(data) {
 		const system = this.getSystemData();
-		if (!isRecord(system)) { console.error('Invalid Socket.IO outbound system metadata.'); return null; }
+		if (!isRecord(system)) {
+			console.error('Invalid Socket.IO outbound system metadata.');
+			return null;
+		}
 		return {data, system};
 	}
 
@@ -166,7 +169,10 @@ export class SocketStreamService extends Service {
 	async request(name, event, data, {timeout = 5000} = {}) {
 		const entry = this.getOrCreateNamespace(name);
 		if (entry.socket.connected === false) return failure('socket.disconnected');
-		if (!Number.isFinite(timeout) || timeout <= 0) { console.error(`Invalid Socket.IO request timeout: ${timeout}`); return failure('socket.invalid_request'); }
+		if (!Number.isFinite(timeout) || timeout <= 0) {
+			console.error(`Invalid Socket.IO request timeout: ${timeout}`);
+			return failure('socket.invalid_request');
+		}
 		const envelope = this.createEnvelope(data);
 		if (!envelope) return failure('socket.invalid_request');
 		try {
@@ -231,7 +237,12 @@ function isResponse(value) {
 function isReason(value) {
 	if (!isRecord(value) || typeof value.phrase !== 'string') return false;
 	if (value.replacements === undefined) return true;
-	return isRecord(value.replacements) && Object.values(value.replacements).every((item) => typeof item === 'string' || typeof item === 'number' && Number.isFinite(item));
+	return (
+		isRecord(value.replacements) &&
+		Object.values(value.replacements).every(
+			(item) => typeof item === 'string' || (typeof item === 'number' && Number.isFinite(item)),
+		)
+	);
 }
 
 /** Called by request handling to create a localizable transport failure. @param {string} phrase - The failure phrase key. @returns {SocketFailure} - The failure envelope. */

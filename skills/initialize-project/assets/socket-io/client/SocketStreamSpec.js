@@ -56,8 +56,12 @@ describe('client socket stream', () => {
 		expect(stream.send('documents', 'find', {})).toBeFalse();
 		expect((await stream.request('documents', 'find', {})).reason.phrase).toBe('socket.invalid_request');
 		stream.getSystemData.and.returnValue({});
-		expect((await stream.request('documents', 'find', {}, {timeout: 0})).reason.phrase).toBe('socket.invalid_request');
-		expect((await stream.request('documents', 'find', {}, {timeout: Infinity})).reason.phrase).toBe('socket.invalid_request');
+		expect((await stream.request('documents', 'find', {}, {timeout: 0})).reason.phrase).toBe(
+			'socket.invalid_request',
+		);
+		expect((await stream.request('documents', 'find', {}, {timeout: Infinity})).reason.phrase).toBe(
+			'socket.invalid_request',
+		);
 		expect(console.error).toHaveBeenCalled();
 	});
 
@@ -99,7 +103,19 @@ describe('client socket stream', () => {
 	it('normalizes invalid, disconnected, and timed-out request results', async () => {
 		stream.namespace('documents');
 		spyOn(console, 'error');
-		for (const invalid of [null, [], {}, {success: 'yes', system: {}}, {success: true, system: {}}, {success: false, reason: null, system: {}}, {success: false, reason: {}, system: {}}, {success: false, reason: {phrase: 7}, system: {}}, {success: false, reason: {phrase: 'bad', replacements: []}, system: {}}, {success: false, reason: {phrase: 'bad', replacements: {value: Infinity}}, system: {}}, {success: true, data: {}, system: []}]) {
+		for (const invalid of [
+			null,
+			[],
+			{},
+			{success: 'yes', system: {}},
+			{success: true, system: {}},
+			{success: false, reason: null, system: {}},
+			{success: false, reason: {}, system: {}},
+			{success: false, reason: {phrase: 7}, system: {}},
+			{success: false, reason: {phrase: 'bad', replacements: []}, system: {}},
+			{success: false, reason: {phrase: 'bad', replacements: {value: Infinity}}, system: {}},
+			{success: true, data: {}, system: []},
+		]) {
 			sockets[0].acknowledgement = invalid;
 			expect((await stream.request('documents', 'find', {})).reason.phrase).toBe('socket.invalid_response');
 		}
@@ -110,7 +126,10 @@ describe('client socket stream', () => {
 		sockets[0].acknowledgement = new Error('timeout');
 		spyOn(console, 'warn');
 		expect((await stream.request('documents', 'find', {})).reason.phrase).toBe('socket.timeout');
-		sockets[0].emitWithAck = async () => { sockets[0].connected = false; throw new Error('closed'); };
+		sockets[0].emitWithAck = async () => {
+			sockets[0].connected = false;
+			throw new Error('closed');
+		};
 		expect((await stream.request('documents', 'find', {})).reason.phrase).toBe('socket.disconnected');
 	});
 

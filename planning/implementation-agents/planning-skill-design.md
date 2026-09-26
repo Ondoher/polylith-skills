@@ -1,6 +1,5 @@
 # Iterative Design Planning Skill
 
-
 Status: implemented refinement workflow. Final PRD publication belongs to generate-prd; implementation planning and coding remain deferred.
 
 ## Purpose And Inputs
@@ -45,15 +44,15 @@ Selected PRD and organized product-description content is accepted working desig
 
 ## Specialist Routing
 
-| Need | Candidate consultation |
-| --- | --- |
-| User tasks, surfaces, components, behavior and recovery | UX planner |
-| App-wide visual foundations, concrete UI and accessibility design | UI designer |
-| Host/runtime, storage, trust and major technical capabilities | System architect |
-| Domain meaning, state authority, invariants and operations | Model assessment |
-| Workflow coordination, sessions, races and resource ownership | Controller assessment |
-| React presentation feasibility and implementation handoff gaps | Installed view assessment under its read-only contract |
-| Structural integration or verification feasibility | Installed Polylith architect assessment; test specialists remain deferred |
+| Need                                                              | Candidate consultation                                                    |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| User tasks, surfaces, components, behavior and recovery           | UX planner                                                                |
+| App-wide visual foundations, concrete UI and accessibility design | UI designer                                                               |
+| Host/runtime, storage, trust and major technical capabilities     | System architect                                                          |
+| Domain meaning, state authority, invariants and operations        | Model assessment                                                          |
+| Workflow coordination, sessions, races and resource ownership     | Controller assessment                                                     |
+| React presentation feasibility and implementation handoff gaps    | Installed view assessment under its read-only contract                    |
+| Structural integration or verification feasibility                | Installed Polylith architect assessment; test specialists remain deferred |
 
 A specialist reports only its assigned questions and their implications. The skill owns coordination and the conversation, not the expertise of every role. It may return useful planning without a coding handoff. Prior accepted UX, visual foundations and system decisions are reused, with affected portions revisited when inputs change.
 

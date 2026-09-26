@@ -40,7 +40,7 @@ They are not a required schema: downstream work cannot assume that a particular
 heading, order, or grouping will exist on the next input, and absence alone does
 not imply that a capability is excluded.
 
-## Unstructured input and full synthesis
+## Unstructured input and complete interpretation
 
 Treat every human input as if it were the first input to the skill. It may be a
 complete description, a sentence, disconnected notes, or a direction such as
@@ -54,20 +54,22 @@ scope or relationship. Interpret those cues normally, while remaining able to
 reach the same understanding when the next input has no such structure or uses
 a different organization.
 
-At the start of every invocation, reconstruct the current product understanding
-from the complete durable product description and the latest human input. Use
+At the start of every invocation, check the durable source and latest human
+input against the current product model. For changed source, reconstruct product
+understanding from the complete description once; unchanged exact source can
+reuse its verified model. Specialists consume that structured authority. Use
 the PRD and supporting evidence where relevant, but do not rely on remembered
 conversation structure, earlier prompt positions, or an incremental parser.
 Treat a clear latest human statement as a correction or addition to the durable
 description. If its relationship to existing content is genuinely ambiguous,
 record the ambiguity or ask only when it blocks useful synthesis.
 
-Produce a newly coherent, well-organized product description after every
-update. Choose headings and grouping from the product capabilities and UX flow
-present at that moment. Reorder, combine, split, or rename sections freely when
-that makes the document easier to understand. Preserve human meaning,
-constraints, terminology, and unresolved questions; do not preserve formatting,
-section boundaries, or wording merely for structural stability.
+Keep the description coherent and readable after an update. Consolidate selected
+product/UX decisions into one writeback before independent review; preserve
+existing prose when its meaning remains current. Reorder, combine, split or
+rename sections when that improves comprehension or the owner asks, not as a
+mandatory pass between specialists. Preserve human meaning, constraints,
+terminology and unresolved questions. See [the stage boundaries](refinement-cycle.md).
 
 A directional visual change can become concrete editable defaults. For example,
 “tighten the whitespace and reduce the vertical size of the controls” can lead
@@ -134,7 +136,7 @@ not create locks from confidence, completeness, or apparent owner satisfaction.
 
 ## Product requirements document
 
-The PRD is the design skill's generated, human-reviewable static HTML result. It expands the
+The PRD is `generate-prd`'s generated, human-reviewable static HTML result. It expands the
 product description through UX and UI planning. It may use multiple linked
 pages, tables, structured records, inline surface and component comps, local vector assets, and provenance because
 a human reviews it but is not expected to author all of it by hand. Content
@@ -143,11 +145,10 @@ does not need an accepted status pill. Clearly label unselected alternatives,
 missing requirements, and unresolved questions where they remain relevant.
 
 The PRD can contain feature groupings, flows, surfaces, design language,
-components, acceptance details, alternatives, and product or UX questions. Its
-main review path is breadth-first: application shell, navigation, workspace and
-activity areas first; then peer capabilities, peer surfaces, workflows,
-component details, and questions. This gives the reader the whole application
-map before any one feature is explored deeply. A
+components, acceptance details, alternatives, and product or UX questions. The
+document-structure agent inventories validated meaning and selects the reader
+hierarchy and page breaks during `generate-prd`. Refinement does not prepare a
+competing publication outline. A
 selected agent direction is an accepted working decision; `proposed` is reserved
 for an unselected candidate retained for comparison, and `unresolved` for a gap
 without a usable choice. `locked` identifies an explicitly frozen design and is
@@ -165,20 +166,20 @@ requirements. Changing a design default updates affected specimens and comps;
 it does not require closing an open question unless the choice also controls
 product behavior.
 
-Refer to the generated `prd/` static site as the PRD even when only an early slice, such
-as design language, currently exists. `prd/index.html` is the review entry point and
-links the generated sections. No Markdown or general SVG scene/specimen PRD is maintained.
+The published collection lives under `documents/<name>/<selected-document>/`.
+Bounded refinement inspection pages and intermediate contexts are design
+evidence; final publication belongs to `generate-prd` and its structure plan.
 
 ## Refinement cycle
 
-Read the whole product description as natural language. Incorporate the latest
-human input first. Re-synthesize the complete organized description, refine the
-affected capabilities and flows, and persist a new canonical product model when
-the meaning changed. Bring accepted product decisions and clarified questions
-back into the product description. Preserve unaffected meaning, while allowing
-broad structural and editorial changes when they produce a clearer current
-document. Resolve a PRD context from the committed snapshot and hand it to
-`generate-prd`; do not reinterpret the description during publication.
+Interpret the complete changed description as natural language, incorporating
+the latest human input. Refine affected capabilities and flows from the validated
+structured model. Consolidate selected product decisions into one description
+writeback before independent UX review; format and bind the final bytes, updating
+the model and affected UX when needed. Unchanged exact source reuses its model.
+Preserve unaffected meaning and avoid repeated editorial passes. Follow
+[the stage contracts](refinement-cycle.md), then resolve a PRD context from the
+committed snapshot for `generate-prd` without reinterpreting prose in publication.
 
 For code generation, treat the product description as the root product input
 and current accepted generated design artifacts as its elaboration. A conflicting

@@ -38,33 +38,33 @@ invalidation than its declared dependencies provide.
 The payload is the closed object `{schemaVersion, evidenceDependencies, records}` with version `1.0`.
 Each record has exactly these members:
 
-| Member | Contract |
-| --- | --- |
-| `id` | Stable lowercase kebab-case ID, unique across the product's technical artifacts. Keep it across revisions; do not recycle superseded IDs. |
-| `kind` | `fact`, `boundary`, `flow`, `contract`, `decision`, or `gap`. |
-| `title`, `summary` | Nonempty bounded text; concise enough for a guide. |
-| `owner` | Responsible domain from the existing product-owner enum. |
-| `scopeRefs` | Nonempty product-record IDs, each exactly bound in the artifact envelope. |
-| `productRefs` | Product requirements and gaps used by this record; subset of the envelope's record dependencies. Includes `scopeRefs`. |
-| `artifactRefs` | Required UX or other artifact IDs, each exactly bound in the envelope. Empty when none are needed. |
-| `dependsOn` | Required technical record IDs. Cross-artifact use also requires an exact artifact dependency. |
-| `evidenceRefs` | Evidence IDs selected into this context; no implicit source claims. |
-| `status` | Kind-specific authorial status below; never a computed freshness flag. |
-| `details` | Closed kind-specific object below. |
+| Member             | Contract                                                                                                                                  |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`               | Stable lowercase kebab-case ID, unique across the product's technical artifacts. Keep it across revisions; do not recycle superseded IDs. |
+| `kind`             | `fact`, `boundary`, `flow`, `contract`, `decision`, or `gap`.                                                                             |
+| `title`, `summary` | Nonempty bounded text; concise enough for a guide.                                                                                        |
+| `owner`            | Responsible domain from the existing product-owner enum.                                                                                  |
+| `scopeRefs`        | Nonempty product-record IDs, each exactly bound in the artifact envelope.                                                                 |
+| `productRefs`      | Product requirements and gaps used by this record; subset of the envelope's record dependencies. Includes `scopeRefs`.                    |
+| `artifactRefs`     | Required UX or other artifact IDs, each exactly bound in the envelope. Empty when none are needed.                                        |
+| `dependsOn`        | Required technical record IDs. Cross-artifact use also requires an exact artifact dependency.                                             |
+| `evidenceRefs`     | Evidence IDs selected into this context; no implicit source claims.                                                                       |
+| `status`           | Kind-specific authorial status below; never a computed freshness flag.                                                                    |
+| `details`          | Closed kind-specific object below.                                                                                                        |
 
 All listed members are required, including empty arrays. Use existing ID, text,
 array, depth and safe-JSON bounds. Reject unknown fields rather than retaining
 extension blobs. Arrays representing sets are unique and sorted by ID. Steps,
 alternatives, and explanatory lists retain deliberate presentation order.
 
-| Kind | Status | Required `details` members |
-| --- | --- | --- |
-| `fact` | `observed` | `claim`, `limits`. At least one repository evidence reference. Claims report inspected code, not future guarantees. |
-| `boundary` | `accepted`, `conditional`, `superseded` | `responsibility`, `consumers`, `exchanges`, `lifecycle`, `failureBehavior`, `decisionRefs`. Decision references are also `dependsOn` references. |
-| `flow` | `accepted`, `conditional`, `superseded` | `trigger`, `preconditions`, `steps`, `success`, `failure`, `cancellation`, `retry`, `guarantees`, `limits`, `verification`, `decisionRefs`. Each step is `{ownerRef, action, result}`; the owner names a boundary in `dependsOn`. |
-| `contract` | `accepted`, `conditional`, `superseded` | `ownerRef`, `participantRefs`, `flowRefs`, `input`, `result`, `invariants`, `failure`, `lifecycle`. Owner and participants name boundaries; flow references identify where the contract is exercised. All are also `dependsOn` references. |
-| `decision` | `accepted`, `proposed`, `conditional`, `superseded` | `context`, `choice`, `alternatives`, `consequences`, `authority`, `supersedes`. Alternatives are `{option, disposition, reason}` with disposition `declined` or `unselected`. |
-| `gap` | `unresolved`, `resolved` | `question`, `category`, `affectedRefs`, `resolutionCriteria`, `resolutionRefs`. Category is `product`, `technical`, or `evidence`. Resolution references are also `dependsOn`; empty while unresolved. |
+| Kind       | Status                                              | Required `details` members                                                                                                                                                                                                                 |
+| ---------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `fact`     | `observed`                                          | `claim`, `limits`. At least one repository evidence reference. Claims report inspected code, not future guarantees.                                                                                                                        |
+| `boundary` | `accepted`, `conditional`, `superseded`             | `responsibility`, `consumers`, `exchanges`, `lifecycle`, `failureBehavior`, `decisionRefs`. Decision references are also `dependsOn` references.                                                                                           |
+| `flow`     | `accepted`, `conditional`, `superseded`             | `trigger`, `preconditions`, `steps`, `success`, `failure`, `cancellation`, `retry`, `guarantees`, `limits`, `verification`, `decisionRefs`. Each step is `{ownerRef, action, result}`; the owner names a boundary in `dependsOn`.          |
+| `contract` | `accepted`, `conditional`, `superseded`             | `ownerRef`, `participantRefs`, `flowRefs`, `input`, `result`, `invariants`, `failure`, `lifecycle`. Owner and participants name boundaries; flow references identify where the contract is exercised. All are also `dependsOn` references. |
+| `decision` | `accepted`, `proposed`, `conditional`, `superseded` | `context`, `choice`, `alternatives`, `consequences`, `authority`, `supersedes`. Alternatives are `{option, disposition, reason}` with disposition `declined` or `unselected`.                                                              |
+| `gap`      | `unresolved`, `resolved`                            | `question`, `category`, `affectedRefs`, `resolutionCriteria`, `resolutionRefs`. Category is `product`, `technical`, or `evidence`. Resolution references are also `dependsOn`; empty while unresolved.                                     |
 
 Text fields in `details` are strings except `consumers`, `exchanges`,
 `preconditions`, `success`, `failure`, `guarantees`, `limits` for flows,
@@ -138,13 +138,13 @@ the full inspected state; scoped observation bindings determine claim freshness.
 
 Each evidence item is `{id, kind, summary, binding}`. Its closed binding is:
 
-| Kind | Binding |
-| --- | --- |
-| `repository` | `{baselineId, baselineSha256, paths, locator, observationSha256}`; paths reference baseline observations; locator names symbols or a search/inventory. Hash the selected sorted observations. |
+| Kind         | Binding                                                                                                                                                                                                                                                                 |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `repository` | `{baselineId, baselineSha256, paths, locator, observationSha256}`; paths reference baseline observations; locator names symbols or a search/inventory. Hash the selected sorted observations.                                                                           |
 | `assessment` | `{role, question, reportSha256, inputRefs, disposition, rationale}`; role identifies the consulted specialist; disposition is `accepted`, `conditional`, or `declined`. Input references resolve to selected records/evidence. Hash the preserved report's exact bytes. |
-| `authority` | `{actor, scopeRefs, instruction, receiptSha256}`; actor `owner` or `parent`; explicit instruction or parent reconciliation under existing delegated scope. Hash exact preserved receipt bytes. |
-| `standard` | `{standardId, section, sha256, applicabilitySha256}`; bind canonical bytes plus selected manifest/overlay inputs for the relevant paths. |
-| `research` | `{url, retrievedAt, claim, sourceSha256, recheckWhen}`; bind preserved primary-source evidence, not merely a mutable URL. |
+| `authority`  | `{actor, scopeRefs, instruction, receiptSha256}`; actor `owner` or `parent`; explicit instruction or parent reconciliation under existing delegated scope. Hash exact preserved receipt bytes.                                                                          |
+| `standard`   | `{standardId, section, sha256, applicabilitySha256}`; bind canonical bytes plus selected manifest/overlay inputs for the relevant paths.                                                                                                                                |
+| `research`   | `{url, retrievedAt, claim, sourceSha256, recheckWhen}`; bind preserved primary-source evidence, not merely a mutable URL.                                                                                                                                               |
 
 The context embeds sufficient summaries and preserved report/receipt excerpts
 for detached interpretation; it does not embed source code, credentials, raw

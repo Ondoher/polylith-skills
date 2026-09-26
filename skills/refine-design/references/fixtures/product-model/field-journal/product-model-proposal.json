@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "2.0",
   "kind": "product-model-proposal",
   "id": "field-journal",
   "name": "Field Journal",
@@ -59,8 +59,6 @@
     {
       "id": "create-observations",
       "name": "Create observations",
-      "description": "Create a dated observation with a title and notes.",
-      "outcome": "The researcher has a durable observation associated with its date.",
       "status": "accepted",
       "owner": "product",
       "consumerDomains": [
@@ -78,13 +76,12 @@
         "sourceClaimRefs": [
           "claim-create-observations"
         ]
-      }
+      },
+      "summary": "Create a dated observation with a title and notes."
     },
     {
       "id": "organize-expeditions",
       "name": "Organize expeditions",
-      "description": "Group observations into named expeditions.",
-      "outcome": "The researcher can review observations in the context of an expedition.",
       "status": "accepted",
       "owner": "product",
       "consumerDomains": [
@@ -102,13 +99,12 @@
         "sourceClaimRefs": [
           "claim-organize-expeditions"
         ]
-      }
+      },
+      "summary": "Group observations into named expeditions."
     },
     {
       "id": "review-glossary",
       "name": "Review glossary",
-      "description": "Review an alphabetical glossary of terms used in observations.",
-      "outcome": "The researcher can find the meaning and usage of a term.",
       "status": "accepted",
       "owner": "product",
       "consumerDomains": [
@@ -125,7 +121,8 @@
         "sourceClaimRefs": [
           "claim-review-glossary"
         ]
-      }
+      },
+      "summary": "Review an alphabetical glossary of terms used in observations."
     }
   ],
   "gaps": [
@@ -143,14 +140,14 @@
         "technical-documentation",
         "implementation-planning"
       ],
-      "capabilityRefs": [
-        "organize-expeditions"
-      ],
       "provenance": {
         "sourceClaimRefs": [
           "claim-expedition-sharing"
         ]
-      }
+      },
+      "affectedRecordRefs": [
+        "organize-expeditions"
+      ]
     }
   ],
   "sourceClaims": [
@@ -181,7 +178,9 @@
       "summary": "The source requires dated observations with titles and notes.",
       "disposition": "incorporated",
       "recordRefs": [
-        "create-observations"
+        "create-observations",
+        "create-observations-goal",
+        "create-observations-requirement"
       ]
     },
     {
@@ -191,7 +190,9 @@
       "summary": "The source requires organizing observations into named expeditions.",
       "disposition": "incorporated",
       "recordRefs": [
-        "organize-expeditions"
+        "organize-expeditions",
+        "organize-expeditions-goal",
+        "organize-expeditions-requirement"
       ]
     },
     {
@@ -201,7 +202,9 @@
       "summary": "The source requires an alphabetical glossary of observation terms.",
       "disposition": "incorporated",
       "recordRefs": [
-        "review-glossary"
+        "review-glossary",
+        "review-glossary-goal",
+        "review-glossary-requirement"
       ]
     },
     {
@@ -251,7 +254,196 @@
       "kind": "new",
       "previousRef": null,
       "supersedesRefs": []
+    },
+    {
+      "recordRef": "create-observations-goal",
+      "kind": "new",
+      "previousRef": null,
+      "supersedesRefs": []
+    },
+    {
+      "recordRef": "create-observations-requirement",
+      "kind": "new",
+      "previousRef": null,
+      "supersedesRefs": []
+    },
+    {
+      "recordRef": "organize-expeditions-goal",
+      "kind": "new",
+      "previousRef": null,
+      "supersedesRefs": []
+    },
+    {
+      "recordRef": "organize-expeditions-requirement",
+      "kind": "new",
+      "previousRef": null,
+      "supersedesRefs": []
+    },
+    {
+      "recordRef": "review-glossary-goal",
+      "kind": "new",
+      "previousRef": null,
+      "supersedesRefs": []
+    },
+    {
+      "recordRef": "review-glossary-requirement",
+      "kind": "new",
+      "previousRef": null,
+      "supersedesRefs": []
     }
   ],
-  "sourceClaimLineage": []
+  "sourceClaimLineage": [],
+  "goals": [
+    {
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "system-architecture",
+        "technical-documentation",
+        "implementation-planning"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-create-observations"
+        ]
+      },
+      "id": "create-observations-goal",
+      "statement": "The researcher has a durable observation associated with its date.",
+      "desiredOutcome": "The researcher has a durable observation associated with its date.",
+      "capabilityRefs": [
+        "create-observations"
+      ],
+      "userRefs": [
+        "field-researcher"
+      ]
+    },
+    {
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "system-architecture",
+        "technical-documentation",
+        "implementation-planning"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-organize-expeditions"
+        ]
+      },
+      "id": "organize-expeditions-goal",
+      "statement": "The researcher can review observations in the context of an expedition.",
+      "desiredOutcome": "The researcher can review observations in the context of an expedition.",
+      "capabilityRefs": [
+        "organize-expeditions"
+      ],
+      "userRefs": [
+        "field-researcher"
+      ]
+    },
+    {
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "technical-documentation",
+        "implementation-planning"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-review-glossary"
+        ]
+      },
+      "id": "review-glossary-goal",
+      "statement": "The researcher can find the meaning and usage of a term.",
+      "desiredOutcome": "The researcher can find the meaning and usage of a term.",
+      "capabilityRefs": [
+        "review-glossary"
+      ],
+      "userRefs": [
+        "field-researcher"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "system-architecture",
+        "technical-documentation",
+        "implementation-planning"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-create-observations"
+        ]
+      },
+      "id": "create-observations-requirement",
+      "kind": "behavior",
+      "statement": "Create a dated observation with a title and notes.",
+      "capabilityRefs": [
+        "create-observations"
+      ],
+      "goalRefs": [
+        "create-observations-goal"
+      ]
+    },
+    {
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "system-architecture",
+        "technical-documentation",
+        "implementation-planning"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-organize-expeditions"
+        ]
+      },
+      "id": "organize-expeditions-requirement",
+      "kind": "behavior",
+      "statement": "Group observations into named expeditions.",
+      "capabilityRefs": [
+        "organize-expeditions"
+      ],
+      "goalRefs": [
+        "organize-expeditions-goal"
+      ]
+    },
+    {
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "technical-documentation",
+        "implementation-planning"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-review-glossary"
+        ]
+      },
+      "id": "review-glossary-requirement",
+      "kind": "behavior",
+      "statement": "Review an alphabetical glossary of terms used in observations.",
+      "capabilityRefs": [
+        "review-glossary"
+      ],
+      "goalRefs": [
+        "review-glossary-goal"
+      ]
+    }
+  ],
+  "rules": []
 }

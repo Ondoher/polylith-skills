@@ -17,17 +17,17 @@ These are organizational examples, not a universal required document template or
 
 Owner-accepted scope for this project (2026-09-17); the living design can be refined through later explicit decisions:
 
-| Area | Include in the basic document |
-| --- | --- |
-| Visual direction | Brief identity, tone, density and guiding visual choices |
-| Typography | Families, roles, sizes, weights, line heights; representative text |
-| Color/theme | Brand palette, semantic mappings, surfaces, text, borders and state colors |
-| Spacing/layout | Scale, padding/gaps, alignment, Grid/Flex conventions and resizing principles |
-| Shape/surfaces | Border weights, radii and relevant elevation/surface distinctions |
-| Iconography | Source/style/size conventions and the already-agreed central required-icon inventory |
-| Shared states | Representative focus, hover/pressed, disabled, selected and error treatment where relevant |
-| Basic component examples | A small selection that demonstrates the shared visual decisions |
-| Decisions/gaps | Accepted versus proposed values, explicit defaults, missing requirements and final open questions |
+| Area                     | Include in the basic document                                                                     |
+| ------------------------ | ------------------------------------------------------------------------------------------------- |
+| Visual direction         | Brief identity, tone, density and guiding visual choices                                          |
+| Typography               | Families, roles, sizes, weights, line heights; representative text                                |
+| Color/theme              | Brand palette, semantic mappings, surfaces, text, borders and state colors                        |
+| Spacing/layout           | Scale, padding/gaps, alignment, Grid/Flex conventions and resizing principles                     |
+| Shape/surfaces           | Border weights, radii and relevant elevation/surface distinctions                                 |
+| Iconography              | Source/style/size conventions and the already-agreed central required-icon inventory              |
+| Shared states            | Representative focus, hover/pressed, disabled, selected and error treatment where relevant        |
+| Basic component examples | A small selection that demonstrates the shared visual decisions                                   |
+| Decisions/gaps           | Accepted versus proposed values, explicit defaults, missing requirements and final open questions |
 
 Motion, illustration, logos and detailed content style can be added when relevant; they should not be obligatory empty sections.
 

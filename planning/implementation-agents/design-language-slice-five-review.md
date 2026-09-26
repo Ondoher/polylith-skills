@@ -24,7 +24,7 @@ Skill validation and UI-role TOML parsing passed. Browser image-embedding inspec
 
 ## Review Artifact
 
- See [the installed contract](../../skills/refine-design/references/design-language.md).
+See [the installed contract](../../skills/refine-design/references/design-language.md).
 
 ## Limits And Next Slice
 
