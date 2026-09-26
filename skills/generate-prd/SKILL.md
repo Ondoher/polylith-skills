@@ -1,40 +1,65 @@
 ---
 name: generate-prd
-description: Publish a deterministic static HTML product requirements document from a validated persisted PRD context. Use after product refinement has produced the context; do not use to interpret product prose or make design decisions.
+description: Inventory validated product context with the document-structure agent, plan a variable product-document collection, and preview or publish its linked HTML pages. Use after refine-design has produced a current PRD context.
 ---
 
-# Generate PRD
+# Generate product documents
 
-Publish an existing PRD context without changing its meaning. This skill is a mechanical consumer of persisted product data.
+Start after `refine-design` has completed a current UI composition pass and
+resolved a PRD context containing its source-bound UX 0.3 and UI 0.3 artifacts,
+design language, and publication manifest. A partial UI pass is usable only
+when it discloses its missing scenes and coverage; do not treat an earlier UX
+or UI package as current merely because its names match. If the handoff is
+missing, return to `refine-design` before creating the outline or PRD preview.
 
-## Input
+Use the validated, persisted PRD context produced by `refine-design`. This
+skill owns the product information outline, editorial document/page plan, and
+deterministic publication. It does not decide product meaning, UX behavior, or
+technical architecture. Keep support files under repository-root
+`product/<name>/`; publish the selected document directories under
+`documents/<name>/<doc-name>/`. Use the confirmed product folder name from the
+context package, not a name inferred from prose.
 
-Repository-backed refinement saves canonical context packages under
-`<repository-root>/product/<name>/contexts/prd/<materialSha256>/context.json`.
-Generated product documentation uses `<repository-root>/documents/<name>/<doc-name>/`. Use the same confirmed folder name as the product data store, with `prd` as this document name. The complete site, including comps and assets, stays inside that document directory. For example, the product folder `field-journal` publishes to `documents/field-journal/prd/`.
-Use `<repository-root>/documents/<name>/prd/` as the normal publication destination
-when no different export destination was requested. A detached context may still
-be published outside its original repository; the publisher does not ask for a
-product name, reinterpret prose, or relocate the canonical data store.
+## Inventory and structure
 
-Require one JSON context conforming to [references/prd-context.md](references/prd-context.md). Do not read a product description, call an agent, conduct research, select defaults, or repair missing data. Return validation errors to the producing workflow.
+For an outline-only request, follow [the information outline procedure](references/outline.md).
+Consult the read-only `document-structure` agent, validate exact source
+coverage, and save the original `outline.json` and Markdown review view. That
+first view makes no document or page decisions.
 
-## Publication
+For a reviewed outline, follow [the structure proposal contract](references/structure-plan.md).
+The same agent assesses hierarchy weight, then chooses a variable number of
+standalone document entry points and linked pages. Validate and save the
+source-bound `weights.json` and `plan.json`. Render the navigation skeleton and
+page-marked outline for review without changing the original outline. An
+edited source context, outline, or weight assessment requires a fresh bound
+plan; do not update digest fields to carry an old plan forward.
 
-Run:
+## Preview and publication
+
+Read [the collection publication contract](references/collection-publication.md).
+Use the exact context, outline, weights, and plan files:
 
 ```text
-node scripts/generate-prd.mjs --context <context.json> --output <output-directory>
+node scripts/product-collection.mjs --context <context.json> --outline <outline.json> --weights <weights.json> --plan <plan.json> --preview <new-product-support-directory>
 ```
 
-The command validates the complete context, embedded artifact envelopes, dependency closure, locks, exclusions, material digests, structured publication packages, and declared resource bytes before writing. Without a `prd-publication` manifest it emits the compact product-model review (`index.html` and `assets/product.css`). Exactly one manifest activates the full linked publication from its named UX 0.2, design-language 0.14 plus review-layout 7, optional UI-composition 0.2, and ordered component-design 0.2 artifacts. The full site includes the requirements index, design-language review, standard-component catalog, product comps, component comps, local fonts and media, diagnostics, and shared CSS supported by those inputs.
+Preview requires a new directory under `product/<name>/` and never replaces a
+current publication. Inspect its links, source coverage, page order, gaps, and
+available inline comps. When publication is requested, run the same command
+with `--output <repository-root>/documents/<name>` instead of `--preview`.
+The publisher replaces and retires only receipt-owned product document
+directories. It leaves `technical/` and unrelated content alone. A current
+combined `prd/` may be retired only when its existing receipt validates.
 
-Every mode also emits `publication-receipt.json`. Its recursive file inventory owns every generated file by path, size, and digest, and its resource inventory records every context-declared binary consumed during rendering.
+The operational publisher also requires every current UI scene to be selected
+in the structure plan, either directly or through one of its render requests.
+Inspect scene fidelity and explicit missing-coverage notes before publishing;
+an available scene is not automatically a finished comp.
 
-The output is deterministic for the same exact context bytes. Read [references/publication.md](references/publication.md) when diagnosing validation, ownership, or replacement behavior.
-
-Treat `publication-receipt.json` as the durable integrity record binding the publication to its context, product model, and exact source-snapshot revision. It is not authenticated provenance. Do not hand-edit generated output.
-
-Render current accepted, partial, and locked PRD artifacts supplied by the context. Present partial artifacts with their explicit gaps. Show stale, locked-conflict, and superseded exclusions as unavailable metadata only; their payloads are absent and must never be reconstructed.
-
-Read [the structured publication artifact contract](references/product-publication.md) for the exact manifest, payload encoding, and resource descriptor shapes. The compact fallback CSS is product-neutral presentation; a manifest-selected site renders the supplied design authority without inventing design choices.
+The renderer uses source identities and relationships from the exact context;
+it does not read the human description, repair missing decisions, or invoke an
+agent during publication. Source-backed comps and assets are placed near
+their owning page content when selected in the plan. Every generated document
+has a receipt binding its inputs and file bytes. Edit source artifacts or the
+structure plan and republish instead of editing generated HTML.

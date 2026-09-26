@@ -107,18 +107,21 @@ function researchSelectionView(research) {
   };
 }
 
-/**
- * Project a UX 0.2 document to decisions that should converge across fresh
- * planners. Freshly coined IDs, prose, exact frame trees, and bookkeeping may
- * vary. The projection retains the behavioral graph: action type and exposure,
- * state applicability and transitions, feedback, cancellation, meaningful
- * failure recovery, selected research basis, and pruning of actual actions.
- */
+/** Project the decision-bearing UX 0.3 graph without run provenance. */
 export function interactionArchitectureView(value) {
   object(value, 'UX interaction architecture');
-  const surfaceKinds = new Map((value.surfaces ?? []).map(surface => [surface.id, surface.kind]));
-  const researchById = new Map((value.patternResearch ?? []).map(research => [research.id, research]));
-
+  const surfaces = new Map((value.surfaces ?? []).map(item => [item.id, item]));
+  const states = new Map((value.states ?? []).map(item => [item.id, item]));
+  const feedback = new Map((value.feedback ?? []).map(item => [item.id, item]));
+  const recovery = new Map((value.recoveryPaths ?? []).map(item => [item.id, item]));
+  const nodes = new Map((value.flowNodes ?? []).map(item => [item.id, item]));
+  const research = new Map((value.patternResearch ?? []).map(item => [item.id, item]));
+  const stateView = ref => {
+    const state = states.get(ref);
+    const ownerId = state?.ownerRef?.split(':').at(-1);
+    return {ownerKind: state?.ownerRef?.split(':')[1] ?? null,
+      surfaceKind: surfaces.get(ownerId)?.kind ?? null, status: state?.status ?? null};
+  };
   const actionBase = action => ({
     status: action.status,
     canonicalMethod: action.canonicalInteraction?.method,
@@ -127,94 +130,56 @@ export function interactionArchitectureView(value) {
     visibilityMode: action.visibility?.mode,
     persistence: action.persistence,
     priority: action.priority,
-    applicableStates: multiset((action.applicableStates ?? []).map(state => ({
-      surfaceKind: surfaceKinds.get(state.surfaceRef) ?? 'surface',
-      state: state.state,
-    }))),
+    applicableStates: multiset((action.applicableStateRefs ?? []).map(stateView)),
     alternateInputs: multiset((action.alternateInputs ?? []).map(input => inputModality(input.input))),
-    feedback: multiset((action.feedback ?? []).map(item => ({phase: item.phase, persistence: item.persistence}))),
+    feedback: multiset((action.feedbackRefs ?? []).map(ref => ({phase: feedback.get(ref)?.phase,
+      persistence: feedback.get(ref)?.persistence}))),
     cancellationMode: action.cancellation?.mode,
     patternBasis: action.patternBasis ? {
       kind: action.patternBasis.kind,
       research: action.patternBasis.researchRef
-        ? researchSelectionView(researchById.get(action.patternBasis.researchRef) ?? {})
-        : null,
+        ? researchSelectionView(research.get(action.patternBasis.researchRef) ?? {}) : null,
     } : null,
   });
   const actionTokens = new Map((value.actions ?? []).map(action => [action.id, signature(actionBase(action))]));
   const actionToken = ref => actionTokens.get(ref) ?? `unresolved:${ref}`;
-  const feedbackById = new Map();
-  for (const action of value.actions ?? []) {
-    for (const feedback of action.feedback ?? []) {
-      feedbackById.set(feedback.id, {action: actionToken(action.id), phase: feedback.phase, persistence: feedback.persistence});
-    }
-  }
-
   const actions = multiset((value.actions ?? []).map(action => ({
     ...actionBase(action),
     cancellationAction: action.cancellation?.actionRef ? actionToken(action.cancellation.actionRef) : null,
-    // Recovery is decision-bearing when an action can fail. Corrective prose
-    // attached to successful selection or cancellation is optional bookkeeping.
-    failureRecovery: (action.feedback ?? []).some(item => item.phase === 'failure')
-      ? multiset((action.recovery ?? []).flatMap(item => item.actionRefs ?? []).map(actionToken))
-      : [],
+    failureRecovery: (action.feedbackRefs ?? []).some(ref => feedback.get(ref)?.phase === 'failure')
+      ? multiset((action.recoveryRefs ?? []).flatMap(ref => recovery.get(ref)?.actionRefs ?? []).map(actionToken)) : [],
   })));
-
-  const useCases = multiset((value.useCases ?? []).map(useCase => ({
-    status: useCase.status,
-    taskPriority: useCase.taskPriority,
-    actionSet: multiset((useCase.actionRefs ?? []).map(actionToken)),
-    canonicalSequence: (useCase.steps ?? []).map(step => actionToken(step.actionRef)),
-  })));
-
+  const useCases = multiset((value.useCases ?? []).map(useCase => {
+    const review = value.pruningReview?.taskReviews?.find(item => item.taskRef === useCase.id);
+    return {status: useCase.status, taskPriority: useCase.taskPriority,
+      actionSet: multiset((useCase.actionRefs ?? []).map(actionToken)),
+      canonicalSequence: (review?.canonicalStepRefs ?? []).map(ref => actionToken(nodes.get(ref)?.actionRef)),
+      alternatives: (value.flowNodes ?? []).filter(node => node.ownerRef === `ux:use-case:${useCase.id}` && node.kind === 'alternative').length};
+  }));
   const frameBehavior = multiset((value.interactionFrames ?? []).flatMap(frame =>
     (frame.regions ?? []).flatMap(region => (region.affordances ?? []).map(affordance => {
       const transition = affordance.transition ?? {kind: 'none'};
-      const isSelfTransition = transition.kind === 'state' && transition.targetState === frame.state;
-      const normalizedTransition = isSelfTransition ? {kind: 'none'} : transition;
-      return {
-        frameKind: frame.kind,
-        state: frame.state,
-        action: actionToken(affordance.actionRef),
-        status: affordance.status,
-        interaction: affordance.interaction,
-        transition: {
-          kind: normalizedTransition.kind,
-          targetState: normalizedTransition.targetState ?? null,
-          targetSurfaceKind: normalizedTransition.targetRef ? surfaceKinds.get(normalizedTransition.targetRef) ?? 'surface' : null,
-        },
-      };
-    }))
-  ));
-
-  const feedbackPlacement = multiset((value.interactionFrames ?? []).flatMap(frame =>
-    (frame.regions ?? []).flatMap(region => (region.content ?? [])
-      .filter(item => item.kind === 'feedback')
-      .map(item => ({
-        state: frame.state,
-        action: item.actionRef ? actionToken(item.actionRef) : feedbackById.get(item.feedbackRef)?.action ?? null,
-        phase: feedbackById.get(item.feedbackRef)?.phase ?? null,
-        persistence: feedbackById.get(item.feedbackRef)?.persistence ?? item.persistence,
-      })))
-  ));
-
+      const self = transition.kind === 'state' && transition.targetState === frame.stateRef;
+      return {frameKind: frame.kind, state: stateView(frame.stateRef),
+        action: actionToken(affordance.actionRef), status: affordance.status,
+        interaction: affordance.interaction, transition: {kind: self ? 'none' : transition.kind,
+          targetState: transition.targetState ? stateView(transition.targetState) : null,
+          targetSurfaceKind: transition.targetRef ? surfaces.get(transition.targetRef)?.kind ?? 'surface' : null}};
+    }))));
+  const flowGraph = multiset((value.flowEdges ?? []).map(edge => ({kind: edge.kind,
+    fromKind: nodes.get(edge.fromRef)?.kind ?? null,
+    toKind: edge.toRef?.split(':')[1] ?? null,
+    toNodeKind: edge.toRef?.startsWith('ux:flow-node:') ? nodes.get(edge.toRef.slice('ux:flow-node:'.length))?.kind ?? null : null,
+    order: edge.order ?? null, hasCondition: Boolean(edge.condition)})));
   const pruning = multiset((value.pruningReview?.taskReviews ?? []).flatMap(review =>
     (review.decisions ?? []).flatMap(decision => (decision.actionRefs ?? []).map(ref => ({
-      action: actionToken(ref),
-      disposition: decision.disposition,
-    })))
-  ));
-
-  return {
-    schemaVersion: value.schemaVersion,
-    status: value.status,
-    useCases,
-    actions,
-    frameBehavior,
-    feedbackPlacement,
-    patternResearch: multiset((value.patternResearch ?? []).map(researchSelectionView)),
-    pruning,
-  };
+      action: actionToken(ref), disposition: decision.disposition,
+    })))));
+  return {schemaVersion: value.schemaVersion, status: value.status, useCases, actions,
+    frameBehavior, flowGraph,
+    productRealizations: multiset((value.productRealizations ?? []).map(item => ({productRef: item.productRef,
+      relation: item.relation, uxKind: item.uxRef.split(':')[1], status: item.status}))),
+    patternResearch: multiset((value.patternResearch ?? []).map(researchSelectionView)), pruning};
 }
 
 /** Compare broad interaction decisions without requiring one preferred screen. */

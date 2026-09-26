@@ -120,8 +120,9 @@ staleness, authority and interruption testing remains the milestone-4 batch;
 this is not routine-use qualification. No product description was changed.
 
 Verification: `npm --prefix skills/refine-design test` passed 104 tests;
-`node --test --test-isolation=none skills/generate-prd/scripts/generate-prd.test.mjs`
-passed 34 tests. The technical positive path also exercises the resolver CLI.
+the then-current generate-prd suite passed 34 tests. That obsolete-schema test
+file was retired during the later product-publication work. The technical
+positive path also exercises the resolver CLI.
 Skill metadata validation and repository whitespace checks passed. Reusable tests
 use a temporary synthetic repository, not the working product's design data.
 The next implementation boundary was milestone 4, the Markdown publisher.

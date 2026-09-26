@@ -1,16 +1,16 @@
-# Canonical Product Model 1.0
+# Canonical Product Model 2.0
 
-Use this contract when the human-owned product description changes. `refine-design` performs one semantic interpretation of the complete current source, produces a `product-model-proposal` 1.0 object, and runs `scripts/product-model.mjs`. Later design and engineering work consumes the persisted model or a frozen consumer context. It does not reinterpret the Markdown.
+Use this contract when the human-owned product description changes. `refine-design` performs one semantic interpretation of the complete current source, produces a `product-model-proposal` 2.0 object, and runs `scripts/product-model.mjs`. Later design and engineering work consumes the persisted model or a frozen consumer context. It does not reinterpret the Markdown.
 
-Version 1.0 is the sole current proposal, model, snapshot, current-pointer, and lock-authority contract. The Slice 2 shape replaces the former greenfield 1.0 shape; there is no migration, import, downgrade, dual-write, or compatibility reader. The machine schema is [product-model-schema-1.0.json](product-model-schema-1.0.json). Objects are closed and unknown or omitted members fail validation.
+Version 2.0 is the sole current proposal and model contract. Snapshot, current-pointer, and lock-authority envelopes retain their independent 1.0 versions. There is no migration, import, downgrade, dual-write, or compatibility reader. The machine schema is [product-model-schema-2.0.json](product-model-schema-2.0.json). Objects are closed and unknown or omitted members fail validation.
 
 ## Semantic proposal
 
-The proposal contains the stable product ID and name; model status, owner, and consumer domains; fixed semantic-parse provenance; one purpose; ordered user, capability, and gap records; a complete partition of current source lines; semantic identity assertions; source-claim lineage; and an exact base binding.
+The proposal contains the stable product ID and name; model status, owner, and consumer domains; fixed semantic-parse provenance; one purpose; ordered user, capability, goal, requirement, rule, and gap records; a complete partition of current source lines; semantic identity assertions; source-claim lineage; and an exact base binding. Capabilities summarize scope, goals name desired outcomes, requirements state product behavior, and rules state constraints or policies. These records do not dictate document sections.
 
 An initial proposal uses `base: null`. An update binds the current snapshot SHA-256, product-model SHA-256, and model revision. The parser does not choose the next revision. The writer rejects a proposal assessed against a different current model or snapshot.
 
-`identityClaims` contains exactly one assertion for every purpose, user, capability, and gap record:
+`identityClaims` contains exactly one assertion for every purpose, user, capability, goal, requirement, rule, and gap record:
 
 - `continued` reuses the same ID and record kind as the previous model;
 - `new` uses an ID absent from the previous model and may name superseded predecessor IDs for explicit split, merge, or replacement lineage.
@@ -31,7 +31,7 @@ The current claim dispositions remain:
 
 The writer assigns revision 1 initially and exactly the next model revision for a changed source. The source binding has the same revision as the model. In a child model it advances exactly one source revision, names the exact parent source SHA-256 as `previousSha256`, and binds different current source bytes. The persisted model binds its exact parent model.
 
-The writer computes one material digest for the product root and every purpose, user, capability, and gap. Material includes the stable ID and kind, product-facing text, lifecycle status, owner, consumer domains, semantic references, and explicit supersession lineage. It excludes current source ranges and claim IDs, paths and byte hashes, parse provenance, revision metadata, peer collection ordering, parent bindings, and computed change bookkeeping.
+The writer computes one material digest for the product root and every purpose, user, capability, goal, requirement, rule, and gap. Material includes the stable ID and kind, product-facing text, lifecycle status, owner, consumer domains, semantic references, and explicit supersession lineage. It excludes current source ranges and claim IDs, paths and byte hashes, parse provenance, revision metadata, peer collection ordering, parent bindings, and computed change bookkeeping.
 
 The product-root material also includes each unclassified claim's summary and exact segment digest. Unknown meaning therefore remains conservatively material without turning the temporary claim ID into product identity.
 
@@ -117,4 +117,4 @@ Stored paths and source labels are portable relative values. The writer rejects 
 
 This is a trusted-local integrity store. Hashes detect accidental changes and local tampering; they do not authenticate an author, encrypt content, or defend a process after the local account is compromised. Treat source and derived product artifacts as sensitive durable data and do not place credentials, tokens, private keys, or other secrets in them.
 
-The product-neutral executable fixture is under `references/fixtures/product-model/field-journal/`.
+The product-neutral 2.0 positive fixture is under `references/fixtures/product-model/garden-log/`.

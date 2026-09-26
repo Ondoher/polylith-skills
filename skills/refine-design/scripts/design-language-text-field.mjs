@@ -119,7 +119,7 @@ export function fieldSvg(d,width){
  const colors=Object.fromEntries(Object.entries(f.colors).map(([k,e])=>[k,color(e)])),helper=color(p.colors.helper),error=color(p.colors.error),x=20;
  const draw=(engine,lines,x,y,cls)=>'<g class="'+cls+'" transform="translate('+x+' '+y+')">'+lines.map((line,i)=>'<g transform="translate(0 '+i*engine.metrics.lineHeightPx+')">'+engine.shape(line).svg+'</g>').join('')+'</g>';
  const styles=['.paper{fill:#fff}.surface{fill:'+colors.surface+'}.caption{font:12px sans-serif;fill:#333}.outline{fill:'+colors.surface+';stroke:'+colors.border+';stroke-width:'+m.borderWidth+'}.label{fill:'+colors.label+'}.value{fill:'+colors.value+'}.helper{fill:'+helper+'}.error-message{fill:'+error+'}',
- '.focused .outline{stroke:'+colors.focus+';stroke-width:'+m.focusWidth+'}.focused .label{fill:'+colors.focus+'}',
+ '.focus-ring{display:none;fill:none;stroke:'+colors.focus+';stroke-width:'+m.focusWidth+'}.focused .focus-ring{display:block}.focused .label{fill:'+colors.label+'}',
  '.disabled .outline{stroke:'+colors.disabledBorder+'}.disabled .label,.disabled .value,.disabled .helper{fill:'+colors.disabled+'}',
  '.error .outline{stroke:'+error+'}.error .label{fill:'+error+'}'].join('');
  const lines=['<svg xmlns="http://www.w3.org/2000/svg" width="'+(width+40)+'" height="'+l.height+'" viewBox="0 0 '+(width+40)+' '+l.height+'" role="img" aria-labelledby="title desc"><title id="title">'+xml(f.label+' text field states')+'</title><desc id="desc">'+xml('Static '+width+'px field. Value: '+f.value+'. Helper: '+f.helperText+'. Error: '+f.errorText+'. Pattern: '+p.errorPresentation+'. No live validation.')+'</desc>',
@@ -131,6 +131,7 @@ export function fieldSvg(d,width){
   const y=row.fieldY,labelY=y-l.label.metrics.lineHeightPx/2;
   lines.push('<g class="'+row.state+'" data-state="'+row.state+'"><text class="caption" x="20" y="'+row.captionY+'">'+row.state+'</text>',
    '<rect class="surface" x="'+(x-4)+'" y="'+(labelY-2)+'" width="'+(width+8)+'" height="'+(row.messages.at(-1).y+row.messages.at(-1).lines.length*l.message.metrics.lineHeightPx-labelY+4)+'"/>',
+   '<rect class="focus-ring" x="'+(x-3)+'" y="'+(y-3)+'" width="'+(width+6)+'" height="'+(m.height+6)+'" rx="'+(m.radius+3)+'"/>',
    '<rect class="outline" x="'+x+'" y="'+y+'" width="'+width+'" height="'+m.height+'" rx="'+m.radius+'"/>',
    '<rect class="surface" x="'+(x+m.paddingX-4)+'" y="'+labelY+'" width="'+(l.labelRun.width+8)+'" height="'+l.label.metrics.lineHeightPx+'"/>',
    draw(l.label,[f.label],x+m.paddingX,labelY,'label'),draw(l.value,[f.value],x+m.paddingX,y+(m.height-l.value.metrics.lineHeightPx)/2,'value'));
@@ -149,7 +150,7 @@ export function fieldComponentsBlock(d){
  const section=['## Ordinary Text Field','',
  'Template: '+f.template+'. Status: '+f.status+'. Message pattern: '+markdown(p.id)+'. Label: '+markdown(f.label)+'. Value: '+markdown(f.value)+'.','',
  ...f.widths.flatMap(w=>['![Text field states at '+w+'px](./design-language/specimens/text-field-'+f.id+'-'+w+'.svg)','']),
- 'Default, focused, disabled and error are separate static examples. Error retains the supplied value. Focus follows the mapped theme role; error uses its semantic role rather than the brand accent. This does not define validation timing.','',
+ 'Default, focused, disabled and error are separate static examples. Error retains the supplied value. Focus uses a separate brand ring while the inner border and small label retain their matching readable color; error uses its semantic role rather than the brand accent. This does not define validation timing.','',
  '## Field Messages: Helper And Error','',
  'Reusable pattern: '+p.template+' / '+markdown(p.id)+'. Status: '+p.status+'. Typography role: '+markdown(p.typography)+'. Applies to other fields such as selects when those templates are implemented.','',
  'Place messages below the field, aligned by the shared inset; wrap to the available width and grow naturally. Helper text explains the expected input. Error text identifies a problem and the corrective action; a visible Error prefix makes the specimen meaningful without color alone.','',

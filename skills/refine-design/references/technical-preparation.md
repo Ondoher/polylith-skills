@@ -1,4 +1,4 @@
-# Technical preparation and context 1.0
+# Technical preparation 1.0 and context 2.0
 
 Use `refine-design` **technical preparation** to turn a verified product snapshot,
 inspected repository facts and reconciled technical advice into durable technical
@@ -153,9 +153,10 @@ the named product root. Evidence and proposals are written before the existing
 artifact transaction; failed commits may leave reusable unreferenced objects.
 Only the store's locked compare-and-swap transaction replaces `current.json`.
 
-Technical contexts retain the existing `sourceSnapshot`, `productModel`,
-`product`, `capabilities`, `gaps`, `provenance`, `artifacts`, `locks`, and
-`exclusions` projections, adding `evidence` and `repositoryBaselines`. Their CLI
+Technical contexts retain the 2.0 product projections: `sourceSnapshot`,
+`productModel`, `product`, `capabilities`, `goals`, `requirements`, `rules`,
+`gaps`, `provenance`, `artifacts`, `locks`, and `exclusions`. They add `evidence`
+and `repositoryBaselines`. Their CLI
 consumer is `technical`; their stored artifact audience remains
 `technical-documentation`. Exact technical payload and envelope bindings are
 validated again on detached consumption. Contexts live at

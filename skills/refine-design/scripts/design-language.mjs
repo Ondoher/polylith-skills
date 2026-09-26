@@ -14,7 +14,7 @@ import {
 import {COMPONENT_BEGIN, COMPONENT_END} from './design-language-components.mjs';
 import {documentGaps} from './design-language-document.mjs';
 import {resolveThemeValue} from './design-language-theme.mjs';
-import {fail, readOptional, rejectLink, publish, renderColorSwatch} from './design-language-support.mjs';
+import {fail, readOptional, rejectLink, publish, renderColorSwatch, formatLocalMarkdown} from './design-language-support.mjs';
 
 const SCHEMA_VERSION = '0.14';
 const RENDERER_VERSION = 'extras-1.2';
@@ -26,6 +26,7 @@ const allowedOptions = new Set([
   'accept',
   'reason',
   'reviewLayout',
+  'formatterBase',
   'lockReason',
   'lockedChangeReason'
 ]);
@@ -63,14 +64,14 @@ function drawings(document) {
   return extrasDrawings(document);
 }
 
-function updateMarkdown(existing, saved, next) {
+function updateMarkdown(existing, saved, next, format = (file, content) => content) {
   if (!saved) return '<!-- Owner notes may be added above the generated section. -->\n\n' + block(next) + '\n';
   const start = existing.indexOf(BEGIN);
   const end = existing.indexOf(END);
   if (start < 0 || end <= start || existing.indexOf(BEGIN, start + 1) >= 0 || existing.indexOf(END, end + 1) >= 0) {
     fail('Missing or ambiguous generated section');
   }
-  if (existing.slice(start, end + END.length).replace(/\r\n/g, '\n') !== block(saved)) {
+  if (format(documentFile, existing.slice(start, end + END.length).replace(/\r\n/g, '\n')).trimEnd() !== format(documentFile, block(saved)).trimEnd()) {
     fail('Generated Markdown was edited; reconcile before rendering');
   }
   return existing.slice(0, start) + block(next) + existing.slice(end + END.length);
@@ -86,6 +87,8 @@ export function applyProposal(baseFolder, proposal, options = {}) {
   validateOptions(options);
 
   const base = path.resolve(baseFolder);
+  const formatterBase = path.resolve(options.formatterBase ?? base);
+  const format = (relative, content) => formatLocalMarkdown(content, path.join(formatterBase, relative));
   const specimensFolder = path.join(base, 'design-language/specimens');
   const sourcePath = path.join(base, sourceFile);
   const documentPath = path.join(base, documentFile);
@@ -133,10 +136,11 @@ export function applyProposal(baseFolder, proposal, options = {}) {
       oldReview,
       review,
       saved ? extrasComponentsBlock(saved) : null,
-      extrasComponentsBlock(next)
+      extrasComponentsBlock(next),
+      format
     )
     : null;
-  const markdown = reviewOutputs?.get(documentFile) ?? updateMarkdown(existingMarkdown, saved, next);
+  const markdown = reviewOutputs?.get(documentFile) ?? updateMarkdown(existingMarkdown, saved, next, format);
   const nextDrawings = drawings(next);
   const outputs = new Map([
     [sourceFile, JSON.stringify(next, null, 2) + '\n'],
@@ -167,7 +171,7 @@ export function applyProposal(baseFolder, proposal, options = {}) {
       ) {
         fail('Missing or ambiguous component markers');
       }
-      if (existing.slice(start, end + COMPONENT_END.length).replace(/\r\n/g, '\n') !== expected) {
+      if (format('components.md', existing.slice(start, end + COMPONENT_END.length).replace(/\r\n/g, '\n')).trimEnd() !== format('components.md', expected).trimEnd()) {
         fail('Generated components.md was edited; reconcile before rendering');
       }
       componentMarkdown = existing.slice(0, start) + generated + existing.slice(end + COMPONENT_END.length);
@@ -176,6 +180,7 @@ export function applyProposal(baseFolder, proposal, options = {}) {
   }
 
   const files = [...outputs.keys()].map(relative => path.join(base, relative));
+  for (const [relative, content] of outputs) if (relative.endsWith('.md')) outputs.set(relative, format(relative, content));
   files.forEach(rejectLink);
   const previousContents = files.map(readOptional);
   [...outputs.keys()].forEach((relative, index) => {
@@ -227,6 +232,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
         'Usage: node design-language.mjs <base> <proposal.json|->'
         + ' [--accept <target>] [--reason <owner-decision>] [--review-layout pages]'
         + ' [--lock-reason <current-user-request>] [--locked-change-reason <current-user-request>]'
+        + ' [--formatter-base <repository-product-directory>]'
       );
     }
     const options = {accept: []};
@@ -237,6 +243,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
       else if (args[index] === '--review-layout' && args[index + 1] === 'pages') options.reviewLayout = 'pages';
       else if (args[index] === '--lock-reason') options.lockReason = args[index + 1];
       else if (args[index] === '--locked-change-reason') options.lockedChangeReason = args[index + 1];
+      else if (args[index] === '--formatter-base') options.formatterBase = args[index + 1];
       else fail('Unknown option: ' + args[index]);
     }
     const inputData = JSON.parse(fs.readFileSync(input === '-' ? 0 : input, 'utf8'));

@@ -17,8 +17,9 @@ must be clear in the human description or supplied by you; otherwise the
 workflow asks. If the description lives in that directory, reset preserves it
 and purges only verified derived children. It never resets the whole shared
 `product/` directory or another product's data. Generated publications are inventoried
-separately under `documents/<name>/<doc-name>/`. A requested fresh PRD goes
-to `documents/<name>/prd/`; human-owned documents and other products are preserved.
+separately under `documents/<name>/<doc-name>/`. A requested fresh product
+publication uses the reviewed `generate-prd` plan to select document names;
+human-owned documents and other products are preserved.
 
 ## What happens
 

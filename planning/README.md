@@ -10,11 +10,18 @@ Installed agents find this folder in the physical governance checkout through
 the existing documentation link. Work topics in consuming repositories remain
 separate: they divide local task context, not shared planning authority.
 
-Generated product documentation uses repository-root `documents/<product>/<doc-name>/`
-(for example, `documents/alexa/prd/`); durable design data stays under
+Generated product documentation uses repository-root
+`documents/<product>/<doc-name>/`; durable design data stays under
 `product/<name>/`. The technical-guide publisher has a first-pass implementation;
-the [separate product publications](implementation-agents/product-publication-separation-plan.md)
-remain an accepted plan awaiting implementation.
+the [product publication correction](product-publication/plan.md) has a researched
+design proposal following a failed first trial. It restores the required PRD and
+interaction-document roles while retaining agent-created interaction hierarchy
+and page breaks. Separate design-language publication is proposed.
+
+Current priority is [refinement efficiency](refinement-efficiency/plan.md):
+remove repeated interpretation and regeneration using local verification and
+bounded live evaluation. Further publication-format tweaking waits behind this
+work; its saved design remains the baseline.
 
 The product-design pipeline and standards tooling are implemented. Additional
 context consumers, implementation planning, and coordinated coding remain
@@ -27,6 +34,8 @@ for operational instructions and the roadmap below for remaining work.
 
 | Document | Purpose |
 | --- | --- |
+| [Refinement efficiency](refinement-efficiency/plan.md) | Priority plan for autonomous workflow streamlining, structured assembly, local verification, and limited evaluation cost. |
+| [Product publication plan](product-publication/plan.md) | Stable PRD and interaction-document design, agent-owned hierarchy/page breaks, and repeatable composition and revision. |
 | [Implementation discussion plan](implementation-agents/plan.md) | Role review, feasibility, repository opt-in, and orchestration decisions. |
 | [Implementation-agent design](implementation-agents/design.md) | Coding orchestrator, specialty ownership, test authorship, and review handoffs. |
 | [Implementation-planning skill](implementation-agents/implementation-planning-skill.md) | Deferred bridge from accepted design to bounded implementation deliverables. |

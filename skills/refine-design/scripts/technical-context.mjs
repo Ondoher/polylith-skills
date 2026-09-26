@@ -80,5 +80,5 @@ export function resolveTechnicalContext({currentPath, scope = [], repositoryRoot
   if (bytes.length > TECHNICAL_MAX_BYTES) fail('Technical context exceeds persisted byte limit');
   const storedPath = `contexts/technical/${context.materialSha256}/context.json`;
   const created = writeImmutable(path.join(chain.root, storedPath), bytes, chain.root);
-  return {schemaVersion: '1.0', consumer: 'technical', path: storedPath, sha256: sha256(bytes), materialSha256: context.materialSha256, created, context};
+  return {schemaVersion: '2.0', consumer: 'technical', path: storedPath, sha256: sha256(bytes), materialSha256: context.materialSha256, created, context};
 }

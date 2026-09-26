@@ -225,7 +225,15 @@ export function validateTechnicalContext(context) {
     }
   }
   require(context.artifacts.every(item => item.resources.length === 0), 'Technical contexts do not include binary resources');
-  validateTechnicalCollection(context.artifacts, context.evidence, context.repositoryBaselines, new Set([context.product.id, context.product.purpose.id, ...context.product.users.map(item => item.id), ...context.capabilities.map(item => item.id), ...context.gaps.map(item => item.id)]));
+  validateTechnicalCollection(context.artifacts, context.evidence, context.repositoryBaselines, new Set([
+    context.product.id, context.product.purpose.id,
+    ...context.product.users.map(item => item.id),
+    ...context.capabilities.map(item => item.id),
+    ...context.goals.map(item => item.id),
+    ...context.requirements.map(item => item.id),
+    ...context.rules.map(item => item.id),
+    ...context.gaps.map(item => item.id),
+  ]));
   require(technicalBytes(context).length <= TECHNICAL_MAX_BYTES, 'Technical context exceeds byte limit');
   return context;
 }

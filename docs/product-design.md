@@ -9,7 +9,7 @@ These skills own different parts of that work:
 | [attach-detail](attach-detail.md) | An existing authored technical white paper needs a link from the product description. | One checked relative link in the human-owned description. |
 | [refine-detail](refine-detail.md) | A linked white paper needs research, clarification, or an information-preserving revision. | An improved authored paper with sourced findings and a checked revision ledger. |
 | [refine-design](refine-design.md) | You want to develop or revise product, UX, UI, or bounded architecture decisions. | Current product and design artifacts, with a context package ready for publication when requested. |
-| [generate-prd](generate-prd.md) | The context is ready and you want a human-readable product requirements document. | A deterministic static HTML publication and an integrity receipt. |
+| [generate-prd](generate-prd.md) | The current UI pass and its source-bound publication context are ready. | A source-bound outline for review, or a deterministic HTML publication and integrity receipt. |
 | [generate-technical](generate-technical.md) | Reconciled technical context is ready for developers and coding agents. | A linked Markdown architecture guide and publication receipt. |
 | [reset-design](reset-design.md) | You explicitly want to discard the complete derived design and rebuild from the current human description. | A fresh product/design history, reset evidence, and optionally a new PRD. |
 
@@ -74,10 +74,14 @@ repository/
       ui/components/
   documents/
     Field Journal/
-      prd/                               # Published review site, comps, and assets
+      <selected-product-document>/       # Linked pages, comps, assets, and receipt
 ```
 
-Generated product documentation uses repository-root `documents/<product>/<doc-name>/`. For example, Alexa's PRD uses `documents/alexa/prd/`, with its comps and assets inside that directory. Use the same confirmed product folder name as the data store. Technical documents follow this convention too.
+Generated product documentation uses repository-root
+`documents/<product>/<doc-name>/`. The structure plan selects product document
+names; each owns its linked pages, comps, and assets. Use the same confirmed
+product folder name as the data store. Technical documents follow the same
+location convention but have independent publication ownership.
 
 The data root is also used for scoped planning, research, and review receipts.
 A changed product name or pre-existing store elsewhere needs an explicit
@@ -114,7 +118,7 @@ Use $refine-design product: develop documentation/product-description.md into
 the main user workflows, reviewed UX, and representative UI compositions.
 ```
 
-The following is the interaction flow for a scope that includes UX and UI. A narrower call may stop after a product decision or UX revision. Refinement does not run every specialist simply because it is installed.
+The following is the normal whole-product refinement flow: `refine-design` completes both UX and UI. A narrower call may stop after a specific product decision or UX revision, but dependent UI must be brought current before a PRD handoff. Refinement does not run every specialist simply because it is installed.
 
 ```mermaid
 sequenceDiagram
@@ -265,12 +269,14 @@ When a named planner is unavailable, ordinary refinement can continue with hones
 
 The result should tell you what changed, where it was saved, what remains unresolved, and which evidence or capabilities were unavailable. A discussion-only request can return advice without creating files. A saved design is planning output, not an automatic implementation authorization.
 
-## Publish a PRD: no new design decisions
+## Outline and publish a PRD: no new product decisions
 
-Once refinement has prepared the context package:
+For a PRD request, refinement completes the UX pass and its independent review,
+then the UI pass before this handoff. Once it has prepared a context
+package with its UX, UI scenes, design language, and publication manifest:
 
 ```text
-Use $generate-prd to publish <context.json> into <output-directory>.
+Use $generate-prd to inventory and plan the product documents from <context.json>.
 ```
 
 ```mermaid
@@ -278,30 +284,51 @@ sequenceDiagram
     actor Owner
     participant Parent as Parent: generate-prd
     participant Context as Detached context and resources
+    participant Structure as Document-structure agent
     participant Publisher as Deterministic publisher
-    participant Output as Static site and receipt
-    Owner->>Parent: Context path and output destination
+    participant Output as Product support or documents root
+    Owner->>Parent: Current context path
     Parent->>Context: Locate complete package
-    Parent->>Publisher: Publish context to destination
-    Publisher->>Context: Validate bindings, dependencies, locks, digests, resources
-    alt Invalid input or output ownership conflict
-        Publisher-->>Parent: Validation error
-        Parent-->>Owner: Explain failure. Input corrections return to refinement.
-    else Valid input and destination
-        Publisher->>Output: Write manifest-selected site or compact review
-        Publisher->>Output: Write publication-receipt.json
-        Publisher-->>Parent: Publication result
-        Parent-->>Owner: Output location and publication evidence
+    Parent->>Context: Verify current UI handoff and prepare source index
+    Parent->>Structure: Ask for source-bound information grouping
+    Structure-->>Parent: Outline with exact source references
+    Parent->>Parent: Check complete unique coverage
+    Parent->>Output: Save original outline for review
+    Parent->>Structure: Assess weight and choose documents and pages
+    Structure-->>Parent: Bound weights and structure plan
+    Parent->>Output: Save navigation and page-marked outline
+    Parent-->>Owner: Review reading paths and gaps
+    Parent->>Publisher: Render exact context, outline, weights, and plan
+    alt Preview
+        Publisher->>Output: Create new support-directory preview
+    else Publish
+        Publisher->>Output: Replace only receipt-owned product documents
     end
+    Publisher-->>Parent: Document receipts and result
+    Parent-->>Owner: Output location and publication evidence
 ```
 
-No specialist agent is involved in this skill. It does not read the original Markdown, consult UX or UI, conduct research, or fill gaps. The publisher consumes validated persisted decisions. A publication request cannot resolve a design disagreement.
+The outline-only path uses the read-only `document-structure` agent to inventory
+the validated source information. Its first pass does not choose documents or
+HTML pages. Its later pass assesses the outline and chooses standalone product
+documents and linked pages. The publisher uses that exact reviewed plan; it
+does not read the original Markdown, consult UX or UI agents, conduct product
+research, or fill gaps. A publication request cannot resolve a design
+disagreement.
 
-Without a structured publication manifest, output is a compact product-model review. A manifest selects a full site with supported UX, design-language, component, and composition content and declared resources. Partial artifacts expose gaps; stale and locked-conflict payloads remain excluded.
+The context package is self-contained. If moving it, copy its complete
+directory, including `artifact-resources/` when present. A new preview goes
+under `product/<name>/`; final generated documents go under
+`documents/<name>/<doc-name>/`. Repeating the same bound inputs produces the
+same generated bytes. Receipts inventory generated files and consumed
+resources; they record integrity, not authenticated authorship. The technical
+document remains independently owned.
 
-The context is self-contained. If moving it, copy its complete package directory, including `artifact-resources/` when present. Identical context bytes produce identical publication output. The receipt inventories generated files and consumed resources; it records integrity, not authenticated authorship.
-
-Refinement may render bounded specimens and comps for inspection. The final PRD publication handoff belongs to `generate-prd`. Update structured source decisions and republish instead of editing generated HTML.
+Refinement may render bounded specimens and comps for inspection. Finish that
+UI pass before starting the final PRD workflow. Its current scenes and explicit
+coverage gaps become inputs to the document-structure agent. The final PRD
+publication handoff belongs to `generate-prd`. Update structured source
+decisions and republish instead of editing generated HTML.
 
 ## Reset a design: a fresh sequence with independent gates
 
@@ -393,7 +420,7 @@ The research role advises; the parent owns evidence checks and the edit. Consult
 | A specialized control is still a labeled placeholder | Request component-mode design through refinement, including research and representative states. |
 | A technical guarantee affects a product promise | Use a bounded architecture consultation and return product implications to their owner. |
 | A technical issue needs a researched, authored treatment | Link the existing paper with `attach-detail`, then use `refine-detail` for one bounded question. |
-| The saved design is ready to share as HTML | Resolve the current PRD context and invoke `generate-prd`. |
+| The current UI pass and its available scenes are ready to share as HTML | Resolve the current PRD context and invoke `generate-prd`. |
 | An input change reaches a locked design | Identify the conflict and explicitly decide whether that named lock should change. |
 | You want all derived choices reconsidered without old-design influence | Explicitly request `reset-design` for the complete named product scope. |
 

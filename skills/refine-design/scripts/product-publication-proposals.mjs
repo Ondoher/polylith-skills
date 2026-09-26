@@ -10,8 +10,37 @@ import {loadCurrentProduct} from './product-model.mjs';
 import {closed, ensureUnlinkedPath, fail, parseJsonFile, stableJson, writeImmutable} from './product-artifact-utils.mjs';
 import {canonicalPublicationJson, collectArtifactResources, decodePublicationDocument, encodePublicationDocument, publishArtifactResourceFiles, PUBLICATION_DOCUMENT_MAX_BYTES, validatePublicationLogicalPath} from './product-publication-package.mjs';
 
-const contracts = new Map([['ux-design', {version: '0.2', owner: 'ux'}], ['design-language', {version: '0.14', owner: 'ui'}], ['ui-composition', {version: '0.2', owner: 'ui'}], ['component-design', {version: '0.2', owner: 'ui'}], ['prd-publication', {version: '1.0', owner: 'product'}]]);
+const contracts = new Map([['ux-design', {version: '0.3', owner: 'ux'}], ['design-language', {version: '0.14', owner: 'ui'}], ['ui-composition', {version: '0.3', owner: 'ui'}], ['component-design', {version: '0.3', owner: 'ui'}], ['prd-publication', {version: '1.0', owner: 'product'}]]);
 const sourceNames = new Set(['ux', 'designLanguage', 'reviewLayout', 'ui', 'component']);
+
+function validateBoundUxProduct(ux, chain) {
+  const bound = chain.snapshot.productModel;
+  const actual = ux.productModelBinding;
+  for (const key of ['id', 'revision', 'sha256', 'materialSha256', 'recordIndexSha256']) {
+    if (actual[key] !== bound[key]) fail(`UX productModelBinding.${key} is stale`);
+  }
+  const records = new Map(chain.model.recordIndex.map(item => [item.id, item]));
+  const targetKinds = new Map([
+    ['pursues', new Set(['use-case'])],
+    ['realizes', new Set(['use-case', 'flow-node', 'surface', 'component', 'action', 'frame', 'state', 'feedback', 'recovery'])],
+    ['constrains', new Set(['use-case', 'flow-node', 'surface', 'component', 'action', 'frame', 'state', 'feedback', 'recovery'])],
+    ['exposes-gap', new Set(['question'])],
+  ]);
+  for (const relation of ux.productRealizations) {
+    const source = records.get(relation.productRef.slice('product:'.length));
+    if (!source) fail(`UX realization ${relation.id} references missing product record`);
+    const expectedKind = relation.relation === 'pursues' ? 'goal'
+      : relation.relation === 'realizes' ? 'requirement'
+        : relation.relation === 'constrains' ? 'rule' : 'gap';
+    if (source.kind !== expectedKind) fail(`UX realization ${relation.id} has incompatible product kind`);
+    const kind = relation.uxRef.split(':')[1];
+    if (!targetKinds.get(relation.relation).has(kind)) fail(`UX realization ${relation.id} has incompatible UX kind`);
+    if (relation.status === 'accepted' && relation.relation !== 'exposes-gap' && !['accepted', 'locked'].includes(source.status)) fail(`Accepted UX realization ${relation.id} has unresolved product authority`);
+  }
+  for (const gap of ux.traceGaps) {
+    if (gap.sourceRef.startsWith('product:') && !records.has(gap.sourceRef.slice('product:'.length))) fail(`UX trace gap ${gap.id} references missing product record`);
+  }
+}
 
 /** Produce one current-schema artifact proposal from validated structured sources, never product prose. */
 export function createPublicationArtifactProposal({currentPath, request, sourceRoot, assetRoot}) {
@@ -42,6 +71,7 @@ export function createPublicationArtifactProposal({currentPath, request, sourceR
   if (request.artifactKind === 'ux-design') {
     document = read('ux');
     validateUxSpec(document);
+    validateBoundUxProduct(document, chain);
   } else if (request.artifactKind === 'design-language') {
     document = {designLanguage: read('designLanguage'), reviewLayout: read('reviewLayout')};
     validateDesignLanguage(document.designLanguage, true);
@@ -62,6 +92,7 @@ export function createPublicationArtifactProposal({currentPath, request, sourceR
     inputs.assetRoot = assetRoot;
     inputs.sourceRoot = sourceRoot;
     validateUxSpec(inputs.uxSpec);
+    validateBoundUxProduct(inputs.uxSpec, chain);
     validateDesignLanguage(inputs.designLanguage, true);
     for (const [kind, value] of [['ux-design', inputs.uxSpec], ['design-language', inputs.designLanguage]]) {
       const matches = dependencies.filter(item => item.artifactKind === kind);

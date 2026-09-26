@@ -1,12 +1,17 @@
 # PRD context contract
 
-`generate-prd` accepts one self-contained product-context 1.0 JSON document produced by refinement. It does not read `product-description.md`, follow product-store paths, invoke an agent, or infer missing design data.
+`generate-prd` accepts one self-contained product-context 2.0 JSON document
+produced after the current refinement UX and UI passes. Its outline-only workflow invokes the read-only
+`document-structure` agent on a derived source index; the existing HTML
+publication command does not invoke an agent. Neither mode reads
+`product-description.md`, follows product-store paths to fill missing data, or
+infers missing design facts.
 
 The context binds:
 
 - an immutable product snapshot by ID, snapshot revision, and byte hash;
 - a product model by ID, source revision, status, byte hash, and aggregate semantic material hash;
-- scoped product, purpose, user, capability, and gap records with stable IDs, statuses, owners, and material hashes;
+- scoped product, purpose, user, capability, goal, requirement, rule, and gap records with stable IDs, statuses, owners, and material hashes;
 - current PRD-consumable design artifacts as validated envelopes with bounded JSON payloads and first-class resource descriptors;
 - explicit locks for included records and artifacts;
 - relevant unavailable artifacts as typed `stale`, `locked-conflict`, or `superseded` exclusions with no payload;

@@ -6,8 +6,8 @@ design inspection and full-site rendering. Final PRD publication belongs to
 [the structured publication workflow](product-publication.md). Do not use this
 lower-level entry point to bypass that context handoff during refinement.
 
-The renderer consumes current UX schema 0.2 and design-language schema 0.14
-sources. UI composition and component sources, when supplied, use schema 0.2 and
+The renderer consumes current UX schema 0.3 and design-language schema 0.14
+sources. UI composition and component sources, when supplied, use schema 0.3 and
 bind to the exact UX interaction frames and actions they present. It leaves all
 structured inputs unchanged. Canonical data belongs under repository-root
 `product/<name>/`; final output normally uses its `prd/` subdirectory, while
@@ -34,7 +34,7 @@ Content presented as the selected design is accepted working design by inclusion
 
 ## Semantic Interaction Wireframes
 
-For every surface with `interactionFrameRefs`, render each referenced interaction frame as deterministic restrained grayscale native HTML inside the owning surface. Place it after the surface's functional arrangement and state description and before any detailed UI comp. Generate it from the same schema 0.2 frame, action, feedback, cancellation, recovery, focus, and transition records used by the UX validator; do not create a second hand-authored interpretation.
+For every surface with `interactionFrameRefs`, render each referenced interaction frame as deterministic restrained grayscale native HTML inside the owning surface. Place it after the surface's functional arrangement and state description and before any detailed UI comp. Generate it from the same schema 0.3 frame, action, feedback, cancellation, recovery, focus, and transition records used by the UX validator; do not create a second hand-authored interpretation.
 
 Use headings, lists, groups, and text links that expose semantic order rather than simulated application controls. Preserve stable `data-ux-frame`, `data-ux-region`, `data-ux-content`, `data-ux-affordance`, and `data-ux-action` hooks. Show labels, action priority and availability, canonical and alternate input meaning, feedback persistence, cancellation and recovery, focus intent, and textual state/frame/surface/completion transitions when they materially aid review. Accepted and default records remain unbadged; identify locked, proposed, and unresolved material explicitly.
 
@@ -52,7 +52,7 @@ Render the standard design-language components in ordinary HTML/CSS:
 - the bounded embedded-action field example;
 - dimensioned labeled placeholders only when the structured source still records an unsupported component.
 
-Use the saved labels, content, metrics, theme tokens, and component-internal icons. A generic specimen does not create a product requirement. Product-specific complex components use schema 0.2 [component mode](component-design.md): focused state comps are published under `component-comps/`, and the exact registered placeholder is replaced inside the owning surface comp.
+Use the saved labels, content, metrics, theme tokens, and component-internal icons. A generic specimen does not create a product requirement. Product-specific complex components use schema 0.3 [component mode](component-design.md): focused state comps are published under `component-comps/`, and the exact registered placeholder is replaced inside the owning surface comp.
 
 ## Publication Rules
 

@@ -51,9 +51,12 @@ function actionInputs(action) {
   return `${canonicalMarkup}${alternates}`;
 }
 
-function actionFeedback(action) {
-  if (!action.feedback?.length) return '';
-  return `<ul class="uxw-feedback" aria-label="Visible feedback">${action.feedback.map(item => `<li data-ux-feedback="${escapeHtml(item.id)}"><strong>${escapeHtml(item.phase)}:</strong> ${escapeHtml(item.description)} <span>${escapeHtml(item.persistence)}</span></li>`).join('')}</ul>`;
+function actionFeedback(action, catalogs) {
+  if (!action.feedbackRefs.length) return '';
+  return `<ul class="uxw-feedback" aria-label="Visible feedback">${action.feedbackRefs.map(ref => {
+    const item = catalogs.feedback.get(ref);
+    return `<li data-ux-feedback="${escapeHtml(item.id)}"><strong>${escapeHtml(item.phase)}:</strong> ${escapeHtml(item.description)} <span>${escapeHtml(item.persistence)}</span></li>`;
+  }).join('')}</ul>`;
 }
 
 function patternBasisMarkup(patternBasis) {
@@ -61,14 +64,15 @@ function patternBasisMarkup(patternBasis) {
   return `<p class="uxw-pattern-basis"><strong>Pattern basis:</strong> ${escapeHtml(patternBasis.kind)}. ${escapeHtml(patternBasis.rationale)}${research}</p>`;
 }
 
-function actionRecovery(action, actions) {
+function actionRecovery(action, catalogs) {
   const cancellation = action.cancellation?.description
     ? `<p><strong>Cancellation:</strong> ${escapeHtml(action.cancellation.description)}</p>`
     : '';
-  const recovery = action.recovery?.length
-    ? `<ul class="uxw-recovery" aria-label="Recovery behavior">${action.recovery.map(item => {
+  const recovery = action.recoveryRefs.length
+    ? `<ul class="uxw-recovery" aria-label="Recovery behavior">${action.recoveryRefs.map(ref => {
+      const item = catalogs.recoveries.get(ref);
       const recoveryActions = (item.actionRefs ?? []).map(actionRef => {
-        const recoveryAction = actions.get(actionRef);
+        const recoveryAction = catalogs.actions.get(actionRef);
         if (!recoveryAction) fail(`Recovery ${item.id} references missing action ${actionRef}`);
         return escapeHtml(recoveryAction.name);
       });
@@ -137,7 +141,7 @@ function renderAffordance(affordance, catalogs) {
   if (!action) fail(`Affordance ${affordance.id} references missing action ${affordance.actionRef}`);
   const label = affordance.label ?? action.name;
   const transition = transitionMarkup(affordance.transition, catalogs);
-  return `<li class="uxw-affordance uxw-affordance--${classToken(action.priority)}" data-ux-affordance="${escapeHtml(affordance.id)}" data-ux-action="${escapeHtml(action.id)}" data-ux-presentation="${escapeHtml(action.presentationClass)}"><div class="uxw-affordance-heading"><div><span class="uxw-label">${escapeHtml(action.presentationClass)}</span><strong>${escapeHtml(label)}</strong></div><span class="uxw-priority">${escapeHtml(action.priority)}</span></div><p>${escapeHtml(action.purpose)}</p><div class="uxw-action-facts"><span><strong>Persistence:</strong> ${escapeHtml(action.persistence)}</span>${actionVisibility(action)}</div>${patternBasisMarkup(action.patternBasis)}${actionInputs(action)}<p><strong>Outcome:</strong> ${escapeHtml(action.outcome)}</p>${actionFeedback(action)}${actionRecovery(action, catalogs.actions)}<p class="uxw-transition"><strong>Transition:</strong> ${transition}</p></li>`;
+  return `<li class="uxw-affordance uxw-affordance--${classToken(action.priority)}" data-ux-affordance="${escapeHtml(affordance.id)}" data-ux-action="${escapeHtml(action.id)}" data-ux-presentation="${escapeHtml(action.presentationClass)}"><div class="uxw-affordance-heading"><div><span class="uxw-label">${escapeHtml(action.presentationClass)}</span><strong>${escapeHtml(label)}</strong></div><span class="uxw-priority">${escapeHtml(action.priority)}</span></div><p>${escapeHtml(action.purpose)}</p><div class="uxw-action-facts"><span><strong>Persistence:</strong> ${escapeHtml(action.persistence)}</span>${actionVisibility(action)}</div>${patternBasisMarkup(action.patternBasis)}${actionInputs(action)}<p><strong>Outcome:</strong> ${escapeHtml(action.outcome)}</p>${actionFeedback(action, catalogs)}${actionRecovery(action, catalogs)}<p class="uxw-transition"><strong>Transition:</strong> ${transition}</p></li>`;
 }
 
 function renderRegion(region, catalogs) {
@@ -165,7 +169,7 @@ function renderFrame(frame, surface, catalogs) {
     if (!task) fail(`Frame ${frame.id} references missing task ${taskRef}`);
     return task.name;
   });
-  return `<figure class="uxw-frame" id="${anchor('interaction-frame', frame.id)}" data-ux-frame="${escapeHtml(frame.id)}" data-ux-surface="${escapeHtml(surface.id)}" data-ux-state="${escapeHtml(frame.state)}"><div class="uxw-frame-heading"><div><p class="uxw-kicker">UX interaction wireframe · ${escapeHtml(frame.kind)}</p><h5>${escapeHtml(frame.name)}</h5></div><span class="uxw-state">State: ${escapeHtml(frame.state)}</span></div><p>${escapeHtml(frame.purpose)}</p>${statusNotice(frame.status)}${frameContext(frame, catalogs)}${tasks.length ? `<p class="uxw-tasks"><strong>Tasks:</strong> ${tasks.map(escapeHtml).join(', ')}</p>` : ''}${patternBasisMarkup(frame.patternBasis)}${focusMarkup(frame, catalogs)}<ol class="uxw-region-list" aria-label="Regions in task order">${regions.map(region => renderRegion(region, catalogs)).join('')}</ol><figcaption>Interaction structure only. UI design owns exact layout, component choice, spacing, typography, color, and visual treatment.</figcaption></figure>`;
+  return `<figure class="uxw-frame" id="${anchor('interaction-frame', frame.id)}" data-ux-frame="${escapeHtml(frame.id)}" data-ux-surface="${escapeHtml(surface.id)}" data-ux-state="${escapeHtml(frame.stateRef)}"><div class="uxw-frame-heading"><div><p class="uxw-kicker">UX interaction wireframe · ${escapeHtml(frame.kind)}</p><h5>${escapeHtml(frame.name)}</h5></div><span class="uxw-state">State: ${escapeHtml(catalogs.states.get(frame.stateRef).name)}</span></div><p>${escapeHtml(frame.purpose)}</p>${statusNotice(frame.status)}${frameContext(frame, catalogs)}${tasks.length ? `<p class="uxw-tasks"><strong>Tasks:</strong> ${tasks.map(escapeHtml).join(', ')}</p>` : ''}${patternBasisMarkup(frame.patternBasis)}${focusMarkup(frame, catalogs)}<ol class="uxw-region-list" aria-label="Regions in task order">${regions.map(region => renderRegion(region, catalogs)).join('')}</ol><figcaption>Interaction structure only. UI design owns exact layout, component choice, spacing, typography, color, and visual treatment.</figcaption></figure>`;
 }
 
 /** Render every validated semantic interaction frame owned by one UX surface. */
@@ -176,6 +180,9 @@ export function renderSurfaceInteractionWireframes(spec, surface) {
     actions: byId(spec.actions),
     frames: byId(spec.interactionFrames),
     surfaces: byId(spec.surfaces),
+    states: byId(spec.states),
+    feedback: byId(spec.feedback),
+    recoveries: byId(spec.recoveryPaths),
     tasks: byId(spec.useCases)
   };
   const frames = frameRefs.map(frameRef => {

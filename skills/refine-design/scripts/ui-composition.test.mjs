@@ -94,6 +94,16 @@ test('validates and canonically persists the executable composition fixture', ()
   assert.equal(result.sceneCount, 1);
 });
 
+test('persists UI below a product document root while resolving sources from the repository root', () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'ui-product-root-'));
+  const paths = writeInputs(directory);
+  const productDocumentRoot = path.join(directory, 'product', 'field-journal');
+  const output = uiOutput(productDocumentRoot);
+  const result = write(paths, output, {productDocumentRoot});
+  assert.equal(result.output, output);
+  assert.equal(JSON.parse(fs.readFileSync(output, 'utf8')).id, proposal().id);
+});
+
 test('rejects obsolete and future design-language dependencies before UI output', () => {
   for (const schemaVersion of ['0.13', '0.15']) {
     const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'ui-design-language-version-'));

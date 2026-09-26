@@ -96,7 +96,7 @@ function visualTargets(svgs) {
  * Verify a published design language without changing it.
  * Replays its current proposal in an isolated copy to prove stable refinement.
  */
-export function verifyDesignLanguage(baseFolder) {
+export function verifyDesignLanguage(baseFolder, {formatterBase = baseFolder} = {}) {
   const base = path.resolve(baseFolder);
   const source = path.join(base, 'design-language', 'design-language.json');
   if (!fs.statSync(base, {throwIfNoEntry: false})?.isDirectory()) fail('Design base folder does not exist');
@@ -107,7 +107,7 @@ export function verifyDesignLanguage(baseFolder) {
   try {
     fs.cpSync(base, copy, {recursive: true, errorOnExist: true});
     const before = snapshot(copy);
-    const result = applyProposal(copy, proposalFromSaved(saved));
+    const result = applyProposal(copy, proposalFromSaved(saved), {formatterBase});
     const after = snapshot(copy);
     const changed = changedFiles(before, after);
     if (result.revision !== saved.revision || changed.length) {
@@ -136,9 +136,9 @@ export function verifyDesignLanguage(baseFolder) {
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
-    const [base, ...rest] = process.argv.slice(2);
-    if (!base || rest.length) fail('Usage: node design-language-verify.mjs <design-base>');
-    process.stdout.write(JSON.stringify(verifyDesignLanguage(base), null, 2) + '\n');
+    const [base, flag, formatterBase, ...rest] = process.argv.slice(2);
+    if (!base || rest.length || (flag !== undefined && (flag !== '--formatter-base' || !formatterBase))) fail('Usage: node design-language-verify.mjs <design-base> [--formatter-base <repository-product-directory>]');
+    process.stdout.write(JSON.stringify(verifyDesignLanguage(base, {formatterBase: formatterBase ?? base}), null, 2) + '\n');
   } catch (error) {
     process.stderr.write('Design-language verification failed: ' + error.message + '\n');
     process.exitCode = 1;

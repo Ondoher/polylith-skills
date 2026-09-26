@@ -16,12 +16,12 @@ The command writes a self-contained detached context package at `contexts/prd/<m
 
 ## Content
 
-The closed 1.0 context contains:
+The closed 2.0 PRD context contains:
 
 - the snapshot ID, independent snapshot revision, and exact snapshot byte hash;
 - the product-model ID, source revision, status, byte hash, and aggregate semantic material hash;
 - requested scope references;
-- selected product, purpose, user, capability, and gap records with their stable IDs, status, owner, and record material hash;
+- selected product, purpose, user, capability, goal, requirement, rule, and gap records with their stable IDs, status, owner, and record material hash;
 - current PRD-consumable product artifacts as validated envelopes with bounded JSON payloads and exact record/artifact dependencies;
 - explicit summaries of every included locked product record or artifact;
 - typed summaries for relevant stale, locked-conflict, or superseded artifacts, without their payloads;
@@ -31,11 +31,13 @@ The context contains no external source or artifact-store path. Copy the complet
 
 Every artifact has a first-class `resources` array, including an empty array when none are declared. Each closed descriptor is `{id,logicalPath,path,mediaType,byteLength,sha256}`. Its `path` is exactly `artifact-resources/<sha256>.<canonical-extension>`; its `logicalPath` is the safe relative image path used by the structured document. Approved media types and canonical extensions are PNG/png, JPEG/jpg, WebP/webp, and SVG/svg. Resource IDs and logical paths are unique within their artifact. The resolver copies only selected artifacts' declared resources, verifies type, size, hash and unlinked paths, rejects conflicting descriptors for one digest, and deduplicates shared bytes. Limits are 20 MiB per resource and 64 MiB for the deduplicated package.
 
-A current `prd-publication` artifact explicitly selects full publication through required UX and design-language IDs, an optional UI ID, and ordered component IDs. Every selected ID must be an exact direct artifact dependency. No manifest means product-only publication; one means full publication; multiple manifests are invalid for the publisher. See [publication packages](product-publication.md) for the exact current encoding and proposal helper.
+A current `prd-publication` artifact explicitly selects rich publication through required UX and design-language IDs, a structurally optional UI ID, and ordered component IDs. Every selected ID must be an exact direct artifact dependency. Product-only and UX-only contexts remain valid refinement outputs, but the operational `generate-prd` workflow requires a manifest with a current UI 0.3 artifact and scenes before outlining or publishing. Multiple manifests are invalid. See [publication packages](product-publication.md) for the exact current encoding and proposal helper.
 
 ## Scope and closure
 
 Without `--scope`, the resolver includes every active PRD product record and every PRD artifact in the current snapshot. With a scope, it starts from the requested active record IDs and adds only required product-record relationships and affected gaps. It includes an artifact only when every record reference in that artifact and its transitive artifact dependencies is already inside that resolved product-record scope. A multi-scope artifact that merely intersects the request is omitted; an artifact never expands a scoped request into otherwise unrelated product records.
+
+Relationship closure may add an active record owned by another consumer when a selected PRD record directly depends on it. Such a record supplies only the context needed to preserve the product relationship; an explicit `--scope` entry must itself be available to PRD, and a PRD artifact cannot introduce unrelated records through its declared references.
 
 Every included artifact must explicitly name the `prd` consumer. A PRD artifact that depends on an artifact unavailable to `prd` is rejected rather than leaking a technical-only payload. Every artifact dependency must resolve to the exact included revision and material hash. Every scope, coverage, gap, and lock reference must have an exact record-dependency binding, and every record dependency must resolve to an included record with the exact material hash. Partial artifacts remain consumable only when they name explicit included gap records.
 
@@ -45,7 +47,7 @@ Artifacts whose authorial status is `superseded`, or whose snapshot dependency s
 
 ## Validation and binding
 
-[product-context-schema-1.0.json](product-context-schema-1.0.json) documents the structural shape. The executable validator additionally enforces:
+[product-context-schema-2.0.json](product-context-schema-2.0.json) documents the structural shape. The executable validator additionally enforces:
 
 - closed objects, identifier and size bounds, unique IDs and references, and exact enums;
 - the shared 2 MiB aggregate context limit;

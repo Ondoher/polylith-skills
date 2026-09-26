@@ -4,7 +4,7 @@ The product description and product requirements document serve different
 purposes in the design workflow.
 
 The description is interpreted once per accepted update into the canonical
-schema 1.0 product model described in [product-model.md](product-model.md).
+schema 2.0 product model described in [product-model.md](product-model.md).
 Specialists and downstream skills consume validated structured artifacts or a
 consumer context derived from that model. They do not independently parse this
 Markdown. `generate-prd` owns PRD publication from the persisted PRD context;

@@ -26,10 +26,11 @@ source path. If it or preserved owner resources live inside the named root,
 purge only inventoried derived files/subdirectories, never that containing root
 or the shared repository `product/` directory. Location policy does not authorize
 an implicit migration or deletion of ambiguous prior data. Generated publications
-use `<repository-root>/documents/<name>/<doc-name>/`; a requested PRD is
-installed at `documents/<name>/prd/`. Inventory owned generated document
+use `<repository-root>/documents/<name>/<doc-name>/`; a requested product
+publication uses the reviewed `generate-prd` structure plan to select its
+document directories. Inventory owned generated document
 outputs separately from the data store. Preserve human-owned documentation and
-never purge the shared `documentation/` directory.
+never purge the shared `documents/` directory.
 
 ## Sole Product Inputs
 

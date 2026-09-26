@@ -15,10 +15,10 @@ import {
 
 export const PUBLICATION_ARTIFACT_KINDS = Object.freeze({
   manifest: Object.freeze({artifactKind: 'prd-publication', artifactSchemaVersion: '1.0'}),
-  ux: Object.freeze({artifactKind: 'ux-design', artifactSchemaVersion: '0.2'}),
+  ux: Object.freeze({artifactKind: 'ux-design', artifactSchemaVersion: '0.3'}),
   designLanguage: Object.freeze({artifactKind: 'design-language', artifactSchemaVersion: '0.14'}),
-  ui: Object.freeze({artifactKind: 'ui-composition', artifactSchemaVersion: '0.2'}),
-  component: Object.freeze({artifactKind: 'component-design', artifactSchemaVersion: '0.2'}),
+  ui: Object.freeze({artifactKind: 'ui-composition', artifactSchemaVersion: '0.3'}),
+  component: Object.freeze({artifactKind: 'component-design', artifactSchemaVersion: '0.3'}),
 });
 
 export const MAX_DECODED_ARTIFACT_BYTES = PUBLICATION_DOCUMENT_MAX_BYTES;
@@ -325,9 +325,11 @@ export function buildArtifactPublication(context, {contextDirectory} = {}) {
       return file;
     });
 
+    let inlineComponentRegistrations = [];
     publishPrdHtml(uxFile, designFile, outputRoot, {
       sourceRoot,
       layoutFile,
+      onInlineComponentRegistrations: registrations => { inlineComponentRegistrations = registrations; },
       uxLabel: `artifact:${uxArtifact.id}@${uxArtifact.revision}`,
       designLabel: `artifact:${designArtifact.id}@${designArtifact.revision}`,
       layoutLabel: `artifact:${designArtifact.id}@${designArtifact.revision}#review-layout`,
@@ -339,6 +341,7 @@ export function buildArtifactPublication(context, {contextDirectory} = {}) {
     });
     return {
       files: collectOutputFiles(outputRoot),
+      inlineComponentRegistrations,
       resources: resourceReceipt.sort((left, right) => compareCodePoints(
         `${left.artifactId}/${left.logicalPath}`,
         `${right.artifactId}/${right.logicalPath}`,

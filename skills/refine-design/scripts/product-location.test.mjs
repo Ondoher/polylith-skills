@@ -20,11 +20,18 @@ test('location preserves the confirmed name beneath the repository root without 
   assert.equal(location.productRoot, path.join(root, 'product', 'Field Journal'));
   assert.equal(location.currentPath, path.join(location.productRoot, 'current.json'));
   assert.equal(location.documentationRoot, path.join(root, 'documents', 'Field Journal'));
-  assert.equal(location.publicationRoot, path.join(location.documentationRoot, 'prd'));
   assert.equal(fs.existsSync(path.join(root, 'product')), false);
   assert.equal(fs.existsSync(path.join(root, 'documents')), false);
   fs.mkdirSync(path.join(root, 'documents'));
   assert.throws(() => resolveProductLocation({repositoryRoot: path.join(root, 'documents'), productName: 'Field Journal'}), /repository root/);
+});
+
+test('an authored documentation folder does not change the locked documents publication root', t => {
+  const root = repository(t);
+  fs.mkdirSync(path.join(root, 'documentation', 'Field Journal'), {recursive: true});
+  const location = resolveProductLocation({repositoryRoot: root, productName: 'Field Journal'});
+  assert.equal(location.documentationRoot, path.join(root, 'documents', 'Field Journal'));
+  assert.equal(fs.existsSync(path.join(root, 'documents')), false);
 });
 
 test('missing and unsafe names require clarification rather than a guessed path', t => {
@@ -62,24 +69,25 @@ test('documentation destinations reject files, case collisions, and linked outpu
   fs.mkdirSync(path.join(docs, 'Other'));
   const outside = path.join(root, 'elsewhere');
   fs.mkdirSync(outside);
-  fs.symlinkSync(outside, path.join(docs, 'Other', 'prd'), process.platform === 'win32' ? 'junction' : 'dir');
+  fs.rmdirSync(path.join(docs, 'Other'));
+  fs.symlinkSync(outside, path.join(docs, 'Other'), process.platform === 'win32' ? 'junction' : 'dir');
   assert.throws(() => resolveProductLocation({repositoryRoot: root, productName: 'Other'}), /ordinary directories/);
   assert.equal(fs.existsSync(path.join(root, 'product')), false);
 });
 
 test('model and detached context persist under the resolved named product while the human source stays in place', t => {
   const root = repository(t);
-  const fixture = new URL('../references/fixtures/product-model/field-journal/', import.meta.url);
+  const fixture = new URL('../references/fixtures/product-model/garden-log/', import.meta.url);
   fs.mkdirSync(path.join(root, 'briefs'));
   const source = path.join(root, 'briefs', 'product-description.md');
   const bytes = fs.readFileSync(new URL('product-description.md', fixture));
   fs.writeFileSync(source, bytes);
   const proposal = path.join(root, 'proposal.json');
   fs.copyFileSync(new URL('product-model-proposal.json', fixture), proposal);
-  const location = resolveProductLocation({repositoryRoot: root, productName: 'Field Journal'});
+  const location = resolveProductLocation({repositoryRoot: root, productName: 'Garden Log'});
   persistProductModel({proposalPath: proposal, sourcePath: source, sourceLabel: 'briefs/product-description.md', outputRoot: location.productRoot});
   const chain = loadCurrentProduct(location.currentPath);
-  assert.equal(chain.model.name, 'Field Journal');
+  assert.equal(chain.model.name, 'Garden Log');
   const context = resolveProductContext({currentPath: location.currentPath});
   assert.equal(fs.existsSync(path.join(location.productRoot, context.path)), true);
   assert.deepEqual(fs.readFileSync(source), bytes);

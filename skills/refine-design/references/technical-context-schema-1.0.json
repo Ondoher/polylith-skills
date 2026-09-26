@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://codex.local/refine-design/technical-context-schema-1.0.json",
-  "title": "Technical preparation and context 1.0",
+  "title": "Technical preparation 1.0 and context 2.0",
   "oneOf": [
     {
       "$ref": "#/$defs/technicalContext"
@@ -422,34 +422,7 @@
       },
       "allOf": [
         {
-          "if": {
-            "properties": {
-              "artifactKind": {
-                "const": "technical-design"
-              }
-            }
-          },
-          "then": {
-            "properties": {
-              "payload": {
-                "$ref": "#/$defs/technicalPayload"
-              },
-              "owner": {
-                "const": "technical-documentation"
-              },
-              "consumerDomains": {
-                "const": [
-                  "technical-documentation"
-                ]
-              },
-              "artifactSchemaVersion": {
-                "const": "1.0"
-              },
-              "resources": {
-                "const": []
-              }
-            }
-          }
+          "$ref": "#/$defs/artifactHistory"
         }
       ]
     },
@@ -1799,6 +1772,9 @@
         "scopeRefs",
         "product",
         "capabilities",
+        "goals",
+        "requirements",
+        "rules",
         "gaps",
         "artifacts",
         "locks",
@@ -1810,7 +1786,7 @@
       ],
       "properties": {
         "schemaVersion": {
-          "const": "1.0"
+          "const": "2.0"
         },
         "contextId": {
           "type": "string",
@@ -1972,25 +1948,15 @@
             "additionalProperties": false,
             "required": [
               "id",
-              "name",
-              "description",
-              "outcome",
               "status",
               "owner",
-              "materialSha256"
+              "materialSha256",
+              "name",
+              "summary"
             ],
             "properties": {
               "id": {
                 "$ref": "#/$defs/id"
-              },
-              "name": {
-                "$ref": "#/$defs/text"
-              },
-              "description": {
-                "$ref": "#/$defs/text"
-              },
-              "outcome": {
-                "$ref": "#/$defs/text"
               },
               "status": {
                 "$ref": "#/$defs/recordStatus"
@@ -2000,6 +1966,12 @@
               },
               "materialSha256": {
                 "$ref": "#/$defs/sha256"
+              },
+              "name": {
+                "$ref": "#/$defs/text"
+              },
+              "summary": {
+                "$ref": "#/$defs/text"
               }
             }
           }
@@ -2085,7 +2057,10 @@
                   "user",
                   "capability",
                   "gap",
-                  "artifact"
+                  "artifact",
+                  "goal",
+                  "requirement",
+                  "rule"
                 ]
               },
               "owner": {
@@ -2166,6 +2141,142 @@
         "materialSha256": {
           "$ref": "#/$defs/sha256"
         },
+        "goals": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "status",
+              "owner",
+              "materialSha256",
+              "statement",
+              "desiredOutcome",
+              "capabilityRefs",
+              "userRefs"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/id"
+              },
+              "status": {
+                "$ref": "#/$defs/recordStatus"
+              },
+              "owner": {
+                "$ref": "#/$defs/owner"
+              },
+              "materialSha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "statement": {
+                "$ref": "#/$defs/text"
+              },
+              "desiredOutcome": {
+                "$ref": "#/$defs/text"
+              },
+              "capabilityRefs": {
+                "$ref": "#/$defs/refs"
+              },
+              "userRefs": {
+                "$ref": "#/$defs/refs"
+              }
+            }
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "status",
+              "owner",
+              "materialSha256",
+              "kind",
+              "statement",
+              "capabilityRefs",
+              "goalRefs"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/id"
+              },
+              "status": {
+                "$ref": "#/$defs/recordStatus"
+              },
+              "owner": {
+                "$ref": "#/$defs/owner"
+              },
+              "materialSha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "kind": {
+                "enum": [
+                  "behavior",
+                  "quality",
+                  "scope"
+                ]
+              },
+              "statement": {
+                "$ref": "#/$defs/text"
+              },
+              "capabilityRefs": {
+                "$ref": "#/$defs/refs"
+              },
+              "goalRefs": {
+                "$ref": "#/$defs/refs"
+              }
+            }
+          }
+        },
+        "rules": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "status",
+              "owner",
+              "materialSha256",
+              "kind",
+              "statement",
+              "appliesToRefs"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/id"
+              },
+              "status": {
+                "$ref": "#/$defs/recordStatus"
+              },
+              "owner": {
+                "$ref": "#/$defs/owner"
+              },
+              "materialSha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "kind": {
+                "enum": [
+                  "policy",
+                  "invariant",
+                  "constraint"
+                ]
+              },
+              "statement": {
+                "$ref": "#/$defs/text"
+              },
+              "appliesToRefs": {
+                "$ref": "#/$defs/refs"
+              }
+            }
+          }
+        },
         "evidence": {
           "type": "array",
           "maxItems": 10000,
@@ -2186,16 +2297,53 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-              "required": ["claimId", "title", "summary", "path", "sha256", "sourceSha256", "researchStatus", "researchReportSha256"],
+            "required": [
+              "claimId",
+              "title",
+              "summary",
+              "path",
+              "sha256",
+              "sourceSha256",
+              "researchStatus",
+              "researchReportSha256"
+            ],
             "properties": {
-              "claimId": {"$ref": "#/$defs/id"},
-              "title": {"$ref": "#/$defs/text"},
-              "summary": {"$ref": "#/$defs/text"},
-              "path": {"type": "string", "minLength": 1},
-              "sha256": {"$ref": "#/$defs/sha256"},
-                "sourceSha256": {"$ref": "#/$defs/sha256"},
-                "researchStatus": {"enum": ["current", "stale", "unassessed"]},
-                "researchReportSha256": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]}
+              "claimId": {
+                "$ref": "#/$defs/id"
+              },
+              "title": {
+                "$ref": "#/$defs/text"
+              },
+              "summary": {
+                "$ref": "#/$defs/text"
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "sourceSha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "researchStatus": {
+                "enum": [
+                  "current",
+                  "stale",
+                  "unassessed"
+                ]
+              },
+              "researchReportSha256": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/sha256"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
             }
           }
         }

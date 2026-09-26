@@ -29,6 +29,7 @@
       "checkpoint-advisor.toml",
       "contracts-reviewer.toml",
       "controller-agent.toml",
+      "document-structure.toml",
       "model-agent.toml",
       "polylith-architect.toml",
       "privacy-security-reviewer.toml",

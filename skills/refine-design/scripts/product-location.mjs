@@ -58,8 +58,6 @@ export function resolveProductLocation({repositoryRoot, productName}) {
       throw new Error('Product location must not be an independently rooted repository');
     }
   }
-  const publicationRoot = path.join(documentationRoot, 'prd');
-  inspectDirectory(publicationRoot);
   return {
     repositoryRoot: root,
     productName,
@@ -71,7 +69,6 @@ export function resolveProductLocation({repositoryRoot, productName}) {
     uiPath: path.join(productRoot, 'ui', 'ui-spec.json'),
     contextsRoot: path.join(productRoot, 'contexts'),
     documentationRoot,
-    publicationRoot,
   };
 }
 

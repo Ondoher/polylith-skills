@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "2.0",
+  "kind": "product-model-proposal",
+  "id": "garden-log",
+  "name": "Garden Log",
+  "status": "accepted",
+  "owner": "product",
+  "consumerDomains": ["prd", "ux"],
+  "base": null,
+  "provenance": {"producer": "refine-design", "method": "semantic-parse"},
+  "purpose": {
+    "id": "garden-log-purpose",
+    "summary": "Help gardeners remember their harvests.",
+    "status": "accepted",
+    "owner": "product",
+    "consumerDomains": ["prd", "ux"],
+    "provenance": {"sourceClaimRefs": ["claim-description"]}
+  },
+  "users": [{
+    "id": "gardener",
+    "name": "Gardener",
+    "description": "A person recording harvests.",
+    "status": "accepted",
+    "owner": "product",
+    "consumerDomains": ["prd", "ux"],
+    "provenance": {"sourceClaimRefs": ["claim-description"]}
+  }],
+  "capabilities": [{
+    "id": "harvest-log",
+    "name": "Harvest log",
+    "summary": "Record and review harvest entries.",
+    "status": "accepted",
+    "owner": "product",
+    "consumerDomains": ["prd", "ux"],
+    "userRefs": ["gardener"],
+    "relatedCapabilityRefs": [],
+    "provenance": {"sourceClaimRefs": ["claim-description"]}
+  }],
+  "goals": [{
+    "id": "remember-harvests",
+    "statement": "Remember past harvests.",
+    "desiredOutcome": "A gardener can review saved harvest entries.",
+    "capabilityRefs": ["harvest-log"],
+    "userRefs": ["gardener"],
+    "status": "accepted",
+    "owner": "product",
+    "consumerDomains": ["prd", "ux"],
+    "provenance": {"sourceClaimRefs": ["claim-description"]}
+  }],
+  "requirements": [{
+    "id": "record-dated-harvest",
+    "kind": "behavior",
+    "statement": "A gardener can save a harvest entry with its date.",
+    "capabilityRefs": ["harvest-log"],
+    "goalRefs": ["remember-harvests"],
+    "status": "accepted",
+    "owner": "product",
+    "consumerDomains": ["prd", "ux"],
+    "provenance": {"sourceClaimRefs": ["claim-description"]}
+  }, {
+    "id": "retain-harvest-entry",
+    "kind": "behavior",
+    "statement": "Saved harvest entries remain available after the application closes.",
+    "capabilityRefs": ["harvest-log"],
+    "goalRefs": ["remember-harvests"],
+    "status": "accepted",
+    "owner": "product",
+    "consumerDomains": ["prd", "ux"],
+    "provenance": {"sourceClaimRefs": ["claim-description"]}
+  }],
+  "rules": [{
+    "id": "reject-empty-entry",
+    "kind": "policy",
+    "statement": "An empty harvest entry is never saved.",
+    "appliesToRefs": ["record-dated-harvest"],
+    "status": "accepted",
+    "owner": "product",
+    "consumerDomains": ["prd", "ux"],
+    "provenance": {"sourceClaimRefs": ["claim-description"]}
+  }],
+  "gaps": [],
+  "sourceClaims": [{
+    "id": "claim-description",
+    "startLine": 1,
+    "endLine": 1,
+    "summary": "Gardeners can record dated harvests; saved entries persist and empty entries are rejected.",
+    "disposition": "incorporated",
+    "recordRefs": ["garden-log-purpose", "gardener", "harvest-log", "remember-harvests", "record-dated-harvest", "retain-harvest-entry", "reject-empty-entry"]
+  }],
+  "identityClaims": [
+    {"recordRef": "garden-log-purpose", "kind": "new", "previousRef": null, "supersedesRefs": []},
+    {"recordRef": "gardener", "kind": "new", "previousRef": null, "supersedesRefs": []},
+    {"recordRef": "harvest-log", "kind": "new", "previousRef": null, "supersedesRefs": []},
+    {"recordRef": "remember-harvests", "kind": "new", "previousRef": null, "supersedesRefs": []},
+    {"recordRef": "record-dated-harvest", "kind": "new", "previousRef": null, "supersedesRefs": []},
+    {"recordRef": "retain-harvest-entry", "kind": "new", "previousRef": null, "supersedesRefs": []},
+    {"recordRef": "reject-empty-entry", "kind": "new", "previousRef": null, "supersedesRefs": []}
+  ],
+  "sourceClaimLineage": []
+}

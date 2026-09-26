@@ -90,7 +90,7 @@ function layoutStyle(layout, tokens) {
   return declarations(result);
 }
 
-function nodeStyle(node, template, tokens) {
+function nodeStyle(node, template, tokens, parentLayoutMode) {
   const result = {};
   if (node.placement) {
     if (node.placement.row) result['grid-row'] = `${node.placement.row} / span ${node.placement.rowSpan ?? 1}`;
@@ -101,7 +101,12 @@ function nodeStyle(node, template, tokens) {
     if (constraints[source] !== undefined) result[target] = `${constraints[source]}px`;
   }
   if (template?.sizing?.width === 'fixed') result.width = `${template.sizing.widthPx}px`;
-  if (template?.sizing?.width === 'fill') result.width = '100%';
+  if (template?.sizing?.width === 'fill') {
+    if (parentLayoutMode === 'flex') {
+      result.flex = '1 1 0';
+      result['min-width'] = result['min-width'] ?? '0';
+    } else result.width = '100%';
+  }
   if (template?.sizing?.height === 'fixed') result.height = `${template.sizing.heightPx}px`;
   if (template?.sizing?.height === 'fill') result.height = '100%';
   return declarations(result);
@@ -231,14 +236,14 @@ function renderSceneTree(scene, spec, uxSpec, context) {
   const surface = uxSpec.surfaces.find(candidate => candidate.id === scene.surfaceRef);
   const regions = new Map(surface.regions.map(region => [region.id, region]));
   context.assets = new Map(spec.assets.map(asset => [asset.id, asset]));
-  const renderNode = (node, root = false) => {
+  const renderNode = (node, root = false, parentLayoutMode) => {
     if (node.kind === 'region') {
       const uxRegion = node.uxRegionRef ? regions.get(node.uxRegionRef) : null;
       const label = node.label ?? uxRegion?.name ?? (root ? scene.name : node.id);
       const surfaceClass = node.surfaceTreatment ? `ui-surface-${cssIdentifier(node.surfaceTreatment)}` : '';
       const classes = `${root ? 'ui-scene-root' : 'ui-region'} ${surfaceClass} ${sourceClasses(node)}`.trim();
       const style = [layoutStyle(node.layout, tokens), nodeStyle(node, null, tokens)].filter(Boolean).join(';');
-      const children = node.children.map(child => renderNode(child)).join('');
+      const children = node.children.map(child => renderNode(child, false, node.layout.mode)).join('');
       const element = root && scene.transientBehavior?.presentation === 'dialog' ? 'dialog' : (root ? 'div' : 'section');
       const transientAttributes = root && scene.transientBehavior
         ? ` data-ui-transient="${escapeHtml(scene.transientBehavior.presentation)}"${element === 'dialog' ? ' open aria-modal="true"' : ''}`
@@ -251,7 +256,7 @@ function renderSceneTree(scene, spec, uxSpec, context) {
     const label = template.html.renderer === 'visual'
       ? `${node.parameters.accessibleLabel ?? node.parameters.text ?? node.parameters.role} · ${node.parameters.role}`
       : `${template.name} · ${node.state}`;
-    const style = nodeStyle(node, template, tokens);
+    const style = nodeStyle(node, template, tokens, parentLayoutMode);
     return `<div class="ui-node-frame" ${annotationAttributes(node, template.id, label)}${style ? ` style="${escapeHtml(style)}"` : ''}>${renderTemplate(node, template, context)}</div>`;
   };
   return renderNode(scene.root, true);
@@ -264,7 +269,7 @@ export function renderInlineScene(scene, spec, {uxSpec, componentRegistrations =
     componentRegistrations,
     uxSpec,
   });
-  return `<div class="prd-comp-canvas ui-viewport" style="--ui-viewport-width:${scene.viewport.width}px;--ui-viewport-height:${scene.viewport.height}px" data-ui-scene="${escapeHtml(scene.id)}" data-ui-source-revisions="${escapeHtml(`${spec.uxSource.revision}/${spec.designLanguageSource.revision}`)}">${sceneMarkup}</div>`;
+  return `<div class="prd-comp-canvas ui-viewport" style="--ui-viewport-width:${scene.viewport.width}px;--ui-viewport-height:${scene.viewport.height}px" data-ui-scene="${escapeHtml(scene.id)}" data-ui-source-revisions="${escapeHtml(`${spec.uxArtifactBinding.revision}/${spec.designLanguageSource.revision}`)}">${sceneMarkup}</div>`;
 }
 
 function pageNavigation(scene, request, requestsForScene, artifactKind) {
@@ -281,7 +286,7 @@ function renderScenePage(scene, request, spec, uxSpec, componentRegistrations) {
   const sceneMarkup = renderSceneTree(scene, spec, uxSpec, {request, componentRegistrations, uxSpec});
   const templates = new Map(spec.templates.map(template => [template.id, template]));
   const unresolvedPlaceholders = countPlaceholders(scene.root) - countResolvedPlaceholders(scene.root, templates, componentRegistrations);
-  const artifactKind = unresolvedPlaceholders > 0 ? 'wireframe' : 'comp';
+  const artifactKind = scene.completeness === 'partial' || unresolvedPlaceholders > 0 ? 'wireframe' : 'comp';
   const title = `${scene.name} · ${request.variant === 'clean' ? 'Clean' : 'Annotated'} ${artifactKind}`;
   const transientReview = request.variant === 'annotated' && scene.transientBehavior
     ? `<aside class="ui-transient-review" aria-label="Transient interaction contract"><h2>Transient interaction</h2><dl><div><dt>Presentation</dt><dd>${escapeHtml(scene.transientBehavior.presentation)}</dd></div><div><dt>Initial focus</dt><dd>${escapeHtml(scene.transientBehavior.initialFocusRef)} — ${escapeHtml(scene.transientBehavior.initialFocusRationale)}</dd></div><div><dt>Focus order</dt><dd>${scene.transientBehavior.focusOrder.map(escapeHtml).join(' → ')}</dd></div><div><dt>Return focus</dt><dd>${escapeHtml(scene.transientBehavior.returnFocusRef)}</dd></div><div><dt>Cancellation</dt><dd>Escape: ${escapeHtml(scene.transientBehavior.cancellation.escape)}; outside: ${escapeHtml(scene.transientBehavior.cancellation.outside)}; ${escapeHtml(scene.transientBehavior.cancellation.result)}</dd></div><div><dt>Height</dt><dd>Content driven${scene.transientBehavior.height.maxPx ? `, max ${scene.transientBehavior.height.maxPx}px` : ''}</dd></div></dl></aside>`
@@ -298,12 +303,12 @@ function renderScenePage(scene, request, spec, uxSpec, componentRegistrations) {
 </head>
 <body class="ui-page ui-page--${request.variant}">
   <!-- ${UI_COMPOSITION_HTML_MARKER} -->
-  <a class="rd-skip-link" href="#main-content">Skip to comp</a>
+  <a class="rd-skip-link" href="#main-content">Skip to scene</a>
   ${pageNavigation(scene, request, requests, artifactKind)}
-  <header class="ui-review-header"><div><p class="rd-eyebrow">${escapeHtml(request.variant)} product ${artifactKind}</p><h1>${escapeHtml(scene.name)}</h1><p>${escapeHtml(scene.state)} · ${escapeHtml(scene.viewport.width)} × ${escapeHtml(scene.viewport.height)}</p>${unresolvedPlaceholders > 0 ? '<p><strong>Partial UI wireframe:</strong> unresolved specialized components prevent this scene from qualifying as a finished comp.</p>' : ''}${spec.status === 'locked' ? '<p><strong>Locked design:</strong> change only on an explicit user request for this design.</p>' : ''}</div><dl><div><dt>UI revision</dt><dd>${escapeHtml(spec.revision)}</dd></div><div><dt>Design state</dt><dd>${escapeHtml(spec.status)}</dd></div><div><dt>Scene</dt><dd>${escapeHtml(scene.id)}</dd></div><div><dt>Publication</dt><dd>${artifactKind}</dd></div></dl></header>
+  <header class="ui-review-header"><div><p class="rd-eyebrow">${escapeHtml(request.variant)} product ${artifactKind}</p><h1>${escapeHtml(scene.name)}</h1><p>${escapeHtml(scene.stateRef)} · ${escapeHtml(scene.viewport.width)} × ${escapeHtml(scene.viewport.height)}</p>${artifactKind === 'wireframe' ? '<p><strong>Partial UI wireframe:</strong> this scene is incomplete and is not a finished comp.</p>' : ''}${spec.status === 'locked' ? '<p><strong>Locked design:</strong> change only on an explicit user request for this design.</p>' : ''}</div><dl><div><dt>UI revision</dt><dd>${escapeHtml(spec.revision)}</dd></div><div><dt>Design state</dt><dd>${escapeHtml(spec.status)}</dd></div><div><dt>Scene</dt><dd>${escapeHtml(scene.id)}</dd></div><div><dt>Publication</dt><dd>${artifactKind}</dd></div></dl></header>
   <main id="main-content" class="ui-comp-main">
     <section id="scene" class="ui-viewport-frame" aria-label="${escapeHtml(scene.name)} fixed desktop viewport">
-      <div class="ui-viewport" style="--ui-viewport-width:${scene.viewport.width}px;--ui-viewport-height:${scene.viewport.height}px" data-ui-scene="${escapeHtml(scene.id)}" data-ui-source-revisions="${escapeHtml(`${spec.uxSource.revision}/${spec.designLanguageSource.revision}`)}">${sceneMarkup}</div>
+      <div class="ui-viewport" style="--ui-viewport-width:${scene.viewport.width}px;--ui-viewport-height:${scene.viewport.height}px" data-ui-scene="${escapeHtml(scene.id)}" data-ui-source-revisions="${escapeHtml(`${spec.uxArtifactBinding.revision}/${spec.designLanguageSource.revision}`)}">${sceneMarkup}</div>
     </section>
     ${transientReview}
   </main>
@@ -322,8 +327,8 @@ function renderCompIndex(spec, componentRegistrations) {
     const clean = requests.find(request => request.variant === 'clean');
     const annotated = requests.find(request => request.variant === 'annotated');
     const unresolvedPlaceholders = countPlaceholders(scene.root) - countResolvedPlaceholders(scene.root, templates, componentRegistrations);
-    const kind = unresolvedPlaceholders > 0 ? 'wireframe' : 'comp';
-    return `<article><p class="rd-eyebrow">${escapeHtml(scene.state)} · ${kind}</p><h2>${escapeHtml(scene.name)}</h2><p>${escapeHtml(scene.viewport.width)} × ${escapeHtml(scene.viewport.height)} · ${unresolvedPlaceholders} unresolved component${unresolvedPlaceholders === 1 ? '' : 's'}</p><div><a href="${escapeHtml(path.posix.basename(clean.output))}">Clean ${kind}</a><a href="${escapeHtml(path.posix.basename(annotated.output))}">Annotated ${kind}</a></div></article>`;
+    const kind = scene.completeness === 'partial' || unresolvedPlaceholders > 0 ? 'wireframe' : 'comp';
+    return `<article><p class="rd-eyebrow">${escapeHtml(scene.stateRef)} · ${kind}</p><h2>${escapeHtml(scene.name)}</h2><p>${escapeHtml(scene.viewport.width)} × ${escapeHtml(scene.viewport.height)} · ${unresolvedPlaceholders} unresolved component${unresolvedPlaceholders === 1 ? '' : 's'}</p><div><a href="${escapeHtml(path.posix.basename(clean.output))}">Clean ${kind}</a><a href="${escapeHtml(path.posix.basename(annotated.output))}">Annotated ${kind}</a></div></article>`;
   }).join('')}</main><footer><p>Generated from the structured UI composition source.</p></footer></body></html>
 `;
 }
@@ -371,8 +376,9 @@ dialog.ui-scene-root { inset: auto; margin: 0; color: inherit; }
 .ui-button:disabled, .ui-icon-button:disabled { background: color-mix(in srgb, var(--rd-color-body-text) 12%, var(--rd-color-surface)); color: color-mix(in srgb, var(--rd-color-body-text) 48%, var(--rd-color-surface)); box-shadow: none; cursor: not-allowed; }
 .ui-button { padding: 0 var(--rd-control-button-padding-x); }
 .ui-icon-button { width: var(--rd-control-button-height); padding: 0; }
-.ui-button-secondary { border: 1px solid var(--rd-color-primary-action); background: var(--rd-color-surface); color: var(--rd-color-primary-action); }
-.ui-button-text { border: 0; background: transparent; color: var(--rd-color-primary-action); }
+.ui-button-secondary { border: 1px solid var(--rd-button-outlined-default-border); background: var(--rd-button-outlined-default-background); color: var(--rd-button-outlined-default-foreground); }
+.ui-button-secondary:disabled { border-color: var(--rd-button-outlined-disabled-border); background: var(--rd-button-outlined-disabled-background); color: var(--rd-button-outlined-disabled-foreground); }
+.ui-button-text { border: 0; background: transparent; color: var(--rd-button-text-default-foreground); }
 .ui-image-viewport { position: relative; width: 100%; height: 100%; min-width: 0; min-height: 0; overflow: hidden; background: #111; }
 .ui-image-viewport img { display: block; width: 100%; height: 100%; max-width: none; transform-origin: top left; }
 .ui-surface-flat { border: 0; background: var(--rd-color-surface); box-shadow: none; }
@@ -381,18 +387,19 @@ dialog.ui-scene-root { inset: auto; margin: 0; color: inherit; }
 .ui-content-choice { justify-content: start; overflow: hidden; padding-inline: var(--rd-space-3); border-color: var(--rd-color-panel-border); color: var(--rd-color-body-text); text-align: left; text-overflow: ellipsis; white-space: nowrap; }
 .ui-content-choice.ui-is-selected, .ui-content-choice.ui-is-current { border-left: 4px solid var(--rd-color-primary-action); background: color-mix(in srgb, var(--rd-color-primary-action) 11%, var(--rd-color-surface)); font-weight: 700; }
 .ui-content-choice.ui-is-unavailable { border-style: dashed; color: var(--rd-review-muted); }
-.ui-status.ui-is-failed, .ui-status.ui-is-unavailable { background: color-mix(in srgb, var(--rd-color-failure) 12%, var(--rd-color-surface)); color: var(--rd-color-failure); }
-.ui-status.ui-is-available, .ui-status.ui-is-completed { background: color-mix(in srgb, var(--rd-color-success) 12%, var(--rd-color-surface)); color: var(--rd-color-success); }
+.ui-status.ui-is-failed, .ui-status.ui-is-unavailable { background: color-mix(in srgb, var(--rd-color-failure) 12%, var(--rd-color-surface)); color: var(--rd-color-body-text); }
+.ui-status.ui-is-available, .ui-status.ui-is-completed { background: color-mix(in srgb, var(--rd-color-success) 12%, var(--rd-color-surface)); color: var(--rd-color-body-text); }
 .ui-status.ui-is-unsaved { background: color-mix(in srgb, var(--rd-color-warning) 14%, var(--rd-color-surface)); }
 .ui-text-field { display: grid; gap: var(--rd-space-1); }
-.ui-text-field label { font-size: var(--rd-type-field-label-size); line-height: var(--rd-type-field-label-line); }
-.ui-text-field input { min-height: var(--rd-control-field-height); padding: 0 var(--rd-control-field-padding-x); border: 1px solid var(--rd-color-panel-border); border-radius: var(--rd-radius-small); background: var(--rd-color-surface); color: inherit; font: inherit; }
-.ui-text-field input:disabled { border-color: color-mix(in srgb, var(--rd-color-panel-border) 70%, transparent); background: color-mix(in srgb, var(--rd-color-body-text) 5%, var(--rd-color-surface)); color: color-mix(in srgb, var(--rd-color-body-text) 48%, var(--rd-color-surface)); cursor: not-allowed; }
+.ui-text-field label { color: var(--rd-field-label); font-size: var(--rd-type-field-label-size); line-height: var(--rd-type-field-label-line); }
+.ui-text-field input { min-height: var(--rd-control-field-height); padding: 0 var(--rd-control-field-padding-x); border: 1px solid var(--rd-field-border); border-radius: var(--rd-radius-small); background: var(--rd-color-surface); color: inherit; font: inherit; }
+.ui-text-field input:focus-visible, .ui-text-field.ui-is-focus input { border-color: var(--rd-field-border); outline: 2px solid var(--rd-color-primary-action); outline-offset: 2px; }
+.ui-text-field input:disabled { border-color: var(--rd-field-disabledBorder); background: color-mix(in srgb, var(--rd-color-body-text) 5%, var(--rd-color-surface)); color: color-mix(in srgb, var(--rd-color-body-text) 48%, var(--rd-color-surface)); cursor: not-allowed; }
 .ui-text-field p { margin: 0; color: var(--rd-review-muted); font-size: var(--rd-type-field-message-size); line-height: var(--rd-type-field-message-line); }
 .ui-choice-group { min-width: 0; color: var(--rd-color-body-text); font-family: var(--rd-type-body-family), sans-serif; }
 .ui-choice-group[data-presentation="tabs"] { display: flex; align-items: stretch; gap: 4px; padding: 4px; border: 1px solid var(--rd-color-panel-border); border-radius: var(--rd-radius-small); background: color-mix(in srgb, var(--rd-color-body-text) 4%, var(--rd-color-surface)); }
 .ui-choice-group[data-presentation="tabs"] button { display: grid; min-width: 0; min-height: var(--rd-control-field-height); place-content: center; gap: 1px; padding: 4px 14px; border: 0; border-radius: var(--rd-radius-small); background: transparent; color: inherit; font: inherit; white-space: nowrap; }
-.ui-choice-group[data-presentation="tabs"] button[aria-selected="true"] { background: var(--rd-color-surface); color: var(--rd-color-primary-action); box-shadow: 0 1px 3px rgba(0,0,0,.18); font-weight: 600; }
+.ui-choice-group[data-presentation="tabs"] button[aria-selected="true"] { background: var(--rd-color-surface); color: var(--rd-color-body-text); box-shadow: 0 1px 3px rgba(0,0,0,.18); font-weight: 600; }
 .ui-choice-group[data-presentation="tabs"] small, .ui-choice-group[data-presentation="list"] small { color: var(--rd-review-muted); font-size: var(--rd-type-supporting-size); line-height: var(--rd-type-supporting-line); }
 .ui-choice-group[data-presentation="list"] { display: grid; gap: 4px; }
 .ui-choice-group[data-presentation="list"] .ui-choice-group__heading { margin-top: 8px; padding: 4px 2px 0; color: var(--rd-review-muted); font-size: var(--rd-type-field-label-size); font-weight: 600; line-height: var(--rd-type-field-label-line); }
@@ -447,8 +454,8 @@ dialog.ui-scene-root { inset: auto; margin: 0; color: inherit; }
 .ui-node-frame:has(> .ui-visual--indicator) { z-index: 6; pointer-events: none; }
 .ui-node-frame:has(> .ui-visual--track), .ui-node-frame:has(> .ui-visual--thumb) { z-index: 7; pointer-events: none; }
 .ui-node-frame:has(> .ui-icon-button) { z-index: 8; align-items: center; justify-items: center; }
-.ui-visual.ui-is-focus { outline: 2px solid var(--rd-color-information); outline-offset: -2px; }
-.ui-button.ui-is-focus, .ui-icon-button.ui-is-focus { outline: 3px solid var(--rd-color-information); outline-offset: 2px; }
+.ui-visual.ui-is-focus { outline: 2px solid var(--rd-color-primary-action); outline-offset: -2px; }
+.ui-button.ui-is-focus, .ui-icon-button.ui-is-focus { outline: 2px solid var(--rd-color-primary-action); outline-offset: 2px; }
 .ui-complex-component { display: block; width: 100%; height: 100%; min-width: 0; min-height: 0; border: 0; background: transparent; }
 .ui-placeholder { display: grid; place-content: center; gap: var(--rd-space-2); width: 100%; height: 100%; padding: var(--rd-space-4); border: 1px dashed var(--rd-color-primary-action); border-radius: var(--rd-radius-small); background: color-mix(in srgb, var(--rd-color-primary-action) 4%, var(--rd-color-surface)); text-align: center; }
 .ui-placeholder p, .ui-placeholder small { margin: 0; color: var(--rd-review-muted); }

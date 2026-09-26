@@ -407,6 +407,10 @@ export function renderDesignLanguageCss(document, layoutInput) {
     const buttonVariables = Object.entries({contained: document.button.states, ...document.buttonVariants.states})
         .flatMap(([variant, states]) => Object.entries(states).flatMap(([state, colors]) => Object.entries(colors)
             .map(([part, expression]) => `    --rd-button-${variant}-${state}-${part}: ${resolveButtonColor(document, expression).value};`))).join('\n');
+    const fieldVariables = Object.entries(document.textField.colors)
+        .map(([part, expression]) => `    --rd-field-${part}: ${resolveButtonColor(document, expression).value};`).join('\n');
+    const selectVariables = Object.entries(document.selectInput.colors)
+        .map(([part, expression]) => `    --rd-select-${part}: ${resolveButtonColor(document, expression).value};`).join('\n');
     const typeVariables = document.typography.roles.map((role) => {
         const type = resolvedType(document, role);
         const font = fontAsset(type.fontId);
@@ -424,6 +428,8 @@ ${fontFaces}
 ${paletteVariables}
 ${roleVariables}
 ${buttonVariables}
+${fieldVariables}
+${selectVariables}
 ${typeVariables}
     --rd-review-canvas: #ededf5;
     --rd-review-card: #ffffff;
@@ -585,8 +591,11 @@ main { background: var(--rd-color-surface); }
 .rd-demo-input-anchor--select { --rd-demo-label-inset: var(--rd-control-select-padding-x); }
 .rd-demo-field-group label, .rd-demo-choice-group legend { font-family: var(--rd-type-field-label-family); font-size: var(--rd-type-field-label-size); font-weight: var(--rd-type-field-label-weight); line-height: var(--rd-type-field-label-line); }
 .rd-demo-input-anchor > label { position: absolute; inset-block-start: 0; inset-inline-start: var(--rd-demo-label-inset); z-index: 2; padding-inline: var(--rd-space-1); background: var(--rd-color-surface); transform: translateY(-50%); }
-.rd-demo-field-group input, .rd-demo-field-group select { width: 100%; min-width: 0; height: var(--rd-control-field-height); padding: 0 var(--rd-control-field-padding-x); border: 1px solid var(--rd-review-frame-border); border-radius: var(--rd-control-field-radius); background: var(--rd-color-surface); color: var(--rd-color-body-text); font: inherit; }
-.rd-demo-field-group select { height: var(--rd-control-select-height); padding-inline: var(--rd-control-select-padding-x); }
+.rd-demo-field-group input, .rd-demo-field-group select { width: 100%; min-width: 0; height: var(--rd-control-field-height); padding: 0 var(--rd-control-field-padding-x); border: 1px solid var(--rd-field-border); border-radius: var(--rd-control-field-radius); background: var(--rd-color-surface); color: var(--rd-color-body-text); font: inherit; }
+.rd-demo-field-group input:focus-visible, .rd-demo-field-group select:focus-visible { border-color: var(--rd-field-border); outline: 2px solid var(--rd-color-primary-action); outline-offset: 2px; }
+.rd-demo-input-anchor > label { color: var(--rd-field-label); }
+.rd-demo-input-anchor--select > label { color: var(--rd-select-label); }
+.rd-demo-field-group select { height: var(--rd-control-select-height); padding-inline: var(--rd-control-select-padding-x); border-color: var(--rd-select-border); }
 .rd-demo-messages { display: grid; gap: ${document.fieldMessages.metrics.messageGap}px; padding-left: ${document.fieldMessages.metrics.inset}px; font-family: var(--rd-type-field-message-family); font-size: var(--rd-type-field-message-size); line-height: var(--rd-type-field-message-line); }
 .rd-demo-messages span, .rd-demo-helper { color: var(--rd-review-muted); }
 .rd-demo-messages strong { color: var(--rd-color-failure); font-weight: 400; }

@@ -8,6 +8,8 @@ description: Publish linked Markdown technical documentation from a validated fr
 Publish an existing `technical` context mechanically. Preparation and decision reconciliation belong to [refine-design technical preparation](../refine-design/references/technical-preparation.md); this skill does not consult agents, inspect application source, or fill gaps.
 
 The normal input is `product/<name>/contexts/technical/<material-sha256>/context.json`. The normal output is `documents/<name>/technical/` in the same repository, using the confirmed product folder name. A detached validated context can be exported to another output directory. Published pages are self-contained apart from links between the pages in that publication.
+Keep `documents/` as the owner-confirmed publication root even when authored
+technical input resides under `documentation/`.
 
 Run:
 

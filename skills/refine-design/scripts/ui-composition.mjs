@@ -8,6 +8,7 @@ import {authorizeAssetRoot} from './input-security.mjs';
 import {ROOT_BOUND_TARGETS, writeOwnedJsonArtifact} from './root-bound-artifact.mjs';
 import {validateUxSpec} from './ux-design.mjs';
 import {validatePassingUxReview} from './ux-review.mjs';
+import {canonicalPublicationJson} from './product-publication-payload.mjs';
 
 const statuses = new Set(['default', 'proposed', 'accepted', 'locked', 'unresolved']);
 const assessmentKinds = new Set(['ui-designer-assessment', 'parent-assessment']);
@@ -34,7 +35,7 @@ const imageFitModes = new Set(['contain', 'cover']);
 const surfaceTreatments = new Set(['flat', 'outlined', 'elevation-1']);
 const imageSizeLimit = 20 * 1024 * 1024;
 const compositionRootKeys = [
-  'schemaVersion', 'id', 'title', 'revision', 'status', 'assessment', 'sources', 'uxSource',
+  'schemaVersion', 'id', 'title', 'revision', 'status', 'assessment', 'sources', 'uxArtifactBinding',
   'designLanguageSource', 'tokens', 'templates', 'assets', 'scenes', 'renderRequests',
   'unspecifiedRequirements', 'uxChangeRequests', 'openQuestions'
 ];
@@ -390,7 +391,7 @@ function sourceBinding(value, kind, sources, actual, label) {
 function uxCatalog(uxSpec) {
   validateUxSpec(uxSpec);
   object(uxSpec, 'UX source');
-  if (uxSpec.schemaVersion !== '0.2') fail('UX source must use schema version 0.2');
+  if (uxSpec.schemaVersion !== '0.3') fail('UX source must use schema version 0.3');
   text(uxSpec.id, 'UX source.id');
   revision(uxSpec.revision, 'UX source.revision');
   const useCases = records(uxSpec.useCases, 'UX source.useCases');
@@ -398,6 +399,9 @@ function uxCatalog(uxSpec) {
   const components = records(uxSpec.components, 'UX source.components');
   const actions = records(uxSpec.actions, 'UX source.actions');
   const interactionFrames = records(uxSpec.interactionFrames, 'UX source.interactionFrames');
+  const states = records(uxSpec.states, 'UX source.states');
+  const flowNodes = records(uxSpec.flowNodes, 'UX source.flowNodes');
+  const feedback = records(uxSpec.feedback, 'UX source.feedback');
   const questions = records(uxSpec.openQuestions, 'UX source.openQuestions');
   const actionsById = new Map(actions.result.map(item => [item.id, item]));
   const interactionFramesById = new Map(interactionFrames.result.map(item => [item.id, item]));
@@ -425,6 +429,9 @@ function uxCatalog(uxSpec) {
     components,
     actions,
     interactionFrames,
+    states,
+    flowNodes,
+    feedback,
     questions,
     useCasesById: new Map(useCases.result.map(item => [item.id, item])),
     surfacesById: new Map(surfaces.result.map(item => [item.id, item])),
@@ -451,7 +458,7 @@ export function validateUiSpec(spec, {
   object(spec, 'UI specification');
   if (!['composition', 'component'].includes(documentKind)) fail(`Unsupported UI document kind ${documentKind}`);
   allowedKeys(spec, [...compositionRootKeys, ...(documentKind === 'component' ? componentRootKeys : [])], 'UI specification');
-  if (spec.schemaVersion !== '0.2') fail('Unsupported UI composition schema version');
+  if (spec.schemaVersion !== '0.3') fail('Unsupported UI composition schema version');
   text(spec.id, 'id');
   text(spec.title, 'title');
   revision(spec.revision, 'revision');
@@ -470,7 +477,15 @@ export function validateUiSpec(spec, {
     text(source.documentId, `source ${source.id}.documentId`);
     revision(source.revision, `source ${source.id}.revision`);
   }
-  sourceBinding(spec.uxSource, 'ux', sources, uxSpec, 'uxSource');
+  object(spec.uxArtifactBinding, 'uxArtifactBinding');
+  allowedKeys(spec.uxArtifactBinding, ['id', 'revision', 'sha256'], 'uxArtifactBinding');
+  if (spec.uxArtifactBinding.id !== uxSpec.id || spec.uxArtifactBinding.revision !== uxSpec.revision
+    || spec.uxArtifactBinding.sha256 !== createHash('sha256').update(canonicalPublicationJson(uxSpec)).digest('hex')) {
+    fail('uxArtifactBinding must match the exact canonical UX artifact');
+  }
+  if (!sources.result.some(source => source.kind === 'ux' && source.documentId === uxSpec.id && source.revision === uxSpec.revision)) {
+    fail('sources must identify the bound UX artifact');
+  }
   sourceBinding(spec.designLanguageSource, 'design-language', sources, designLanguage, 'designLanguageSource');
 
   const ux = uxCatalog(uxSpec);
@@ -767,7 +782,7 @@ export function validateUiSpec(spec, {
   };
 
   for (const scene of scenes.result) {
-    allowedKeys(scene, ['id', 'name', 'status', 'completeness', 'surfaceRef', 'interactionFrameRef', 'deferredInteractionNodeRefs', 'subject', 'useCaseRefs', 'state', 'viewport', 'themeRef', 'uxQuestionRefs', 'uiQuestionRefs', 'unspecifiedRequirementRefs', 'root', 'transientBehavior'], `scene ${scene.id}`);
+    allowedKeys(scene, ['id', 'name', 'status', 'completeness', 'surfaceRef', 'interactionFrameRef', 'deferredInteractionNodeRefs', 'subject', 'useCaseRefs', 'stateRef', 'depictsRefs', 'viewport', 'themeRef', 'uxQuestionRefs', 'uiQuestionRefs', 'unspecifiedRequirementRefs', 'root', 'transientBehavior'], `scene ${scene.id}`);
     text(scene.name, `scene ${scene.id}.name`);
     status(scene.status, `scene ${scene.id}`);
     if (!['partial', 'complete'].includes(scene.completeness)) fail(`scene ${scene.id}.completeness is unsupported`);
@@ -797,10 +812,20 @@ export function validateUiSpec(spec, {
       const feature = uxSpec.features.find(item => item.id === featureRef);
       if (!feature?.surfaceRefs.includes(scene.surfaceRef)) fail(`scene ${scene.id} use case ${useCaseRef} does not use surface ${scene.surfaceRef}`);
     }
-    text(scene.state, `scene ${scene.id}.state`);
-    const allowedStates = scene.subject.kind === 'surface' ? surface.states : ux.componentsById.get(scene.subject.ref).states;
-    if (!allowedStates.includes(scene.state)) fail(`scene ${scene.id}.state is not declared by its UX subject`);
-    if (scene.subject.kind === 'surface' && frame.state !== scene.state) fail(`scene ${scene.id}.state must match interaction frame ${frame.id}`);
+    reference(scene.stateRef, ux.states.ids, `scene ${scene.id}.stateRef`);
+    const allowedStates = scene.subject.kind === 'surface' ? surface.stateRefs : ux.componentsById.get(scene.subject.ref).stateRefs;
+    if (!allowedStates.includes(scene.stateRef)) fail(`scene ${scene.id}.stateRef is not declared by its UX subject`);
+    if (scene.subject.kind === 'surface' && frame.stateRef !== scene.stateRef) fail(`scene ${scene.id}.stateRef must match interaction frame ${frame.id}`);
+    const depicted = textList(scene.depictsRefs, `scene ${scene.id}.depictsRefs`, {nonempty: true});
+    const depictable = new Set([
+      `ux:frame:${frame.id}`, `ux:state:${scene.stateRef}`,
+      ...ux.flowNodes.result.filter(node => scene.useCaseRefs.some(ref => node.ownerRef === `ux:use-case:${ref}`)
+        || (node.kind === 'component-behavior' && scene.subject.kind === 'component' && node.ownerRef === `ux:component:${scene.subject.ref}`))
+        .map(node => `ux:flow-node:${node.id}`),
+      ...ux.feedback.result.filter(item => scene.useCaseRefs.some(ref => ux.actionsById.get(item.actionRef)?.taskRefs.includes(ref)))
+        .map(item => `ux:feedback:${item.id}`),
+    ]);
+    for (const ref of depicted) if (!depictable.has(ref)) fail(`scene ${scene.id}.depictsRefs cannot depict ${ref} in its bound scope`);
     object(scene.viewport, `scene ${scene.id}.viewport`);
     allowedKeys(scene.viewport, ['width', 'height'], `scene ${scene.id}.viewport`);
     positiveInteger(scene.viewport.width, `scene ${scene.id}.viewport.width`);
@@ -897,6 +922,8 @@ export function uiRequiredScopeRefs(spec) {
     add(scene.surfaceRef);
     add(scene.interactionFrameRef);
     add(scene.subject?.ref);
+    add(scene.stateRef);
+    addAll(scene.depictsRefs?.map(ref => ref.slice(ref.lastIndexOf(':') + 1)));
     addAll(scene.useCaseRefs);
     addAll(scene.uxQuestionRefs);
     addAll(scene.deferredInteractionNodeRefs);
@@ -933,9 +960,10 @@ export function writeUiSpec(inputPath, outputPath, uxPath, designLanguagePath, o
     sourceRoot,
     requiredScopeRefs: uiRequiredScopeRefs(spec),
   });
-  const relativeTarget = requireCanonicalArtifactTarget(sourceRoot, outputPath, ROOT_BOUND_TARGETS.ui, 'UI artifact target');
+  const productDocumentRoot = path.resolve(options.productDocumentRoot ?? sourceRoot);
+  const relativeTarget = requireCanonicalArtifactTarget(productDocumentRoot, outputPath, ROOT_BOUND_TARGETS.ui, 'UI artifact target');
   const output = writeOwnedJsonArtifact({
-    productDocumentRoot: sourceRoot,
+    productDocumentRoot,
     relativeTarget,
     value: spec,
     validateExisting: existing => {
@@ -958,12 +986,14 @@ function cli(argumentsToParse) {
   const uxReview = options.get('--ux-review');
   const productDescription = options.get('--product-description');
   const sourceRoot = options.get('--source-root');
-  if (!input || !output || !ux || !designLanguage || !uxReview || !productDescription || !sourceRoot) fail('Usage: node ui-composition.mjs --input <ui-spec.json> --ux <ux-spec.json> --ux-review <ux-review.json> --product-description <product-description.md> [--product-description-id <ux-source-id>] --source-root <authoritative-source-root> --design-language <design-language.json> --output <ui-spec.json> [--asset-root <ui-asset-root> (required for image assets)] [--lock-reason <current-user-request>] [--locked-change-reason <current-user-request>]');
+  const productDocumentRoot = options.get('--product-document-root');
+  if (!input || !output || !ux || !designLanguage || !uxReview || !productDescription || !sourceRoot) fail('Usage: node ui-composition.mjs --input <ui-spec.json> --ux <ux-spec.json> --ux-review <ux-review.json> --product-description <product-description.md> [--product-description-id <ux-source-id>] --source-root <authoritative-source-root> [--product-document-root <product/<name>>] --design-language <design-language.json> --output <ui-spec.json> [--asset-root <ui-asset-root> (required for image assets)] [--lock-reason <current-user-request>] [--locked-change-reason <current-user-request>]');
   process.stdout.write(`${JSON.stringify(writeUiSpec(path.resolve(input), path.resolve(output), path.resolve(ux), path.resolve(designLanguage), {
     uxReviewPath: path.resolve(uxReview),
     productDescriptionPath: path.resolve(productDescription),
     productDescriptionId: options.get('--product-description-id'),
     sourceRoot: path.resolve(sourceRoot),
+    productDocumentRoot: productDocumentRoot ? path.resolve(productDocumentRoot) : undefined,
     assetRoot: options.get('--asset-root') ? path.resolve(options.get('--asset-root')) : path.dirname(path.resolve(input)),
     lockReason: options.get('--lock-reason'),
     lockedChangeReason: options.get('--locked-change-reason')

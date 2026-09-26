@@ -183,7 +183,7 @@ export function validateComponentDesign(spec, {uxSpec, designLanguage, assetRoot
   const scenesById = new Map(spec.scenes.map(scene => [scene.id, scene]));
   for (const scene of spec.scenes) {
     if (scene.subject.kind !== 'component' || scene.subject.ref !== contract.uxRef) fail(`scene ${scene.id} must focus component ${contract.uxRef}`);
-    if (!supportedStates.has(scene.state)) fail(`scene ${scene.id}.state is not listed by componentTemplate.supportedStates`);
+    if (!supportedStates.has(scene.stateRef)) fail(`scene ${scene.id}.stateRef is not listed by componentTemplate.supportedStates`);
   }
 
   const stateScenes = records(contract.stateScenes, 'componentTemplate.stateScenes');
@@ -197,7 +197,7 @@ export function validateComponentDesign(spec, {uxSpec, designLanguage, assetRoot
     const sceneRef = text(mapping.sceneRef, `componentTemplate.stateScenes ${mapping.id}.sceneRef`);
     const scene = scenesById.get(sceneRef);
     if (!scene) fail(`componentTemplate.stateScenes ${mapping.id}.sceneRef references missing id ${sceneRef}`);
-    if (scene.state !== state) fail(`componentTemplate.stateScenes ${mapping.id} does not match scene state`);
+    if (scene.stateRef !== state) fail(`componentTemplate.stateScenes ${mapping.id} does not match scene state`);
   }
   sameSet(mappedStates, supportedStates, 'componentTemplate.stateScenes');
 

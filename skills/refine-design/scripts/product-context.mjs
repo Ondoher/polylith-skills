@@ -40,6 +40,9 @@ function recordIndex(chain) {
     chain.model.purpose.id,
     ...chain.model.users.map(record => record.id),
     ...chain.model.capabilities.map(record => record.id),
+    ...chain.model.goals.map(record => record.id),
+    ...chain.model.requirements.map(record => record.id),
+    ...chain.model.rules.map(record => record.id),
     ...chain.model.gaps.map(record => record.id),
   ];
   for (const ref of required) if (!records.has(ref)) fail(`Product record index is missing ${ref}`);
@@ -51,10 +54,16 @@ function selectRecords(model, requestedScope, requiredRefs = [], audience = 'prd
   const externalById = new Map([
     [model.id, {type: 'product', record: model}],
     [model.purpose.id, {type: 'purpose', record: model.purpose}],
-    ...model.users.filter(record => activeForAudience(record, audience)).map(record => [record.id, {type: 'user', record}]),
-    ...model.capabilities.filter(record => activeForAudience(record, audience)).map(record => [record.id, {type: 'capability', record}]),
-    ...model.gaps.filter(record => activeForAudience(record, audience)).map(record => [record.id, {type: 'gap', record}]),
+    ...model.users.filter(record => record.status !== 'superseded').map(record => [record.id, {type: 'user', record}]),
+    ...model.capabilities.filter(record => record.status !== 'superseded').map(record => [record.id, {type: 'capability', record}]),
+    ...model.goals.filter(record => record.status !== 'superseded').map(record => [record.id, {type: 'goal', record}]),
+    ...model.requirements.filter(record => record.status !== 'superseded').map(record => [record.id, {type: 'requirement', record}]),
+    ...model.rules.filter(record => record.status !== 'superseded').map(record => [record.id, {type: 'rule', record}]),
+    ...model.gaps.filter(record => record.status !== 'superseded').map(record => [record.id, {type: 'gap', record}]),
   ]);
+  for (const ref of requestedScope) {
+    if (!activeForAudience(externalById.get(ref)?.record ?? {status: 'superseded', consumerDomains: []}, audience)) fail(`PRD selection references unavailable record ${ref}`);
+  }
   for (const ref of [...requestedScope, ...requiredRefs]) {
     if (!externalById.has(ref)) fail(`PRD selection references unavailable record ${ref}`);
   }
@@ -64,10 +73,12 @@ function selectRecords(model, requestedScope, requiredRefs = [], audience = 'prd
       model.purpose.id,
       ...model.users.filter(record => activeForAudience(record, audience)).map(record => record.id),
       ...model.capabilities.filter(record => activeForAudience(record, audience)).map(record => record.id),
+      ...model.goals.filter(record => activeForAudience(record, audience)).map(record => record.id),
+      ...model.requirements.filter(record => activeForAudience(record, audience)).map(record => record.id),
+      ...model.rules.filter(record => activeForAudience(record, audience)).map(record => record.id),
       ...model.gaps.filter(record => activeForAudience(record, audience)).map(record => record.id),
-      ...requiredRefs,
     ])
-    : new Set([model.id, model.purpose.id, ...requestedScope, ...requiredRefs]);
+    : new Set([model.id, model.purpose.id, ...requestedScope]);
   let changed = true;
   while (changed) {
     changed = false;
@@ -81,26 +92,38 @@ function selectRecords(model, requestedScope, requiredRefs = [], audience = 'prd
         }
       }
     }
+    for (const record of [...model.goals, ...model.requirements, ...model.rules]) {
+      if (!selected.has(record.id)) continue;
+      const refs = [...(record.capabilityRefs ?? []), ...(record.userRefs ?? []), ...(record.goalRefs ?? []), ...(record.appliesToRefs ?? [])];
+      for (const ref of refs) {
+        if (!externalById.has(ref)) fail(`Selected product record ${record.id} has unavailable dependency ${ref}`);
+        if (!selected.has(ref)) { selected.add(ref); changed = true; }
+      }
+    }
     for (const gap of model.gaps) {
       if (selected.has(gap.id)) {
-        for (const ref of gap.capabilityRefs) {
+        for (const ref of gap.affectedRecordRefs) {
           if (!externalById.has(ref)) fail(`Selected gap ${gap.id} has unavailable PRD dependency ${ref}`);
           if (!selected.has(ref)) {
             selected.add(ref);
             changed = true;
           }
         }
-      } else if (activeForAudience(gap, audience) && gap.capabilityRefs.some(ref => selected.has(ref))) {
+      } else if (activeForAudience(gap, audience) && gap.affectedRecordRefs.some(ref => selected.has(ref))) {
         selected.add(gap.id);
         changed = true;
       }
     }
   }
+  for (const ref of requiredRefs) if (!selected.has(ref)) fail(`PRD artifact references unrelated or unavailable record ${ref}`);
   return {
     selected,
-    users: model.users.filter(record => selected.has(record.id) && activeForAudience(record, audience)),
-    capabilities: model.capabilities.filter(record => selected.has(record.id) && activeForAudience(record, audience)),
-    gaps: model.gaps.filter(record => selected.has(record.id) && activeForAudience(record, audience)),
+    users: model.users.filter(record => selected.has(record.id)),
+    capabilities: model.capabilities.filter(record => selected.has(record.id)),
+    goals: model.goals.filter(record => selected.has(record.id)),
+    requirements: model.requirements.filter(record => selected.has(record.id)),
+    rules: model.rules.filter(record => selected.has(record.id)),
+    gaps: model.gaps.filter(record => selected.has(record.id)),
   };
 }
 
@@ -231,7 +254,7 @@ function buildLocks(model, selection, artifacts) {
   const locks = [];
   if (model.status === 'locked') locks.push({ref: model.id, kind: 'product', owner: model.owner});
   if (model.purpose.status === 'locked') locks.push({ref: model.purpose.id, kind: 'purpose', owner: model.purpose.owner});
-  for (const [kind, records] of [['user', selection.users], ['capability', selection.capabilities], ['gap', selection.gaps]]) {
+  for (const [kind, records] of [['user', selection.users], ['capability', selection.capabilities], ['goal', selection.goals], ['requirement', selection.requirements], ['rule', selection.rules], ['gap', selection.gaps]]) {
     for (const record of records) if (record.status === 'locked') locks.push({ref: record.id, kind, owner: record.owner});
   }
   for (const artifact of artifacts) if (artifact.status === 'locked') locks.push({ref: artifact.id, kind: 'artifact', owner: artifact.owner});
@@ -246,7 +269,7 @@ export function buildContext(chain, requestedScope, consumer = 'prd') {
   const selection = selectRecords(chain.model, scopeRefs, selectedRecordRefs(artifactSelection.artifacts), audience);
   const records = recordIndex(chain);
   const context = {
-    schemaVersion: '1.0',
+    schemaVersion: '2.0',
     contextId: 'pending',
     consumer,
     sourceSnapshot: {
@@ -287,11 +310,25 @@ export function buildContext(chain, requestedScope, consumer = 'prd') {
     capabilities: selection.capabilities.map(capability => ({
       id: capability.id,
       name: capability.name,
-      description: capability.description,
-      outcome: capability.outcome,
+      summary: capability.summary,
       status: capability.status,
       owner: capability.owner,
       materialSha256: material(records, capability.id),
+    })),
+    goals: selection.goals.map(goal => ({
+      id: goal.id, statement: goal.statement, desiredOutcome: goal.desiredOutcome,
+      capabilityRefs: [...goal.capabilityRefs], userRefs: [...goal.userRefs],
+      status: goal.status, owner: goal.owner, materialSha256: material(records, goal.id),
+    })),
+    requirements: selection.requirements.map(requirement => ({
+      id: requirement.id, kind: requirement.kind, statement: requirement.statement,
+      capabilityRefs: [...requirement.capabilityRefs], goalRefs: [...requirement.goalRefs],
+      status: requirement.status, owner: requirement.owner, materialSha256: material(records, requirement.id),
+    })),
+    rules: selection.rules.map(rule => ({
+      id: rule.id, kind: rule.kind, statement: rule.statement,
+      appliesToRefs: [...rule.appliesToRefs],
+      status: rule.status, owner: rule.owner, materialSha256: material(records, rule.id),
     })),
     gaps: selection.gaps.map(gap => ({
       id: gap.id,
@@ -301,7 +338,7 @@ export function buildContext(chain, requestedScope, consumer = 'prd') {
       status: gap.status,
       owner: gap.owner,
       materialSha256: material(records, gap.id),
-      affectsRefs: [...gap.capabilityRefs],
+      affectsRefs: [...gap.affectedRecordRefs],
     })),
     artifacts: artifactSelection.artifacts.map(artifact => structuredClone(artifact)),
     locks: buildLocks(chain.model, selection, artifactSelection.artifacts),
@@ -333,7 +370,7 @@ export function resolveProductContext({currentPath, consumer = 'prd', scope = []
   publishArtifactResourceFiles(resourceFiles, {outputRoot: path.dirname(file)});
   const created = writeImmutable(file, bytes, chain.root);
   return {
-    schemaVersion: '1.0',
+    schemaVersion: '2.0',
     consumer,
     path: storedPath,
     sha256: sha256(bytes),

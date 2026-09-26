@@ -1,11 +1,15 @@
 # Publication behavior
 
+This reference describes the former combined `prd/` publisher retained for
+validating and retiring an existing receipt-owned output. The current
+agent-selected document collection uses [collection-publication.md](collection-publication.md).
+
 The publisher validates and renders entirely in memory before it creates or changes the output directory. It applies the product-context contract's shared 2 MiB aggregate byte limit to the exact input file before parsing. A malformed, oversized, structurally invalid, or digest-mismatched context cannot alter an existing publication.
 
 ## Output
 
 - Without a `prd-publication` manifest, `index.html` contains the persisted orientation, users, capabilities, gaps, current artifact coverage, partial-artifact gaps, unavailable-artifact exclusions, locks, scope, and binding metadata. Generic payloads remain escaped deterministic inspection blocks.
-- Exactly one `prd-publication` manifest selects the full site. Its exact dependencies identify one UX 0.2 artifact, one design-language 0.14 artifact containing review-layout 7, an optional UI-composition 0.2 artifact, and ordered component-design 0.2 artifacts. The publisher uses the copied product-neutral renderers to emit linked requirements, design-language, component-state, product-comp, component-comp, asset, and diagnostic pages. It does not consult another installed skill.
+- Exactly one `prd-publication` manifest selects the full site. Its exact dependencies identify one UX 0.3 artifact, one design-language 0.14 artifact containing review-layout 7, an optional UI-composition 0.3 artifact, and ordered component-design 0.3 artifacts. The publisher uses the copied product-neutral renderers to emit linked requirements, design-language, component-state, product-comp, component-comp, asset, and diagnostic pages. It does not consult another installed skill.
 - `publication-receipt.json` binds the exact context-byte hash and material hash to the source snapshot ID and revision, product model, generator version, every recursively emitted file's path/size/hash, and every consumed resource descriptor.
 
 No output contains a generation timestamp or absolute path. Repeated publication of the same context therefore produces the same bytes in every output file.

@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 import {isPublicationPayload, validatePublicationPayload, validateResourceDescriptors, PUBLICATION_DOCUMENTS_MAX_BYTES, PUBLICATION_RESOURCES_MAX_BYTES} from './product-publication-payload.mjs';
 
-export const PRODUCT_CONTEXT_SCHEMA_VERSION = '1.0';
+export const PRODUCT_CONTEXT_SCHEMA_VERSION = '2.0';
 export const PRODUCT_CONTEXT_MAX_BYTES = 2 * 1024 * 1024;
 export const PRODUCT_CONTEXT_MAX_TEXT_LENGTH = 32_768;
 export const PRODUCT_CONTEXT_MAX_ARRAY_LENGTH = 10_000;
@@ -80,8 +80,7 @@ export const PRODUCT_CONTEXT_MAX_JSON_NODES = 100_000;
  * @typedef {object} ProductCapabilityRecord
  * @property {string} id
  * @property {string} name
- * @property {string} description
- * @property {string} outcome
+ * @property {string} summary
  * @property {ProductRecordStatus} status
  * @property {ProductOwner} owner
  * @property {string} materialSha256
@@ -235,16 +234,17 @@ export const PRODUCT_CONTEXT_MAX_JSON_NODES = 100_000;
  *
  * @typedef {object} ProductContextProvenance
  * @property {string} sourceId
- * @property {number} sourceRevision
- * @property {string} sourceSha256
+ * @property {string} materialSha256
+ * @property {ProductPurposeRecord} purpose
+ * @property {ProductUserRecord[]} users
  */
 
 /**
- * Closed Slice 2 context consumed by deterministic PRD publication.
+ * Closed product context consumed by deterministic PRD publication.
  * Validators reject missing or additional properties at every defined envelope.
  *
  * @typedef {object} ProductContext
- * @property {'1.0'} schemaVersion
+ * @property {'2.0'} schemaVersion
  * @property {string} contextId
  * @property {'prd'} consumer
  * @property {ProductSourceSnapshot} sourceSnapshot
@@ -252,6 +252,9 @@ export const PRODUCT_CONTEXT_MAX_JSON_NODES = 100_000;
  * @property {string[]} scopeRefs
  * @property {ProductContextProduct} product
  * @property {ProductCapabilityRecord[]} capabilities
+ * @property {object[]} goals
+ * @property {object[]} requirements
+ * @property {object[]} rules
  * @property {ProductGapRecord[]} gaps
  * @property {ProductArtifact[]} artifacts
  * @property {ProductContextLock[]} locks
@@ -264,13 +267,16 @@ export const PRODUCT_CONTEXT_MAX_JSON_NODES = 100_000;
  * Product context fields that determine context identity.
  *
  * @typedef {object} ProductContextMaterial
- * @property {'1.0'} schemaVersion
+ * @property {'2.0'} schemaVersion
  * @property {'prd'} consumer
  * @property {ProductSourceSnapshot} sourceSnapshot
  * @property {ProductModelBinding} productModel
  * @property {string[]} scopeRefs
  * @property {ProductContextProduct} product
  * @property {ProductCapabilityRecord[]} capabilities
+ * @property {object[]} goals
+ * @property {object[]} requirements
+ * @property {object[]} rules
  * @property {ProductGapRecord[]} gaps
  * @property {ProductArtifact[]} artifacts
  * @property {ProductContextLock[]} locks
@@ -293,7 +299,7 @@ const persistedArtifactStatuses = new Set([...artifactStatuses, 'superseded']);
 const artifactChangeKinds = new Set(['added', 'unchanged', 'modified', 'superseded']);
 const exclusionOutcomes = new Set(['stale', 'locked-conflict', 'superseded']);
 const gapKinds = new Set(['open-question', 'missing-requirement', 'ambiguity', 'conflict']);
-const lockKinds = new Set(['product', 'purpose', 'user', 'capability', 'gap', 'artifact']);
+const lockKinds = new Set(['product', 'purpose', 'user', 'capability', 'goal', 'requirement', 'rule', 'gap', 'artifact']);
 const owners = new Set([
   'product', 'ux', 'ui', 'system-architecture', 'data-model', 'controller',
   'technical-documentation', 'implementation-planning', 'testing', 'coding',
@@ -603,7 +609,7 @@ export function validateProductContext(context) {
 export function validateConsumerContext(context, {consumer = 'prd', audience = 'prd', extraKeys = []} = {}) {
   object(context, 'context', [
     'schemaVersion', 'contextId', 'consumer', 'sourceSnapshot', 'productModel', 'scopeRefs',
-    'product', 'capabilities', 'gaps', 'artifacts', 'locks', 'exclusions', 'provenance', 'materialSha256', ...extraKeys,
+    'product', 'capabilities', 'goals', 'requirements', 'rules', 'gaps', 'artifacts', 'locks', 'exclusions', 'provenance', 'materialSha256', ...extraKeys,
   ]);
   if (context.schemaVersion !== PRODUCT_CONTEXT_SCHEMA_VERSION) fail(`context.schemaVersion must be ${PRODUCT_CONTEXT_SCHEMA_VERSION}`);
   if (context.consumer !== consumer) fail(`context.consumer must be ${consumer}`);
@@ -641,12 +647,29 @@ export function validateConsumerContext(context, {consumer = 'prd', audience = '
 
   array(context.capabilities, 'context.capabilities').forEach((capability, index) => {
     const label = `context.capabilities[${index}]`;
-    validateMaterialRecord(capability, label, ['id', 'name', 'description', 'outcome', 'status', 'owner', 'materialSha256'], recordStatuses);
+    validateMaterialRecord(capability, label, ['id', 'name', 'summary', 'status', 'owner', 'materialSha256'], recordStatuses);
     text(capability.name, `${label}.name`);
-    text(capability.description, `${label}.description`);
-    text(capability.outcome, `${label}.outcome`);
+    text(capability.summary, `${label}.summary`);
   });
   unique(context.capabilities.map(capability => capability.id), 'context.capabilities IDs');
+
+  for (const [key, fields] of [
+    ['goals', ['statement', 'desiredOutcome', 'capabilityRefs', 'userRefs']],
+    ['requirements', ['kind', 'statement', 'capabilityRefs', 'goalRefs']],
+    ['rules', ['kind', 'statement', 'appliesToRefs']],
+  ]) {
+    array(context[key], `context.${key}`).forEach((record, index) => {
+      const label = `context.${key}[${index}]`;
+      validateMaterialRecord(record, label, ['id', ...fields, 'status', 'owner', 'materialSha256'], recordStatuses);
+      for (const field of fields) {
+        if (field.endsWith('Refs')) idList(record[field], `${label}.${field}`);
+        else text(record[field], `${label}.${field}`);
+      }
+      if (key === 'requirements') choice(record.kind, new Set(['behavior', 'quality', 'scope']), `${label}.kind`);
+      if (key === 'rules') choice(record.kind, new Set(['policy', 'invariant', 'constraint']), `${label}.kind`);
+    });
+    unique(context[key].map(record => record.id), `context.${key} IDs`);
+  }
 
   array(context.gaps, 'context.gaps').forEach((gap, index) => {
     const label = `context.gaps[${index}]`;
@@ -663,12 +686,20 @@ export function validateConsumerContext(context, {consumer = 'prd', audience = '
     [context.product.purpose.id, context.product.purpose.materialSha256],
     ...context.product.users.map(record => [record.id, record.materialSha256]),
     ...context.capabilities.map(record => [record.id, record.materialSha256]),
+    ...context.goals.map(record => [record.id, record.materialSha256]),
+    ...context.requirements.map(record => [record.id, record.materialSha256]),
+    ...context.rules.map(record => [record.id, record.materialSha256]),
     ...context.gaps.map(record => [record.id, record.materialSha256]),
   ]);
-  const expectedRecordCount = 2 + context.product.users.length + context.capabilities.length + context.gaps.length;
+  const expectedRecordCount = 2 + context.product.users.length + context.capabilities.length + context.goals.length + context.requirements.length + context.rules.length + context.gaps.length;
   if (recordMaterial.size !== expectedRecordCount) fail('context product record IDs must not contain duplicates');
   for (const ref of scopeRefs) if (!recordMaterial.has(ref)) fail(`context.scopeRefs contains unknown record ID ${ref}`);
   for (const gap of context.gaps) for (const ref of gap.affectsRefs) if (!recordMaterial.has(ref)) fail(`context gap ${gap.id} affects missing record ${ref}`);
+  for (const record of [...context.goals, ...context.requirements, ...context.rules]) {
+    for (const ref of [...(record.capabilityRefs ?? []), ...(record.userRefs ?? []), ...(record.goalRefs ?? []), ...(record.appliesToRefs ?? [])]) {
+      if (!recordMaterial.has(ref)) fail(`context record ${record.id} references missing record ${ref}`);
+    }
+  }
 
   array(context.artifacts, 'context.artifacts').forEach((artifact, index) => validateArtifact(artifact, `context.artifacts[${index}]`));
   let decodedBytes = 0;
@@ -725,7 +756,7 @@ export function validateConsumerContext(context, {consumer = 'prd', audience = '
   const expectedLocks = new Map();
   if (context.product.status === 'locked') expectedLocks.set(context.product.id, {kind: 'product', owner: context.product.owner});
   if (context.product.purpose.status === 'locked') expectedLocks.set(context.product.purpose.id, {kind: 'purpose', owner: context.product.purpose.owner});
-  for (const [kind, records] of [['user', context.product.users], ['capability', context.capabilities], ['gap', context.gaps]]) {
+  for (const [kind, records] of [['user', context.product.users], ['capability', context.capabilities], ['goal', context.goals], ['requirement', context.requirements], ['rule', context.rules], ['gap', context.gaps]]) {
     for (const record of records) if (record.status === 'locked') expectedLocks.set(record.id, {kind, owner: record.owner});
   }
   for (const artifact of context.artifacts) if (artifact.status === 'locked') expectedLocks.set(artifact.id, {kind: 'artifact', owner: artifact.owner});

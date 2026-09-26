@@ -10,7 +10,7 @@ Use component mode for a diagram editor, spatial planner, layered canvas, data v
 
 ## UI Designer Response
 
-For an explicit `component` assignment, the named `ui-designer` returns one JSON-only schema 0.2 composition document with `designMode: "component"`. It uses the normal UI composition scene vocabulary and adds:
+For an explicit `component` assignment, the named `ui-designer` returns one JSON-only schema 0.3 composition document with `designMode: "component"`. It uses the normal UI composition scene vocabulary and adds:
 
 - `artifactKind`: `comp` only when the scene expresses finished visual hierarchy, geometry, styling, information density, representative content, and meaningful state distinctions; otherwise `wireframe`;
 - `patternResearch`: an auditable bounded comparison of similar controls from primary product or platform documentation, including the search method and queries, outcome, source type and access date, URLs, observed shared patterns, the selected adaptation, rejected patterns, evidence limits, and parent verification status;

@@ -25,6 +25,8 @@ Product-specific surfaces, specialized components, workflow actions, and app-spe
 5. Persist one current structured design source. Reuse stable IDs and preserve accepted or locked current decisions unless current owner authority permits a change.
 6. Generate the current HTML review, repeat it for byte stability, and inspect representative output. Rendering never accepts a choice or resolves a missing requirement.
 
+Generated Markdown review pages use the consuming repository's installed Prettier and resolved configuration during persistence. If that repository declares Prettier but has no local installation, rendering stops. For an isolated staging copy, pass `--formatter-base <repository-product-directory>` to the renderer and verifier so their generated sections use the same rules and remain byte-stable when installed.
+
 A partial brief still produces schema 0.14. Represent missing decisions in its current unresolved fields and disclosed defaults instead of selecting a smaller historical schema or copying unrelated fixture values.
 
 ## Acceptance and locks

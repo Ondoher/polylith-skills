@@ -264,28 +264,33 @@ function expandScope(uxSpec, scopeRefs) {
       add(useCase.featureRef);
       addAll(useCase.surfaceRefs);
       addAll(useCase.actionRefs);
-      useCase.steps.forEach(step => add(step.actionRef));
+      add(useCase.entryNodeRef);
     }
     for (const surface of uxSpec.surfaces) if (includesRecord(surface)) {
       addOwnedIds(surface);
       add(surface.areaRef);
       addAll(surface.componentRefs);
+      addAll(surface.stateRefs);
       addAll(surface.interactionFrameRefs);
     }
     for (const component of uxSpec.components) if (includesRecord(component)) {
       addOwnedIds(component);
       addAll(component.surfaceRefs);
+      addAll(component.stateRefs);
+      addAll(component.behaviorNodeRefs);
     }
     for (const action of uxSpec.actions) if (includesRecord(action)) {
       addOwnedIds(action);
       addAll(action.taskRefs);
-      action.applicableStates.forEach(state => add(state.surfaceRef));
-      action.recovery.forEach(recovery => addAll(recovery.actionRefs));
+      addAll(action.applicableStateRefs);
+      addAll(action.feedbackRefs);
+      addAll(action.recoveryRefs);
       add(action.patternBasis?.researchRef);
     }
     for (const frame of uxSpec.interactionFrames) if (includesRecord(frame)) {
       addOwnedIds(frame);
       add(frame.surfaceRef);
+      add(frame.stateRef);
       addAll(frame.taskRefs);
       add(frame.patternBasis?.researchRef);
       frame.regions.forEach(region => region.affordances.forEach(affordance => add(affordance.actionRef)));
@@ -295,6 +300,31 @@ function expandScope(uxSpec, scopeRefs) {
       addAll(research.taskRefs);
       addAll(research.actionRefs);
       addAll(research.frameRefs);
+    }
+    for (const node of uxSpec.flowNodes) if (includesRecord(node)) {
+      addOwnedIds(node);
+      add(node.actionRef);
+      add(node.componentRef);
+      add(node.frameRef);
+      add(node.ownerRef?.slice(node.ownerRef.lastIndexOf(':') + 1));
+    }
+    for (const edge of uxSpec.flowEdges) if (includesRecord(edge)) {
+      addOwnedIds(edge);
+      add(edge.fromRef);
+      add(edge.toRef?.slice(edge.toRef.lastIndexOf(':') + 1));
+    }
+    for (const item of uxSpec.states) if (includesRecord(item)) {
+      addOwnedIds(item);
+      add(item.ownerRef.slice(item.ownerRef.lastIndexOf(':') + 1));
+    }
+    for (const item of uxSpec.feedback) if (includesRecord(item)) {
+      addOwnedIds(item);
+      add(item.actionRef);
+    }
+    for (const item of uxSpec.recoveryPaths) if (includesRecord(item)) {
+      addOwnedIds(item);
+      add(item.ownerRef.slice(item.ownerRef.lastIndexOf(':') + 1));
+      addAll(item.actionRefs);
     }
   }
   return expanded;

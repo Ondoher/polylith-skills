@@ -77,7 +77,7 @@ const recordStatuses = new Set(['accepted', 'locked', 'superseded']);
 const gapStatuses = new Set(['unresolved', 'locked', 'superseded']);
 const anyRecordStatuses = new Set([...modelStatuses, ...recordStatuses, ...gapStatuses]);
 const identityKinds = new Set(['new', 'continued']);
-const recordKinds = new Set(['product', 'purpose', 'user', 'capability', 'gap']);
+const recordKinds = new Set(['product', 'purpose', 'user', 'capability', 'goal', 'requirement', 'rule', 'gap']);
 const changeClasses = new Set(['introduced', 'unchanged', 'changed']);
 const modelChangeClasses = new Set(['initial', 'source-only', 'material']);
 const claimChangeClasses = new Set(['introduced', 'retained', 'succeeded']);
@@ -140,23 +140,66 @@ function normalizeUser(value, label) {
 }
 
 function normalizeCapability(value, label) {
-  closed(value, ['id', 'name', 'description', 'outcome', 'status', 'owner', 'consumerDomains', 'userRefs', 'relatedCapabilityRefs', 'provenance'], label);
+  closed(value, ['id', 'name', 'summary', 'status', 'owner', 'consumerDomains', 'userRefs', 'relatedCapabilityRefs', 'provenance'], label);
   return {
     id: stableId(value.id, `${label}.id`),
     name: text(value.name, `${label}.name`),
-    description: text(value.description, `${label}.description`),
-    outcome: text(value.outcome, `${label}.outcome`),
+    summary: text(value.summary, `${label}.summary`),
     status: choice(value.status, recordStatuses, `${label}.status`),
     owner: normalizeOwner(value.owner, `${label}.owner`),
     consumerDomains: normalizeConsumerDomains(value.consumerDomains, `${label}.consumerDomains`),
-    userRefs: unique(array(value.userRefs, `${label}.userRefs`).map((item, index) => stableId(item, `${label}.userRefs[${index}]`)), `${label}.userRefs`).sort(),
-    relatedCapabilityRefs: unique(array(value.relatedCapabilityRefs, `${label}.relatedCapabilityRefs`).map((item, index) => stableId(item, `${label}.relatedCapabilityRefs[${index}]`)), `${label}.relatedCapabilityRefs`).sort(),
+    userRefs: unique(array(value.userRefs, `${label}.userRefs`).map((ref, index) => stableId(ref, `${label}.userRefs[${index}]`)), `${label}.userRefs`).sort(),
+    relatedCapabilityRefs: unique(array(value.relatedCapabilityRefs, `${label}.relatedCapabilityRefs`).map((ref, index) => stableId(ref, `${label}.relatedCapabilityRefs[${index}]`)), `${label}.relatedCapabilityRefs`).sort(),
     provenance: normalizeProvenance(value.provenance, `${label}.provenance`),
   };
 }
 
+function normalizeFactCommon(value, label, keys) {
+  closed(value, ['id', 'status', 'owner', 'consumerDomains', 'provenance', ...keys], label);
+  return {
+    id: stableId(value.id, `${label}.id`),
+    status: choice(value.status, recordStatuses, `${label}.status`),
+    owner: normalizeOwner(value.owner, `${label}.owner`),
+    consumerDomains: normalizeConsumerDomains(value.consumerDomains, `${label}.consumerDomains`),
+    provenance: normalizeProvenance(value.provenance, `${label}.provenance`),
+  };
+}
+
+function normalizeRefs(value, label) {
+  return unique(array(value, label).map((ref, index) => stableId(ref, `${label}[${index}]`)), label).sort();
+}
+
+function normalizeGoal(value, label) {
+  return {
+    ...normalizeFactCommon(value, label, ['statement', 'desiredOutcome', 'capabilityRefs', 'userRefs']),
+    statement: text(value.statement, `${label}.statement`),
+    desiredOutcome: text(value.desiredOutcome, `${label}.desiredOutcome`),
+    capabilityRefs: normalizeRefs(value.capabilityRefs, `${label}.capabilityRefs`),
+    userRefs: normalizeRefs(value.userRefs, `${label}.userRefs`),
+  };
+}
+
+function normalizeRequirement(value, label) {
+  return {
+    ...normalizeFactCommon(value, label, ['kind', 'statement', 'capabilityRefs', 'goalRefs']),
+    kind: choice(value.kind, new Set(['behavior', 'quality', 'scope']), `${label}.kind`),
+    statement: text(value.statement, `${label}.statement`),
+    capabilityRefs: normalizeRefs(value.capabilityRefs, `${label}.capabilityRefs`),
+    goalRefs: normalizeRefs(value.goalRefs, `${label}.goalRefs`),
+  };
+}
+
+function normalizeRule(value, label) {
+  return {
+    ...normalizeFactCommon(value, label, ['kind', 'statement', 'appliesToRefs']),
+    kind: choice(value.kind, new Set(['policy', 'invariant', 'constraint']), `${label}.kind`),
+    statement: text(value.statement, `${label}.statement`),
+    appliesToRefs: normalizeRefs(value.appliesToRefs, `${label}.appliesToRefs`),
+  };
+}
+
 function normalizeGap(value, label) {
-  closed(value, ['id', 'kind', 'question', 'impact', 'status', 'owner', 'consumerDomains', 'capabilityRefs', 'provenance'], label);
+  closed(value, ['id', 'kind', 'question', 'impact', 'status', 'owner', 'consumerDomains', 'affectedRecordRefs', 'provenance'], label);
   return {
     id: stableId(value.id, `${label}.id`),
     kind: choice(value.kind, gapKinds, `${label}.kind`),
@@ -165,7 +208,7 @@ function normalizeGap(value, label) {
     status: choice(value.status, gapStatuses, `${label}.status`),
     owner: normalizeOwner(value.owner, `${label}.owner`),
     consumerDomains: normalizeConsumerDomains(value.consumerDomains, `${label}.consumerDomains`),
-    capabilityRefs: unique(array(value.capabilityRefs, `${label}.capabilityRefs`).map((item, index) => stableId(item, `${label}.capabilityRefs[${index}]`)), `${label}.capabilityRefs`).sort(),
+    affectedRecordRefs: normalizeRefs(value.affectedRecordRefs, `${label}.affectedRecordRefs`),
     provenance: normalizeProvenance(value.provenance, `${label}.provenance`),
   };
 }
@@ -253,6 +296,9 @@ function semanticRecords(model) {
     {kind: 'purpose', record: model.purpose},
     ...model.users.map(record => ({kind: 'user', record})),
     ...model.capabilities.map(record => ({kind: 'capability', record})),
+    ...model.goals.map(record => ({kind: 'goal', record})),
+    ...model.requirements.map(record => ({kind: 'requirement', record})),
+    ...model.rules.map(record => ({kind: 'rule', record})),
     ...model.gaps.map(record => ({kind: 'gap', record})),
   ];
 }
@@ -271,7 +317,22 @@ function validateRecordGraph(model) {
       if (ref === capability.id) fail(`Capability ${capability.id} cannot relate to itself`);
     }
   }
-  for (const gap of model.gaps) for (const ref of gap.capabilityRefs) if (!model.capabilities.some(record => record.id === ref)) fail(`Gap ${gap.id} references missing capability ${ref}`);
+  for (const goal of model.goals) {
+    for (const ref of goal.capabilityRefs) if (!model.capabilities.some(record => record.id === ref)) fail(`Goal ${goal.id} references missing capability ${ref}`);
+    for (const ref of goal.userRefs) if (!model.users.some(record => record.id === ref)) fail(`Goal ${goal.id} references missing user ${ref}`);
+  }
+  for (const requirement of model.requirements) {
+    for (const ref of requirement.capabilityRefs) if (!model.capabilities.some(record => record.id === ref)) fail(`Requirement ${requirement.id} references missing capability ${ref}`);
+    for (const ref of requirement.goalRefs) if (!model.goals.some(record => record.id === ref)) fail(`Requirement ${requirement.id} references missing goal ${ref}`);
+  }
+  for (const rule of model.rules) for (const ref of rule.appliesToRefs) {
+    if (![...model.capabilities, ...model.goals, ...model.requirements].some(record => record.id === ref)) {
+      fail(`Rule ${rule.id} references unsupported product record ${ref}`);
+    }
+  }
+  for (const gap of model.gaps) {
+    for (const ref of gap.affectedRecordRefs) if (!byId.has(ref) || ref === gap.id) fail(`Gap ${gap.id} references missing or unsupported record ${ref}`);
+  }
   const claims = new Map(model.sourceClaims.map(claim => [claim.id, claim]));
   for (const claim of model.sourceClaims) {
     for (const ref of claim.recordRefs) {
@@ -343,14 +404,14 @@ function normalizeSourceClaimLineage(value, label) {
 function normalizeProposal(value) {
   closed(value, [
     'schemaVersion', 'kind', 'id', 'name', 'status', 'owner', 'consumerDomains', 'base',
-    'provenance', 'purpose', 'users', 'capabilities', 'gaps', 'sourceClaims',
+    'provenance', 'purpose', 'users', 'capabilities', 'goals', 'requirements', 'rules', 'gaps', 'sourceClaims',
     'identityClaims', 'sourceClaimLineage',
   ], 'proposal');
-  if (value.schemaVersion !== '1.0' || value.kind !== 'product-model-proposal') fail('Proposal must use product-model-proposal schema 1.0');
+  if (value.schemaVersion !== '2.0' || value.kind !== 'product-model-proposal') fail('Proposal must use product-model-proposal schema 2.0');
   closed(value.provenance, ['producer', 'method'], 'proposal.provenance');
   if (value.provenance.producer !== 'refine-design' || value.provenance.method !== 'semantic-parse') fail('Proposal provenance must identify the refine-design semantic parse');
   return {
-    schemaVersion: '1.0',
+    schemaVersion: '2.0',
     kind: 'product-model-proposal',
     id: stableId(value.id, 'proposal.id'),
     name: text(value.name, 'proposal.name'),
@@ -362,6 +423,9 @@ function normalizeProposal(value) {
     purpose: normalizePurpose(value.purpose, 'proposal.purpose'),
     users: array(value.users, 'proposal.users').map((item, index) => normalizeUser(item, `proposal.users[${index}]`)).sort((left, right) => compareCodePoints(left.id, right.id)),
     capabilities: array(value.capabilities, 'proposal.capabilities').map((item, index) => normalizeCapability(item, `proposal.capabilities[${index}]`)).sort((left, right) => compareCodePoints(left.id, right.id)),
+    goals: array(value.goals, 'proposal.goals').map((item, index) => normalizeGoal(item, `proposal.goals[${index}]`)).sort((left, right) => compareCodePoints(left.id, right.id)),
+    requirements: array(value.requirements, 'proposal.requirements').map((item, index) => normalizeRequirement(item, `proposal.requirements[${index}]`)).sort((left, right) => compareCodePoints(left.id, right.id)),
+    rules: array(value.rules, 'proposal.rules').map((item, index) => normalizeRule(item, `proposal.rules[${index}]`)).sort((left, right) => compareCodePoints(left.id, right.id)),
     gaps: array(value.gaps, 'proposal.gaps').map((item, index) => normalizeGap(item, `proposal.gaps[${index}]`)).sort((left, right) => compareCodePoints(left.id, right.id)),
     sourceClaims: value.sourceClaims,
     identityClaims: normalizeIdentityClaims(value.identityClaims, 'proposal.identityClaims'),
@@ -381,12 +445,15 @@ function recordMaterialProjection(kind, record, supersedesRefs) {
   if (kind === 'purpose') return {...common, summary: record.summary};
   if (kind === 'user') return {...common, name: record.name, description: record.description};
   if (kind === 'capability') return {
-    ...common, name: record.name, description: record.description, outcome: record.outcome,
+    ...common, name: record.name, summary: record.summary,
     userRefs: record.userRefs, relatedCapabilityRefs: record.relatedCapabilityRefs,
   };
+  if (kind === 'goal') return {...common, statement: record.statement, desiredOutcome: record.desiredOutcome, capabilityRefs: record.capabilityRefs, userRefs: record.userRefs};
+  if (kind === 'requirement') return {...common, requirementKind: record.kind, statement: record.statement, capabilityRefs: record.capabilityRefs, goalRefs: record.goalRefs};
+  if (kind === 'rule') return {...common, ruleKind: record.kind, statement: record.statement, appliesToRefs: record.appliesToRefs};
   return {
     ...common, gapKind: record.kind, question: record.question, impact: record.impact,
-    capabilityRefs: record.capabilityRefs,
+    affectedRecordRefs: record.affectedRecordRefs,
   };
 }
 
@@ -593,6 +660,9 @@ function proposalSemanticProjection(value) {
     purpose: value.purpose,
     users: value.users,
     capabilities: value.capabilities,
+    goals: value.goals,
+    requirements: value.requirements,
+    rules: value.rules,
     gaps: value.gaps,
     sourceClaims: value.sourceClaims,
   };
@@ -688,7 +758,7 @@ function buildCandidate(proposal, sourceBytes, sourceLabel, current, grants) {
   const receipts = consumeLockAuthority(current, descriptors, recordIndex, grants);
   const classification = !current ? 'initial' : changes.every(change => change.classification === 'unchanged') ? 'source-only' : 'material';
   return {
-    schemaVersion: '1.0',
+    schemaVersion: candidate.schemaVersion,
     kind: 'product-model',
     id: candidate.id,
     name: candidate.name,
@@ -702,6 +772,9 @@ function buildCandidate(proposal, sourceBytes, sourceLabel, current, grants) {
     purpose: candidate.purpose,
     users: candidate.users,
     capabilities: candidate.capabilities,
+    goals: candidate.goals,
+    requirements: candidate.requirements,
+    rules: candidate.rules,
     gaps: candidate.gaps,
     sourceClaims: candidate.sourceClaims,
     materialSha256: aggregateMaterialSha256(recordIndex),
@@ -952,19 +1025,19 @@ function validateClaimCoverage(model) {
   if (expectedLine !== model.source.lineCount + 1 || expectedByte !== model.source.byteLength) fail('Product-model source claims must cover every source line and byte exactly once');
 }
 
-/** Validate and normalize a persisted product-model 1.0 document. */
+/** Validate and normalize a persisted product-model 2.0 document. */
 export function validateProductModel(value) {
   closed(value, [
     'schemaVersion', 'kind', 'id', 'name', 'revision', 'status', 'owner', 'consumerDomains',
-    'source', 'parent', 'provenance', 'purpose', 'users', 'capabilities', 'gaps',
+    'source', 'parent', 'provenance', 'purpose', 'users', 'capabilities', 'goals', 'requirements', 'rules', 'gaps',
     'sourceClaims', 'materialSha256', 'recordIndex', 'changeSet', 'authorityReceipts',
   ], 'productModel');
-  if (value.schemaVersion !== '1.0' || value.kind !== 'product-model') fail('Product model must use product-model schema 1.0');
+  if (value.schemaVersion !== '2.0' || value.kind !== 'product-model') fail('Product model must use product-model schema 2.0');
   closed(value.provenance, ['producer', 'method'], 'productModel.provenance');
   if (value.provenance.producer !== 'refine-design' || value.provenance.method !== 'semantic-parse') fail('Product model provenance must identify the refine-design semantic parse');
   const revision = positiveInteger(value.revision, 'productModel.revision');
   const model = {
-    schemaVersion: '1.0', kind: 'product-model',
+    schemaVersion: '2.0', kind: 'product-model',
     id: stableId(value.id, 'productModel.id'),
     name: text(value.name, 'productModel.name'),
     revision,
@@ -977,6 +1050,9 @@ export function validateProductModel(value) {
     purpose: normalizePurpose(value.purpose, 'productModel.purpose'),
     users: array(value.users, 'productModel.users').map((item, index) => normalizeUser(item, `productModel.users[${index}]`)).sort((left, right) => compareCodePoints(left.id, right.id)),
     capabilities: array(value.capabilities, 'productModel.capabilities').map((item, index) => normalizeCapability(item, `productModel.capabilities[${index}]`)).sort((left, right) => compareCodePoints(left.id, right.id)),
+    goals: array(value.goals, 'productModel.goals').map((item, index) => normalizeGoal(item, `productModel.goals[${index}]`)).sort((left, right) => compareCodePoints(left.id, right.id)),
+    requirements: array(value.requirements, 'productModel.requirements').map((item, index) => normalizeRequirement(item, `productModel.requirements[${index}]`)).sort((left, right) => compareCodePoints(left.id, right.id)),
+    rules: array(value.rules, 'productModel.rules').map((item, index) => normalizeRule(item, `productModel.rules[${index}]`)).sort((left, right) => compareCodePoints(left.id, right.id)),
     gaps: array(value.gaps, 'productModel.gaps').map((item, index) => normalizeGap(item, `productModel.gaps[${index}]`)).sort((left, right) => compareCodePoints(left.id, right.id)),
     sourceClaims: array(value.sourceClaims, 'productModel.sourceClaims').map((item, index) => normalizePersistedClaim(item, `productModel.sourceClaims[${index}]`)).sort((left, right) => left.startLine - right.startLine || compareCodePoints(left.id, right.id)),
     materialSha256: assertSha256(value.materialSha256, 'productModel.materialSha256'),
@@ -1286,8 +1362,8 @@ function preflightProductModelProposal(proposalPath) {
     parseJsonFile(proposalPath, 'product-model proposal', PRODUCT_MODEL_MAX_INPUT_BYTES),
     'product-model proposal',
   );
-  if (proposal.schemaVersion !== '1.0' || proposal.kind !== 'product-model-proposal') {
-    fail('Proposal must use product-model-proposal schema 1.0');
+  if (proposal.schemaVersion !== '2.0' || proposal.kind !== 'product-model-proposal') {
+    fail('Proposal must use product-model-proposal schema 2.0');
   }
 }
 

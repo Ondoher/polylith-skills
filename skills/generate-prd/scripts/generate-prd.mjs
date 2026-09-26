@@ -283,9 +283,21 @@ function renderCapabilities(capabilities) {
   return `<ul>
 ${capabilities.map((capability) => `        <li>
           <h3>${escapeHtml(capability.name)}</h3>
-          <p>${escapeHtml(capability.description)}</p>
-          <p><strong>Outcome:</strong> ${escapeHtml(capability.outcome)}</p>
+          <p>${escapeHtml(capability.summary)}</p>
           <p class="record-meta">ID: ${escapeHtml(capability.id)} · Status: ${escapeHtml(capability.status)} · Owner: ${escapeHtml(capability.owner)}</p>
+        </li>`).join('\n')}
+      </ul>`;
+}
+
+function renderProductFacts(records, description, relations) {
+  if (records.length === 0) return `<p class="empty">No ${description} are recorded in this context.</p>`;
+  return `<ul>
+${records.map(record => `        <li>
+          <h3>${escapeHtml(record.id)}</h3>
+          <p>${escapeHtml(record.statement)}</p>
+          ${record.desiredOutcome ? `<p><strong>Desired outcome:</strong> ${escapeHtml(record.desiredOutcome)}</p>` : ''}
+          <p class="record-meta">Status: ${escapeHtml(record.status)} · Owner: ${escapeHtml(record.owner)}</p>
+          <p class="record-meta">Related: ${relations(record).map(escapeHtml).join(', ') || 'No persisted references'}</p>
         </li>`).join('\n')}
       </ul>`;
 }
@@ -392,6 +404,21 @@ export function renderHtml(context) {
     <section aria-labelledby="capabilities-heading">
       <h2 id="capabilities-heading">Capabilities</h2>
       ${renderCapabilities(context.capabilities)}
+    </section>
+
+    <section aria-labelledby="goals-heading">
+      <h2 id="goals-heading">Goals</h2>
+      ${renderProductFacts(context.goals, 'goals', record => [...record.capabilityRefs, ...record.userRefs])}
+    </section>
+
+    <section aria-labelledby="requirements-heading">
+      <h2 id="requirements-heading">Requirements</h2>
+      ${renderProductFacts(context.requirements, 'requirements', record => [...record.capabilityRefs, ...record.goalRefs])}
+    </section>
+
+    <section aria-labelledby="rules-heading">
+      <h2 id="rules-heading">Rules</h2>
+      ${renderProductFacts(context.rules, 'rules', record => record.appliesToRefs)}
     </section>
 
     <section aria-labelledby="gaps-heading">
@@ -601,7 +628,7 @@ async function publicationInventory(root) {
   };
 }
 
-async function validatePublicationDirectory(outputDirectory, { allowEmpty = false } = {}) {
+export async function validatePublicationDirectory(outputDirectory, { allowEmpty = false } = {}) {
   const outputStat = await lstat(outputDirectory);
   if (outputStat.isSymbolicLink() || !outputStat.isDirectory()) {
     fail('Output must be a directory and must not be a symbolic link');

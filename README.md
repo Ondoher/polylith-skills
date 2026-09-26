@@ -58,7 +58,7 @@ published changes first. Restart Codex when needed for discovery.
 | [attach-detail](docs/attach-detail.md) | Links an existing technical white paper from the product description with a checked relative path. |
 | [refine-detail](docs/refine-detail.md) | Researches and revises a linked technical white paper while accounting for all existing information. |
 | [refine-design](docs/refine-design.md) | Develops a product brief into persisted product, UX, and UI decisions with specialist consultation. |
-| [generate-prd](docs/generate-prd.md) | Publishes a static HTML product requirements document from validated design context. |
+| [generate-prd](docs/generate-prd.md) | Plans a source-bound product-document collection and publishes its linked HTML pages from validated context. |
 | [generate-technical](docs/generate-technical.md) | Publishes a linked Markdown implementation guide from validated technical context. |
 | [reset-design](docs/reset-design.md) | Discards a product's derived design and rebuilds it from the current human-owned description. |
 
@@ -83,7 +83,12 @@ For a complete walkthrough of reviewer roles, setup, review timing, and local ru
 
 Use `initialize-project` for a new project and `create-app` for an additional application. Use `refine-design` to develop requirements and design artifacts, then `generate-prd` to publish them. Use `attach-detail` to link an existing authored technical white paper from the product description and `refine-detail` to research and revise it. For implementation-facing architecture, use `refine-design` technical preparation and `generate-technical` to publish its linked guide. Reserve `reset-design` for an intentional fresh start.
 
-Product-design data lives in repository-root `product/<name>/`. If the product description does not clearly state its name, `refine-design` asks before saving. Existing human descriptions stay in place. Generated product documentation goes under repository-root `documents/<product>/<doc-name>/`; the PRD goes in `documents/<product>/prd/`, including its comps and assets.
+Product-design data lives in repository-root `product/<name>/`. If the product
+description does not clearly state its name, `refine-design` asks before
+saving. Existing human descriptions stay in place. Generated product
+documentation goes under repository-root `documents/<product>/<doc-name>/`;
+`generate-prd` selects the product document names through its reviewed
+structure plan. Comps and assets stay with their owning document.
 
 For standards-driven work, `normalize-standards` establishes the initial folder mappings and local rules. `bootstrap` loads project authority and starts eligible review infrastructure; `review-standards` reviews selected work. `write-standards-guide` exposes the effective configuration to developers. `check-point` provides a separate commit review and approval step.
 

@@ -7,7 +7,7 @@ Use this skill to turn an idea, rough notes, or an existing brief into durable p
 ## Use it
 
 ```text
-Use $refine-design to develop documentation/product-description.md into a product model and UX design.
+Use $refine-design to develop documentation/product-description.md into a product model, reviewed UX, and UI compositions.
 ```
 
 A complete specification is not required. State the product input and desired scope. The skill consults relevant specialists when their expertise can materially affect the result rather than requiring every specialty for every request.
@@ -30,8 +30,9 @@ descriptions normally live at `product/<name>/product-description.md`.
 
 Models, snapshots, contexts, UX, visual foundations, UI, component designs,
 research, and review records share that named root. Generated human-facing documents use
-repository-root `documents/<name>/<doc-name>/`. The default generated PRD
-is `documents/<name>/prd/`. Existing data elsewhere is not silently moved or reset.
+repository-root `documents/<name>/<doc-name>/`. The `generate-prd`
+structure plan selects product document names and linked pages. Existing data
+elsewhere is not silently moved or reset.
 
 For the example above, an existing description can remain at
 `documentation/product-description.md` while the generated data uses:
@@ -52,7 +53,7 @@ product/Field Journal/
   ui/ui-spec.json
   ui/components/<component-id>.json
 
-documents/Field Journal/prd/  # Published HTML, comps, and assets
+documents/Field Journal/<selected-product-document>/  # Linked HTML and assets
 ```
 
 Optional files appear only when that work is needed. The immutable copy under
@@ -77,7 +78,7 @@ for exact naming and ownership rules.
 
 The human-owned product description is the root input. Refinement formats and checks edited Markdown with the working repository's installed Prettier before recording its final bytes. It then interprets the description's meaning into a structured product model and records exact source bytes, stable record identities, revisions, and immutable snapshots. Updates preserve continued meaning and explicitly account for replaced or removed claims.
 
-Depending on scope, specialist work produces UX interaction design and review, visual foundations, UI compositions, component designs, or engineering assessments. Artifacts record dependencies on product decisions and other artifacts. Changed inputs can make affected work stale while leaving unrelated decisions usable.
+For a whole-product refinement, the skill runs both design passes: it persists UX, obtains an independent review of that exact UX, then composes and inspects UI against the reviewed behavior. A narrower request can update only the affected decision or artifact; any dependent UX or UI must be brought current before publication. Specialized components and engineering assessments are consulted when their scope calls for them. Artifacts record dependencies on product decisions and other artifacts. Changed inputs can make affected work stale while leaving unrelated decisions usable.
 
 Concrete specialist choices incorporated by the workflow become accepted working decisions. You can revise them through the product description. Explicitly locked decisions have stronger protection: changing or unlocking them requires current, scope-specific owner authority. Unresolved gaps remain visible instead of being filled with invented requirements.
 
@@ -103,8 +104,16 @@ gaps used for questions from the primary description. The publisher shows those
 gaps in the common decisions and handoff pages and maps paper-backed records
 on a dedicated focused-paper page.
 
-Use the context beneath `product/<name>/contexts/prd/<context-hash>/` to publish
-the default review site at `documents/<name>/prd/`. If you copy the context for an
+For a product-documentation request, `refine-design` runs the UX pass and its
+independent review, then the dependent UI composition pass. It does not hand
+off an intermediate UX-only context as the PRD input. After the UI pass,
+package the source-bound UX and UI scenes, design
+language, publication manifest, and explicit missing-coverage gaps in the PRD
+context. Hand that context beneath
+`product/<name>/contexts/prd/<context-hash>/` to `generate-prd` for its
+source-bound outline and document-structure pass. After
+review, that skill previews under `product/<name>/` and publishes the selected
+document directories under `documents/<name>/`. If you copy the context for an
 export, include its sibling `artifact-resources/` directory when present. An
 explicit export destination does not change the canonical data location.
 

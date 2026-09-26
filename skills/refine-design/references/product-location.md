@@ -28,7 +28,15 @@ node scripts/product-location.mjs --repo <repository-root> --name "<name>"
 
 The script path is relative to the installed `refine-design` skill. It validates repository-root and path boundaries and returns canonical paths without creating directories. Pass its `productRoot` to product-model `--output-root` and to UX, design-language, UI, component, and root-bound artifact persistence helpers. Use its `currentPath` for artifact commits and context resolution. Place durable planning/research records and review receipts under that same product root. Do not add a second `product/` layer inside it.
 
-Generated human-facing product documentation belongs under `<repository-root>/documents/<name>/<doc-name>/`. Use the same confirmed product folder name as the data store. The helper returns `documentationRoot` for that product and `publicationRoot` for its `prd/` document. For example, the confirmed folder name `field-journal` produces `documents/field-journal/prd/`. Pass `publicationRoot` to `generate-prd --output`. Keep published comps and assets inside their owning document directory. Other generated document types, including the technical guide, use their own `<doc-name>/` directory. Durable structured data, research, and review evidence remain under `product/<name>/`.
+Generated human-facing product documentation belongs under
+`<repository-root>/documents/<name>/<doc-name>/`. Use the same confirmed
+product folder name as the data store. The helper returns `documentationRoot`
+for that product; pass it to the `generate-prd` collection publisher as
+`--output`. The reviewed structure plan selects product document IDs beneath
+that root. Keep published comps and assets inside their owning document
+directory. The technical guide keeps its own independently owned directory.
+Durable structured data, research, and review evidence remain under
+`product/<name>/`.
 
 The canonical layout is:
 
@@ -51,7 +59,8 @@ The canonical layout is:
       ui/components/<component-id>.json
   documents/
     <name>/
-      prd/                         # Published PRD, comps, and assets
+      <selected-product-document>/ # Linked HTML, comps, and assets
+      technical/                   # Independently published technical guide
 ```
 
 Optional data appears only when needed. Preserve each writer's internal filenames and relative-path contracts; this rule changes their shared base directory, not the artifact schemas. Publication may use an explicitly requested export destination; it must not create a competing canonical data store there. Detached PRD contexts remain usable outside their originating repository.

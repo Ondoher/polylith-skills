@@ -7,7 +7,7 @@ export const PUBLICATION_DOCUMENTS_MAX_BYTES = 16 * 1024 * 1024;
 export const PUBLICATION_RESOURCE_MAX_BYTES = 20 * 1024 * 1024;
 export const PUBLICATION_RESOURCES_MAX_BYTES = 64 * 1024 * 1024;
 const packageMaxBytes = 2 * 1024 * 1024;
-const versions = new Map([['ux-design', '0.2'], ['design-language', '0.14'], ['ui-composition', '0.2'], ['component-design', '0.2'], ['prd-publication', '1.0']]);
+const versions = new Map([['ux-design', '0.3'], ['design-language', '0.14'], ['ui-composition', '0.3'], ['component-design', '0.3'], ['prd-publication', '1.0']]);
 const extensions = new Map([['image/png', 'png'], ['image/jpeg', 'jpg'], ['image/webp', 'webp'], ['image/svg+xml', 'svg']]);
 const digest = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const fail = message => { throw new Error(message); };
