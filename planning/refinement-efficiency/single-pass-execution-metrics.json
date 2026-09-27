@@ -5,8 +5,56 @@
 	"baselineCommit": "d82ff2ba55964003b049984959f737983ccd7f70",
 	"scope": "Repository implementation and saved-data verification; no fresh live product refinement",
 	"usage": null,
-	"stages": [],
-	"measurements": [],
-	"bottlenecks": [],
-	"checkpoints": []
+	"stages": [
+		{
+			"name": "A: planning checkpoint",
+			"startedAt": "2026-09-27T00:40:02Z",
+			"finishedAt": "2026-09-27T00:44:58Z",
+			"elapsedSeconds": 296,
+			"result": "Committed planning baseline; includes initial consumer inspection while adviser worked"
+		},
+		{
+			"name": "B/C: consumer inspection and resumable record store",
+			"startedAt": "2026-09-27T00:44:58Z",
+			"finishedAt": "2026-09-27T00:56:21Z",
+			"elapsedSeconds": 683,
+			"result": "Captured reusable fixtures; implemented five tested record-store behaviors; authoring projection still pending"
+		}
+	],
+	"measurements": [
+		{
+			"name": "Existing fixture capture",
+			"elapsedMs": 2.7067,
+			"uxBytes": 20848,
+			"uiBytes": 3789,
+			"source": "Existing synthetic UX/UI fixtures",
+			"savedAt": ".codex-tmp/single-pass/",
+			"note": "Saved once for subsequent proof and replay; no specialist generation"
+		},
+		{
+			"name": "Record store named test lane",
+			"command": "npm --prefix skills/refine-design run test:single-pass",
+			"testsPassed": 5,
+			"testsFailed": 0,
+			"testRunnerMs": 82.0584,
+			"commandWallSeconds": 1.6080433,
+			"note": "Second execution exercised the new package command; unchanged tests were not used to claim another feature"
+		}
+	],
+	"bottlenecks": [
+		{
+			"id": "SP-01",
+			"observation": "Current UX/UI validators and publication packages require expanded schema 0.3 and whole-artifact review bindings.",
+			"impact": "Direct replacement would affect multiple validators, renderers, review and publication consumers before transport could be exercised.",
+			"action": "Evaluate compact authoring with deterministic projection into the existing validated consumer contract; preserve supplied IDs and meaning.",
+			"result": "Implementation selected for the first end-to-end proof; no live speedup yet measured"
+		}
+	],
+	"checkpoints": [
+		{
+			"commit": "6a9972529c9be5ee3d8ed9ac21d42ac5ec9db2d0",
+			"recommendation": "CHECKPOINT_RECOMMENDED",
+			"message": "docs: establish single-pass UX/UI execution baseline"
+		}
+	]
 }

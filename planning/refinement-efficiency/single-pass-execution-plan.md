@@ -130,7 +130,8 @@ Write `planning/refinement-efficiency/single-pass-execution-summary.md` with:
 
 Update progress below at meaningful boundaries, not after every command.
 
-| Slice | State       | Evidence / next action                                                                                                |
-| ----- | ----------- | --------------------------------------------------------------------------------------------------------------------- |
-| A     | In progress | Plan recorded; initial repository state contains the owner's reference files and the preceding design/research notes. |
-| B–F   | Pending     | Follow the sequence above; use saved data for the first implementation proof.                                         |
+| Slice | State       | Evidence / next action                                                                                                                           |
+| ----- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| A     | Complete    | Checkpoint `6a99725` preserves the full planning baseline and owner references; initial adviser recommended it.                                  |
+| B/C   | In progress | Saved synthetic UX/UI captured once in ignored staging. Incremental record store passes five recovery/reuse tests. Authoring projection is next. |
+| D–F   | Pending     | Integrate the authoring route and owning instructions before claiming the method delivered.                                                      |

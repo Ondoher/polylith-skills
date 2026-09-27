@@ -10,7 +10,8 @@
 		"test:renderer": "node --test --test-isolation=none scripts/design-language-html.test.mjs scripts/design-language-mui.test.mjs scripts/design-language-icons.test.mjs scripts/design-language-button.test.mjs scripts/design-language-components.test.mjs scripts/design-language-composite.test.mjs scripts/design-language-identity.test.mjs scripts/design-language-password.test.mjs scripts/design-language-text-field.test.mjs scripts/design-language-select.test.mjs scripts/design-language-layout.test.mjs scripts/design-language-spacing.test.mjs scripts/design-language-verify.test.mjs",
 		"test:design:full": "npm run test:design && npm run test:renderer",
 		"test:full": "npm run test:design:full && node --test --test-isolation=none scripts/component-design-html.test.mjs scripts/consultation-provenance.test.mjs scripts/design-lock.test.mjs scripts/input-security.test.mjs scripts/prd-html.test.mjs scripts/refinement-impact.test.mjs scripts/ui-composition-html.test.mjs scripts/ux-review-evaluation-fixture.test.mjs",
-		"test:efficiency": "node --test --test-isolation=none scripts/refinement-efficiency.test.mjs"
+		"test:efficiency": "node --test --test-isolation=none scripts/refinement-efficiency.test.mjs",
+		"test:single-pass": "node --test --test-isolation=none scripts/design-records.test.mjs"
 	},
 	"dependencies": {
 		"fontkit": "2.0.4"
