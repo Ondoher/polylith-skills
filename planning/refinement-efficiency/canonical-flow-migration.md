@@ -68,15 +68,19 @@ results, performance evidence, migration limits and checkpoint history.
 
 ## Work ledger and acceptance evidence
 
-| Slice                 | Required evidence                                                                                                                                                   | State       |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| Canonical contract    | Ordered primary/alternate steps are persisted directly; no required graph catalogs or duplicated step-order list. Stable element and step references are checked.   | In progress |
-| Saved-data import     | Existing data is reused once; ambiguous relationships produce explicit repair notices; original input remains available. Import does not run in ordinary consumers. | Pending     |
-| UX consumers          | Validation, review, handoff, impact and document inventory consume native flows without graph reconstruction.                                                       | Pending     |
-| UI consumers          | Parts/variations are persisted as canonical data; bindings and rendered comps work against the new UX contract.                                                     | Pending     |
-| Workflow and fixtures | Agent/skill instructions, machine schemas, examples and behavioral tests match the actual canonical format.                                                         | Pending     |
-| Verification/handoff  | Focused and package checks, detached documentation inputs, saved-data metrics, corrected summaries and final adviser checkpoint.                                    | Pending     |
+| Slice                 | Required evidence                                                                                                                                                   | State    |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| Canonical contract    | Ordered primary/alternate steps are persisted directly; no required graph catalogs or duplicated step-order list. Stable element and step references are checked.   | Complete |
+| Saved-data import     | Existing data is reused once; ambiguous relationships produce explicit repair notices; original input remains available. Import does not run in ordinary consumers. | Complete |
+| UX consumers          | Validation, review, handoff, impact and document inventory consume native flows without graph reconstruction.                                                       | Complete |
+| UI consumers          | Parts/variations are persisted as canonical data; bindings and rendered comps work against the new UX contract.                                                     | Complete |
+| Workflow and fixtures | Agent/skill instructions, machine schemas, examples and behavioral tests match the actual canonical format.                                                         | Complete |
+| Verification/handoff  | Focused and package checks, detached documentation inputs, saved-data metrics, corrected summaries and final adviser checkpoint.                                    | Complete |
 
 A compact authoring adapter alone does not meet this plan's completion condition.
 If a difficult migration requires intermediate checkpoints, those checkpoints are
 explicitly incomplete foundations; continue through the consumer migration.
+
+## Completion
+
+Implementation checkpoint `9adbae2` replaces the canonical graph model and its consumers. The root package gate passed all 512 tests; composable publication passed 14 tests. See [execution summary](canonical-flow-migration-summary.md) and [measured results](canonical-flow-migration-metrics.json). Saved Alexa input was imported without live writes: its 25 ambiguous conversion records remain explicit repair work for a later product refinement, not an unfinished repository migration or a passing semantic review.

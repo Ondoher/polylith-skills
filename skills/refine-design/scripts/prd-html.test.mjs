@@ -223,6 +223,25 @@ test('publishes a linked deterministic PRD, design language, and component state
 	assert.deepEqual(snapshot(output), before);
 });
 
+test('publishes repair notices and remedies without hiding usable design content', () => {
+	const base = folder(),
+		input = sources(base);
+	const ux = JSON.parse(fs.readFileSync(input.ux, 'utf8'));
+	ux.repairNeeds.push({
+		reference: 'update-record',
+		reason: 'Review <ambiguous> recovery.',
+		remedy: 'Confirm the local retry condition.',
+	});
+	fs.writeFileSync(input.ux, JSON.stringify(ux));
+	const output = path.join(base, 'prd');
+	publishPrdHtml(input.ux, input.design, output, {layoutFile: input.layout});
+	const html = fs.readFileSync(path.join(output, 'index.html'), 'utf8');
+	assert.match(html, /Repairs needed/);
+	assert.match(html, /Review &lt;ambiguous&gt; recovery/);
+	assert.match(html, /Confirm the local retry condition/);
+	assert.match(html, /Product capabilities/);
+});
+
 test('persists an accepted structured UX change, scopes its impact, and republishes it without a separate acceptance gate', () => {
 	const base = folder();
 	const input = sources(base);

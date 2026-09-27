@@ -1,5 +1,7 @@
 # Single-pass UX/UI execution summary
 
+> Historical report for the authoring/transport change through `74f7f77`. That implementation still projected compact records into the old canonical graph. The owner rejected that limitation; [the native schema migration](canonical-flow-migration-summary.md) now supersedes those compatibility-output statements.
+
 Implemented 2026-09-26 local time (2026-09-27 UTC). The
 [execution plan](single-pass-execution-plan.md) was carried through repository
 implementation, saved-data replay, consumer integration and verification.

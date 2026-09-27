@@ -197,6 +197,7 @@ function renderPrdIndex(spec, uiSpec = null, hasComponentComps = false, componen
         <dl class="rd-source-summary"><div><dt>Revision</dt><dd>${escapeHtml(spec.revision)}</dd></div><div><dt>Design state</dt><dd>${escapeHtml(spec.status)}</dd></div><div><dt>Features</dt><dd>${spec.features.length}</dd></div><div><dt>Surfaces</dt><dd>${spec.surfaces.length}</dd></div></dl>
     </header>
     ${attention(spec.status)}
+    ${spec.repairNeeds.length ? `<aside class="prd-attention" aria-label="Design repairs needed"><h2>Repairs needed</h2><p>This document contains incomplete imported design data.</p><ul>${spec.repairNeeds.map((repair) => `<li><strong>${escapeHtml(repair.reference)}:</strong> ${escapeHtml(repair.reason)} <strong>Remedy:</strong> ${escapeHtml(repair.remedy)}</li>`).join('')}</ul></aside>` : ''}
     ${renderSiteNavigation('requirements', '', Boolean(uiSpec), hasComponentComps)}
     <nav class="rd-section-nav" aria-label="Product requirement sections"><a href="#structure">Application</a><a href="#features">Capabilities</a><a href="#surfaces">Surfaces</a><a href="#use-cases">Workflows</a><a href="#requirements">Components</a><a href="#questions">Questions</a></nav>
     <main id="main-content" class="prd-main">

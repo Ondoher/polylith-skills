@@ -9,7 +9,7 @@ import {DesignAssembly} from './design-assembly.mjs';
 import {DesignRecords} from './design-records.mjs';
 import {DesignRun} from './design-run.mjs';
 import {UiParts} from './ui-parts.mjs';
-import {validateUxSpec} from './ux-design.mjs';
+import {renderPrd, validateUxSpec} from './ux-design.mjs';
 import {uiRequiredScopeRefs} from './ui-composition.mjs';
 import {createUxTestSpec} from './ux-test-fixture.mjs';
 import {gardenUx} from './ux-composable-fixture.mjs';
@@ -142,6 +142,8 @@ test('malformed import remains preserved and a repair-bearing candidate never re
 	assert.equal(report.valid, false);
 	assert.ok(report.candidatePath);
 	assert.match(report.issues[0].remedy, /Supply/);
+	assert.match(renderPrd(spec), /## Repairs Needed/);
+	assert.match(renderPrd(spec), /Supply the missing product decision/);
 });
 
 test('UI review scope includes behavior references inside shared parts and variations', () => {

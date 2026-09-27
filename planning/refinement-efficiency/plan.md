@@ -1,6 +1,6 @@
 # Refinement efficiency: autonomous execution plan
 
-Current execution: [single-pass UX/UI autonomous plan](single-pass-execution-plan.md),
+Current completion: [native flow model migration](canonical-flow-migration-summary.md), following the [autonomous migration plan](canonical-flow-migration.md). The previous execution was the [single-pass UX/UI autonomous plan](single-pass-execution-plan.md),
 authorized 2026-09-27 for self-directed implementation, measurement, reuse, and
 adviser-triggered checkpoints with preapproved messages. This document retains
 the previous efficiency work and the route into that next implementation.

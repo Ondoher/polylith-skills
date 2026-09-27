@@ -1,0 +1,182 @@
+{
+	"schemaVersion": "1.0",
+	"purpose": "Observed local schema-migration and saved-data processing; not a live authoring benchmark",
+	"startedAt": "2026-09-27T03:23:48.000Z",
+	"capturedAt": "2026-09-27T04:10:16.714Z",
+	"elapsedToCaptureMinutes": 46.478566666666666,
+	"implementationCommit": "9adbae2",
+	"freshDesignAgentCalls": 0,
+	"paidBaselineRuns": 0,
+	"liveProductMutated": false,
+	"usage": {
+		"tokens": null,
+		"credits": null,
+		"reason": "Provider accounting was not available; no cost or live speedup inferred."
+	},
+	"savedData": {
+		"capturedAt": "2026-09-27T03:59:20.882Z",
+		"counts": {
+			"flows": 9,
+			"primarySteps": 27,
+			"alternates": 57,
+			"parts": 11,
+			"scenes": 11,
+			"oldNodes": 86,
+			"oldEdges": 216
+		},
+		"sizes": {
+			"ux": {
+				"oldCanonicalBytes": 353586,
+				"nativeCanonicalBytes": 318632,
+				"changePercent": -9.885572392572104
+			},
+			"ui": {
+				"oldCanonicalBytes": 89295,
+				"nativeCanonicalBytes": 90058,
+				"changePercent": 0.8544711350019598
+			}
+		},
+		"imports": {
+			"uxMs": 31.087699999999998,
+			"uiMs": 34.995000000000005,
+			"uxRepairCount": 25,
+			"uiRepairCount": 0,
+			"repairCategories": {
+				"A nested branch was lifted to its primary step; its combined condition requires local repair": 5,
+				"A cycle or shared alternate tail requires explicit local repair": 2,
+				"Recovery requires a local alternate": 12,
+				"Saved cross-task relation needs review as a precondition or reusable interaction call-out": 6
+			}
+		},
+		"stages": {
+			"ux": {
+				"splitMs": 8.031499999999994,
+				"deliveryMs": 46.677899999999994,
+				"records": 14,
+				"first": {
+					"elapsedMs": 78.83360000000002,
+					"valid": false,
+					"stages": {
+						"assemblyMs": 10.862300000000005,
+						"validationMs": 29.309699999999964
+					},
+					"outputCount": 2,
+					"issueCount": 25
+				},
+				"replay": {
+					"elapsedMs": 31.908199999999965,
+					"reused": true
+				},
+				"bytesRead": 315050
+			},
+			"ui": {
+				"splitMs": 1.4868000000000166,
+				"deliveryMs": 58.62349999999998,
+				"records": 23,
+				"first": {
+					"elapsedMs": 1196.7019,
+					"valid": true,
+					"stages": {
+						"assemblyMs": 8.855099999999993,
+						"validationMs": 753.0178,
+						"renderMs": 317.7638999999999
+					},
+					"outputCount": 30,
+					"issueCount": 0
+				},
+				"replay": {
+					"elapsedMs": 156.15660000000003,
+					"reused": true
+				},
+				"bytesRead": 91740
+			}
+		}
+	},
+	"checks": [
+		{
+			"name": "initial focused",
+			"file": "first-tests.log",
+			"tests": [82],
+			"passes": [48],
+			"failures": [34],
+			"durationsMs": [10210.0969]
+		},
+		{
+			"name": "native fixture reconciliation",
+			"file": "second-tests.log",
+			"tests": [82],
+			"passes": [77],
+			"failures": [5],
+			"durationsMs": [12025.2693]
+		},
+		{
+			"name": "consumer integration",
+			"file": "consumer-tests.log",
+			"tests": [67],
+			"passes": [54],
+			"failures": [13],
+			"durationsMs": [13419.0565]
+		},
+		{
+			"name": "consumer recheck",
+			"file": "consumer-recheck.log",
+			"tests": [25],
+			"passes": [25],
+			"failures": [0],
+			"durationsMs": [9846.0519]
+		},
+		{
+			"name": "native migration boundaries",
+			"file": "native-tests-final.log",
+			"tests": [8],
+			"passes": [8],
+			"failures": [0],
+			"durationsMs": [146.8333]
+		},
+		{
+			"name": "full package gate",
+			"file": "package-final.log",
+			"tests": [169, 139, 87, 61, 45, 11],
+			"passes": [169, 139, 87, 61, 45, 11],
+			"failures": [0, 0, 0, 0, 0, 0],
+			"durationsMs": [24795.7317, 29466.9059, 16348.5192, 40056.5105, 11450.0608, 611.5909]
+		},
+		{
+			"name": "composable publication",
+			"file": "composable-final.log",
+			"tests": [14],
+			"passes": [14],
+			"failures": [0],
+			"durationsMs": [967.8097]
+		},
+		{
+			"name": "final repair-notice publication and import checks",
+			"file": "repair-publication-recheck.log",
+			"tests": [19],
+			"passes": [19],
+			"failures": [0],
+			"durationsMs": [9856.2927]
+		}
+	],
+	"verification": {
+		"prettier": "passed for changed supported files",
+		"diffCheck": "passed",
+		"skillValidation": {
+			"refine-design": "passed",
+			"generate-prd": "passed"
+		},
+		"standardsReview": "not claimed",
+		"semanticReview": "saved migration candidates are not assessed",
+		"packageGateScope": "512 tests before the final repair-notice rendering addition; the affected final suites passed 19 tests afterward.",
+		"migrationCli": "Explicit migrate command reused the saved generated UX import with unchanged original bytes and candidate."
+	},
+	"limits": [
+		"Timings are single local observations, not statistically controlled comparisons.",
+		"Assembly replay retains generated files from the same execution.",
+		"Saved graph conversion can preserve an unreviewed candidate without resolving product semantics.",
+		"UI imports factor only identical whole trees; 11 distinct saved scenes produce 11 parts.",
+		"Publication-format refinement remains outside this migration."
+	],
+	"handoffRecordedAt": "2026-09-27T04:16:10.324Z",
+	"checkpointConsultations": 2
+}

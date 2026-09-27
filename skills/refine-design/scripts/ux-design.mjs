@@ -1387,6 +1387,11 @@ export function renderPrd(spec) {
 		...spec.product.users.map((user) => `- ${user}`),
 		'',
 	];
+	if (spec.repairNeeds.length) {
+		lines.push('## Repairs Needed', '', 'This document contains incomplete imported design data.', '');
+		for (const repair of spec.repairNeeds)
+			lines.push(`- **${repair.reference}:** ${repair.reason} **Remedy:** ${repair.remedy}`, '');
+	}
 
 	lines.push(
 		'## Application Organization',

@@ -8,7 +8,7 @@ The executable route is now documented in the
 [single-pass authoring contract](../../skills/refine-design/references/single-pass-design.md).
 The [execution plan](single-pass-execution-plan.md) and its metrics track delivery.
 The implementation uses atomic per-record JSON files in place of the initial JSONL
-suggestion below, and projects into the existing expanded consumer schemas.
+suggestion below. The later [native model migration](canonical-flow-migration-summary.md) replaces the prior projection into expanded legacy consumer schemas.
 Foundation overlap is supported; reviewed per-batch composition remains deferred.
 
 ## 1. Operating rule
