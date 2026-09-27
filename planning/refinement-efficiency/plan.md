@@ -1,5 +1,10 @@
 # Refinement efficiency: autonomous execution plan
 
+Current execution: [single-pass UX/UI autonomous plan](single-pass-execution-plan.md),
+authorized 2026-09-27 for self-directed implementation, measurement, reuse, and
+adviser-triggered checkpoints with preapproved messages. This document retains
+the previous efficiency work and the route into that next implementation.
+
 Status, 2026-09-26: the initial implementation and subsequent package-test repairs
 are delivered. Checkpoint advice has been separated from standards-review gates.
 The first authorized live Alexa refinement took **101.80 minutes**, through a
@@ -8,6 +13,24 @@ substantial remaining authoring, handoff, and review costs; no speedup or credit
 saving has been established. See the [performance findings and proposed fixes](performance-findings.md)
 for the complete issue register, evidence limits, priorities, and low-cost checks.
 Earlier execution entries below are historical, not the current status.
+The owner's subsequent PF-01 proposal centers UX on major interface elements,
+each with named flows and linear steps. Steps reference supporting or reusable
+elements; errors are alternate flows. See the [candidate UX model](performance-findings.md#pf-01-ux-decisions-expanded-manually-into-a-large-canonical-document)
+and [industry-practice research](ux-flow-model-research.md). The owner requested
+that research before settling the model; schema and consumer migration remain
+future implementation work.
+The [UX information and documentation synthesis](ux-documentation-synthesis.md)
+captures the imported references and the owner's subsequent requirement for
+publication-neutral input. It distinguishes product relationships from document
+placement and provides the background for the concrete method below.
+The owner's next direction is the [single-pass UX/UI production method](single-pass-ux-ui.md):
+assume parsing and the facts-to-UX handoff are satisfactory; focus on one authoring
+pass per design agent, optional linear reconciliation, mechanical assembly,
+overlap through independently reviewed batches, compact file-based transfers,
+and sufficient retained meaning for product and
+later technical documentation. The method is documented, not yet implemented.
+This narrows the next work to the design stages; earlier interpretation changes
+below describe the previous implementation and are not an instruction to reopen it.
 This work takes priority over further product-document format refinement.
 The owner expects to be AFK, delegates routine decisions to the assistant's
 judgment, and wants credit use minimized. Progress does not depend on answers
@@ -25,7 +48,9 @@ Do not promise a measured speedup without comparable run evidence.
 
 Work in this repository on refinement instructions, specialist input contracts,
 small assembly/orchestration helpers, relevant fixtures/tests, and user guides.
-Retain existing canonical artifact formats wherever possible. Keep document
+Retain existing canonical artifact formats wherever possible. PF-01 now evaluates
+a simpler UX model with coordinated consumer changes as an alternative to
+preserving the current graph structure. No migration has been selected or applied. Keep document
 layout work, model/provider comparisons, new agent roles, architecture planning,
 and unrelated renderer improvements out of the implementation scope.
 

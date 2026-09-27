@@ -7,6 +7,12 @@ Decimal section numbering for the interaction guide is owner-accepted.
 Resilient continuation with visible repair needs is also owner-required; its
 proposed contract is recorded in [resilience](resilience.md).
 
+Later discussion is captured in the [UX information and documentation synthesis](../refinement-efficiency/ux-documentation-synthesis.md).
+The owner wants the structure agent to receive publication-neutral information.
+Product relationships remain explicit, while chapter placement and page breaks
+remain editorial choices. Reconcile the fixed chapter and layout proposals below
+with that clarification before turning them into generator requirements.
+
 Open the [linked HTML sample](design-preview/prd.html) to review the appearance.
 It contains a synthetic PRD, interaction guide, and design-language reference.
 Its sample product decisions and comps demonstrate the format; they are not

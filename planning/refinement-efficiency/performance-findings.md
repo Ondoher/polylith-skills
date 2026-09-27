@@ -5,6 +5,11 @@ the follow-up register for the [efficiency plan](plan.md). It records problems
 encountered, including coordination mistakes, and proposed remedies. These
 remedies have not been implemented by this documentation change.
 
+The current response to PF-01/PF-02 is the [single-pass UX/UI production method](single-pass-ux-ui.md).
+The owner now says to assume parsing and the facts-to-UX handoff are satisfactory.
+The next scope is design authoring, bounded reconciliation, assembly, and compact
+handoffs; upstream packet redesign is not a prerequisite for that work.
+
 ## Evidence and measurement limits
 
 Run: `run-20260926-214023-cold-start`, in the sibling Alexa checkout under
@@ -67,16 +72,63 @@ semantic chunks and task-specific parent assembly. UX revision 3 is 480,856
 bytes. The time is measured; the explanation is the planner's report, not a
 token-level profiler result.
 
-**Fix.** Add a compact UX authoring contract that records each decision once.
-Deterministically expand indexes, repeated references, bindings, and provable
-graph structure into the existing canonical schema. Keep conditions, recovery,
-decision content, and interaction meaning with the UX planner. Preserve stable
-IDs independently of document hierarchy. Parent assembly must not invent behavior.
+**Proposal under discussion.** Center UX on an identified major user interface element
+and its list of **flows**. Each flow consists of linear steps describing user
+actions and visible application responses. Steps call out intermediate elements
+such as dialogs and link to reusable elements such as a content-selection dialog.
+Error handling is expressed as alternate flows. The owner requested an industry
+practice check before settling this conceptual model. See the [research findings](ux-flow-model-research.md).
+The runtime schema and consumers have not been changed.
 
-**Cheap check.** Replay the saved selected chunks through the proposed adapter;
-compare stable identities, meaning, coverage, and current validation with the
-saved accepted candidate. Include rejection of ambiguous expansion. No fresh
-planner run is needed to test bookkeeping.
+The subsequent [working synthesis](ux-documentation-synthesis.md) records the
+reference-document exploration and the owner's clarification: element/flow
+relationships describe the product, while the document-structure agent receives
+publication-neutral information and chooses its reading hierarchy and pages.
+The collection/storage/presentation breakdown remains to be designed.
+
+The unit of UX design is:
+
+- A major interface element, with its purpose and relevant displayed information.
+- Its flows, each named for the task being performed, with any necessary starting
+  condition and a linear sequence of steps.
+- Step references to supporting or reusable interface elements, stating what
+  returns to the calling flow and where it continues when that matters.
+- Alternate flows for errors, cancellation, and other meaningful variations,
+  stating when they apply and how they finish or resume the primary flow.
+
+Define reusable elements once and refer to them from their callers. Shared rules
+also have one definition. Keep references stable as the information hierarchy
+changes; reader-facing outline and step numbers remain presentation details.
+Use **flow** as the working name for these local use cases.
+
+For example, the Video Editor owns an **Add content** flow:
+
+1. The user chooses Add Content.
+2. The reusable Content Selection dialog opens.
+3. The user selects content and confirms; the dialog returns the selection.
+4. The editor inserts it at the current insertion position and displays the result.
+
+Its **Cancel selection** alternate flow closes the dialog and leaves the editor
+unchanged. Its **Selected content is unavailable** alternate flow explains the
+problem in the dialog and lets the user select another item or cancel. These are
+illustrative descriptions of the model, not new Alexa product requirements.
+
+**Proposed fix.** Evaluate a simpler canonical UX model around those elements,
+flows, steps, and references. This is the current alternative to preserving the
+entire graph contract behind a smaller authoring syntax. Avoid a second graph or
+separate error-state model to restate the flows. Retain a derived representation
+only where a concrete consumer need justifies it, and generate its bookkeeping
+in code. Behavioral decisions remain with the UX planner. Inventory and update
+the affected validation, independent review, UI handoff, and publication consumers
+as one coherent change; current schemas remain authoritative until that work lands.
+The document-structure agent still organizes the information hierarchy and page breaks.
+
+**Cheap check.** Express one saved major element and several of its flows in the
+simpler model, including a shared dialog, cancellation, and a failure/retry
+alternate. Check that users can follow every sequence, references resolve,
+return/continuation behavior is explicit, and required product meaning survives.
+Verify the intended consumers can use it without re-authoring a graph. Use saved
+evidence and local fixtures; no full paid refinement is needed to test this model.
 
 ### PF-02: UI repeats scene structure and serializes a large response
 
@@ -89,8 +141,10 @@ reasoning-versus-serialization split is unknown.
 **Fix.** Let the UI designer author shared scene fragments and explicit state
 overrides, then expand them in code into the current UI contract. Geometry,
 hierarchy, representative content, focus choices, and visual decisions remain
-the UI designer's responsibility. Validate each expanded frame's exact action
-bindings and deferrals; shared fragments must not erase state differences.
+the UI designer's responsibility. Validate the interaction references required
+by the selected UX contract, including declared omissions; shared fragments must
+not erase differences between flows or their steps. Reconcile existing frame
+bindings with the simpler PF-01 model during its consumer migration.
 
 **Cheap check.** Use the saved UI response to verify expansion, scene identity,
 bindings, and byte-stable rendering. Compare a few representative screenshots.
@@ -122,8 +176,8 @@ JSON. Parent requests for updates did not create a persistable intermediate
 artifact. Interrupting risks losing an unfinished response.
 
 **Fix.** Request bounded authoring units with an early first deliverable, such
-as one interaction object plus its supporting dialogs, or one shared shell and
-scene. Persist those units in an authoring journal with explicit unresolved
+as one major interface element with its flows and referenced dialogs, or one
+shared shell and scene. Persist those units with explicit unresolved
 references; promote them only after canonical validation. Define recovery at
 safe response boundaries. An elapsed-time threshold should trigger scope
 assessment, not an endless interrupt/restart loop or fabricated completion.
@@ -215,15 +269,16 @@ conditional export destinations were difficult to express. The UX author
 reported this as part of the initial stall. Explicit partial trace gaps remain
 even after the independent pass; they must not imply an accepted disabling policy.
 
-**Fix.** First test whether compact reusable interaction patterns can expand
-into valid existing records for each invocation. If the canonical contract still
-cannot represent accepted behavior, design a narrow invocation/return extension
-separately, with consumer changes identified. Do not force semantics into a
-misleading single target or start an unbounded schema migration during a product run.
+**Proposed fix.** With PF-01's candidate element-owned flows, a step references the reusable
+dialog, describes its relevant input and returned result, and specifies where
+the caller continues. Error and cancellation paths are alternate flows. Each
+caller retains its own context while sharing the dialog definition. This
+offers an alternative to extending the old graph to express those calls and returns.
 
-**Cheap check.** Use one object-local use case with a subsequent dialog,
-multiple entry points, deferred discard, and captured return context. Compare
-both successful continuation and canceled/failed restoration.
+**Cheap check.** Use two element-owned flows that invoke the same dialog and
+resume at their own next steps. Include deferred discard and successful,
+canceled, and failed continuation. Verify that reuse does not merge callers or
+lose retained work. Evaluate this with the bounded PF-01 model change.
 
 ### PF-10: Conflicting version guidance adds contract-discovery work
 
@@ -371,16 +426,16 @@ deduplication, and invalidation. See [refinement-run.mjs](../../skills/refine-de
 
 ## Recommended order and completion evidence
 
-| Priority                  | Work                                                                                  | Evidence required before considering it addressed                                                             |
-| ------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| First                     | PF-06, PF-10, PF-14: early complete preflight, current guidance, reliable invocations | Saved negative cases fail before review; current positive replay passes                                       |
-| First                     | PF-01, PF-02, PF-05: compact authoring and exact handoff                              | Existing canonical consumers remain valid; semantic/scene identities preserved; representative output matches |
-| Next                      | PF-04, PF-13, PF-15: durable partial delivery and automatic run evidence              | Interrupted/repaired replay resumes smallest affected scope; timing/counts/provenance remain correct          |
-| Next                      | PF-03: smaller dependency-aware task views                                            | Late global rules, gaps, locks, and unclassified content retained; actual input sizes reported                |
-| Next                      | PF-07, PF-08: decision completeness and source freeze                                 | Known omissions caught; one coordinated writeback; valid exact review and source accounting                   |
-| Bounded follow-up         | PF-09: transient expressiveness                                                       | One representative shared-dialog case proves the chosen approach before any migration                         |
-| Targeted repair           | PF-11, PF-12: renderer fidelity and inspection scope                                  | Focused state/overflow screenshots and local-link checks pass without altering product authority              |
-| Next ordinary publication | Separate `generate-prd` measurement                                                   | Stage timing plus comparable scope/quality, without a duplicate paid baseline                                 |
+| Priority                  | Work                                                                                  | Evidence required before considering it addressed                                                            |
+| ------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| First                     | PF-06, PF-10, PF-14: early complete preflight, current guidance, reliable invocations | Saved negative cases fail before review; current positive replay passes                                      |
+| First                     | PF-01, PF-02, PF-05: simpler element-owned flows, compact UI authoring, exact handoff | Product meaning and stable references preserved; affected consumers updated together; usable output verified |
+| Next                      | PF-04, PF-13, PF-15: durable partial delivery and automatic run evidence              | Interrupted/repaired replay resumes smallest affected scope; timing/counts/provenance remain correct         |
+| Next                      | PF-03: smaller dependency-aware task views                                            | Late global rules, gaps, locks, and unclassified content retained; actual input sizes reported               |
+| Next                      | PF-07, PF-08: decision completeness and source freeze                                 | Known omissions caught; one coordinated writeback; valid exact review and source accounting                  |
+| With PF-01                | PF-09: supporting and reusable dialog references                                      | Two callers retain their own continuation; cancellation and errors work as alternate flows                   |
+| Targeted repair           | PF-11, PF-12: renderer fidelity and inspection scope                                  | Focused state/overflow screenshots and local-link checks pass without altering product authority             |
+| Next ordinary publication | Separate `generate-prd` measurement                                                   | Stage timing plus comparable scope/quality, without a duplicate paid baseline                                |
 
 Use saved responses and small synthetic fixtures first. Do not rerun the full
 101.80-minute product refinement merely to test deterministic adapters or
