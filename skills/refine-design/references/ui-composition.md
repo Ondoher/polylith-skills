@@ -1,5 +1,11 @@
 # UI Composition And HTML Comps
 
+For initial or substantial composition, use [the single-pass route](single-pass-design.md)
+and request `single-pass-ui`. Its bounded context/part/scene records replace the
+whole-schema agent response below; the parent expands them into this unchanged
+consumer contract. Reuse foundations and scene parts, read shared inputs once and
+consume bounded UX references after exact review. Do not author a second expanded copy.
+
 Schema 0.3 is the structured handoff between accepted UX, the design language, the UI designer, and deterministic HTML comp rendering. It binds every scene to an exact accepted interaction frame, binds behavioral nodes to UX actions, preserves stable node identities, and renders one clean and one annotated page from the same scene tree.
 
 ## Entry Gate

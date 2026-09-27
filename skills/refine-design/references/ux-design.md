@@ -1,5 +1,12 @@
 # UX Design Mode
 
+For initial or substantial authoring, use [the single-pass route](single-pass-design.md)
+and request `single-pass-ux`. Its bounded record-array response and inline pruning
+replace this document's whole-schema response and separate normalization/pruning
+passes. The schema below remains authoritative for expanded fields, product meaning,
+research, locks and review. The parent assembles the expanded candidate mechanically.
+Do not ask the planner to author both the records and a second expanded JSON copy.
+
 Use `<repository-root>/product/<name>/` as the output/product-document root under
 [the product location contract](product-location.md). The human description may
 remain elsewhere; its source reference is repository-relative. Pass an explicit

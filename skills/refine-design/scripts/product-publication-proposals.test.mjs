@@ -12,8 +12,9 @@ import {publishArtifactResourceFiles, verifyArtifactResourceFiles} from './produ
 import {sha256} from './product-artifact-utils.mjs';
 import {createUxTestSpec} from './ux-test-fixture.mjs';
 import {createDefaultReviewConfig} from './design-language-review-pages.mjs';
+import {DesignAssembly} from './design-assembly.mjs';
 
-function fixture(t) {
+function fixture(t, singlePass = false) {
 	const root = fs.mkdtempSync(path.join(os.tmpdir(), 'publication-proposals-'));
 	t.after(() => fs.rmSync(root, {recursive: true, force: true}));
 	const store = path.join(root, 'product');
@@ -47,6 +48,16 @@ function fixture(t) {
 			revision: sources.ux.revision,
 			sha256: sha256(canonicalPublicationJson(sources.ux)),
 		};
+	}
+	if (singlePass) {
+		for (const stage of ['ux', 'ui']) {
+			const assembled = DesignAssembly[stage](
+				DesignAssembly[stage === 'ux' ? 'importUx' : 'importUi'](sources[stage]),
+			);
+			assert.deepEqual(assembled.issues, []);
+			assert.deepEqual(assembled.document, sources[stage]);
+			sources[stage] = assembled.document;
+		}
 	}
 	for (const [name, document] of Object.entries(sources))
 		fs.writeFileSync(path.join(root, `${name}.json`), JSON.stringify(document));
@@ -84,8 +95,8 @@ function commit(environment, request_) {
 	return result.proposal;
 }
 
-test('produces validated UX, design-language, UI, repeatable component and explicit manifest proposals', (t) => {
-	const environment = fixture(t);
+test('single-pass UX/UI feeds validated publication artifacts, components, manifest and detached PRD context', (t) => {
+	const environment = fixture(t, true);
 	commit(environment, request('publication-ux', 'ux-design', {sources: {ux: 'ux.json'}}));
 	commit(
 		environment,

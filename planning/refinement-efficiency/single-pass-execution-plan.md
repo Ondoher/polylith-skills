@@ -130,8 +130,13 @@ Write `planning/refinement-efficiency/single-pass-execution-summary.md` with:
 
 Update progress below at meaningful boundaries, not after every command.
 
-| Slice | State       | Evidence / next action                                                                                                                           |
-| ----- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| A     | Complete    | Checkpoint `6a99725` preserves the full planning baseline and owner references; initial adviser recommended it.                                  |
-| B/C   | In progress | Saved synthetic UX/UI captured once in ignored staging. Incremental record store passes five recovery/reuse tests. Authoring projection is next. |
-| D–F   | Pending     | Integrate the authoring route and owning instructions before claiming the method delivered.                                                      |
+| Slice | State                                      | Evidence / limit                                                                                                                                                                                                    |
+| ----- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A     | Complete                                   | Planning checkpoint 6a99725.                                                                                                                                                                                        |
+| B/C   | Complete                                   | Record-store checkpoint 56b5edb; compact authoring projects losslessly into current consumer contracts. Recovery, stale repairs and bounded handoff are exercised.                                                  |
+| D     | Complete                                   | Agent/skill instructions use the executable route. Saved Alexa replay produced eleven scene pairs with resources; an integration test produces detached PRD context. Technical-preparation contracts remain intact. |
+| E     | Complete within the documented alternative | Foundation overlap retained. Per-batch composition is explicitly deferred because current independent review binds whole UX artifacts; no review bypass introduced.                                                 |
+| F     | Complete                                   | Root suite: 504 passed. Focused integration: 18 passed. Final changed-code lane and formatting verified at handoff. Summary and measured limits recorded.                                                           |
+
+See [the execution summary](single-pass-execution-summary.md) for deliverables,
+measurements, choices, remaining live-performance uncertainty and checkpoint history.

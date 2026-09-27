@@ -4,8 +4,12 @@ Recorded 2026-09-26. This is the concrete working method requested after the
 [UX/documentation synthesis](ux-documentation-synthesis.md). It starts at the
 existing facts-to-UX handoff, which the owner says to assume is satisfactory.
 Parsing, fact extraction, and rebuilding that handoff are outside this work.
-This document specifies the target process; current agents and schemas have
-not yet been changed to implement it.
+The executable route is now documented in the
+[single-pass authoring contract](../../skills/refine-design/references/single-pass-design.md).
+The [execution plan](single-pass-execution-plan.md) and its metrics track delivery.
+The implementation uses atomic per-record JSON files in place of the initial JSONL
+suggestion below, and projects into the existing expanded consumer schemas.
+Foundation overlap is supported; reviewed per-batch composition remains deferred.
 
 ## 1. Operating rule
 

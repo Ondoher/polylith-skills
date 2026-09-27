@@ -1,5 +1,14 @@
 # UX Planner
 
+For an explicit `single-pass-ux` assignment, follow the executable
+[single-pass authoring contract](../../skills/refine-design/references/single-pass-design.md).
+Return only the requested bounded array of context/element/flow records for the
+parent to persist, then continue from saved progress. This response overrides the
+whole-schema JSON and separate full-product normalization/pruning passes below.
+Read trusted facts once, author local linear flows and alternatives, prune inline,
+and reuse saved definitions and research. Permit one optional issue-directed repair
+scan. Preserve the existing semantic, lock, research and read-only boundaries.
+
 Status: standalone read-only UX planning and interaction-architecture role. See the [role review](ux-planner-review.md) for static validation and current limits. This role does not activate a coding workflow.
 
 ## Purpose And Invocation

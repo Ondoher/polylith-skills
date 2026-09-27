@@ -129,9 +129,17 @@ export const DesignRecords = {
 		const target = childPath(ownedRoot(root), `${record.kind}.${record.id}.json`);
 		const nextDigest = digest(record);
 		if (fs.existsSync(target)) {
-			const previous = JSON.parse(fs.readFileSync(target, 'utf8'));
-			validateRecord(previous);
-			const previousDigest = digest(previous);
+			const previousBytes = fs.readFileSync(target);
+			let previousDigest;
+			try {
+				const previous = JSON.parse(previousBytes);
+				validateRecord(previous);
+				if (previous.id !== record.id || previous.kind !== record.kind)
+					throw new Error('Stored identity differs');
+				previousDigest = digest(previous);
+			} catch {
+				previousDigest = `raw:${crypto.createHash('sha256').update(previousBytes).digest('hex')}`;
+			}
 			if (previousDigest === nextDigest) return {recordKey, digest: nextDigest, path: target, reused: true};
 			if (expectedDigest !== previousDigest) throw new Error(`Stale or unrequested replacement of ${recordKey}`);
 		} else if (expectedDigest !== null) throw new Error(`Cannot repair missing record ${recordKey}`);
@@ -173,11 +181,13 @@ export const DesignRecords = {
 				});
 				continue;
 			}
+			let repairDigest;
 			try {
 				if (!/^(context|element|flow|part|scene)\.[a-z0-9][a-z0-9._-]{0,159}\.json$/.test(name))
 					throw new Error('Unrecognized staging file');
 				const bytes = fs.readFileSync(childPath(absoluteRoot, name));
 				bytesRead += bytes.length;
+				repairDigest = `raw:${crypto.createHash('sha256').update(bytes).digest('hex')}`;
 				const record = JSON.parse(bytes.toString('utf8'));
 				validateRecord(record);
 				if (name !== `${record.kind}.${record.id}.json`) throw new Error('Record filename and identity differ');
@@ -188,6 +198,7 @@ export const DesignRecords = {
 					reference: name,
 					reason: error.message,
 					remedy: 'Repair or redeliver this record; retain other completed units.',
+					...(repairDigest ? {repairDigest} : {}),
 				});
 			}
 		}

@@ -1,5 +1,11 @@
 # Efficient refinement cycle
 
+For the UX/UI stages, use [single-pass authoring](single-pass-design.md): one
+forward authoring pass, optionally one issue-directed repair scan, and indexed
+assembly. Persist each completed unit and reuse it during this run. Inline task
+pruning replaces repeated whole-product rewrite passes; independent review remains.
+Foundation work can overlap UX. Whole-artifact review still precedes composition.
+
 Use this sequence for product refinement. It changes coordination, not the
 current product, UX, review, or UI schemas. A whole-product request retains
 whole-product coverage. Document hierarchy and page breaks belong to the later

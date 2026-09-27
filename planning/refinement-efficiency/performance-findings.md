@@ -1,5 +1,11 @@
 # Refinement performance findings and proposed fixes
 
+The single-pass implementation and saved-data measurements are recorded in
+[the execution metrics](single-pass-execution-metrics.json) and
+[execution plan](single-pass-execution-plan.md). They address authoring, transport,
+reuse and mechanical assembly; no live UX/UI speedup is claimed. New findings
+SP-01 through SP-05 distinguish measured costs from the historical observations below.
+
 Recorded 2026-09-26 after the first authorized fresh Alexa refinement. This is
 the follow-up register for the [efficiency plan](plan.md). It records problems
 encountered, including coordination mistakes, and proposed remedies. These
