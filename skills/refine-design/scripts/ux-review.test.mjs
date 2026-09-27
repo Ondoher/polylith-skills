@@ -37,7 +37,7 @@ function context() {
 		uxSpec,
 		artifactRef: uxSpec.id,
 		revision: uxSpec.revision,
-		taskRef: uxSpec.useCases[0].id,
+		taskRef: uxSpec.flows[0].id,
 		actionRef: uxSpec.actions[0].id,
 	};
 }

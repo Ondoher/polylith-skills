@@ -1,207 +1,149 @@
 # Single-pass UX and UI authoring
 
-Use this route for initial or substantial UX/UI authoring after the trusted facts
-packet is ready. It changes authoring and transport, not parsing, product authority,
-semantic review, consumer schema versions, or document organization. Narrow advice,
-design-language-only work and existing canonical persistence commands remain valid.
+Use after the trusted facts packet is ready. Parsing and product authority remain
+unchanged. UX and UI schema 0.4 are the canonical persisted formats; assembly never
+reconstructs the old flow graph or saves expanded scene copies.
 
 ## Execution
 
-1. The parent binds a staging store to exact facts, relevant shared inputs and the
-   producing contract version. Import useful saved UX/UI once, or initialize empty
-   stores. Keep a file manifest and progress cursor. Reuse data generated during the
-   current run as well as earlier artifacts; resume the same author at the next unit.
-2. UX reads the trusted facts once in source order. Build the application orientation
-   and identified interaction elements, then author each local flow as ordered steps.
-   Append facts that belong to a later element to its pending record. Select ordinary
-   patterns, prune redundant controls and record rationale while authoring the unit.
-   Do not commission separate full-product inventory, normalization, pruning, trace
-   rewrite and narrative rewrite passes. Research unfamiliar patterns only when needed.
-3. Persist every complete unit before moving on. Parent-owned file transport is the
-   supported route for read-only agents: request a bounded JSON array of records,
-   save it immediately with `deliver`, then continue the **same** agent with remaining
-   IDs and paths. A new agent resumes from saved files if replacement is necessary.
-   Do not create a specialist for every element or resend accumulated JSON in messages.
-4. Optionally scan the issue list once. Return only complete replacements of affected
-   records with their prior digests. A repair may alter a unit and its actual dependents;
-   it is not another whole-product pass. Unresolved issues remain repair notices.
-5. Assemble with the helper, validate the expanded candidate once, then use existing
-   UX persistence, source checking and independent UX review. A structural success
-   is not a semantic pass. Reviewer findings route to bounded repairs, not automatic
-   repeated full authoring. If review cannot pass, preserve results and continue
-   independent work; do not fabricate release eligibility.
-6. UI can author or reuse shared visual foundations while UX runs. After exact UX
-   review, give the **same UI author** shared context once and requested element/flow
-   paths as needed. Author reusable parts, then each scene's metadata and changes in
-   one forward pass. Do not repeatedly reread the complete product or UX for every
-   scene. Allow one optional issue-directed repair pass, then mechanically expand.
-7. Validate/persist through the normal UI path, render and inspect. Reuse unchanged
-   assembled output and completed records. Publication and technical preparation use
-   the existing expanded consumer schemas; they do not re-author the compact records.
+1. Bind each staging store to exact facts, shared inputs and the producing contract
+   version. Reuse useful saved data, including records completed during this run.
+   Resume at the next unfinished unit instead of restarting an agent.
+2. UX reads trusted facts once in source order. Record application orientation and
+   identified interaction elements; author each local flow as ordered steps. Keep
+   pending facts with the affected element. Choose patterns, prune redundant actions
+   and record material decisions while authoring. Research unfamiliar patterns only
+   when needed. Do not add separate full-product inventory, graph, pruning or rewrite
+   passes.
+3. Persist each complete unit. Read-only specialists return bounded JSON arrays;
+   the parent saves them with `deliver`. Continue the same author with remaining
+   IDs and file paths, without resending accumulated JSON. A replacement author
+   resumes from the saved manifest and records.
+4. Optionally scan outstanding issues once. Replace only affected records and actual
+   dependents, naming each previous digest. Unresolved issues remain repair notices;
+   continue independent work without an automatic full-run retry.
+5. Mechanically assemble native records, validate the candidate, source-check new
+   research and obtain the existing independent UX review. Validation and import do
+   not grant semantic approval. Preserve partial results if review cannot pass.
+6. UI may prepare or reuse visual foundations while UX runs. After exact UX review,
+   the same UI author receives shared context once and bounded element/flow paths as
+   needed. Author reusable parts and scene variations in one forward pass, followed
+   by at most one issue-directed repair scan. Render deterministically and inspect.
+7. Publication and technical preparation consume the same canonical meaning and
+   stable references; they do not ask UX/UI to re-author the product.
 
-There is one UX author and one UI author, not an agent swarm. The current independent
-UX review binds the whole artifact. **Only foundation work overlaps UX today.**
-Per-batch scene authoring while UX is still changing is deferred until exact scoped
-review bindings exist. A transport manifest is not that review binding.
+There is one UX author and one UI author. Foundation work can overlap UX today;
+scene authoring waits for the exact UX review binding. A transport manifest is not
+a review receipt. Independent scene rendering can run in parallel after inputs
+are fixed, without starting more design agents.
 
 ## Records and identity
 
-Each complete JSON record is `{ "kind": "flow", "id": "edit-entry", "data": {...},
-"dependencies": ["element:entry-editor"] }`. Omit `dependencies` when none exist.
-Kinds are `context`, `element`, `flow`, `part`, `scene`; IDs match
-`[a-z0-9][a-z0-9._-]{0,159}`. Dependencies are explicit kind:ID references, not document
-positions. A major reusable dialog can have its own element and be called by local
-flows. Product references, locks, source evidence and behavior stay explicit.
+Each unit is `{ "kind": "flow", "id": "edit-entry", "data": {...},
+"dependencies": ["element:entry-editor"] }`. Kinds are `context`, `element`, `flow`,
+`part`, `scene`; dependencies are explicit kind:ID references. Omit dependencies
+when unnecessary. IDs follow `[a-z0-9][a-z0-9._-]{0,159}`; domain records follow their
+own schema's stable-ID contract.
 
-File transport is one atomic JSON file per completed record. This replaces the
-initial JSONL suggestion: no tail repair or replay of an entire stream is needed.
-Do not include page numbers, section numbers, headings or publication layout here.
-The document-structure agent still inventories meaning, organizes the hierarchy
-and chooses page breaks. External numbering is derived consecutively from that
-organization; it never supplies internal identities.
+Transport is one atomic JSON file per completed record. Stable IDs never contain
+outline numbering or imply document placement. The document-structure agent still
+inventories meaning, organizes sections and chooses page breaks. Reader-facing
+numbering starts at 1 and is consecutive at each hierarchy level.
 
-`context:document` is common metadata, not a second task narrative. Its data contains:
+`context:document.data` contains `document` (shared root fields excluding assembled
+catalogs) and optional imported `order` (catalog ID arrays preserving original order,
+not document structure). The store header binds inputs and producer identity. Reuse
+the same store only for the same binding; actual changes require explicit revisions.
 
-- `document`: current schema root fields other than the catalogs assembled below.
-- Optional `order`: saved catalog ID lists used only by import to preserve canonical
-  material identity. New authors omit it; it is not a document outline.
+## Native UX records
 
-Import preserves canonical material, not necessarily original JSON whitespace or
-property order. For unchanged material, keep using the original persisted UX bytes
-and their current exact review receipt. A newly serialized candidate does not inherit
-that receipt automatically; verify the exact review subject before composition.
+The [UX 0.4 contract](ux-schema-0.4.json) defines exact field shapes. Read the shared
+contract once, then only the relevant saved records for each unit.
 
-Fields inside the expanded catalogs follow the existing [UX machine contract](ux-schema-0.3.json)
-or [UI composition contract](ui-composition.md). Read the relevant contract once;
-do not infer synonyms. The assembler validates the small authoring envelopes;
-existing validators check full semantic references and consumer constraints.
+An `element` contains `data.catalogs`: `surfaces`, `components`, `actions`,
+`interactionFrames`, `states`, `feedback`. Omit unused catalogs. Each supplied catalog
+is `{ "defaults": {...}, "values": [...] }`; optional defaults factor explicitly
+supplied `status`, `sourceRefs`, `questionRefs`, `ownerRef`, `surfaceRef`, `taskRefs`.
+Values override defaults; use only fields allowed for that catalog. A component owns
+its short `behaviors` records. Shared dialogs are defined once.
 
-## UX records
+A `flow.data` is the canonical flow itself, with an ID equal to the envelope ID:
 
-An `element` owns `data.catalogs`. Catalog names are `surfaces`, `components`,
-`actions`, `interactionFrames`, `states`, `feedback`, `recoveryPaths`, `behaviors`.
-Omit unused catalogs. Each catalog is `{ "defaults": {...}, "values": [...] }`.
-Defaults may contain explicitly supplied `status`, `sourceRefs`, `questionRefs`,
-`ownerRef`, `surfaceRef`, `taskRefs`. Omit defaults when unnecessary. Values override
-defaults. Do not apply a field to a catalog whose current schema prohibits it.
-`behaviors` holds reusable component-behavior nodes; do not repeat the same shared
-dialog definition in every owning flow. No recursive definition inheritance.
+| Field                                                        | Meaning                                                                                                                          |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| `elementRef`                                                 | Typed `ux:surface:ID` or `ux:component:ID` identifying where interaction starts.                                                 |
+| `id`, `name`, `featureRef`, `goal`, `taskPriority`, `status` | Identity and user purpose.                                                                                                       |
+| `trigger`, `preconditions`, `outcome`, `questionRefs`        | Entry conditions, intended result and outstanding questions.                                                                     |
+| `steps`                                                      | Primary sequence in array order; each step has `id`, `actor`, `action`, `response`.                                              |
+| `alternates`                                                 | Local error, cancel, correction or retry flows: `id`, `afterStepRef`, `condition`, `steps`, `outcome`, optional `resumeStepRef`. |
+| `decisions`                                                  | Material pruning/selection rationale captured during authoring, not a second order list or review pass.                          |
 
-A `flow` belongs to one identified interaction element. Its data is:
+Steps may reference an action, frame, target element, state, feedback and reusable
+`usesElementRefs`. Optional status/source/question metadata records local differences;
+otherwise status inherits from the flow. An alternate starts and optionally resumes
+at a primary step in its own flow. It may include supporting dialogs. A zero-step
+alternate is valid when its condition directly produces the stated outcome.
 
-| Field          | Meaning                                                                                                                                                  |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `elementRef`   | Stable ID of the major `element` record where the task starts.                                                                                           |
-| `useCase`      | Current use-case metadata: ID, name, goal, trigger, preconditions, outcome, priority, status and references. ID equals the flow record ID.               |
-| `nodeDefaults` | Explicit shared node status/source/question metadata; owner defaults to this use case.                                                                   |
-| `steps`        | Ordered nodes describing user action and visible response. Ordinary steps use existing `kind: "step"`, actor, action, actionRef, targetRef and response. |
-| `alternates`   | Error, cancellation, correction, retry or other local alternatives, each with stable ID and ordered steps.                                               |
+Example: **choose content → edit fields → save → see saved result**. An alternate
+after save can **correct input → retry**, then resume at save. Choosing content may
+call `ux:component:content-picker`; the picker is not copied into every flow.
 
-`useCase.entryNodeRef` and `actionRefs` may be omitted: the assembler derives them
-from the first primary step and actual step actions. It does **not** infer pruning
-decisions, statuses, research verification or product traceability. Capture those
-as facts/decisions once while authoring; preserve existing evidence when importing.
+There are no flow-node/edge catalogs, entry-node pointers, separate recovery catalog,
+cross-use-case graph, or duplicated canonical-step list. Array order is authoritative.
+Actions, semantic frames, states and feedback remain because UI and later technical
+work need actual behavior, accessibility intent and observable results.
 
-Consecutive steps produce `next` links mechanically. An alternate can name
-`afterStepRef`, `condition`, `order` (needed to distinguish multiple branches), and
-optional `resumeStepRef`. Its steps may introduce or call a supporting dialog and
-return to the owning task. Include an actual successful termination; a retry loop
-alone is not a complete flow.
+## Native UI records
 
-For example, a form flow can be **choose content → edit fields → save → view the
-saved result**, with **save failure → correct input → retry** returning to save.
-Choosing content may call a shared selector dialog. The flow remains local to the
-form; the selector's reusable behavior is defined once on its own component.
+The UI context contains shared root fields except `parts` and `scenes`: bindings,
+tokens, templates, assets, render requests, questions and coverage. See the
+[composition contract](ui-composition.md).
 
-Optional step `callouts` retain explicit `invokes`, state, feedback or recovery
-relations using existing edge fields except `fromRef`, which is supplied by the
-owning step. Ordinary order does not require edge authoring. `links` is an exact
-outgoing-list override used by saved-data import to preserve irregular existing
-relations and IDs; an empty list explicitly terminates that step. Do not write both
-an automatic linear sequence and a second complete graph. Imported data is not
-reinterpreted just to force its graph into a simpler shape.
+- A `part` has `data.root`: one independent region/component tree with stable node IDs.
+- A `scene.data` is canonical scene metadata plus `partRef` and `changes`; its ID
+  equals the envelope ID. It has `flowRefs` and no `root` or nested `scene` wrapper.
+- Each change is `{ "nodeRef": "title", "set": {"parameters": {"text": "Updated"}} }`.
+  It shallowly replaces declared fields on one node. Identity, children and prototype
+  fields cannot change; structural differences need another part. No recursive part
+  inheritance or general patch language.
 
-## UI records
-
-The UI context holds all existing root fields except `scenes`: shared tokens,
-templates, assets, source bindings, design language reference, render requests and
-issues. Reuse current foundations rather than regenerating them for each scene.
-
-A `part` contains `data.root`: one independent current-schema region/component
-tree. It has no nested part references or inheritance chain.
-
-A `scene` contains:
-
-- `data.scene`: existing scene metadata without `root`; ID equals the record ID.
-- `data.partRef`: the exact reusable part ID, also listed in record dependencies.
-- `data.changes`: optional `{ "nodeRef": "stable-node-id", "set": {...} }` changes.
-
-Changes replace named nonstructural properties such as state, parameters, visual
-roles, UX bindings or layout values. A property value is complete, not a deep merge.
-Do not change node IDs or children through a variation; create a distinct part when
-structure changes. The validator still checks every frame/action/affordance binding.
-Both clean and annotated renders consume the same expanded tree. Placeholders and
-partial scenes remain labeled; expansion never upgrades them to finished comps.
+Canonical UI stores parts and variations directly. Validation and rendering resolve
+trees in memory; both clean and annotated views use the same resolved scene. Keep
+MUI/design-language controls, placeholder disclosure and exact UX bindings intact.
 
 ## Commands and recovery
 
-Run from the managed skill directory or supply the helper's absolute path:
-
 ```text
-node scripts/single-pass-design.mjs init --stage ux --binding inputs.json --store <staging>/ux
-node scripts/single-pass-design.mjs deliver --store <staging>/ux --input batch.json
-node scripts/single-pass-design.mjs handoff --store <staging>/ux --refs flow:edit-entry
-node scripts/single-pass-design.mjs assemble --store <staging>/ux --output-dir <staging>/ux-output
+node scripts/single-pass-design.mjs init --store <dir> --stage ux --binding <json>
+node scripts/single-pass-design.mjs deliver --store <dir> --input <records.json>
+node scripts/single-pass-design.mjs handoff --store <dir> --refs flow:edit-entry
+node scripts/single-pass-design.mjs assemble --store <dir> --output-dir <owned-dir>
+node scripts/single-pass-design.mjs import --store <dir> --stage ux --input <native-ux.json>
+node scripts/single-pass-design.mjs migrate --stage ux --input <old-ux.json> --output-dir <empty-dir>
+node scripts/single-pass-design.mjs migrate --stage ui --input <old-ui.json> --output-dir <empty-dir> --ux <native-ux.json> --migration <ux-migration-report.json>
 ```
 
-The binding JSON names exact fact/source hashes, relevant shared-input identities
-and producer version. Changed bindings require a new store; selectively carry
-forward units whose relevant inputs remain valid, with their evidence intact.
-Existing saved material can be imported without another specialist call:
+UI assembly also accepts `--ux`, `--design`, and `--render`; asset-bearing designs
+require explicit authorized source/asset roots. `deliver --repairs <json>` names
+prior digests by kind:ID; corrupt records use their returned `raw:` repair digest.
+Unchanged records and generated output are reused, including within the same run.
 
-```text
-node scripts/single-pass-design.mjs import --stage ux --input <saved-ux.json> --store <staging>/ux
-node scripts/single-pass-design.mjs import --stage ui --input <saved-ui.json> --store <staging>/ui
-node scripts/single-pass-design.mjs assemble --store <staging>/ui --output-dir <staging>/ui-output --ux <current-ux.json> --design <design-language.json> --render
-```
+`import` accepts current canonical data. `migrate` is the explicit one-time route for
+old schema 0.3. It preserves original bytes, mappings, an unreviewed candidate and
+repair notices in its owned output directory. Ambiguous nested branches, cycles or
+unmapped relations need local repair. Ordinary validators reject obsolete schemas;
+no hidden conversion happens during publication or rendering. Old review receipts
+remain evidence of their original inputs and cannot approve the changed candidate.
 
-These produce isolated candidates and previews, not live product commits or review
-receipts. Inspect `valid`, `issues`, `reviewStatus` and output paths. Issues are data:
-the command completes with repair notices and whatever candidate is usable. Invalid
-CLI scope or an unsafe/unwritable output location is reported as a command error;
-the orchestrator preserves records and continues unaffected work elsewhere.
+Assembly saves usable candidates and actionable notices. Missing/corrupt units do
+not discard valid siblings; continue through the enclosing element or next available
+unit. Output ownership and writes remain checked. Repair notices describe what the
+user can supply or change. A successful structural check never claims UX approval.
 
-For a repair, pass `--repairs prior-identities.json`, mapping `kind:ID` to the exact
-previous digest. Malformed files report a `raw:` repair digest for their damaged
-bytes; stale repairs cannot overwrite newer work. Interrupted `.pending` files are
-diagnostic evidence. Preserve or move them outside the store after resolving the
-specific interrupted delivery so they no longer report unfinished work.
+## Downstream sufficiency
 
-If a unit is unusable, skip it and its missing explicit dependents, assemble siblings
-and report the repair at the nearest available context. If context itself is broken,
-retain all unit files and emit repair notices without pretending to have a candidate.
-Do not halt the whole refinement or loop until every issue disappears. Parent-owned
-publication may show these issues through its existing partial-artifact mechanism;
-this helper never invents approved context from an invalid candidate.
-
-Assembly output is bound to record identities, producer version and exact UX/design
-inputs. Identical outputs are byte-checked and reused; changed assemblies get new
-directories so prior output survives. External asset roots disable cache reuse until
-asset bytes can be included in the identity. Measurements include read bytes,
-record count, assembly/validation/render duration and reuse. Credit usage is not
-inferred from byte counts.
-
-## Documentation and later technical work
-
-The assembled UX/UI uses the unchanged consumer schema. Product publication keeps
-requirements, application structure, local flows, alternatives, semantic states,
-focus/recovery, research, questions, exact comps and source references. The PRD,
-interaction document and optional design-language document are presentations of
-that data, not separate agent-authored copies of it.
-
-Technical preparation reuses product facts, UX/UI behavior and unresolved feasibility
-questions, then adds actual repository baselines, boundaries, contracts and technical
-decisions. This route does not fabricate architecture or claim UX alone is sufficient
-to publish technical documentation. Existing technical context validation remains
-authoritative. No app code, publication layout or human source prose is generated
-by the single-pass assembler.
+Product documentation receives goals, requirements, rules, app structure, local
+flows, alternatives, shared interactions, questions and linked comps. Technical
+preparation receives those same stable identities and explicit behavior constraints
+as inputs to architecture work; UX/UI do not invent storage, transport or runtime
+guarantees. Publication organization remains independent of the persisted model.

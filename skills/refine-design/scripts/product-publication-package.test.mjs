@@ -114,10 +114,10 @@ test('rejects damaged, noncanonical, oversized, and obsolete compressed wrappers
 
 test('reserved kinds reject missing wrappers and manifests bind every exact role', () => {
 	for (const [artifactKind, artifactSchemaVersion] of [
-		['ux-design', '0.3'],
+		['ux-design', '0.4'],
 		['design-language', '0.14'],
-		['ui-composition', '0.3'],
-		['component-design', '0.3'],
+		['ui-composition', '0.4'],
+		['component-design', '0.4'],
 		['prd-publication', '1.0'],
 	]) {
 		const artifact = {

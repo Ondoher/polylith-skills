@@ -69,13 +69,9 @@ function uxFixture() {
 		overview: 'A product with <structured> workflows and visible results.',
 		users: ['A person completing the fixture task.'],
 	};
-	spec.flowNodes.find((node) => node.id === 'save-failure').status = 'unresolved';
-	for (const edge of spec.flowEdges.filter(
-		(item) => item.fromRef === 'save-failure' || item.toRef === 'ux:flow-node:save-failure',
-	))
-		edge.status = 'unresolved';
+	spec.flows[0].alternates[0].status = 'unresolved';
 	spec.features[0].questionRefs = ['recovery'];
-	spec.useCases[0].questionRefs = ['recovery'];
+	spec.flows[0].questionRefs = ['recovery'];
 	spec.surfaces[0].questionRefs = ['recovery'];
 	spec.openQuestions = [
 		{
@@ -188,7 +184,7 @@ test('publishes a linked deterministic PRD, design language, and component state
 	assert.equal(first.designLanguage.rendererVersion, 'design-language-html-1.14');
 	assert.equal(first.counts.features, 1);
 	assert.equal(first.counts.openQuestions, 1);
-	assert.equal(first.counts.unresolvedRecords, 3);
+	assert.equal(first.counts.unresolvedRecords, 1);
 	assert.equal(first.counts.lockedRecords, 1);
 	assert.equal(first.counts.uxActions, 3);
 	assert.equal(first.counts.uxInteractionFrames, 5);
@@ -237,7 +233,7 @@ test('persists an accepted structured UX change, scopes its impact, and republis
 
 	const changed = structuredClone(previous);
 	changed.revision = 'fixture-2';
-	changed.flowNodes.find((node) => node.id === 'open-current-record').response =
+	changed.flows[0].steps.find((node) => node.id === 'open-current-record').response =
 		'The accepted updated value and save state appear immediately.';
 	const proposal = path.join(base, 'changed-ux.json');
 	fs.writeFileSync(proposal, `${JSON.stringify(changed, null, 2)}\n`);
@@ -248,14 +244,14 @@ test('persists an accepted structured UX change, scopes its impact, and republis
 			{
 				id: 'ux',
 				revision: previous.revision,
-				records: Object.fromEntries(previous.flowNodes.map((node) => [node.id, node])),
+				records: Object.fromEntries(previous.flows[0].steps.map((node) => [node.id, node])),
 			},
 		],
 		[
 			{
 				id: 'ux',
 				revision: current.revision,
-				records: Object.fromEntries(current.flowNodes.map((node) => [node.id, node])),
+				records: Object.fromEntries(current.flows[0].steps.map((node) => [node.id, node])),
 			},
 		],
 		[{id: 'update-record-prd', dependencies: [{sourceId: 'ux', recordRefs: ['open-current-record']}]}],
@@ -361,15 +357,10 @@ test('publishes and registers multiple independently owned component comps', () 
 		ux.states.push(state);
 		return state.id;
 	});
-	secondUxComponent.behaviorNodeRefs = secondUxComponent.behaviorNodeRefs.map((ref) => {
-		const node = structuredClone(ux.flowNodes.find((item) => item.id === ref));
-		node.id = ref.replace('record-list', secondUxComponent.id);
-		node.ownerRef = `ux:component:${secondUxComponent.id}`;
-		node.componentRef = secondUxComponent.id;
-		ux.flowNodes.push(node);
-		return node.id;
-	});
-	secondUxComponent.entryBehaviorNodeRef = secondUxComponent.behaviorNodeRefs[0];
+	secondUxComponent.behaviors = secondUxComponent.behaviors.map((behavior) => ({
+		...behavior,
+		id: behavior.id.replace('record-list', secondUxComponent.id),
+	}));
 	ux.components.push(secondUxComponent);
 	ux.surfaces[0].componentRefs.push(secondUxComponent.id);
 	ux.surfaces[0].regions[0].componentRefs.push(secondUxComponent.id);
@@ -383,7 +374,7 @@ test('publishes and registers multiple independently owned component comps', () 
 	secondTemplate.supportedStates = ['record-list-secondary-available'];
 	secondTemplate.interaction = 'presentational';
 	ui.templates.push(secondTemplate);
-	const contentRegion = ui.scenes[0].root;
+	const contentRegion = ui.parts[0].root;
 	contentRegion.layout.rows = [{unit: 'content'}, {unit: 'fr', value: 1}, {unit: 'fr', value: 1}];
 	const secondNode = structuredClone(contentRegion.children.find((node) => node.id === 'record-list-instance'));
 	secondNode.id = 'record-list-secondary-instance';
@@ -425,11 +416,11 @@ test('publishes and registers multiple independently owned component comps', () 
 	second.scenes[0].interactionFrameRef = 'records-saving';
 	second.scenes[0].stateRef = 'record-list-secondary-available';
 	second.scenes[0].depictsRefs = ['ux:frame:records-saving', 'ux:state:record-list-secondary-available'];
-	second.scenes[0].root.uxRegionRef = 'saving-details';
-	second.scenes[0].root.label = 'Secondary observation records';
-	second.scenes[0].root.layout.rows = [{unit: 'fr', value: 1}];
-	second.scenes[0].root.children = second.scenes[0].root.children.filter((node) => node.id === 'record-summary');
-	for (const node of second.scenes[0].root.children)
+	second.parts[0].root.uxRegionRef = 'saving-details';
+	second.parts[0].root.label = 'Secondary observation records';
+	second.parts[0].root.layout.rows = [{unit: 'fr', value: 1}];
+	second.parts[0].root.children = second.parts[0].root.children.filter((node) => node.id === 'record-summary');
+	for (const node of second.parts[0].root.children)
 		if (node.uxRef === 'record-list') node.uxRef = secondUxComponent.id;
 	second.renderRequests[0].id = 'record-list-secondary-available-clean';
 	second.renderRequests[0].sceneRef = second.scenes[0].id;

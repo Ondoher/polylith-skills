@@ -1,3 +1,4 @@
+import {UiParts} from './ui-parts.mjs';
 import {createHash} from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -101,28 +102,24 @@ function renderList(items, emptyText = 'None recorded.') {
 		: `<p>${escapeHtml(emptyText)}</p>`;
 }
 
-function renderUseCaseFlow(spec, useCase) {
-	const nodes = idMap(spec.flowNodes);
-	const review = spec.pruningReview.taskReviews.find((item) => item.taskRef === useCase.id);
-	const mainPath = review?.canonicalStepRefs ?? [useCase.entryNodeRef];
-	const steps = mainPath.map((ref) => nodes.get(ref)).filter((node) => node?.kind === 'step');
-	const alternatives = spec.flowNodes.filter(
-		(node) => node.ownerRef === `ux:use-case:${useCase.id}` && node.kind === 'alternative',
+function renderUseCaseFlow(spec, flow) {
+	const steps = (values) =>
+		`<ol class="prd-step-list">${values.map((step) => `<li><p><strong>${escapeHtml(step.actor)}:</strong> ${escapeHtml(step.action)}</p><p class="prd-response"><strong>Visible response:</strong> ${escapeHtml(step.response)}</p></li>`).join('')}</ol>`;
+	return (
+		steps(flow.steps) +
+		(flow.alternates.length
+			? `<h4>Alternatives and recovery</h4><div class="prd-alternatives">${flow.alternates.map((alternate) => `<article><h5>${escapeHtml(alternate.condition)}</h5><p>After step ${flow.steps.findIndex((step) => step.id === alternate.afterStepRef) + 1}</p>${steps(alternate.steps)}<p>${escapeHtml(alternate.outcome)}</p>${alternate.resumeStepRef ? `<p>Resume at step ${flow.steps.findIndex((step) => step.id === alternate.resumeStepRef) + 1}.</p>` : ''}${attention(alternate.status ?? flow.status)}</article>`).join('')}</div>`
+			: '')
 	);
-	const stepMarkup = `<ol class="prd-step-list">${steps.map((step) => `<li><p><strong>${escapeHtml(step.actor)}:</strong> ${escapeHtml(step.action)}</p><p class="prd-response"><strong>Visible response:</strong> ${escapeHtml(step.response)}</p></li>`).join('')}</ol>`;
-	const alternativesMarkup = alternatives.length
-		? `<h4>Alternatives and recovery</h4><div class="prd-alternatives">${alternatives.map((node) => `<article><h5>${escapeHtml(node.prompt)}</h5><p>${escapeHtml(node.response)}</p>${attention(node.status)}</article>`).join('')}</div>`
-		: '';
-	return stepMarkup + alternativesMarkup;
 }
 
 function renderPrdIndex(spec, uiSpec = null, hasComponentComps = false, componentRegistrations = []) {
+	if (uiSpec) uiSpec = UiParts.materialize(uiSpec);
 	const areas = idMap(spec.application.areas);
 	const surfaces = idMap(spec.surfaces);
 	const components = idMap(spec.components);
 	const states = idMap(spec.states);
-	const flowNodes = idMap(spec.flowNodes);
-	const useCases = idMap(spec.useCases);
+	const useCases = idMap(spec.flows);
 	const openQuestions = spec.openQuestions.filter((question) => question.status === 'open');
 	const scenesBySurface = new Map(
 		spec.surfaces.map((surface) => [
@@ -204,7 +201,7 @@ function renderPrdIndex(spec, uiSpec = null, hasComponentComps = false, componen
     <nav class="rd-section-nav" aria-label="Product requirement sections"><a href="#structure">Application</a><a href="#features">Capabilities</a><a href="#surfaces">Surfaces</a><a href="#use-cases">Workflows</a><a href="#requirements">Components</a><a href="#questions">Questions</a></nav>
     <main id="main-content" class="prd-main">
         <section id="structure" class="prd-section"><div class="prd-section-heading"><p class="rd-section-number">01</p><div><h2>Application organization</h2><p>${escapeHtml(spec.application.summary)}</p></div></div><article class="prd-shell"><div class="prd-article-heading"><div><p class="prd-kicker">${escapeHtml(spec.application.shell.kind)}</p><h3>Shell and navigation</h3></div></div><p>${escapeHtml(spec.application.shell.description)}</p>${attention(spec.application.shell.status)}<dl class="prd-facts"><div><dt>Intended users</dt><dd>${spec.product.users.map(escapeHtml).join(' ')}</dd></div>${shellNavigation}</dl>${shellStack}</article><h3 class="prd-subsection-heading">Activity areas</h3><div class="prd-card-grid">${spec.application.areas.map((area) => `<article class="prd-card" id="${anchor('area', area.id)}"><h3>${escapeHtml(area.name)}</h3><p>${escapeHtml(area.purpose)}</p>${attention(area.status)}${area.surfaceRefs.length ? `<p class="prd-links"><strong>Surfaces:</strong> ${area.surfaceRefs.map((ref) => `<a href="#${anchor('surface', ref)}">${escapeHtml(surfaces.get(ref).name)}</a>`).join(', ')}</p>` : '<p class="prd-muted">No surface has been designed for this area yet.</p>'}</article>`).join('')}</div>${supportingLinks}</section>
-        <section id="features" class="prd-section"><div class="prd-section-heading"><p class="rd-section-number">02</p><div><h2>Product capabilities</h2><p>All peer capabilities are introduced before their detailed surfaces and workflows.</p></div></div><div class="prd-feature-list">${spec.features.map((feature) => `<article class="prd-feature" id="${anchor('feature', feature.id)}"><h3>${escapeHtml(feature.name)}</h3><p>${escapeHtml(feature.purpose)}</p>${attention(feature.status)}<dl class="prd-link-groups"><div><dt>Surfaces</dt><dd>${feature.surfaceRefs.map((ref) => `<a href="#${anchor('surface', ref)}">${escapeHtml(surfaces.get(ref).name)}</a>`).join(', ') || 'None yet'}</dd></div><div><dt>Workflows</dt><dd>${feature.useCaseRefs.map((ref) => `<a href="#${anchor('use-case', ref)}">${escapeHtml(useCases.get(ref).name)}</a>`).join(', ') || 'None yet'}</dd></div></dl></article>`).join('')}</div></section>
+        <section id="features" class="prd-section"><div class="prd-section-heading"><p class="rd-section-number">02</p><div><h2>Product capabilities</h2><p>All peer capabilities are introduced before their detailed surfaces and workflows.</p></div></div><div class="prd-feature-list">${spec.features.map((feature) => `<article class="prd-feature" id="${anchor('feature', feature.id)}"><h3>${escapeHtml(feature.name)}</h3><p>${escapeHtml(feature.purpose)}</p>${attention(feature.status)}<dl class="prd-link-groups"><div><dt>Surfaces</dt><dd>${feature.surfaceRefs.map((ref) => `<a href="#${anchor('surface', ref)}">${escapeHtml(surfaces.get(ref).name)}</a>`).join(', ') || 'None yet'}</dd></div><div><dt>Workflows</dt><dd>${feature.flowRefs.map((ref) => `<a href="#${anchor('use-case', ref)}">${escapeHtml(useCases.get(ref).name)}</a>`).join(', ') || 'None yet'}</dd></div></dl></article>`).join('')}</div></section>
         <section id="surfaces" class="prd-section"><div class="prd-section-heading"><p class="rd-section-number">03</p><div><h2>Work surfaces</h2><p>Every surface is presented at the same depth before workflows or component detail.</p></div></div>${spec.surfaces
 			.map(
 				(surface) =>
@@ -221,8 +218,8 @@ function renderPrdIndex(spec, uiSpec = null, hasComponentComps = false, componen
 						)}</ol><p><strong>Relevant states:</strong> ${surface.stateRefs.map((ref) => escapeHtml(states.get(ref).name)).join(', ')}.</p>${renderSurfaceInteractionWireframes(spec, surface)}${scenesBySurface.get(surface.id).map(inlineComp).join('')}</article>`,
 			)
 			.join('')}</section>
-        <section id="use-cases" class="prd-section"><div class="prd-section-heading"><p class="rd-section-number">04</p><div><h2>Workflows</h2><p>Each flow states its trigger, visible interactions, result, alternatives, and recovery.</p></div></div>${spec.useCases.map((useCase) => `<article class="prd-use-case" id="${anchor('use-case', useCase.id)}"><p class="prd-kicker"><a href="#${anchor('feature', useCase.featureRef)}">${escapeHtml(spec.features.find((feature) => feature.id === useCase.featureRef).name)}</a></p><h3>${escapeHtml(useCase.name)}</h3><p><strong>Goal:</strong> ${escapeHtml(useCase.goal)}</p>${attention(useCase.status)}<dl class="prd-facts"><div><dt>Trigger</dt><dd>${escapeHtml(useCase.trigger)}</dd></div><div><dt>Successful outcome</dt><dd>${escapeHtml(useCase.outcome)}</dd></div></dl><h4>Preconditions</h4>${renderList(useCase.preconditions)}<h4>Interactions</h4>${renderUseCaseFlow(spec, useCase)}</article>`).join('')}</section>
-        <section id="requirements" class="prd-section"><div class="prd-section-heading"><p class="rd-section-number">05</p><div><h2>Component behavior</h2><p>These deeper requirements define capabilities, behavior, and states for UI design.</p></div></div><div class="prd-component-list">${spec.components.map((component) => `<article class="prd-requirement" id="${anchor('component', component.id)}"><p class="prd-kicker">${escapeHtml(component.kind)}</p><h3>${escapeHtml(component.name)}</h3><p>${escapeHtml(component.purpose)}</p>${attention(component.status)}<div class="prd-requirement-columns"><div><h4>Capabilities</h4>${renderList(component.capabilities)}</div><div><h4>Behavior</h4>${renderList(component.behaviorNodeRefs.map((ref) => flowNodes.get(ref).statement))}</div></div><p><strong>States:</strong> ${component.stateRefs.map((ref) => escapeHtml(states.get(ref).name)).join(', ')}.</p></article>`).join('')}</div></section>
+        <section id="use-cases" class="prd-section"><div class="prd-section-heading"><p class="rd-section-number">04</p><div><h2>Workflows</h2><p>Each flow states its trigger, visible interactions, result, alternatives, and recovery.</p></div></div>${spec.flows.map((useCase) => `<article class="prd-use-case" id="${anchor('use-case', useCase.id)}"><p class="prd-kicker"><a href="#${anchor('feature', useCase.featureRef)}">${escapeHtml(spec.features.find((feature) => feature.id === useCase.featureRef).name)}</a></p><h3>${escapeHtml(useCase.name)}</h3><p><strong>Goal:</strong> ${escapeHtml(useCase.goal)}</p>${attention(useCase.status)}<dl class="prd-facts"><div><dt>Trigger</dt><dd>${escapeHtml(useCase.trigger)}</dd></div><div><dt>Successful outcome</dt><dd>${escapeHtml(useCase.outcome)}</dd></div></dl><h4>Preconditions</h4>${renderList(useCase.preconditions)}<h4>Interactions</h4>${renderUseCaseFlow(spec, useCase)}</article>`).join('')}</section>
+        <section id="requirements" class="prd-section"><div class="prd-section-heading"><p class="rd-section-number">05</p><div><h2>Component behavior</h2><p>These deeper requirements define capabilities, behavior, and states for UI design.</p></div></div><div class="prd-component-list">${spec.components.map((component) => `<article class="prd-requirement" id="${anchor('component', component.id)}"><p class="prd-kicker">${escapeHtml(component.kind)}</p><h3>${escapeHtml(component.name)}</h3><p>${escapeHtml(component.purpose)}</p>${attention(component.status)}<div class="prd-requirement-columns"><div><h4>Capabilities</h4>${renderList(component.capabilities)}</div><div><h4>Behavior</h4>${renderList(component.behaviors.map((behavior) => behavior.statement))}</div></div><p><strong>States:</strong> ${component.stateRefs.map((ref) => escapeHtml(states.get(ref).name)).join(', ')}.</p></article>`).join('')}</div></section>
         <section id="questions" class="prd-section"><div class="prd-section-heading"><p class="rd-section-number">06</p><div><h2>Open product and UX questions</h2><p>Only unresolved product behavior appears here; technical questions belong in engineering design review.</p></div></div>${openQuestions.length ? `<div class="prd-question-list">${openQuestions.map((question) => `<article id="${anchor('question', question.id)}"><h3>${escapeHtml(question.question)}</h3><p>${escapeHtml(question.why)}</p><p><strong>Decision owner:</strong> ${escapeHtml(question.owner)}</p><p class="prd-code">Affects: ${question.affects.map(escapeHtml).join(', ')}</p></article>`).join('')}</div>` : '<p>No open product or UX questions are recorded.</p>'}</section>
     </main>
     <footer><p>Generated from the structured UX specification. Update the product description and regenerate to change the design.</p></footer>
@@ -574,7 +571,6 @@ export function publishPrdHtml(uxSourceFile, designSourceFile, outputRoot, optio
 		...registration,
 		inlineSpec: componentInputs[index].value,
 	}));
-	options.onInlineComponentRegistrations?.(inlineComponentRegistrations);
 	const uiBuild = uiInput
 		? buildUiCompositionHtml(uiInput.value, {
 				uxSpec: uxInput.value,
@@ -678,7 +674,7 @@ export function publishPrdHtml(uxSourceFile, designSourceFile, outputRoot, optio
 			applicationAreas: uxInput.value.application.areas.length,
 			features: uxInput.value.features.length,
 			surfaces: uxInput.value.surfaces.length,
-			useCases: uxInput.value.useCases.length,
+			flows: uxInput.value.flows.length,
 			uxActions: uxInput.value.actions.length,
 			uxInteractionFrames: uxInput.value.interactionFrames.length,
 			wireframedSurfaces: uxInput.value.surfaces.filter((surface) => surface.interactionFrameRefs.length).length,

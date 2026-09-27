@@ -1,18 +1,28 @@
-/** Synthetic current-schema UX; never a specialist-run receipt. */
-const digest = '0'.repeat(64);
-
+/** Synthetic current-schema UX, not a specialist review. */
 export function gardenUx() {
 	return {
-		schemaVersion: '0.3',
+		schemaVersion: '0.4',
 		id: 'garden-log-ux',
 		title: 'Garden log UX',
 		revision: '1',
 		status: 'accepted',
-		assessment: {kind: 'parent-assessment', description: 'Synthetic positive contract example.'},
+		assessment: {
+			kind: 'parent-assessment',
+			description: 'Synthetic positive contract example.',
+		},
 		sources: [
-			{id: 'brief', path: 'product-description.md', revision: '1', kind: 'human-owned-product-description'},
+			{
+				id: 'brief',
+				path: 'product-description.md',
+				revision: '1',
+				kind: 'human-owned-product-description',
+			},
 		],
-		product: {name: 'Garden log', overview: 'Record an observation.', users: ['A gardener']},
+		product: {
+			name: 'Garden log',
+			overview: 'Record an observation.',
+			users: ['A gardener'],
+		},
 		supportingDocuments: [],
 		application: {
 			summary: 'One workspace records observations.',
@@ -20,7 +30,10 @@ export function gardenUx() {
 				kind: 'application-window',
 				description: 'One persistent work area.',
 				status: 'accepted',
-				navigation: {pattern: 'single workspace', description: 'The entry form remains available.'},
+				navigation: {
+					pattern: 'single workspace',
+					description: 'The entry form remains available.',
+				},
 				regions: [],
 			},
 			areas: [
@@ -41,24 +54,8 @@ export function gardenUx() {
 				status: 'accepted',
 				sourceRefs: ['brief'],
 				surfaceRefs: ['entry-surface'],
-				useCaseRefs: ['record-entry'],
 				questionRefs: [],
-			},
-		],
-		useCases: [
-			{
-				id: 'record-entry',
-				name: 'Record entry',
-				featureRef: 'recording',
-				goal: 'Remember an observation.',
-				taskPriority: 'primary',
-				status: 'accepted',
-				trigger: 'The gardener has an observation.',
-				preconditions: [],
-				actionRefs: ['save-entry'],
-				entryNodeRef: 'save-step',
-				outcome: 'The entry is saved.',
-				questionRefs: [],
+				flowRefs: ['record-entry'],
 			},
 		],
 		surfaces: [
@@ -73,7 +70,13 @@ export function gardenUx() {
 				status: 'accepted',
 				areaRef: 'entries',
 				regions: [
-					{id: 'form', name: 'Entry form', purpose: 'Enter the observation.', order: 1, componentRefs: []},
+					{
+						id: 'form',
+						name: 'Entry form',
+						purpose: 'Enter the observation.',
+						order: 1,
+						componentRefs: [],
+					},
 				],
 				componentRefs: [],
 				stateRefs: ['editing'],
@@ -90,18 +93,31 @@ export function gardenUx() {
 				status: 'accepted',
 				taskRefs: ['record-entry'],
 				outcome: 'The entry is saved.',
-				canonicalInteraction: {method: 'activate', input: 'pointer', description: 'Activate Save.'},
+				canonicalInteraction: {
+					method: 'activate',
+					input: 'pointer',
+					description: 'Activate Save.',
+				},
 				alternateInputs: [],
 				presentationClass: 'persistent-control',
-				visibility: {mode: 'always', conditions: []},
+				visibility: {
+					mode: 'always',
+					conditions: [],
+				},
 				persistence: 'persistent',
 				priority: 'primary',
 				applicableStateRefs: ['editing'],
 				feedbackRefs: ['saved-feedback'],
-				cancellation: {mode: 'not-applicable', description: 'Saving completes immediately.'},
-				recoveryRefs: [],
-				patternBasis: {kind: 'ordinary', rationale: 'A save action is a common form interaction.'},
+				cancellation: {
+					mode: 'not-applicable',
+					description: 'Saving completes immediately.',
+				},
+				patternBasis: {
+					kind: 'ordinary',
+					rationale: 'A save action is a common form interaction.',
+				},
 				questionRefs: [],
+				alternateRefs: [],
 			},
 		],
 		interactionFrames: [
@@ -114,7 +130,10 @@ export function gardenUx() {
 				surfaceRef: 'entry-surface',
 				stateRef: 'editing',
 				taskRefs: ['record-entry'],
-				patternBasis: {kind: 'ordinary', rationale: 'A simple form is familiar.'},
+				patternBasis: {
+					kind: 'ordinary',
+					rationale: 'A simple form is familiar.',
+				},
 				regions: [
 					{
 						id: 'entry-region',
@@ -133,63 +152,29 @@ export function gardenUx() {
 								status: 'accepted',
 								order: 1,
 								interaction: 'canonical',
-								transition: {kind: 'completion'},
+								transition: {
+									kind: 'completion',
+								},
 							},
 						],
 					},
 				],
-				focus: {entry: 'Focus the entry field.', orderRefs: ['save-affordance']},
+				focus: {
+					entry: 'Focus the entry field.',
+					orderRefs: ['save-affordance'],
+				},
 				questionRefs: [],
 			},
 		],
 		patternResearch: [],
-		pruningReview: {
-			status: 'accepted',
-			summary: 'One action completes the goal.',
-			taskReviews: [
-				{
-					id: 'record-entry-review',
-					taskRef: 'record-entry',
-					status: 'accepted',
-					canonicalStepRefs: ['save-step'],
-					reviewedActionRefs: ['save-entry'],
-					decisions: [
-						{
-							id: 'retain-save',
-							disposition: 'retain',
-							candidate: 'Save',
-							actionRefs: ['save-entry'],
-							rationale: 'Required for the goal.',
-							result: 'Save remains visible.',
-						},
-					],
-				},
-			],
-		},
 		openQuestions: [],
 		productModelBinding: {
 			id: 'garden-log',
 			revision: 1,
-			sha256: digest,
-			materialSha256: digest,
-			recordIndexSha256: digest,
+			sha256: '0000000000000000000000000000000000000000000000000000000000000000',
+			materialSha256: '0000000000000000000000000000000000000000000000000000000000000000',
+			recordIndexSha256: '0000000000000000000000000000000000000000000000000000000000000000',
 		},
-		useCaseRelations: [],
-		flowNodes: [
-			{
-				id: 'save-step',
-				kind: 'step',
-				ownerRef: 'ux:use-case:record-entry',
-				status: 'accepted',
-				sourceRefs: ['brief'],
-				questionRefs: [],
-				actor: 'Gardener',
-				action: 'Save the observation.',
-				actionRef: 'save-entry',
-				response: 'The saved entry is confirmed.',
-			},
-		],
-		flowEdges: [],
 		states: [
 			{
 				id: 'editing',
@@ -211,12 +196,11 @@ export function gardenUx() {
 				sourceRefs: ['brief'],
 			},
 		],
-		recoveryPaths: [],
 		productRealizations: [
 			{
 				id: 'goal-to-case',
 				productRef: 'product:remember-harvests',
-				uxRef: 'ux:use-case:record-entry',
+				uxRef: 'ux:flow:record-entry',
 				relation: 'pursues',
 				status: 'accepted',
 				rationale: 'This goal is fulfilled by recording.',
@@ -248,5 +232,44 @@ export function gardenUx() {
 				explanation: 'The validation interaction has not yet been designed.',
 			},
 		],
+		flows: [
+			{
+				id: 'record-entry',
+				name: 'Record entry',
+				featureRef: 'recording',
+				goal: 'Remember an observation.',
+				taskPriority: 'primary',
+				status: 'accepted',
+				trigger: 'The gardener has an observation.',
+				preconditions: [],
+				outcome: 'The entry is saved.',
+				questionRefs: [],
+				elementRef: 'ux:surface:entry-surface',
+				steps: [
+					{
+						id: 'save-step',
+						status: 'accepted',
+						sourceRefs: ['brief'],
+						questionRefs: [],
+						actor: 'Gardener',
+						action: 'Save the observation.',
+						actionRef: 'save-entry',
+						response: 'The saved entry is confirmed.',
+					},
+				],
+				alternates: [],
+				decisions: [
+					{
+						id: 'retain-save',
+						disposition: 'retain',
+						candidate: 'Save',
+						actionRefs: ['save-entry'],
+						rationale: 'Required for the goal.',
+						result: 'Save remains visible.',
+					},
+				],
+			},
+		],
+		repairNeeds: [],
 	};
 }

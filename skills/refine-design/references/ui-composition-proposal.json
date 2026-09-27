@@ -1,5 +1,5 @@
 {
-	"schemaVersion": "0.3",
+	"schemaVersion": "0.4",
 	"id": "field-journal-ui",
 	"title": "Field Journal UI",
 	"revision": "1",
@@ -104,7 +104,6 @@
 				"kind": "surface",
 				"ref": "records-workspace"
 			},
-			"useCaseRefs": ["update-record"],
 			"viewport": {
 				"width": 960,
 				"height": 640
@@ -113,6 +112,47 @@
 			"uxQuestionRefs": [],
 			"uiQuestionRefs": [],
 			"unspecifiedRequirementRefs": ["record-list-template"],
+			"stateRef": "viewing",
+			"depictsRefs": ["ux:frame:records-viewing", "ux:state:viewing"],
+			"partRef": "records-viewing-base",
+			"changes": [],
+			"flowRefs": ["update-record"]
+		}
+	],
+	"renderRequests": [
+		{
+			"id": "records-viewing-clean",
+			"sceneRef": "records-viewing",
+			"variant": "clean",
+			"output": "comps/records-viewing.html"
+		},
+		{
+			"id": "records-viewing-annotated",
+			"sceneRef": "records-viewing",
+			"variant": "annotated",
+			"output": "comps/records-viewing-annotated.html"
+		}
+	],
+	"unspecifiedRequirements": [
+		{
+			"id": "record-list-template",
+			"description": "The reusable record-list template has not been designed.",
+			"owner": "ui",
+			"affects": ["record-list-instance"],
+			"blocks": ["complete scene rendering"],
+			"status": "unresolved"
+		}
+	],
+	"uxChangeRequests": [],
+	"openQuestions": [],
+	"uxArtifactBinding": {
+		"id": "field-journal-ux",
+		"revision": "1",
+		"sha256": "09930d3293f1f7ec49b28c56c9aaa073afe183814f29b0613bbefd1bf1c724dd"
+	},
+	"parts": [
+		{
+			"id": "records-viewing-base",
 			"root": {
 				"id": "records-layout",
 				"kind": "region",
@@ -195,40 +235,7 @@
 						}
 					}
 				]
-			},
-			"stateRef": "viewing",
-			"depictsRefs": ["ux:frame:records-viewing", "ux:state:viewing"]
+			}
 		}
-	],
-	"renderRequests": [
-		{
-			"id": "records-viewing-clean",
-			"sceneRef": "records-viewing",
-			"variant": "clean",
-			"output": "comps/records-viewing.html"
-		},
-		{
-			"id": "records-viewing-annotated",
-			"sceneRef": "records-viewing",
-			"variant": "annotated",
-			"output": "comps/records-viewing-annotated.html"
-		}
-	],
-	"unspecifiedRequirements": [
-		{
-			"id": "record-list-template",
-			"description": "The reusable record-list template has not been designed.",
-			"owner": "ui",
-			"affects": ["record-list-instance"],
-			"blocks": ["complete scene rendering"],
-			"status": "unresolved"
-		}
-	],
-	"uxChangeRequests": [],
-	"openQuestions": [],
-	"uxArtifactBinding": {
-		"id": "field-journal-ux",
-		"revision": "1",
-		"sha256": "f2ff9aa94f26639b1f906bda6891a9c6b05bc81aa461f8ca8d07fc39cc146525"
-	}
+	]
 }

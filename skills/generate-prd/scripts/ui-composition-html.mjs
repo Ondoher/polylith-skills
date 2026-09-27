@@ -1,3 +1,4 @@
+import {UiParts} from './ui-parts.mjs';
 import {createHash} from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -263,7 +264,10 @@ function renderTemplate(node, template, context) {
 				const mapping = registration.inlineSpec.componentTemplate.stateScenes.find(
 					(candidate) => candidate.state === node.state,
 				);
-				const scene = registration.inlineSpec.scenes.find((candidate) => candidate.id === mapping.sceneRef);
+				const storedScene = registration.inlineSpec.scenes.find(
+					(candidate) => candidate.id === mapping.sceneRef,
+				);
+				const scene = UiParts.materialize({...registration.inlineSpec, scenes: [storedScene]}).scenes[0];
 				const content = renderSceneTree(scene, registration.inlineSpec, context.uxSpec, {
 					request: context.request,
 					componentRegistrations: context.componentRegistrations,
@@ -320,6 +324,7 @@ function renderSceneTree(scene, spec, uxSpec, context) {
 
 /** Render one clean scene directly into a containing document without an iframe or review-page chrome. */
 export function renderInlineScene(scene, spec, {uxSpec, componentRegistrations = []} = {}) {
+	if (!scene.root) scene = UiParts.materialize({...spec, scenes: [scene]}).scenes[0];
 	const sceneMarkup = renderSceneTree(scene, spec, uxSpec, {
 		request: {output: 'index.html', variant: 'clean'},
 		componentRegistrations,
@@ -591,6 +596,8 @@ export function buildUiCompositionHtml(
 	} = {},
 ) {
 	validateUiSpec(spec, {uxSpec, designLanguage, assetRoot, sourceRoot, documentKind});
+	const canonical = spec;
+	spec = UiParts.materialize(spec);
 	const templates = new Map(spec.templates.map((template) => [template.id, template]));
 	const placeholderCount = spec.scenes.reduce((total, scene) => total + countPlaceholders(scene.root), 0);
 	const resolvedPlaceholderCount = spec.scenes.reduce(
@@ -619,7 +626,7 @@ export function buildUiCompositionHtml(
 				id: spec.id,
 				schemaVersion: spec.schemaVersion,
 				revision: spec.revision,
-				sha256: hash(uiSource || `${JSON.stringify(spec, null, 2)}\n`),
+				sha256: hash(uiSource || `${JSON.stringify(canonical, null, 2)}\n`),
 				label: uiLabel,
 			},
 			ux: {

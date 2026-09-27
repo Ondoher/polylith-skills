@@ -46,7 +46,7 @@ export function createUxReviewerEvaluationFixtures() {
 			mode: 'not-applicable',
 			description: 'Restating the current selection is immediate.',
 		},
-		recoveryRefs: [],
+		alternateRefs: [],
 		patternBasis: {
 			kind: 'ordinary',
 			rationale: 'A named confirmation command is mechanically familiar.',
@@ -64,12 +64,9 @@ export function createUxReviewerEvaluationFixtures() {
 		sourceRefs: ['product'],
 	});
 
-	const task = cluttered.useCases.find((candidate) => candidate.id === 'update-record');
-	task.actionRefs.splice(1, 0, redundantAction.id);
-	cluttered.flowNodes.unshift({
+	const task = cluttered.flows.find((candidate) => candidate.id === 'update-record');
+	task.steps.unshift({
 		id: 'confirm-visible-selection',
-		kind: 'step',
-		ownerRef: `ux:use-case:${task.id}`,
 		status: 'accepted',
 		sourceRefs: ['product'],
 		questionRefs: [],
@@ -79,15 +76,6 @@ export function createUxReviewerEvaluationFixtures() {
 		targetRef: 'ux:component:record-list',
 		response: 'The workspace repeats the name of the record that remains visibly selected.',
 	});
-	cluttered.flowEdges.push({
-		id: 'confirm-selection-before-opening',
-		fromRef: 'confirm-visible-selection',
-		toRef: `ux:flow-node:${task.entryNodeRef}`,
-		kind: 'next',
-		status: 'accepted',
-		sourceRefs: ['product'],
-	});
-	task.entryNodeRef = 'confirm-visible-selection';
 
 	const frame = cluttered.interactionFrames.find((candidate) => candidate.id === 'records-viewing');
 	const region = frame.regions.find((candidate) => candidate.id === 'viewing-collection');
@@ -103,12 +91,7 @@ export function createUxReviewerEvaluationFixtures() {
 	});
 	frame.focus.orderRefs.unshift('confirm-current-selection-affordance');
 
-	cluttered.pruningReview.summary =
-		'The primary task retains a persistent confirmation command before its two outcome-bearing steps.';
-	const pruning = cluttered.pruningReview.taskReviews.find((candidate) => candidate.taskRef === 'update-record');
-	pruning.canonicalStepRefs.unshift('confirm-visible-selection');
-	pruning.reviewedActionRefs.splice(1, 0, redundantAction.id);
-	pruning.decisions.push({
+	task.decisions.push({
 		id: 'retain-selection-confirmation',
 		disposition: 'retain',
 		candidate: 'A persistent command that repeats the already-visible current selection.',

@@ -4,6 +4,7 @@ import {parseArgs} from 'node:util';
 import {DesignRecords} from './design-records.mjs';
 import {DesignAssembly} from './design-assembly.mjs';
 import {DesignRun} from './design-run.mjs';
+import {DesignMigration} from './design-migration.mjs';
 
 /** Called by the command boundary to read an explicitly supplied JSON file.
  * @param {string|undefined} filename - User-selected file.
@@ -39,6 +40,7 @@ try {
 				'source-root',
 				'asset-root',
 				'refs',
+				'migration',
 			]
 				.map((name) => [name, {type: 'string'}])
 				.concat([
@@ -50,12 +52,20 @@ try {
 	const [command] = positionals;
 	if (values.help) {
 		console.log(
-			'single-pass-design.mjs init|import|deliver|handoff|assemble --store <directory>\ninit: --stage ux|ui --binding <json>\nimport: --stage ux|ui --input <saved-spec.json> [--binding <json>]\ndeliver: --input <record-or-array.json> [--repairs <key-to-prior-digest.json>]\nhandoff: --refs <comma-separated-kind:IDs>\nassemble: --output-dir <empty-or-owned-directory> [--ux <json> --design <json> --render]\nCandidates remain subject to existing review and product persistence. Repair issues are returned as data.',
+			'single-pass-design.mjs init|migrate|import|deliver|handoff|assemble --store <directory>\ninit: --stage ux|ui --binding <json>\nmigrate: --stage ux|ui --input <old-spec.json> --output-dir <empty-dir> [--ux <native-ux.json> --migration <ux-migration-report.json>]\nimport: --stage ux|ui --input <native-spec.json> [--binding <json>]\ndeliver: --input <record-or-array.json> [--repairs <key-to-prior-digest.json>]\nhandoff: --refs <comma-separated-kind:IDs>\nassemble: --output-dir <empty-or-owned-directory> [--ux <json> --design <json> --render]\nCandidates remain subject to existing review and product persistence. Repair issues are returned as data.',
 		);
 	} else {
-		const store = required(values, 'store');
+		const store = command === 'migrate' ? undefined : required(values, 'store');
 		let result;
-		if (command === 'init')
+		if (command === 'migrate')
+			result = DesignMigration.import({
+				inputPath: required(values, 'input'),
+				outputDirectory: required(values, 'output-dir'),
+				stage: required(values, 'stage'),
+				uxSpec: read(values.ux),
+				mappings: read(values.migration)?.mappings,
+			});
+		else if (command === 'init')
 			result = DesignRecords.initialize(store, {
 				stage: required(values, 'stage'),
 				binding: read(required(values, 'binding')),
@@ -68,7 +78,7 @@ try {
 				stage,
 				binding: {
 					...read(values.binding),
-					producer: 'single-pass-design/1',
+					producer: 'single-pass-native/1',
 					importedSourceSha256: createHash('sha256').update(source).digest('hex'),
 				},
 			});
@@ -88,7 +98,7 @@ try {
 				assetRoot: values['asset-root'],
 				render: values.render,
 			});
-		else throw new Error('Expected init, import, deliver, handoff or assemble; use --help');
+		else throw new Error('Expected init, migrate, import, deliver, handoff or assemble; use --help');
 		console.log(JSON.stringify(result, null, 2));
 	}
 } catch (error) {

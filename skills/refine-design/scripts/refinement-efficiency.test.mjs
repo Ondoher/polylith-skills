@@ -210,12 +210,8 @@ test('local multi-step form use case keeps its supporting dialog and exact produ
 		status: 'accepted',
 		sourceRefs: ['brief'],
 	});
-	ux.useCases[0].actionRefs.unshift(open.id);
-	ux.useCases[0].entryNodeRef = 'review-step';
-	ux.flowNodes.unshift({
+	ux.flows[0].steps.unshift({
 		id: 'review-step',
-		kind: 'step',
-		ownerRef: 'ux:use-case:record-entry',
 		status: 'accepted',
 		sourceRefs: ['brief'],
 		questionRefs: [],
@@ -224,17 +220,7 @@ test('local multi-step form use case keeps its supporting dialog and exact produ
 		actionRef: open.id,
 		response: 'A confirmation dialog opens.',
 	});
-	ux.flowEdges.push({
-		id: 'review-then-save',
-		fromRef: 'review-step',
-		toRef: 'ux:flow-node:save-step',
-		kind: 'next',
-		status: 'accepted',
-		sourceRefs: ['brief'],
-	});
-	ux.pruningReview.taskReviews[0].canonicalStepRefs.unshift('review-step');
-	ux.pruningReview.taskReviews[0].reviewedActionRefs.unshift(open.id);
-	ux.pruningReview.taskReviews[0].decisions.push({
+	ux.flows[0].decisions.push({
 		id: 'retain-review',
 		disposition: 'retain',
 		candidate: 'Review entry',
@@ -276,7 +262,7 @@ test('local multi-step form use case keeps its supporting dialog and exact produ
 		uxPath: env.uxPath,
 		useCaseIds: ['record-entry'],
 	});
-	assert.deepEqual(packet.focus.handoffs[0].canonicalStepRefs, ['review-step', 'save-step']);
+	assert.deepEqual(packet.focus.handoffs[0].stepRefs, ['review-step', 'save-step']);
 	assert.deepEqual(packet.focus.handoffs[0].frameRefs, ['confirmation-frame', 'editing-frame']);
 	assert.ok(packet.focus.handoffs[0].productRefs.includes('product:reject-empty-entry'));
 	assert.deepEqual(affectedUseCases(ux, 'product:reject-empty-entry', packet.productModel), ['record-entry']);
@@ -441,15 +427,15 @@ test('a changed product requirement reaches one use case while an independent ca
 	const env = fixture(t);
 	const ux = env.ux;
 	const second = {
-		...structuredClone(ux.useCases[0]),
+		...structuredClone(ux.flows[0]),
 		id: 'inspect-entry',
 		name: 'Inspect entry',
 		taskPriority: 'supporting',
-		actionRefs: ['inspect-action'],
-		entryNodeRef: 'inspect-step',
+		steps: [{...structuredClone(ux.flows[0].steps[0]), id: 'inspect-step', actionRef: 'inspect-action'}],
+		decisions: [],
 	};
-	ux.useCases.push(second);
-	ux.features[0].useCaseRefs.push(second.id);
+	ux.flows.push(second);
+	ux.features[0].flowRefs.push(second.id);
 	ux.interactionFrames[0].taskRefs.push(second.id);
 	ux.actions.push({
 		...structuredClone(ux.actions[0]),
@@ -458,12 +444,6 @@ test('a changed product requirement reaches one use case while an independent ca
 		feedbackRefs: ['inspect-feedback'],
 	});
 	ux.feedback.push({...structuredClone(ux.feedback[0]), id: 'inspect-feedback', actionRef: 'inspect-action'});
-	ux.flowNodes.push({
-		...structuredClone(ux.flowNodes[0]),
-		id: 'inspect-step',
-		ownerRef: 'ux:use-case:inspect-entry',
-		actionRef: 'inspect-action',
-	});
 	ux.interactionFrames[0].regions[0].affordances.push({
 		id: 'inspect-affordance',
 		actionRef: 'inspect-action',
@@ -479,7 +459,7 @@ test('a changed product requirement reaches one use case while an independent ca
 	assert.deepEqual(affectedUseCases(ux, 'product:record-dated-harvest', loadCurrentProduct(env.currentPath).model), [
 		'record-entry',
 	]);
-	assert.equal(JSON.stringify(ux.useCases[1]), unchanged);
+	assert.equal(JSON.stringify(ux.flows[1]), unchanged);
 });
 
 test('assembly orders dependencies, replays without model changes, and needs no specialist', (t) => {

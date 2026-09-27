@@ -8,10 +8,10 @@ export const PUBLICATION_RESOURCE_MAX_BYTES = 20 * 1024 * 1024;
 export const PUBLICATION_RESOURCES_MAX_BYTES = 64 * 1024 * 1024;
 const packageMaxBytes = 2 * 1024 * 1024;
 const versions = new Map([
-	['ux-design', '0.3'],
+	['ux-design', '0.4'],
 	['design-language', '0.14'],
-	['ui-composition', '0.3'],
-	['component-design', '0.3'],
+	['ui-composition', '0.4'],
+	['component-design', '0.4'],
 	['prd-publication', '1.0'],
 ]);
 const extensions = new Map([

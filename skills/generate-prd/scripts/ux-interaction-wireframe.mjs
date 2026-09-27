@@ -77,17 +77,20 @@ function actionRecovery(action, catalogs) {
 	const cancellation = action.cancellation?.description
 		? `<p><strong>Cancellation:</strong> ${escapeHtml(action.cancellation.description)}</p>`
 		: '';
-	const recovery = action.recoveryRefs.length
-		? `<ul class="uxw-recovery" aria-label="Recovery behavior">${action.recoveryRefs
+	const recovery = action.alternateRefs.length
+		? `<ul class="uxw-recovery" aria-label="Recovery behavior">${action.alternateRefs
 				.map((ref) => {
 					const item = catalogs.recoveries.get(ref);
-					const recoveryActions = (item.actionRefs ?? []).map((actionRef) => {
-						const recoveryAction = catalogs.actions.get(actionRef);
-						if (!recoveryAction) fail(`Recovery ${item.id} references missing action ${actionRef}`);
-						return escapeHtml(recoveryAction.name);
-					});
+					const recoveryActions = item.steps
+						.map((step) => step.actionRef)
+						.filter(Boolean)
+						.map((actionRef) => {
+							const recoveryAction = catalogs.actions.get(actionRef);
+							if (!recoveryAction) fail(`Recovery ${item.id} references missing action ${actionRef}`);
+							return escapeHtml(recoveryAction.name);
+						});
 					const actionsMarkup = recoveryActions.length ? ` Next actions: ${recoveryActions.join(', ')}.` : '';
-					return `<li><strong>${escapeHtml(item.condition)}:</strong> ${escapeHtml(item.response)}${actionsMarkup}</li>`;
+					return `<li><strong>${escapeHtml(item.condition)}:</strong> ${escapeHtml(item.outcome)}${actionsMarkup}${(item.notes ?? []).map((note) => `<p>${escapeHtml(note)}</p>`).join('')}</li>`;
 				})
 				.join('')}</ul>`
 		: '';
@@ -200,8 +203,8 @@ export function renderSurfaceInteractionWireframes(spec, surface) {
 		surfaces: byId(spec.surfaces),
 		states: byId(spec.states),
 		feedback: byId(spec.feedback),
-		recoveries: byId(spec.recoveryPaths),
-		tasks: byId(spec.useCases),
+		recoveries: byId(spec.flows.flatMap((flow) => flow.alternates)),
+		tasks: byId(spec.flows),
 	};
 	const frames = frameRefs.map((frameRef) => {
 		const frame = catalogs.frames.get(frameRef);

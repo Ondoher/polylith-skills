@@ -10,7 +10,7 @@ import {validateUxSpec} from './ux-design.mjs';
 import {createUxReviewerEvaluationFixtures} from './ux-review-evaluation-fixture.mjs';
 import {createUxTestSpec} from './ux-test-fixture.mjs';
 
-test('sanitized saved reviews validate against their exact fixtures and reject changed inputs', () => {
+test('archival saved reviews are rejected for migrated inputs and remain historical evidence', () => {
 	const sourceRoot = fileURLToPath(new URL('../references/fixtures/ux-regression/', import.meta.url));
 	const productDescriptionPath = path.join(sourceRoot, 'product-description.md');
 	const productDescriptionSource = fs.readFileSync(productDescriptionPath, 'utf8');
@@ -27,7 +27,7 @@ test('sanitized saved reviews validate against their exact fixtures and reject c
 			scopeRefs: ['update-record'],
 		};
 		assert.equal(validateUxSpec(uxSpec), uxSpec);
-		assert.equal(validateUxReview(receipt, inputs), receipt);
+		assert.throws(() => validateUxReview(receipt, inputs), /sha256|UX artifact/);
 		assert.equal(receipt.verdict, name === 'coherent' ? 'pass' : 'revise');
 		if (name === 'cluttered') {
 			assert.ok(
@@ -116,17 +116,12 @@ test('creates a structurally valid cluttered fixture with a materially different
 	assert.equal(validateUxSpec(cluttered), cluttered);
 	assert.equal(compareInteractionArchitectures(coherent, cluttered).equivalent, false);
 
-	const task = cluttered.useCases.find((candidate) => candidate.id === 'update-record');
+	const task = cluttered.flows.find((candidate) => candidate.id === 'update-record');
 	const frame = cluttered.interactionFrames.find((candidate) => candidate.id === 'records-viewing');
-	const pruning = cluttered.pruningReview.taskReviews.find((candidate) => candidate.taskRef === task.id);
-	assert.equal(
-		cluttered.flowNodes.find((node) => node.id === task.entryNodeRef).actionRef,
-		'confirm-current-selection',
-	);
+	assert.equal(task.steps[0].actionRef, 'confirm-current-selection');
 	assert.equal(frame.regions[0].affordances[0].actionRef, 'confirm-current-selection');
 	assert.equal(frame.focus.orderRefs[0], 'confirm-current-selection-affordance');
-	assert.ok(pruning.reviewedActionRefs.includes('confirm-current-selection'));
-	assert.ok(pruning.decisions.some((decision) => decision.actionRefs.includes('confirm-current-selection')));
+	assert.ok(task.decisions.some((decision) => decision.actionRefs.includes('confirm-current-selection')));
 });
 
 test('keeps both reviewer fixtures free of pilot-product vocabulary', () => {

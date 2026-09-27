@@ -256,118 +256,40 @@ export function createUxReviewSubject(inputs) {
 	return expectedReviewSubject(inputs);
 }
 
+/** Follow semantic record dependencies once; this does not reconstruct flow execution. */
 function expandScope(uxSpec, scopeRefs) {
-	const expanded = new Set(scopeRefs);
-	if (expanded.has(uxSpec.id)) {
-		collectUxIds(uxSpec, expanded);
-		return expanded;
-	}
-
-	let changed = true;
-	while (changed) {
-		changed = false;
-		const add = (ref) => {
-			if (typeof ref === 'string' && ref && !expanded.has(ref)) {
+	const allIds = collectUxIds(uxSpec),
+		expanded = new Set(scopeRefs);
+	if (expanded.has(uxSpec.id)) return allIds;
+	const dependencies = new Map();
+	const add = (id, ref) => {
+		if (!allIds.has(ref)) return;
+		if (!dependencies.has(id)) dependencies.set(id, new Set());
+		dependencies.get(id).add(ref);
+	};
+	const visit = (value, owner = null, key = '') => {
+		if (Array.isArray(value)) {
+			value.forEach((item) => visit(item, owner, key));
+			return;
+		}
+		if (value && typeof value === 'object') {
+			const id = value.id ?? owner;
+			if (value.id && owner) {
+				add(owner, value.id);
+				add(value.id, owner);
+			}
+			for (const [name, item] of Object.entries(value)) visit(item, id, name);
+		} else if (owner && /Refs?$/.test(key) && typeof value === 'string') add(owner, value.split(':').at(-1));
+	};
+	// Top-level catalogs have no implicit dependency on the entire document.
+	for (const [key, value] of Object.entries(uxSpec)) if (value && typeof value === 'object') visit(value, null, key);
+	const queue = [...expanded];
+	for (let offset = 0; offset < queue.length; offset++)
+		for (const ref of dependencies.get(queue[offset]) ?? [])
+			if (!expanded.has(ref)) {
 				expanded.add(ref);
-				changed = true;
+				queue.push(ref);
 			}
-		};
-		const addAll = (refs) => {
-			if (Array.isArray(refs)) refs.forEach(add);
-		};
-		const includesRecord = (record) => {
-			const ownedIds = collectUxIds(record);
-			return [...ownedIds].some((id) => expanded.has(id));
-		};
-		const addOwnedIds = (record) => collectUxIds(record).forEach(add);
-
-		for (const feature of uxSpec.features)
-			if (includesRecord(feature)) {
-				addOwnedIds(feature);
-				addAll(feature.useCaseRefs);
-				addAll(feature.surfaceRefs);
-			}
-		for (const useCase of uxSpec.useCases)
-			if (includesRecord(useCase)) {
-				addOwnedIds(useCase);
-				add(useCase.featureRef);
-				addAll(useCase.surfaceRefs);
-				addAll(useCase.actionRefs);
-				add(useCase.entryNodeRef);
-			}
-		for (const surface of uxSpec.surfaces)
-			if (includesRecord(surface)) {
-				addOwnedIds(surface);
-				add(surface.areaRef);
-				addAll(surface.componentRefs);
-				addAll(surface.stateRefs);
-				addAll(surface.interactionFrameRefs);
-			}
-		for (const component of uxSpec.components)
-			if (includesRecord(component)) {
-				addOwnedIds(component);
-				addAll(component.surfaceRefs);
-				addAll(component.stateRefs);
-				addAll(component.behaviorNodeRefs);
-			}
-		for (const action of uxSpec.actions)
-			if (includesRecord(action)) {
-				addOwnedIds(action);
-				addAll(action.taskRefs);
-				addAll(action.applicableStateRefs);
-				addAll(action.feedbackRefs);
-				addAll(action.recoveryRefs);
-				add(action.patternBasis?.researchRef);
-			}
-		for (const frame of uxSpec.interactionFrames)
-			if (includesRecord(frame)) {
-				addOwnedIds(frame);
-				add(frame.surfaceRef);
-				add(frame.stateRef);
-				addAll(frame.taskRefs);
-				add(frame.patternBasis?.researchRef);
-				frame.regions.forEach((region) =>
-					region.affordances.forEach((affordance) => add(affordance.actionRef)),
-				);
-			}
-		for (const research of uxSpec.patternResearch)
-			if (includesRecord(research)) {
-				addOwnedIds(research);
-				addAll(research.taskRefs);
-				addAll(research.actionRefs);
-				addAll(research.frameRefs);
-			}
-		for (const node of uxSpec.flowNodes)
-			if (includesRecord(node)) {
-				addOwnedIds(node);
-				add(node.actionRef);
-				add(node.componentRef);
-				add(node.frameRef);
-				add(node.ownerRef?.slice(node.ownerRef.lastIndexOf(':') + 1));
-			}
-		for (const edge of uxSpec.flowEdges)
-			if (includesRecord(edge)) {
-				addOwnedIds(edge);
-				add(edge.fromRef);
-				add(edge.toRef?.slice(edge.toRef.lastIndexOf(':') + 1));
-			}
-		for (const item of uxSpec.states)
-			if (includesRecord(item)) {
-				addOwnedIds(item);
-				add(item.ownerRef.slice(item.ownerRef.lastIndexOf(':') + 1));
-			}
-		for (const item of uxSpec.feedback)
-			if (includesRecord(item)) {
-				addOwnedIds(item);
-				add(item.actionRef);
-			}
-		for (const item of uxSpec.recoveryPaths)
-			if (includesRecord(item)) {
-				addOwnedIds(item);
-				add(item.ownerRef.slice(item.ownerRef.lastIndexOf(':') + 1));
-				addAll(item.actionRefs);
-			}
-	}
 	return expanded;
 }
 

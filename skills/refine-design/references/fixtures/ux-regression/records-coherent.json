@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.3",
+  "schemaVersion": "0.4",
   "id": "example-records-ux",
   "title": "Example Records UX",
   "revision": "1",
@@ -77,32 +77,10 @@
       "surfaceRefs": [
         "records-workspace"
       ],
-      "useCaseRefs": [
-        "update-record"
-      ],
-      "questionRefs": []
-    }
-  ],
-  "useCases": [
-    {
-      "id": "update-record",
-      "name": "Update a record",
-      "featureRef": "record-maintenance",
-      "goal": "Correct one observation record.",
-      "taskPriority": "primary",
-      "status": "accepted",
-      "trigger": "The user chooses a record from the collection.",
-      "preconditions": [
-        "At least one record is available."
-      ],
-      "actionRefs": [
-        "open-record",
-        "save-record",
-        "retry-save"
-      ],
-      "outcome": "The corrected record remains visible as saved.",
       "questionRefs": [],
-      "entryNodeRef": "open-current-record"
+      "flowRefs": [
+        "update-record"
+      ]
     }
   ],
   "surfaces": [
@@ -177,10 +155,17 @@
         "record-list-available",
         "record-list-selected"
       ],
-      "behaviorNodeRefs": [
-        "record-list-behavior-1"
-      ],
-      "entryBehaviorNodeRef": "record-list-behavior-1"
+      "behaviors": [
+        {
+          "id": "record-list-behavior-1",
+          "statement": "Selection remains visible when the record opens.",
+          "status": "accepted",
+          "sourceRefs": [
+            "product"
+          ],
+          "questionRefs": []
+        }
+      ]
     },
     {
       "id": "record-field",
@@ -201,10 +186,17 @@
         "record-field-saving",
         "record-field-failed"
       ],
-      "behaviorNodeRefs": [
-        "record-field-behavior-1"
-      ],
-      "entryBehaviorNodeRef": "record-field-behavior-1"
+      "behaviors": [
+        {
+          "id": "record-field-behavior-1",
+          "statement": "A failed save preserves the edited value.",
+          "status": "accepted",
+          "sourceRefs": [
+            "product"
+          ],
+          "questionRefs": []
+        }
+      ]
     },
     {
       "id": "save-status",
@@ -224,10 +216,17 @@
         "save-status-saved",
         "save-status-failed"
       ],
-      "behaviorNodeRefs": [
-        "save-status-behavior-1"
-      ],
-      "entryBehaviorNodeRef": "save-status-behavior-1"
+      "behaviors": [
+        {
+          "id": "save-status-behavior-1",
+          "statement": "Failure identifies the retained edit and available recovery.",
+          "status": "accepted",
+          "sourceRefs": [
+            "product"
+          ],
+          "questionRefs": []
+        }
+      ]
     }
   ],
   "actions": [
@@ -275,7 +274,7 @@
       "feedbackRefs": [
         "record-opened"
       ],
-      "recoveryRefs": []
+      "alternateRefs": []
     },
     {
       "id": "save-record",
@@ -323,8 +322,8 @@
         "save-completed",
         "save-failed"
       ],
-      "recoveryRefs": [
-        "retry-preserved-save"
+      "alternateRefs": [
+        "save-failure"
       ]
     },
     {
@@ -373,7 +372,7 @@
       "feedbackRefs": [
         "retry-started"
       ],
-      "recoveryRefs": []
+      "alternateRefs": []
     }
   ],
   "interactionFrames": [
@@ -670,49 +669,6 @@
     }
   ],
   "patternResearch": [],
-  "pruningReview": {
-    "status": "accepted",
-    "summary": "The primary task has one canonical path; retry appears only in the state that needs it.",
-    "taskReviews": [
-      {
-        "id": "update-record-pruning",
-        "taskRef": "update-record",
-        "status": "accepted",
-        "canonicalStepRefs": [
-          "open-current-record",
-          "save-current-record"
-        ],
-        "reviewedActionRefs": [
-          "open-record",
-          "save-record",
-          "retry-save"
-        ],
-        "decisions": [
-          {
-            "id": "retain-canonical-actions",
-            "disposition": "retain",
-            "candidate": "The record-open and save actions in the canonical task path.",
-            "actionRefs": [
-              "open-record",
-              "save-record"
-            ],
-            "rationale": "Each action advances a distinct required step toward the saved outcome.",
-            "result": "The canonical path contains one visible action for each required step."
-          },
-          {
-            "id": "contextualize-retry",
-            "disposition": "contextualize",
-            "candidate": "A persistent retry command before any failure occurs.",
-            "actionRefs": [
-              "retry-save"
-            ],
-            "rationale": "Retry has meaning only after a failed save.",
-            "result": "Retry appears only in the failed state."
-          }
-        ]
-      }
-    ]
-  },
   "openQuestions": [],
   "productModelBinding": {
     "id": "example-records",
@@ -721,136 +677,6 @@
     "materialSha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "recordIndexSha256": "0000000000000000000000000000000000000000000000000000000000000000"
   },
-  "useCaseRelations": [],
-  "flowNodes": [
-    {
-      "id": "open-current-record",
-      "actor": "User",
-      "action": "Open the selected record for editing.",
-      "actionRef": "open-record",
-      "targetRef": "ux:component:record-list",
-      "response": "The selected record becomes editable without losing collection context.",
-      "kind": "step",
-      "ownerRef": "ux:use-case:update-record",
-      "status": "accepted",
-      "sourceRefs": [
-        "product"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "save-current-record",
-      "actor": "User",
-      "action": "Save the corrected value.",
-      "actionRef": "save-record",
-      "targetRef": "ux:component:record-field",
-      "response": "Progress and then the saved result appear in the workspace.",
-      "kind": "step",
-      "ownerRef": "ux:use-case:update-record",
-      "status": "accepted",
-      "sourceRefs": [
-        "product"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "save-failure",
-      "kind": "alternative",
-      "ownerRef": "ux:use-case:update-record",
-      "status": "accepted",
-      "sourceRefs": [
-        "product"
-      ],
-      "questionRefs": [],
-      "prompt": "The save does not complete.",
-      "response": "The edited value remains visible with a failure result. The user can retry without re-entering the value."
-    },
-    {
-      "id": "retry-current-record",
-      "kind": "step",
-      "ownerRef": "ux:use-case:update-record",
-      "status": "accepted",
-      "sourceRefs": [
-        "product"
-      ],
-      "questionRefs": [],
-      "actor": "User",
-      "action": "Retry saving the preserved edit.",
-      "actionRef": "retry-save",
-      "targetRef": "ux:component:record-field",
-      "response": "The workspace confirms the saved value or preserves it for another retry."
-    },
-    {
-      "id": "record-list-behavior-1",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:record-list",
-      "componentRef": "record-list",
-      "statement": "Selection remains visible when the record opens.",
-      "status": "accepted",
-      "sourceRefs": [
-        "product"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "record-field-behavior-1",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:record-field",
-      "componentRef": "record-field",
-      "statement": "A failed save preserves the edited value.",
-      "status": "accepted",
-      "sourceRefs": [
-        "product"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "save-status-behavior-1",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:save-status",
-      "componentRef": "save-status",
-      "statement": "Failure identifies the retained edit and available recovery.",
-      "status": "accepted",
-      "sourceRefs": [
-        "product"
-      ],
-      "questionRefs": []
-    }
-  ],
-  "flowEdges": [
-    {
-      "id": "open-current-record-next",
-      "fromRef": "open-current-record",
-      "toRef": "ux:flow-node:save-current-record",
-      "kind": "next",
-      "status": "accepted",
-      "sourceRefs": [
-        "product"
-      ]
-    },
-    {
-      "id": "save-failure-branch",
-      "fromRef": "save-current-record",
-      "toRef": "ux:flow-node:save-failure",
-      "kind": "branches-to",
-      "status": "accepted",
-      "sourceRefs": [
-        "product"
-      ],
-      "condition": "The save does not complete.",
-      "order": 1
-    },
-    {
-      "id": "save-failure-retry",
-      "fromRef": "save-failure",
-      "toRef": "ux:flow-node:retry-current-record",
-      "kind": "next",
-      "status": "accepted",
-      "sourceRefs": [
-        "product"
-      ]
-    }
-  ],
   "states": [
     {
       "id": "viewing",
@@ -1050,22 +876,107 @@
       ]
     }
   ],
-  "recoveryPaths": [
+  "productRealizations": [],
+  "traceGaps": [],
+  "flows": [
     {
-      "id": "retry-preserved-save",
-      "condition": "The prior save failed.",
-      "response": "Keep the edited value and offer retry in the failed state.",
-      "actionRefs": [
-        "retry-save"
-      ],
-      "ownerRef": "ux:action:save-record",
-      "returnNodeRef": "retry-current-record",
+      "id": "update-record",
+      "name": "Update a record",
+      "featureRef": "record-maintenance",
+      "goal": "Correct one observation record.",
+      "taskPriority": "primary",
       "status": "accepted",
-      "sourceRefs": [
-        "product"
+      "trigger": "The user chooses a record from the collection.",
+      "preconditions": [
+        "At least one record is available."
+      ],
+      "outcome": "The corrected record remains visible as saved.",
+      "questionRefs": [],
+      "elementRef": "ux:component:record-list",
+      "steps": [
+        {
+          "id": "open-current-record",
+          "actor": "User",
+          "action": "Open the selected record for editing.",
+          "actionRef": "open-record",
+          "targetRef": "ux:component:record-list",
+          "response": "The selected record becomes editable without losing collection context.",
+          "status": "accepted",
+          "sourceRefs": [
+            "product"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "save-current-record",
+          "actor": "User",
+          "action": "Save the corrected value.",
+          "actionRef": "save-record",
+          "targetRef": "ux:component:record-field",
+          "response": "Progress and then the saved result appear in the workspace.",
+          "status": "accepted",
+          "sourceRefs": [
+            "product"
+          ],
+          "questionRefs": []
+        }
+      ],
+      "alternates": [
+        {
+          "id": "save-failure",
+          "afterStepRef": "save-current-record",
+          "condition": "The save does not complete.",
+          "steps": [
+            {
+              "id": "retry-current-record",
+              "status": "accepted",
+              "sourceRefs": [
+                "product"
+              ],
+              "questionRefs": [],
+              "actor": "User",
+              "action": "Retry saving the preserved edit.",
+              "actionRef": "retry-save",
+              "targetRef": "ux:component:record-field",
+              "response": "The workspace confirms the saved value or preserves it for another retry."
+            }
+          ],
+          "outcome": "The edited value remains visible with a failure result. The user can retry without re-entering the value.",
+          "status": "accepted",
+          "sourceRefs": [
+            "product"
+          ],
+          "questionRefs": [],
+          "notes": [
+            "The prior save failed.",
+            "Keep the edited value and offer retry in the failed state."
+          ]
+        }
+      ],
+      "decisions": [
+        {
+          "id": "retain-canonical-actions",
+          "disposition": "retain",
+          "candidate": "The record-open and save actions in the canonical task path.",
+          "actionRefs": [
+            "open-record",
+            "save-record"
+          ],
+          "rationale": "Each action advances a distinct required step toward the saved outcome.",
+          "result": "The canonical path contains one visible action for each required step."
+        },
+        {
+          "id": "contextualize-retry",
+          "disposition": "contextualize",
+          "candidate": "A persistent retry command before any failure occurs.",
+          "actionRefs": [
+            "retry-save"
+          ],
+          "rationale": "Retry has meaning only after a failed save.",
+          "result": "Retry appears only in the failed state."
+        }
       ]
     }
   ],
-  "productRealizations": [],
-  "traceGaps": []
+  "repairNeeds": []
 }

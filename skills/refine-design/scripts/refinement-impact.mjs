@@ -1,3 +1,4 @@
+import {UxFlows} from './ux-flows.mjs';
 import crypto from 'node:crypto';
 
 const nonMaterialKeys = new Set(['assessment', 'checkedAt', 'path', 'revision', 'reviewedAt', 'sources']);
@@ -109,14 +110,13 @@ function researchSelectionView(research) {
 	};
 }
 
-/** Project the decision-bearing UX 0.3 graph without run provenance. */
+/** Project decision-bearing native UX flows without run provenance. */
 export function interactionArchitectureView(value) {
 	object(value, 'UX interaction architecture');
 	const surfaces = new Map((value.surfaces ?? []).map((item) => [item.id, item]));
 	const states = new Map((value.states ?? []).map((item) => [item.id, item]));
 	const feedback = new Map((value.feedback ?? []).map((item) => [item.id, item]));
-	const recovery = new Map((value.recoveryPaths ?? []).map((item) => [item.id, item]));
-	const nodes = new Map((value.flowNodes ?? []).map((item) => [item.id, item]));
+	const alternatives = new Map((value.flows ?? []).flatMap((flow) => flow.alternates).map((item) => [item.id, item]));
 	const research = new Map((value.patternResearch ?? []).map((item) => [item.id, item]));
 	const stateView = (ref) => {
 		const state = states.get(ref);
@@ -162,28 +162,34 @@ export function interactionArchitectureView(value) {
 			cancellationAction: action.cancellation?.actionRef ? actionToken(action.cancellation.actionRef) : null,
 			failureRecovery: (action.feedbackRefs ?? []).some((ref) => feedback.get(ref)?.phase === 'failure')
 				? multiset(
-						(action.recoveryRefs ?? [])
-							.flatMap((ref) => recovery.get(ref)?.actionRefs ?? [])
+						(action.alternateRefs ?? [])
+							.flatMap(
+								(ref) =>
+									alternatives
+										.get(ref)
+										?.steps.map((step) => step.actionRef)
+										.filter(Boolean) ?? [],
+							)
 							.map(actionToken),
 					)
 				: [],
 		})),
 	);
-	const useCases = multiset(
-		(value.useCases ?? []).map((useCase) => {
-			const review = value.pruningReview?.taskReviews?.find((item) => item.taskRef === useCase.id);
-			return {
-				status: useCase.status,
-				taskPriority: useCase.taskPriority,
-				actionSet: multiset((useCase.actionRefs ?? []).map(actionToken)),
-				canonicalSequence: (review?.canonicalStepRefs ?? []).map((ref) =>
-					actionToken(nodes.get(ref)?.actionRef),
-				),
-				alternatives: (value.flowNodes ?? []).filter(
-					(node) => node.ownerRef === `ux:use-case:${useCase.id}` && node.kind === 'alternative',
-				).length,
-			};
-		}),
+	const flows = multiset(
+		(value.flows ?? []).map((flow) => ({
+			status: flow.status,
+			taskPriority: flow.taskPriority,
+			elementKind: flow.elementRef.split(':')[1],
+			actionSet: multiset(UxFlows.actionRefs(flow).map(actionToken)),
+			canonicalSequence: flow.steps.map((step) => actionToken(step.actionRef)),
+			alternatives: flow.alternates.map((alternate) => ({
+				after: flow.steps.findIndex((step) => step.id === alternate.afterStepRef),
+				resume: flow.steps.findIndex((step) => step.id === alternate.resumeStepRef),
+				condition: alternate.condition,
+				outcome: alternate.outcome,
+				actions: alternate.steps.map((step) => actionToken(step.actionRef)),
+			})),
+		})),
 	);
 	const frameBehavior = multiset(
 		(value.interactionFrames ?? []).flatMap((frame) =>
@@ -209,20 +215,9 @@ export function interactionArchitectureView(value) {
 			),
 		),
 	);
-	const flowGraph = multiset(
-		(value.flowEdges ?? []).map((edge) => ({
-			kind: edge.kind,
-			fromKind: nodes.get(edge.fromRef)?.kind ?? null,
-			toKind: edge.toRef?.split(':')[1] ?? null,
-			toNodeKind: edge.toRef?.startsWith('ux:flow-node:')
-				? (nodes.get(edge.toRef.slice('ux:flow-node:'.length))?.kind ?? null)
-				: null,
-			order: edge.order ?? null,
-			hasCondition: Boolean(edge.condition),
-		})),
-	);
+
 	const pruning = multiset(
-		(value.pruningReview?.taskReviews ?? []).flatMap((review) =>
+		(value.flows ?? []).flatMap((review) =>
 			(review.decisions ?? []).flatMap((decision) =>
 				(decision.actionRefs ?? []).map((ref) => ({
 					action: actionToken(ref),
@@ -234,10 +229,9 @@ export function interactionArchitectureView(value) {
 	return {
 		schemaVersion: value.schemaVersion,
 		status: value.status,
-		useCases,
+		flows,
 		actions,
 		frameBehavior,
-		flowGraph,
 		productRealizations: multiset(
 			(value.productRealizations ?? []).map((item) => ({
 				productRef: item.productRef,

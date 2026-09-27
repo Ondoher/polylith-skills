@@ -95,7 +95,7 @@ type DesignNodeChange = {
 
 /** A consumer candidate and any recoverable assembly problems. */
 type DesignAssemblyResult = {
-	/** Existing consumer schema, or null when shared context is unavailable. */
+	/** Native schema 0.4 candidate, or null when shared context is unavailable. */
 	document: Record<string, unknown> | null;
 	/** Units needing repair; never an acceptance or review receipt. */
 	issues: DesignRecordIssue[];
@@ -135,7 +135,7 @@ type DesignHandoffUnit = {
 
 /** Exact dependencies for candidate UI validation and optional isolated previews. */
 type DesignRunOptions = {
-	/** Current expanded UX consumer document. */
+	/** Current native UX document. */
 	uxSpec?: Record<string, unknown>;
 	/** Current validated design-language document. */
 	designLanguage?: Record<string, unknown>;
@@ -145,6 +145,44 @@ type DesignRunOptions = {
 	assetRoot?: string;
 	/** Whether to run the existing comp renderer after structural validation. */
 	render?: boolean;
+};
+
+/** Direct indexes over local routes, independent of publication hierarchy. */
+type UxFlowIndex = {
+	steps: Map<string, Record<string, unknown>>;
+	owners: Map<string, Record<string, unknown>>;
+	alternates: Map<string, Record<string, unknown>>;
+};
+
+/** Explicit conversion of saved graph-era input; not semantic approval. */
+type UxMigrationResult = {
+	document: Record<string, unknown>;
+	issues: DesignRecordIssue[];
+	mappings: Record<string, string>;
+};
+
+/** Inputs to the explicit one-time importer. */
+type DesignMigrationOptions = {
+	inputPath: string;
+	outputDirectory: string;
+	stage: 'ux' | 'ui';
+	uxSpec?: Record<string, unknown>;
+	mappings?: Record<string, string>;
+};
+
+/** Saved migration evidence and measured execution time. */
+type DesignMigrationReport = {
+	version: string;
+	stage: 'ux' | 'ui';
+	sourceSha256: string;
+	originalPath: string;
+	candidatePath: string | null;
+	reviewStatus: 'not-assessed';
+	issues: DesignRecordIssue[];
+	mappings: Record<string, string>;
+	sourceBytes: number;
+	candidateBytes: number;
+	elapsedMs: number;
 };
 
 /** One generated file with an exact reusable byte identity. */

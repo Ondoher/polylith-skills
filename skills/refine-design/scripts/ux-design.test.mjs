@@ -26,7 +26,7 @@ test('validates, renders, and deterministically writes one complete interaction 
 	const prd = renderPrd(saved);
 	const second = writeUxArtifacts(first.sourcePath, directory);
 
-	assert.equal(saved.schemaVersion, '0.3');
+	assert.equal(saved.schemaVersion, '0.4');
 	assert.equal(fs.readFileSync(second.sourcePath, 'utf8'), source);
 	assert.equal(renderPrd(JSON.parse(fs.readFileSync(second.sourcePath, 'utf8'))), prd);
 	assert.match(prd, /## Application Organization/);
@@ -34,7 +34,7 @@ test('validates, renders, and deterministically writes one complete interaction 
 	assert.match(prd, /### Retry save/);
 	assert.match(prd, /## Interaction Frames/);
 	assert.match(prd, /### Record save failed/);
-	assert.match(prd, /## Interaction Pruning/);
+	assert.match(prd, /## Flow Decisions/);
 });
 
 test('rejects traversal and absolute root-bound targets before creating output', () => {
@@ -133,20 +133,20 @@ test('preserves the prior owned UX artifact when replacement fails before rename
 test('rejects schema 0.1 without adding a compatibility path', () => {
 	const spec = createUxTestSpec();
 	spec.schemaVersion = '0.1';
-	assert.throws(() => validateUxSpec(spec), /requires schema 0\.3/);
+	assert.throws(() => validateUxSpec(spec), /requires schema 0\.4/);
 });
 
 test('requires reciprocal task, step, and action traceability', () => {
 	const missingAction = createUxTestSpec();
-	byId(missingAction.flowNodes, 'open-current-record').actionRef = 'missing-action';
+	byId(missingAction.flows[0].steps, 'open-current-record').actionRef = 'missing-action';
 	assert.throws(() => validateUxSpec(missingAction), /references missing id missing-action/);
 
 	const undeclaredAction = createUxTestSpec();
 	undeclaredAction.actions[0].taskRefs = [];
-	assert.throws(() => validateUxSpec(undeclaredAction), /taskRefs must not be empty/);
+	assert.throws(() => validateUxSpec(undeclaredAction), /taskRefs/);
 
 	const oneWayTrace = createUxTestSpec();
-	oneWayTrace.useCases[0].actionRefs = ['save-record', 'retry-save'];
+	delete oneWayTrace.flows[0].steps[0].actionRef;
 	assert.throws(() => validateUxSpec(oneWayTrace), /action open-record task update-record does not list the action/);
 
 	const missingFeatureSurface = createUxTestSpec();
@@ -165,7 +165,10 @@ test('requires reciprocal task, step, and action traceability', () => {
 
 	const missingComponentSurface = createUxTestSpec();
 	byId(missingComponentSurface.components, 'record-list').surfaceRefs = [];
-	assert.throws(() => validateUxSpec(missingComponentSurface), /does not trace back from component\.surfaceRefs/);
+	assert.throws(
+		() => validateUxSpec(missingComponentSurface),
+		/does not trace back from component\.surfaceRefs|does not share a surface/,
+	);
 
 	const unrelatedTarget = createUxTestSpec();
 	unrelatedTarget.surfaces.push({
@@ -194,7 +197,7 @@ test('requires reciprocal task, step, and action traceability', () => {
 	});
 	unrelatedTarget.application.areas[0].surfaceRefs.push('unrelated-surface');
 	unrelatedTarget.features[0].surfaceRefs.push('unrelated-surface');
-	byId(unrelatedTarget.flowNodes, 'open-current-record').targetRef = 'ux:surface:unrelated-surface';
+	byId(unrelatedTarget.flows[0].steps, 'open-current-record').targetRef = 'ux:surface:unrelated-surface';
 	assert.throws(() => validateUxSpec(unrelatedTarget), /targetRef does not share a surface with action open-record/);
 });
 
@@ -293,8 +296,8 @@ test('requires resolved actions and transitions in accepted frames', () => {
 	);
 
 	const selfRecovery = createUxTestSpec();
-	byId(selfRecovery.recoveryPaths, 'retry-preserved-save').actionRefs = ['save-record'];
-	assert.throws(() => validateUxSpec(selfRecovery), /cannot reference its owning action/);
+	selfRecovery.flows[0].alternates[0].resumeStepRef = 'missing-step';
+	assert.throws(() => validateUxSpec(selfRecovery), /must resume at a primary step/);
 });
 
 test('requires source-checked research only for researched or novel patterns', () => {
@@ -346,36 +349,16 @@ test('requires source-checked research only for researched or novel patterns', (
 	);
 });
 
-test('requires one exact pruning review for every primary task', () => {
-	const missingReview = createUxTestSpec();
-	missingReview.pruningReview.taskReviews = [];
-	assert.throws(() => validateUxSpec(missingReview), /primary task update-record needs a pruning review/);
-
-	const incompleteReview = createUxTestSpec();
-	incompleteReview.pruningReview.taskReviews[0].reviewedActionRefs.pop();
-	assert.throws(() => validateUxSpec(incompleteReview), /must cover the referenced records exactly once/);
-
-	const changedPath = createUxTestSpec();
-	changedPath.pruningReview.taskReviews[0].canonicalStepRefs.reverse();
-	assert.throws(() => validateUxSpec(changedPath), /must begin at the entry node/);
-
-	const missingDecision = createUxTestSpec();
-	missingDecision.pruningReview.taskReviews[0].decisions.pop();
-	assert.throws(
-		() => validateUxSpec(missingDecision),
-		/decisions\[\]\.actionRefs must cover the referenced records exactly once/,
-	);
-
-	const unresolvedTopReview = createUxTestSpec();
-	unresolvedTopReview.pruningReview.status = 'proposed';
-	assert.throws(() => validateUxSpec(unresolvedTopReview), /resolved primary tasks require a resolved pruningReview/);
-
-	const removedAcceptedAction = createUxTestSpec();
-	removedAcceptedAction.pruningReview.taskReviews[0].decisions[0].disposition = 'remove';
-	assert.throws(
-		() => validateUxSpec(removedAcceptedAction),
-		/cannot remove actions that remain in the accepted action catalog/,
-	);
+test('native order needs no second pruning or entry-node record', () => {
+	const spec = createUxTestSpec();
+	spec.flows[0].steps.reverse();
+	assert.doesNotThrow(() => validateUxSpec(spec));
+	const missing = createUxTestSpec();
+	missing.flows[0].steps = [];
+	assert.throws(() => validateUxSpec(missing), /primary steps/);
+	const removed = createUxTestSpec();
+	removed.flows[0].decisions[0].disposition = 'remove';
+	assert.throws(() => validateUxSpec(removed), /cannot remove/);
 });
 
 test('rejects geometry fields, duplicate state content, and unexplained technical information', () => {
@@ -543,16 +526,12 @@ test('renders unresolved recovery without promoting it', () => {
 		affects: ['update-record.alternatives'],
 		status: 'open',
 	});
-	spec.useCases[0].questionRefs.push('recovery-choice');
-	byId(spec.flowNodes, 'save-failure').status = 'unresolved';
-	for (const edge of spec.flowEdges.filter(
-		(item) => item.fromRef === 'save-failure' || item.toRef === 'ux:flow-node:save-failure',
-	))
-		edge.status = 'unresolved';
-	byId(spec.flowNodes, 'save-failure').response = 'Further recovery remains undefined by recovery-choice.';
+	spec.flows[0].questionRefs.push('recovery-choice');
+	spec.flows[0].alternates[0].status = 'unresolved';
+	spec.flows[0].alternates[0].outcome = 'Further recovery remains undefined by recovery-choice.';
 
 	const prd = renderPrd(spec);
-	assert.match(prd, /Further recovery remains undefined by recovery-choice\. \(unresolved\)/);
+	assert.match(prd, /Further recovery remains undefined by recovery-choice\. \(Unresolved\)/);
 	assert.match(prd, /recovery-choice: Which recovery choices are available when retry also fails\?/);
 });
 

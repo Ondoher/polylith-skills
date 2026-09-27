@@ -105,7 +105,7 @@ test('renders a bounded choice group with semantic tabs from one UX binding', ()
 		{id: 'disabled', required: false},
 	];
 	template.sizing = {width: 'fill', height: 'content'};
-	const node = ui.scenes[0].root.children[1];
+	const node = ui.parts[0].root.children[1];
 	node.templateRef = {id: template.id, version: template.version};
 	node.parameters = {
 		label: 'Workspace',
@@ -147,7 +147,7 @@ test('renders ordered list choice headings without adding UX bindings', () => {
 		{id: 'disabled', required: false},
 	];
 	template.sizing = {width: 'fill', height: 'content'};
-	const node = ui.scenes[0].root.children[1];
+	const node = ui.parts[0].root.children[1];
 	node.templateRef = {id: template.id, version: template.version};
 	node.parameters = {
 		label: 'Content',
@@ -216,7 +216,7 @@ test('publishes a validated image viewport as one deterministic media asset', (t
 		],
 		sizing: {width: 'fill', height: 'fixed', heightPx: 240},
 	};
-	const node = ui.scenes[0].root.children[1];
+	const node = ui.parts[0].root.children[1];
 	node.templateRef = {id: 'item-image', version: '1'};
 	node.parameters = {
 		assetId: 'sample-frame',
@@ -229,7 +229,7 @@ test('publishes a validated image viewport as one deterministic media asset', (t
 	node.assetRefs = ['sample-frame'];
 	delete node.placeholder;
 	ui.scenes[0].completeness = 'complete';
-	ui.scenes[0].root.surfaceTreatment = 'elevation-1';
+	ui.parts[0].root.surfaceTreatment = 'elevation-1';
 	ui.scenes[0].unspecifiedRequirementRefs = [];
 	ui.unspecifiedRequirements = [];
 	const input = sources(base, ui);

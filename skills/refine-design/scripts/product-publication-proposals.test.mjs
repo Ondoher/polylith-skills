@@ -202,7 +202,7 @@ test('producer rejects noncurrent design versions and mismatched dependency docu
 	const environment = fixture(t);
 	const uxFile = path.join(environment.root, 'ux.json');
 	const ux = JSON.parse(fs.readFileSync(uxFile));
-	for (const schemaVersion of ['0.1', '0.2', '0.4']) {
+	for (const schemaVersion of ['0.1', '0.2', '0.3', '0.5']) {
 		fs.writeFileSync(uxFile, JSON.stringify({...ux, schemaVersion}));
 		assert.throws(
 			() =>

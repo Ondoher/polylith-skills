@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import {validateUxSpec} from './ux-design.mjs';
 import {createPatternResearchRecord, createUxTestSpec} from './ux-test-fixture.mjs';
 
-const contract = JSON.parse(fs.readFileSync(new URL('../references/ux-schema-0.3.json', import.meta.url), 'utf8'));
+const contract = JSON.parse(fs.readFileSync(new URL('../references/ux-schema-0.4.json', import.meta.url), 'utf8'));
 
 function sameValue(left, right) {
 	return JSON.stringify(left) === JSON.stringify(right);
@@ -155,7 +155,7 @@ function replaceAtPath(value, path, replacement) {
 
 test('machine contract accepts the validator fixture and closes every object shape', () => {
 	assert.equal(contract.$schema, 'https://json-schema.org/draft/2020-12/schema');
-	assert.equal(contract.properties.schemaVersion.const, '0.3');
+	assert.equal(contract.properties.schemaVersion.const, '0.4');
 	assert.equal(contract.additionalProperties, false);
 	assert.ok(Array.isArray(contract['x-semanticRules']) && contract['x-semanticRules'].length > 0);
 
@@ -248,7 +248,7 @@ test('machine contract and validator reject representative structural drift', ()
 		[
 			'pruning record without id',
 			(spec) => {
-				delete spec.pruningReview.taskReviews[0].decisions[0].id;
+				delete spec.flows[0].decisions[0].id;
 			},
 		],
 	];

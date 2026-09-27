@@ -26,10 +26,10 @@ import {
 } from './product-publication-package.mjs';
 
 const contracts = new Map([
-	['ux-design', {version: '0.3', owner: 'ux'}],
+	['ux-design', {version: '0.4', owner: 'ux'}],
 	['design-language', {version: '0.14', owner: 'ui'}],
-	['ui-composition', {version: '0.3', owner: 'ui'}],
-	['component-design', {version: '0.3', owner: 'ui'}],
+	['ui-composition', {version: '0.4', owner: 'ui'}],
+	['component-design', {version: '0.4', owner: 'ui'}],
 	['prd-publication', {version: '1.0', owner: 'product'}],
 ]);
 const sourceNames = new Set(['ux', 'designLanguage', 'reviewLayout', 'ui', 'component']);
@@ -42,33 +42,37 @@ function validateBoundUxProduct(ux, chain) {
 	}
 	const records = new Map(chain.model.recordIndex.map((item) => [item.id, item]));
 	const targetKinds = new Map([
-		['pursues', new Set(['use-case'])],
+		['pursues', new Set(['flow'])],
 		[
 			'realizes',
 			new Set([
-				'use-case',
-				'flow-node',
+				'flow',
+				'step',
+				'alternate',
+				'behavior',
 				'surface',
 				'component',
 				'action',
 				'frame',
 				'state',
 				'feedback',
-				'recovery',
+				'alternate',
 			]),
 		],
 		[
 			'constrains',
 			new Set([
-				'use-case',
-				'flow-node',
+				'flow',
+				'step',
+				'alternate',
+				'behavior',
 				'surface',
 				'component',
 				'action',
 				'frame',
 				'state',
 				'feedback',
-				'recovery',
+				'alternate',
 			]),
 		],
 		['exposes-gap', new Set(['question'])],

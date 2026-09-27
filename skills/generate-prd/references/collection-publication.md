@@ -1,8 +1,8 @@
 # Product document collection publication
 
 Run this collection publisher after the current UI composition pass. The
-operational command requires a publication manifest selecting current UX 0.3
-and UI 0.3 artifacts, at least one source-bound scene, and a plan that selects
+operational command requires a publication manifest selecting current UX 0.4
+and UI 0.4 artifacts, at least one source-bound scene, and a plan that selects
 every scene. A partial pass may retain explicit missing-coverage gaps; a scene
 still needs visual inspection before it is called a finished comp.
 

@@ -4,10 +4,10 @@ The producer packages current validated structured sources for a downstream PRD 
 
 | Artifact kind      | Version | Logical document                                                                      |
 | ------------------ | ------- | ------------------------------------------------------------------------------------- |
-| `ux-design`        | `0.3`   | Current UX document                                                                   |
+| `ux-design`        | `0.4`   | Current UX document                                                                   |
 | `design-language`  | `0.14`  | Exactly `{designLanguage,reviewLayout}`, with design schema 0.14 and layout version 7 |
-| `ui-composition`   | `0.3`   | Current UI composition; required for operational PRD generation                       |
-| `component-design` | `0.3`   | Current component design; repeatable                                                  |
+| `ui-composition`   | `0.4`   | Current UI composition; required for operational PRD generation                       |
+| `component-design` | `0.4`   | Current component design; repeatable                                                  |
 | `prd-publication`  | `1.0`   | Explicit publication manifest                                                         |
 
 These names are reserved: they always require their exact current package and schema. Generic artifacts use other kind names; omitted encoding and obsolete versions are not alternate forms of these kinds.

@@ -19,13 +19,10 @@ const CONTENT_ARRAYS = new Set([
 	'patternResearch',
 	'scenes',
 	'surfaces',
-	'useCases',
-	'useCaseRelations',
-	'flowNodes',
-	'flowEdges',
+	'flows',
+	'parts',
 	'states',
 	'feedback',
-	'recoveryPaths',
 	'productRealizations',
 	'traceGaps',
 	'renderRequests',
@@ -68,7 +65,61 @@ function addSource(sources, ref, kind, value, label, parentRef) {
 export function uxRecordSources(artifactId, key, entry, index) {
 	const sources = [];
 	const ref = `artifact:${artifactId}#/${key}/${entry.id}`;
-	addSource(sources, ref, `ux-design/${key}`, entry, `${key} ${index + 1}`);
+	if (key === 'flows') {
+		const {steps, alternates, ...metadata} = entry;
+		addSource(
+			sources,
+			ref,
+			'ux-design/flows',
+			{
+				...metadata,
+				stepRefs: steps.map((step) => step.id),
+				alternateRefs: alternates.map((alternate) => alternate.id),
+			},
+			`${key} ${index + 1}`,
+		);
+		for (const step of entry.steps)
+			addSource(sources, `${ref}/steps/${step.id}`, 'ux-design/steps', step, step.action, ref);
+		for (const alternate of entry.alternates) {
+			const alternateRef = `${ref}/alternates/${alternate.id}`;
+			const {steps, ...metadata} = alternate;
+			addSource(
+				sources,
+				alternateRef,
+				'ux-design/alternates',
+				{...metadata, stepRefs: steps.map((step) => step.id)},
+				alternate.condition,
+				ref,
+			);
+			for (const step of alternate.steps)
+				addSource(
+					sources,
+					`${alternateRef}/steps/${step.id}`,
+					'ux-design/steps',
+					step,
+					step.action,
+					alternateRef,
+				);
+		}
+	} else if (key === 'components') {
+		const {behaviors, ...metadata} = entry;
+		addSource(
+			sources,
+			ref,
+			'ux-design/components',
+			{...metadata, behaviorRefs: behaviors.map((behavior) => behavior.id)},
+			`${key} ${index + 1}`,
+		);
+		for (const behavior of behaviors)
+			addSource(
+				sources,
+				`${ref}/behaviors/${behavior.id}`,
+				'ux-design/behaviors',
+				behavior,
+				behavior.statement,
+				ref,
+			);
+	} else addSource(sources, ref, `ux-design/${key}`, entry, `${key} ${index + 1}`);
 	return sources;
 }
 
@@ -184,9 +235,29 @@ function sourceScope(ref) {
 export function linkSourceRelations(sources) {
 	const byScope = new Map();
 	const byId = new Map();
+	const sourceRefs = new Set(sources.map((source) => source.ref));
+	const typedUx = new Map();
+	const kinds = {
+		flows: 'flow',
+		steps: 'step',
+		alternates: 'alternate',
+		behaviors: 'behavior',
+		components: 'component',
+		surfaces: 'surface',
+		features: 'feature',
+		actions: 'action',
+		interactionFrames: 'frame',
+		states: 'state',
+		feedback: 'feedback',
+		openQuestions: 'question',
+	};
 	for (const source of sources) {
 		const id = source.value && typeof source.value === 'object' ? source.value.id : undefined;
 		if (typeof id !== 'string') continue;
+		if (source.kind.startsWith('ux-design/')) {
+			const kind = kinds[source.kind.slice('ux-design/'.length)];
+			if (kind) typedUx.set(`ux:${kind}:${id}`, source.ref);
+		}
 		const scope = sourceScope(source.ref);
 		if (!byScope.has(scope)) byScope.set(scope, new Map());
 		if (!byScope.get(scope).has(id)) byScope.get(scope).set(id, source.ref);
@@ -198,14 +269,13 @@ export function linkSourceRelations(sources) {
 	return sources.map((source) => {
 		const local = byScope.get(sourceScope(source.ref));
 		const resolveId = (id, field) => {
-			if (id.startsWith('product:')) return sources.some((item) => item.ref === id) ? id : null;
+			if (id.startsWith('product:')) return sourceRefs.has(id) ? id : null;
 			if (id.startsWith('ux:')) {
-				const uxId = id.slice(id.lastIndexOf(':') + 1);
-				return uxIds?.get(uxId) ?? null;
+				return typedUx.get(id) ?? null;
 			}
 			if (
 				source.kind.startsWith('ui-composition/') &&
-				/\/(?:interactionFrameRef|surfaceRef|useCaseRefs|actionRef|uxRef|uxQuestionRefs)(?:\/\d+)?$/u.test(
+				/\/(?:interactionFrameRef|surfaceRef|flowRefs|actionRef|uxRef|uxQuestionRefs)(?:\/\d+)?$/u.test(
 					field,
 				) &&
 				uxIds?.has(id)
@@ -344,11 +414,11 @@ function markdownSummary(value) {
 }
 
 function sourcePreview(source) {
-	if (source.kind === 'ux-design/flowNodes' && source.value.kind === 'step') {
+	if (source.kind === 'ux-design/steps') {
 		return source.value.response;
 	}
-	if (source.kind === 'ux-design/flowNodes' && source.value.kind === 'alternative') {
-		return source.value.response;
+	if (source.kind === 'ux-design/alternates') {
+		return source.value.outcome;
 	}
 	if (!source.kind.startsWith('ux-design/application')) return '';
 	const value = source.value;

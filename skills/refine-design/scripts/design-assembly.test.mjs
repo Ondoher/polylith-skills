@@ -1,3 +1,4 @@
+import {UiParts} from './ui-parts.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -57,36 +58,17 @@ test('saved UX and UI preserve every consumer field, ordering, binding and stabl
 	validateUiSpec(result.document, {uxSpec: ux, designLanguage: design});
 });
 
-test('new authoring assembles linear steps, an error alternate, a resume and reusable component call-out', () => {
-	const records = DesignAssembly.importUx(createUxTestSpec());
-	const flow = records.find((record) => record.kind === 'flow');
-	const [failure, retry] = flow.data.alternates[0].steps;
-	for (const step of [...flow.data.steps, failure, retry]) delete step.links;
-	flow.data.steps[1].callouts = [
-		{id: 'select-reusable-content', kind: 'invokes', toRef: 'ux:flow-node:record-list-behavior-1'},
-	];
-	flow.data.steps.push({id: 'save-complete', kind: 'decision', prompt: 'The save has completed successfully.'});
-	flow.data.alternates = [
-		{
-			id: 'save-failure',
-			afterStepRef: 'save-current-record',
-			condition: failure.prompt,
-			steps: [failure, retry],
-			resumeStepRef: 'save-current-record',
-		},
-	];
-	delete flow.data.useCase.entryNodeRef;
-	delete flow.data.useCase.actionRefs;
+test('native ordered flows preserve alternatives, resume points and reusable dialog call-outs', () => {
+	const records = DesignAssembly.importUx(createUxTestSpec()),
+		flow = records.find((record) => record.kind === 'flow');
+	flow.data.steps[1].usesElementRefs = ['ux:component:record-list'];
+	flow.data.alternates[0].resumeStepRef = 'save-current-record';
 	const result = DesignAssembly.ux(records);
 	assert.deepEqual(result.issues, []);
 	validateUxSpec(result.document);
-	assert.equal(result.document.useCases[0].entryNodeRef, 'open-current-record');
-	assert.deepEqual(result.document.useCases[0].actionRefs, ['open-record', 'save-record', 'retry-save']);
-	const edges = new Map(result.document.flowEdges.map((edge) => [edge.id, edge]));
-	assert.equal(edges.get('open-current-record-next').toRef, 'ux:flow-node:save-current-record');
-	assert.equal(edges.get('save-failure-branch').fromRef, 'save-current-record');
-	assert.equal(edges.get('save-failure-resume').fromRef, 'retry-current-record');
-	assert.equal(edges.get('select-reusable-content').kind, 'invokes');
+	assert.deepEqual(result.document.flows[0], flow.data);
+	for (const key of ['flowNodes', 'flowEdges', 'useCases', 'pruningReview'])
+		assert.equal(Object.hasOwn(result.document, key), false);
 });
 
 test('one scene part supplies a bounded visual variation without copying its tree or changing the base', () => {
@@ -99,12 +81,15 @@ test('one scene part supplies a bounded visual variation without copying its tre
 	const result = DesignAssembly.ui(records);
 	assert.deepEqual(result.issues, []);
 	assert.deepEqual(part, original);
-	assert.equal(result.document.scenes[0].root.children[0].parameters.text, 'Updated observation records');
+	assert.equal(
+		UiParts.materialize(result.document).scenes[0].root.children[0].parameters.text,
+		'Updated observation records',
+	);
 	validateUiSpec(result.document, {uxSpec: ux, designLanguage: design});
 	scene.data.changes = [{nodeRef: 'missing', set: {state: 'default'}}];
-	assert.match(DesignAssembly.ui(records).issues[0].reason, /Missing/);
+	assert.throws(() => UiParts.materialize(DesignAssembly.ui(records).document), /Missing/);
 	scene.data.changes = [{nodeRef: 'title', set: {id: 'replacement'}}];
-	assert.match(DesignAssembly.ui(records).issues[0].reason, /cannot change identity/);
+	assert.throws(() => UiParts.materialize(DesignAssembly.ui(records).document), /cannot change identity/);
 });
 
 test('missing dependencies and duplicate identities remain repairable without discarding independent elements', () => {
@@ -113,7 +98,7 @@ test('missing dependencies and duplicate identities remain repairable without di
 	flow.dependencies.push('element:missing-dialog');
 	const result = DesignAssembly.ux(records);
 	assert.equal(result.document.surfaces.length, 1);
-	assert.equal(result.document.useCases.length, 0);
+	assert.equal(result.document.flows.length, 0);
 	assert.match(result.issues[0].reason, /unavailable/);
 	const duplicate = DesignAssembly.ux([...records, structuredClone(flow)]);
 	assert.match(duplicate.issues[0].reason, /duplicate/);

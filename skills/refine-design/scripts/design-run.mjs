@@ -10,7 +10,7 @@ import {buildUiCompositionHtml} from './ui-composition-html.mjs';
 import {buildDesignLanguageAssetOutputs} from './design-language-html.mjs';
 
 const VERSION = 'single-pass-design/1';
-const ASSEMBLY_VERSION = 'single-pass-assembly/2';
+const ASSEMBLY_VERSION = 'single-pass-assembly/3';
 
 /** Called by run persistence to identify exact bytes.
  * @param {string|Buffer} bytes - UTF-8 or binary material.
@@ -193,6 +193,7 @@ export const DesignRun = {
 			const result = DesignAssembly[input.header.stage](input.records);
 			document = result.document;
 			issues.push(...result.issues);
+			issues.push(...(document?.repairNeeds ?? []));
 		} catch (error) {
 			issues.push({
 				reference: 'context:document',

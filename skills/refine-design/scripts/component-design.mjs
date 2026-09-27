@@ -1,3 +1,4 @@
+import {UiParts} from './ui-parts.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -310,7 +311,7 @@ export function buildComponentRegistration(spec, surfaceSpec, inputs) {
 		else if (node.templateRef.id === template.id && node.templateRef.version === template.version)
 			matchingNodes.push(node);
 	};
-	surfaceSpec.scenes.forEach((scene) => visit(scene.root));
+	UiParts.materialize(surfaceSpec).scenes.forEach((scene) => visit(scene.root));
 	if (!matchingNodes.length) fail(`surface UI does not use replacement template ${template.id}@${template.version}`);
 	for (const node of matchingNodes) {
 		if (node.uxRef !== contract.uxRef)

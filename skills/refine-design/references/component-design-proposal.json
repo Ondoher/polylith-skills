@@ -1,5 +1,5 @@
 {
-	"schemaVersion": "0.3",
+	"schemaVersion": "0.4",
 	"designMode": "component",
 	"artifactKind": "comp",
 	"patternResearch": {
@@ -208,7 +208,6 @@
 				"kind": "component",
 				"ref": "record-list"
 			},
-			"useCaseRefs": ["update-record"],
 			"viewport": {
 				"width": 880,
 				"height": 240
@@ -217,6 +216,38 @@
 			"uxQuestionRefs": [],
 			"uiQuestionRefs": [],
 			"unspecifiedRequirementRefs": [],
+			"stateRef": "record-list-available",
+			"depictsRefs": ["ux:frame:records-viewing", "ux:state:record-list-available"],
+			"partRef": "record-list-available-base",
+			"changes": [],
+			"flowRefs": ["update-record"]
+		}
+	],
+	"renderRequests": [
+		{
+			"id": "record-list-available-clean",
+			"sceneRef": "record-list-available",
+			"variant": "clean",
+			"output": "comps/record-list-available.html"
+		},
+		{
+			"id": "record-list-available-annotated",
+			"sceneRef": "record-list-available",
+			"variant": "annotated",
+			"output": "comps/record-list-available-annotated.html"
+		}
+	],
+	"unspecifiedRequirements": [],
+	"uxChangeRequests": [],
+	"openQuestions": [],
+	"uxArtifactBinding": {
+		"id": "field-journal-ux",
+		"revision": "1",
+		"sha256": "09930d3293f1f7ec49b28c56c9aaa073afe183814f29b0613bbefd1bf1c724dd"
+	},
+	"parts": [
+		{
+			"id": "record-list-available-base",
 			"root": {
 				"id": "record-list-layout",
 				"kind": "region",
@@ -297,31 +328,7 @@
 						}
 					}
 				]
-			},
-			"stateRef": "record-list-available",
-			"depictsRefs": ["ux:frame:records-viewing", "ux:state:record-list-available"]
+			}
 		}
-	],
-	"renderRequests": [
-		{
-			"id": "record-list-available-clean",
-			"sceneRef": "record-list-available",
-			"variant": "clean",
-			"output": "comps/record-list-available.html"
-		},
-		{
-			"id": "record-list-available-annotated",
-			"sceneRef": "record-list-available",
-			"variant": "annotated",
-			"output": "comps/record-list-available-annotated.html"
-		}
-	],
-	"unspecifiedRequirements": [],
-	"uxChangeRequests": [],
-	"openQuestions": [],
-	"uxArtifactBinding": {
-		"id": "field-journal-ux",
-		"revision": "1",
-		"sha256": "f2ff9aa94f26639b1f906bda6891a9c6b05bc81aa461f8ca8d07fc39cc146525"
-	}
+	]
 }

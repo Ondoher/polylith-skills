@@ -6,7 +6,7 @@ description: Inventory validated product context with the document-structure age
 # Generate product documents
 
 Start after `refine-design` has completed a current UI composition pass and
-resolved a PRD context containing its source-bound UX 0.3 and UI 0.3 artifacts,
+resolved a PRD context containing its source-bound UX 0.4 and UI 0.4 artifacts,
 design language, and publication manifest. A partial UI pass is usable only
 when it discloses its missing scenes and coverage; do not treat an earlier UX
 or UI package as current merely because its names match. If the handoff is

@@ -1,6 +1,6 @@
 # UX Review Gate
 
-Run an independent qualitative UX review after the parent has structurally validated and persisted UX schema 0.3, and before any UI composition or component-design work for the reviewed scope. This is a product-design gate within `refine-design`; it is separate from engineering standards review and does not invoke `review-standards`.
+Run an independent qualitative UX review after the parent has structurally validated and persisted UX schema 0.4, and before any UI composition or component-design work for the reviewed scope. This is a product-design gate within `refine-design`; it is separate from engineering standards review and does not invoke `review-standards`.
 
 ## Serial Gate
 

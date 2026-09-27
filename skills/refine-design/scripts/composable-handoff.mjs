@@ -1,162 +1,135 @@
 import {validateProductModel} from './product-model.mjs';
 import {validateUxSpec} from './ux-design.mjs';
+import {UxFlows} from './ux-flows.mjs';
 
-const uxRef = (kind, id) => `ux:${kind}:${id}`;
-const idFromRef = (ref) => ref.slice(ref.lastIndexOf(':') + 1);
-
-function ids(records) {
-	return [...new Set(records)].sort();
+/** Call to deduplicate stable references. @param {Iterable<string>} values @returns {string[]} */
+function ids(values) {
+	return [...new Set(values)].sort();
 }
 
-function reachableNodes(ux, useCase) {
-	const nodes = new Map(ux.flowNodes.map((node) => [node.id, node]));
-	const edges = new Map();
-	for (const edge of ux.flowEdges) {
-		if (!edges.has(edge.fromRef)) edges.set(edge.fromRef, []);
-		edges.get(edge.fromRef).push(edge);
-	}
-	const visited = new Set();
-	const queue = [useCase.entryNodeRef];
-	while (queue.length) {
-		const id = queue.shift();
-		if (visited.has(id)) continue;
-		visited.add(id);
-		for (const edge of edges.get(id) ?? []) {
-			if (edge.toRef.startsWith('ux:flow-node:')) queue.push(idFromRef(edge.toRef));
-			if (edge.toRef.startsWith('ux:recovery:')) {
-				const recovery = ux.recoveryPaths.find((item) => item.id === idFromRef(edge.toRef));
-				if (recovery) queue.push(recovery.returnNodeRef);
-			}
+/** Index actual semantic dependencies once, without traversing flow execution.
+ * @param {object} ux - Canonical UX. @returns {Map<string, Set<string>>} - References by flow ID.
+ */
+function flowSubjects(ux) {
+	const actions = new Map(ux.actions.map((item) => [item.id, item]));
+	const components = new Map(ux.components.map((item) => [`ux:component:${item.id}`, item]));
+	const frames = new Map();
+	for (const frame of ux.interactionFrames)
+		for (const id of frame.taskRefs) {
+			if (!frames.has(id)) frames.set(id, []);
+			frames.get(id).push(frame.id);
 		}
-	}
-	return {visited, nodes};
+	return new Map(
+		ux.flows.map((flow) => {
+			const refs = new Set([`ux:flow:${flow.id}`, `ux:feature:${flow.featureRef}`, flow.elementRef]);
+			const add = (kind, values) => values.forEach((id) => refs.add(`ux:${kind}:${id}`));
+			add(
+				'alternate',
+				flow.alternates.map((item) => item.id),
+			);
+			add('frame', frames.get(flow.id) ?? []);
+			for (const step of UxFlows.steps(flow)) {
+				refs.add(`ux:step:${step.id}`);
+				if (step.targetRef) refs.add(step.targetRef);
+				for (const ref of step.usesElementRefs ?? []) refs.add(ref);
+				if (step.frameRef) refs.add(`ux:frame:${step.frameRef}`);
+				add('state', step.stateRefs ?? []);
+				add('feedback', step.feedbackRefs ?? []);
+				if (step.actionRef) {
+					refs.add(`ux:action:${step.actionRef}`);
+					const action = actions.get(step.actionRef);
+					add('state', action.applicableStateRefs);
+					add('feedback', action.feedbackRefs);
+					add('alternate', action.alternateRefs);
+				}
+			}
+			for (const ref of [...refs]) {
+				const component = components.get(ref);
+				if (component) {
+					add(
+						'behavior',
+						component.behaviors.map((item) => item.id),
+					);
+					add('state', component.stateRefs);
+				}
+			}
+			return [flow.id, refs];
+		}),
+	);
 }
 
-/** A bounded implementation input made entirely from current semantic IDs. */
+/** Build a bounded input from a local flow and its dependencies.
+ * @param {object} model @param {object} ux @param {string} useCaseId @param {object|null} ui
+ * @returns {object} - Stable product, flow and scene references.
+ */
 export function buildUseCaseHandoff(model, ux, useCaseId, ui = null) {
 	validateProductModel(model);
 	validateUxSpec(ux);
-	const useCase = ux.useCases.find((item) => item.id === useCaseId);
-	if (!useCase) throw new Error(`Unknown use case ${useCaseId}`);
-	const {visited, nodes} = reachableNodes(ux, useCase);
-	const actions = new Set(useCase.actionRefs);
-	for (const id of visited) if (nodes.get(id)?.actionRef) actions.add(nodes.get(id).actionRef);
-	const actionRecords = ux.actions.filter((item) => actions.has(item.id));
-	const stateRefs = ids(actionRecords.flatMap((item) => item.applicableStateRefs));
-	const feedbackRefs = ids(actionRecords.flatMap((item) => item.feedbackRefs));
-	const recoveryRefs = ids(actionRecords.flatMap((item) => item.recoveryRefs));
-	const frameRefs = ids([
-		...ux.interactionFrames.filter((frame) => frame.taskRefs.includes(useCaseId)).map((frame) => frame.id),
-		...[...visited].map((id) => nodes.get(id)?.frameRef).filter(Boolean),
-	]);
-	const subjectRefs = new Set([
-		uxRef('use-case', useCaseId),
-		...[...visited].map((id) => uxRef('flow-node', id)),
-		...[...actions].map((id) => uxRef('action', id)),
-		...stateRefs.map((id) => uxRef('state', id)),
-		...feedbackRefs.map((id) => uxRef('feedback', id)),
-		...recoveryRefs.map((id) => uxRef('recovery', id)),
-		...frameRefs.map((id) => uxRef('frame', id)),
-	]);
-	const realizations = ux.productRealizations.filter((item) => subjectRefs.has(item.uxRef));
+	const flow = ux.flows.find((item) => item.id === useCaseId);
+	if (!flow) throw new Error(`Unknown flow ${useCaseId}`);
+	const refs = flowSubjects(ux).get(flow.id);
+	const typed = (kind) =>
+		ids([...refs].filter((ref) => ref.startsWith(`ux:${kind}:`)).map((ref) => ref.split(':').at(-1)));
+	const realizations = ux.productRealizations.filter((item) => refs.has(item.uxRef));
 	const productRefs = new Set(realizations.map((item) => item.productRef));
-	const relatedRules = model.rules.filter((item) =>
-		item.appliesToRefs.some((ref) => productRefs.has(`product:${ref}`)),
-	);
-	for (const item of relatedRules) productRefs.add(`product:${item.id}`);
-	const gaps = ux.traceGaps.filter((item) => subjectRefs.has(item.sourceRef) || productRefs.has(item.sourceRef));
-	const scenes =
-		ui?.scenes.filter(
-			(scene) => scene.useCaseRefs.includes(useCaseId) && scene.depictsRefs.some((ref) => subjectRefs.has(ref)),
-		) ?? [];
-	const invokedNodes = ux.flowEdges
-		.filter((edge) => visited.has(edge.fromRef) && edge.kind === 'invokes')
-		.map((edge) => nodes.get(idFromRef(edge.toRef)))
-		.filter(Boolean);
+	for (const rule of model.rules)
+		if (rule.appliesToRefs.some((ref) => productRefs.has(`product:${ref}`))) productRefs.add(`product:${rule.id}`);
 	return {
 		productModelRef: `product:${model.id}`,
-		uxArtifactRef: uxRef('artifact', ux.id),
-		useCaseRef: uxRef('use-case', useCaseId),
+		uxArtifactRef: `ux:artifact:${ux.id}`,
+		flowRef: `ux:flow:${flow.id}`,
 		productRefs: ids(productRefs),
 		realizationRefs: ids(realizations.map((item) => item.id)),
-		canonicalStepRefs: [
-			...(ux.pruningReview.taskReviews.find((item) => item.taskRef === useCaseId)?.canonicalStepRefs ?? []),
-		],
-		flowNodeRefs: ids([...visited]),
-		flowEdgeRefs: ids(ux.flowEdges.filter((item) => visited.has(item.fromRef)).map((item) => item.id)),
-		actionRefs: ids([...actions]),
-		stateRefs,
-		feedbackRefs,
-		recoveryRefs,
-		frameRefs,
-		sharedComponentRefs: ids(invokedNodes.map((node) => node.ownerRef)),
-		sharedBehaviorNodeRefs: ids(invokedNodes.map((node) => node.id)),
-		uiSceneRefs: ids(scenes.map((scene) => scene.id)),
-		traceGapRefs: ids(gaps.map((item) => item.id)),
+		stepRefs: flow.steps.map((step) => step.id),
+		alternateRefs: flow.alternates.map((item) => item.id),
+		actionRefs: typed('action'),
+		stateRefs: typed('state'),
+		feedbackRefs: typed('feedback'),
+		frameRefs: typed('frame'),
+		sharedElementRefs: ids(UxFlows.steps(flow).flatMap((step) => step.usesElementRefs ?? [])),
+		uiSceneRefs: ids(
+			(ui?.scenes ?? [])
+				.filter((scene) => scene.flowRefs.includes(flow.id) && scene.depictsRefs.some((ref) => refs.has(ref)))
+				.map((scene) => scene.id),
+		),
+		traceGapRefs: ids(
+			ux.traceGaps
+				.filter((item) => refs.has(item.sourceRef) || productRefs.has(item.sourceRef))
+				.map((item) => item.id),
+		),
 	};
 }
 
-/** Reverse trace a changed product or UX record to every affected use case. */
+/** Find affected local flows with one semantic dependency index.
+ * @param {object} ux @param {string} changedRef @param {object|null} model @returns {string[]}
+ */
 export function affectedUseCases(ux, changedRef, model = null) {
 	validateUxSpec(ux);
 	if (model) validateProductModel(model);
-	const candidates = new Set();
-	const visitedRefs = new Set();
-	const queue = [changedRef];
-	while (queue.length) {
-		const ref = queue.shift();
-		if (visitedRefs.has(ref)) continue;
-		visitedRefs.add(ref);
-		if (ref.startsWith('product:')) {
-			const directRealizations = ux.productRealizations.filter((item) => item.productRef === ref);
-			for (const relation of directRealizations) queue.push(relation.uxRef);
-			if (model) {
-				const id = idFromRef(ref);
-				for (const rule of model.rules.filter((item) => item.id === id)) {
-					for (const target of rule.appliesToRefs) queue.push(`product:${target}`);
-				}
-				for (const requirement of model.requirements.filter(
-					(item) => item.id === id && directRealizations.length === 0,
-				)) {
-					for (const target of requirement.goalRefs) queue.push(`product:${target}`);
-				}
-				for (const goal of model.goals.filter((item) => item.id === id)) {
-					for (const requirement of model.requirements.filter((item) => item.goalRefs.includes(goal.id))) {
-						queue.push(`product:${requirement.id}`);
-					}
-				}
+	const dependents = new Map(),
+		add = (ref, target) => {
+			if (!dependents.has(ref)) dependents.set(ref, []);
+			dependents.get(ref).push(target);
+		};
+	for (const relation of ux.productRealizations) add(relation.productRef, relation.uxRef);
+	if (model) {
+		for (const rule of model.rules)
+			for (const ref of rule.appliesToRefs) add(`product:${rule.id}`, `product:${ref}`);
+		const realized = new Set(ux.productRealizations.map((item) => item.productRef));
+		for (const requirement of model.requirements)
+			for (const goal of requirement.goalRefs) {
+				add(`product:${goal}`, `product:${requirement.id}`);
+				if (!realized.has(`product:${requirement.id}`)) add(`product:${requirement.id}`, `product:${goal}`);
 			}
-			continue;
-		}
-		const kind = ref.split(':')[1];
-		const id = idFromRef(ref);
-		if (kind === 'use-case') candidates.add(id);
-		if (kind === 'action')
-			for (const taskRef of ux.actions.find((item) => item.id === id)?.taskRefs ?? []) candidates.add(taskRef);
-		if (kind === 'state') {
-			for (const action of ux.actions.filter((item) => item.applicableStateRefs.includes(id)))
-				queue.push(uxRef('action', action.id));
-			const ownerRef = ux.states.find((item) => item.id === id)?.ownerRef;
-			if (ownerRef?.startsWith('ux:component:')) queue.push(ownerRef);
-		}
-		if (kind === 'feedback') queue.push(uxRef('action', ux.feedback.find((item) => item.id === id)?.actionRef));
-		if (kind === 'recovery') queue.push(ux.recoveryPaths.find((item) => item.id === id)?.ownerRef);
-		if (kind === 'flow-node') {
-			const node = ux.flowNodes.find((item) => item.id === id);
-			if (node?.ownerRef.startsWith('ux:use-case:')) candidates.add(idFromRef(node.ownerRef));
-			if (node?.ownerRef.startsWith('ux:component:')) {
-				for (const edge of ux.flowEdges.filter((item) => item.kind === 'invokes' && item.toRef === ref)) {
-					queue.push(uxRef('flow-node', edge.fromRef));
-				}
-			}
-		}
-		if (kind === 'flow-edge') {
-			const edge = ux.flowEdges.find((item) => item.id === id);
-			if (edge) queue.push(uxRef('flow-node', edge.fromRef));
-		}
-		if (kind === 'component')
-			for (const node of ux.flowNodes.filter((item) => item.ownerRef === ref))
-				queue.push(uxRef('flow-node', node.id));
 	}
-	return ids(candidates);
+	for (const [flow, refs] of flowSubjects(ux)) for (const ref of refs) add(ref, `ux:flow:${flow}`);
+	const visited = new Set([changedRef]),
+		queue = [changedRef];
+	for (let offset = 0; offset < queue.length; offset++)
+		for (const ref of dependents.get(queue[offset]) ?? [])
+			if (!visited.has(ref)) {
+				visited.add(ref);
+				queue.push(ref);
+			}
+	return ids(ux.flows.filter((flow) => visited.has(`ux:flow:${flow.id}`)).map((flow) => flow.id));
 }

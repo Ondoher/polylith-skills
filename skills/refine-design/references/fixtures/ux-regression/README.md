@@ -1,3 +1,5 @@
+> Current UX examples use native schema 0.4. The saved review receipts predate this migration and intentionally fail exact-byte binding against changed examples. They remain historical qualitative evidence; current receipt tests are explicitly synthetic. Checkout imports retain repair notices for ambiguous old routes.
+
 # Sanitized UX regression fixtures
 
 These examples retain interaction structures and review findings recovered from

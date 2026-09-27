@@ -31,45 +31,37 @@ test('a shell exposes stable source identities for its navigation and areas', ()
 	);
 });
 
-test('flat UX records use stable IDs and typed relationships', () => {
-	const useCase = uxRecordSources(
+test('native flow inventory exposes stable child identities without prescribing publication hierarchy', () => {
+	const records = uxRecordSources(
 		'field-ux',
-		'useCases',
+		'flows',
 		{
 			id: 'record-observation',
 			name: 'Record an observation',
-			status: 'accepted',
-			featureRef: 'recording',
-			entryNodeRef: 'enter-note',
-			actionRefs: ['write-note'],
-		},
-		0,
-	);
-	const step = uxRecordSources(
-		'field-ux',
-		'flowNodes',
-		{
-			id: 'enter-note',
-			kind: 'step',
-			ownerRef: 'ux:use-case:record-observation',
-			actionRef: 'write-note',
-			action: 'Enter a note',
-			response: 'The note appears.',
+			elementRef: 'ux:surface:entry',
+			steps: [
+				{
+					id: 'enter-note',
+					actor: 'User',
+					action: 'Enter a note',
+					actionRef: 'write-note',
+					response: 'The note appears.',
+				},
+			],
+			alternates: [],
 		},
 		0,
 	);
 	const action = uxRecordSources('field-ux', 'actions', {id: 'write-note', name: 'Write note'}, 0);
-	assert.equal(useCase[0].ref, 'artifact:field-ux#/useCases/record-observation');
-	assert.equal(step[0].ref, 'artifact:field-ux#/flowNodes/enter-note');
-	const linked = linkSourceRelations([...useCase, ...step, ...action]);
+	assert.equal(records[0].ref, 'artifact:field-ux#/flows/record-observation');
+	assert.equal(records[1].ref, 'artifact:field-ux#/flows/record-observation/steps/enter-note');
+	assert.equal(records[1].parentRef, records[0].ref);
+	const linked = linkSourceRelations([...records, ...action]);
 	assert.ok(
 		linked[1].relations.some(
 			(relation) =>
 				relation.field === '/actionRef' && relation.targetRef === 'artifact:field-ux#/actions/write-note',
 		),
-	);
-	assert.ok(
-		linked[1].relations.some((relation) => relation.field === '/ownerRef' && relation.targetRef === useCase[0].ref),
 	);
 });
 

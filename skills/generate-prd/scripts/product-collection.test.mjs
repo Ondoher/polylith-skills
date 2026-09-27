@@ -48,7 +48,7 @@ async function sourceBoundTrial({withScene = false} = {}) {
 				artifactKind,
 				owner,
 				artifactSchemaVersion:
-					artifactKind === 'prd-publication' ? '1.0' : artifactKind === 'design-language' ? '0.14' : '0.3',
+					artifactKind === 'prd-publication' ? '1.0' : artifactKind === 'design-language' ? '0.14' : '0.4',
 				revision: 1,
 				status: 'accepted',
 				consumerDomains: ['prd'],
@@ -68,7 +68,7 @@ async function sourceBoundTrial({withScene = false} = {}) {
 			return value;
 		};
 		const ux = artifact('garden-ux', 'ux-design', 'ux', {
-			schemaVersion: '0.3',
+			schemaVersion: '0.4',
 			id: 'garden-ux-spec',
 			surfaces: [{id: 'entry-surface', name: 'Entry surface', regions: []}],
 		});
@@ -81,7 +81,7 @@ async function sourceBoundTrial({withScene = false} = {}) {
 			'ui-composition',
 			'ui',
 			{
-				schemaVersion: '0.3',
+				schemaVersion: '0.4',
 				uxArtifactBinding: {id: 'garden-ux-spec', revision: 1},
 				designLanguageSource: {revision: 1},
 				tokens: [],
@@ -370,18 +370,18 @@ test('a planned current UI pass selects every source-bound scene', () => {
 			{
 				id: 'ux',
 				artifactKind: 'ux-design',
-				artifactSchemaVersion: '0.3',
+				artifactSchemaVersion: '0.4',
 				payload: payload({
-					schemaVersion: '0.3',
+					schemaVersion: '0.4',
 					id: 'ux-spec',
 				}),
 			},
 			{
 				id: 'ui',
 				artifactKind: 'ui-composition',
-				artifactSchemaVersion: '0.3',
+				artifactSchemaVersion: '0.4',
 				payload: payload({
-					schemaVersion: '0.3',
+					schemaVersion: '0.4',
 					uxArtifactBinding: {id: 'ux-spec'},
 					scenes: [{id: 'entry'}, {id: 'confirmation'}],
 					renderRequests: [

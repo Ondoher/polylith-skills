@@ -16,7 +16,7 @@ Supply a self-contained bounded assignment with:
 - accepted requirements, owner rationale, terminology, and locks;
 - the exact UX artifact ID and schema 0.2 revision;
 - the activity areas, use cases, surfaces, actions, frames, and questions in scope;
-- relevant `patternResearch` and `pruningReview` records; and
+- relevant `patternResearch` and the owning flow's `decisions` records; and
 - any applicable accessibility or platform requirements already established for the scope.
 
 The reviewer treats durable inputs as authority. Missing material that prevents a criterion from being assessed produces a blocking finding and `revise`, not an invented assumption.

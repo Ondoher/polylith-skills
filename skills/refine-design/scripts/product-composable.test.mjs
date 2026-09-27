@@ -93,7 +93,7 @@ test('a fresh product exposes separately addressable goals, requirements, and ru
 			publication: null,
 		},
 	});
-	assert.equal(proposal.proposal.artifactSchemaVersion, '0.3');
+	assert.equal(proposal.proposal.artifactSchemaVersion, '0.4');
 	const artifactProposalPath = path.join(root, 'ux-artifact-proposal.json');
 	fs.writeFileSync(artifactProposalPath, JSON.stringify(proposal.proposal));
 	commitProductArtifact({
@@ -105,9 +105,7 @@ test('a fresh product exposes separately addressable goals, requirements, and ru
 	const packaged = resolveProductContext({currentPath: path.join(root, 'current.json'), repositoryRoot: root});
 	const completeIndex = createOutlineSourceIndex(packaged.context);
 	assert.ok(
-		completeIndex.sources.some(
-			(source) => source.kind === 'ux-design/flowNodes' && source.value.id === 'save-step',
-		),
+		completeIndex.sources.some((source) => source.kind === 'ux-design/steps' && source.value.id === 'save-step'),
 	);
 	const realization = completeIndex.sources.find(
 		(source) => source.kind === 'ux-design/productRealizations' && source.value.id === 'goal-to-case',
@@ -120,11 +118,11 @@ test('a fresh product exposes separately addressable goals, requirements, and ru
 	);
 	assert.ok(
 		realization.relations.some(
-			(link) => link.field === '/uxRef' && link.targetRef?.includes('/useCases/record-entry'),
+			(link) => link.field === '/uxRef' && link.targetRef?.includes('/flows/record-entry'),
 		),
 	);
 	const handoff = buildUseCaseHandoff(loadCurrentProduct(path.join(root, 'current.json')).model, ux, 'record-entry');
-	assert.deepEqual(handoff.canonicalStepRefs, ['save-step']);
+	assert.deepEqual(handoff.stepRefs, ['save-step']);
 	assert.ok(handoff.productRefs.includes('product:record-dated-harvest'));
 	assert.ok(handoff.productRefs.includes('product:reject-empty-entry'));
 	assert.deepEqual(handoff.traceGapRefs, ['validation-detail-gap']);

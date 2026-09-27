@@ -184,7 +184,7 @@ test('rejects incomplete state mapping and non-placeholder replacement targets',
 	);
 
 	const wrongOwner = surface();
-	delete wrongOwner.scenes[0].root.children[1].uxRef;
+	delete wrongOwner.parts[0].root.children[1].uxRef;
 	assert.throws(
 		() => buildComponentRegistration(fixture(), wrongOwner, {uxSpec: ux(), designLanguage: design()}),
 		/does not reference UX component record-list/,
@@ -252,7 +252,7 @@ test('requires component-focused scenes and controlled visual roles', () => {
 	);
 
 	const wrongVisual = fixture();
-	wrongVisual.scenes[0].root.children[0].parameters.role = 'invented-art';
+	wrongVisual.parts[0].root.children[0].parameters.role = 'invented-art';
 	assert.throws(
 		() => validateComponentDesign(wrongVisual, {uxSpec: ux(), designLanguage: design()}),
 		/unsupported for the visual renderer/,

@@ -1,5 +1,5 @@
 {
-	"schemaVersion": "0.2",
+	"schemaVersion": "0.4",
 	"id": "field-journal-ui",
 	"title": "Field Journal UI",
 	"revision": "1",
@@ -9,7 +9,13 @@
 		"description": "Parent-authored synthetic fixture for the UI composition contract."
 	},
 	"sources": [
-		{"id": "ux", "kind": "ux", "path": "ux/ux-spec.json", "documentId": "field-journal-ux", "revision": "1"},
+		{
+			"id": "ux",
+			"kind": "ux",
+			"path": "ux/ux-spec.json",
+			"documentId": "field-journal-ux",
+			"revision": "1"
+		},
 		{
 			"id": "design-language",
 			"kind": "design-language",
@@ -18,8 +24,11 @@
 			"revision": 1
 		}
 	],
-	"uxSource": {"sourceId": "ux", "documentId": "field-journal-ux", "revision": "1"},
-	"designLanguageSource": {"sourceId": "design-language", "documentId": "example-design", "revision": 1},
+	"designLanguageSource": {
+		"sourceId": "design-language",
+		"documentId": "example-design",
+		"revision": 1
+	},
 	"tokens": [
 		{
 			"id": "space-medium",
@@ -27,7 +36,10 @@
 			"value": 16,
 			"unit": "px",
 			"status": "default",
-			"source": {"kind": "ui-default", "description": "Synthetic spacing used by this executable fixture."}
+			"source": {
+				"kind": "ui-default",
+				"description": "Synthetic spacing used by this executable fixture."
+			}
 		}
 	],
 	"templates": [
@@ -39,10 +51,22 @@
 			"status": "default",
 			"availability": "available",
 			"interaction": "presentational",
-			"html": {"renderer": "heading", "element": "h1", "className": "ui-heading"},
+			"html": {
+				"renderer": "heading",
+				"element": "h1",
+				"className": "ui-heading"
+			},
 			"supportedStates": ["default"],
-			"parameters": [{"id": "text", "required": true}],
-			"sizing": {"width": "fill", "height": "content"}
+			"parameters": [
+				{
+					"id": "text",
+					"required": true
+				}
+			],
+			"sizing": {
+				"width": "fill",
+				"height": "content"
+			}
 		},
 		{
 			"id": "record-list-placeholder",
@@ -52,10 +76,18 @@
 			"status": "unresolved",
 			"availability": "placeholder",
 			"interaction": "behavioral",
-			"html": {"renderer": "placeholder", "element": "section", "className": "ui-placeholder"},
-			"supportedStates": ["available"],
+			"html": {
+				"renderer": "placeholder",
+				"element": "section",
+				"className": "ui-placeholder"
+			},
+			"supportedStates": ["record-list-available"],
 			"parameters": [],
-			"sizing": {"width": "fill", "height": "fixed", "heightPx": 240}
+			"sizing": {
+				"width": "fill",
+				"height": "fixed",
+				"heightPx": 240
+			}
 		}
 	],
 	"assets": [],
@@ -68,60 +100,23 @@
 			"surfaceRef": "records-workspace",
 			"interactionFrameRef": "records-viewing",
 			"deferredInteractionNodeRefs": [],
-			"subject": {"kind": "surface", "ref": "records-workspace"},
-			"useCaseRefs": ["update-record"],
-			"state": "viewing",
-			"viewport": {"width": 960, "height": 640},
+			"subject": {
+				"kind": "surface",
+				"ref": "records-workspace"
+			},
+			"viewport": {
+				"width": 960,
+				"height": 640
+			},
 			"themeRef": "example-theme",
 			"uxQuestionRefs": [],
 			"uiQuestionRefs": [],
 			"unspecifiedRequirementRefs": ["record-list-template"],
-			"root": {
-				"id": "records-layout",
-				"kind": "region",
-				"uxRegionRef": "viewing-collection",
-				"layout": {
-					"mode": "grid",
-					"columns": [{"unit": "fr", "value": 1}],
-					"rows": [{"unit": "content"}, {"unit": "fr", "value": 1}],
-					"gap": {"tokenRef": "space-medium"},
-					"padding": {"tokenRef": "space-medium"},
-					"align": "stretch",
-					"justify": "start"
-				},
-				"children": [
-					{
-						"id": "title",
-						"kind": "component",
-						"templateRef": {"id": "heading", "version": "1"},
-						"state": "default",
-						"parameters": {"text": "Observation records"},
-						"styleRefs": [
-							{"kind": "typography-role", "id": "heading"},
-							{"kind": "color-role", "id": "body-text"}
-						],
-						"assetRefs": [],
-						"placement": {"row": 1, "column": 1}
-					},
-					{
-						"id": "record-list-instance",
-						"kind": "component",
-						"uxRef": "record-list",
-						"templateRef": {"id": "record-list-placeholder", "version": "1"},
-						"state": "available",
-						"interactionNodeRef": "open-record-affordance",
-						"actionRef": "open-record",
-						"parameters": {},
-						"styleRefs": [],
-						"assetRefs": [],
-						"placement": {"row": 2, "column": 1},
-						"placeholder": {
-							"label": "Record list — placeholder",
-							"description": "Shows available records until its reusable component template is implemented."
-						}
-					}
-				]
-			}
+			"stateRef": "viewing",
+			"depictsRefs": ["ux:frame:records-viewing", "ux:state:viewing"],
+			"partRef": "records-viewing-base",
+			"changes": [],
+			"flowRefs": ["update-record"]
 		}
 	],
 	"renderRequests": [
@@ -149,5 +144,98 @@
 		}
 	],
 	"uxChangeRequests": [],
-	"openQuestions": []
+	"openQuestions": [],
+	"uxArtifactBinding": {
+		"id": "field-journal-ux",
+		"revision": "1",
+		"sha256": "09930d3293f1f7ec49b28c56c9aaa073afe183814f29b0613bbefd1bf1c724dd"
+	},
+	"parts": [
+		{
+			"id": "records-viewing-base",
+			"root": {
+				"id": "records-layout",
+				"kind": "region",
+				"uxRegionRef": "viewing-collection",
+				"layout": {
+					"mode": "grid",
+					"columns": [
+						{
+							"unit": "fr",
+							"value": 1
+						}
+					],
+					"rows": [
+						{
+							"unit": "content"
+						},
+						{
+							"unit": "fr",
+							"value": 1
+						}
+					],
+					"gap": {
+						"tokenRef": "space-medium"
+					},
+					"padding": {
+						"tokenRef": "space-medium"
+					},
+					"align": "stretch",
+					"justify": "start"
+				},
+				"children": [
+					{
+						"id": "title",
+						"kind": "component",
+						"templateRef": {
+							"id": "heading",
+							"version": "1"
+						},
+						"state": "default",
+						"parameters": {
+							"text": "Observation records"
+						},
+						"styleRefs": [
+							{
+								"kind": "typography-role",
+								"id": "heading"
+							},
+							{
+								"kind": "color-role",
+								"id": "body-text"
+							}
+						],
+						"assetRefs": [],
+						"placement": {
+							"row": 1,
+							"column": 1
+						}
+					},
+					{
+						"id": "record-list-instance",
+						"kind": "component",
+						"uxRef": "record-list",
+						"templateRef": {
+							"id": "record-list-placeholder",
+							"version": "1"
+						},
+						"state": "record-list-available",
+						"interactionNodeRef": "open-record-affordance",
+						"actionRef": "open-record",
+						"parameters": {},
+						"styleRefs": [],
+						"assetRefs": [],
+						"placement": {
+							"row": 2,
+							"column": 1
+						},
+						"placeholder": {
+							"label": "Record list — placeholder",
+							"description": "Shows available records until its reusable component template is implemented."
+						}
+					}
+				]
+			}
+		}
+	]
 }

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.3",
+  "schemaVersion": "0.4",
   "id": "example-checkout",
   "title": "Example Checkout UX",
   "revision": "1",
@@ -68,34 +68,10 @@
       "surfaceRefs": [
         "checkout-workspace"
       ],
-      "useCaseRefs": [
-        "check-out-tool"
-      ],
-      "questionRefs": []
-    }
-  ],
-  "useCases": [
-    {
-      "id": "check-out-tool",
-      "name": "Check out a tool",
-      "featureRef": "checkout",
-      "goal": "Record one available tool as checked out to the selected borrowing member.",
-      "taskPriority": "primary",
-      "status": "accepted",
-      "trigger": "A workshop staff member needs to record a tool checkout.",
-      "preconditions": [
-        "Staff can identify an available tool and its borrowing member in the workspace."
-      ],
-      "actionRefs": [
-        "select-tool",
-        "select-member",
-        "record-checkout",
-        "cancel-checkout",
-        "begin-checkout"
-      ],
-      "outcome": "The checkout is recorded and its exact tool-member pairing remains visible until staff deliberately begin another checkout.",
       "questionRefs": [],
-      "entryNodeRef": "choose-tool"
+      "flowRefs": [
+        "check-out-tool"
+      ]
     }
   ],
   "surfaces": [
@@ -184,15 +160,62 @@
         "tool-field-edited",
         "tool-field-disabled"
       ],
-      "behaviorNodeRefs": [
-        "tool-field-behavior-1",
-        "tool-field-behavior-2",
-        "tool-field-behavior-3",
-        "tool-field-behavior-4",
-        "tool-field-behavior-5",
-        "tool-field-behavior-6"
-      ],
-      "entryBehaviorNodeRef": "tool-field-behavior-1"
+      "behaviors": [
+        {
+          "id": "tool-field-behavior-1",
+          "statement": "Use an ordinary semantic selection control with an accessible label, keyboard operation, and visible focus.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "tool-field-behavior-2",
+          "statement": "Keep the selected tool identifiable together with the borrowing member.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "tool-field-behavior-3",
+          "statement": "Selecting a tool never records a checkout.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "tool-field-behavior-4",
+          "statement": "Prevent changes while saving.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "tool-field-behavior-5",
+          "statement": "Retain the selected tool after failure.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "tool-field-behavior-6",
+          "statement": "After success, display the exact completed tool as read-only context even if it is no longer available for a new checkout.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        }
+      ]
     },
     {
       "id": "member-field",
@@ -215,15 +238,62 @@
         "member-field-edited",
         "member-field-disabled"
       ],
-      "behaviorNodeRefs": [
-        "member-field-behavior-1",
-        "member-field-behavior-2",
-        "member-field-behavior-3",
-        "member-field-behavior-4",
-        "member-field-behavior-5",
-        "member-field-behavior-6"
-      ],
-      "entryBehaviorNodeRef": "member-field-behavior-1"
+      "behaviors": [
+        {
+          "id": "member-field-behavior-1",
+          "statement": "Use an ordinary semantic selection control with an accessible label, keyboard operation, and visible focus.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "member-field-behavior-2",
+          "statement": "Keep the selected member identifiable together with the tool.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "member-field-behavior-3",
+          "statement": "Selecting a member never records a checkout.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "member-field-behavior-4",
+          "statement": "Prevent changes while saving.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "member-field-behavior-5",
+          "statement": "Retain the selected member after failure.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "member-field-behavior-6",
+          "statement": "After success, retain the exact completed member as read-only context.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        }
+      ]
     },
     {
       "id": "checkout-action",
@@ -245,15 +315,62 @@
         "checkout-action-available",
         "checkout-action-saving"
       ],
-      "behaviorNodeRefs": [
-        "checkout-action-behavior-1",
-        "checkout-action-behavior-2",
-        "checkout-action-behavior-3",
-        "checkout-action-behavior-4",
-        "checkout-action-behavior-5",
-        "checkout-action-behavior-6"
-      ],
-      "entryBehaviorNodeRef": "checkout-action-behavior-1"
+      "behaviors": [
+        {
+          "id": "checkout-action-behavior-1",
+          "statement": "Use an ordinary semantic command with keyboard activation and visible focus.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "checkout-action-behavior-2",
+          "statement": "Remain unavailable until exactly one available tool and one borrowing member are selected.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "checkout-action-behavior-3",
+          "statement": "Enter saving immediately when recording starts and suppress repeated pointer and keyboard activation until the result is known.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "checkout-action-behavior-4",
+          "statement": "Keep the submitted pair fixed during saving.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "checkout-action-behavior-5",
+          "statement": "After failure, present the same command as Retry checkout while retaining the pair.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "checkout-action-behavior-6",
+          "statement": "After success, do not offer recording of the completed pair again; expose Begin another checkout for deliberate continuation.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        }
+      ]
     },
     {
       "id": "checkout-status",
@@ -276,14 +393,53 @@
         "checkout-status-saved",
         "checkout-status-failed"
       ],
-      "behaviorNodeRefs": [
-        "checkout-status-behavior-1",
-        "checkout-status-behavior-2",
-        "checkout-status-behavior-3",
-        "checkout-status-behavior-4",
-        "checkout-status-behavior-5"
-      ],
-      "entryBehaviorNodeRef": "checkout-status-behavior-1"
+      "behaviors": [
+        {
+          "id": "checkout-status-behavior-1",
+          "statement": "Communicate meaningful status changes to keyboard and assistive-technology users without relying only on visual changes.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "checkout-status-behavior-2",
+          "statement": "Keep progress visible until success or failure.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "checkout-status-behavior-3",
+          "statement": "Keep success and the exact completed pair visible until staff deliberately begin another checkout.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "checkout-status-behavior-4",
+          "statement": "Keep failure visible with both selections retained until staff retry, correct a selection, or cancel.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "checkout-status-behavior-5",
+          "statement": "When staff correct a failed pair, return to editing and make clear that the corrected pair has not yet been recorded.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        }
+      ]
     }
   ],
   "actions": [
@@ -336,9 +492,7 @@
       "feedbackRefs": [
         "tool-selected"
       ],
-      "recoveryRefs": [
-        "tool-correction"
-      ]
+      "alternateRefs": []
     },
     {
       "id": "select-member",
@@ -389,9 +543,7 @@
       "feedbackRefs": [
         "member-selected"
       ],
-      "recoveryRefs": [
-        "member-correction"
-      ]
+      "alternateRefs": []
     },
     {
       "id": "record-checkout",
@@ -444,9 +596,7 @@
         "checkout-recorded",
         "checkout-recording-failed"
       ],
-      "recoveryRefs": [
-        "checkout-failure-recovery"
-      ]
+      "alternateRefs": []
     },
     {
       "id": "cancel-checkout",
@@ -495,9 +645,7 @@
       "feedbackRefs": [
         "checkout-canceled"
       ],
-      "recoveryRefs": [
-        "checkout-reselect"
-      ]
+      "alternateRefs": []
     },
     {
       "id": "begin-checkout",
@@ -545,7 +693,7 @@
       "feedbackRefs": [
         "checkout-begun"
       ],
-      "recoveryRefs": []
+      "alternateRefs": []
     }
   ],
   "interactionFrames": [
@@ -1113,80 +1261,6 @@
     }
   ],
   "patternResearch": [],
-  "pruningReview": {
-    "status": "accepted",
-    "summary": "One task uses one workspace. Review occurs through the visible pair, retry reuses the recording command, and correction reuses the selection controls. Cancel and Begin another checkout appear only in their meaningful states. Keyboard access remains an alternate input to the same actions.",
-    "taskReviews": [
-      {
-        "id": "checkout-pruning",
-        "taskRef": "check-out-tool",
-        "status": "accepted",
-        "canonicalStepRefs": [
-          "choose-tool",
-          "choose-member",
-          "record-pair"
-        ],
-        "reviewedActionRefs": [
-          "select-tool",
-          "select-member",
-          "record-checkout",
-          "cancel-checkout",
-          "begin-checkout"
-        ],
-        "decisions": [
-          {
-            "id": "retain-selections",
-            "disposition": "retain",
-            "candidate": "Direct tool and borrowing member selection",
-            "actionRefs": [
-              "select-tool",
-              "select-member"
-            ],
-            "rationale": "Both selections are required, and the same controls support correction and review.",
-            "result": "Retain one action for each selection, with keyboard input attached to that action."
-          },
-          {
-            "id": "merge-recording",
-            "disposition": "merge",
-            "candidate": "Separate record and retry commands",
-            "actionRefs": [
-              "record-checkout"
-            ],
-            "rationale": "Retry invokes the same recording outcome for the retained pair.",
-            "result": "Use one recording command whose presentation changes to Retry checkout after failure and whose saving state suppresses activation."
-          },
-          {
-            "id": "contextualize-cancel",
-            "disposition": "contextualize",
-            "candidate": "Cancel checkout",
-            "actionRefs": [
-              "cancel-checkout"
-            ],
-            "rationale": "Cancellation has a useful meaning only while an uncommitted attempt can be abandoned.",
-            "result": "Expose Cancel checkout in editing and failed, and omit it during saving and after success."
-          },
-          {
-            "id": "contextualize-begin",
-            "disposition": "contextualize",
-            "candidate": "Begin another checkout",
-            "actionRefs": [
-              "begin-checkout"
-            ],
-            "rationale": "Starting again must be deliberate after success so the completed pairing remains visible.",
-            "result": "Expose Begin another checkout only in saved."
-          },
-          {
-            "id": "remove-review-command",
-            "disposition": "remove",
-            "candidate": "A separate review command or confirmation surface",
-            "actionRefs": [],
-            "rationale": "The pair is already visible together in the single workspace before the explicit recording action.",
-            "result": "Keep review within the canonical selection-and-recording flow without adding another control or surface."
-          }
-        ]
-      }
-    ]
-  },
   "openQuestions": [],
   "productModelBinding": {
     "id": "example-checkout",
@@ -1195,570 +1269,6 @@
     "materialSha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "recordIndexSha256": "0000000000000000000000000000000000000000000000000000000000000000"
   },
-  "useCaseRelations": [],
-  "flowNodes": [
-    {
-      "id": "choose-tool",
-      "actor": "Workshop staff member",
-      "action": "Select one available tool.",
-      "actionRef": "select-tool",
-      "targetRef": "ux:component:tool-field",
-      "response": "The selected tool remains visibly identified in the current pair.",
-      "kind": "step",
-      "ownerRef": "ux:use-case:check-out-tool",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "choose-member",
-      "actor": "Workshop staff member",
-      "action": "Select the borrowing member.",
-      "actionRef": "select-member",
-      "targetRef": "ux:component:member-field",
-      "response": "The member remains visibly identified alongside the selected tool so staff can review the pair.",
-      "kind": "step",
-      "ownerRef": "ux:use-case:check-out-tool",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "record-pair",
-      "actor": "Workshop staff member",
-      "action": "Review the displayed pair and activate Record checkout.",
-      "actionRef": "record-checkout",
-      "targetRef": "ux:component:checkout-action",
-      "response": "The workspace enters saving, preserves the submitted pair, and prevents another submission. Success enters saved and retains the exact completed pairing.",
-      "kind": "step",
-      "ownerRef": "ux:use-case:check-out-tool",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "ownerRef": "ux:use-case:check-out-tool",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": [],
-      "id": "selection-order",
-      "kind": "alternative",
-      "prompt": "Staff identify the member before the tool.",
-      "response": "Either selection can be made first; recording still requires both. Complete the other selection and review the pair."
-    },
-    {
-      "ownerRef": "ux:use-case:check-out-tool",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": [],
-      "id": "incomplete-pair",
-      "kind": "alternative",
-      "prompt": "One or both selections are missing.",
-      "response": "Record checkout remains unavailable and the missing selection is apparent. Complete the selections using the same fields."
-    },
-    {
-      "ownerRef": "ux:use-case:check-out-tool",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": [],
-      "id": "correct-pair",
-      "kind": "alternative",
-      "prompt": "Staff notice an incorrect selection before recording.",
-      "response": "They can replace either selection directly without leaving the workspace. Review the corrected pair before recording."
-    },
-    {
-      "ownerRef": "ux:use-case:check-out-tool",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": [],
-      "id": "recording-pending",
-      "kind": "alternative",
-      "prompt": "Recording has started and its result is pending.",
-      "response": "The submitted pair remains visible, selection changes are unavailable, and further submission is suppressed. Wait for the saved or failed result; cancellation of an in-progress recording is not offered."
-    },
-    {
-      "ownerRef": "ux:use-case:check-out-tool",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": [],
-      "id": "recording-failed",
-      "kind": "alternative",
-      "prompt": "Recording fails.",
-      "response": "The workspace enters failed, retains both selections, and explains that recording failed. Retry through the existing recording command, correct either selection, or cancel the uncommitted attempt."
-    },
-    {
-      "ownerRef": "ux:use-case:check-out-tool",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": [],
-      "id": "cancel-attempt",
-      "kind": "alternative",
-      "prompt": "Staff abandon an uncommitted editing or failed attempt.",
-      "response": "Cancel checkout clears the selections and returns the workspace to empty. Staff may select a new pair; this action does not claim to undo a completed checkout."
-    },
-    {
-      "ownerRef": "ux:use-case:check-out-tool",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": [],
-      "id": "another-checkout",
-      "kind": "alternative",
-      "prompt": "The checkout has succeeded and staff want to continue.",
-      "response": "The completed pair remains visible until staff activate Begin another checkout. That deliberate action returns the workspace to empty and focuses tool selection."
-    },
-    {
-      "id": "tool-field-behavior-1",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:tool-field",
-      "componentRef": "tool-field",
-      "statement": "Use an ordinary semantic selection control with an accessible label, keyboard operation, and visible focus.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "tool-field-behavior-2",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:tool-field",
-      "componentRef": "tool-field",
-      "statement": "Keep the selected tool identifiable together with the borrowing member.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "tool-field-behavior-3",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:tool-field",
-      "componentRef": "tool-field",
-      "statement": "Selecting a tool never records a checkout.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "tool-field-behavior-4",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:tool-field",
-      "componentRef": "tool-field",
-      "statement": "Prevent changes while saving.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "tool-field-behavior-5",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:tool-field",
-      "componentRef": "tool-field",
-      "statement": "Retain the selected tool after failure.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "tool-field-behavior-6",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:tool-field",
-      "componentRef": "tool-field",
-      "statement": "After success, display the exact completed tool as read-only context even if it is no longer available for a new checkout.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "member-field-behavior-1",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:member-field",
-      "componentRef": "member-field",
-      "statement": "Use an ordinary semantic selection control with an accessible label, keyboard operation, and visible focus.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "member-field-behavior-2",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:member-field",
-      "componentRef": "member-field",
-      "statement": "Keep the selected member identifiable together with the tool.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "member-field-behavior-3",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:member-field",
-      "componentRef": "member-field",
-      "statement": "Selecting a member never records a checkout.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "member-field-behavior-4",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:member-field",
-      "componentRef": "member-field",
-      "statement": "Prevent changes while saving.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "member-field-behavior-5",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:member-field",
-      "componentRef": "member-field",
-      "statement": "Retain the selected member after failure.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "member-field-behavior-6",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:member-field",
-      "componentRef": "member-field",
-      "statement": "After success, retain the exact completed member as read-only context.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "checkout-action-behavior-1",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:checkout-action",
-      "componentRef": "checkout-action",
-      "statement": "Use an ordinary semantic command with keyboard activation and visible focus.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "checkout-action-behavior-2",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:checkout-action",
-      "componentRef": "checkout-action",
-      "statement": "Remain unavailable until exactly one available tool and one borrowing member are selected.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "checkout-action-behavior-3",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:checkout-action",
-      "componentRef": "checkout-action",
-      "statement": "Enter saving immediately when recording starts and suppress repeated pointer and keyboard activation until the result is known.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "checkout-action-behavior-4",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:checkout-action",
-      "componentRef": "checkout-action",
-      "statement": "Keep the submitted pair fixed during saving.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "checkout-action-behavior-5",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:checkout-action",
-      "componentRef": "checkout-action",
-      "statement": "After failure, present the same command as Retry checkout while retaining the pair.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "checkout-action-behavior-6",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:checkout-action",
-      "componentRef": "checkout-action",
-      "statement": "After success, do not offer recording of the completed pair again; expose Begin another checkout for deliberate continuation.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "checkout-status-behavior-1",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:checkout-status",
-      "componentRef": "checkout-status",
-      "statement": "Communicate meaningful status changes to keyboard and assistive-technology users without relying only on visual changes.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "checkout-status-behavior-2",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:checkout-status",
-      "componentRef": "checkout-status",
-      "statement": "Keep progress visible until success or failure.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "checkout-status-behavior-3",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:checkout-status",
-      "componentRef": "checkout-status",
-      "statement": "Keep success and the exact completed pair visible until staff deliberately begin another checkout.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "checkout-status-behavior-4",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:checkout-status",
-      "componentRef": "checkout-status",
-      "statement": "Keep failure visible with both selections retained until staff retry, correct a selection, or cancel.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "checkout-status-behavior-5",
-      "kind": "component-behavior",
-      "ownerRef": "ux:component:checkout-status",
-      "componentRef": "checkout-status",
-      "statement": "When staff correct a failed pair, return to editing and make clear that the corrected pair has not yet been recorded.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "cancel-current-checkout",
-      "kind": "step",
-      "ownerRef": "ux:use-case:check-out-tool",
-      "actor": "Workshop staff member",
-      "action": "Cancel checkout",
-      "actionRef": "cancel-checkout",
-      "targetRef": "ux:surface:checkout-workspace",
-      "response": "The uncommitted selections are cleared and the workspace returns to empty.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    },
-    {
-      "id": "begin-next-checkout",
-      "kind": "step",
-      "ownerRef": "ux:use-case:check-out-tool",
-      "actor": "Workshop staff member",
-      "action": "Begin another checkout",
-      "actionRef": "begin-checkout",
-      "targetRef": "ux:surface:checkout-workspace",
-      "response": "An empty checkout attempt replaces the completed pairing in the workspace without reversing the recorded checkout.",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "questionRefs": []
-    }
-  ],
-  "flowEdges": [
-    {
-      "id": "choose-tool-next",
-      "fromRef": "choose-tool",
-      "toRef": "ux:flow-node:choose-member",
-      "kind": "next",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ]
-    },
-    {
-      "id": "choose-member-next",
-      "fromRef": "choose-member",
-      "toRef": "ux:flow-node:record-pair",
-      "kind": "next",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ]
-    },
-    {
-      "id": "selection-order-branch",
-      "fromRef": "choose-tool",
-      "toRef": "ux:flow-node:selection-order",
-      "kind": "branches-to",
-      "condition": "Staff identify the member before the tool.",
-      "order": 1,
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ]
-    },
-    {
-      "id": "incomplete-pair-branch",
-      "fromRef": "record-pair",
-      "toRef": "ux:flow-node:incomplete-pair",
-      "kind": "branches-to",
-      "condition": "One or both selections are missing.",
-      "order": 2,
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ]
-    },
-    {
-      "id": "correct-pair-branch",
-      "fromRef": "record-pair",
-      "toRef": "ux:flow-node:correct-pair",
-      "kind": "branches-to",
-      "condition": "Staff notice an incorrect selection before recording.",
-      "order": 3,
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ]
-    },
-    {
-      "id": "recording-pending-branch",
-      "fromRef": "record-pair",
-      "toRef": "ux:flow-node:recording-pending",
-      "kind": "branches-to",
-      "condition": "Recording has started and its result is pending.",
-      "order": 4,
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ]
-    },
-    {
-      "id": "recording-failed-branch",
-      "fromRef": "record-pair",
-      "toRef": "ux:flow-node:recording-failed",
-      "kind": "branches-to",
-      "condition": "Recording fails.",
-      "order": 5,
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ]
-    },
-    {
-      "id": "cancel-attempt-branch",
-      "fromRef": "record-pair",
-      "toRef": "ux:flow-node:cancel-attempt",
-      "kind": "branches-to",
-      "condition": "Staff abandon an uncommitted editing or failed attempt.",
-      "order": 6,
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ]
-    },
-    {
-      "id": "another-checkout-branch",
-      "fromRef": "record-pair",
-      "toRef": "ux:flow-node:another-checkout",
-      "kind": "branches-to",
-      "condition": "The checkout has succeeded and staff want to continue.",
-      "order": 7,
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ]
-    },
-    {
-      "id": "cancel-attempt-next",
-      "fromRef": "cancel-attempt",
-      "toRef": "ux:flow-node:cancel-current-checkout",
-      "kind": "next",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ]
-    },
-    {
-      "id": "another-checkout-next",
-      "fromRef": "another-checkout",
-      "toRef": "ux:flow-node:begin-next-checkout",
-      "kind": "next",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ]
-    }
-  ],
   "states": [
     {
       "id": "empty",
@@ -2040,67 +1550,251 @@
       ]
     }
   ],
-  "recoveryPaths": [
+  "productRealizations": [],
+  "traceGaps": [],
+  "flows": [
     {
-      "id": "tool-correction",
-      "condition": "The selected tool is incorrect.",
-      "response": "Replace it directly through the same selection control, or cancel the uncommitted attempt.",
-      "actionRefs": [
-        "cancel-checkout"
-      ],
-      "ownerRef": "ux:action:select-tool",
+      "id": "check-out-tool",
+      "name": "Check out a tool",
+      "featureRef": "checkout",
+      "goal": "Record one available tool as checked out to the selected borrowing member.",
+      "taskPriority": "primary",
       "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
+      "trigger": "A workshop staff member needs to record a tool checkout.",
+      "preconditions": [
+        "Staff can identify an available tool and its borrowing member in the workspace."
       ],
-      "returnNodeRef": "choose-tool"
-    },
-    {
-      "id": "member-correction",
-      "condition": "The selected member is incorrect.",
-      "response": "Replace them directly through the same selection control, or cancel the uncommitted attempt.",
-      "actionRefs": [
-        "cancel-checkout"
+      "outcome": "The checkout is recorded and its exact tool-member pairing remains visible until staff deliberately begin another checkout.",
+      "questionRefs": [],
+      "elementRef": "ux:component:tool-field",
+      "steps": [
+        {
+          "id": "choose-tool",
+          "actor": "Workshop staff member",
+          "action": "Select one available tool.",
+          "actionRef": "select-tool",
+          "targetRef": "ux:component:tool-field",
+          "response": "The selected tool remains visibly identified in the current pair.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "choose-member",
+          "actor": "Workshop staff member",
+          "action": "Select the borrowing member.",
+          "actionRef": "select-member",
+          "targetRef": "ux:component:member-field",
+          "response": "The member remains visibly identified alongside the selected tool so staff can review the pair.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "record-pair",
+          "actor": "Workshop staff member",
+          "action": "Review the displayed pair and activate Record checkout.",
+          "actionRef": "record-checkout",
+          "targetRef": "ux:component:checkout-action",
+          "response": "The workspace enters saving, preserves the submitted pair, and prevents another submission. Success enters saved and retains the exact completed pairing.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        }
       ],
-      "ownerRef": "ux:action:select-member",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
+      "alternates": [
+        {
+          "id": "selection-order",
+          "afterStepRef": "choose-tool",
+          "condition": "Staff identify the member before the tool.",
+          "steps": [],
+          "outcome": "Either selection can be made first; recording still requires both. Complete the other selection and review the pair.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "incomplete-pair",
+          "afterStepRef": "record-pair",
+          "condition": "One or both selections are missing.",
+          "steps": [],
+          "outcome": "Record checkout remains unavailable and the missing selection is apparent. Complete the selections using the same fields.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "correct-pair",
+          "afterStepRef": "record-pair",
+          "condition": "Staff notice an incorrect selection before recording.",
+          "steps": [],
+          "outcome": "They can replace either selection directly without leaving the workspace. Review the corrected pair before recording.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "recording-pending",
+          "afterStepRef": "record-pair",
+          "condition": "Recording has started and its result is pending.",
+          "steps": [],
+          "outcome": "The submitted pair remains visible, selection changes are unavailable, and further submission is suppressed. Wait for the saved or failed result; cancellation of an in-progress recording is not offered.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "recording-failed",
+          "afterStepRef": "record-pair",
+          "condition": "Recording fails.",
+          "steps": [],
+          "outcome": "The workspace enters failed, retains both selections, and explains that recording failed. Retry through the existing recording command, correct either selection, or cancel the uncommitted attempt.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "cancel-attempt",
+          "afterStepRef": "record-pair",
+          "condition": "Staff abandon an uncommitted editing or failed attempt.",
+          "steps": [
+            {
+              "id": "cancel-current-checkout",
+              "actor": "Workshop staff member",
+              "action": "Cancel checkout",
+              "actionRef": "cancel-checkout",
+              "targetRef": "ux:surface:checkout-workspace",
+              "response": "The uncommitted selections are cleared and the workspace returns to empty.",
+              "status": "accepted",
+              "sourceRefs": [
+                "checkout-brief"
+              ],
+              "questionRefs": []
+            }
+          ],
+          "outcome": "Cancel checkout clears the selections and returns the workspace to empty. Staff may select a new pair; this action does not claim to undo a completed checkout.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        },
+        {
+          "id": "another-checkout",
+          "afterStepRef": "record-pair",
+          "condition": "The checkout has succeeded and staff want to continue.",
+          "steps": [
+            {
+              "id": "begin-next-checkout",
+              "actor": "Workshop staff member",
+              "action": "Begin another checkout",
+              "actionRef": "begin-checkout",
+              "targetRef": "ux:surface:checkout-workspace",
+              "response": "An empty checkout attempt replaces the completed pairing in the workspace without reversing the recorded checkout.",
+              "status": "accepted",
+              "sourceRefs": [
+                "checkout-brief"
+              ],
+              "questionRefs": []
+            }
+          ],
+          "outcome": "The completed pair remains visible until staff activate Begin another checkout. That deliberate action returns the workspace to empty and focuses tool selection.",
+          "status": "accepted",
+          "sourceRefs": [
+            "checkout-brief"
+          ],
+          "questionRefs": []
+        }
       ],
-      "returnNodeRef": "choose-member"
-    },
-    {
-      "id": "checkout-failure-recovery",
-      "condition": "Recording fails.",
-      "response": "Retain both selections and show failure. Retry through this same recording command, correct either selection before recording again, or cancel the attempt.",
-      "actionRefs": [
-        "select-tool",
-        "select-member",
-        "cancel-checkout"
-      ],
-      "ownerRef": "ux:action:record-checkout",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "returnNodeRef": "record-pair"
-    },
-    {
-      "id": "checkout-reselect",
-      "condition": "Staff want to make a checkout after canceling.",
-      "response": "Select the tool and borrowing member again.",
-      "actionRefs": [
-        "select-tool",
-        "select-member"
-      ],
-      "ownerRef": "ux:action:cancel-checkout",
-      "status": "accepted",
-      "sourceRefs": [
-        "checkout-brief"
-      ],
-      "returnNodeRef": "choose-tool"
+      "decisions": [
+        {
+          "id": "retain-selections",
+          "disposition": "retain",
+          "candidate": "Direct tool and borrowing member selection",
+          "actionRefs": [
+            "select-tool",
+            "select-member"
+          ],
+          "rationale": "Both selections are required, and the same controls support correction and review.",
+          "result": "Retain one action for each selection, with keyboard input attached to that action."
+        },
+        {
+          "id": "merge-recording",
+          "disposition": "merge",
+          "candidate": "Separate record and retry commands",
+          "actionRefs": [
+            "record-checkout"
+          ],
+          "rationale": "Retry invokes the same recording outcome for the retained pair.",
+          "result": "Use one recording command whose presentation changes to Retry checkout after failure and whose saving state suppresses activation."
+        },
+        {
+          "id": "contextualize-cancel",
+          "disposition": "contextualize",
+          "candidate": "Cancel checkout",
+          "actionRefs": [
+            "cancel-checkout"
+          ],
+          "rationale": "Cancellation has a useful meaning only while an uncommitted attempt can be abandoned.",
+          "result": "Expose Cancel checkout in editing and failed, and omit it during saving and after success."
+        },
+        {
+          "id": "contextualize-begin",
+          "disposition": "contextualize",
+          "candidate": "Begin another checkout",
+          "actionRefs": [
+            "begin-checkout"
+          ],
+          "rationale": "Starting again must be deliberate after success so the completed pairing remains visible.",
+          "result": "Expose Begin another checkout only in saved."
+        },
+        {
+          "id": "remove-review-command",
+          "disposition": "remove",
+          "candidate": "A separate review command or confirmation surface",
+          "actionRefs": [],
+          "rationale": "The pair is already visible together in the single workspace before the explicit recording action.",
+          "result": "Keep review within the canonical selection-and-recording flow without adding another control or surface."
+        }
+      ]
     }
   ],
-  "productRealizations": [],
-  "traceGaps": []
+  "repairNeeds": [
+    {
+      "reference": "select-tool",
+      "reason": "Recovery tool-correction needs a local alternate",
+      "remedy": "Inspect the preserved original input and repair only this local flow; retain independent migrated data."
+    },
+    {
+      "reference": "select-member",
+      "reason": "Recovery member-correction needs a local alternate",
+      "remedy": "Inspect the preserved original input and repair only this local flow; retain independent migrated data."
+    },
+    {
+      "reference": "record-checkout",
+      "reason": "Recovery checkout-failure-recovery needs a local alternate",
+      "remedy": "Inspect the preserved original input and repair only this local flow; retain independent migrated data."
+    },
+    {
+      "reference": "cancel-checkout",
+      "reason": "Recovery checkout-reselect needs a local alternate",
+      "remedy": "Inspect the preserved original input and repair only this local flow; retain independent migrated data."
+    }
+  ]
 }

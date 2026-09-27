@@ -14,17 +14,17 @@ export function assertUiPass(context, plan = null) {
 	if (
 		!ux ||
 		ux.artifactKind !== 'ux-design' ||
-		ux.artifactSchemaVersion !== '0.3' ||
+		ux.artifactSchemaVersion !== '0.4' ||
 		!ui ||
 		ui.artifactKind !== 'ui-composition' ||
-		ui.artifactSchemaVersion !== '0.3'
+		ui.artifactSchemaVersion !== '0.4'
 	) {
-		fail('Product document generation requires current UX 0.3 and UI composition 0.3 artifacts');
+		fail('Product document generation requires current UX 0.4 and UI composition 0.4 artifacts');
 	}
 	const uxSpec = decodePublicationDocument(ux.payload).document;
 	const spec = decodePublicationDocument(ui.payload).document;
 	if (
-		spec.schemaVersion !== '0.3' ||
+		spec.schemaVersion !== '0.4' ||
 		spec.uxArtifactBinding?.id !== uxSpec.id ||
 		!Array.isArray(spec.scenes) ||
 		!spec.scenes.length

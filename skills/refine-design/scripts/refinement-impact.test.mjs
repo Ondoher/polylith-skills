@@ -16,8 +16,8 @@ test('sanitized checkout fixtures expose their different alternative coverage', 
 	validateUxSpec(left);
 	validateUxSpec(right);
 	assert.notDeepEqual(left, right);
-	assert.equal(left.flowNodes.filter((node) => node.kind === 'alternative').length, 7);
-	assert.equal(right.flowNodes.filter((node) => node.kind === 'alternative').length, 8);
+	assert.equal(left.flows.flatMap((flow) => flow.alternates).length, 7);
+	assert.equal(right.flows.flatMap((flow) => flow.alternates).length, 8);
 	assert.equal(compareInteractionArchitectures(left, right).equivalent, false);
 });
 
@@ -50,7 +50,7 @@ test('compares broad interaction decisions without requiring identical prose or 
 	right.actions[0].canonicalInteraction.description = 'Use the available activation gesture.';
 	right.interactionFrames[0].purpose = 'Different but compatible explanation.';
 	right.interactionFrames[0].regions[0].content[0].text = 'Check the current information.';
-	right.pruningReview.taskReviews[0].decisions[0].rationale = 'This remains the canonical completion path.';
+	right.flows[0].decisions[0].rationale = 'This remains the canonical completion path.';
 	assert.equal(compareInteractionArchitectures(left, right).equivalent, true);
 	right.actions[0].presentationClass = 'menu-item';
 	assert.equal(compareInteractionArchitectures(left, right).equivalent, false);
@@ -75,12 +75,10 @@ test('broad interaction comparison remains sensitive to each material behavior c
 			spec.actions[0].cancellation.mode = 'unavailable';
 		},
 		(spec) => {
-			spec.recoveryPaths.find((item) => item.id === spec.actions[1].recoveryRefs[0]).actionRefs = [
-				spec.actions[0].id,
-			];
+			spec.flows[0].alternates[0].steps[0].actionRef = spec.actions[0].id;
 		},
 		(spec) => {
-			spec.pruningReview.taskReviews[0].decisions[0].disposition = 'remove';
+			spec.flows[0].decisions[0].disposition = 'remove';
 		},
 	];
 	for (const mutate of materiallyChanged) {

@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {UxFlows} from './ux-flows.mjs';
 import {guardDesignLocks} from './design-lock.mjs';
 import {
 	escapeMarkdownText,
@@ -10,7 +11,7 @@ import {
 } from './input-security.mjs';
 import {ROOT_BOUND_TARGETS, writeOwnedJsonArtifact} from './root-bound-artifact.mjs';
 
-const uxSchema = JSON.parse(fs.readFileSync(new URL('../references/ux-schema-0.3.json', import.meta.url), 'utf8'));
+const uxSchema = JSON.parse(fs.readFileSync(new URL('../references/ux-schema-0.4.json', import.meta.url), 'utf8'));
 const stableIdPattern = new RegExp(uxSchema.$defs.stableId.pattern);
 
 const statuses = new Set(['default', 'proposed', 'accepted', 'locked', 'unresolved']);
@@ -206,6 +207,8 @@ function validatePatternBasis(basis, label, ownerStatus, researchById) {
 
 /** Validate the bounded UX-to-UI handoff used by UX design mode. */
 export function validateUxSpec(spec) {
+	if (spec?.schemaVersion !== '0.4')
+		fail('Unsupported UX schema version; UX interaction architecture requires schema 0.4');
 	object(spec, 'UX specification');
 	validateStableIds(spec, uxSchema);
 	allowedKeys(
@@ -222,28 +225,22 @@ export function validateUxSpec(spec) {
 			'supportingDocuments',
 			'application',
 			'features',
-			'useCases',
+			'flows',
+			'repairNeeds',
 			'surfaces',
 			'components',
 			'actions',
 			'interactionFrames',
 			'patternResearch',
-			'pruningReview',
 			'openQuestions',
 			'productModelBinding',
-			'useCaseRelations',
-			'flowNodes',
-			'flowEdges',
 			'states',
 			'feedback',
-			'recoveryPaths',
 			'productRealizations',
 			'traceGaps',
 		],
 		'UX specification',
 	);
-	if (spec.schemaVersion !== '0.3')
-		fail('Unsupported UX schema version; UX interaction architecture requires schema 0.3');
 	text(spec.id, 'id');
 	text(spec.title, 'title');
 	text(spec.revision, 'revision');
@@ -315,17 +312,20 @@ export function validateUxSpec(spec) {
 
 	const areas = records(spec.application.areas, 'application.areas');
 	const features = records(spec.features, 'features');
-	const useCases = records(spec.useCases, 'useCases');
+	const useCases = records(spec.flows, 'useCases');
 	const surfaces = records(spec.surfaces, 'surfaces');
 	const components = records(spec.components, 'components');
 	const actions = records(spec.actions, 'actions');
 	const frames = records(spec.interactionFrames, 'interactionFrames');
 	const states = records(spec.states, 'states');
 	const feedback = records(spec.feedback, 'feedback');
-	const recoveries = records(spec.recoveryPaths, 'recoveryPaths');
-	const flowNodes = records(spec.flowNodes, 'flowNodes');
-	const flowEdges = records(spec.flowEdges, 'flowEdges');
-	const useCaseRelations = records(spec.useCaseRelations, 'useCaseRelations');
+	const flowIndex = UxFlows.validate(spec);
+	const steps = records([...flowIndex.steps.values()], 'steps');
+	const alternates = records([...flowIndex.alternates.values()], 'alternates');
+	const behaviors = records(
+		spec.components.flatMap((component) => component.behaviors),
+		'behaviors',
+	);
 	const productRealizations = records(spec.productRealizations, 'productRealizations');
 	const traceGaps = records(spec.traceGaps, 'traceGaps');
 	const researchRecords = records(spec.patternResearch, 'patternResearch');
@@ -337,8 +337,6 @@ export function validateUxSpec(spec) {
 	const framesById = new Map(frames.result.map((frame) => [frame.id, frame]));
 	const statesById = new Map(states.result.map((state) => [state.id, state]));
 	const feedbackById = new Map(feedback.result.map((item) => [item.id, item]));
-	const recoveryById = new Map(recoveries.result.map((item) => [item.id, item]));
-	const flowNodeById = new Map(flowNodes.result.map((item) => [item.id, item]));
 	const researchById = new Map(researchRecords.result.map((research) => [research.id, research]));
 
 	for (const area of areas.result) {
@@ -359,7 +357,7 @@ export function validateUxSpec(spec) {
 	for (const feature of features.result) {
 		allowedKeys(
 			feature,
-			['id', 'name', 'purpose', 'status', 'sourceRefs', 'surfaceRefs', 'useCaseRefs', 'questionRefs'],
+			['id', 'name', 'purpose', 'status', 'sourceRefs', 'surfaceRefs', 'flowRefs', 'questionRefs'],
 			`feature ${feature.id}`,
 		);
 		text(feature.name, `feature ${feature.id}.name`);
@@ -376,11 +374,11 @@ export function validateUxSpec(spec) {
 			`feature ${feature.id}.surfaceRefs`,
 		);
 		references(
-			uniqueTextList(feature.useCaseRefs, `feature ${feature.id}.useCaseRefs`),
+			uniqueTextList(feature.flowRefs, `feature ${feature.id}.flowRefs`),
 			useCases.ids,
-			`feature ${feature.id}.useCaseRefs`,
+			`feature ${feature.id}.flowRefs`,
 		);
-		for (const useCaseRef of feature.useCaseRefs) {
+		for (const useCaseRef of feature.flowRefs) {
 			if (useCasesById.get(useCaseRef).featureRef !== feature.id)
 				fail(
 					`feature ${feature.id} references use case ${useCaseRef} owned by ${useCasesById.get(useCaseRef).featureRef}`,
@@ -473,8 +471,7 @@ export function validateUxSpec(spec) {
 				'questionRefs',
 				'capabilities',
 				'stateRefs',
-				'behaviorNodeRefs',
-				'entryBehaviorNodeRef',
+				'behaviors',
 			],
 			`component ${component.id}`,
 		);
@@ -497,13 +494,13 @@ export function validateUxSpec(spec) {
 		for (const ref of component.stateRefs)
 			if (statesById.get(ref).ownerRef !== `ux:component:${component.id}`)
 				fail(`component ${component.id} state ${ref} has another owner`);
-		references(
-			uniqueTextList(component.behaviorNodeRefs, `component ${component.id}.behaviorNodeRefs`),
-			flowNodes.ids,
-			`component ${component.id}.behaviorNodeRefs`,
-		);
-		if (component.entryBehaviorNodeRef !== undefined)
-			reference(component.entryBehaviorNodeRef, flowNodes.ids, `component ${component.id}.entryBehaviorNodeRef`);
+		for (const behavior of records(component.behaviors, 'component behaviors').result) {
+			allowedKeys(behavior, ['id', 'statement', 'status', 'sourceRefs', 'questionRefs'], 'component behavior');
+			text(behavior.statement, 'component behavior statement');
+			status(behavior.status, 'component behavior');
+			references(behavior.sourceRefs, sources.ids, 'component behavior sourceRefs');
+			references(behavior.questionRefs, questions.ids, 'component behavior questionRefs');
+		}
 	}
 
 	for (const surface of surfaces.result) {
@@ -688,7 +685,7 @@ export function validateUxSpec(spec) {
 				'applicableStateRefs',
 				'feedbackRefs',
 				'cancellation',
-				'recoveryRefs',
+				'alternateRefs',
 				'patternBasis',
 				'questionRefs',
 			],
@@ -757,13 +754,13 @@ export function validateUxSpec(spec) {
 			if (feedbackById.get(ref).actionRef !== action.id)
 				fail(`${label} feedback ${ref} has another action owner`);
 		references(
-			uniqueTextList(action.recoveryRefs, `${label}.recoveryRefs`),
-			recoveries.ids,
-			`${label}.recoveryRefs`,
+			uniqueTextList(action.alternateRefs, 'action alternateRefs'),
+			alternates.ids,
+			'action alternateRefs',
 		);
-		for (const ref of action.recoveryRefs)
-			if (recoveryById.get(ref).ownerRef !== `ux:action:${action.id}`)
-				fail(`${label} recovery ${ref} has another owner`);
+		for (const ref of action.alternateRefs)
+			if (!action.taskRefs.some((id) => useCasesById.get(id).alternates.some((item) => item.id === ref)))
+				fail('Action alternate must belong to its flow');
 
 		object(action.cancellation, `${label}.cancellation`);
 		allowedKeys(action.cancellation, ['mode', 'description', 'actionRef'], `${label}.cancellation`);
@@ -784,7 +781,7 @@ export function validateUxSpec(spec) {
 			action.applicableStateRefs.map((ref) => statesById.get(ref).ownerRef.slice('ux:surface:'.length)),
 		);
 		for (const taskRef of actionTaskRefs) {
-			const taskActionRefs = useCasesById.get(taskRef).actionRefs;
+			const taskActionRefs = UxFlows.actionRefs(useCasesById.get(taskRef));
 			if (!Array.isArray(taskActionRefs) || !taskActionRefs.includes(action.id))
 				fail(`action ${action.id} task ${taskRef} does not list the action in actionRefs`);
 		}
@@ -796,15 +793,11 @@ export function validateUxSpec(spec) {
 				label: `action ${action.id}.cancellation.actionRef`,
 			});
 		}
-		for (const ref of action.recoveryRefs) {
-			const recovery = recoveryById.get(ref);
-			references(recovery.actionRefs, actions.ids, `action ${action.id} recovery ${recovery.id}.actionRefs`);
-			linkedActionRefs.push(
-				...recovery.actionRefs.map((actionRef) => ({
-					actionRef,
-					label: `action ${action.id} recovery ${recovery.id}.actionRefs`,
-				})),
-			);
+		for (const ref of action.alternateRefs) {
+			const alternate = flowIndex.alternates.get(ref);
+			for (const step of alternate.steps)
+				if (step.actionRef && step.actionRef !== action.id)
+					linkedActionRefs.push({actionRef: step.actionRef, label: 'alternate step'});
 		}
 		for (const linked of linkedActionRefs) {
 			if (linked.actionRef === action.id) fail(`${linked.label} cannot reference its owning action`);
@@ -840,8 +833,10 @@ export function validateUxSpec(spec) {
 				'status',
 				'trigger',
 				'preconditions',
-				'actionRefs',
-				'entryNodeRef',
+				'elementRef',
+				'steps',
+				'alternates',
+				'decisions',
 				'outcome',
 				'questionRefs',
 			],
@@ -854,10 +849,10 @@ export function validateUxSpec(spec) {
 		choice(useCase.taskPriority, taskPriorities, `use case ${useCase.id}.taskPriority`);
 		status(useCase.status, `use case ${useCase.id}`);
 		reference(useCase.featureRef, features.ids, `use case ${useCase.id}.featureRef`);
-		if (!features.result.find((feature) => feature.id === useCase.featureRef).useCaseRefs.includes(useCase.id))
-			fail(`use case ${useCase.id} is not listed by feature ${useCase.featureRef}.useCaseRefs`);
+		if (!features.result.find((feature) => feature.id === useCase.featureRef).flowRefs.includes(useCase.id))
+			fail(`use case ${useCase.id} is not listed by feature ${useCase.featureRef}.flowRefs`);
 		textList(useCase.preconditions, `use case ${useCase.id}.preconditions`);
-		const actionRefs = uniqueTextList(useCase.actionRefs, `use case ${useCase.id}.actionRefs`);
+		const actionRefs = uniqueTextList(UxFlows.actionRefs(useCase), `use case ${useCase.id}.actionRefs`);
 		references(actionRefs, actions.ids, `use case ${useCase.id}.actionRefs`);
 		if (actionRefs.length === 0) fail(`use case ${useCase.id}.actionRefs must not be empty`);
 		for (const actionRef of actionRefs) {
@@ -868,9 +863,6 @@ export function validateUxSpec(spec) {
 				fail(`resolved use case ${useCase.id} references unresolved action ${actionRef}`);
 		}
 		references(useCase.questionRefs, questions.ids, `use case ${useCase.id}.questionRefs`);
-		reference(useCase.entryNodeRef, flowNodes.ids, `${useCaseLabel}.entryNodeRef`);
-		if (flowNodeById.get(useCase.entryNodeRef).ownerRef !== `ux:use-case:${useCase.id}`)
-			fail(`${useCaseLabel}.entryNodeRef has another owner`);
 	}
 	if (!useCases.result.some((useCase) => useCase.taskPriority === 'primary'))
 		fail('useCases must include at least one primary task');
@@ -890,16 +882,16 @@ export function validateUxSpec(spec) {
 	const uxRefs = new Set();
 	const catalogs = {
 		feature: features,
-		'use-case': useCases,
+		flow: useCases,
 		surface: surfaces,
 		component: components,
 		action: actions,
 		frame: frames,
 		state: states,
 		feedback,
-		recovery: recoveries,
-		'flow-node': flowNodes,
-		'flow-edge': flowEdges,
+		alternate: alternates,
+		step: steps,
+		behavior: behaviors,
 		question: questions,
 	};
 	for (const [kind, catalog] of Object.entries(catalogs)) {
@@ -930,211 +922,6 @@ export function validateUxSpec(spec) {
 		if (!actionsById.get(item.actionRef).feedbackRefs.includes(item.id))
 			fail(`${label} is not listed by its action`);
 	}
-	for (const item of recoveries.result) {
-		const label = `recovery ${item.id}`;
-		allowedKeys(
-			item,
-			['id', 'ownerRef', 'condition', 'response', 'actionRefs', 'returnNodeRef', 'status', 'sourceRefs'],
-			label,
-		);
-		if (!/^ux:action:/.test(item.ownerRef) || !uxRefs.has(item.ownerRef))
-			fail(`${label}.ownerRef must identify an action`);
-		text(item.condition, `${label}.condition`);
-		text(item.response, `${label}.response`);
-		references(uniqueTextList(item.actionRefs, `${label}.actionRefs`), actions.ids, `${label}.actionRefs`);
-		reference(item.returnNodeRef, flowNodes.ids, `${label}.returnNodeRef`);
-		const returnOwner = flowNodeById.get(item.returnNodeRef).ownerRef;
-		const ownerAction = actionsById.get(item.ownerRef.slice('ux:action:'.length));
-		if (
-			!returnOwner.startsWith('ux:use-case:') ||
-			!ownerAction.taskRefs.includes(returnOwner.slice('ux:use-case:'.length))
-		) {
-			fail(`${label}.returnNodeRef must return to one of the owning action's use cases`);
-		}
-		status(item.status, label);
-		references(uniqueTextList(item.sourceRefs, `${label}.sourceRefs`), sources.ids, `${label}.sourceRefs`);
-	}
-	for (const item of flowNodes.result) {
-		const label = `flow node ${item.id}`;
-		allowedKeys(
-			item,
-			[
-				'id',
-				'kind',
-				'ownerRef',
-				'status',
-				'sourceRefs',
-				'questionRefs',
-				'actor',
-				'action',
-				'actionRef',
-				'targetRef',
-				'response',
-				'prompt',
-				'componentRef',
-				'statement',
-				'frameRef',
-			],
-			label,
-		);
-		choice(item.kind, new Set(['step', 'decision', 'alternative', 'component-behavior']), `${label}.kind`);
-		const ownerKind = item.kind === 'component-behavior' ? 'component' : 'use-case';
-		if (!item.ownerRef.startsWith(`ux:${ownerKind}:`) || !uxRefs.has(item.ownerRef))
-			fail(`${label}.ownerRef must identify a ${ownerKind}`);
-		status(item.status, label);
-		references(uniqueTextList(item.sourceRefs, `${label}.sourceRefs`), sources.ids, `${label}.sourceRefs`);
-		references(uniqueTextList(item.questionRefs, `${label}.questionRefs`), questions.ids, `${label}.questionRefs`);
-		if (item.kind === 'step') {
-			text(item.actor, `${label}.actor`);
-			text(item.action, `${label}.action`);
-			reference(item.actionRef, actions.ids, `${label}.actionRef`);
-			text(item.response, `${label}.response`);
-			if (!actionsById.get(item.actionRef).taskRefs.includes(item.ownerRef.slice('ux:use-case:'.length)))
-				fail(`${label}.actionRef must belong to its use case`);
-		} else if (item.kind === 'decision') text(item.prompt, `${label}.prompt`);
-		else if (item.kind === 'alternative') {
-			text(item.prompt, `${label}.prompt`);
-			text(item.response, `${label}.response`);
-		} else {
-			reference(item.componentRef, components.ids, `${label}.componentRef`);
-			text(item.statement, `${label}.statement`);
-		}
-		if (item.frameRef !== undefined) reference(item.frameRef, frames.ids, `${label}.frameRef`);
-		if (item.targetRef !== undefined && !uxRefs.has(item.targetRef)) fail(`${label}.targetRef is missing`);
-		if (item.kind === 'step' && /^ux:(surface|component):/.test(item.targetRef ?? '')) {
-			const targetId = item.targetRef.slice(item.targetRef.lastIndexOf(':') + 1);
-			const targetSurfaces = item.targetRef.startsWith('ux:surface:')
-				? [targetId]
-				: componentsById.get(targetId).surfaceRefs;
-			const actionSurfaces = actionsById
-				.get(item.actionRef)
-				.applicableStateRefs.map((ref) => statesById.get(ref).ownerRef.slice('ux:surface:'.length));
-			if (!targetSurfaces.some((ref) => actionSurfaces.includes(ref)))
-				fail(`${label}.targetRef does not share a surface with action ${item.actionRef}`);
-		}
-	}
-	for (const component of components.result) {
-		for (const ref of component.behaviorNodeRefs)
-			if (flowNodeById.get(ref).ownerRef !== `ux:component:${component.id}`)
-				fail(`component ${component.id} behavior node ${ref} has another owner`);
-		if (
-			component.entryBehaviorNodeRef !== undefined &&
-			!component.behaviorNodeRefs.includes(component.entryBehaviorNodeRef)
-		)
-			fail(`component ${component.id}.entryBehaviorNodeRef must belong to its behavior nodes`);
-	}
-	const outgoing = new Map();
-	for (const item of flowEdges.result) {
-		const label = `flow edge ${item.id}`;
-		allowedKeys(item, ['id', 'fromRef', 'toRef', 'kind', 'status', 'sourceRefs', 'order', 'condition'], label);
-		reference(item.fromRef, flowNodes.ids, `${label}.fromRef`);
-		if (!uxRefs.has(item.toRef)) fail(`${label}.toRef is missing`);
-		choice(
-			item.kind,
-			new Set(['next', 'branches-to', 'recovers-to', 'invokes', 'enters-state', 'emits-feedback']),
-			`${label}.kind`,
-		);
-		const targetKind =
-			item.kind === 'enters-state'
-				? 'ux:state:'
-				: item.kind === 'emits-feedback'
-					? 'ux:feedback:'
-					: item.kind === 'recovers-to'
-						? 'ux:recovery:'
-						: 'ux:flow-node:';
-		if (!item.toRef.startsWith(targetKind)) fail(`${label}.toRef must identify ${targetKind}`);
-		status(item.status, label);
-		references(uniqueTextList(item.sourceRefs, `${label}.sourceRefs`), sources.ids, `${label}.sourceRefs`);
-		if (item.order !== undefined) positiveInteger(item.order, `${label}.order`);
-		if (item.condition !== undefined) text(item.condition, `${label}.condition`);
-		const from = flowNodeById.get(item.fromRef);
-		if (targetKind === 'ux:flow-node:') {
-			const target = flowNodeById.get(item.toRef.slice(targetKind.length));
-			if (item.kind !== 'invokes' && from.ownerRef !== target.ownerRef)
-				fail(`${label} crosses owners without an invokes relation`);
-			if (item.kind === 'invokes' && (from.ownerRef === target.ownerRef || target.kind !== 'component-behavior'))
-				fail(`${label} must invoke shared component behavior`);
-		}
-		if (isResolved(item.status)) {
-			const target =
-				targetKind === 'ux:flow-node:'
-					? flowNodeById.get(item.toRef.slice(targetKind.length))
-					: targetKind === 'ux:state:'
-						? statesById.get(item.toRef.slice(targetKind.length))
-						: targetKind === 'ux:feedback:'
-							? feedbackById.get(item.toRef.slice(targetKind.length))
-							: recoveryById.get(item.toRef.slice(targetKind.length));
-			if (!isResolved(from.status) || !isResolved(target.status)) fail(`${label} has an unresolved endpoint`);
-		}
-		if (!outgoing.has(item.fromRef)) outgoing.set(item.fromRef, []);
-		outgoing.get(item.fromRef).push(item);
-	}
-	for (const [fromRef, edges] of outgoing) {
-		if (edges.filter((edge) => edge.kind === 'next').length > 1)
-			fail(`flow node ${fromRef} has ambiguous next edges`);
-		const branches = edges.filter((edge) => edge.kind === 'branches-to');
-		const orders = branches.map((edge) => edge.order);
-		if (
-			branches.length > 1 &&
-			(orders.some((order) => order === undefined) || new Set(orders).size !== orders.length)
-		) {
-			fail(`flow node ${fromRef} branches need distinct explicit order`);
-		}
-	}
-	for (const useCase of useCases.result) {
-		const owner = `ux:use-case:${useCase.id}`;
-		const seen = new Set([useCase.entryNodeRef]);
-		const queue = [useCase.entryNodeRef];
-		while (queue.length) {
-			const current = queue.shift();
-			for (const edge of outgoing.get(current) ?? []) {
-				if (edge.toRef.startsWith('ux:recovery:')) {
-					const target = recoveryById.get(edge.toRef.slice('ux:recovery:'.length)).returnNodeRef;
-					if (flowNodeById.get(target).ownerRef === owner && !seen.has(target)) {
-						seen.add(target);
-						queue.push(target);
-					}
-					continue;
-				}
-				if (!edge.toRef.startsWith('ux:flow-node:')) continue;
-				const target = edge.toRef.slice('ux:flow-node:'.length);
-				if (flowNodeById.get(target).ownerRef !== owner || seen.has(target)) continue;
-				seen.add(target);
-				queue.push(target);
-			}
-		}
-		for (const node of flowNodes.result.filter((item) => item.ownerRef === owner))
-			if (!seen.has(node.id)) fail(`use case ${useCase.id} cannot reach flow node ${node.id}`);
-		const reachesEnd = (id, exploring = new Set()) => {
-			if (exploring.has(id)) return false;
-			const forward = (outgoing.get(id) ?? []).filter((edge) =>
-				['next', 'branches-to', 'recovers-to'].includes(edge.kind),
-			);
-			if (!forward.length) return true;
-			const next = new Set(exploring).add(id);
-			return forward.some((edge) => {
-				const target =
-					edge.kind === 'recovers-to'
-						? recoveryById.get(edge.toRef.slice('ux:recovery:'.length)).returnNodeRef
-						: edge.toRef.slice('ux:flow-node:'.length);
-				return reachesEnd(target, next);
-			});
-		};
-		if (!reachesEnd(useCase.entryNodeRef)) fail(`use case ${useCase.id} has no terminating flow path`);
-		for (const actionRef of useCase.actionRefs)
-			if (!flowNodes.result.some((item) => item.ownerRef === owner && item.actionRef === actionRef))
-				fail(`use case ${useCase.id} action ${actionRef} has no flow step`);
-	}
-	for (const item of useCaseRelations.result) {
-		const label = `use case relation ${item.id}`;
-		allowedKeys(item, ['id', 'fromUseCaseRef', 'toUseCaseRef', 'kind', 'status', 'sourceRefs'], label);
-		reference(item.fromUseCaseRef, useCases.ids, `${label}.fromUseCaseRef`);
-		reference(item.toUseCaseRef, useCases.ids, `${label}.toUseCaseRef`);
-		if (item.fromUseCaseRef === item.toUseCaseRef) fail(`${label} cannot relate a use case to itself`);
-		choice(item.kind, new Set(['precedes', 'depends-on', 'extends', 'shares-behavior-with']), `${label}.kind`);
-		status(item.status, label);
-		references(uniqueTextList(item.sourceRefs, `${label}.sourceRefs`), sources.ids, `${label}.sourceRefs`);
-	}
 	for (const item of productRealizations.result) {
 		const label = `product realization ${item.id}`;
 		allowedKeys(item, ['id', 'productRef', 'uxRef', 'relation', 'status', 'rationale'], label);
@@ -1147,7 +934,13 @@ export function validateUxSpec(spec) {
 			const id = item.uxRef.slice(item.uxRef.lastIndexOf(':') + 1);
 			const catalog = catalogs[kind];
 			const target = catalog?.result.find((record) => record.id === id);
-			if (!target || !isResolved(target.status)) fail(`${label} has an unresolved UX endpoint`);
+			const ownerStatus =
+				kind === 'step'
+					? flowIndex.owners.get(id)?.status
+					: kind === 'alternate'
+						? spec.flows.find((flow) => flow.alternates.some((alternate) => alternate.id === id))?.status
+						: undefined;
+			if (!target || !isResolved(target.status ?? ownerStatus)) fail(`${label} has an unresolved UX endpoint`);
 		}
 		text(item.rationale, `${label}.rationale`);
 	}
@@ -1504,7 +1297,7 @@ export function validateUxSpec(spec) {
 	}
 
 	for (const feature of features.result) {
-		const featureTaskRefs = new Set(feature.useCaseRefs);
+		const featureTaskRefs = new Set(feature.flowRefs);
 		const usedSurfaceRefs = new Set();
 		for (const action of actions.result) {
 			if (action.taskRefs.some((taskRef) => featureTaskRefs.has(taskRef))) {
@@ -1521,85 +1314,28 @@ export function validateUxSpec(spec) {
 		}
 	}
 
-	object(spec.pruningReview, 'pruningReview');
-	allowedKeys(spec.pruningReview, ['status', 'summary', 'taskReviews'], 'pruningReview');
-	status(spec.pruningReview.status, 'pruningReview');
-	text(spec.pruningReview.summary, 'pruningReview.summary');
-	const taskReviews = records(spec.pruningReview.taskReviews, 'pruningReview.taskReviews');
-	const reviewsByTask = new Map();
-	for (const review of taskReviews.result) {
-		const label = `pruning review ${review.id}`;
-		allowedKeys(review, ['id', 'taskRef', 'status', 'canonicalStepRefs', 'reviewedActionRefs', 'decisions'], label);
-		reference(review.taskRef, useCases.ids, `${label}.taskRef`);
-		if (reviewsByTask.has(review.taskRef))
-			fail(`pruningReview contains duplicate review for task ${review.taskRef}`);
-		reviewsByTask.set(review.taskRef, review);
-		status(review.status, label);
-		const task = useCasesById.get(review.taskRef);
-		const canonicalStepRefs = uniqueTextList(review.canonicalStepRefs, `${label}.canonicalStepRefs`);
-		references(canonicalStepRefs, flowNodes.ids, `${label}.canonicalStepRefs`);
-		if (canonicalStepRefs.length === 0) fail(`${label}.canonicalStepRefs must contain a main path`);
-		for (const stepRef of canonicalStepRefs) {
-			const node = flowNodeById.get(stepRef);
-			if (node.kind !== 'step' || node.ownerRef !== `ux:use-case:${task.id}`)
-				fail(`${label}.canonicalStepRefs must identify this use case's steps`);
-		}
-		if (canonicalStepRefs[0] !== task.entryNodeRef) fail(`${label}.canonicalStepRefs must begin at the entry node`);
-		for (let index = 1; index < canonicalStepRefs.length; index += 1) {
-			const prior = canonicalStepRefs[index - 1];
-			if (
-				!(outgoing.get(prior) ?? []).some(
-					(edge) => edge.kind === 'next' && edge.toRef === `ux:flow-node:${canonicalStepRefs[index]}`,
-				)
-			) {
-				fail(`${label}.canonicalStepRefs must follow next edges`);
-			}
-		}
-		const reviewedActionRefs = uniqueTextList(review.reviewedActionRefs, `${label}.reviewedActionRefs`);
-		references(reviewedActionRefs, actions.ids, `${label}.reviewedActionRefs`);
-		exactSet(reviewedActionRefs, task.actionRefs, `${label}.reviewedActionRefs`);
-		const decisions = records(review.decisions, `${label}.decisions`);
-		if (decisions.result.length === 0) fail(`${label}.decisions must record the pruning result`);
-		const decidedActionRefs = [];
-		for (const decision of decisions.result) {
-			const decisionLabel = `${label} decision ${decision.id}`;
+	for (const flow of spec.flows) {
+		for (const decision of records(flow.decisions, 'flow decisions').result) {
 			allowedKeys(
 				decision,
 				['id', 'disposition', 'candidate', 'actionRefs', 'rationale', 'result'],
-				decisionLabel,
+				'flow decision',
 			);
-			choice(decision.disposition, pruningDispositions, `${decisionLabel}.disposition`);
-			text(decision.candidate, `${decisionLabel}.candidate`);
-			references(decision.actionRefs, actions.ids, `${decisionLabel}.actionRefs`);
-			if (decision.actionRefs.some((actionRef) => !task.actionRefs.includes(actionRef)))
-				fail(`${decisionLabel}.actionRefs must belong to task ${task.id}`);
-			if (decision.disposition === 'remove' && decision.actionRefs.length > 0)
-				fail(`${decisionLabel} cannot remove actions that remain in the accepted action catalog`);
+			choice(decision.disposition, pruningDispositions, 'flow decision disposition');
+			text(decision.candidate, 'flow decision candidate');
+			text(decision.rationale, 'flow decision rationale');
+			text(decision.result, 'flow decision result');
+			references(decision.actionRefs, new Set(UxFlows.actionRefs(flow)), 'flow decision actionRefs');
 			if (
-				decision.disposition === 'demote' &&
-				decision.actionRefs.some((actionRef) => actionsById.get(actionRef).priority === 'primary')
+				decision.disposition === 'remove' &&
+				decision.actionRefs.some((ref) => isResolved(actionsById.get(ref).status))
 			)
-				fail(`${decisionLabel} demoted actions cannot retain primary priority`);
-			if (
-				decision.disposition === 'contextualize' &&
-				decision.actionRefs.some((actionRef) => actionsById.get(actionRef).visibility.mode === 'always')
-			)
-				fail(`${decisionLabel} contextualized actions cannot remain always visible`);
-			decidedActionRefs.push(...decision.actionRefs);
-			text(decision.rationale, `${decisionLabel}.rationale`);
-			text(decision.result, `${decisionLabel}.result`);
+				fail('Flow decision cannot remove actions that remain accepted');
 		}
-		exactSet(decidedActionRefs, reviewedActionRefs, `${label}.decisions[].actionRefs`);
 	}
-	const resolvedPrimaryTasks = useCases.result.filter(
-		(useCase) => useCase.taskPriority === 'primary' && isResolved(useCase.status),
-	);
-	if (resolvedPrimaryTasks.length > 0 && !isResolved(spec.pruningReview.status))
-		fail('resolved primary tasks require a resolved pruningReview');
-	for (const task of resolvedPrimaryTasks) {
-		const review = reviewsByTask.get(task.id);
-		if (!review) fail(`primary task ${task.id} needs a pruning review`);
-		if (!isResolved(review.status)) fail(`primary task ${task.id} needs a resolved pruning review`);
+	for (const repair of list(spec.repairNeeds, 'repairNeeds')) {
+		allowedKeys(repair, ['reference', 'reason', 'remedy'], 'repair need');
+		for (const key of ['reference', 'reason', 'remedy']) text(repair[key], 'repair need ' + key);
 	}
 
 	for (const question of questions.result) {
@@ -1629,12 +1365,11 @@ export function renderPrd(spec) {
 	const areas = byId(spec.application.areas);
 	const features = byId(spec.features);
 	const surfaces = byId(spec.surfaces);
-	const useCases = byId(spec.useCases);
+	const useCases = byId(spec.flows);
 	const components = byId(spec.components);
 	const actions = byId(spec.actions);
 	const frames = byId(spec.interactionFrames);
 	const states = byId(spec.states);
-	const flowNodes = byId(spec.flowNodes);
 	const questions = byId(spec.openQuestions);
 	const lines = [
 		`# ${spec.product.name} Product Requirements Document`,
@@ -1709,8 +1444,8 @@ export function renderPrd(spec) {
 		if (feature.surfaceRefs.length) {
 			lines.push(`Surfaces: ${feature.surfaceRefs.map((ref) => surfaces.get(ref).name).join(', ')}.`, '');
 		}
-		if (feature.useCaseRefs.length) {
-			lines.push(`Workflows: ${feature.useCaseRefs.map((ref) => useCases.get(ref).name).join(', ')}.`, '');
+		if (feature.flowRefs.length) {
+			lines.push(`Workflows: ${feature.flowRefs.map((ref) => useCases.get(ref).name).join(', ')}.`, '');
 		}
 	}
 
@@ -1755,7 +1490,7 @@ export function renderPrd(spec) {
 	}
 
 	lines.push('## Workflows', '');
-	for (const useCase of spec.useCases) {
+	for (const useCase of spec.flows) {
 		lines.push(
 			`### ${useCase.name}`,
 			'',
@@ -1770,24 +1505,14 @@ export function renderPrd(spec) {
 			lines.push('Preconditions:', '', ...useCase.preconditions.map((value) => `- ${value}`), '');
 		}
 		lines.push('Interactions:', '');
-		const stepRefs = spec.pruningReview.taskReviews.find((review) => review.taskRef === useCase.id)
-			?.canonicalStepRefs ?? [useCase.entryNodeRef];
-		for (const [index, ref] of stepRefs.entries()) {
-			const step = flowNodes.get(ref);
-			if (step?.kind === 'step')
-				lines.push(
-					`${index + 1}. **${step.actor}:** ${actions.get(step.actionRef).name} - ${step.action} **Visible response:** ${step.response}`,
-				);
-		}
+		for (const [index, step] of useCase.steps.entries())
+			lines.push(`${index + 1}. **${step.actor}:** ${step.action} **Visible response:** ${step.response}`);
 		lines.push('', `Successful outcome: ${useCase.outcome}`, '');
-		const alternatives = spec.flowNodes.filter(
-			(node) => node.ownerRef === `ux:use-case:${useCase.id}` && node.kind === 'alternative',
-		);
-		if (alternatives.length) {
-			lines.push('Alternatives and recovery:', '');
-			for (const alternative of alternatives)
-				lines.push(`- **${alternative.prompt}:** ${alternative.response} (${alternative.status}).`);
-			lines.push('');
+		for (const alternate of useCase.alternates) {
+			lines.push(`Alternative: ${alternate.condition}`, '');
+			for (const [index, step] of alternate.steps.entries())
+				lines.push(`${index + 1}. ${step.action} — ${step.response}`);
+			lines.push(`Outcome: ${alternate.outcome} (${statusLabel(alternate.status ?? useCase.status)})`, '');
 		}
 		if (useCase.questionRefs.length) {
 			lines.push(
@@ -1831,6 +1556,14 @@ export function renderPrd(spec) {
 			);
 	}
 
+	lines.push('## Flow Decisions', '');
+	for (const flow of spec.flows)
+		for (const decision of flow.decisions)
+			lines.push(
+				`- ${decision.candidate}: ${decision.disposition}. ${decision.rationale} ${decision.result}`,
+				'',
+			);
+
 	lines.push('## Interaction Frames', '');
 	for (const frame of spec.interactionFrames) {
 		lines.push(
@@ -1865,15 +1598,7 @@ export function renderPrd(spec) {
 			);
 	}
 
-	lines.push('## Interaction Pruning', '', spec.pruningReview.summary, '');
-	for (const review of spec.pruningReview.taskReviews) {
-		lines.push(`### ${useCases.get(review.taskRef).name}`, '');
-		for (const decision of review.decisions)
-			lines.push(`- **${decision.disposition}:** ${decision.result} ${decision.rationale}`);
-		lines.push('');
-	}
-
-	lines.push('## Component Behavior', '');
+	lines.push('## Component Requirements', '');
 	for (const component of spec.components) {
 		lines.push(
 			`### ${component.name}`,
@@ -1888,7 +1613,7 @@ export function renderPrd(spec) {
 			'',
 			'Behavior:',
 			'',
-			...component.behaviorNodeRefs.map((ref) => `- ${flowNodes.get(ref).statement}`),
+			...component.behaviors.map((behavior) => `- ${behavior.statement}`),
 			'',
 			`Relevant states: ${component.stateRefs.map((ref) => states.get(ref).name).join(', ')}.`,
 			'',

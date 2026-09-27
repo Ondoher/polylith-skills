@@ -1,3 +1,5 @@
+import {UiParts} from './ui-parts.mjs';
+import {UxFlows} from './ux-flows.mjs';
 import {createHash} from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -75,6 +77,7 @@ const imageFitModes = new Set(['contain', 'cover']);
 const surfaceTreatments = new Set(['flat', 'outlined', 'elevation-1']);
 const imageSizeLimit = 20 * 1024 * 1024;
 const compositionRootKeys = [
+	'parts',
 	'schemaVersion',
 	'id',
 	'title',
@@ -518,16 +521,16 @@ function sourceBinding(value, kind, sources, actual, label) {
 function uxCatalog(uxSpec) {
 	validateUxSpec(uxSpec);
 	object(uxSpec, 'UX source');
-	if (uxSpec.schemaVersion !== '0.3') fail('UX source must use schema version 0.3');
+	if (uxSpec.schemaVersion !== '0.4') fail('UX source must use schema version 0.4');
 	text(uxSpec.id, 'UX source.id');
 	revision(uxSpec.revision, 'UX source.revision');
-	const useCases = records(uxSpec.useCases, 'UX source.useCases');
+	const useCases = records(uxSpec.flows, 'UX source.flows');
 	const surfaces = records(uxSpec.surfaces, 'UX source.surfaces');
 	const components = records(uxSpec.components, 'UX source.components');
 	const actions = records(uxSpec.actions, 'UX source.actions');
 	const interactionFrames = records(uxSpec.interactionFrames, 'UX source.interactionFrames');
 	const states = records(uxSpec.states, 'UX source.states');
-	const flowNodes = records(uxSpec.flowNodes, 'UX source.flowNodes');
+
 	const feedback = records(uxSpec.feedback, 'UX source.feedback');
 	const questions = records(uxSpec.openQuestions, 'UX source.openQuestions');
 	const actionsById = new Map(actions.result.map((item) => [item.id, item]));
@@ -567,7 +570,6 @@ function uxCatalog(uxSpec) {
 		actions,
 		interactionFrames,
 		states,
-		flowNodes,
 		feedback,
 		questions,
 		useCasesById: new Map(useCases.result.map((item) => [item.id, item])),
@@ -595,7 +597,9 @@ export function validateUiSpec(
 		[...compositionRootKeys, ...(documentKind === 'component' ? componentRootKeys : [])],
 		'UI specification',
 	);
-	if (spec.schemaVersion !== '0.3') fail('Unsupported UI composition schema version');
+	if (spec.schemaVersion !== '0.4') fail('Unsupported UI composition schema version');
+	const canonical = spec;
+	spec = UiParts.materialize(spec);
 	text(spec.id, 'id');
 	text(spec.title, 'title');
 	revision(spec.revision, 'revision');
@@ -1090,7 +1094,7 @@ export function validateUiSpec(
 				'interactionFrameRef',
 				'deferredInteractionNodeRefs',
 				'subject',
-				'useCaseRefs',
+				'flowRefs',
 				'stateRef',
 				'depictsRefs',
 				'viewport',
@@ -1132,8 +1136,8 @@ export function validateUiSpec(
 			if (!ux.componentsById.get(scene.subject.ref).surfaceRefs.includes(scene.surfaceRef))
 				fail(`scene ${scene.id}.subject component is not available on surface ${scene.surfaceRef}`);
 		}
-		references(scene.useCaseRefs, ux.useCases.ids, `scene ${scene.id}.useCaseRefs`);
-		for (const useCaseRef of scene.useCaseRefs) {
+		references(scene.flowRefs, ux.useCases.ids, `scene ${scene.id}.flowRefs`);
+		for (const useCaseRef of scene.flowRefs) {
 			if (!['accepted', 'locked'].includes(ux.useCasesById.get(useCaseRef).status))
 				fail(`scene ${scene.id} use case ${useCaseRef} must be accepted or locked`);
 			const featureRef = ux.useCasesById.get(useCaseRef).featureRef;
@@ -1152,18 +1156,18 @@ export function validateUiSpec(
 		const depictable = new Set([
 			`ux:frame:${frame.id}`,
 			`ux:state:${scene.stateRef}`,
-			...ux.flowNodes.result
-				.filter(
-					(node) =>
-						scene.useCaseRefs.some((ref) => node.ownerRef === `ux:use-case:${ref}`) ||
-						(node.kind === 'component-behavior' &&
-							scene.subject.kind === 'component' &&
-							node.ownerRef === `ux:component:${scene.subject.ref}`),
-				)
-				.map((node) => `ux:flow-node:${node.id}`),
+			...scene.flowRefs.flatMap((ref) =>
+				UxFlows.steps(ux.useCasesById.get(ref)).map((step) => `ux:step:${step.id}`),
+			),
+			...scene.flowRefs.flatMap((ref) =>
+				ux.useCasesById.get(ref).alternates.map((alternate) => `ux:alternate:${alternate.id}`),
+			),
+			...(scene.subject.kind === 'component'
+				? ux.componentsById.get(scene.subject.ref).behaviors.map((behavior) => `ux:behavior:${behavior.id}`)
+				: []),
 			...ux.feedback.result
 				.filter((item) =>
-					scene.useCaseRefs.some((ref) => ux.actionsById.get(item.actionRef)?.taskRefs.includes(ref)),
+					scene.flowRefs.some((ref) => ux.actionsById.get(item.actionRef)?.taskRefs.includes(ref)),
 				)
 				.map((item) => `ux:feedback:${item.id}`),
 		]);
@@ -1288,11 +1292,12 @@ export function validateUiSpec(
 			fail(`scene ${scene.id} needs one clean and one annotated render request`);
 	}
 
-	return spec;
+	return canonical;
 }
 
 /** Collect every UX record that the persisted composition directly consumes. */
 export function uiRequiredScopeRefs(spec) {
+	spec = UiParts.materialize(spec);
 	const refs = new Set();
 	const add = (value) => {
 		if (typeof value === 'string' && value !== '') refs.add(value);
@@ -1313,7 +1318,7 @@ export function uiRequiredScopeRefs(spec) {
 		add(scene.subject?.ref);
 		add(scene.stateRef);
 		addAll(scene.depictsRefs?.map((ref) => ref.slice(ref.lastIndexOf(':') + 1)));
-		addAll(scene.useCaseRefs);
+		addAll(scene.flowRefs);
 		addAll(scene.uxQuestionRefs);
 		addAll(scene.deferredInteractionNodeRefs);
 		if (scene.root) visit(scene.root);

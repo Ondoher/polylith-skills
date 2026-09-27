@@ -154,7 +154,7 @@ test('root-binds UI output and refuses linked or foreign targets without mutatio
 
 test('rejects a dangling UX component reference', () => {
 	const ui = proposal();
-	ui.scenes[0].root.children[1].uxRef = 'missing-component';
+	ui.parts[0].root.children[1].uxRef = 'missing-component';
 	assert.throws(
 		() => validateUiSpec(ui, {uxSpec: ux(), designLanguage: designLanguage()}),
 		/missing id missing-component/,
@@ -163,7 +163,7 @@ test('rejects a dangling UX component reference', () => {
 
 test('rejects a mismatched template version and unsupported state', () => {
 	const ui = proposal();
-	const node = ui.scenes[0].root.children[0];
+	const node = ui.parts[0].root.children[0];
 	node.templateRef.version = '2';
 	assert.throws(
 		() => validateUiSpec(ui, {uxSpec: ux(), designLanguage: designLanguage()}),
@@ -188,23 +188,23 @@ test('requires placeholder scenes to disclose partial completeness', () => {
 
 test('requires exact UX interaction bindings and permits explicit partial deferral', () => {
 	const wrongAction = proposal();
-	wrongAction.scenes[0].root.children[1].actionRef = 'save-record';
+	wrongAction.parts[0].root.children[1].actionRef = 'save-record';
 	assert.throws(
 		() => validateUiSpec(wrongAction, {uxSpec: ux(), designLanguage: designLanguage()}),
 		/must match UX affordance/,
 	);
 
 	const duplicate = proposal();
-	const copy = structuredClone(duplicate.scenes[0].root.children[1]);
+	const copy = structuredClone(duplicate.parts[0].root.children[1]);
 	copy.id = 'duplicate-command';
-	duplicate.scenes[0].root.children.push(copy);
-	duplicate.scenes[0].root.layout.rows.push({unit: 'content'});
+	duplicate.parts[0].root.children.push(copy);
+	duplicate.parts[0].root.layout.rows.push({unit: 'content'});
 	copy.placement.row = 3;
 	assert.throws(() => validateUiSpec(duplicate, {uxSpec: ux(), designLanguage: designLanguage()}), /more than once/);
 
 	const deferred = proposal();
-	deferred.scenes[0].root.children.pop();
-	deferred.scenes[0].root.layout.rows.pop();
+	deferred.parts[0].root.children.pop();
+	deferred.parts[0].root.layout.rows.pop();
 	deferred.scenes[0].deferredInteractionNodeRefs = ['open-record-affordance'];
 	assert.doesNotThrow(() => validateUiSpec(deferred, {uxSpec: ux(), designLanguage: designLanguage()}));
 	deferred.scenes[0].completeness = 'complete';
@@ -230,7 +230,7 @@ test('routes behavior changes upstream without authorizing unbound UI behavior',
 		},
 	];
 	assert.doesNotThrow(() => validateUiSpec(ui, {uxSpec: ux(), designLanguage: designLanguage()}));
-	ui.scenes[0].root.children[1].actionRef = 'invented-action';
+	ui.parts[0].root.children[1].actionRef = 'invented-action';
 	assert.throws(
 		() => validateUiSpec(ui, {uxSpec: ux(), designLanguage: designLanguage()}),
 		/must match UX affordance/,
@@ -262,7 +262,7 @@ test('requires semantic HTML template contracts and paired HTML render variants'
 
 test('rejects a child placed outside its declared grid', () => {
 	const ui = proposal();
-	ui.scenes[0].root.children[0].placement.row = 4;
+	ui.parts[0].root.children[0].placement.row = 4;
 	assert.throws(
 		() => validateUiSpec(ui, {uxSpec: ux(), designLanguage: designLanguage()}),
 		/exceeds the declared grid rows/,
@@ -284,10 +284,10 @@ test('rejects undeclared schema 0.2 properties at the root and nested contract s
 			ui.scenes[0].viewport.unreviewedMetadata = true;
 		},
 		(ui) => {
-			ui.scenes[0].root.layout.unreviewedMetadata = true;
+			ui.parts[0].root.layout.unreviewedMetadata = true;
 		},
 		(ui) => {
-			ui.scenes[0].root.children[0].templateRef.unreviewedMetadata = true;
+			ui.parts[0].root.children[0].templateRef.unreviewedMetadata = true;
 		},
 		(ui) => {
 			ui.renderRequests[0].unreviewedMetadata = true;
@@ -699,7 +699,7 @@ test('validates one bounded behavioral choice group without duplicating its UX a
 		{id: 'disabled', required: false},
 	];
 	template.sizing = {width: 'fill', height: 'content'};
-	const node = ui.scenes[0].root.children[1];
+	const node = ui.parts[0].root.children[1];
 	node.templateRef = {id: template.id, version: template.version};
 	node.parameters = {
 		label: 'Workspace',
@@ -739,7 +739,7 @@ test('accepts ordered headings only for list choice groups', () => {
 		{id: 'disabled', required: false},
 	];
 	template.sizing = {width: 'fill', height: 'content'};
-	const node = ui.scenes[0].root.children[1];
+	const node = ui.parts[0].root.children[1];
 	node.templateRef = {id: template.id, version: template.version};
 	node.parameters = {
 		label: 'Content',
