@@ -1,5 +1,7 @@
 # Direct MCP namespace follow-up
 
+**Subsequent diagnosis:** [Outgoing request capture](ux-request-capture-20260928.md) verified `parallel_tool_calls: false` in this client configuration over both HTTP and WebSocket, without model execution. That establishes a request-level restriction; the sequential result below should not be attributed to model instruction-following alone.
+
 **A documented Codex configuration exposes our MCP tools as native calls. The isolated test verified separate, byte-exact 28,000-byte results. It did not achieve the requested single-response batch: the model still generated the two reads sequentially.**
 
 This follows the [two earlier exposure checks](ux-native-mcp-20260928.md). Those checks changed the code-host feature, which did not expose direct calls. The more specific setting below succeeds without changing the model or modifying the MCP server.
