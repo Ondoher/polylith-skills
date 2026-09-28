@@ -412,3 +412,39 @@ type BoundedReadPage = {
 	/** Contiguous source fragments for programmatic validation and coverage tracking. */
 	parts: BoundedReadPart[];
 };
+
+/** Explicit inputs for current-schema UI replacement; prior paths prove existing ownership only. */
+type UiPersistenceOptions = {
+	/** Exact passing review of the incoming UI's UX dependency. */
+	uxReviewPath?: string;
+	/** Authoritative human-owned product description. */
+	productDescriptionPath?: string;
+	/** Source id when the UX artifact has multiple product descriptions. */
+	productDescriptionId?: string;
+	/** Canonical authority root for source and asset paths. */
+	sourceRoot?: string;
+	/** Explicit image-asset root within the source root when images are declared. */
+	assetRoot?: string;
+	/** Product document root owning the canonical UI target. */
+	productDocumentRoot?: string;
+	/** Exact current-schema UX dependency of an existing UI target, when different from incoming UX. */
+	existingUxPath?: string;
+	/** Exact current-schema design dependency of an existing UI target, when different from incoming design. */
+	existingDesignLanguagePath?: string;
+	/** Explicit owner reason for establishing a design lock. */
+	lockReason?: string;
+	/** Explicit owner reason for changing existing locked design. */
+	lockedChangeReason?: string;
+};
+
+/** Identity of the validated canonical UI source written by the persistence boundary. */
+type UiPersistenceResult = {
+	/** Absolute path of the canonical persisted UI source. */
+	output: string;
+	/** Preserved UI artifact identity. */
+	id: string;
+	/** Current contract's string or numeric revision value. */
+	revision: string | number;
+	/** Number of scene records in the persisted composition. */
+	sceneCount: number;
+};

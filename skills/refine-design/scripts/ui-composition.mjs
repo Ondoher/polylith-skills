@@ -1326,7 +1326,18 @@ export function uiRequiredScopeRefs(spec) {
 	return [...refs];
 }
 
-/** Validate and persist a canonical UI composition source for HTML comp rendering. */
+/** Call this method to validate and persist a canonical UI composition source.
+ * Existing targets require their exact dependencies; explicit prior paths are used
+ * only for ownership validation, never for incoming design or review validation.
+ * Invalid ownership, current inputs, review, target paths or lock changes throw before replacement.
+ *
+ * @param {string} inputPath - Incoming UI proposal file.
+ * @param {string} outputPath - Canonical UI target file.
+ * @param {string} uxPath - Current independently reviewed UX file.
+ * @param {string} designLanguagePath - Current design-language file.
+ * @param {UiPersistenceOptions} options - Authority, prior dependencies and lock reasons.
+ * @returns {UiPersistenceResult} - Persisted source identity and scene count.
+ */
 export function writeUiSpec(inputPath, outputPath, uxPath, designLanguagePath, options = {}) {
 	const spec = JSON.parse(fs.readFileSync(inputPath, 'utf8'));
 	const uxSource = fs.readFileSync(uxPath);
@@ -1368,7 +1379,18 @@ export function writeUiSpec(inputPath, outputPath, uxPath, designLanguagePath, o
 		relativeTarget,
 		value: spec,
 		validateExisting: (existing) => {
-			validateUiSpec(existing, {uxSpec, designLanguage, assetRoot, sourceRoot});
+			const existingUxSpec = options.existingUxPath
+				? JSON.parse(fs.readFileSync(path.resolve(options.existingUxPath), 'utf8'))
+				: uxSpec;
+			const existingDesignLanguage = options.existingDesignLanguagePath
+				? JSON.parse(fs.readFileSync(path.resolve(options.existingDesignLanguagePath), 'utf8'))
+				: designLanguage;
+			validateUiSpec(existing, {
+				uxSpec: existingUxSpec,
+				designLanguage: existingDesignLanguage,
+				assetRoot,
+				sourceRoot,
+			});
 			if (existing.id !== spec.id)
 				fail(`UI artifact identity ${existing.id} does not match incoming identity ${spec.id}`);
 		},
@@ -1392,7 +1414,7 @@ function cli(argumentsToParse) {
 	const productDocumentRoot = options.get('--product-document-root');
 	if (!input || !output || !ux || !designLanguage || !uxReview || !productDescription || !sourceRoot)
 		fail(
-			'Usage: node ui-composition.mjs --input <ui-spec.json> --ux <ux-spec.json> --ux-review <ux-review.json> --product-description <product-description.md> [--product-description-id <ux-source-id>] --source-root <authoritative-source-root> [--product-document-root <product/<name>>] --design-language <design-language.json> --output <ui-spec.json> [--asset-root <ui-asset-root> (required for image assets)] [--lock-reason <current-user-request>] [--locked-change-reason <current-user-request>]',
+			'Usage: node ui-composition.mjs --input <ui-spec.json> --ux <ux-spec.json> --ux-review <ux-review.json> --product-description <product-description.md> [--product-description-id <ux-source-id>] --source-root <authoritative-source-root> [--product-document-root <product/<name>>] --design-language <design-language.json> --output <ui-spec.json> [--existing-ux <prior-ux.json>] [--existing-design-language <prior-design-language.json>] [--asset-root <ui-asset-root> (required for image assets)] [--lock-reason <current-user-request>] [--locked-change-reason <current-user-request>]',
 		);
 	process.stdout.write(
 		`${JSON.stringify(
@@ -1402,6 +1424,8 @@ function cli(argumentsToParse) {
 				productDescriptionId: options.get('--product-description-id'),
 				sourceRoot: path.resolve(sourceRoot),
 				productDocumentRoot: productDocumentRoot ? path.resolve(productDocumentRoot) : undefined,
+				existingUxPath: options.get('--existing-ux'),
+				existingDesignLanguagePath: options.get('--existing-design-language'),
 				assetRoot: options.get('--asset-root')
 					? path.resolve(options.get('--asset-root'))
 					: path.dirname(path.resolve(input)),

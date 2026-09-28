@@ -536,6 +536,28 @@ test('visual persistence uses exact synthetic UX review and existing owned targe
 		);
 		assert.ok(result);
 		assert.ok(fs.existsSync(path.join(f.root, outputPath)));
+		if (kind === 'ui') {
+			const original = fs.readFileSync(path.join(f.root, outputPath), 'utf8');
+			for (const priorPathField of ['existingUxPath', 'existingDesignLanguagePath']) {
+				await assert.rejects(
+					f.execute('ui.persist', {
+						document,
+						outputPath,
+						uxPath,
+						designLanguagePath: 'design.json',
+						options: {
+							uxReviewPath: 'ux-review.json',
+							productDescriptionPath: 'product-description.md',
+							sourceRoot: '.',
+							productDocumentRoot: 'output',
+							[priorPathField]: '../outside-dependency.json',
+						},
+					}),
+					/outside|escape|within|root/i,
+				);
+				assert.equal(fs.readFileSync(path.join(f.root, outputPath), 'utf8'), original);
+			}
+		}
 	}
 	const applied = f.value(await f.execute('design.apply', {proposal: designProposal, baseFolder: 'design-output'}));
 	assert.equal(applied.revision, 1);

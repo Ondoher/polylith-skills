@@ -24,6 +24,20 @@ function sources(scenario, contents) {
 }
 const cli = fileURLToPath(new URL('./bounded-read.mjs', import.meta.url));
 
+test('CLI runs through an installed directory link and returns the exact bounded page', async (scenario) => {
+	const files = sources(scenario, ['linked instruction source']);
+	const installed = path.join(path.dirname(files[0]), 'installed-scripts');
+	fs.symlinkSync(path.dirname(cli), installed, 'junction');
+	const result = spawnSync(process.execPath, [path.join(installed, 'bounded-read.mjs'), ...files], {
+		encoding: 'utf8',
+		windowsHide: true,
+	});
+	assert.ifError(result.error);
+	assert.equal(result.status, 0, result.stderr);
+	assert.equal(result.stderr, '');
+	assert.equal(result.stdout, (await readBoundedBatch(files)).text);
+});
+
 test('one batch budget includes every file, framing and cursor; continuations reconstruct exact input', async (scenario) => {
 	const contents = [
 		'',

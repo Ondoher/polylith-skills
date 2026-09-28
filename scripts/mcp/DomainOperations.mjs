@@ -220,6 +220,8 @@ export class DomainOperations {
 								'sourceRoot',
 								'assetRoot',
 								'productDocumentRoot',
+								'existingUxPath',
+								'existingDesignLanguagePath',
 							],
 							context,
 						),

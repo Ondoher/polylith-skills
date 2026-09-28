@@ -223,7 +223,7 @@ export async function readBoundedBatch(files, options = {}) {
 	return {batch, text: output, bytes: Buffer.byteLength(output), next, parts};
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (process.argv[1] && (await fs.realpath(process.argv[1]).catch(() => null)) === fileURLToPath(import.meta.url)) {
 	try {
 		const {values, positionals} = parseArgs({
 			options: {cursor: {type: 'string'}, 'max-bytes': {type: 'string'}},

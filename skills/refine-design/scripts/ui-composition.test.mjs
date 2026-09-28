@@ -108,6 +108,79 @@ test('persists UI below a product document root while resolving sources from the
 	assert.equal(JSON.parse(fs.readFileSync(output, 'utf8')).id, proposal().id);
 });
 
+test('updates owned UI against exact prior dependencies while preserving current validation and locks', (scenario) => {
+	const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'ui-prior-dependencies-'));
+	scenario.after(() => fs.rmSync(directory, {recursive: true, force: true}));
+	const paths = writeInputs(directory);
+	const output = uiOutput(directory);
+	write(paths, output);
+	const original = fs.readFileSync(output, 'utf8');
+	const existingUxPath = path.join(directory, 'prior-ux.json');
+	const existingDesignLanguagePath = path.join(directory, 'prior-design.json');
+	fs.copyFileSync(paths.uxPath, existingUxPath);
+	fs.copyFileSync(paths.designPath, existingDesignLanguagePath);
+	const nextUx = ux();
+	nextUx.revision = '2';
+	const nextUxSource = `${JSON.stringify(nextUx, null, 2)}\n`;
+	fs.writeFileSync(paths.uxPath, nextUxSource);
+	const nextDesign = designLanguage();
+	nextDesign.revision = 2;
+	fs.writeFileSync(paths.designPath, JSON.stringify(nextDesign));
+	const nextUi = proposal();
+	nextUi.revision = '2';
+	nextUi.uxArtifactBinding = {
+		id: nextUx.id,
+		revision: nextUx.revision,
+		sha256: createHash('sha256').update(canonicalPublicationJson(nextUx)).digest('hex'),
+	};
+	nextUi.sources.find((source) => source.kind === 'ux').revision = nextUx.revision;
+	nextUi.sources.find((source) => source.kind === 'design-language').revision = nextDesign.revision;
+	nextUi.designLanguageSource.revision = nextDesign.revision;
+	fs.writeFileSync(paths.input, JSON.stringify(nextUi));
+	const priorOptions = {existingUxPath, existingDesignLanguagePath};
+	assert.throws(() => write(paths, output, priorOptions), /subject\.uxArtifact\.revision/);
+	assert.equal(fs.readFileSync(output, 'utf8'), original);
+	const review = JSON.parse(fs.readFileSync(paths.uxReviewPath, 'utf8'));
+	review.subject = createUxReviewSubject({
+		uxSpec: nextUx,
+		uxSource: nextUxSource,
+		uxArtifactPath: paths.uxPath,
+		productDescriptionSource,
+		productDescriptionPath: paths.productDescriptionPath,
+		sourceRoot: directory,
+		scopeRefs: [nextUx.id],
+	});
+	fs.writeFileSync(paths.uxReviewPath, JSON.stringify(review));
+	const invalidIncoming = structuredClone(nextUi);
+	invalidIncoming.uxArtifactBinding.sha256 = '0'.repeat(64);
+	fs.writeFileSync(paths.input, JSON.stringify(invalidIncoming));
+	assert.throws(() => write(paths, output, priorOptions), /uxArtifactBinding/);
+	fs.writeFileSync(paths.input, JSON.stringify(nextUi));
+	assert.throws(() => write(paths, output), /Existing UI artifact/);
+	assert.equal(fs.readFileSync(output, 'utf8'), original);
+	const priorUx = fs.readFileSync(existingUxPath, 'utf8');
+	fs.writeFileSync(existingUxPath, nextUxSource);
+	assert.throws(() => write(paths, output, priorOptions), /uxArtifactBinding/);
+	fs.writeFileSync(existingUxPath, priorUx);
+	const obsoleteUx = JSON.parse(priorUx);
+	obsoleteUx.schemaVersion = '0.3';
+	fs.writeFileSync(existingUxPath, JSON.stringify(obsoleteUx));
+	assert.throws(() => write(paths, output, priorOptions), /Existing UI artifact/);
+	fs.writeFileSync(existingUxPath, priorUx);
+	const locked = JSON.parse(original);
+	locked.status = 'locked';
+	fs.writeFileSync(output, JSON.stringify(locked));
+	assert.throws(() => write(paths, output, priorOptions), /locked/i);
+	assert.equal(JSON.parse(fs.readFileSync(output, 'utf8')).status, 'locked');
+	fs.writeFileSync(output, original);
+	const result = write(paths, output, priorOptions);
+	assert.equal(result.revision, '2');
+	assert.equal(JSON.parse(fs.readFileSync(output, 'utf8')).uxArtifactBinding.revision, '2');
+	const updated = fs.readFileSync(output, 'utf8');
+	write(paths, output);
+	assert.equal(fs.readFileSync(output, 'utf8'), updated);
+});
+
 test('rejects obsolete and future design-language dependencies before UI output', () => {
 	for (const schemaVersion of ['0.13', '0.15']) {
 		const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'ui-design-language-version-'));

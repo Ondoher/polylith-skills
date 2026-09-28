@@ -60,12 +60,16 @@ node scripts/ui-composition.mjs \
   --product-description <product-description.md> \
   --source-root <authoritative-source-root> \
   [--product-document-root <product/<name>>] \
+  [--existing-ux <prior-ux.json>] \
+  [--existing-design-language <prior-design-language.json>] \
   --design-language <design-language.json> \
   --output <ui-spec.json> \
   [--asset-root <ui-asset-root>]
 ```
 
 `--source-root` is the canonical base for paths declared by the UX artifact and the authority boundary for UI assets; for repository-relative source paths, pass the repository root even when the UX artifact is stored deeper. Pass `--product-document-root` when generated support files live under `product/<name>` rather than at the repository root; the UI output must then be `<product-document-root>/ui/ui-spec.json`. The selected source path and `--product-description` must resolve to the same real file. Use `--product-description-id <ux-source-id>` when the UX artifact has multiple human-owned product-description sources. `--asset-root` is required exactly when the proposal declares image assets, and that root must remain inside the same source root after realpath resolution.
+
+When replacing an existing composition whose dependencies have advanced, supply its exact prior dependency files through `--existing-ux` and, when needed, `--existing-design-language` (`existingUxPath` / `existingDesignLanguagePath` in `ui.persist` options). These inputs validate ownership of the existing target using the same current schemas and exact bindings. The incoming composition still requires current dependencies and their passing independent review. Identity, root confinement and lock checks remain mandatory. Omit prior paths when replaying the newly persisted composition against its current dependencies.
 
 Validation checks the closed schema 0.4 shapes, exact source revisions, interaction-frame/node/action traceability, deferral completeness, UX change-request shape, design roles, templates and versions, supported states, parameters, Grid placement, paths, placeholder disclosure, and one clean plus one annotated request per scene. Before replacing the saved source, the writer also recomputes the current product-description and UX hashes and requires a `pass` receipt whose expanded reviewed scope covers every UX record consumed by the UI. Missing, stale, `revise`, or out-of-scope receipts fail without writing. It rejects a behavior-changing node that is justified only by an open UX change request.
 

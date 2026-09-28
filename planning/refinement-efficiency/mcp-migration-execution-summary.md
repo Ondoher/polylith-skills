@@ -4,6 +4,12 @@ The agreed migration is complete: all six goals are verified, all 16 agents and 
 
 This implements and verifies a direct mechanical path. It does **not** establish a sub-minute full refinement or a measured end-to-end speedup. The live specialist test still spent almost two minutes in its overall agent window.
 
+The subsequent [complete reversible Alexa refinement](alexa-mcp-refinement-20260928.md)
+records the full live workflow, encountered repairs, rollback protection and
+[granular timing evidence](alexa-mcp-refinement-20260928-metrics.json). It completed
+in 2h 9m 12s through the refinement client's exit; it is not a controlled comparison
+with the earlier partial runs.
+
 ## Completed work
 
 | Goal                      | Result and evidence                                                                                                                                                                                                                                                        |
