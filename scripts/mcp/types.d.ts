@@ -33,6 +33,8 @@ interface WorkflowServiceOptions {
 	stateDirectory?: string;
 	/** Closed maintained operation definitions. */
 	operations?: Record<string, WorkflowOperation>;
+	/** Configured read-content ceiling in UTF-8 bytes; defaults to 7000. */
+	pageBytes?: number;
 }
 
 /** A run's immutable source locations, not a guarantee that file contents remain current. */

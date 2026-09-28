@@ -10,7 +10,13 @@ if (!workspace || process.argv.length > 4)
 const port = Number(process.argv[3] ?? 0);
 if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error('Invalid port');
 const worker = new OperationWorker();
-const service = new WorkflowService({workspace: path.resolve(workspace), operations: worker.operations});
+const service = new WorkflowService({
+	workspace: path.resolve(workspace),
+	operations: worker.operations,
+	...(process.env.POLYLITH_MCP_PAGE_BYTES === undefined
+		? {}
+		: {pageBytes: Number(process.env.POLYLITH_MCP_PAGE_BYTES)}),
+});
 const token = process.env.POLYLITH_MCP_TOKEN ?? randomBytes(32).toString('hex');
 const server = new McpHttpServer(service, token);
 const url = await server.listen(port);
@@ -21,6 +27,7 @@ const ready = {
 	instance: service.instance,
 	pid: process.pid,
 	access: service.ownerAccess,
+	readLimits: service.readLimits,
 	...(!process.env.POLYLITH_MCP_TOKEN ? {token} : {}),
 };
 if (process.send) process.send(ready);

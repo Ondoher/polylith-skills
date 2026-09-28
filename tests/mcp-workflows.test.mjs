@@ -83,10 +83,14 @@ test('shutdown stops admission and drains an accepted background operation befor
  * @param {object} scenario - Test lifecycle.
  * @returns {Promise<object>} - Client, owner service and cleanup.
  */
-async function fixture(scenario, extraOperations = {}) {
+async function fixture(scenario, extraOperations = {}, serviceOptions = {}) {
 	const root = fs.mkdtempSync(path.join(os.tmpdir(), 'workflow-mcp-'));
 	const worker = new OperationWorker();
-	const service = new WorkflowService({workspace: root, operations: {...worker.operations, ...extraOperations}});
+	const service = new WorkflowService({
+		workspace: root,
+		operations: {...worker.operations, ...extraOperations},
+		...serviceOptions,
+	});
 	const token = randomBytes(32).toString('hex');
 	const server = new McpHttpServer(service, token);
 	const url = await server.listen();
@@ -135,10 +139,42 @@ async function fixture(scenario, extraOperations = {}) {
 	return {root, worker, service, server, url, token, rpc, call, access, run, execute, value};
 }
 
+test('configured read windows advertise their cap and preserve escaped UTF-8 across pages', async (scenario) => {
+	const f = await fixture(scenario, {}, {pageBytes: 28000});
+	const catalog = await f.rpc('tools/list', {});
+	assert.equal(
+		catalog.tools.find((tool) => tool.name === 'workflow_read').inputSchema.properties.maxBytes.maximum,
+		28000,
+	);
+	assert.equal((await f.call('status', {access: f.access, run: f.run})).readLimits.pageBytes, 28000);
+	const value = {text: 'quoted "value" é🙂\\\n'.repeat(2600)};
+	const receipt = await f.call('store', {access: f.access, run: f.run, value});
+	const fragments = [];
+	let offset = 0;
+	do {
+		const page = await f.call('read', {access: f.access, handle: receipt.handle, offset});
+		assert.ok(Buffer.byteLength(page.text) <= 28000);
+		assert.ok(Buffer.byteLength(JSON.stringify(page)) <= f.service.readLimits.envelopeBytes);
+		assert.equal(page.offset, offset);
+		assert.ok(page.nextOffset === null || page.nextOffset > offset);
+		fragments.push(page.text);
+		offset = page.nextOffset;
+	} while (offset !== null);
+	assert.deepEqual(JSON.parse(fragments.join('')), value);
+	assert.equal(createHash('sha256').update(fragments.join('')).digest('hex'), receipt.sha256);
+	for (const pageBytes of [6999, 112001, NaN, 7000.5])
+		assert.throws(() => new WorkflowService({workspace: f.root, pageBytes}), /Page limit/);
+});
+
 test('two HTTP clients share a run, exact handles, assigned delivery, bounded reads and operation timings', async (scenario) => {
 	const f = await fixture(scenario);
 	assert.equal((await f.rpc('initialize', {})).serverInfo.name, 'polylith-workflows');
 	assert.equal((await f.rpc('tools/list', {})).tools.length, 7);
+	assert.equal(
+		(await f.rpc('tools/list', {})).tools.find((tool) => tool.name === 'workflow_read').inputSchema.properties
+			.maxBytes.maximum,
+		7000,
+	);
 	const second = await fetch(f.url, {
 		method: 'POST',
 		headers: {authorization: `Bearer ${f.token}`, 'content-type': 'application/json'},

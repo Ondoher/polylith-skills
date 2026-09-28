@@ -7,7 +7,14 @@ import {createInterface} from 'node:readline';
 import {randomBytes, createHash} from 'node:crypto';
 
 const workspace = fileURLToPath(new URL('../../../../', import.meta.url));
-const output = path.join(workspace, '.codex-tmp/ux-collection-phase-20260928');
+const pageArgument = process.argv.find((value) => value.startsWith('--page-bytes='));
+const pageBytes = Number(pageArgument?.slice(13) ?? 7000);
+const probe = process.argv.includes('--probe');
+const windowExperiment = Boolean(pageArgument) || probe;
+const output = path.join(
+	workspace,
+	windowExperiment ? '.codex-tmp/ux-read-window-20260928' : '.codex-tmp/ux-collection-phase-20260928',
+);
 const tooling = path.join(workspace, '.codex-tmp/ux-mcp-replay-20260928');
 fs.mkdirSync(output, {recursive: true});
 const prior = path.join(workspace, '.codex-tmp/ux-comparison-replay-20260928-160822');
@@ -25,10 +32,13 @@ const token = randomBytes(32).toString('hex');
 const environment = {
 	...process.env,
 	POLYLITH_MCP_TOKEN: token,
+	POLYLITH_MCP_PAGE_BYTES: String(pageBytes),
 	RUST_LOG: 'warn,codex_core::stream_events_utils=debug,codex_core::tools::parallel=debug',
 };
 const control = {
-	experiment: 'prescribed-collection-phase',
+	experiment: windowExperiment ? 'ux-read-window' : 'prescribed-collection-phase',
+	pageBytes,
+	probe,
 	startedAt: new Date().toISOString(),
 	run,
 	workspace,
@@ -85,6 +95,7 @@ Object.assign(control, {
 	serverPid: server.pid,
 	instance: ready.instance,
 	serverStartupMs: performance.now() - serverStart,
+	readLimits: ready.readLimits,
 });
 save();
 let rpcId = 0;
@@ -153,15 +164,24 @@ try {
 			savedInputBytes: Object.fromEntries(Object.entries(inputs).map(([key, value]) => [key, value.bytes])),
 		});
 	} else {
-		let assignment = fs.readFileSync(new URL('./assignment.md', import.meta.url), 'utf8');
+		let assignment = fs.readFileSync(
+			new URL(windowExperiment ? '../ux-read-window/assignment.md' : './assignment.md', import.meta.url),
+			'utf8',
+		);
 		for (const [name, value] of Object.entries({
 			RUN: run,
 			ACCESS: assigned.access,
 			FACTS: inputs.facts.handle,
 			UX: inputs.ux.handle,
+			PAGE_BYTES: String(pageBytes),
 		}))
 			assignment = assignment.replaceAll(`{{${name}}}`, value);
-		const prompt = `Run this authorized isolated collection experiment only. You are a dispatch supervisor, not the UX author. Do not inspect product contents, reports or completed answers. No Git, research, review or canonical work.
+		const prompt = probe
+			? `Run ONLY this authorized MCP client delivery probe. Do not spawn agents, load role guidance, inspect product files or perform product reasoning. No file fallback. The test server explicitly permits larger windows; leave client output-token limits at their existing defaults.
+Assigned access: ${assigned.access}. Run: ${run}. Facts handle: ${inputs.facts.handle}. UX handle: ${inputs.ux.handle}.
+For facts first and then UX, call workflow_read at offset 0, separately for each maxBytes in [7000,14000,28000,56000]. Emit each complete raw tool result in its own command. Do not shorten, transform, summarize, combine results, generate helper programs or increase the normal output allowance. Ignore nextOffset because these are independent first-page probes, not full acquisition. If a page is visibly truncated, note its handle and size in the final response but continue the remaining independent probes; never reread the same page. Stop only on a tool error. Saved tool responses will be checked mechanically by an external analyzer. Do not calculate hashes yourself.
+After the eight reads, workflow_store with the assigned access/run and value {kind:"ux-replay-phase",phase:"inputs-ready"}. Return only probe completion and any observed truncation. The product is unchanged.`
+			: `Run this authorized isolated collection experiment only. You are a dispatch supervisor, not the UX author. Do not inspect product contents, reports or completed answers. No Git, research, review or canonical work.
 First verify workflow_status with assigned access ${assigned.access}, run ${run}. Missing MCP is an error; no fallback.
 Spawn ONE fresh ux-planner, fork_turns="none", task_name="ux_collection_phase". Do not override its configured model or effort. Give this exact assignment:
 <assignment>

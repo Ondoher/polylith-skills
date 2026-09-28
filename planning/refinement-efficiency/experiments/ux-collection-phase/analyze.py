@@ -1,6 +1,7 @@
 """Analyze saved timing/size metadata only; never publish model reasoning or call arguments."""
 import hashlib
 import json
+import re
 import statistics
 import subprocess
 import sys
@@ -8,7 +9,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
-BASE = ROOT / '.codex-tmp/ux-collection-phase-20260928'
+window_trial = '--windows' in sys.argv
+BASE = ROOT / ('.codex-tmp/ux-read-window-20260928' if window_trial else '.codex-tmp/ux-collection-phase-20260928')
 ATTEMPT = BASE / (sys.argv[1] if len(sys.argv) > 1 else 'attempt-01')
 
 def read(file):
@@ -89,7 +91,7 @@ for name, receipt in inputs.items():
     cursor = 0
     for page in observations:
         assert page['offset'] == cursor and page['pointer'] == '' and not page['failed']
-        assert page['maxBytes'] == 7000
+        assert page['maxBytes'] == control.get('pageBytes', 7000)
         cursor += page['textBytes']
         pages.append({**page, 'source': name})
     assert cursor == receipt['bytes'] and observations[-1]['nextOffset'] is None
@@ -100,6 +102,7 @@ for name, receipt in inputs.items():
 # Verify actual client-visible tool outputs, not just the server's transmission ledger.
 received_pages = {}
 truncation_warnings = 0
+explicit_output_budgets = []
 decoder = json.JSONDecoder()
 
 def inspect_output(value, call_id):
@@ -132,6 +135,9 @@ def inspect_output(value, call_id):
 
 for event in rows(Path(actor['sourceSession'])):
     payload = event.get('payload', {})
+    if payload.get('type') in ['custom_tool_call', 'function_call']:
+        arguments = payload.get('input', payload.get('arguments', ''))
+        explicit_output_budgets.extend(re.findall(r'"?(?:max_output_tokens|max_tokens)"?\s*:\s*(\d+)', str(arguments)))
     if payload.get('type') not in ['custom_tool_call_output', 'function_call_output']:
         continue
     output = payload.get('output')
@@ -183,11 +189,13 @@ summary = {key: stats(key) for key in ['argumentBytes', 'commandOutputSeconds', 
                                      'previousResultToCommandStartSeconds', 'previousResultThroughThisResultSeconds']}
 comparison = {key: {'baselineMean': baseline['readCommandAnalysis']['summary'][key]['mean'],
                     'trialMean': value['mean']} for key, value in summary.items()}
+collection_baseline = read(ROOT / 'planning/refinement-efficiency/ux-collection-phase-20260928-metrics.json') if window_trial else None
 report = {
-    'experiment': 'Prescribed collection-only UX acquisition, same full inputs and bounded MCP reads',
+    'experiment': 'Larger-window collection-only UX acquisition' if window_trial else 'Prescribed collection-only UX acquisition, same full inputs and bounded MCP reads',
     'capturedAt': datetime.now(timezone.utc).isoformat(), 'control': control,
     'windows': windows, 'coverage': coverage, 'clientCoverage': client_coverage,
     'truncationWarnings': truncation_warnings, 'phaseObservations': list(markers.values()),
+    'explicitOutputBudgetValues': explicit_output_budgets,
     'readCommandAnalysis': {'readCount': len(pages), 'generatedCommandCount': len(commands),
                             'summary': summary, 'uniqueCommands': list(commands.values())},
     'comparison': comparison, 'baselineInputLoadingSeconds': baseline['windows']['inputLoading']['wallSeconds'],
@@ -196,13 +204,21 @@ report = {
                 [Path(__file__), Path(__file__).with_name('run.mjs'), Path(__file__).with_name('assignment.md'), extractor,
                  ROOT / '.codex-tmp/ux-mcp-replay-20260928/server-observer.mjs']},
     'limits': ['One fresh collection-only trial against a historical run, not a repeated or randomized A/B.',
-               'Prompt differs intentionally; the prior run already deferred explicit comparison, but less strictly prescribed acquisition.',
-               'The 7KB cap, full source values, model and reasoning effort are unchanged; batching compliance is reported, not assumed.',
+               'Larger server window and single-read commands throughout; historical 7KB collection trial batched its first two reads.' if window_trial else 'Prompt differs intentionally; the prior run already deferred explicit comparison, but less strictly prescribed acquisition.',
+               'Full source values, model and reasoning effort are unchanged; batching compliance is reported, not assumed.',
                'Client streams are observed intervals, not provider compute time. Pre-command gaps cannot isolate input processing or scheduling.',
                'No subsequent design comparison or independent review was performed; retention and design quality are unmeasured.',
                'Cached input and reasoning output counts are subsets, not extra usage to add. Overlapping windows must not be summed.'],
 }
-destination = ROOT / 'planning/refinement-efficiency/ux-collection-phase-20260928-metrics.json'
+if window_trial:
+    report['prescribedCollectionBaseline'] = {
+        'inputLoadingSeconds': collection_baseline['windows']['inputLoading']['wallSeconds'],
+        'readCommandAnalysis': collection_baseline['readCommandAnalysis']['summary'],
+        'inputLoadingUsage': collection_baseline['windows']['inputLoading']['usageByResponsesCompletedInWindow'],
+    }
+    assignment = Path(__file__).parent.parent / 'ux-read-window/assignment.md'
+    report['tooling'][str(assignment.relative_to(ROOT))] = hashlib.sha256(assignment.read_bytes()).hexdigest()
+destination = ROOT / ('planning/refinement-efficiency/ux-read-window-20260928-' + ATTEMPT.name + '-metrics.json' if window_trial else 'planning/refinement-efficiency/ux-collection-phase-20260928-metrics.json')
 destination.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
 (ATTEMPT / 'analysis.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
 print(json.dumps({'windows': {key: value['wallSeconds'] for key, value in windows.items()},

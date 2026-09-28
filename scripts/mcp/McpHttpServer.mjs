@@ -14,6 +14,9 @@ export class McpHttpServer {
 		if (typeof token !== 'string' || token.length < 32)
 			throw new Error('Use a connection token of at least 32 characters');
 		this.service = service;
+		this.toolContracts = structuredClone(toolContracts);
+		this.toolContracts.find((tool) => tool.name === 'workflow_read').inputSchema.properties.maxBytes.maximum =
+			service.readLimits.pageBytes;
 		this._authorization = Buffer.from(`Bearer ${token}`);
 		this.samples = [];
 		this._requests = new Set();
@@ -100,17 +103,17 @@ export class McpHttpServer {
 					serverInfo: {name: 'polylith-workflows', version: WORKFLOW_VERSION},
 				};
 			else if (message.method === 'ping') result = {};
-			else if (message.method === 'tools/list') result = {tools: toolContracts};
+			else if (message.method === 'tools/list') result = {tools: this.toolContracts};
 			else if (message.method === 'tools/call') {
 				try {
 					if (this._closing) throw new Error('Service is shutting down; no new work was accepted');
-					const contract = toolContracts.find((tool) => tool.name === message.params?.name);
+					const contract = this.toolContracts.find((tool) => tool.name === message.params?.name);
 					if (!contract) throw new Error('Unknown tool');
 					const args = message.params.arguments ?? {};
 					new InputContract().validate(args, contract.inputSchema);
 					const value = await this.service[contract.name.slice(9)](args);
 					const text = JSON.stringify(value);
-					if (Buffer.byteLength(text) > 8192)
+					if (Buffer.byteLength(text) > this.service.readLimits.toolBytes)
 						throw new Error('Result exceeds tool budget; use a saved handle and bounded reads');
 					result = {content: [{type: 'text', text}]};
 				} catch (error) {
