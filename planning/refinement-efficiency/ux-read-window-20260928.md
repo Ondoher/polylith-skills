@@ -76,6 +76,7 @@ The local sweep refuses to overwrite its saved report. To repeat it, first prese
 - [Actual-client probe](ux-read-window-20260928-probe-01.json)
 - [Full 28 KB collection metrics](ux-read-window-20260928-window-28k-01-metrics.json)
 - [Larger-window assignment](experiments/ux-read-window/assignment.md)
+- [Follow-up: paired sequential and parallel calls](ux-read-parallel-20260928.md)
 - [Earlier prescribed 7 KB collection](ux-collection-phase-20260928.md)
 
 The full collection trial uses a fresh configured UX planner, gpt-6-astra at ultra reasoning, and loads the same three role-guidance files before the separately timed input phase. It uses one read per command throughout. The earlier 7 KB trial combined its first two reads, then used one per command; this small protocol difference is explicit rather than attributed to page size.
