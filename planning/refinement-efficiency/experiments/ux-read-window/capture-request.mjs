@@ -169,6 +169,8 @@ if (savedAttempt) {
 	if (!attemptName || !/^[a-z0-9-]+$/.test(attemptName)) throw new Error('Supply a fresh --attempt=name');
 	const output = path.join(workspace, '.codex-tmp/ux-request-capture-20260928', attemptName);
 	const websocket = process.argv.includes('--websocket');
+	const catalogArgument = process.argv.find((value) => value.startsWith('--model-catalog='))?.slice(16);
+	const catalogPath = catalogArgument ? path.resolve(workspace, catalogArgument) : null;
 	if (fs.existsSync(output)) throw new Error('Preserve the existing capture');
 	fs.mkdirSync(output, {recursive: true});
 	const token = randomBytes(32).toString('hex');
@@ -180,6 +182,9 @@ if (savedAttempt) {
 		binary,
 		binarySha256: createHash('sha256').update(fs.readFileSync(binary)).digest('hex'),
 		websocketCapture: websocket,
+		modelCatalogOverride: catalogPath
+			? {path: catalogPath, sha256: createHash('sha256').update(fs.readFileSync(catalogPath)).digest('hex')}
+			: null,
 		modelOverride: null,
 		reasoningOverride: null,
 		configurationOverrides: [
@@ -187,6 +192,7 @@ if (savedAttempt) {
 			'features.code_mode.enabled=true',
 			'features.code_mode.direct_only_tool_namespaces=[mcp__polylith_workflows]',
 			'mcp_servers.polylith_workflows=loopback metadata-only server',
+			...(catalogPath ? ['model_catalog_json=temporary diagnostic catalog'] : []),
 		],
 		modelExecutions: 0,
 		forwardedRequests: 0,
@@ -353,6 +359,7 @@ if (savedAttempt) {
 			'mcp_servers.polylith_workflows.required=true',
 			'-',
 		];
+		if (catalogPath) args.splice(1, 0, '-c', `model_catalog_json=${JSON.stringify(catalogPath)}`);
 		child = spawn(binary, args, {
 			env: {...process.env, POLYLITH_MCP_TOKEN: token, RUST_LOG: 'warn'},
 			windowsHide: true,

@@ -1,5 +1,7 @@
 # Outgoing parallel-call configuration capture
 
+**Source trace follow-up:** [Responses Lite is the rule that disables parallel calls](ux-parallel-client-rule-20260928.md). A temporary custom-catalog override changed the outgoing flag to true in a local-only test. Backend compatibility remains untested.
+
 **The installed Codex client explicitly sends `parallel_tool_calls: false` with the tested native MCP configuration. Both HTTP fallback and the normal WebSocket path show it.** This identifies a client request restriction consistent with the previous sequential-read result; a missing read-only annotation or a stronger prompt does not resolve it.
 
 ## Evidence

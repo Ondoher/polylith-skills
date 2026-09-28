@@ -1,0 +1,503 @@
+{
+	"experiment": "Trace the client rule that disables parallel model tool calls",
+	"installedVersion": "0.155.0-alpha.16.3",
+	"sourceTag": "rust-v0.155.0-alpha.16.3",
+	"sourceCommit": "ffa06df2317e3e65fc74da977a5884710c5382d5",
+	"rule": "prompt.parallel_tool_calls && !model_info.use_responses_lite",
+	"ordinaryTurnParallelAllowed": true,
+	"defaultAstraResponsesLite": true,
+	"configurationFindings": {
+		"dedicatedParallelRequestToggleFound": false,
+		"dedicatedResponsesLiteToggleFound": false,
+		"documentedCatalogOverride": "model_catalog_json",
+		"catalogAppliesAt": "process startup",
+		"mcpServerParallelSettingScope": "tool execution eligibility, not the model request flag"
+	},
+	"catalogDelta": {
+		"sourceCache": "C:\\Users\\gande\\.codex\\models_cache.json",
+		"model": "gpt-6-astra",
+		"changedFields": ["use_responses_lite"],
+		"before": {
+			"use_responses_lite": true,
+			"tool_mode": "code_mode_only"
+		},
+		"after": {
+			"use_responses_lite": false,
+			"tool_mode": "code_mode_only"
+		},
+		"catalogPath": "C:\\dev\\polylith-skills\\.codex-tmp\\codex-parallel-rule-20260928\\catalog-without-lite.private.json",
+		"catalogSha256": "e467b2b152eed8aa7378fb0fd42e1c366818634d31d99904d9d4f4910f97b6aa",
+		"otherEntriesUnchanged": true
+	},
+	"baseline": {
+		"attempt": "direct-native-ws-01",
+		"generationRequest": {
+			"at": "2026-09-28T20:14:45.282Z",
+			"elapsedMs": 2383.3939,
+			"method": "WEBSOCKET",
+			"path": "/responses",
+			"decodedBytes": 94128,
+			"keys": [
+				"type",
+				"model",
+				"input",
+				"tool_choice",
+				"parallel_tool_calls",
+				"reasoning",
+				"store",
+				"stream",
+				"include",
+				"prompt_cache_key",
+				"text",
+				"client_metadata"
+			],
+			"requestType": "response.create",
+			"generate": "omitted",
+			"model": "gpt-6-astra",
+			"parallelToolCalls": false,
+			"toolChoice": "auto",
+			"reasoningEffort": "xhigh",
+			"tools": [],
+			"inputItems": 7
+		},
+		"elapsedMs": 2726.5334000000003
+	},
+	"modifiedCapture": {
+		"startedAt": "2026-09-28T21:00:04.771Z",
+		"binary": "C:/Users/gande/.vscode/extensions/openai.chatgpt-26.917.62051-win32-x64/bin/windows-x86_64/codex.exe",
+		"binarySha256": "589f2546cc1e86703da326b00741f8b7a58fd182a1a90499faa0beebf22a24e2",
+		"websocketCapture": true,
+		"modelCatalogOverride": {
+			"path": "C:\\dev\\polylith-skills\\.codex-tmp\\codex-parallel-rule-20260928\\catalog-without-lite.private.json",
+			"sha256": "e467b2b152eed8aa7378fb0fd42e1c366818634d31d99904d9d4f4910f97b6aa"
+		},
+		"modelOverride": null,
+		"reasoningOverride": null,
+		"configurationOverrides": [
+			"openai_base_url=loopback capture endpoint",
+			"features.code_mode.enabled=true",
+			"features.code_mode.direct_only_tool_namespaces=[mcp__polylith_workflows]",
+			"mcp_servers.polylith_workflows=loopback metadata-only server",
+			"model_catalog_json=temporary diagnostic catalog"
+		],
+		"modelExecutions": 0,
+		"forwardedRequests": 0,
+		"requests": [
+			{
+				"at": "2026-09-28T21:00:06.900Z",
+				"elapsedMs": 2129.4745,
+				"method": "WEBSOCKET",
+				"path": "/responses",
+				"decodedBytes": 63204,
+				"keys": [
+					"type",
+					"model",
+					"instructions",
+					"input",
+					"tools",
+					"tool_choice",
+					"parallel_tool_calls",
+					"reasoning",
+					"store",
+					"stream",
+					"include",
+					"prompt_cache_key",
+					"text",
+					"generate",
+					"client_metadata"
+				],
+				"requestType": "response.create",
+				"generate": false,
+				"model": "gpt-6-astra",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"tools": [
+					{
+						"type": "custom",
+						"name": "exec"
+					},
+					{
+						"type": "function",
+						"name": "wait"
+					},
+					{
+						"type": "function",
+						"name": "request_user_input"
+					},
+					{
+						"type": "function",
+						"name": "request_user_input_async"
+					},
+					{
+						"type": "namespace",
+						"name": "clock",
+						"tools": [
+							{
+								"type": "function",
+								"name": "sleep"
+							}
+						]
+					},
+					{
+						"type": "namespace",
+						"name": "collaboration",
+						"tools": [
+							{
+								"type": "function",
+								"name": "followup_task"
+							},
+							{
+								"type": "function",
+								"name": "interrupt_agent"
+							},
+							{
+								"type": "function",
+								"name": "list_agents"
+							},
+							{
+								"type": "function",
+								"name": "send_message"
+							},
+							{
+								"type": "function",
+								"name": "spawn_agent"
+							},
+							{
+								"type": "function",
+								"name": "wait_agent"
+							}
+						]
+					},
+					{
+						"type": "namespace",
+						"name": "mcp__polylith_workflows",
+						"tools": [
+							{
+								"type": "function",
+								"name": "workflow_assign"
+							},
+							{
+								"type": "function",
+								"name": "workflow_catalog"
+							},
+							{
+								"type": "function",
+								"name": "workflow_execute"
+							},
+							{
+								"type": "function",
+								"name": "workflow_open"
+							},
+							{
+								"type": "function",
+								"name": "workflow_read"
+							},
+							{
+								"type": "function",
+								"name": "workflow_status"
+							},
+							{
+								"type": "function",
+								"name": "workflow_store"
+							}
+						]
+					},
+					{
+						"type": "web_search",
+						"name": null
+					}
+				],
+				"inputItems": 0
+			},
+			{
+				"at": "2026-09-28T21:00:07.390Z",
+				"elapsedMs": 2618.6146,
+				"method": "WEBSOCKET",
+				"path": "/responses",
+				"decodedBytes": 82717,
+				"keys": [
+					"type",
+					"model",
+					"instructions",
+					"input",
+					"tools",
+					"tool_choice",
+					"parallel_tool_calls",
+					"reasoning",
+					"store",
+					"stream",
+					"include",
+					"prompt_cache_key",
+					"text",
+					"client_metadata"
+				],
+				"requestType": "response.create",
+				"generate": "omitted",
+				"model": "gpt-6-astra",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"tools": [
+					{
+						"type": "custom",
+						"name": "exec"
+					},
+					{
+						"type": "function",
+						"name": "wait"
+					},
+					{
+						"type": "function",
+						"name": "request_user_input"
+					},
+					{
+						"type": "function",
+						"name": "request_user_input_async"
+					},
+					{
+						"type": "namespace",
+						"name": "clock",
+						"tools": [
+							{
+								"type": "function",
+								"name": "sleep"
+							}
+						]
+					},
+					{
+						"type": "namespace",
+						"name": "collaboration",
+						"tools": [
+							{
+								"type": "function",
+								"name": "followup_task"
+							},
+							{
+								"type": "function",
+								"name": "interrupt_agent"
+							},
+							{
+								"type": "function",
+								"name": "list_agents"
+							},
+							{
+								"type": "function",
+								"name": "send_message"
+							},
+							{
+								"type": "function",
+								"name": "spawn_agent"
+							},
+							{
+								"type": "function",
+								"name": "wait_agent"
+							}
+						]
+					},
+					{
+						"type": "namespace",
+						"name": "mcp__polylith_workflows",
+						"tools": [
+							{
+								"type": "function",
+								"name": "workflow_assign"
+							},
+							{
+								"type": "function",
+								"name": "workflow_catalog"
+							},
+							{
+								"type": "function",
+								"name": "workflow_execute"
+							},
+							{
+								"type": "function",
+								"name": "workflow_open"
+							},
+							{
+								"type": "function",
+								"name": "workflow_read"
+							},
+							{
+								"type": "function",
+								"name": "workflow_status"
+							},
+							{
+								"type": "function",
+								"name": "workflow_store"
+							}
+						]
+					},
+					{
+						"type": "web_search",
+						"name": null
+					}
+				],
+				"inputItems": 5
+			}
+		],
+		"advertisedMcpTools": [
+			{
+				"name": "workflow_open",
+				"annotations": {
+					"readOnlyHint": false,
+					"destructiveHint": false,
+					"openWorldHint": false
+				}
+			},
+			{
+				"name": "workflow_assign",
+				"annotations": {
+					"readOnlyHint": false,
+					"destructiveHint": false,
+					"openWorldHint": false
+				}
+			},
+			{
+				"name": "workflow_store",
+				"annotations": {
+					"readOnlyHint": false,
+					"destructiveHint": false,
+					"openWorldHint": false
+				}
+			},
+			{
+				"name": "workflow_read",
+				"annotations": {
+					"readOnlyHint": true,
+					"destructiveHint": false,
+					"openWorldHint": false
+				}
+			},
+			{
+				"name": "workflow_catalog",
+				"annotations": {
+					"readOnlyHint": true,
+					"destructiveHint": false,
+					"openWorldHint": false
+				}
+			},
+			{
+				"name": "workflow_execute",
+				"annotations": {
+					"readOnlyHint": false,
+					"destructiveHint": true,
+					"openWorldHint": false
+				}
+			},
+			{
+				"name": "workflow_status",
+				"annotations": {
+					"readOnlyHint": true,
+					"destructiveHint": false,
+					"openWorldHint": false
+				}
+			}
+		],
+		"exitCode": 1,
+		"exitSignal": null,
+		"elapsedMs": 2907.4444,
+		"completedAt": "2026-09-28T21:00:07.678Z",
+		"validation": {
+			"generationRequests": [
+				{
+					"method": "WEBSOCKET",
+					"model": "gpt-6-astra",
+					"reasoningEffort": "xhigh",
+					"parallelToolCalls": true,
+					"toolChoice": "auto"
+				}
+			],
+			"prewarmRequests": [
+				{
+					"model": "gpt-6-astra",
+					"parallelToolCalls": true
+				}
+			]
+		},
+		"resourcesClosed": true
+	},
+	"sources": [
+		{
+			"path": "codex-rs/core/src/client.rs",
+			"url": "https://github.com/openai/codex/blob/ffa06df2317e3e65fc74da977a5884710c5382d5/codex-rs/core/src/client.rs",
+			"sha256": "b5b78a45550cca04fcde2f846553db85f0bd307690d5ca95baef29fb7fd32463",
+			"locations": [
+				{
+					"line": 942,
+					"text": "parallel_tool_calls: prompt.parallel_tool_calls && !model_info.use_responses_lite,"
+				}
+			]
+		},
+		{
+			"path": "codex-rs/core/src/session/turn.rs",
+			"url": "https://github.com/openai/codex/blob/ffa06df2317e3e65fc74da977a5884710c5382d5/codex-rs/core/src/session/turn.rs",
+			"sha256": "77060a5de9158ef69cc172fd9109af1cb074da15391ef03b574b6d2a362672a5",
+			"locations": [
+				{
+					"line": 1534,
+					"text": "parallel_tool_calls: true,"
+				}
+			]
+		},
+		{
+			"path": "codex-rs/core/config.schema.json",
+			"url": "https://github.com/openai/codex/blob/ffa06df2317e3e65fc74da977a5884710c5382d5/codex-rs/core/config.schema.json",
+			"sha256": "8b80568c4e19872cb0cc9de9bf865286416d29f17309db1e74be24ad209065b9",
+			"locations": [
+				{
+					"line": 1147,
+					"text": "\"model_catalog_json\": {"
+				},
+				{
+					"line": 6968,
+					"text": "\"model_catalog_json\": {"
+				},
+				{
+					"line": 3492,
+					"text": "\"supports_parallel_tool_calls\": {"
+				}
+			]
+		},
+		{
+			"path": "codex-rs/core/src/config/mod.rs",
+			"url": "https://github.com/openai/codex/blob/ffa06df2317e3e65fc74da977a5884710c5382d5/codex-rs/core/src/config/mod.rs",
+			"sha256": "5ee7f28438f53f3b68943c3c0c648c434ddb1d7e257071fd0d9d48aa18b1b3ad",
+			"locations": []
+		},
+		{
+			"path": "codex-rs/models-manager/src/config.rs",
+			"url": "https://github.com/openai/codex/blob/ffa06df2317e3e65fc74da977a5884710c5382d5/codex-rs/models-manager/src/config.rs",
+			"sha256": "e6892ac4157db2fff368cd48f1a839876ef2f6dd04a2f7dcb1e783ae45b7f26e",
+			"locations": []
+		},
+		{
+			"path": "codex-rs/models-manager/src/manager.rs",
+			"url": "https://github.com/openai/codex/blob/ffa06df2317e3e65fc74da977a5884710c5382d5/codex-rs/models-manager/src/manager.rs",
+			"sha256": "8ae229b8587990f9f9643d019a56703f48465172ddf75bc22a158c09f489ed90",
+			"locations": []
+		}
+	],
+	"validation": {
+		"sameBinary": true,
+		"sameModelAndEffort": true,
+		"onlySelectedCatalogFieldChanged": true,
+		"otherCatalogEntriesUnchanged": true,
+		"changedFlagFromFalseToTrue": true,
+		"modelExecutions": 0
+	},
+	"limits": [
+		"The documented catalog-loading mechanism is supported configuration; backend support for disabling Responses Lite for this model was not established or tested.",
+		"No model execution, direct-call batching, result retention, design quality or performance improvement was tested.",
+		"Responses Lite changes request representation as well as parallel-call permission. This is not proof that flipping the flag alone is a production fix.",
+		"No global config, installed binary, persistent model catalog entry, agent role, or Alexa artifact was deliberately modified."
+	],
+	"tooling": {
+		"path": "planning/refinement-efficiency/experiments/ux-read-window/capture-request.mjs",
+		"sha256": "01587a2090167f70b4fe3e1379ebbce495e19befbaa37929a07836689bdbec1a"
+	},
+	"officialConfigReference": "https://learn.chatgpt.com/docs/config-file/config-reference",
+	"sourceTree": "142fb8832510096b2c3541f69cb7a09f4665bc9c",
+	"releaseUrl": "https://github.com/openai/codex/commit/ffa06df2317e3e65fc74da977a5884710c5382d5"
+}
