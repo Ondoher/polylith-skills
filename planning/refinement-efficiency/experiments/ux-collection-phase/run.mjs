@@ -12,6 +12,8 @@ const pageBytes = Number(pageArgument?.slice(13) ?? 7000);
 const parallelProbe = process.argv.includes('--parallel-probe');
 const nativeProbe = process.argv.includes('--native-probe');
 const disableCodeHost = process.argv.includes('--disable-code-host');
+const directNamespace = process.argv.find((value) => value.startsWith('--direct-namespace='))?.slice(19);
+if (directNamespace && !/^[a-zA-Z0-9_]+$/.test(directNamespace)) throw new Error('Invalid direct tool namespace');
 const probe = process.argv.includes('--probe') || parallelProbe || nativeProbe;
 const windowExperiment = Boolean(pageArgument) || probe;
 const output = path.join(
@@ -45,6 +47,7 @@ const control = {
 	parallelProbe,
 	nativeProbe,
 	disableCodeHost,
+	directNamespace: directNamespace ?? null,
 	startedAt: new Date().toISOString(),
 	run,
 	workspace,
@@ -224,6 +227,15 @@ Wait for READY and the inputs-ready marker handle, then return the child identit
 			'-',
 		];
 		if (disableCodeHost) args.splice(1, 0, '--disable', 'code_mode_host');
+		if (directNamespace)
+			args.splice(
+				1,
+				0,
+				'-c',
+				'features.code_mode.enabled=true',
+				'-c',
+				`features.code_mode.direct_only_tool_namespaces=${JSON.stringify([directNamespace])}`,
+			);
 		const agentStart = performance.now();
 		child = spawn(codexBinary, args, {env: environment, stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true});
 		Object.assign(control, {status: 'running', childPid: child.pid, agentStartedAt: new Date().toISOString()});

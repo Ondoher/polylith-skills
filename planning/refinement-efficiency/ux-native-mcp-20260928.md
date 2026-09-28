@@ -1,5 +1,7 @@
 # Native MCP call exposure check
 
+**Follow-up:** [A per-namespace configuration now exposes native MCP calls](ux-native-direct-20260928.md). It delivered both 28 KB pages exactly, but the model issued them in separate responses. The two negative results below remain valid for their tested configurations; direct exposure is no longer the unresolved issue.
+
 **The user's proposed arrangement is valid: a model response can contain several independent tool calls, each with a corresponding result. Our two isolated probes did not expose that direct-call route in the installed Codex client with its current model.** This is a different question from returning several MCP results through one `functions.exec` response.
 
 OpenAI's [function-calling documentation](https://developers.openai.com/api/docs/guides/function-calling) describes multiple calls in one model response and results associated with individual call IDs. Its [programmatic tool-calling documentation](https://developers.openai.com/api/docs/guides/tools-programmatic-tool-calling) distinguishes direct invocation from program-only invocation through `allowed_callers`. Those API capabilities do not establish which route this particular Codex client exposes.
