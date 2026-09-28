@@ -42,7 +42,7 @@
 			"verification-reviewer.toml",
 			"view-agent.toml"
 		],
-		"requiredDocumentation": ["standards"],
+		"requiredDocumentation": ["standards", "workflows"],
 		"requiredPlanning": ["implementation-agents", "review-agents", "skills-repository", "application-scaffolding"]
 	},
 	"install": {

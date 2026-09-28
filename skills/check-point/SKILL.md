@@ -5,6 +5,10 @@ description: Propose, approve, and create a Git commit containing the entire cur
 
 # Check Point
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use repository.snapshot and assigned adviser result delivery. Git staging, exact-snapshot verification and commit stay in the host approval boundary under this skill. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 Create one deliberate Git checkpoint containing the complete current repository state. The proposal phase is read-only. Do not stage or commit until the engineer accepts the latest proposed message and reviewed scope.
 
 ## Load instructions

@@ -5,6 +5,10 @@ description: Commit the complete current state of the canonical standards reposi
 
 # Update Standards
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use repository.snapshot and assigned adviser result delivery. The host retains message acceptance, exact checkpoint verification and explicitly authorized Git publication. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 Publish the canonical governance checkout so existing branch-based GitHub links display its current standards. Skills and reviewers continue reading local files. This workflow publishes the entire reviewed repository state, including skills, agents, documentation, and other non-ignored changes; it is not a standards-directory-only commit.
 
 ## Resolve the repository and publication scope

@@ -5,6 +5,10 @@ description: Bootstrap the current repository when the user says to bootstrap by
 
 # Bootstrap
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use files.read, repository.snapshot, and review.request. Host instruction discovery and reviewer lifecycle/eligibility remain in this skill; bootstrap must work before a service exists. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 1. Resolve the Codex root from `CODEX_HOME`, or use `~/.codex` when `CODEX_HOME` is unset.
 2. If `AGENTS.md` exists in the Codex root, read it completely and follow its instructions, including reading any files it routes to.
 3. Determine the root of the repository containing the current working directory without modifying Git state.

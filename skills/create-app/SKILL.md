@@ -5,6 +5,10 @@ description: Add a new Polylith application to an established normalized reposit
 
 # Create App
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use project.inspect and project.plan with kind existing. Run the existing dedicated apply/validation workers in the host for dependency installation and subprocess permissions; reuse saved options. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 Create one application inside an established Polylith repository. Reuse repository capabilities, make app-scoped additions, verify the complete integration, and leave Git writes to the developer.
 
 ## Eligibility and safety

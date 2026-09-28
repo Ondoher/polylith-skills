@@ -54,7 +54,7 @@ export class WorkspaceFiles {
 		if (!status.isFile() || status.size > MAX_RESULT_BYTES) throw new Error('Input is not a bounded file');
 		const bytes = fs.readFileSync(absolute);
 		if (bytes.length > MAX_RESULT_BYTES) throw new Error('Input grew beyond the file limit');
-		return new TextDecoder('utf-8', {fatal: true}).decode(bytes);
+		return new TextDecoder('utf-8', {fatal: true, ignoreBOM: true}).decode(bytes);
 	}
 
 	/** Call this method to decode a current JSON input.

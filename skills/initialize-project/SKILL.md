@@ -5,6 +5,10 @@ description: Initialize a brand-new application project in an empty folder or fr
 
 # Initialize Project
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use project.inspect and project.plan with kind initial. Keep the service outside the empty target. Run existing dedicated apply/validation workers in the host for dependency installation and subprocess permissions. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 Initialize one fresh project from explicit configuration choices. Preserve the user's files, use current compatible dependencies, verify the result, and leave all Git writes to the developer.
 
 ## Safety boundary

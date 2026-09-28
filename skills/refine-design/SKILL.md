@@ -5,6 +5,10 @@ description: Refine human-owned product descriptions into canonical persisted pr
 
 # Refine Design
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use product.prepare/product.select, units._, ux-review._, the existing-writer adapters, publication.assemble, and context.resolve. Use technical.inspect/technical.prepare/technical.resolve for technical preparation. The parent owns canonical writes and independently reviewed UX remains required before UI persistence. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 For long instructions and batched file reads, use `scripts/bounded-read.mjs`
 with all requested paths in one invocation. It caps the complete raw response at
 4096 UTF-8 bytes by default, including source labels and continuation. Forward
@@ -17,20 +21,22 @@ Scripts should inspect large design files directly and return only the records
 or summaries needed for the next decision.
 
 For initial or substantial UX/UI authoring after the trusted product facts are ready,
-use [single-pass authoring and resumable file handoff](references/single-pass-design.md).
+use [single-pass authoring and resumable delivery](references/single-pass-design.md).
 Request `single-pass-ux` and `single-pass-ui` modes: one forward authoring pass per
 stage, at most one optional issue-directed repair pass, then deterministic assembly
 into the current consumer schemas. Persist and reuse completed units during the run.
 Keep parsing, semantic review and product publication under their existing contracts.
 
-For structured UX/UI authoring, assign each author an absolute `proposalDirectory`
-inside an effective writable root, separate from canonical product data and the
-parent-owned record store. The author writes proposal JSON there and returns paths
-and status; consume those files directly. Follow the single-pass contract's startup
-and delivery checks so an inherited read-only role cannot silently restore a large
-text-only handoff. The parent retains validation, review, rendering and permanent
-persistence. This task-scoped temporary-file assignment needs no additional owner
-approval within an already authorized refinement.
+For structured UX/UI authoring with MCP configured, give each author a scoped
+assignment capability and input handles. Deliver completed records through
+`units.deliver` and return handles, record IDs and status. Otherwise, assign an
+absolute `proposalDirectory` inside an effective writable root, separate from
+canonical product data and the parent-owned record store; consume the author's
+completed files directly. Follow the single-pass contract's startup and delivery
+checks so inherited restrictions cannot silently restore a large text-only
+handoff. The parent retains validation, review, rendering and permanent
+persistence. These task-scoped assignments need no additional owner approval
+within an already authorized refinement.
 
 Run one bounded design-refinement cycle. For a whole-product refinement, complete both the UX and UI passes in this skill: persist UX, obtain its independent review, then compose UI from the reviewed UX. A request confined to one decision or artifact may update only the affected scope; preserve and revalidate dependent artifacts before treating them as current. Treat the user's current input as a fresh, potentially unstructured design input and reconstruct context from durable documents rather than conversation shape. Reuse product meaning and prior evidence recorded there; consult only specialists whose input can materially change the result. The workflow is planning-only, with a bounded design-language artifact path. It does not require a complete specification or a repository implementation opt-in.
 

@@ -29,18 +29,25 @@ let stopping = false;
 const stop = async () => {
 	if (stopping) return;
 	stopping = true;
-	await service.drain();
-	service.files.write(
-		path.join(service.stateDirectory, `metrics-${service.instance}.json`),
-		JSON.stringify(
-			{instance: service.instance, requests: server.samples, operations: service.measurements},
-			null,
-			2,
-		),
-	);
-	await server.close();
-	await worker.close();
-	if (process.connected) process.disconnect();
+	try {
+		await server.quiesce();
+		await service.drain();
+		service.files.write(
+			path.join(service.stateDirectory, `metrics-${service.instance}.json`),
+			JSON.stringify(
+				{instance: service.instance, requests: server.samples, operations: service.measurements},
+				null,
+				2,
+			),
+		);
+	} catch (error) {
+		process.stderr.write(`Shutdown evidence could not be saved: ${error.message}\n`);
+		process.exitCode = 1;
+	} finally {
+		await server.close();
+		await worker.close();
+		if (process.connected) process.disconnect();
+	}
 };
 process.on('SIGINT', stop);
 process.on('SIGTERM', stop);

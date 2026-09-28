@@ -5,6 +5,10 @@ description: Install, inspect, repair, update, relocate, or safely unlink the ma
 
 # Install Polylith Skills
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use assigned report delivery if a service already exists. Keep ownership-aware dry-run/apply in the existing dedicated local installer: installation must work without a service and may replace its own runtime. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 Use the repository's deterministic installer rather than creating links or copying files manually.
 
 1. Run the requested mode without `--apply` and inspect its JSON plan. Record the emitted `planDigest`:

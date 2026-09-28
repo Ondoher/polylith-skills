@@ -5,6 +5,10 @@ description: Rebuild one product's complete derived design from its current huma
 
 # Reset Design
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use reset.plan. Apply and stale-lock recovery remain the dedicated host CLI with the reviewed exact plan digest and source-preservation checks. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 Reinterpret one product from clean inputs. Preserve the current human-owned product description and explicitly supplied owner resources; discard every machine-derived design decision and rebuild the design through fresh, isolated agents. This is a reset of design authority, not a migration or an invitation to copy the previous result.
 
 Read [the fresh-run contract](references/fresh-run.md) before changing files. Also read the current `refine-design` and `generate-prd` skill entrypoints from the resolved Codex root. Their current schemas and validation rules govern the new artifacts; this skill governs isolation, reset authority, and replacement.

@@ -1,0 +1,799 @@
+{
+	"schemaVersion": 1,
+	"scope": "16 agents, 17 skill entries, 36 executable operations, one submission permission, seven MCP tools",
+	"evidenceLimits": [
+		"All definitions and shared delivery contracts verified; one new real UX MCP trial.",
+		"Earlier sixteen-role file permission checks reused.",
+		"No live Alexa mutation, full refinement or Git push.",
+		"The broader adversarial/platform/concurrency testing pass is separately agreed future scope."
+	],
+	"operations": [
+		{
+			"name": "artifact.commit",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"current product preparation, scoped facts, exact review and canonical artifact persistence preserve existing contracts"
+			]
+		},
+		{
+			"name": "collection.preview",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["collection preview and publication reuse an existing source-bound fixture"]
+		},
+		{
+			"name": "collection.publish",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["collection preview and publication reuse an existing source-bound fixture"]
+		},
+		{
+			"name": "component.persist",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["visual persistence uses exact synthetic UX review and existing owned target rules"]
+		},
+		{
+			"name": "context.resolve",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"current product preparation, scoped facts, exact review and canonical artifact persistence preserve existing contracts",
+				"technical inspection, preparation and publication preserve frozen synthetic evidence"
+			]
+		},
+		{
+			"name": "design.apply",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["visual persistence uses exact synthetic UX review and existing owned target rules"]
+		},
+		{
+			"name": "files.edit",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["research revisions, exact description edits and reset plans use existing authority"]
+		},
+		{
+			"name": "files.read",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"two HTTP clients share a run, exact handles, assigned delivery, bounded reads and operation timings"
+			]
+		},
+		{
+			"name": "model.persist",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"current product preparation, scoped facts, exact review and canonical artifact persistence preserve existing contracts"
+			]
+		},
+		{
+			"name": "product.location",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["technical inspection, preparation and publication preserve frozen synthetic evidence"]
+		},
+		{
+			"name": "product.prepare",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"current product preparation, scoped facts, exact review and canonical artifact persistence preserve existing contracts"
+			]
+		},
+		{
+			"name": "product.select",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"current product preparation, scoped facts, exact review and canonical artifact persistence preserve existing contracts"
+			]
+		},
+		{
+			"name": "project.inspect",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["project preparation produces a reusable plan without modifying an empty target"]
+		},
+		{
+			"name": "project.plan",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["project preparation produces a reusable plan without modifying an empty target"]
+		},
+		{
+			"name": "publication.assemble",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"current product preparation, scoped facts, exact review and canonical artifact persistence preserve existing contracts"
+			]
+		},
+		{
+			"name": "repository.snapshot",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"standards mapping, guide, repository request and independent ledger validation use current contracts"
+			]
+		},
+		{
+			"name": "research.record",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["research revisions, exact description edits and reset plans use existing authority"]
+		},
+		{
+			"name": "reset.plan",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["research revisions, exact description edits and reset plans use existing authority"]
+		},
+		{
+			"name": "review.request",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"standards mapping, guide, repository request and independent ledger validation use current contracts"
+			]
+		},
+		{
+			"name": "review.validate",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"standards mapping, guide, repository request and independent ledger validation use current contracts"
+			]
+		},
+		{
+			"name": "standards.guide",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"standards mapping, guide, repository request and independent ledger validation use current contracts"
+			]
+		},
+		{
+			"name": "standards.resolve",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"standards mapping, guide, repository request and independent ledger validation use current contracts"
+			]
+		},
+		{
+			"name": "technical.inspect",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["technical inspection, preparation and publication preserve frozen synthetic evidence"]
+		},
+		{
+			"name": "technical.prepare",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["technical inspection, preparation and publication preserve frozen synthetic evidence"]
+		},
+		{
+			"name": "technical.publish",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["technical inspection, preparation and publication preserve frozen synthetic evidence"]
+		},
+		{
+			"name": "technical.resolve",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["technical inspection, preparation and publication preserve frozen synthetic evidence"]
+		},
+		{
+			"name": "ui.persist",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["visual persistence uses exact synthetic UX review and existing owned target rules"]
+		},
+		{
+			"name": "units.assemble",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"saved UX and UI units flow through handles, scoped deliveries and assembly without regeneration"
+			]
+		},
+		{
+			"name": "units.deliver",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"saved UX and UI units flow through handles, scoped deliveries and assembly without regeneration"
+			]
+		},
+		{
+			"name": "units.handoff",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"saved UX and UI units flow through handles, scoped deliveries and assembly without regeneration"
+			]
+		},
+		{
+			"name": "units.import",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"saved UX and UI units flow through handles, scoped deliveries and assembly without regeneration"
+			]
+		},
+		{
+			"name": "units.open",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"saved UX and UI units flow through handles, scoped deliveries and assembly without regeneration"
+			]
+		},
+		{
+			"name": "units.read",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"saved UX and UI units flow through handles, scoped deliveries and assembly without regeneration"
+			]
+		},
+		{
+			"name": "ux-review.subject",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"current product preparation, scoped facts, exact review and canonical artifact persistence preserve existing contracts",
+				"visual persistence uses exact synthetic UX review and existing owned target rules"
+			]
+		},
+		{
+			"name": "ux-review.validate",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": [
+				"current product preparation, scoped facts, exact review and canonical artifact persistence preserve existing contracts"
+			]
+		},
+		{
+			"name": "ux.persist",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["visual persistence uses exact synthetic UX review and existing owned target rules"]
+		},
+		{
+			"name": "result.store",
+			"kind": "permission for workflow_store",
+			"implemented": true,
+			"verified": true,
+			"positiveCases": ["shared HTTP case", "mcp-migration-live-metrics.json"]
+		}
+	],
+	"agents": [
+		{
+			"name": "architecture-reviewer",
+			"instruction": "agents/architecture-reviewer.toml",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["result.store", "files.read"],
+			"evidence": [
+				"TOML parse and scoped instructions",
+				"agent-write-check-20260927.json",
+				"common capability/read/store integration"
+			],
+			"liveMcpTrial": false,
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "checkpoint-advisor",
+			"instruction": "agents/checkpoint-advisor.toml",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["result.store", "files.read"],
+			"evidence": [
+				"TOML parse and scoped instructions",
+				"agent-write-check-20260927.json",
+				"common capability/read/store integration"
+			],
+			"liveMcpTrial": false,
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "contracts-reviewer",
+			"instruction": "agents/contracts-reviewer.toml",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["result.store", "files.read"],
+			"evidence": [
+				"TOML parse and scoped instructions",
+				"agent-write-check-20260927.json",
+				"common capability/read/store integration"
+			],
+			"liveMcpTrial": false,
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "controller-agent",
+			"instruction": "agents/controller-agent.toml",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["result.store", "files.read"],
+			"evidence": [
+				"TOML parse and scoped instructions",
+				"agent-write-check-20260927.json",
+				"common capability/read/store integration"
+			],
+			"liveMcpTrial": false,
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "document-structure",
+			"instruction": "agents/document-structure.toml",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["result.store", "files.read"],
+			"evidence": [
+				"TOML parse and scoped instructions",
+				"agent-write-check-20260927.json",
+				"common capability/read/store integration"
+			],
+			"liveMcpTrial": false,
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "model-agent",
+			"instruction": "agents/model-agent.toml",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["result.store", "files.read"],
+			"evidence": [
+				"TOML parse and scoped instructions",
+				"agent-write-check-20260927.json",
+				"common capability/read/store integration"
+			],
+			"liveMcpTrial": false,
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "polylith-architect",
+			"instruction": "agents/polylith-architect.toml",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["result.store", "files.read"],
+			"evidence": [
+				"TOML parse and scoped instructions",
+				"agent-write-check-20260927.json",
+				"common capability/read/store integration"
+			],
+			"liveMcpTrial": false,
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "privacy-security-reviewer",
+			"instruction": "agents/privacy-security-reviewer.toml",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["result.store", "files.read"],
+			"evidence": [
+				"TOML parse and scoped instructions",
+				"agent-write-check-20260927.json",
+				"common capability/read/store integration"
+			],
+			"liveMcpTrial": false,
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "system-architect",
+			"instruction": "agents/system-architect.toml",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["result.store", "files.read"],
+			"evidence": [
+				"TOML parse and scoped instructions",
+				"agent-write-check-20260927.json",
+				"common capability/read/store integration"
+			],
+			"liveMcpTrial": false,
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "technical-researcher",
+			"instruction": "agents/technical-researcher.toml",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["result.store", "files.read"],
+			"evidence": [
+				"TOML parse and scoped instructions",
+				"agent-write-check-20260927.json",
+				"common capability/read/store integration"
+			],
+			"liveMcpTrial": false,
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "ui-designer",
+			"instruction": "agents/ui-designer.toml",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["result.store", "files.read", "units.read", "units.deliver"],
+			"evidence": [
+				"TOML parse and scoped instructions",
+				"agent-write-check-20260927.json",
+				"common capability/read/store integration"
+			],
+			"liveMcpTrial": false,
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "ui-reviewer",
+			"instruction": "agents/ui-reviewer.toml",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["result.store", "files.read"],
+			"evidence": [
+				"TOML parse and scoped instructions",
+				"agent-write-check-20260927.json",
+				"common capability/read/store integration"
+			],
+			"liveMcpTrial": false,
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "ux-planner",
+			"instruction": "agents/ux-planner.toml",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["result.store", "files.read", "units.read", "units.deliver"],
+			"evidence": [
+				"TOML parse and scoped instructions",
+				"agent-write-check-20260927.json",
+				"common capability/read/store integration",
+				"mcp-migration-live-metrics.json"
+			],
+			"liveMcpTrial": true,
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "ux-reviewer",
+			"instruction": "agents/ux-reviewer.toml",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["result.store", "files.read"],
+			"evidence": [
+				"TOML parse and scoped instructions",
+				"agent-write-check-20260927.json",
+				"common capability/read/store integration"
+			],
+			"liveMcpTrial": false,
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "verification-reviewer",
+			"instruction": "agents/verification-reviewer.toml",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["result.store", "files.read"],
+			"evidence": [
+				"TOML parse and scoped instructions",
+				"agent-write-check-20260927.json",
+				"common capability/read/store integration"
+			],
+			"liveMcpTrial": false,
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "view-agent",
+			"instruction": "agents/view-agent.toml",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["result.store", "files.read"],
+			"evidence": [
+				"TOML parse and scoped instructions",
+				"agent-write-check-20260927.json",
+				"common capability/read/store integration"
+			],
+			"liveMcpTrial": false,
+			"requiredRemainingWork": []
+		}
+	],
+	"skills": [
+		{
+			"name": "attach-detail",
+			"instruction": "skills/attach-detail/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["files.read", "files.edit"],
+			"retainedHostRole": null,
+			"evidence": [
+				"skill-creator quick_validate.py",
+				"documentation/workflows/mcp.md",
+				"tests/mcp-workflows.test.mjs"
+			],
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "bootstrap",
+			"instruction": "skills/bootstrap/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["files.read", "repository.snapshot", "review.request"],
+			"retainedHostRole": "Instruction discovery and reviewer lifecycle work before a server exists.",
+			"evidence": [
+				"skill-creator quick_validate.py",
+				"documentation/workflows/mcp.md",
+				"tests/mcp-workflows.test.mjs"
+			],
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "check-point",
+			"instruction": "skills/check-point/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["repository.snapshot"],
+			"retainedHostRole": "Git writes remain in host approval/credential boundary; actual milestone checkpoint verified.",
+			"evidence": [
+				"skill-creator quick_validate.py",
+				"documentation/workflows/mcp.md",
+				"tests/mcp-workflows.test.mjs"
+			],
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "create-app",
+			"instruction": "skills/create-app/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["project.inspect", "project.plan"],
+			"retainedHostRole": "Dedicated apply/validation workers own install subprocesses and progress; existing positive apply fixture passed.",
+			"evidence": [
+				"skill-creator quick_validate.py",
+				"documentation/workflows/mcp.md",
+				"tests/mcp-workflows.test.mjs"
+			],
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "generate-prd",
+			"instruction": "skills/generate-prd/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["context.resolve", "collection.preview", "collection.publish"],
+			"retainedHostRole": null,
+			"evidence": [
+				"skill-creator quick_validate.py",
+				"documentation/workflows/mcp.md",
+				"tests/mcp-workflows.test.mjs"
+			],
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "generate-technical",
+			"instruction": "skills/generate-technical/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["technical.resolve", "technical.publish"],
+			"retainedHostRole": null,
+			"evidence": [
+				"skill-creator quick_validate.py",
+				"documentation/workflows/mcp.md",
+				"tests/mcp-workflows.test.mjs"
+			],
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "initialize-project",
+			"instruction": "skills/initialize-project/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["project.inspect", "project.plan"],
+			"retainedHostRole": "Dedicated apply/validation workers own dependency installation; injected-command positive scaffold test passed.",
+			"evidence": [
+				"skill-creator quick_validate.py",
+				"documentation/workflows/mcp.md",
+				"tests/mcp-workflows.test.mjs"
+			],
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "normalize-standards",
+			"instruction": "skills/normalize-standards/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["standards.resolve", "files.edit"],
+			"retainedHostRole": "Dedicated attestation CLI retains normalization authority; first-attestation positive case passed.",
+			"evidence": [
+				"skill-creator quick_validate.py",
+				"documentation/workflows/mcp.md",
+				"tests/mcp-workflows.test.mjs"
+			],
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "refine-detail",
+			"instruction": "skills/refine-detail/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["files.read", "files.edit", "research.record"],
+			"retainedHostRole": null,
+			"evidence": [
+				"skill-creator quick_validate.py",
+				"documentation/workflows/mcp.md",
+				"tests/mcp-workflows.test.mjs"
+			],
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "refine-design",
+			"instruction": "skills/refine-design/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": [
+				"product.location",
+				"product.prepare",
+				"product.select",
+				"model.persist",
+				"units.open",
+				"units.import",
+				"units.read",
+				"units.deliver",
+				"units.handoff",
+				"units.assemble",
+				"ux-review.subject",
+				"ux-review.validate",
+				"ux.persist",
+				"design.apply",
+				"ui.persist",
+				"component.persist",
+				"artifact.commit",
+				"publication.assemble",
+				"context.resolve",
+				"technical.inspect",
+				"technical.prepare",
+				"technical.resolve"
+			],
+			"retainedHostRole": null,
+			"evidence": [
+				"skill-creator quick_validate.py",
+				"documentation/workflows/mcp.md",
+				"tests/mcp-workflows.test.mjs"
+			],
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "reset-design",
+			"instruction": "skills/reset-design/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["reset.plan"],
+			"retainedHostRole": "Dedicated apply/recovery CLI uses exact plan digest and host deletion authority; positive reset/recovery cases passed.",
+			"evidence": [
+				"skill-creator quick_validate.py",
+				"documentation/workflows/mcp.md",
+				"tests/mcp-workflows.test.mjs"
+			],
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "review-standards",
+			"instruction": "skills/review-standards/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": [
+				"standards.resolve",
+				"standards.guide",
+				"repository.snapshot",
+				"review.request",
+				"review.validate"
+			],
+			"retainedHostRole": "Eligibility, calibration, independent dispatch/audit and lifecycle remain in the skill.",
+			"evidence": [
+				"skill-creator quick_validate.py",
+				"documentation/workflows/mcp.md",
+				"tests/mcp-workflows.test.mjs"
+			],
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "update-canonical-standard",
+			"instruction": "skills/update-canonical-standard/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["standards.resolve", "files.read", "files.edit"],
+			"retainedHostRole": "Human promotion scope remains parent-owned.",
+			"evidence": [
+				"skill-creator quick_validate.py",
+				"documentation/workflows/mcp.md",
+				"tests/mcp-workflows.test.mjs"
+			],
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "update-standards",
+			"instruction": "skills/update-standards/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["repository.snapshot"],
+			"retainedHostRole": "Git publication stays host-owned; no real push was authorized or performed.",
+			"evidence": [
+				"skill-creator quick_validate.py",
+				"documentation/workflows/mcp.md",
+				"tests/mcp-workflows.test.mjs"
+			],
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "write-standards-guide",
+			"instruction": "skills/write-standards-guide/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": ["standards.guide"],
+			"retainedHostRole": "Existing owned write/check CLI uses the same validated guide engine.",
+			"evidence": [
+				"skill-creator quick_validate.py",
+				"documentation/workflows/mcp.md",
+				"tests/mcp-workflows.test.mjs"
+			],
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "install-polylith-skills",
+			"instruction": ".agents/skills/install-polylith-skills/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": [],
+			"retainedHostRole": "Ownership-aware installer must work without the runtime it installs; disposable install/unlink checks passed.",
+			"evidence": ["skill-creator quick_validate.py", "documentation/workflows/mcp.md", "npm run test:mcp:host"],
+			"requiredRemainingWork": []
+		},
+		{
+			"name": "uninstall-polylith-skills",
+			"instruction": ".agents/skills/uninstall-polylith-skills/SKILL.md",
+			"implemented": true,
+			"connected": true,
+			"verified": true,
+			"operations": [],
+			"retainedHostRole": "Ownership-aware unlink may remove service source/config; disposable unlink checks passed.",
+			"evidence": ["skill-creator quick_validate.py", "documentation/workflows/mcp.md", "npm run test:mcp:host"],
+			"requiredRemainingWork": []
+		}
+	],
+	"requiredRemainingWork": []
+}

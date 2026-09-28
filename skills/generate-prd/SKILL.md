@@ -5,6 +5,10 @@ description: Inventory validated product context with the document-structure age
 
 # Generate product documents
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use context.resolve, collection.preview, and collection.publish. The document-structure agent still owns hierarchy, weighting and page breaks; consume its exact saved files. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 Start after `refine-design` has completed a current UI composition pass and
 resolved a PRD context containing its source-bound UX 0.4 and UI 0.4 artifacts,
 design language, and publication manifest. A partial UI pass is usable only

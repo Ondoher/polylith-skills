@@ -5,6 +5,10 @@ description: Update a global canonical engineering standard by promoting the act
 
 # Update Canonical Standard
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use files.read, standards.resolve, and digest-guarded files.edit. Preserve owner-directed promotion scope; publication remains the existing host checkpoint/push workflow. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 Promote the repository's proven local rule into the global canonical standard unless the engineer supplies a different canonical change.
 
 ## Resolve The Promotion Source

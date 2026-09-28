@@ -5,6 +5,10 @@ description: Research and revise one linked authored technical white paper while
 
 # Refine Detail
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use files.read, files.edit, research.record, and result.store. Retain research attribution, exact before/after evidence and preservation of prior information. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 Develop one human-owned white paper linked from the current product description. Accept the paper at its supplied location and preserve that location; there is no standard input folder. Keep immutable source snapshots, research handoffs, and revision ledgers under `product/<product>/`. Generated `documents/<product>/<doc-name>/` folders are output only. Do not create a second editable paper or impose a fixed heading template.
 
 Resolve the product and selected paper from the user's request. Load repository instructions and the current product model. The paper must have a `White paper:` declaration classified as a `reference` source claim. If the link was newly attached and the model has not been refreshed, route that source-only interpretation through `refine-design` before consuming it; do not classify the link as a capability or make paper prose into PRD requirements. Run the installed refinement helper `node ../refine-design/scripts/white-paper-references.mjs --current <product/current.json> --repo <repository>` to bind exact source bytes and check the current link. Work on the one selected paper.

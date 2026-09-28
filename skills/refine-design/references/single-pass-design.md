@@ -4,6 +4,15 @@ Use after the trusted facts packet is ready. Parsing and product authority remai
 unchanged. UX and UI schema 0.4 are the canonical persisted formats; assembly never
 reconstructs the old flow graph or saves expanded scene copies.
 
+When configured, use the shared MCP protocol in `documentation/workflows/mcp.md`
+under the governance checkout. The parent opens each store with `units.open` and
+assigns input handles, stage and record references through `workflow_assign`.
+Authors use `units.read` and `units.deliver` within that capability; the parent
+owns `units.import`, `units.handoff`, `units.assemble` and canonical persistence.
+This route replaces the file-transfer mechanics below, not their ownership,
+review or reuse rules. The maintained CLI/file route remains available for
+bootstrap and recovery when MCP is unavailable.
+
 ## Execution
 
 1. Bind each staging store to exact facts, shared inputs and the producing contract
@@ -15,11 +24,12 @@ reconstructs the old flow graph or saves expanded scene copies.
    and record material decisions while authoring. Research unfamiliar patterns only
    when needed. Do not add separate full-product inventory, graph, pruning or rewrite
    passes.
-3. Save each complete unit in the author's assigned `proposalDirectory`. The author
-   returns paths and record IDs; the parent consumes the exact files with `deliver`,
-   without retyping their JSON. Continue the same author with remaining IDs and file
-   paths, without resending accumulated JSON. A replacement author resumes from the
-   saved manifest and records.
+3. Deliver each complete unit through the author's scoped `units.deliver` operation,
+   or save it in the assigned `proposalDirectory` for direct parent consumption
+   with `deliver`. Return handles or paths and record IDs without retyping JSON.
+   Continue the same author with remaining IDs and existing handles/paths, without
+   resending accumulated data. A replacement author resumes from the saved manifest
+   and records.
 4. Optionally scan outstanding issues once. Replace only affected records and actual
    dependents, naming each previous digest. Unresolved issues remain repair notices;
    continue independent work without an automatic full-run retry.
@@ -27,8 +37,8 @@ reconstructs the old flow graph or saves expanded scene copies.
    research and obtain the existing independent UX review. Validation and import do
    not grant semantic approval. Preserve partial results if review cannot pass.
 6. UI may prepare or reuse visual foundations while UX runs. After exact UX review,
-   the same UI author receives shared context once and bounded element/flow paths as
-   needed. Author reusable parts and scene variations in one forward pass, followed
+   the same UI author receives shared context once and bounded element/flow handles
+   or paths as needed. Author reusable parts and scene variations in one forward pass, followed
    by at most one issue-directed repair scan. Render deterministically and inspect.
 7. Publication and technical preparation consume the same canonical meaning and
    stable references; they do not ask UX/UI to re-author the product.
@@ -40,11 +50,16 @@ are fixed, without starting more design agents.
 
 ## Proposal-file permission and delivery
 
+For MCP delivery, verify the assigned capability and input handles with the first
+real bounded read/delivery; no proposal directory is required. The remainder of
+this section describes the file route.
+
 The UX/UI author roles use `sandbox_mode = "workspace-write"` with a narrower
 instruction-level write scope: only proposal files in the directory assigned by
 the parent. This is not a filesystem sandbox restricted to that one directory;
-effective host permissions still apply. Other assessment and reviewer roles remain
-read-only. See [Codex custom-agent configuration](https://learn.chatgpt.com/docs/agent-configuration/subagents),
+effective host permissions still apply. Other roles retain their own assigned
+report/proposal scope; this contract grants no canonical write authority. See
+[Codex custom-agent configuration](https://learn.chatgpt.com/docs/agent-configuration/subagents),
 checked 2026-09-27.
 
 Before substantive authoring, the parent supplies the mode, exact input paths,
@@ -89,7 +104,8 @@ Each unit is `{ "kind": "flow", "id": "edit-entry", "data": {...},
 when unnecessary. IDs follow `[a-z0-9][a-z0-9._-]{0,159}`; domain records follow their
 own schema's stable-ID contract.
 
-Transport is one atomic JSON file per completed record. Stable IDs never contain
+Transport uses scoped unit delivery or one atomic JSON file per completed record.
+Stable IDs never contain
 outline numbering or imply document placement. The document-structure agent still
 inventories meaning, organizes sections and chooses page breaks. Reader-facing
 numbering starts at 1 and is consecutive at each hierarchy level.

@@ -1,0 +1,27 @@
+# MCP system assessment
+
+Proceed with G5 after fixing the two defects below. The existing process, capability and saved-result boundaries suit this local workflow; no additional service or database is warranted. This is a scoped advisory assessment of the supplied working-tree files, not a standards-compliance verdict or permission to implement.
+
+## Required fixes
+
+1. **High — close admission before draining accepted operations.** [mcp-server.mjs:32](../../scripts/mcp-server.mjs#L32) calls `service.drain()` while HTTP remains open until line 41. [WorkflowService.mjs:332](../../scripts/mcp/WorkflowService.mjs#L332) waits only for the queue promises present at that instant; `execute` can append another task meanwhile (lines 240–300). A client can therefore receive a queued-job receipt during shutdown for work outside the drain snapshot. The host can then terminate the worker before that work finishes, potentially interrupting canonical mutations. This contradicts the accepted-work guarantee in [mcp.md:27](../../documentation/workflows/mcp.md#L27). Establish a synchronous admission cutoff covering requests already being parsed as well as new requests, drain every admitted operation, then close transport and worker resources. Preserve delivery of responses for admitted foreground calls where possible. Worker termination must not imply rollback; uncertain mutations still need state inspection. Also ensure resource cleanup runs if shutdown measurement persistence fails. Add a focused regression for an operation submitted while an earlier operation is draining; the broad concurrency matrix can remain deferred.
+
+2. **Medium — preserve the guide engine's repository-relative option contract.** [DomainOperations.mjs:629](../../scripts/mcp/DomainOperations.mjs#L629) resolves explicit `standards.guide` `manifest` and `overlay` options to absolute paths. The called engine rejects absolute paths in [standards-guide.mjs:42](../../skills/write-standards-guide/scripts/standards-guide.mjs#L42), reached through `repositoryFile` at lines 145–146. Consequently, even the ordinary explicit option `manifest: "agents/topics/standards/manifest.md"` fails, although omitting the option works. Validate confinement at the adapter boundary and supply the engine with its required repository-relative representation. Extend the existing guide fixture with explicit manifest/overlay options; [mcp-workflows.test.mjs:530](../../tests/mcp-workflows.test.mjs#L530) currently covers only defaults.
+
+## Boundary findings
+
+The parent owns the service, canonical adapters and capability issuance. Delegated capabilities are run-bound, restrict named operations, and require explicit handle membership ([WorkflowService.mjs:34](../../scripts/mcp/WorkflowService.mjs#L34), line 92). Worker messages retain that assigned context; assigned file reads are rechecked in the worker. Unit adapters enforce stage and record-reference membership before accessing their run-specific stores ([DomainOperations.mjs:86](../../scripts/mcp/DomainOperations.mjs#L86)). Exclusive record ownership remains a parent scheduling obligation, as documented; the service does not revoke older overlapping assignments automatically.
+
+Saved JSON is serialized once, hashed, retained and cloned into downstream arguments, avoiding model-mediated reconstruction. The existing positive tests inspect shared clients, bounded Unicode reads, reused handles and UX/UI delivery. No additional concrete handle or record-isolation defect emerged from this inspection. Direct paths use workspace containment and existing-link rejection; this is not a hostile-filesystem isolation guarantee. The documented same-account trust boundary is material.
+
+The new UX planner and refine-design MCP instructions align with the adapters: parent-issued capabilities, catalog inspection, selected reads, scoped unit delivery and parent-owned assembly. Source freshness, independent UX review and canonical locks remain domain responsibilities. Host-owned installation, Git mutation and reset application remain appropriately outside the shared operation catalog.
+
+## Later verification and limits
+
+Keep broader cross-run denial, overlapping-assignment scheduling, restart/tamper, link-race/platform and memory-growth testing in the deferred comprehensive pass. In-memory results, jobs and measurements accumulate for the process lifetime; establish retention from real workload evidence rather than inventing limits now. The two regression checks above directly address observed defects and should accompany their fixes.
+
+Evidence is static source tracing and inspection of existing tests; no applications, builds, tests or installers were run and no web research was needed. Applicable role guidance and routed work context were read. Folder-mapped standards were not assessed; downstream reviewers retain that responsibility. No model-usage or whole-workflow performance measurements are available from this assessment.
+
+## Parent resolution
+
+Both required findings are fixed. HTTP admission now stops and accepted handlers settle before the service drains queued/background work. A focused lifecycle case verifies an accepted job completes before resources close. Explicit standards-guide manifest/overlay paths now normalize to confined repository-relative labels; the positive case compares custom-path output with the default output. The final MCP suite passes all ten cases. The separately planned broader adversarial/concurrency matrix remains outside this pass.

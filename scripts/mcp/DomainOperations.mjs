@@ -626,7 +626,12 @@ export class DomainOperations {
 					additionalProperties: false,
 				});
 				return buildGuide({
-					...this._paths(input.options ?? {}, ['manifest', 'overlay'], context),
+					...Object.fromEntries(
+						Object.entries(input.options ?? {}).map(([key, value]) => [
+							key,
+							path.relative(context.files.root, context.files.resolve(value)).replaceAll('\\', '/'),
+						]),
+					),
 					repo: context.files.root,
 					codex_root: this.codexRoot,
 				});

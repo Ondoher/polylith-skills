@@ -5,6 +5,10 @@ description: Generate or check repository-root STANDARDS.md from normalized fold
 
 # Write Standards Guide
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use standards.guide. Use the existing owned guide CLI to write/check STANDARDS.md from the same validated inputs; the service result retains the generated content and provenance. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 Generate a deterministic developer reference without creating another standards authority.
 
 ## Authority Boundary

@@ -1,0 +1,1147 @@
+{
+	"recordedAt": "2026-09-28T03:44:34.227Z",
+	"kind": "local-positive-integration",
+	"modelUsage": null,
+	"tests": [
+		{
+			"name": "shutdown stops admission and drains an accepted background operation before releasing resources",
+			"requests": [
+				{
+					"at": "2026-09-28T03:44:27.385Z",
+					"method": "tools/call",
+					"tool": "workflow_open",
+					"requestBytes": 267,
+					"responseBytes": 300,
+					"handlingMs": 5.136799999999994,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.399Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 240,
+					"responseBytes": 171,
+					"handlingMs": 0.47879999999997835,
+					"failed": false
+				}
+			],
+			"operations": [
+				{
+					"operation": "fixture.wait",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.25950000000000273,
+					"operationMs": 13.08359999999999
+				}
+			]
+		},
+		{
+			"name": "two HTTP clients share a run, exact handles, assigned delivery, bounded reads and operation timings",
+			"requests": [
+				{
+					"at": "2026-09-28T03:44:27.432Z",
+					"method": "tools/call",
+					"tool": "workflow_open",
+					"requestBytes": 267,
+					"responseBytes": 300,
+					"handlingMs": 2.870299999999986,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.439Z",
+					"method": "initialize",
+					"tool": null,
+					"requestBytes": 58,
+					"responseBytes": 155,
+					"handlingMs": 0.24250000000000682,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.443Z",
+					"method": "tools/list",
+					"tool": null,
+					"requestBytes": 58,
+					"responseBytes": 3711,
+					"handlingMs": 0.23849999999998772,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.447Z",
+					"method": "tools/call",
+					"tool": "workflow_status",
+					"requestBytes": 194,
+					"responseBytes": 266,
+					"handlingMs": 0.266900000000021,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.454Z",
+					"method": "tools/call",
+					"tool": "workflow_store",
+					"requestBytes": 30232,
+					"responseBytes": 506,
+					"handlingMs": 3.359299999999962,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.459Z",
+					"method": "tools/call",
+					"tool": "workflow_assign",
+					"requestBytes": 317,
+					"responseBytes": 239,
+					"handlingMs": 0.5009999999999764,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.463Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 279,
+					"responseBytes": 276,
+					"handlingMs": 0.5072000000000116,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.476Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 271,
+					"responseBytes": 10078,
+					"handlingMs": 10.040500000000009,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.492Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 274,
+					"responseBytes": 10071,
+					"handlingMs": 10.285300000000007,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.507Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 275,
+					"responseBytes": 10073,
+					"handlingMs": 10.536599999999964,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.521Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 276,
+					"responseBytes": 10069,
+					"handlingMs": 8.950699999999983,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.525Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 276,
+					"responseBytes": 6054,
+					"handlingMs": 0.33969999999999345,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.532Z",
+					"method": "tools/call",
+					"tool": "workflow_store",
+					"requestBytes": 224,
+					"responseBytes": 504,
+					"handlingMs": 2.2554999999999836,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.538Z",
+					"method": "tools/call",
+					"tool": "workflow_store",
+					"requestBytes": 224,
+					"responseBytes": 503,
+					"handlingMs": 1.5423999999999864,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.541Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 261,
+					"responseBytes": 284,
+					"handlingMs": 0.2441000000000031,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.544Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 232,
+					"responseBytes": 114,
+					"handlingMs": 0.2300999999999931,
+					"failed": true
+				},
+				{
+					"at": "2026-09-28T03:44:27.640Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 276,
+					"responseBytes": 505,
+					"handlingMs": 93.44,
+					"failed": false
+				}
+			],
+			"operations": [
+				{
+					"operation": "files.read",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.016899999999964166,
+					"operationMs": 93.20210000000003
+				}
+			]
+		},
+		{
+			"name": "current product preparation, scoped facts, exact review and canonical artifact persistence preserve existing contracts",
+			"requests": [
+				{
+					"at": "2026-09-28T03:44:27.659Z",
+					"method": "tools/call",
+					"tool": "workflow_open",
+					"requestBytes": 267,
+					"responseBytes": 300,
+					"handlingMs": 2.3260999999999967,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.781Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 3508,
+					"responseBytes": 504,
+					"handlingMs": 116.71189999999996,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.813Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 254,
+					"responseBytes": 505,
+					"handlingMs": 27.118000000000052,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.841Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 371,
+					"responseBytes": 505,
+					"handlingMs": 3.872799999999984,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.874Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 321,
+					"responseBytes": 504,
+					"handlingMs": 13.811199999999985,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:27.888Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 2124,
+					"responseBytes": 503,
+					"handlingMs": 8.38409999999999,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.106Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 575,
+					"responseBytes": 505,
+					"handlingMs": 212.4524,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.161Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 254,
+					"responseBytes": 505,
+					"handlingMs": 26.874199999999973,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.257Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1026,
+					"responseBytes": 504,
+					"handlingMs": 69.49839999999995,
+					"failed": false
+				}
+			],
+			"operations": [
+				{
+					"operation": "model.persist",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.016200000000026193,
+					"operationMs": 116.19170000000003
+				},
+				{
+					"operation": "product.prepare",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.01269999999999527,
+					"operationMs": 26.859899999999925
+				},
+				{
+					"operation": "product.select",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.01310000000000855,
+					"operationMs": 3.4189999999999827
+				},
+				{
+					"operation": "ux-review.subject",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.014800000000036562,
+					"operationMs": 13.52699999999993
+				},
+				{
+					"operation": "ux-review.validate",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.04559999999992215,
+					"operationMs": 7.98720000000003
+				},
+				{
+					"operation": "publication.assemble",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.02030000000002019,
+					"operationMs": 212.15679999999998
+				},
+				{
+					"operation": "context.resolve",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.03089999999997417,
+					"operationMs": 26.439899999999966
+				},
+				{
+					"operation": "artifact.commit",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.011700000000018917,
+					"operationMs": 69.25939999999991
+				}
+			]
+		},
+		{
+			"name": "saved UX and UI units flow through handles, scoped deliveries and assembly without regeneration",
+			"requests": [
+				{
+					"at": "2026-09-28T03:44:28.300Z",
+					"method": "tools/call",
+					"tool": "workflow_open",
+					"requestBytes": 267,
+					"responseBytes": 300,
+					"handlingMs": 2.19600000000014,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.357Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 355,
+					"responseBytes": 504,
+					"handlingMs": 50.378099999999904,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.365Z",
+					"method": "tools/call",
+					"tool": "workflow_store",
+					"requestBytes": 19171,
+					"responseBytes": 506,
+					"handlingMs": 3.27170000000001,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.376Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 354,
+					"responseBytes": 506,
+					"handlingMs": 7.300899999999956,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.382Z",
+					"method": "tools/call",
+					"tool": "workflow_assign",
+					"requestBytes": 437,
+					"responseBytes": 255,
+					"handlingMs": 0.28510000000005675,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.436Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 354,
+					"responseBytes": 504,
+					"handlingMs": 50.29009999999994,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.451Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 326,
+					"responseBytes": 506,
+					"handlingMs": 9.118600000000015,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.466Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 347,
+					"responseBytes": 504,
+					"handlingMs": 8.169199999999819,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.482Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 354,
+					"responseBytes": 504,
+					"handlingMs": 9.107700000000023,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.511Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 279,
+					"responseBytes": 506,
+					"handlingMs": 22.46849999999995,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.522Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 356,
+					"responseBytes": 505,
+					"handlingMs": 5.298600000000079,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.528Z",
+					"method": "tools/call",
+					"tool": "workflow_store",
+					"requestBytes": 4075,
+					"responseBytes": 506,
+					"handlingMs": 2.325599999999895,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.535Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 355,
+					"responseBytes": 506,
+					"handlingMs": 4.107899999999972,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.542Z",
+					"method": "tools/call",
+					"tool": "workflow_assign",
+					"requestBytes": 441,
+					"responseBytes": 256,
+					"handlingMs": 0.2681999999999789,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.555Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 355,
+					"responseBytes": 505,
+					"handlingMs": 10.483000000000175,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.565Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 330,
+					"responseBytes": 506,
+					"handlingMs": 5.882800000000088,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.577Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 351,
+					"responseBytes": 505,
+					"handlingMs": 6.57080000000019,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.588Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 355,
+					"responseBytes": 505,
+					"handlingMs": 7.656400000000076,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:28.817Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 49150,
+					"responseBytes": 506,
+					"handlingMs": 224.0710999999999,
+					"failed": false
+				}
+			],
+			"operations": [
+				{
+					"operation": "units.open",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.014599999999973079,
+					"operationMs": 50.05939999999987
+				},
+				{
+					"operation": "units.import",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.010199999999940701,
+					"operationMs": 6.618099999999913
+				},
+				{
+					"operation": "units.deliver",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.015899999999874126,
+					"operationMs": 49.72649999999999
+				},
+				{
+					"operation": "units.read",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.010199999999940701,
+					"operationMs": 8.868600000000015
+				},
+				{
+					"operation": "units.handoff",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.00959999999986394,
+					"operationMs": 7.944900000000189
+				},
+				{
+					"operation": "units.deliver",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.010500000000092768,
+					"operationMs": 8.480999999999995
+				},
+				{
+					"operation": "units.assemble",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.009199999999964348,
+					"operationMs": 22.27410000000009
+				},
+				{
+					"operation": "units.open",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.009399999999914144,
+					"operationMs": 5.032699999999977
+				},
+				{
+					"operation": "units.import",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.009199999999964348,
+					"operationMs": 3.722400000000107
+				},
+				{
+					"operation": "units.deliver",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.009400000000141517,
+					"operationMs": 10.142499999999927
+				},
+				{
+					"operation": "units.read",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.009199999999964348,
+					"operationMs": 5.680700000000115
+				},
+				{
+					"operation": "units.handoff",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.010099999999965803,
+					"operationMs": 6.349799999999959
+				},
+				{
+					"operation": "units.deliver",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.010999999999967258,
+					"operationMs": 7.351800000000139
+				},
+				{
+					"operation": "units.assemble",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.011400000000094224,
+					"operationMs": 222.14829999999984
+				}
+			]
+		},
+		{
+			"name": "collection preview and publication reuse an existing source-bound fixture",
+			"requests": [
+				{
+					"at": "2026-09-28T03:44:28.842Z",
+					"method": "tools/call",
+					"tool": "workflow_open",
+					"requestBytes": 267,
+					"responseBytes": 300,
+					"handlingMs": 2.683999999999969,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:29.073Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 389,
+					"responseBytes": 503,
+					"handlingMs": 132.97609999999986,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:29.104Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 391,
+					"responseBytes": 503,
+					"handlingMs": 24.14779999999996,
+					"failed": false
+				}
+			],
+			"operations": [
+				{
+					"operation": "collection.preview",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.009600000000091313,
+					"operationMs": 132.71319999999992
+				},
+				{
+					"operation": "collection.publish",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.011200000000144428,
+					"operationMs": 23.930900000000065
+				}
+			]
+		},
+		{
+			"name": "technical inspection, preparation and publication preserve frozen synthetic evidence",
+			"requests": [
+				{
+					"at": "2026-09-28T03:44:29.129Z",
+					"method": "tools/call",
+					"tool": "workflow_open",
+					"requestBytes": 267,
+					"responseBytes": 300,
+					"handlingMs": 2.8463999999999032,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:30.068Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 284,
+					"responseBytes": 504,
+					"handlingMs": 45.39589999999998,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:30.077Z",
+					"method": "tools/call",
+					"tool": "workflow_open",
+					"requestBytes": 306,
+					"responseBytes": 302,
+					"handlingMs": 2.8333999999999833,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:30.672Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 312,
+					"responseBytes": 507,
+					"handlingMs": 591.7755000000002,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:30.926Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 9426,
+					"responseBytes": 506,
+					"handlingMs": 247.54469999999992,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:31.112Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 239,
+					"responseBytes": 508,
+					"handlingMs": 182.31320000000005,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:31.287Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 259,
+					"responseBytes": 508,
+					"handlingMs": 169.0653000000002,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:31.724Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 14293,
+					"responseBytes": 507,
+					"handlingMs": 431.6227000000008,
+					"failed": false
+				}
+			],
+			"operations": [
+				{
+					"operation": "product.location",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.011999999999716238,
+					"operationMs": 45.15610000000015
+				},
+				{
+					"operation": "technical.inspect",
+					"run": "technical-test",
+					"status": "complete",
+					"queuedMs": 0.008299999999962893,
+					"operationMs": 591.565
+				},
+				{
+					"operation": "technical.prepare",
+					"run": "technical-test",
+					"status": "complete",
+					"queuedMs": 0.010499999999865395,
+					"operationMs": 247.01720000000023
+				},
+				{
+					"operation": "technical.resolve",
+					"run": "technical-test",
+					"status": "complete",
+					"queuedMs": 0.007899999999608553,
+					"operationMs": 182.11280000000033
+				},
+				{
+					"operation": "context.resolve",
+					"run": "technical-test",
+					"status": "complete",
+					"queuedMs": 0.011800000000221189,
+					"operationMs": 168.8340000000003
+				},
+				{
+					"operation": "technical.publish",
+					"run": "technical-test",
+					"status": "complete",
+					"queuedMs": 0.0091999999995096,
+					"operationMs": 431.0621000000001
+				}
+			]
+		},
+		{
+			"name": "research revisions, exact description edits and reset plans use existing authority",
+			"requests": [
+				{
+					"at": "2026-09-28T03:44:31.759Z",
+					"method": "tools/call",
+					"tool": "workflow_open",
+					"requestBytes": 267,
+					"responseBytes": 300,
+					"handlingMs": 2.598800000000665,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:31.828Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 352,
+					"responseBytes": 504,
+					"handlingMs": 63.539600000000064,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:31.838Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 406,
+					"responseBytes": 504,
+					"handlingMs": 5.000300000000607,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:31.854Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 291,
+					"responseBytes": 504,
+					"handlingMs": 11.198699999999917,
+					"failed": false
+				}
+			],
+			"operations": [
+				{
+					"operation": "research.record",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.010600000000522414,
+					"operationMs": 63.30209999999988
+				},
+				{
+					"operation": "files.edit",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.009700000000520959,
+					"operationMs": 4.770599999999831
+				},
+				{
+					"operation": "reset.plan",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.008200000000215368,
+					"operationMs": 11.006899999999405
+				}
+			]
+		},
+		{
+			"name": "project preparation produces a reusable plan without modifying an empty target",
+			"requests": [
+				{
+					"at": "2026-09-28T03:44:31.871Z",
+					"method": "tools/call",
+					"tool": "workflow_open",
+					"requestBytes": 267,
+					"responseBytes": 300,
+					"handlingMs": 2.5449999999991633,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:31.922Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 289,
+					"responseBytes": 504,
+					"handlingMs": 45.160399999999754,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:31.943Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 434,
+					"responseBytes": 505,
+					"handlingMs": 13.548800000000483,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:31.965Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 291,
+					"responseBytes": 504,
+					"handlingMs": 7.19669999999951,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:31.990Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 397,
+					"responseBytes": 504,
+					"handlingMs": 16.796800000000076,
+					"failed": false
+				}
+			],
+			"operations": [
+				{
+					"operation": "project.inspect",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.009299999999711872,
+					"operationMs": 44.94790000000012
+				},
+				{
+					"operation": "project.plan",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.014799999999922875,
+					"operationMs": 13.10819999999967
+				},
+				{
+					"operation": "project.inspect",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.009699999999611464,
+					"operationMs": 6.945300000000316
+				},
+				{
+					"operation": "project.plan",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.008100000000013097,
+					"operationMs": 16.55240000000049
+				}
+			]
+		},
+		{
+			"name": "visual persistence uses exact synthetic UX review and existing owned target rules",
+			"requests": [
+				{
+					"at": "2026-09-28T03:44:32.011Z",
+					"method": "tools/call",
+					"tool": "workflow_open",
+					"requestBytes": 267,
+					"responseBytes": 300,
+					"handlingMs": 2.692399999999907,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:32.099Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 19256,
+					"responseBytes": 504,
+					"handlingMs": 81.18329999999969,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:32.119Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 341,
+					"responseBytes": 504,
+					"handlingMs": 13.833300000000236,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:32.376Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 4385,
+					"responseBytes": 504,
+					"handlingMs": 251.26879999999983,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:32.494Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 6756,
+					"responseBytes": 504,
+					"handlingMs": 111.16870000000017,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:33.404Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 30156,
+					"responseBytes": 505,
+					"handlingMs": 905.2656999999999,
+					"failed": false
+				}
+			],
+			"operations": [
+				{
+					"operation": "ux.persist",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.011899999999513966,
+					"operationMs": 80.0649000000003
+				},
+				{
+					"operation": "ux-review.subject",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.00889999999981228,
+					"operationMs": 13.626299999999901
+				},
+				{
+					"operation": "ui.persist",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.009299999999711872,
+					"operationMs": 250.90660000000025
+				},
+				{
+					"operation": "component.persist",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.011099999999714782,
+					"operationMs": 110.57520000000022
+				},
+				{
+					"operation": "design.apply",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.02599999999983993,
+					"operationMs": 904.1103000000003
+				}
+			]
+		},
+		{
+			"name": "standards mapping, guide, repository request and independent ledger validation use current contracts",
+			"requests": [
+				{
+					"at": "2026-09-28T03:44:33.438Z",
+					"method": "tools/call",
+					"tool": "workflow_open",
+					"requestBytes": 267,
+					"responseBytes": 300,
+					"handlingMs": 2.6253999999998996,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:33.498Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 377,
+					"responseBytes": 504,
+					"handlingMs": 52.39480000000003,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:33.591Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 254,
+					"responseBytes": 505,
+					"handlingMs": 87.42239999999947,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:33.674Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 361,
+					"responseBytes": 504,
+					"handlingMs": 79.22309999999925,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:33.971Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 258,
+					"responseBytes": 504,
+					"handlingMs": 142.09140000000025,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:34.200Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 364,
+					"responseBytes": 506,
+					"handlingMs": 225.02670000000035,
+					"failed": false
+				},
+				{
+					"at": "2026-09-28T03:44:34.211Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1431,
+					"responseBytes": 502,
+					"handlingMs": 4.6817999999993845,
+					"failed": false
+				}
+			],
+			"operations": [
+				{
+					"operation": "standards.resolve",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.00889999999981228,
+					"operationMs": 52.16119999999955
+				},
+				{
+					"operation": "standards.guide",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.010299999999915599,
+					"operationMs": 87.1835000000001
+				},
+				{
+					"operation": "standards.guide",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.007899999999608553,
+					"operationMs": 79.03020000000015
+				},
+				{
+					"operation": "repository.snapshot",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.009000000000014552,
+					"operationMs": 141.8764000000001
+				},
+				{
+					"operation": "review.request",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.010399999999208376,
+					"operationMs": 224.79960000000028
+				},
+				{
+					"operation": "review.validate",
+					"run": "positive-test",
+					"status": "complete",
+					"queuedMs": 0.014299999999821011,
+					"operationMs": 4.378099999999904
+				}
+			]
+		}
+	]
+}

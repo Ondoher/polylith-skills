@@ -5,6 +5,10 @@ description: Publish linked Markdown technical documentation from a validated fr
 
 # Generate technical guide
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use technical.resolve and technical.publish. Consume the existing validated frozen technical context; no architecture decisions or synthetic evidence. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 Publish an existing `technical` context mechanically. Preparation and decision reconciliation belong to [refine-design technical preparation](../refine-design/references/technical-preparation.md); this skill does not consult agents, inspect application source, or fill gaps.
 
 The normal input is `product/<name>/contexts/technical/<material-sha256>/context.json`. The normal output is `documents/<name>/technical/` in the same repository, using the confirmed product folder name. A detached validated context can be exported to another output directory. Published pages are self-contained apart from links between the pages in that publication.

@@ -16,7 +16,14 @@ export class McpHttpServer {
 		this.service = service;
 		this._authorization = Buffer.from(`Bearer ${token}`);
 		this.samples = [];
-		this.server = createServer((request, response) => this._handle(request, response));
+		this._requests = new Set();
+		this._closing = false;
+		this._closed = null;
+		this.server = createServer((request, response) => {
+			const pending = this._handle(request, response);
+			this._requests.add(pending);
+			pending.finally(() => this._requests.delete(pending));
+		});
 		this.server.requestTimeout = 120000;
 	}
 
@@ -32,12 +39,22 @@ export class McpHttpServer {
 		return `http://127.0.0.1:${this.server.address().port}/mcp`;
 	}
 
-	/** Call this method after draining service jobs to close owned HTTP resources.
+	/** Call this method before service drain to stop admitting new work and finish accepted tool calls.
+	 * @returns {Promise<void>} - No HTTP handler can submit further service work.
+	 */
+	async quiesce() {
+		this._closing = true;
+		this._closed ??= new Promise((resolve) => this.server.close(resolve));
+		await Promise.allSettled([...this._requests]);
+	}
+
+	/** Call this method to close owned HTTP resources after admission has stopped.
 	 * @returns {Promise<void>} - Resolves after connections close.
 	 */
 	async close() {
+		await this.quiesce();
 		this.server.closeAllConnections();
-		await new Promise((resolve) => this.server.close(resolve));
+		await this._closed;
 	}
 
 	/** Handles one authenticated JSON-RPC message and records sizes and elapsed time, never data or tokens.
@@ -53,6 +70,7 @@ export class McpHttpServer {
 			response.writeHead(status);
 			response.end();
 		};
+		if (this._closing) return fail(503);
 		if (request.headers.host !== `127.0.0.1:${this.server.address().port}` || request.headers.origin)
 			return fail(403);
 		const authorization = Buffer.from(request.headers.authorization ?? '');
@@ -85,6 +103,7 @@ export class McpHttpServer {
 			else if (message.method === 'tools/list') result = {tools: toolContracts};
 			else if (message.method === 'tools/call') {
 				try {
+					if (this._closing) throw new Error('Service is shutting down; no new work was accepted');
 					const contract = toolContracts.find((tool) => tool.name === message.params?.name);
 					if (!contract) throw new Error('Unknown tool');
 					const args = message.params.arguments ?? {};

@@ -1,6 +1,6 @@
 # MCP migration: self-driven implementation plan
 
-Status: service implementation is in progress; see [the execution ledger](mcp-migration-progress.json). Agent-permission preparation and post-restart checks are complete. The owner has specified independent execution while AFK, credit-efficiency and checkpoint rules, and a completion report with decisions.
+Status: complete. All six goals and all 33 agent/skill entries are verified. See the [execution summary](mcp-migration-execution-summary.md), [coverage ledger](mcp-migration-coverage.json) and [progress ledger](mcp-migration-progress.json). The separately agreed comprehensive testing pass remains outside this migration run.
 
 ## Objective
 
@@ -23,7 +23,7 @@ All 16 managed agent configurations now use `workspace-write`. Their instruction
 
 The installer status check confirmed that the installed agents directory is a live link to this checkout; no reinstall or user-configuration edit was needed. All 16 TOML files were parsed, and model/reasoning settings were preserved. This prepares permissions, not the MCP service or its enforcement. Fresh post-restart agent checks are recorded below; do not repeat them without a permission or configuration change. Reuse saved work throughout.
 
-Post-restart verification is complete: at the owner's request, fresh instances of all 16 roles passed a minimal assigned-file write/read check, and the parent independently verified exact bytes. The complete check window took 180.017 seconds with overlapping agent work. See the [saved results and scope limits](agent-write-check-20260927.md). MCP submissions and service enforcement remain to be verified during implementation.
+Post-restart verification is complete: at the owner's request, fresh instances of all 16 roles passed a minimal assigned-file write/read check, and the parent independently verified exact bytes. The complete check window took 180.017 seconds with overlapping agent work. See the [saved results and scope limits](agent-write-check-20260927.md). MCP delivery and service enforcement are now verified by the migration integration evidence linked above.
 
 ## Reportable intermediate goals
 

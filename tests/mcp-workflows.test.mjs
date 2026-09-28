@@ -39,14 +39,54 @@ after(() => {
 		);
 });
 
+test('shutdown stops admission and drains an accepted background operation before releasing resources', async (scenario) => {
+	let release;
+	const barrier = new Promise((resolve) => {
+		release = resolve;
+	});
+	const f = await fixture(scenario, {
+		'fixture.wait': {
+			description: 'Bounded lifecycle fixture',
+			inputSchema: {type: 'object', properties: {}, additionalProperties: false},
+			assignable: false,
+			writes: false,
+			execute: async () => {
+				await barrier;
+				return {completed: true};
+			},
+		},
+	});
+	const receipt = await f.call('execute', {
+		access: f.access,
+		run: f.run,
+		operation: 'fixture.wait',
+		background: true,
+	});
+	await f.server.quiesce();
+	await assert.rejects(
+		f.call('execute', {access: f.access, run: f.run, operation: 'fixture.wait', background: true}),
+	);
+	let drained = false;
+	const drain = f.service.drain().then(() => {
+		drained = true;
+	});
+	await Promise.resolve();
+	assert.equal(drained, false);
+	release();
+	await drain;
+	const job = f.service.status({access: f.access, run: f.run, job: receipt.job});
+	assert.equal(job.status, 'complete');
+	assert.deepEqual(f.value(job.result), {completed: true});
+});
+
 /** Creates an owned disposable workspace and real HTTP service.
  * @param {object} scenario - Test lifecycle.
  * @returns {Promise<object>} - Client, owner service and cleanup.
  */
-async function fixture(scenario) {
+async function fixture(scenario, extraOperations = {}) {
 	const root = fs.mkdtempSync(path.join(os.tmpdir(), 'workflow-mcp-'));
 	const worker = new OperationWorker();
-	const service = new WorkflowService({workspace: root, operations: worker.operations});
+	const service = new WorkflowService({workspace: root, operations: {...worker.operations, ...extraOperations}});
 	const token = randomBytes(32).toString('hex');
 	const server = new McpHttpServer(service, token);
 	const url = await server.listen();
@@ -142,9 +182,9 @@ test('two HTTP clients share a run, exact handles, assigned delivery, bounded re
 		arguments: {access: delegated.access, run: f.run, operation: 'files.edit', input: {}},
 	});
 	assert.equal(denied.isError, true);
-	fs.writeFileSync(path.join(f.root, 'description.md'), 'Current description');
+	fs.writeFileSync(path.join(f.root, 'description.md'), '\uFEFFCurrent description');
 	const receipt = await f.execute('files.read', {paths: ['description.md']});
-	assert.equal(f.value(receipt)[0].text, 'Current description');
+	assert.equal(f.value(receipt)[0].text, '\uFEFFCurrent description');
 	assert.ok(f.server.samples.length > 10);
 	assert.ok(f.service.measurements[0].operationMs > 0);
 });
@@ -280,8 +320,22 @@ test('saved UX and UI units flow through handles, scoped deliveries and assembly
 			inputHandles: {records: imported.handle},
 		});
 		assert.deepEqual(f.value(receipt).issues, []);
+		const references = records.map((record) => `${record.kind}:${record.id}`);
+		const read = f.value(
+			await f.call('execute', {
+				access: delegated.access,
+				run: f.run,
+				operation: 'units.read',
+				input: {stage, references},
+			}),
+		);
+		assert.deepEqual(read.records, records);
+		const handoff = f.value(await f.execute('units.handoff', {stage, references}));
+		assert.equal(handoff.units.length, records.length);
 		const repeat = f.value(await f.execute('units.deliver', {stage}, {records: imported.handle}));
 		assert.deepEqual(repeat.issues, []);
+		assert.equal(repeat.saved.length, records.length);
+		assert.ok(repeat.saved.every((record) => record.reused));
 		const assembled = f.value(
 			await f.execute('units.assemble', {
 				stage,
@@ -317,6 +371,8 @@ test('technical inspection, preparation and publication preserve frozen syntheti
 	execFileSync('git', ['init', f.root], {stdio: 'pipe'});
 	fs.appendFileSync(path.join(f.root, '.git/info/exclude'), '\n/.codex-tmp/\n');
 	const data = createTechnicalFixture(scenario, f.root);
+	const location = f.value(await f.execute('product.location', {productName: 'Field Journal'}));
+	assert.ok(location);
 	const run = 'technical-test';
 	await f.call('open', {access: f.access, run, currentPath: data.currentPath});
 	const execute = (operation, input = {}) => f.call('execute', {access: f.access, run, operation, input});
@@ -529,6 +585,12 @@ test('standards mapping, guide, repository request and independent ledger valida
 	assert.equal(mapped.standards.standards[0].name, 'documentation.md');
 	const guide = f.value(await f.execute('standards.guide'));
 	assert.match(guide.content, /documentation.md/);
+	const explicit = f.value(
+		await f.execute('standards.guide', {
+			options: {manifest: 'agents/topics/standards/manifest.md', overlay: 'agents/topics/standards/overlay.md'},
+		}),
+	);
+	assert.equal(explicit.content, guide.content);
 	execFileSync('git', ['init', f.root], {stdio: 'pipe'});
 	fs.writeFileSync(path.join(f.root, '.gitignore'), '/.codex-tmp/\n/node_modules/\n');
 	fs.writeFileSync(path.join(f.root, 'notes.md'), '# Notes\n\nA documented fixture.\n');

@@ -5,6 +5,10 @@ description: Audit and reconcile repository-local folder standards mappings and 
 
 # Normalize Standards
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use standards.resolve, files.read, and digest-guarded files.edit. The existing normalization attestation CLI and reconciliation decisions remain under this skill. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 Perform a repository's required first standards normalization without losing useful local guidance. Discovery and reconciliation are separate, manually gated phases. After a successful first normalization, the durable marker remains valid permanently; later manifest, overlay, instruction, or canonical-standard changes do not require another normalization.
 
 ## Sources And Scope

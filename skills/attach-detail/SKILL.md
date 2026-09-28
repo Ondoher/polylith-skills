@@ -5,6 +5,10 @@ description: Link an existing authored technical white paper from a product desc
 
 # Attach Detail
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use files.read, files.edit, and result.store. Keep authored-paper linking and human source authority unchanged. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 Add a labeled link to one existing technical white paper in the human-owned product description. This is a small source-document edit, not technical analysis or publication.
 
 Locate the description and paper from the user's request and repository context. If either is ambiguous, resolve it from existing documents or ask for the missing identity. Accept the authored paper at its supplied location; there is no standard input folder. Preserve its location. Generated `documents/<product>/<doc-name>/` folders are output only and must not become the canonical home of authored inputs. Check that the entry page exists, is a regular file, and resolves inside the repository, including through linked path segments. Do not create an empty paper or link to a proposed one.

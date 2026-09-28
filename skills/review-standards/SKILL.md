@@ -5,6 +5,10 @@ description: Initialize and run focused read-only review agents against normaliz
 
 # Review Standards
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use standards.resolve, standards.guide, repository.snapshot, review.request, and review.validate. Keep eligibility, calibration, exact context, independent audit and lifecycle rules. MCP is transport and mechanics, not reviewer authority. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 Orchestrate standards reviewers without allowing reviewer threads to edit files or Git state. Read the approved [design](../../planning/review-agents/design.md) for detailed contracts and failure behavior.
 
 ## Select The Mode

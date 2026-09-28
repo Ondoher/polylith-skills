@@ -5,6 +5,10 @@ description: Safely remove the global Codex links and managed root instructions 
 
 # Uninstall Polylith Skills
 
+## Shared MCP operations
+
+When configured `workflow_*` tools are available, use assigned report delivery if a service already exists. Keep the dedicated ownership-aware local uninstaller: it may remove the running service source and user configuration. Stop owned service processes first. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
+
 Use the repository installer's ownership-aware `unlink` mode. Do not remove global paths manually.
 
 1. Resolve the repository root containing this skill and the active Codex home from `CODEX_HOME`, or use `~/.codex` when it is unset.
