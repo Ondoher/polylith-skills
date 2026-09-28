@@ -52,6 +52,23 @@ The 51.554s submission phase includes composing the JSON and the MCP call contai
 
 This result provides direct evidence that service execution and localhost HTTP handling are small costs here. The longer preparation is in the many agent/tool cycles: more pages, more output-stream time and more unattributed time. The test does not establish why all those gaps grew. Cached prompt processing, scheduling and transport cannot be separated from the available client evidence.
 
+## Follow-up: individual read-command cost
+
+A read-only join of the saved stream and service logs separates **74 MCP page reads from 73 model-generated commands**: the first command fetched the first page of each input together. Counting it twice would overstate command-generation time. No new model run was needed for this analysis.
+
+| Per generated read command                        |   Mean | Median |
+| ------------------------------------------------- | -----: | -----: |
+| Previous tool result → next command stream begins | 3.194s | 2.601s |
+| Emit the read command                             | 2.281s | 2.017s |
+| Execute tool and return result                    | 0.121s | 0.113s |
+| Whole result-to-result cycle                      | 5.596s | 4.891s |
+
+Mean components sum to the mean cycle; component medians need not sum to the cycle median. The pre-command interval includes model processing, any reasoning, scheduling and other unclassified delays, so it is not all command preparation. Emitting the 73 commands consumed **166.510s** in total. Commands contained a median **214 argument bytes**. After the first two setup commands, mean command generation was 2.137s and the longest was 3.574s. Service-method execution across all 74 reads still totals 90.946ms and is nested inside the tool intervals.
+
+For these inputs the page count was mechanical: `ceil(125008/7000) + ceil(389418/7000) = 18 + 56 = 74`. Escaping slightly shortened some pages but did not add another page. The experiment explicitly required both complete inputs. Agent choice affected batching and timing, not the need for those 74 pages under that requirement and the current reader limit.
+
+The strongest candidates are a decision-focused input view that preserves relevant behavior and traceability with fewer bytes, bounded batching or automatic cursor traversal supported by the client, and shorter prebound read commands. Removing a model turn saves command generation and its intervening gap; shortening a command alone addresses only part of the cycle. Batching must preserve the verified tool-output bounds and complete delivery. These are proposed changes, not measured improvements. The derived per-command data is retained under `readCommandAnalysis` in the metrics and in the local `read-call-breakdown.json`.
+
 ## Output and integrity checks
 
 The delivered plan covers independent video-owned copies, grouped editing, retained content during trim, future-additions-only library updates, removal of obsolete propagation/collision behavior, Ungroup and affected trace coverage. It identifies unresolved Ungroup placement and group crop/audio transfer, grouped-edge trim bounds and further research needs, while retaining existing unresolved product questions.
