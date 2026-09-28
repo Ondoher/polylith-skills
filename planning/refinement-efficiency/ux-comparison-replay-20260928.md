@@ -4,6 +4,8 @@ A prepared UX agent produced a useful compact change plan in **2m43s**. It marke
 
 This follows the [full Alexa refinement](alexa-mcp-refinement-20260928.md). The experiment stops at a change plan: no UX persistence, review cycle, UI work or product publication. All 612 protected live files still match their starting hashes; no extra files appeared under the live product directory.
 
+Transport clarification: this replay used a directly spawned desktop agent with local file reading and delivery helpers. Workflow MCP tools were unavailable in that conversation, so it used the permitted experimental fallback. The earlier full refinement used an MCP-configured CLI runner. These results do not measure MCP delivery performance.
+
 ## What ran
 
 1. Copy the original model-7 facts packet and prior UX revision 4 into an isolated local directory. Verify exact hashes; compact JSON whitespace losslessly for reading. Withhold the original completed answer and subsequent product state.
@@ -61,7 +63,7 @@ All existing UX and product source references resolve. Four `new:` references ar
 
 ## Interpretation and limits
 
-- The gated comparison and output together still exceed the one-minute target before any full artifact construction or review. Preparation also remains expensive with full input loading.
+- The gated comparison and output together exceeded the original one-minute aspiration before any full artifact construction or review. The owner subsequently replaced that target with minimizing overhead around necessary decisions and overlapping independent work. Preparation remains expensive with full input loading.
 - This does not prove how much of the original 15m50s was bookkeeping. That run included full authoring and used different input selection and delivery. Subtracting these timings would not yield a valid savings estimate.
 - Loading inputs can already involve implicit comparison. The 86.759s window is the explicitly requested comparison phase, not a measure of all thinking required to reach the decisions. Conversely, reasoning continued after the decisions-ready marker.
 - Stream classifications reveal where the client observed activity; they do not expose provider compute time or separate semantic reasoning from planning an output representation.
