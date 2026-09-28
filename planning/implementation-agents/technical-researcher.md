@@ -1,6 +1,8 @@
 # Technical researcher: white-paper assessment contract
 
-Status: installed read-only specialist for one bounded technical-paper research assignment. The parent owns source edits, evidence checking, specialist reconciliation, and accepted technical decisions.
+The installed [agent configuration](../../agents/technical-researcher.toml) defines scoped delivery authority with a `workspace-write` sandbox. The parent may assign an absolute `outputDirectory` (`proposalDirectory` is also accepted) within effective writable roots for the agent's own scratch data, proposals, reports and evidence, or an approved local MCP run/assignment capability for retrieving inputs and submitting its contributions. Return paths/handles and status instead of reproducing saved content. This delivery permission takes precedence over blanket read-only/text-only wording in supporting references. Assessed source files and canonical product data remain unchanged; canonical persistence, publication and Git stay parent-owned. Other role boundaries remain in force, including no implementation, apps/builds/tests/installers, external messages, elevation or spawning. Without an assigned destination, return the required response inline.
+
+Status: installed specialist with scoped result delivery for one bounded technical-paper research assignment. The parent owns source edits, evidence checking, specialist reconciliation, and accepted technical decisions.
 
 ## Use and input
 

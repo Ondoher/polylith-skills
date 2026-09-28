@@ -1,0 +1,362 @@
+{
+	"threadId": "01a0de10-e775-74e3-9d59-a3f6baaba8ee",
+	"sourceSession": "C:\\Users\\gande\\.codex\\sessions\\2026\\09\\26\\rollout-2026-09-26T07-14-05-01a0de10-e775-74e3-9d59-a3f6baaba8ee.jsonl",
+	"sourceSessionBytes": 55315626,
+	"windowStart": "2026-09-27T22:22:13.000+00:00",
+	"windowEnd": "2026-09-27T22:23:15.000+00:00",
+	"windowSeconds": 62.0,
+	"seconds": {
+		"output": 22.50406241416931,
+		"reasoning-item": 23.641886711120605,
+		"tool": 3.741999864578247,
+		"unattributed": 12.112051010131836
+	},
+	"items": [
+		{
+			"id": "msg_0b1a9a3ac91ed0ad016ab99712d18487d191a392a6d8e39f6c",
+			"kind": "message",
+			"end": 1790547732.2129037,
+			"start": 1790547730.6216917,
+			"startLogId": 511342186,
+			"finishLogId": 511342227
+		},
+		{
+			"id": "ctc_0b1a9a3ac91ed0ad016ab99714599087d1b2a444147d54e3b0",
+			"kind": "custom_tool_call",
+			"end": 1790547733.099,
+			"start": 1790547732.2170386,
+			"startLogId": 511342229
+		},
+		{
+			"id": "rs_0b1a9a3ac91ed0ad016ab99716e1b487d1a735797ca7b16c8b",
+			"kind": "reasoning",
+			"end": 1790547750.4061215,
+			"start": 1790547734.680075,
+			"startLogId": 511342240,
+			"finishLogId": 511342249
+		},
+		{
+			"id": "ctc_0b1a9a3ac91ed0ad016ab99726962087d1a65944dc48f0111d",
+			"kind": "custom_tool_call",
+			"end": 1790547752.598,
+			"start": 1790547750.410005,
+			"startLogId": 511342251
+		},
+		{
+			"id": "rs_0b1a9a3ac91ed0ad016ab9972aff2487d1a76f1b54aa79fb34",
+			"kind": "reasoning",
+			"end": 1790547760.0085523,
+			"start": 1790547754.794758,
+			"startLogId": 511342267,
+			"finishLogId": 511342269
+		},
+		{
+			"id": "ctc_0b1a9a3ac91ed0ad016ab99730360c87d1a901a76404976f7d",
+			"kind": "custom_tool_call",
+			"end": 1790547763.286,
+			"start": 1790547760.0283554,
+			"startLogId": 511342271
+		},
+		{
+			"id": "rs_0b1a9a3ac91ed0ad016ab99735991887d1aa75f6cd5c78bd8c",
+			"kind": "reasoning",
+			"end": 1790547768.114055,
+			"start": 1790547765.412009,
+			"startLogId": 511342287,
+			"finishLogId": 511342289
+		},
+		{
+			"id": "ctc_0b1a9a3ac91ed0ad016ab99738509087d1883a204bf6be33bd",
+			"kind": "custom_tool_call",
+			"end": 1790547771.359,
+			"start": 1790547768.1187541,
+			"startLogId": 511342291
+		},
+		{
+			"id": "ctc_0b1a9a3ac91ed0ad016ab9973eb74087d1a709430261fac302",
+			"kind": "custom_tool_call",
+			"end": 1790547777.841,
+			"start": 1790547774.5102026,
+			"startLogId": 511342308
+		},
+		{
+			"id": "ctc_0b1a9a3ac91ed0ad016ab99744733c87d19ec653af5ec5fb6d",
+			"kind": "custom_tool_call",
+			"end": 1790547783.5,
+			"start": 1790547780.2456808,
+			"startLogId": 511342324
+		},
+		{
+			"id": "ctc_0b1a9a3ac91ed0ad016ab99749e7c087d193eb8d143185006b",
+			"kind": "custom_tool_call",
+			"end": 1790547788.994,
+			"start": 1790547785.7043786,
+			"startLogId": 511342342
+		},
+		{
+			"id": "ctc_0b1a9a3ac91ed0ad016ab9974f5c1487d1907d336f192552a6",
+			"kind": "custom_tool_call",
+			"end": 1790547795.088,
+			"start": 1790547791.155561,
+			"startLogId": 511342358
+		},
+		{
+			"id": "rs_0b1a9a3ac91ed0ad016ab99755207887d1993144bd5a5950ea",
+			"kind": "reasoning",
+			"start": 1790547796.9210584,
+			"startLogId": 511342375
+		}
+	],
+	"calls": [
+		{
+			"id": "call_gvAgXHb3Wz9x5tsAdsvaabFH",
+			"name": "exec",
+			"start": 1790547733.099,
+			"argumentBytes": 106,
+			"boundedRead": false,
+			"end": 1790547733.215,
+			"outputBytes": 164,
+			"runtimeMs": 113.0,
+			"timingLogId": 511342233
+		},
+		{
+			"id": "call_70TeuIrnaTFYCciUIQcmAd21",
+			"name": "exec",
+			"start": 1790547752.598,
+			"argumentBytes": 268,
+			"boundedRead": true,
+			"end": 1790547753.184,
+			"outputBytes": 8395,
+			"runtimeMs": 584.0,
+			"timingLogId": 511342260
+		},
+		{
+			"id": "call_Vr7ssxrDWROWZVtuw2RePWis",
+			"name": "exec",
+			"start": 1790547763.286,
+			"argumentBytes": 373,
+			"boundedRead": true,
+			"end": 1790547763.92,
+			"outputBytes": 8358,
+			"runtimeMs": 626.0,
+			"timingLogId": 511342280
+		},
+		{
+			"id": "call_g8TrZ2z3Gpp9l9cACgcd4ASk",
+			"name": "exec",
+			"start": 1790547771.359,
+			"argumentBytes": 373,
+			"boundedRead": true,
+			"end": 1790547771.951,
+			"outputBytes": 8357,
+			"runtimeMs": 588.0,
+			"timingLogId": 511342300
+		},
+		{
+			"id": "call_klAruuY19OJGaW0KNhgNpHuj",
+			"name": "exec",
+			"start": 1790547777.841,
+			"argumentBytes": 373,
+			"boundedRead": true,
+			"end": 1790547778.421,
+			"outputBytes": 8360,
+			"runtimeMs": 577.0,
+			"timingLogId": 511342317
+		},
+		{
+			"id": "call_mvHZofZUYMS54jya5yh9q7re",
+			"name": "exec",
+			"start": 1790547783.5,
+			"argumentBytes": 373,
+			"boundedRead": true,
+			"end": 1790547784.128,
+			"outputBytes": 8359,
+			"runtimeMs": 618.0,
+			"timingLogId": 511342333
+		},
+		{
+			"id": "call_tBScj9DPeWFoQHOjfNPM5Qpa",
+			"name": "exec",
+			"start": 1790547788.994,
+			"argumentBytes": 373,
+			"boundedRead": true,
+			"end": 1790547789.6,
+			"outputBytes": 8363,
+			"runtimeMs": 603.0,
+			"timingLogId": 511342351
+		},
+		{
+			"id": "call_xs7IknKcY18hn6iaxEJ9Wxgm",
+			"name": "exec",
+			"start": 1790547795.088,
+			"argumentBytes": 447,
+			"boundedRead": true,
+			"end": 1790547795.674,
+			"outputBytes": 6506,
+			"runtimeMs": 583.0,
+			"timingLogId": 511342367
+		}
+	],
+	"responses": [
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab9971180b487d1876919c9e38129ca",
+			"at": 1790547733.212,
+			"turn": "01a0e4f6-18f2-74a3-adb7-9c143404c6c5",
+			"usage": {
+				"input_tokens": 147141,
+				"cached_input_tokens": 146816,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 83,
+				"reasoning_output_tokens": 0,
+				"total_tokens": 147224
+			}
+		},
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab99715baa087d191c4194f96f0d502",
+			"at": 1790547752.737,
+			"turn": "01a0e4f6-18f2-74a3-adb7-9c143404c6c5",
+			"usage": {
+				"input_tokens": 147265,
+				"cached_input_tokens": 147072,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 599,
+				"reasoning_output_tokens": 516,
+				"total_tokens": 147864
+			}
+		},
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab997299b1487d184e867b095c91f26",
+			"at": 1790547763.42,
+			"turn": "01a0e4f6-18f2-74a3-adb7-9c143404c6c5",
+			"usage": {
+				"input_tokens": 149548,
+				"cached_input_tokens": 147200,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 284,
+				"reasoning_output_tokens": 166,
+				"total_tokens": 149832
+			}
+		},
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab99734641087d1a726132d5573e908",
+			"at": 1790547771.496,
+			"turn": "01a0e4f6-18f2-74a3-adb7-9c143404c6c5",
+			"usage": {
+				"input_tokens": 151477,
+				"cached_input_tokens": 149376,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 200,
+				"reasoning_output_tokens": 82,
+				"total_tokens": 151677
+			}
+		},
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab9973c596487d191ba4e65b270a88f",
+			"at": 1790547777.945,
+			"turn": "01a0e4f6-18f2-74a3-adb7-9c143404c6c5",
+			"usage": {
+				"input_tokens": 153125,
+				"cached_input_tokens": 151424,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 116,
+				"reasoning_output_tokens": 0,
+				"total_tokens": 153241
+			}
+		},
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab99742f03087d197353824c9cfc3a3",
+			"at": 1790547783.639,
+			"turn": "01a0e4f6-18f2-74a3-adb7-9c143404c6c5",
+			"usage": {
+				"input_tokens": 154913,
+				"cached_input_tokens": 152960,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 116,
+				"reasoning_output_tokens": 0,
+				"total_tokens": 155029
+			}
+		},
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab99748a71c87d189e0b4fd5d03c259",
+			"at": 1790547789.136,
+			"turn": "01a0e4f6-18f2-74a3-adb7-9c143404c6c5",
+			"usage": {
+				"input_tokens": 156667,
+				"cached_input_tokens": 154752,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 116,
+				"reasoning_output_tokens": 0,
+				"total_tokens": 156783
+			}
+		},
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab9974dfe0c87d19660c1dd7adbfbde",
+			"at": 1790547795.232,
+			"turn": "01a0e4f6-18f2-74a3-adb7-9c143404c6c5",
+			"usage": {
+				"input_tokens": 158302,
+				"cached_input_tokens": 156544,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 138,
+				"reasoning_output_tokens": 0,
+				"total_tokens": 158440
+			}
+		}
+	],
+	"resultToNextItem": [
+		{
+			"callId": "call_gvAgXHb3Wz9x5tsAdsvaabFH",
+			"resultAt": "2026-09-27T22:22:13.215+00:00",
+			"nextItemAt": "2026-09-27T22:22:14.680+00:00",
+			"seconds": 1.4650750160217285
+		},
+		{
+			"callId": "call_70TeuIrnaTFYCciUIQcmAd21",
+			"resultAt": "2026-09-27T22:22:33.184+00:00",
+			"nextItemAt": "2026-09-27T22:22:34.794+00:00",
+			"seconds": 1.6107580661773682
+		},
+		{
+			"callId": "call_Vr7ssxrDWROWZVtuw2RePWis",
+			"resultAt": "2026-09-27T22:22:43.920+00:00",
+			"nextItemAt": "2026-09-27T22:22:45.412+00:00",
+			"seconds": 1.492008924484253
+		},
+		{
+			"callId": "call_g8TrZ2z3Gpp9l9cACgcd4ASk",
+			"resultAt": "2026-09-27T22:22:51.951+00:00",
+			"nextItemAt": "2026-09-27T22:22:54.510+00:00",
+			"seconds": 2.5592026710510254
+		},
+		{
+			"callId": "call_klAruuY19OJGaW0KNhgNpHuj",
+			"resultAt": "2026-09-27T22:22:58.421+00:00",
+			"nextItemAt": "2026-09-27T22:23:00.245+00:00",
+			"seconds": 1.8246808052062988
+		},
+		{
+			"callId": "call_mvHZofZUYMS54jya5yh9q7re",
+			"resultAt": "2026-09-27T22:23:04.128+00:00",
+			"nextItemAt": "2026-09-27T22:23:05.704+00:00",
+			"seconds": 1.576378583908081
+		},
+		{
+			"callId": "call_tBScj9DPeWFoQHOjfNPM5Qpa",
+			"resultAt": "2026-09-27T22:23:09.600+00:00",
+			"nextItemAt": "2026-09-27T22:23:11.155+00:00",
+			"seconds": 1.5555610656738281
+		}
+	],
+	"resultToNextItemSeconds": 12.083665132522583,
+	"usageForResponsesCompletedWithinClockWindow": {
+		"input_tokens": 1060136,
+		"cached_input_tokens": 1049600,
+		"output_tokens": 1514,
+		"reasoning_output_tokens": 764
+	},
+	"databaseQueryPlan": [
+		[4, 0, 0, "SEARCH TABLE logs USING INDEX idx_logs_thread_id_ts (thread_id=? AND ts>? AND ts<?)"]
+	],
+	"extractionSeconds": 0.3774942001327872,
+	"limitations": "Client-observed item stream intervals, not provider compute or semantic thought. Tools include nested command work. Clock boundaries have one-second precision. Usage is by response completion and can include boundary-crossing work. No raw message, prompt, tool argument or reasoning content is retained."
+}

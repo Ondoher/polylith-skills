@@ -1,0 +1,2204 @@
+{
+	"runId": "run-20260927-215515-modest-edit",
+	"segmentId": "segment-04-model-and-ux-handoff",
+	"startedAt": "2026-09-27T23:54:38.576Z",
+	"status": "paused-on-parent-preparation-performance",
+	"uxAgent": "/root/attended_ux_update",
+	"uxDispatchReceiptAt": "2026-09-28T00:01:41.822Z",
+	"operations": [
+		{
+			"operation": "bounded-model-inspection",
+			"startedAt": "2026-09-27T23:54:38.576Z",
+			"finishedAt": "2026-09-27T23:54:39.420Z",
+			"chunk_id": "55b04e",
+			"wall_time_seconds": 0.6334954,
+			"exit_code": 0,
+			"original_token_count": 462
+		},
+		{
+			"operation": "locate-proposal-and-trace-contract",
+			"startedAt": "2026-09-27T23:54:50.385Z",
+			"finishedAt": "2026-09-27T23:54:50.956Z",
+			"chunk_id": "121e2e",
+			"wall_time_seconds": 0.3834442,
+			"exit_code": 0,
+			"original_token_count": 4758
+		},
+		{
+			"operation": "prepare-model-projection",
+			"startedAt": "2026-09-27T23:55:18.112Z",
+			"finishedAt": "2026-09-27T23:55:18.714Z",
+			"chunk_id": "d56438",
+			"wall_time_seconds": 0.3943321,
+			"exit_code": 0,
+			"original_token_count": 3
+		},
+		{
+			"operation": "read-model-overview",
+			"startedAt": "2026-09-27T23:55:30.732Z",
+			"finishedAt": "2026-09-27T23:55:31.323Z",
+			"chunk_id": "525cd6",
+			"wall_time_seconds": 0.3865643,
+			"exit_code": 0,
+			"original_token_count": 2048
+		},
+		{
+			"operation": "read-model-overview-continuation",
+			"startedAt": "2026-09-27T23:55:43.004Z",
+			"finishedAt": "2026-09-27T23:55:43.634Z",
+			"chunk_id": "76bb9a",
+			"wall_time_seconds": 0.4159583,
+			"exit_code": 0,
+			"original_token_count": 2048
+		},
+		{
+			"operation": "read-affected-records",
+			"startedAt": "2026-09-27T23:56:01.761Z",
+			"finishedAt": "2026-09-27T23:56:02.373Z",
+			"chunk_id": "be24ef",
+			"wall_time_seconds": 0.4027857,
+			"exit_code": 0,
+			"original_token_count": 2048
+		},
+		{
+			"operation": "read-affected-records-continuation",
+			"startedAt": "2026-09-27T23:56:14.809Z",
+			"finishedAt": "2026-09-27T23:56:15.451Z",
+			"chunk_id": "a702b5",
+			"wall_time_seconds": 0.4290941,
+			"exit_code": 0,
+			"original_token_count": 1414
+		},
+		{
+			"operation": "read-authority-contract",
+			"startedAt": "2026-09-27T23:56:29.443Z",
+			"finishedAt": "2026-09-27T23:56:30.696Z",
+			"chunk_id": "908c39",
+			"wall_time_seconds": 1.0430847,
+			"exit_code": 0,
+			"original_token_count": 1596
+		},
+		{
+			"operation": "read-prior-reusable-proposal-builder",
+			"startedAt": "2026-09-27T23:56:40.894Z",
+			"finishedAt": "2026-09-27T23:56:41.294Z",
+			"chunk_id": "342d02",
+			"wall_time_seconds": 0.1894978,
+			"exit_code": 0,
+			"original_token_count": 2048
+		},
+		{
+			"operation": "build-model-proposal",
+			"startedAt": "2026-09-27T23:58:12.567Z",
+			"finishedAt": "2026-09-27T23:58:13.317Z",
+			"chunk_id": "ab2299",
+			"wall_time_seconds": 0.5291601,
+			"exit_code": 0,
+			"original_token_count": 184
+		},
+		{
+			"operation": "staged-model-validation",
+			"startedAt": "2026-09-27T23:58:41.294Z",
+			"finishedAt": "2026-09-27T23:58:42.376Z",
+			"chunk_id": "10ccac",
+			"wall_time_seconds": 0.8715993,
+			"exit_code": 0,
+			"original_token_count": 40
+		},
+		{
+			"operation": "persist-live-model",
+			"startedAt": "2026-09-27T23:58:56.793Z",
+			"finishedAt": "2026-09-27T23:59:02.776Z",
+			"chunk_id": "0b889b",
+			"wall_time_seconds": 0.8748263,
+			"exit_code": 0,
+			"original_token_count": 36
+		},
+		{
+			"operation": "locate-ux-handoff-contracts",
+			"startedAt": "2026-09-27T23:59:13.511Z",
+			"finishedAt": "2026-09-27T23:59:14.061Z",
+			"chunk_id": "c65790",
+			"wall_time_seconds": 0.3425475,
+			"exit_code": 1,
+			"original_token_count": 47
+		},
+		{
+			"operation": "read-single-pass-handoff-contract",
+			"startedAt": "2026-09-27T23:59:24.513Z",
+			"finishedAt": "2026-09-27T23:59:25.226Z",
+			"chunk_id": "efdb98",
+			"wall_time_seconds": 0.5066421,
+			"exit_code": 0,
+			"original_token_count": 2649
+		},
+		{
+			"operation": "read-single-pass-assembly-commands",
+			"startedAt": "2026-09-27T23:59:39.752Z",
+			"finishedAt": "2026-09-27T23:59:40.419Z",
+			"chunk_id": "ea6d23",
+			"wall_time_seconds": 0.4583458,
+			"exit_code": 1,
+			"original_token_count": 1503
+		},
+		{
+			"operation": "prepare-ux-handoff",
+			"startedAt": "2026-09-28T00:00:52.797Z",
+			"finishedAt": "2026-09-28T00:00:53.717Z",
+			"chunk_id": "2037e1",
+			"wall_time_seconds": 0.7126538,
+			"exit_code": 0,
+			"original_token_count": 331
+		}
+	],
+	"additionalCommands": [
+		{
+			"operation": "locate-import-api",
+			"chunk_id": "871648",
+			"wall_time_seconds": 0.3292444,
+			"exit_code": 0,
+			"original_token_count": 1271
+		}
+	],
+	"productWrites": "Model7 persisted and reloaded successfully. Source unchanged; prior UX/UI pending reconciliation.",
+	"ordinaryErrors": "A missing await in a scratch projection prevented display; read the already-created projection and corrected await without regeneration. Broad searches that exceeded their requested output caps were narrowed. Ordinary errors are fixed and do not pause refinement per owner direction.",
+	"measurementCaveat": "Process timings exclude model generation and parent work. Timestamps captured inside functions.exec cannot measure the generation of that same tool call. Dispatch receipt is not observed agent-start. Some small inspection command metadata is in the runtime records rather than this command list.",
+	"stoppedAt": "2026-09-28T00:02:51.773Z",
+	"uxDispatchAt": "2026-09-28T00:01:41.351Z",
+	"uxTaskStartRecordedAt": "2026-09-28T00:01:54.4044363Z",
+	"uxInterruptedAt": "2026-09-28T00:02:51.773Z",
+	"uxAgentStatus": "interrupted; no proposal delivery",
+	"firstUsableUxDeliveryAt": null,
+	"localReceipts": {
+		"model-load-metrics": {
+			"operation": "load-and-validate-current-product",
+			"startedAt": "2026-09-27T23:54:39.231Z",
+			"finishedAt": "2026-09-27T23:54:39.375Z",
+			"elapsedMs": 143.8458,
+			"returnedKeys": [
+				"root",
+				"current",
+				"currentBytes",
+				"snapshot",
+				"snapshotBytes",
+				"model",
+				"modelBytes",
+				"sourceBytes",
+				"artifacts"
+			]
+		},
+		"model-proposal-build-metrics": {
+			"startedAt": "2026-09-27T23:58:13.164Z",
+			"finishedAt": "2026-09-27T23:58:13.283Z",
+			"elapsedMs": 118.6567,
+			"proposalBytes": 92351,
+			"sourceAddedBytes": 640,
+			"sourceLines": 212,
+			"unchangedRecords": [
+				"personal-video-work",
+				"desktop-owner",
+				"content-library",
+				"playlist-editing",
+				"project-management",
+				"spatial-composition",
+				"video-editing",
+				"video-export",
+				"video-playback",
+				"compose-video",
+				"export-result",
+				"play-collections",
+				"preserve-work",
+				"adopted-player-direction",
+				"commit-edit-availability",
+				"delete-split-reorder",
+				"desktop-scope",
+				"draft-project-guard",
+				"edit-surface-regions",
+				"editor-transient-context",
+				"electron-runtime",
+				"export-choice-and-consent",
+				"export-operation-lifecycle",
+				"four-track-editing",
+				"inspection-zoom",
+				"library-browsing",
+				"object-reorder",
+				"playback-workspace",
+				"playlist-draft",
+				"playlist-transport",
+				"precise-selection",
+				"project-commands",
+				"project-reference-storage",
+				"range-selection",
+				"save-video-draft",
+				"scrub-and-follow",
+				"single-track-baseline",
+				"spatial-region-capability",
+				"timeline-drop-rearrangement",
+				"track-and-clip-audio",
+				"workspace-shell",
+				"brand-treatment",
+				"component-shape",
+				"material-surface-theme",
+				"outline-label-color",
+				"outlined-field-baseline",
+				"spacing-and-control-metrics",
+				"type-scale",
+				"visual-defaults-editable",
+				"cross-source-playback",
+				"export-app-close",
+				"media-repair",
+				"multitrack-interface",
+				"source-ownership",
+				"video-expansion-settings-conflict"
+			],
+			"changedRecords": [
+				"clip-management",
+				"add-timeline-content",
+				"timeline-occurrences",
+				"update-named-clip",
+				"clip-persistence-invariants",
+				"content-types",
+				"occurrence-trim",
+				"timeline-trim-push",
+				"save-library-clip",
+				"grouped-assembly-editing",
+				"shared-clip-update-collision"
+			],
+			"allRecords": 66,
+			"sourceHash": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+			"base": {
+				"snapshotSha256": "619c96c47015bef4ba407abe415d36deb284e213c34bceaf5fe03b2f026d95e8",
+				"modelSha256": "253f74288021cf816f4af0dba493aa824e09963df25630b5029820faaea295b7",
+				"revision": 6
+			}
+		},
+		"staged-model-update-metrics": {
+			"operation": "validate-staged-model",
+			"startedAt": "2026-09-27T23:58:41.863Z",
+			"outputRoot": "C:\\dev\\polylith-skills\\.codex-tmp\\attended-alexa-20260927/restore-check/product/Alexa",
+			"persistenceMs": 255.33790000000002,
+			"result": {
+				"schemaVersion": "1.0",
+				"productId": "alexa",
+				"revision": 7,
+				"source": {
+					"path": "sources/5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe/product-description.md",
+					"sha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+					"created": true
+				},
+				"productModel": {
+					"path": "models/7-4d1ab6f952539aee900469148d0042cf03a7a284f99ffe57e3f7a4a2f801ad81/product-model.json",
+					"sha256": "4d1ab6f952539aee900469148d0042cf03a7a284f99ffe57e3f7a4a2f801ad81",
+					"materialSha256": "291de44c6f01db5451df2eadf85da781008c956dd0f69a4d31c6603ac7980b54",
+					"created": true
+				},
+				"snapshot": {
+					"id": "alexa-snapshot",
+					"revision": 16,
+					"path": "snapshots/94bda6f2747f45cb02ac2718cc0d6b4a94d4f0017e829bf46926d5033d8ed0a4/product-snapshot.json",
+					"sha256": "94bda6f2747f45cb02ac2718cc0d6b4a94d4f0017e829bf46926d5033d8ed0a4",
+					"created": true
+				},
+				"current": {
+					"path": "current.json",
+					"sha256": "638f6379e987827b750bca9f6a7480153c3d45eff13bd32921664756a00310e6",
+					"changed": true
+				}
+			},
+			"reloadValidationMs": 196.5229,
+			"revision": 7,
+			"snapshot": {
+				"id": "alexa-snapshot",
+				"revision": 16,
+				"path": "snapshots/94bda6f2747f45cb02ac2718cc0d6b4a94d4f0017e829bf46926d5033d8ed0a4/product-snapshot.json",
+				"sha256": "94bda6f2747f45cb02ac2718cc0d6b4a94d4f0017e829bf46926d5033d8ed0a4"
+			},
+			"sourceHash": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+			"changeSet": {
+				"classification": "material",
+				"records": [
+					{
+						"id": "add-timeline-content",
+						"kind": "requirement",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "1ee2013ca24d5b04a297fc4fe24260181cfe653559f05f020b89ea1115f81388",
+						"materialSha256": "2f1e69dad27941a733b619b692205175c28052b39350644d313b7999960ee830"
+					},
+					{
+						"id": "adopted-player-direction",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "8f749f6ae1601084792da80fb67a434384e7ad21720266a323e592cc23ee1951",
+						"materialSha256": "8f749f6ae1601084792da80fb67a434384e7ad21720266a323e592cc23ee1951"
+					},
+					{
+						"id": "alexa",
+						"kind": "product",
+						"classification": "unchanged",
+						"previousStatus": "partial",
+						"status": "partial",
+						"previousMaterialSha256": "38401499c132edbc09a2fbc1c8278b68c5a4cc6596a53a1ce42f8a9f15681734",
+						"materialSha256": "38401499c132edbc09a2fbc1c8278b68c5a4cc6596a53a1ce42f8a9f15681734"
+					},
+					{
+						"id": "brand-treatment",
+						"kind": "rule",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "7988dcdedf176a8536a8eefadf66f79a5ae21c8d5eeac9bdce4865d6a2093331",
+						"materialSha256": "7988dcdedf176a8536a8eefadf66f79a5ae21c8d5eeac9bdce4865d6a2093331"
+					},
+					{
+						"id": "clip-management",
+						"kind": "capability",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "c44295cebbad91eecb9d2f9a2d0dc350aed09100ee95f69f1c5ecef8362ad3eb",
+						"materialSha256": "a41c78e179a43fd0169807e476b78148d4a8b4c7b1a5f889213ee522a13e6d89"
+					},
+					{
+						"id": "clip-persistence-invariants",
+						"kind": "requirement",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "3a4a6c3b644c9dc2cc165da42d8fafec3aee4ef442894b2cfa90f8ffab634a51",
+						"materialSha256": "a70077b9d093fe138754219e6d55cf8450e33035af6aca6e52b7e6521fd4fbfa"
+					},
+					{
+						"id": "commit-edit-availability",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "0acb7ae81f5e26b2274e21225b5dedfd2666fb0761fcc854e912fe7f0032996f",
+						"materialSha256": "0acb7ae81f5e26b2274e21225b5dedfd2666fb0761fcc854e912fe7f0032996f"
+					},
+					{
+						"id": "component-shape",
+						"kind": "rule",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "dc95cfb582b117c21a07e0d6518e3c415ae1b2c6eba9998f3e0f3ef06c1dc753",
+						"materialSha256": "dc95cfb582b117c21a07e0d6518e3c415ae1b2c6eba9998f3e0f3ef06c1dc753"
+					},
+					{
+						"id": "compose-video",
+						"kind": "goal",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "6652b4e5546a6b8c4e4167d350c8a2ebe7ea5444c778bf9f555346be15d5577d",
+						"materialSha256": "6652b4e5546a6b8c4e4167d350c8a2ebe7ea5444c778bf9f555346be15d5577d"
+					},
+					{
+						"id": "content-library",
+						"kind": "capability",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "9ad99cb6ee72102b93d91452eda2ab30f086c200e4edc660c4daa9993011e0cd",
+						"materialSha256": "9ad99cb6ee72102b93d91452eda2ab30f086c200e4edc660c4daa9993011e0cd"
+					},
+					{
+						"id": "content-types",
+						"kind": "requirement",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "1d43a332f996b634b6d802527c75d57dbb642845091882914a06feb3ef4e3f9b",
+						"materialSha256": "03ae3d380b2ddd49aacb6e4c3dff54630e1349b945a68986f84c6110158e92de"
+					},
+					{
+						"id": "cross-source-playback",
+						"kind": "gap",
+						"classification": "unchanged",
+						"previousStatus": "unresolved",
+						"status": "unresolved",
+						"previousMaterialSha256": "b97840225a37ea3d6daac2f1fb3bae2098aa69ca17f06ac477f5d138cd50442c",
+						"materialSha256": "b97840225a37ea3d6daac2f1fb3bae2098aa69ca17f06ac477f5d138cd50442c"
+					},
+					{
+						"id": "delete-split-reorder",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "e4c5b2260d18f5f88a971f7faf1d23e21866b3fb4970e2cb68fe5baadc46a65a",
+						"materialSha256": "e4c5b2260d18f5f88a971f7faf1d23e21866b3fb4970e2cb68fe5baadc46a65a"
+					},
+					{
+						"id": "desktop-owner",
+						"kind": "user",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "434f1b58e156823f6f3ee9c933f04d6b162143287f6e33abc71d28521b3ebc9f",
+						"materialSha256": "434f1b58e156823f6f3ee9c933f04d6b162143287f6e33abc71d28521b3ebc9f"
+					},
+					{
+						"id": "desktop-scope",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "04a976cebad68c90d0c78a173b9f215062062b278d43373f00591152fec69946",
+						"materialSha256": "04a976cebad68c90d0c78a173b9f215062062b278d43373f00591152fec69946"
+					},
+					{
+						"id": "draft-project-guard",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "3d07008388fc68a17e600fca12cd27a989fdc1ee31e910b21df1740a8cdfd8d1",
+						"materialSha256": "3d07008388fc68a17e600fca12cd27a989fdc1ee31e910b21df1740a8cdfd8d1"
+					},
+					{
+						"id": "edit-surface-regions",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "e13ad1ef92cbd74aaf27eda8873a1dd3eeab650c3fddd7285f899cc6802d97bd",
+						"materialSha256": "e13ad1ef92cbd74aaf27eda8873a1dd3eeab650c3fddd7285f899cc6802d97bd"
+					},
+					{
+						"id": "editor-transient-context",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "e13b08c50829c3b162c03664cdbda2967705442e680a3c0d8b1f156374171da3",
+						"materialSha256": "e13b08c50829c3b162c03664cdbda2967705442e680a3c0d8b1f156374171da3"
+					},
+					{
+						"id": "electron-runtime",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "995aa54bb8917f42ce9ac539a1b377b209b2a8edf777d42bd5dba70a297fbdd3",
+						"materialSha256": "995aa54bb8917f42ce9ac539a1b377b209b2a8edf777d42bd5dba70a297fbdd3"
+					},
+					{
+						"id": "export-app-close",
+						"kind": "gap",
+						"classification": "unchanged",
+						"previousStatus": "unresolved",
+						"status": "unresolved",
+						"previousMaterialSha256": "00d67dd15159b54bdaace876f4e459ce901b53ede8b4053e57717af9c0e9f753",
+						"materialSha256": "00d67dd15159b54bdaace876f4e459ce901b53ede8b4053e57717af9c0e9f753"
+					},
+					{
+						"id": "export-choice-and-consent",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "e4dc38511b6f223afde1e3a65a122bfff80a3e63016c665673ae590235b30d18",
+						"materialSha256": "e4dc38511b6f223afde1e3a65a122bfff80a3e63016c665673ae590235b30d18"
+					},
+					{
+						"id": "export-operation-lifecycle",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "3e25567ed7e6cec77e4d6e6d47657735b6cc37e90cd7619e86b8989a3163ddea",
+						"materialSha256": "3e25567ed7e6cec77e4d6e6d47657735b6cc37e90cd7619e86b8989a3163ddea"
+					},
+					{
+						"id": "export-result",
+						"kind": "goal",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "af2ea35772f2f86e5836e23a2cea3239dba0b948e04a38f15ce5455539219fe4",
+						"materialSha256": "af2ea35772f2f86e5836e23a2cea3239dba0b948e04a38f15ce5455539219fe4"
+					},
+					{
+						"id": "four-track-editing",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "19dfd61a9e13697f462f7f73278c497d513c4ee03e568e240d71bbbe38846406",
+						"materialSha256": "19dfd61a9e13697f462f7f73278c497d513c4ee03e568e240d71bbbe38846406"
+					},
+					{
+						"id": "grouped-assembly-editing",
+						"kind": "requirement",
+						"classification": "introduced",
+						"previousStatus": null,
+						"status": "accepted",
+						"previousMaterialSha256": null,
+						"materialSha256": "ab569d1ae72d88c711f43bbc15eb22fe6af2db0f50a232a9669836071782eef3"
+					},
+					{
+						"id": "inspection-zoom",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "356fb991e132e205578fc028962bf85cccb979a072c3bcc94e050c136b64a77a",
+						"materialSha256": "356fb991e132e205578fc028962bf85cccb979a072c3bcc94e050c136b64a77a"
+					},
+					{
+						"id": "library-browsing",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "cf1da36027acbdad6d8816de1314e323d96754fa37a9e8687d464eaf946d6498",
+						"materialSha256": "cf1da36027acbdad6d8816de1314e323d96754fa37a9e8687d464eaf946d6498"
+					},
+					{
+						"id": "material-surface-theme",
+						"kind": "rule",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "0246acf65a21bd31c1a04ccdd62c2cc782dd8f85d75d2e8f57a37bfc055f3022",
+						"materialSha256": "0246acf65a21bd31c1a04ccdd62c2cc782dd8f85d75d2e8f57a37bfc055f3022"
+					},
+					{
+						"id": "media-repair",
+						"kind": "gap",
+						"classification": "unchanged",
+						"previousStatus": "unresolved",
+						"status": "unresolved",
+						"previousMaterialSha256": "ee55a7a469b96ea670187379f05b15d72877684a0bba323221f0a5659a4dbe9c",
+						"materialSha256": "ee55a7a469b96ea670187379f05b15d72877684a0bba323221f0a5659a4dbe9c"
+					},
+					{
+						"id": "multitrack-interface",
+						"kind": "gap",
+						"classification": "unchanged",
+						"previousStatus": "superseded",
+						"status": "superseded",
+						"previousMaterialSha256": "53f78b5c3c83dab7fb2e29704eb28f597510944c2e219f6ee43385cc1ffc5651",
+						"materialSha256": "53f78b5c3c83dab7fb2e29704eb28f597510944c2e219f6ee43385cc1ffc5651"
+					},
+					{
+						"id": "object-reorder",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "c5a42b8d4fc628244c298eb6599249f3a5ab82374ba29817a827774f8845e21e",
+						"materialSha256": "c5a42b8d4fc628244c298eb6599249f3a5ab82374ba29817a827774f8845e21e"
+					},
+					{
+						"id": "occurrence-trim",
+						"kind": "requirement",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "043868d08aec5ac201712559759cffa0176c863116a60eca13f3ab9e19946ccf",
+						"materialSha256": "a8e616565565012a21d0fa49e3b71d4411f6e9a61fa9bd8da50d076a44a1ea78"
+					},
+					{
+						"id": "outline-label-color",
+						"kind": "rule",
+						"classification": "unchanged",
+						"previousStatus": "superseded",
+						"status": "superseded",
+						"previousMaterialSha256": "86bbb602864860a48882f76161c588d32bdc4c7cfe205e3f5d8835060939730f",
+						"materialSha256": "86bbb602864860a48882f76161c588d32bdc4c7cfe205e3f5d8835060939730f"
+					},
+					{
+						"id": "outlined-field-baseline",
+						"kind": "rule",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "209f86dbb197344994fea1dbc8b1a4ff4df5409a6b837aa7e96203632cfaef25",
+						"materialSha256": "209f86dbb197344994fea1dbc8b1a4ff4df5409a6b837aa7e96203632cfaef25"
+					},
+					{
+						"id": "personal-video-work",
+						"kind": "purpose",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "b460389787f834a0d64a3527561a5820d6ba4abc7652c7771073d0b5faa22dd0",
+						"materialSha256": "b460389787f834a0d64a3527561a5820d6ba4abc7652c7771073d0b5faa22dd0"
+					},
+					{
+						"id": "play-collections",
+						"kind": "goal",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "cb64a8875d472b425f6517e948a5a01bae6a2a5bc02abaca0e6de48c27823068",
+						"materialSha256": "cb64a8875d472b425f6517e948a5a01bae6a2a5bc02abaca0e6de48c27823068"
+					},
+					{
+						"id": "playback-workspace",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "c65f6224f778836e07fcbfedad00a980c13f5000eda18ae7ad89e06b6c10f17f",
+						"materialSha256": "c65f6224f778836e07fcbfedad00a980c13f5000eda18ae7ad89e06b6c10f17f"
+					},
+					{
+						"id": "playlist-draft",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "873fbf7cdfade140626444ffd9e34925a6a9d4de80b56705f25887c97548fdd5",
+						"materialSha256": "873fbf7cdfade140626444ffd9e34925a6a9d4de80b56705f25887c97548fdd5"
+					},
+					{
+						"id": "playlist-editing",
+						"kind": "capability",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "1040e101da9916ace8140542bdd981d040d0d9ffcbce2c301814d0754c90403c",
+						"materialSha256": "1040e101da9916ace8140542bdd981d040d0d9ffcbce2c301814d0754c90403c"
+					},
+					{
+						"id": "playlist-transport",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "a2677a18f8d8431a3158fc12381726399df1847578085857394c67e403ef6fa7",
+						"materialSha256": "a2677a18f8d8431a3158fc12381726399df1847578085857394c67e403ef6fa7"
+					},
+					{
+						"id": "precise-selection",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "c6597df8561065aa7af82efcc056a0471f49ad317aefde9c1af4d1c6c388c944",
+						"materialSha256": "c6597df8561065aa7af82efcc056a0471f49ad317aefde9c1af4d1c6c388c944"
+					},
+					{
+						"id": "preserve-work",
+						"kind": "goal",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "f1c035e92474802328e6d1fa6e8f1dfad3a737e7b124e42f9a41a31bd86c6ef9",
+						"materialSha256": "f1c035e92474802328e6d1fa6e8f1dfad3a737e7b124e42f9a41a31bd86c6ef9"
+					},
+					{
+						"id": "project-commands",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "0fe7b0a0338d62564a63c5c2fad2c4a8a45c6e907e27a7b1f325682a638a1ff6",
+						"materialSha256": "0fe7b0a0338d62564a63c5c2fad2c4a8a45c6e907e27a7b1f325682a638a1ff6"
+					},
+					{
+						"id": "project-management",
+						"kind": "capability",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "2b4ac9972a86df757619c8e6b6ad5a0713bea391003aa031bad2a4cda4e6320d",
+						"materialSha256": "2b4ac9972a86df757619c8e6b6ad5a0713bea391003aa031bad2a4cda4e6320d"
+					},
+					{
+						"id": "project-reference-storage",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "808ae642321ec83f1e0b8758c9dda928f9942c9c65363684e693241c7019555f",
+						"materialSha256": "808ae642321ec83f1e0b8758c9dda928f9942c9c65363684e693241c7019555f"
+					},
+					{
+						"id": "range-selection",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "fbdebeed47b4e0fbbc0b56a1c0fd30ef3da4d620f3e3a1c1a242a13b0ec5bb4d",
+						"materialSha256": "fbdebeed47b4e0fbbc0b56a1c0fd30ef3da4d620f3e3a1c1a242a13b0ec5bb4d"
+					},
+					{
+						"id": "save-library-clip",
+						"kind": "requirement",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "cffe443be4daf3cf1878759e680140e9cb5b486187f23ce2d32d3bae66109e4c",
+						"materialSha256": "f29e70b0f1a2b7347ef3c2d6e5999c84fead778335bae4c40e4bcc5f3324cb67"
+					},
+					{
+						"id": "save-video-draft",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "648bceae24716d11bc22fcc892034ca173f297d5d580769a0bda77ce45491073",
+						"materialSha256": "648bceae24716d11bc22fcc892034ca173f297d5d580769a0bda77ce45491073"
+					},
+					{
+						"id": "scrub-and-follow",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "91a6981da88ad71f1afc03d9a8132f73e6b00ea75ce7a1e620506c83aa8adf2b",
+						"materialSha256": "91a6981da88ad71f1afc03d9a8132f73e6b00ea75ce7a1e620506c83aa8adf2b"
+					},
+					{
+						"id": "shared-clip-update-collision",
+						"kind": "gap",
+						"classification": "changed",
+						"previousStatus": "unresolved",
+						"status": "superseded",
+						"previousMaterialSha256": "43cfc31d5a4ee69ad7df104daf31e985fa0fcc86e9daa37ce0ddb3d770bde2b1",
+						"materialSha256": "0d0c1af6acf7632234be596c31ff89407c883a57c0b7e9c38e9e227d73654b90"
+					},
+					{
+						"id": "single-track-baseline",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "superseded",
+						"status": "superseded",
+						"previousMaterialSha256": "22e86c04e9e126d314513742fc714c7e8107d046eb0aaa537cb60b3cdac2dc1d",
+						"materialSha256": "22e86c04e9e126d314513742fc714c7e8107d046eb0aaa537cb60b3cdac2dc1d"
+					},
+					{
+						"id": "source-ownership",
+						"kind": "gap",
+						"classification": "unchanged",
+						"previousStatus": "unresolved",
+						"status": "unresolved",
+						"previousMaterialSha256": "d3c52ac198f452b2957bbd04d944d7775376a4240f99b96d4134d39290c77d0b",
+						"materialSha256": "d3c52ac198f452b2957bbd04d944d7775376a4240f99b96d4134d39290c77d0b"
+					},
+					{
+						"id": "spacing-and-control-metrics",
+						"kind": "rule",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "c79038c488990255fcacc5cbdbedf5e06ac23838fd5a379ab54ee56525f12c57",
+						"materialSha256": "c79038c488990255fcacc5cbdbedf5e06ac23838fd5a379ab54ee56525f12c57"
+					},
+					{
+						"id": "spatial-composition",
+						"kind": "capability",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "b0a46bc19e98fce675c7ca317da3c3c9a47da6c7743caac1a3ebc8964f28e5b7",
+						"materialSha256": "b0a46bc19e98fce675c7ca317da3c3c9a47da6c7743caac1a3ebc8964f28e5b7"
+					},
+					{
+						"id": "spatial-region-capability",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "e847db6674bc63fa5ee95097bad543c2e6810274ab3f140a63a9af6e36fdad66",
+						"materialSha256": "e847db6674bc63fa5ee95097bad543c2e6810274ab3f140a63a9af6e36fdad66"
+					},
+					{
+						"id": "timeline-drop-rearrangement",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "49c295055e32529978752dbd44461c8bef0091e322daf2477667490fe9cf6b6d",
+						"materialSha256": "49c295055e32529978752dbd44461c8bef0091e322daf2477667490fe9cf6b6d"
+					},
+					{
+						"id": "timeline-occurrences",
+						"kind": "requirement",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "de05d370fec8bdcf2e65e7e12f711c02327a636023412dd39a9ec2d22004ba13",
+						"materialSha256": "4e78d7d3bb13b3f0334a425fbbbdf579efd9330db4f3090e2accd28e9bc84110"
+					},
+					{
+						"id": "timeline-trim-push",
+						"kind": "requirement",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "7e0baa1343426a15c66e077539c67044c789fbc19911b25639c4c7cd0033c32e",
+						"materialSha256": "5b7030718f873781071ef5d8fbf716c5dcf39a1a53d8c7184b20af0bb65f5359"
+					},
+					{
+						"id": "track-and-clip-audio",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "75e39a41a41e6b6d4b03675a43402d24117910cad373f5897c66d006da3d9d29",
+						"materialSha256": "75e39a41a41e6b6d4b03675a43402d24117910cad373f5897c66d006da3d9d29"
+					},
+					{
+						"id": "type-scale",
+						"kind": "rule",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "913bf8147facf3af50f44c692bea8b6086628ce64f579442c4bacd30046f1f77",
+						"materialSha256": "913bf8147facf3af50f44c692bea8b6086628ce64f579442c4bacd30046f1f77"
+					},
+					{
+						"id": "update-named-clip",
+						"kind": "requirement",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "228cfcc85b2af90aa3a664a2e9706f06c13755eac56078cc48546842d4489ec7",
+						"materialSha256": "d09df8e436f529f5e49a3478f45f5aa6b1f598baf956a2ee4cd81afdc855855f"
+					},
+					{
+						"id": "video-editing",
+						"kind": "capability",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "ef8ec2ff534a7f4da39ed0a95720f83f2a6d0087c4943942725bfdefb909890e",
+						"materialSha256": "ef8ec2ff534a7f4da39ed0a95720f83f2a6d0087c4943942725bfdefb909890e"
+					},
+					{
+						"id": "video-expansion-settings-conflict",
+						"kind": "gap",
+						"classification": "unchanged",
+						"previousStatus": "unresolved",
+						"status": "unresolved",
+						"previousMaterialSha256": "20082be8087ae992bf8a7b52907638ee32488b6ca241bc294490100b92a3282e",
+						"materialSha256": "20082be8087ae992bf8a7b52907638ee32488b6ca241bc294490100b92a3282e"
+					},
+					{
+						"id": "video-export",
+						"kind": "capability",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "4bbcc8205b3f725d234c98863cd1d7ad9715393f37f13f5bf8c5b42c57b56d22",
+						"materialSha256": "4bbcc8205b3f725d234c98863cd1d7ad9715393f37f13f5bf8c5b42c57b56d22"
+					},
+					{
+						"id": "video-playback",
+						"kind": "capability",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "fa521eba695b228021fdb38bd62904415ebbc48bdee3cd627bbadec8bdd136cd",
+						"materialSha256": "fa521eba695b228021fdb38bd62904415ebbc48bdee3cd627bbadec8bdd136cd"
+					},
+					{
+						"id": "visual-defaults-editable",
+						"kind": "rule",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "09726e80b9578c554b421c4ce8360dc7ac5c2a5c9a4551a2d43694f47dd68b6c",
+						"materialSha256": "09726e80b9578c554b421c4ce8360dc7ac5c2a5c9a4551a2d43694f47dd68b6c"
+					},
+					{
+						"id": "workspace-shell",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "a0aed58d346a67ab5410cd7f01a0050657b34ab9ede9dff5dfcc644ee585c8f2",
+						"materialSha256": "a0aed58d346a67ab5410cd7f01a0050657b34ab9ede9dff5dfcc644ee585c8f2"
+					}
+				],
+				"sourceClaims": [
+					{
+						"id": "claim-addition",
+						"classification": "retained",
+						"previousRefs": ["claim-addition"]
+					},
+					{
+						"id": "claim-brand",
+						"classification": "retained",
+						"previousRefs": ["claim-brand"]
+					},
+					{
+						"id": "claim-clip-create",
+						"classification": "retained",
+						"previousRefs": ["claim-clip-create"]
+					},
+					{
+						"id": "claim-clip-update",
+						"classification": "retained",
+						"previousRefs": ["claim-clip-update"]
+					},
+					{
+						"id": "claim-close-question",
+						"classification": "retained",
+						"previousRefs": ["claim-close-question"]
+					},
+					{
+						"id": "claim-commit-freeze",
+						"classification": "retained",
+						"previousRefs": ["claim-commit-freeze"]
+					},
+					{
+						"id": "claim-content",
+						"classification": "retained",
+						"previousRefs": ["claim-content"]
+					},
+					{
+						"id": "claim-continuity-question",
+						"classification": "retained",
+						"previousRefs": ["claim-continuity-question"]
+					},
+					{
+						"id": "claim-copied-assembly-update",
+						"classification": "introduced",
+						"previousRefs": []
+					},
+					{
+						"id": "claim-desktop-runtime",
+						"classification": "retained",
+						"previousRefs": ["claim-desktop-runtime"]
+					},
+					{
+						"id": "claim-edit-operations",
+						"classification": "retained",
+						"previousRefs": ["claim-edit-operations"]
+					},
+					{
+						"id": "claim-editor",
+						"classification": "retained",
+						"previousRefs": ["claim-editor"]
+					},
+					{
+						"id": "claim-export",
+						"classification": "retained",
+						"previousRefs": ["claim-export"]
+					},
+					{
+						"id": "claim-export-lifecycle",
+						"classification": "retained",
+						"previousRefs": ["claim-export-lifecycle"]
+					},
+					{
+						"id": "claim-field-baseline",
+						"classification": "retained",
+						"previousRefs": ["claim-field-baseline"]
+					},
+					{
+						"id": "claim-four-track-update",
+						"classification": "retained",
+						"previousRefs": ["claim-four-track-update"]
+					},
+					{
+						"id": "claim-guard",
+						"classification": "retained",
+						"previousRefs": ["claim-guard"]
+					},
+					{
+						"id": "claim-inspection",
+						"classification": "retained",
+						"previousRefs": ["claim-inspection"]
+					},
+					{
+						"id": "claim-layout",
+						"classification": "retained",
+						"previousRefs": ["claim-layout"]
+					},
+					{
+						"id": "claim-library",
+						"classification": "retained",
+						"previousRefs": ["claim-library"]
+					},
+					{
+						"id": "claim-multitrack-intent",
+						"classification": "retained",
+						"previousRefs": ["claim-multitrack-intent"]
+					},
+					{
+						"id": "claim-multitrack-question",
+						"classification": "retained",
+						"previousRefs": ["claim-multitrack-question"]
+					},
+					{
+						"id": "claim-occurrences",
+						"classification": "retained",
+						"previousRefs": ["claim-occurrences"]
+					},
+					{
+						"id": "claim-outline-withdrawn",
+						"classification": "retained",
+						"previousRefs": ["claim-outline-withdrawn"]
+					},
+					{
+						"id": "claim-ownership-question",
+						"classification": "retained",
+						"previousRefs": ["claim-ownership-question"]
+					},
+					{
+						"id": "claim-paper",
+						"classification": "retained",
+						"previousRefs": ["claim-paper"]
+					},
+					{
+						"id": "claim-persistence",
+						"classification": "retained",
+						"previousRefs": ["claim-persistence"]
+					},
+					{
+						"id": "claim-playback",
+						"classification": "retained",
+						"previousRefs": ["claim-playback"]
+					},
+					{
+						"id": "claim-playback-gaps",
+						"classification": "retained",
+						"previousRefs": ["claim-playback-gaps"]
+					},
+					{
+						"id": "claim-player-direction",
+						"classification": "retained",
+						"previousRefs": ["claim-player-direction"]
+					},
+					{
+						"id": "claim-playhead",
+						"classification": "retained",
+						"previousRefs": ["claim-playhead"]
+					},
+					{
+						"id": "claim-playlist",
+						"classification": "retained",
+						"previousRefs": ["claim-playlist"]
+					},
+					{
+						"id": "claim-precision",
+						"classification": "retained",
+						"previousRefs": ["claim-precision"]
+					},
+					{
+						"id": "claim-project",
+						"classification": "retained",
+						"previousRefs": ["claim-project"]
+					},
+					{
+						"id": "claim-purpose",
+						"classification": "retained",
+						"previousRefs": ["claim-purpose"]
+					},
+					{
+						"id": "claim-reorder",
+						"classification": "retained",
+						"previousRefs": ["claim-reorder"]
+					},
+					{
+						"id": "claim-repair-question",
+						"classification": "retained",
+						"previousRefs": ["claim-repair-question"]
+					},
+					{
+						"id": "claim-selection",
+						"classification": "retained",
+						"previousRefs": ["claim-selection"]
+					},
+					{
+						"id": "claim-shape",
+						"classification": "retained",
+						"previousRefs": ["claim-shape"]
+					},
+					{
+						"id": "claim-shared-clip-collision-question",
+						"classification": "retained",
+						"previousRefs": ["claim-shared-clip-collision-question"]
+					},
+					{
+						"id": "claim-shell",
+						"classification": "retained",
+						"previousRefs": ["claim-shell"]
+					},
+					{
+						"id": "claim-single-track-prior",
+						"classification": "retained",
+						"previousRefs": ["claim-single-track-prior"]
+					},
+					{
+						"id": "claim-spatial",
+						"classification": "retained",
+						"previousRefs": ["claim-spatial"]
+					},
+					{
+						"id": "claim-surface-colors",
+						"classification": "retained",
+						"previousRefs": ["claim-surface-colors"]
+					},
+					{
+						"id": "claim-transient-editing",
+						"classification": "retained",
+						"previousRefs": ["claim-transient-editing"]
+					},
+					{
+						"id": "claim-transport",
+						"classification": "retained",
+						"previousRefs": ["claim-transport"]
+					},
+					{
+						"id": "claim-trimming",
+						"classification": "retained",
+						"previousRefs": ["claim-trimming"]
+					},
+					{
+						"id": "claim-typography",
+						"classification": "retained",
+						"previousRefs": ["claim-typography"]
+					},
+					{
+						"id": "claim-video-expansion-question",
+						"classification": "retained",
+						"previousRefs": ["claim-video-expansion-question"]
+					},
+					{
+						"id": "claim-video-save",
+						"classification": "retained",
+						"previousRefs": ["claim-video-save"]
+					},
+					{
+						"id": "claim-visual-foundations",
+						"classification": "retained",
+						"previousRefs": ["claim-visual-foundations"]
+					}
+				]
+			},
+			"status": "complete",
+			"finishedAt": "2026-09-27T23:58:42.315Z",
+			"elapsedMs": 451.9012
+		},
+		"live-model-update-metrics": {
+			"operation": "persist-live-model",
+			"startedAt": "2026-09-27T23:59:02.319Z",
+			"outputRoot": "C:/dev/alexa/product/Alexa",
+			"persistenceMs": 193.5052,
+			"result": {
+				"schemaVersion": "1.0",
+				"productId": "alexa",
+				"revision": 7,
+				"source": {
+					"path": "sources/5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe/product-description.md",
+					"sha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+					"created": true
+				},
+				"productModel": {
+					"path": "models/7-4d1ab6f952539aee900469148d0042cf03a7a284f99ffe57e3f7a4a2f801ad81/product-model.json",
+					"sha256": "4d1ab6f952539aee900469148d0042cf03a7a284f99ffe57e3f7a4a2f801ad81",
+					"materialSha256": "291de44c6f01db5451df2eadf85da781008c956dd0f69a4d31c6603ac7980b54",
+					"created": true
+				},
+				"snapshot": {
+					"id": "alexa-snapshot",
+					"revision": 16,
+					"path": "snapshots/94bda6f2747f45cb02ac2718cc0d6b4a94d4f0017e829bf46926d5033d8ed0a4/product-snapshot.json",
+					"sha256": "94bda6f2747f45cb02ac2718cc0d6b4a94d4f0017e829bf46926d5033d8ed0a4",
+					"created": true
+				},
+				"current": {
+					"path": "current.json",
+					"sha256": "638f6379e987827b750bca9f6a7480153c3d45eff13bd32921664756a00310e6",
+					"changed": true
+				}
+			},
+			"reloadValidationMs": 134.9352,
+			"revision": 7,
+			"snapshot": {
+				"id": "alexa-snapshot",
+				"revision": 16,
+				"path": "snapshots/94bda6f2747f45cb02ac2718cc0d6b4a94d4f0017e829bf46926d5033d8ed0a4/product-snapshot.json",
+				"sha256": "94bda6f2747f45cb02ac2718cc0d6b4a94d4f0017e829bf46926d5033d8ed0a4"
+			},
+			"sourceHash": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+			"changeSet": {
+				"classification": "material",
+				"records": [
+					{
+						"id": "add-timeline-content",
+						"kind": "requirement",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "1ee2013ca24d5b04a297fc4fe24260181cfe653559f05f020b89ea1115f81388",
+						"materialSha256": "2f1e69dad27941a733b619b692205175c28052b39350644d313b7999960ee830"
+					},
+					{
+						"id": "adopted-player-direction",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "8f749f6ae1601084792da80fb67a434384e7ad21720266a323e592cc23ee1951",
+						"materialSha256": "8f749f6ae1601084792da80fb67a434384e7ad21720266a323e592cc23ee1951"
+					},
+					{
+						"id": "alexa",
+						"kind": "product",
+						"classification": "unchanged",
+						"previousStatus": "partial",
+						"status": "partial",
+						"previousMaterialSha256": "38401499c132edbc09a2fbc1c8278b68c5a4cc6596a53a1ce42f8a9f15681734",
+						"materialSha256": "38401499c132edbc09a2fbc1c8278b68c5a4cc6596a53a1ce42f8a9f15681734"
+					},
+					{
+						"id": "brand-treatment",
+						"kind": "rule",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "7988dcdedf176a8536a8eefadf66f79a5ae21c8d5eeac9bdce4865d6a2093331",
+						"materialSha256": "7988dcdedf176a8536a8eefadf66f79a5ae21c8d5eeac9bdce4865d6a2093331"
+					},
+					{
+						"id": "clip-management",
+						"kind": "capability",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "c44295cebbad91eecb9d2f9a2d0dc350aed09100ee95f69f1c5ecef8362ad3eb",
+						"materialSha256": "a41c78e179a43fd0169807e476b78148d4a8b4c7b1a5f889213ee522a13e6d89"
+					},
+					{
+						"id": "clip-persistence-invariants",
+						"kind": "requirement",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "3a4a6c3b644c9dc2cc165da42d8fafec3aee4ef442894b2cfa90f8ffab634a51",
+						"materialSha256": "a70077b9d093fe138754219e6d55cf8450e33035af6aca6e52b7e6521fd4fbfa"
+					},
+					{
+						"id": "commit-edit-availability",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "0acb7ae81f5e26b2274e21225b5dedfd2666fb0761fcc854e912fe7f0032996f",
+						"materialSha256": "0acb7ae81f5e26b2274e21225b5dedfd2666fb0761fcc854e912fe7f0032996f"
+					},
+					{
+						"id": "component-shape",
+						"kind": "rule",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "dc95cfb582b117c21a07e0d6518e3c415ae1b2c6eba9998f3e0f3ef06c1dc753",
+						"materialSha256": "dc95cfb582b117c21a07e0d6518e3c415ae1b2c6eba9998f3e0f3ef06c1dc753"
+					},
+					{
+						"id": "compose-video",
+						"kind": "goal",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "6652b4e5546a6b8c4e4167d350c8a2ebe7ea5444c778bf9f555346be15d5577d",
+						"materialSha256": "6652b4e5546a6b8c4e4167d350c8a2ebe7ea5444c778bf9f555346be15d5577d"
+					},
+					{
+						"id": "content-library",
+						"kind": "capability",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "9ad99cb6ee72102b93d91452eda2ab30f086c200e4edc660c4daa9993011e0cd",
+						"materialSha256": "9ad99cb6ee72102b93d91452eda2ab30f086c200e4edc660c4daa9993011e0cd"
+					},
+					{
+						"id": "content-types",
+						"kind": "requirement",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "1d43a332f996b634b6d802527c75d57dbb642845091882914a06feb3ef4e3f9b",
+						"materialSha256": "03ae3d380b2ddd49aacb6e4c3dff54630e1349b945a68986f84c6110158e92de"
+					},
+					{
+						"id": "cross-source-playback",
+						"kind": "gap",
+						"classification": "unchanged",
+						"previousStatus": "unresolved",
+						"status": "unresolved",
+						"previousMaterialSha256": "b97840225a37ea3d6daac2f1fb3bae2098aa69ca17f06ac477f5d138cd50442c",
+						"materialSha256": "b97840225a37ea3d6daac2f1fb3bae2098aa69ca17f06ac477f5d138cd50442c"
+					},
+					{
+						"id": "delete-split-reorder",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "e4c5b2260d18f5f88a971f7faf1d23e21866b3fb4970e2cb68fe5baadc46a65a",
+						"materialSha256": "e4c5b2260d18f5f88a971f7faf1d23e21866b3fb4970e2cb68fe5baadc46a65a"
+					},
+					{
+						"id": "desktop-owner",
+						"kind": "user",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "434f1b58e156823f6f3ee9c933f04d6b162143287f6e33abc71d28521b3ebc9f",
+						"materialSha256": "434f1b58e156823f6f3ee9c933f04d6b162143287f6e33abc71d28521b3ebc9f"
+					},
+					{
+						"id": "desktop-scope",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "04a976cebad68c90d0c78a173b9f215062062b278d43373f00591152fec69946",
+						"materialSha256": "04a976cebad68c90d0c78a173b9f215062062b278d43373f00591152fec69946"
+					},
+					{
+						"id": "draft-project-guard",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "3d07008388fc68a17e600fca12cd27a989fdc1ee31e910b21df1740a8cdfd8d1",
+						"materialSha256": "3d07008388fc68a17e600fca12cd27a989fdc1ee31e910b21df1740a8cdfd8d1"
+					},
+					{
+						"id": "edit-surface-regions",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "e13ad1ef92cbd74aaf27eda8873a1dd3eeab650c3fddd7285f899cc6802d97bd",
+						"materialSha256": "e13ad1ef92cbd74aaf27eda8873a1dd3eeab650c3fddd7285f899cc6802d97bd"
+					},
+					{
+						"id": "editor-transient-context",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "e13b08c50829c3b162c03664cdbda2967705442e680a3c0d8b1f156374171da3",
+						"materialSha256": "e13b08c50829c3b162c03664cdbda2967705442e680a3c0d8b1f156374171da3"
+					},
+					{
+						"id": "electron-runtime",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "995aa54bb8917f42ce9ac539a1b377b209b2a8edf777d42bd5dba70a297fbdd3",
+						"materialSha256": "995aa54bb8917f42ce9ac539a1b377b209b2a8edf777d42bd5dba70a297fbdd3"
+					},
+					{
+						"id": "export-app-close",
+						"kind": "gap",
+						"classification": "unchanged",
+						"previousStatus": "unresolved",
+						"status": "unresolved",
+						"previousMaterialSha256": "00d67dd15159b54bdaace876f4e459ce901b53ede8b4053e57717af9c0e9f753",
+						"materialSha256": "00d67dd15159b54bdaace876f4e459ce901b53ede8b4053e57717af9c0e9f753"
+					},
+					{
+						"id": "export-choice-and-consent",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "e4dc38511b6f223afde1e3a65a122bfff80a3e63016c665673ae590235b30d18",
+						"materialSha256": "e4dc38511b6f223afde1e3a65a122bfff80a3e63016c665673ae590235b30d18"
+					},
+					{
+						"id": "export-operation-lifecycle",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "3e25567ed7e6cec77e4d6e6d47657735b6cc37e90cd7619e86b8989a3163ddea",
+						"materialSha256": "3e25567ed7e6cec77e4d6e6d47657735b6cc37e90cd7619e86b8989a3163ddea"
+					},
+					{
+						"id": "export-result",
+						"kind": "goal",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "af2ea35772f2f86e5836e23a2cea3239dba0b948e04a38f15ce5455539219fe4",
+						"materialSha256": "af2ea35772f2f86e5836e23a2cea3239dba0b948e04a38f15ce5455539219fe4"
+					},
+					{
+						"id": "four-track-editing",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "19dfd61a9e13697f462f7f73278c497d513c4ee03e568e240d71bbbe38846406",
+						"materialSha256": "19dfd61a9e13697f462f7f73278c497d513c4ee03e568e240d71bbbe38846406"
+					},
+					{
+						"id": "grouped-assembly-editing",
+						"kind": "requirement",
+						"classification": "introduced",
+						"previousStatus": null,
+						"status": "accepted",
+						"previousMaterialSha256": null,
+						"materialSha256": "ab569d1ae72d88c711f43bbc15eb22fe6af2db0f50a232a9669836071782eef3"
+					},
+					{
+						"id": "inspection-zoom",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "356fb991e132e205578fc028962bf85cccb979a072c3bcc94e050c136b64a77a",
+						"materialSha256": "356fb991e132e205578fc028962bf85cccb979a072c3bcc94e050c136b64a77a"
+					},
+					{
+						"id": "library-browsing",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "cf1da36027acbdad6d8816de1314e323d96754fa37a9e8687d464eaf946d6498",
+						"materialSha256": "cf1da36027acbdad6d8816de1314e323d96754fa37a9e8687d464eaf946d6498"
+					},
+					{
+						"id": "material-surface-theme",
+						"kind": "rule",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "0246acf65a21bd31c1a04ccdd62c2cc782dd8f85d75d2e8f57a37bfc055f3022",
+						"materialSha256": "0246acf65a21bd31c1a04ccdd62c2cc782dd8f85d75d2e8f57a37bfc055f3022"
+					},
+					{
+						"id": "media-repair",
+						"kind": "gap",
+						"classification": "unchanged",
+						"previousStatus": "unresolved",
+						"status": "unresolved",
+						"previousMaterialSha256": "ee55a7a469b96ea670187379f05b15d72877684a0bba323221f0a5659a4dbe9c",
+						"materialSha256": "ee55a7a469b96ea670187379f05b15d72877684a0bba323221f0a5659a4dbe9c"
+					},
+					{
+						"id": "multitrack-interface",
+						"kind": "gap",
+						"classification": "unchanged",
+						"previousStatus": "superseded",
+						"status": "superseded",
+						"previousMaterialSha256": "53f78b5c3c83dab7fb2e29704eb28f597510944c2e219f6ee43385cc1ffc5651",
+						"materialSha256": "53f78b5c3c83dab7fb2e29704eb28f597510944c2e219f6ee43385cc1ffc5651"
+					},
+					{
+						"id": "object-reorder",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "c5a42b8d4fc628244c298eb6599249f3a5ab82374ba29817a827774f8845e21e",
+						"materialSha256": "c5a42b8d4fc628244c298eb6599249f3a5ab82374ba29817a827774f8845e21e"
+					},
+					{
+						"id": "occurrence-trim",
+						"kind": "requirement",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "043868d08aec5ac201712559759cffa0176c863116a60eca13f3ab9e19946ccf",
+						"materialSha256": "a8e616565565012a21d0fa49e3b71d4411f6e9a61fa9bd8da50d076a44a1ea78"
+					},
+					{
+						"id": "outline-label-color",
+						"kind": "rule",
+						"classification": "unchanged",
+						"previousStatus": "superseded",
+						"status": "superseded",
+						"previousMaterialSha256": "86bbb602864860a48882f76161c588d32bdc4c7cfe205e3f5d8835060939730f",
+						"materialSha256": "86bbb602864860a48882f76161c588d32bdc4c7cfe205e3f5d8835060939730f"
+					},
+					{
+						"id": "outlined-field-baseline",
+						"kind": "rule",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "209f86dbb197344994fea1dbc8b1a4ff4df5409a6b837aa7e96203632cfaef25",
+						"materialSha256": "209f86dbb197344994fea1dbc8b1a4ff4df5409a6b837aa7e96203632cfaef25"
+					},
+					{
+						"id": "personal-video-work",
+						"kind": "purpose",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "b460389787f834a0d64a3527561a5820d6ba4abc7652c7771073d0b5faa22dd0",
+						"materialSha256": "b460389787f834a0d64a3527561a5820d6ba4abc7652c7771073d0b5faa22dd0"
+					},
+					{
+						"id": "play-collections",
+						"kind": "goal",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "cb64a8875d472b425f6517e948a5a01bae6a2a5bc02abaca0e6de48c27823068",
+						"materialSha256": "cb64a8875d472b425f6517e948a5a01bae6a2a5bc02abaca0e6de48c27823068"
+					},
+					{
+						"id": "playback-workspace",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "c65f6224f778836e07fcbfedad00a980c13f5000eda18ae7ad89e06b6c10f17f",
+						"materialSha256": "c65f6224f778836e07fcbfedad00a980c13f5000eda18ae7ad89e06b6c10f17f"
+					},
+					{
+						"id": "playlist-draft",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "873fbf7cdfade140626444ffd9e34925a6a9d4de80b56705f25887c97548fdd5",
+						"materialSha256": "873fbf7cdfade140626444ffd9e34925a6a9d4de80b56705f25887c97548fdd5"
+					},
+					{
+						"id": "playlist-editing",
+						"kind": "capability",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "1040e101da9916ace8140542bdd981d040d0d9ffcbce2c301814d0754c90403c",
+						"materialSha256": "1040e101da9916ace8140542bdd981d040d0d9ffcbce2c301814d0754c90403c"
+					},
+					{
+						"id": "playlist-transport",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "a2677a18f8d8431a3158fc12381726399df1847578085857394c67e403ef6fa7",
+						"materialSha256": "a2677a18f8d8431a3158fc12381726399df1847578085857394c67e403ef6fa7"
+					},
+					{
+						"id": "precise-selection",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "c6597df8561065aa7af82efcc056a0471f49ad317aefde9c1af4d1c6c388c944",
+						"materialSha256": "c6597df8561065aa7af82efcc056a0471f49ad317aefde9c1af4d1c6c388c944"
+					},
+					{
+						"id": "preserve-work",
+						"kind": "goal",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "f1c035e92474802328e6d1fa6e8f1dfad3a737e7b124e42f9a41a31bd86c6ef9",
+						"materialSha256": "f1c035e92474802328e6d1fa6e8f1dfad3a737e7b124e42f9a41a31bd86c6ef9"
+					},
+					{
+						"id": "project-commands",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "0fe7b0a0338d62564a63c5c2fad2c4a8a45c6e907e27a7b1f325682a638a1ff6",
+						"materialSha256": "0fe7b0a0338d62564a63c5c2fad2c4a8a45c6e907e27a7b1f325682a638a1ff6"
+					},
+					{
+						"id": "project-management",
+						"kind": "capability",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "2b4ac9972a86df757619c8e6b6ad5a0713bea391003aa031bad2a4cda4e6320d",
+						"materialSha256": "2b4ac9972a86df757619c8e6b6ad5a0713bea391003aa031bad2a4cda4e6320d"
+					},
+					{
+						"id": "project-reference-storage",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "808ae642321ec83f1e0b8758c9dda928f9942c9c65363684e693241c7019555f",
+						"materialSha256": "808ae642321ec83f1e0b8758c9dda928f9942c9c65363684e693241c7019555f"
+					},
+					{
+						"id": "range-selection",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "fbdebeed47b4e0fbbc0b56a1c0fd30ef3da4d620f3e3a1c1a242a13b0ec5bb4d",
+						"materialSha256": "fbdebeed47b4e0fbbc0b56a1c0fd30ef3da4d620f3e3a1c1a242a13b0ec5bb4d"
+					},
+					{
+						"id": "save-library-clip",
+						"kind": "requirement",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "cffe443be4daf3cf1878759e680140e9cb5b486187f23ce2d32d3bae66109e4c",
+						"materialSha256": "f29e70b0f1a2b7347ef3c2d6e5999c84fead778335bae4c40e4bcc5f3324cb67"
+					},
+					{
+						"id": "save-video-draft",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "648bceae24716d11bc22fcc892034ca173f297d5d580769a0bda77ce45491073",
+						"materialSha256": "648bceae24716d11bc22fcc892034ca173f297d5d580769a0bda77ce45491073"
+					},
+					{
+						"id": "scrub-and-follow",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "91a6981da88ad71f1afc03d9a8132f73e6b00ea75ce7a1e620506c83aa8adf2b",
+						"materialSha256": "91a6981da88ad71f1afc03d9a8132f73e6b00ea75ce7a1e620506c83aa8adf2b"
+					},
+					{
+						"id": "shared-clip-update-collision",
+						"kind": "gap",
+						"classification": "changed",
+						"previousStatus": "unresolved",
+						"status": "superseded",
+						"previousMaterialSha256": "43cfc31d5a4ee69ad7df104daf31e985fa0fcc86e9daa37ce0ddb3d770bde2b1",
+						"materialSha256": "0d0c1af6acf7632234be596c31ff89407c883a57c0b7e9c38e9e227d73654b90"
+					},
+					{
+						"id": "single-track-baseline",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "superseded",
+						"status": "superseded",
+						"previousMaterialSha256": "22e86c04e9e126d314513742fc714c7e8107d046eb0aaa537cb60b3cdac2dc1d",
+						"materialSha256": "22e86c04e9e126d314513742fc714c7e8107d046eb0aaa537cb60b3cdac2dc1d"
+					},
+					{
+						"id": "source-ownership",
+						"kind": "gap",
+						"classification": "unchanged",
+						"previousStatus": "unresolved",
+						"status": "unresolved",
+						"previousMaterialSha256": "d3c52ac198f452b2957bbd04d944d7775376a4240f99b96d4134d39290c77d0b",
+						"materialSha256": "d3c52ac198f452b2957bbd04d944d7775376a4240f99b96d4134d39290c77d0b"
+					},
+					{
+						"id": "spacing-and-control-metrics",
+						"kind": "rule",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "c79038c488990255fcacc5cbdbedf5e06ac23838fd5a379ab54ee56525f12c57",
+						"materialSha256": "c79038c488990255fcacc5cbdbedf5e06ac23838fd5a379ab54ee56525f12c57"
+					},
+					{
+						"id": "spatial-composition",
+						"kind": "capability",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "b0a46bc19e98fce675c7ca317da3c3c9a47da6c7743caac1a3ebc8964f28e5b7",
+						"materialSha256": "b0a46bc19e98fce675c7ca317da3c3c9a47da6c7743caac1a3ebc8964f28e5b7"
+					},
+					{
+						"id": "spatial-region-capability",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "e847db6674bc63fa5ee95097bad543c2e6810274ab3f140a63a9af6e36fdad66",
+						"materialSha256": "e847db6674bc63fa5ee95097bad543c2e6810274ab3f140a63a9af6e36fdad66"
+					},
+					{
+						"id": "timeline-drop-rearrangement",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "49c295055e32529978752dbd44461c8bef0091e322daf2477667490fe9cf6b6d",
+						"materialSha256": "49c295055e32529978752dbd44461c8bef0091e322daf2477667490fe9cf6b6d"
+					},
+					{
+						"id": "timeline-occurrences",
+						"kind": "requirement",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "de05d370fec8bdcf2e65e7e12f711c02327a636023412dd39a9ec2d22004ba13",
+						"materialSha256": "4e78d7d3bb13b3f0334a425fbbbdf579efd9330db4f3090e2accd28e9bc84110"
+					},
+					{
+						"id": "timeline-trim-push",
+						"kind": "requirement",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "7e0baa1343426a15c66e077539c67044c789fbc19911b25639c4c7cd0033c32e",
+						"materialSha256": "5b7030718f873781071ef5d8fbf716c5dcf39a1a53d8c7184b20af0bb65f5359"
+					},
+					{
+						"id": "track-and-clip-audio",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "75e39a41a41e6b6d4b03675a43402d24117910cad373f5897c66d006da3d9d29",
+						"materialSha256": "75e39a41a41e6b6d4b03675a43402d24117910cad373f5897c66d006da3d9d29"
+					},
+					{
+						"id": "type-scale",
+						"kind": "rule",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "913bf8147facf3af50f44c692bea8b6086628ce64f579442c4bacd30046f1f77",
+						"materialSha256": "913bf8147facf3af50f44c692bea8b6086628ce64f579442c4bacd30046f1f77"
+					},
+					{
+						"id": "update-named-clip",
+						"kind": "requirement",
+						"classification": "changed",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "228cfcc85b2af90aa3a664a2e9706f06c13755eac56078cc48546842d4489ec7",
+						"materialSha256": "d09df8e436f529f5e49a3478f45f5aa6b1f598baf956a2ee4cd81afdc855855f"
+					},
+					{
+						"id": "video-editing",
+						"kind": "capability",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "ef8ec2ff534a7f4da39ed0a95720f83f2a6d0087c4943942725bfdefb909890e",
+						"materialSha256": "ef8ec2ff534a7f4da39ed0a95720f83f2a6d0087c4943942725bfdefb909890e"
+					},
+					{
+						"id": "video-expansion-settings-conflict",
+						"kind": "gap",
+						"classification": "unchanged",
+						"previousStatus": "unresolved",
+						"status": "unresolved",
+						"previousMaterialSha256": "20082be8087ae992bf8a7b52907638ee32488b6ca241bc294490100b92a3282e",
+						"materialSha256": "20082be8087ae992bf8a7b52907638ee32488b6ca241bc294490100b92a3282e"
+					},
+					{
+						"id": "video-export",
+						"kind": "capability",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "4bbcc8205b3f725d234c98863cd1d7ad9715393f37f13f5bf8c5b42c57b56d22",
+						"materialSha256": "4bbcc8205b3f725d234c98863cd1d7ad9715393f37f13f5bf8c5b42c57b56d22"
+					},
+					{
+						"id": "video-playback",
+						"kind": "capability",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "fa521eba695b228021fdb38bd62904415ebbc48bdee3cd627bbadec8bdd136cd",
+						"materialSha256": "fa521eba695b228021fdb38bd62904415ebbc48bdee3cd627bbadec8bdd136cd"
+					},
+					{
+						"id": "visual-defaults-editable",
+						"kind": "rule",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "09726e80b9578c554b421c4ce8360dc7ac5c2a5c9a4551a2d43694f47dd68b6c",
+						"materialSha256": "09726e80b9578c554b421c4ce8360dc7ac5c2a5c9a4551a2d43694f47dd68b6c"
+					},
+					{
+						"id": "workspace-shell",
+						"kind": "requirement",
+						"classification": "unchanged",
+						"previousStatus": "accepted",
+						"status": "accepted",
+						"previousMaterialSha256": "a0aed58d346a67ab5410cd7f01a0050657b34ab9ede9dff5dfcc644ee585c8f2",
+						"materialSha256": "a0aed58d346a67ab5410cd7f01a0050657b34ab9ede9dff5dfcc644ee585c8f2"
+					}
+				],
+				"sourceClaims": [
+					{
+						"id": "claim-addition",
+						"classification": "retained",
+						"previousRefs": ["claim-addition"]
+					},
+					{
+						"id": "claim-brand",
+						"classification": "retained",
+						"previousRefs": ["claim-brand"]
+					},
+					{
+						"id": "claim-clip-create",
+						"classification": "retained",
+						"previousRefs": ["claim-clip-create"]
+					},
+					{
+						"id": "claim-clip-update",
+						"classification": "retained",
+						"previousRefs": ["claim-clip-update"]
+					},
+					{
+						"id": "claim-close-question",
+						"classification": "retained",
+						"previousRefs": ["claim-close-question"]
+					},
+					{
+						"id": "claim-commit-freeze",
+						"classification": "retained",
+						"previousRefs": ["claim-commit-freeze"]
+					},
+					{
+						"id": "claim-content",
+						"classification": "retained",
+						"previousRefs": ["claim-content"]
+					},
+					{
+						"id": "claim-continuity-question",
+						"classification": "retained",
+						"previousRefs": ["claim-continuity-question"]
+					},
+					{
+						"id": "claim-copied-assembly-update",
+						"classification": "introduced",
+						"previousRefs": []
+					},
+					{
+						"id": "claim-desktop-runtime",
+						"classification": "retained",
+						"previousRefs": ["claim-desktop-runtime"]
+					},
+					{
+						"id": "claim-edit-operations",
+						"classification": "retained",
+						"previousRefs": ["claim-edit-operations"]
+					},
+					{
+						"id": "claim-editor",
+						"classification": "retained",
+						"previousRefs": ["claim-editor"]
+					},
+					{
+						"id": "claim-export",
+						"classification": "retained",
+						"previousRefs": ["claim-export"]
+					},
+					{
+						"id": "claim-export-lifecycle",
+						"classification": "retained",
+						"previousRefs": ["claim-export-lifecycle"]
+					},
+					{
+						"id": "claim-field-baseline",
+						"classification": "retained",
+						"previousRefs": ["claim-field-baseline"]
+					},
+					{
+						"id": "claim-four-track-update",
+						"classification": "retained",
+						"previousRefs": ["claim-four-track-update"]
+					},
+					{
+						"id": "claim-guard",
+						"classification": "retained",
+						"previousRefs": ["claim-guard"]
+					},
+					{
+						"id": "claim-inspection",
+						"classification": "retained",
+						"previousRefs": ["claim-inspection"]
+					},
+					{
+						"id": "claim-layout",
+						"classification": "retained",
+						"previousRefs": ["claim-layout"]
+					},
+					{
+						"id": "claim-library",
+						"classification": "retained",
+						"previousRefs": ["claim-library"]
+					},
+					{
+						"id": "claim-multitrack-intent",
+						"classification": "retained",
+						"previousRefs": ["claim-multitrack-intent"]
+					},
+					{
+						"id": "claim-multitrack-question",
+						"classification": "retained",
+						"previousRefs": ["claim-multitrack-question"]
+					},
+					{
+						"id": "claim-occurrences",
+						"classification": "retained",
+						"previousRefs": ["claim-occurrences"]
+					},
+					{
+						"id": "claim-outline-withdrawn",
+						"classification": "retained",
+						"previousRefs": ["claim-outline-withdrawn"]
+					},
+					{
+						"id": "claim-ownership-question",
+						"classification": "retained",
+						"previousRefs": ["claim-ownership-question"]
+					},
+					{
+						"id": "claim-paper",
+						"classification": "retained",
+						"previousRefs": ["claim-paper"]
+					},
+					{
+						"id": "claim-persistence",
+						"classification": "retained",
+						"previousRefs": ["claim-persistence"]
+					},
+					{
+						"id": "claim-playback",
+						"classification": "retained",
+						"previousRefs": ["claim-playback"]
+					},
+					{
+						"id": "claim-playback-gaps",
+						"classification": "retained",
+						"previousRefs": ["claim-playback-gaps"]
+					},
+					{
+						"id": "claim-player-direction",
+						"classification": "retained",
+						"previousRefs": ["claim-player-direction"]
+					},
+					{
+						"id": "claim-playhead",
+						"classification": "retained",
+						"previousRefs": ["claim-playhead"]
+					},
+					{
+						"id": "claim-playlist",
+						"classification": "retained",
+						"previousRefs": ["claim-playlist"]
+					},
+					{
+						"id": "claim-precision",
+						"classification": "retained",
+						"previousRefs": ["claim-precision"]
+					},
+					{
+						"id": "claim-project",
+						"classification": "retained",
+						"previousRefs": ["claim-project"]
+					},
+					{
+						"id": "claim-purpose",
+						"classification": "retained",
+						"previousRefs": ["claim-purpose"]
+					},
+					{
+						"id": "claim-reorder",
+						"classification": "retained",
+						"previousRefs": ["claim-reorder"]
+					},
+					{
+						"id": "claim-repair-question",
+						"classification": "retained",
+						"previousRefs": ["claim-repair-question"]
+					},
+					{
+						"id": "claim-selection",
+						"classification": "retained",
+						"previousRefs": ["claim-selection"]
+					},
+					{
+						"id": "claim-shape",
+						"classification": "retained",
+						"previousRefs": ["claim-shape"]
+					},
+					{
+						"id": "claim-shared-clip-collision-question",
+						"classification": "retained",
+						"previousRefs": ["claim-shared-clip-collision-question"]
+					},
+					{
+						"id": "claim-shell",
+						"classification": "retained",
+						"previousRefs": ["claim-shell"]
+					},
+					{
+						"id": "claim-single-track-prior",
+						"classification": "retained",
+						"previousRefs": ["claim-single-track-prior"]
+					},
+					{
+						"id": "claim-spatial",
+						"classification": "retained",
+						"previousRefs": ["claim-spatial"]
+					},
+					{
+						"id": "claim-surface-colors",
+						"classification": "retained",
+						"previousRefs": ["claim-surface-colors"]
+					},
+					{
+						"id": "claim-transient-editing",
+						"classification": "retained",
+						"previousRefs": ["claim-transient-editing"]
+					},
+					{
+						"id": "claim-transport",
+						"classification": "retained",
+						"previousRefs": ["claim-transport"]
+					},
+					{
+						"id": "claim-trimming",
+						"classification": "retained",
+						"previousRefs": ["claim-trimming"]
+					},
+					{
+						"id": "claim-typography",
+						"classification": "retained",
+						"previousRefs": ["claim-typography"]
+					},
+					{
+						"id": "claim-video-expansion-question",
+						"classification": "retained",
+						"previousRefs": ["claim-video-expansion-question"]
+					},
+					{
+						"id": "claim-video-save",
+						"classification": "retained",
+						"previousRefs": ["claim-video-save"]
+					},
+					{
+						"id": "claim-visual-foundations",
+						"classification": "retained",
+						"previousRefs": ["claim-visual-foundations"]
+					}
+				]
+			},
+			"status": "complete",
+			"finishedAt": "2026-09-27T23:59:02.649Z",
+			"elapsedMs": 328.4913
+		},
+		"ux-handoff-metrics": {
+			"startedAt": "2026-09-28T00:00:53.449Z",
+			"finishedAt": "2026-09-28T00:00:53.678Z",
+			"elapsedMs": 228.435,
+			"modelRevision": 7,
+			"plannerInputBytes": 170537,
+			"semanticFactsBytes": 54178,
+			"priorUxBytes": 538174,
+			"uxRevision": "4",
+			"units": [
+				{
+					"ref": "context:document",
+					"bytes": 45863
+				},
+				{
+					"ref": "element:library-workspace",
+					"bytes": 41021
+				},
+				{
+					"ref": "element:video-workspace",
+					"bytes": 132228
+				},
+				{
+					"ref": "element:playback-workspace",
+					"bytes": 38187
+				},
+				{
+					"ref": "element:export-workspace",
+					"bytes": 42853
+				},
+				{
+					"ref": "flow:navigate-work",
+					"bytes": 1583
+				},
+				{
+					"ref": "flow:protect-project",
+					"bytes": 11132
+				},
+				{
+					"ref": "flow:browse-content",
+					"bytes": 3493
+				},
+				{
+					"ref": "flow:edit-video",
+					"bytes": 30495
+				},
+				{
+					"ref": "flow:save-clip",
+					"bytes": 4169
+				},
+				{
+					"ref": "flow:update-clip",
+					"bytes": 4363
+				},
+				{
+					"ref": "flow:edit-playlist",
+					"bytes": 5051
+				},
+				{
+					"ref": "flow:play-content",
+					"bytes": 5728
+				},
+				{
+					"ref": "flow:export-video",
+					"bytes": 9770
+				},
+				{
+					"ref": "flow:frame-composition",
+					"bytes": 5631
+				},
+				{
+					"ref": "flow:mix-audio",
+					"bytes": 4507
+				}
+			],
+			"contextKeys": [
+				"schemaVersion",
+				"id",
+				"title",
+				"revision",
+				"status",
+				"assessment",
+				"sources",
+				"productModelBinding",
+				"product",
+				"application",
+				"features",
+				"patternResearch",
+				"openQuestions",
+				"productRealizations",
+				"traceGaps",
+				"repairNeeds"
+			],
+			"proposalDirectory": "C:\\dev\\polylith-skills\\.codex-tmp\\attended-alexa-20260927/ux-proposals",
+			"sourceHash": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe"
+		}
+	},
+	"uxTimingMarkers": [
+		{
+			"event": "task-start",
+			"time": "2026-09-28T00:01:54.4044363Z"
+		}
+	],
+	"savedAt": "2026-09-28T00:07:23.419Z",
+	"reportingErrors": [
+		"An attempted delete/add of the same metrics path in one patch was rejected before mutation; replaced with a direct metadata update."
+	]
+}

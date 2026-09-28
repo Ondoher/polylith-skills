@@ -1,0 +1,290 @@
+﻿{
+	"schemaVersion": 1,
+	"experiment": "Per-agent STDIO MCP process and RAM sharing",
+	"testedRuntime": "codex-cli 0.155.0-alpha.16.3; isolated exec coordinator and two default child agents",
+	"rootThreadId": "01a0e59d-ae8e-7bb1-88d5-73c6e1325927",
+	"outcome": "Three distinct resident server processes; no cross-agent marker visibility; child A retained same process and marker across turns.",
+	"scope": "Same installed binary as IDE; current VS Code conversation was not reconfigured. This tests the isolated CLI agent tree, not every possible client/configuration/version.",
+	"runtime": {
+		"event": "finished",
+		"code": 0,
+		"signal": null,
+		"elapsedMs": 68027,
+		"time": "2026-09-28T01:26:18.590Z"
+	},
+	"processCount": 3,
+	"toolCallCount": 9,
+	"operationMs": {
+		"Count": 9,
+		"Average": 0.030677777777975104,
+		"Sum": 0.27610000000177592,
+		"Maximum": 0.043500000000001648,
+		"Minimum": 0.018999999999998352,
+		"Property": null
+	},
+	"measurementLimit": "operationMs covers Map lookup/update and response-object construction only; excludes audit writes, JSON serialization, STDIO transport, Codex orchestration, and model work. elapsedMs covers the isolated experiment, not parent setup/reporting. No HTTP comparison or end-to-end retrieval benchmark.",
+	"coordinatorReportedUsage": {
+		"input_tokens": 193746,
+		"cached_input_tokens": 171776,
+		"cache_write_input_tokens": 0,
+		"output_tokens": 1020,
+		"reasoning_output_tokens": 0
+	},
+	"usageLimit": "Usage is the CLI coordinator turn report; it is not an independently reconciled total across child turns. Cached tokens are included in input_tokens. No price/credit estimate.",
+	"observations": [
+		{
+			"time": "2026-09-28T01:25:38.588Z",
+			"instance": "4fdb88e6-5350-402c-a68b-ab0df37763ac",
+			"pid": 22600,
+			"ppid": 60436,
+			"event": "start",
+			"started": "2026-09-28T01:25:38.587Z"
+		},
+		{
+			"time": "2026-09-28T01:25:38.592Z",
+			"instance": "4fdb88e6-5350-402c-a68b-ab0df37763ac",
+			"pid": 22600,
+			"ppid": 60436,
+			"event": "initialize",
+			"clientInfo": {
+				"name": "codex-mcp-client",
+				"title": "Codex",
+				"version": "0.155.0-alpha.16.3"
+			},
+			"protocolVersion": "2025-06-18"
+		},
+		{
+			"time": "2026-09-28T01:25:38.598Z",
+			"instance": "4fdb88e6-5350-402c-a68b-ab0df37763ac",
+			"pid": 22600,
+			"ppid": 60436,
+			"event": "call",
+			"tool": "inspect",
+			"result": {
+				"instance": "4fdb88e6-5350-402c-a68b-ab0df37763ac",
+				"pid": 22600,
+				"ppid": 60436,
+				"started": "2026-09-28T01:25:38.587Z",
+				"call": 1,
+				"caller": "probe_a",
+				"markers": {},
+				"operationMs": 0.03370000000000317
+			}
+		},
+		{
+			"time": "2026-09-28T01:25:38.607Z",
+			"instance": "4fdb88e6-5350-402c-a68b-ab0df37763ac",
+			"pid": 22600,
+			"ppid": 60436,
+			"event": "call",
+			"tool": "put",
+			"result": {
+				"instance": "4fdb88e6-5350-402c-a68b-ab0df37763ac",
+				"pid": 22600,
+				"ppid": 60436,
+				"started": "2026-09-28T01:25:38.587Z",
+				"call": 2,
+				"caller": "probe_a",
+				"markers": {
+					"probe_a": "child-marker"
+				},
+				"operationMs": 0.03410000000000224
+			}
+		},
+		{
+			"time": "2026-09-28T01:25:38.613Z",
+			"instance": "4fdb88e6-5350-402c-a68b-ab0df37763ac",
+			"pid": 22600,
+			"ppid": 60436,
+			"event": "call",
+			"tool": "inspect",
+			"result": {
+				"instance": "4fdb88e6-5350-402c-a68b-ab0df37763ac",
+				"pid": 22600,
+				"ppid": 60436,
+				"started": "2026-09-28T01:25:38.587Z",
+				"call": 3,
+				"caller": "probe_a",
+				"markers": {
+					"probe_a": "child-marker"
+				},
+				"operationMs": 0.019599999999996953
+			}
+		},
+		{
+			"time": "2026-09-28T01:26:02.720Z",
+			"instance": "4fdb88e6-5350-402c-a68b-ab0df37763ac",
+			"pid": 22600,
+			"ppid": 60436,
+			"event": "call",
+			"tool": "inspect",
+			"result": {
+				"instance": "4fdb88e6-5350-402c-a68b-ab0df37763ac",
+				"pid": 22600,
+				"ppid": 60436,
+				"started": "2026-09-28T01:25:38.587Z",
+				"call": 4,
+				"caller": "probe_a-followup",
+				"markers": {
+					"probe_a": "child-marker"
+				},
+				"operationMs": 0.03589999999894644
+			}
+		},
+		{
+			"time": "2026-09-28T01:25:12.156Z",
+			"instance": "a8dde34d-84d0-4b55-b293-88fa7b1ed942",
+			"pid": 31176,
+			"ppid": 60436,
+			"event": "start",
+			"started": "2026-09-28T01:25:12.155Z"
+		},
+		{
+			"time": "2026-09-28T01:25:12.161Z",
+			"instance": "a8dde34d-84d0-4b55-b293-88fa7b1ed942",
+			"pid": 31176,
+			"ppid": 60436,
+			"event": "initialize",
+			"clientInfo": {
+				"name": "codex-mcp-client",
+				"title": "Codex",
+				"version": "0.155.0-alpha.16.3"
+			},
+			"protocolVersion": "2025-06-18"
+		},
+		{
+			"time": "2026-09-28T01:25:21.186Z",
+			"instance": "a8dde34d-84d0-4b55-b293-88fa7b1ed942",
+			"pid": 31176,
+			"ppid": 60436,
+			"event": "call",
+			"tool": "put",
+			"result": {
+				"instance": "a8dde34d-84d0-4b55-b293-88fa7b1ed942",
+				"pid": 31176,
+				"ppid": 60436,
+				"started": "2026-09-28T01:25:12.155Z",
+				"call": 1,
+				"caller": "parent",
+				"markers": {
+					"parent": "parent-marker"
+				},
+				"operationMs": 0.038200000000870205
+			}
+		},
+		{
+			"time": "2026-09-28T01:25:54.610Z",
+			"instance": "a8dde34d-84d0-4b55-b293-88fa7b1ed942",
+			"pid": 31176,
+			"ppid": 60436,
+			"event": "call",
+			"tool": "inspect",
+			"result": {
+				"instance": "a8dde34d-84d0-4b55-b293-88fa7b1ed942",
+				"pid": 31176,
+				"ppid": 60436,
+				"started": "2026-09-28T01:25:12.155Z",
+				"call": 2,
+				"caller": "parent-after",
+				"markers": {
+					"parent": "parent-marker"
+				},
+				"operationMs": 0.022100000001955777
+			}
+		},
+		{
+			"time": "2026-09-28T01:25:47.204Z",
+			"instance": "f63ab0fc-1306-478e-bb8c-e9bfda91aa70",
+			"pid": 63932,
+			"ppid": 60436,
+			"event": "start",
+			"started": "2026-09-28T01:25:47.203Z"
+		},
+		{
+			"time": "2026-09-28T01:25:47.209Z",
+			"instance": "f63ab0fc-1306-478e-bb8c-e9bfda91aa70",
+			"pid": 63932,
+			"ppid": 60436,
+			"event": "initialize",
+			"clientInfo": {
+				"name": "codex-mcp-client",
+				"title": "Codex",
+				"version": "0.155.0-alpha.16.3"
+			},
+			"protocolVersion": "2025-06-18"
+		},
+		{
+			"time": "2026-09-28T01:25:47.214Z",
+			"instance": "f63ab0fc-1306-478e-bb8c-e9bfda91aa70",
+			"pid": 63932,
+			"ppid": 60436,
+			"event": "call",
+			"tool": "inspect",
+			"result": {
+				"instance": "f63ab0fc-1306-478e-bb8c-e9bfda91aa70",
+				"pid": 63932,
+				"ppid": 60436,
+				"started": "2026-09-28T01:25:47.203Z",
+				"call": 1,
+				"caller": "probe_b",
+				"markers": {},
+				"operationMs": 0.030000000000001137
+			}
+		},
+		{
+			"time": "2026-09-28T01:25:47.221Z",
+			"instance": "f63ab0fc-1306-478e-bb8c-e9bfda91aa70",
+			"pid": 63932,
+			"ppid": 60436,
+			"event": "call",
+			"tool": "put",
+			"result": {
+				"instance": "f63ab0fc-1306-478e-bb8c-e9bfda91aa70",
+				"pid": 63932,
+				"ppid": 60436,
+				"started": "2026-09-28T01:25:47.203Z",
+				"call": 2,
+				"caller": "probe_b",
+				"markers": {
+					"probe_b": "child-marker"
+				},
+				"operationMs": 0.04350000000000165
+			}
+		},
+		{
+			"time": "2026-09-28T01:25:47.227Z",
+			"instance": "f63ab0fc-1306-478e-bb8c-e9bfda91aa70",
+			"pid": 63932,
+			"ppid": 60436,
+			"event": "call",
+			"tool": "inspect",
+			"result": {
+				"instance": "f63ab0fc-1306-478e-bb8c-e9bfda91aa70",
+				"pid": 63932,
+				"ppid": 60436,
+				"started": "2026-09-28T01:25:47.203Z",
+				"call": 3,
+				"caller": "probe_b",
+				"markers": {
+					"probe_b": "child-marker"
+				},
+				"operationMs": 0.01899999999999835
+			}
+		}
+	],
+	"sources": [
+		{
+			"Path": "C:\\dev\\polylith-skills\\.codex-tmp\\mcp-stdio-sharing\\probe.mjs",
+			"Hash": "A4F1F03F2A12A6C3FADC1D279CC78035C480CD50A05DF7534958F2B60B3C9851"
+		},
+		{
+			"Path": "C:\\dev\\polylith-skills\\.codex-tmp\\mcp-stdio-sharing\\run.mjs",
+			"Hash": "D8499AC52AE8AC1A12CA5C74CF32763E5566A4C9B1C2917A0E65C699D895D417"
+		},
+		{
+			"Path": "C:\\dev\\polylith-skills\\.codex-tmp\\mcp-stdio-sharing\\prompt.txt",
+			"Hash": "FE0F9CCF5806A4896BFCF6D8EBAE8CE55601E5B47860C1B0CB9B3B25A3A55030"
+		}
+	],
+	"scratchDirectory": "C:/dev/polylith-skills/.codex-tmp/mcp-stdio-sharing"
+}

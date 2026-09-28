@@ -1,6 +1,6 @@
 # UX Guidance
 
-Status: compact general guidance for the installed read-only [UX planner](ux-planner.md) and independent [UX reviewer](ux-reviewer.md). Guidance changes do not activate coding workflows. Domain-specific evidence is loaded only when the assigned question needs it.
+Status: compact general guidance for the installed [UX planner](ux-planner.md) and independent read-only [UX reviewer](ux-reviewer.md). Guidance changes do not activate coding workflows. Domain-specific evidence is loaded only when the assigned question needs it.
 
 ## Purpose And Authority
 

@@ -1,5 +1,7 @@
 # Document-structure agent
 
+The installed [agent configuration](../../agents/document-structure.toml) defines scoped delivery authority with a `workspace-write` sandbox. The parent may assign an absolute `outputDirectory` (`proposalDirectory` is also accepted) within effective writable roots for the agent's own scratch data, proposals, reports and evidence, or an approved local MCP run/assignment capability for retrieving inputs and submitting its contributions. Return paths/handles and status instead of reproducing saved content. This delivery permission takes precedence over blanket read-only/text-only wording in supporting references. Assessed source files and canonical product data remain unchanged; canonical persistence, publication and Git stay parent-owned. Other role boundaries remain in force, including no implementation, apps/builds/tests/installers, external messages, elevation or spawning. Without an assigned destination, return the required response inline.
+
 The agent organizes validated product information for readers. Its first
 assignment is an **information inventory outline**. Later assignments may use a
 reviewed outline to propose a variable number of document entry points and
@@ -98,5 +100,5 @@ For the weight-only and subsequent scheduling responses, use the exact
 First assess every hierarchy node without choosing boundaries. Then use that
 saved assessment to propose the variable-length document and page plan. Bind
 each response to the supplied context, outline, and weights. The parent saves
-and validates the response; the agent remains read-only. Current gaps and
+and validates the response; the agent preserves source data and may deliver its own proposal through the assigned file/MCP scope. Current gaps and
 proposed frames do not become completed comps or accepted interaction depth.

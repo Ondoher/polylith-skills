@@ -137,6 +137,17 @@ test('assembly renders actual clean and annotated previews and reuses generated 
 	);
 	const second = DesignRun.assemble(store, output, options);
 	assert.equal(second.reused, true);
+	for (const name of [
+		'readMs',
+		'identityMs',
+		'cacheCheckMs',
+		'assemblyMs',
+		'validationMs',
+		'serializationMs',
+		'persistMs',
+	])
+		assert.ok(first.stages[name] >= 0, `Missing first-run timing: ${name}`);
+	assert.deepEqual(Object.keys(second.stages).sort(), ['cacheCheckMs', 'identityMs', 'readMs']);
 	assert.equal(second.identity, first.identity);
 	assert.equal(fs.statSync(first.candidatePath).mtimeMs, modified);
 	const scene = records.find((record) => record.kind === 'scene');

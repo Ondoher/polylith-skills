@@ -1,0 +1,1082 @@
+{
+	"capturedAt": "2026-09-27T21:31:33.817+00:00",
+	"extractionSeconds": 0.05606350000016391,
+	"setup": {
+		"preparedAt": "2026-09-27T21:22:21.847Z",
+		"source": "C:/dev/alexa/product/Alexa/ux/ux-spec.json",
+		"frozenSourcePath": "C:\\dev\\polylith-skills\\.codex-tmp\\shared-text-trial-20260927\\baseline.json",
+		"sourceSha256": "b2fa0be7cba3742c97f2763cf9fe72653b8f5e7705a125ea2dd00a3c1d832096",
+		"selection": "Every other action in saved 79-action catalog, positions 0,2,...78. Includes all four prior sample positions; selected before author trials, without ranking repetition.",
+		"positions": [
+			0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54,
+			56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78
+		],
+		"ids": [
+			"navigate",
+			"open-project",
+			"save-project-as",
+			"discard-draft",
+			"cancel-transition",
+			"select-content",
+			"choose-video",
+			"add-timeline",
+			"select-range",
+			"clear-selection",
+			"scrub",
+			"trim-occurrence",
+			"delete-selection",
+			"reorder-objects",
+			"redo",
+			"stop-preview",
+			"zoom-player-out",
+			"pan-player",
+			"pan-timeline",
+			"save-video",
+			"open-save-clip",
+			"create-clip",
+			"confirm-update",
+			"name-playlist",
+			"reorder-playlist",
+			"save-playlist",
+			"play-pause",
+			"previous-item",
+			"shuffle",
+			"choose-export-video",
+			"export",
+			"choose-another-destination",
+			"request-cancel-export",
+			"continue-export",
+			"select-track",
+			"edit-track-rectangle",
+			"adjust-rectangle",
+			"apply-rectangle",
+			"mute-track",
+			"mute-clip"
+		],
+		"actionCount": 40,
+		"priorActionCount": 4,
+		"recordCountMultiplier": 10,
+		"tripleIdentical": 25,
+		"nativeCompactBytes": 55848,
+		"commonFactsBytes": 60562,
+		"role": "worker",
+		"history": "none",
+		"model": "inherited; verify matching runtime context",
+		"effort": "inherited; verify matching runtime context",
+		"initialAuthorTasks": 2,
+		"writeTool": "one functions.exec with tools.apply_patch for both arms",
+		"writeToolChangeFromSmall": "Small trial used PowerShell Set-Content. Large trial uses apply_patch symmetrically to avoid shell command-length constraints; absolute cross-size timing is therefore not a pure size-only comparison.",
+		"repairPolicy": "At most one scoped correction per failed arm, measured separately. Preserve initial failure. No silent parent correction."
+	},
+	"newAuthorTasks": 2,
+	"outputRepairTasks": 0,
+	"validationCommandWallSeconds": {
+		"direct": 0.545328,
+		"shared": 0.4235033,
+		"source": "Parent exec_command results; complete validation command including startup."
+	},
+	"inputDeliveryProblem": {
+		"failedReadsPerArm": 2,
+		"successfulCorrection": "Two half-file reads, raw output rather than JSON-serialized tool-result objects. Same authors and source retained.",
+		"protocolDeviation": true,
+		"reportedSeparately": true
+	},
+	"summary": [
+		{
+			"arm": "direct",
+			"model": "gpt-6-astra",
+			"effort": "xhigh",
+			"startedAt": "2026-09-27T21:22:44.303+00:00",
+			"completedAt": "2026-09-27T21:30:21.556+00:00",
+			"completeFactsAt": "2026-09-27T21:24:30.663+00:00",
+			"fileReadyAt": "2026-09-27T21:30:18.937+00:00",
+			"inputDeliverySeconds": 106.3600001335144,
+			"fileReadySecondsFromTaskStart": 454.6340000629425,
+			"afterCompleteInputToFileSeconds": 348.2739999294281,
+			"fullTurnSeconds": 457.25300002098083,
+			"parentCoordinationWaitSeconds": 60.65700030326843,
+			"seconds": {
+				"output": 364.3314037322998,
+				"reasoning-item": 10.485105514526367,
+				"tool": 63.12000060081482
+			},
+			"unattributedSeconds": 19.316490173339844,
+			"usage": {
+				"input_tokens": 376354,
+				"cached_input_tokens": 325504,
+				"output_tokens": 12538,
+				"reasoning_output_tokens": 315
+			},
+			"writingResponse": {
+				"responseId": "resp_03fe9d9bb7e22349016ab9898efbe487d1b44d429b4907f0d1",
+				"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+				"at": 1790544618.66,
+				"usage": {
+					"input_tokens": 51577,
+					"cached_input_tokens": 45184,
+					"cache_write_input_tokens": 0,
+					"output_tokens": 11545,
+					"reasoning_output_tokens": 0,
+					"total_tokens": 63122
+				}
+			},
+			"writingNonReasoningTokens": 11545,
+			"writingOutputStreamSeconds": 346.1555416584015,
+			"writingReasoningItemSeconds": 0,
+			"writingToolRuntimeMs": 295.0,
+			"writingToolArgumentBytes": 60046,
+			"writingToolStringEncoding": "double-quoted JavaScript string",
+			"validation": {
+				"mode": "direct",
+				"authorBytes": 55849,
+				"conversionMs": 0.34890000000000043,
+				"validationMs": 44.7833,
+				"exactEquality": true,
+				"valid": true,
+				"canonicalSha256": "3dda1bed4ef609a30f35ee5f5a1d14e30fb69fec8ec9bfcc845c6461e6c37988",
+				"texts": 0,
+				"completedAt": "2026-09-27T21:30:26.959Z"
+			}
+		},
+		{
+			"arm": "shared",
+			"model": "gpt-6-astra",
+			"effort": "xhigh",
+			"startedAt": "2026-09-27T21:22:53.190+00:00",
+			"completedAt": "2026-09-27T21:29:34.230+00:00",
+			"completeFactsAt": "2026-09-27T21:24:37.223+00:00",
+			"fileReadyAt": "2026-09-27T21:29:31.912+00:00",
+			"inputDeliverySeconds": 104.0329999923706,
+			"fileReadySecondsFromTaskStart": 398.72199988365173,
+			"afterCompleteInputToFileSeconds": 294.6889998912811,
+			"fullTurnSeconds": 401.039999961853,
+			"parentCoordinationWaitSeconds": 63.90700030326843,
+			"seconds": {
+				"output": 297.7601819038391,
+				"reasoning-item": 21.945669651031494,
+				"tool": 65.94700026512146
+			},
+			"unattributedSeconds": 15.387148141860962,
+			"usage": {
+				"input_tokens": 368307,
+				"cached_input_tokens": 321920,
+				"output_tokens": 10703,
+				"reasoning_output_tokens": 687
+			},
+			"writingResponse": {
+				"responseId": "resp_0be5703870d763a1016ab989959dd487d1acde6f0057565ff6",
+				"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+				"at": 1790544571.648,
+				"usage": {
+					"input_tokens": 50717,
+					"cached_input_tokens": 44288,
+					"cache_write_input_tokens": 0,
+					"output_tokens": 9772,
+					"reasoning_output_tokens": 426,
+					"total_tokens": 60489
+				}
+			},
+			"writingNonReasoningTokens": 9346,
+			"writingOutputStreamSeconds": 280.01196122169495,
+			"writingReasoningItemSeconds": 13.024094820022583,
+			"writingToolRuntimeMs": 300.0,
+			"writingToolArgumentBytes": 44144,
+			"writingToolStringEncoding": "JavaScript template literal",
+			"validation": {
+				"mode": "shared",
+				"authorBytes": 43978,
+				"conversionMs": 1.7937999999999974,
+				"validationMs": 32.64569999999999,
+				"exactEquality": true,
+				"valid": true,
+				"canonicalSha256": "3dda1bed4ef609a30f35ee5f5a1d14e30fb69fec8ec9bfcc845c6461e6c37988",
+				"texts": 35,
+				"completedAt": "2026-09-27T21:29:41.154Z"
+			}
+		}
+	],
+	"relativeResults": {
+		"afterCompleteInputTimeReductionPercent": 15.385874354389095,
+		"taskStartToFileTimeReductionPercent": 12.298244339743603,
+		"writingTotalOutputTokenReductionPercent": 15.357297531398872,
+		"writingNonReasoningTokenReductionPercent": 19.047206582936337,
+		"actualFileByteReductionPercent": 21.25552829952192
+	},
+	"evidence": [
+		{
+			"path": ".codex-tmp/shared-text-large-trial-20260927/prepare.mjs",
+			"bytes": 4752,
+			"sha256": "3bf7ed03ba20524c25630088930cf55df5f6bffb5cda8c34df3a8c5d08083fb8"
+		},
+		{
+			"path": ".codex-tmp/shared-text-large-trial-20260927/validate.mjs",
+			"bytes": 3983,
+			"sha256": "dc13c31cc09c1b8b525884ee6bd391490a64d53e08e7edab8e3878c0118ca522"
+		},
+		{
+			"path": ".codex-tmp/shared-text-large-trial-20260927/measure.py",
+			"bytes": 6966,
+			"sha256": "868641289e2243c5dcd2bb8569694e16a844924896bcaa39e332ce6dc215adfd"
+		},
+		{
+			"path": ".codex-tmp/shared-text-large-trial-20260927/setup.json",
+			"bytes": 2473,
+			"sha256": "575765a9517f557dcf72d3d9b1da8e6e93347a27fdff56539ddb0000788c9403"
+		},
+		{
+			"path": ".codex-tmp/shared-text-large-trial-20260927/facts.md",
+			"bytes": 60562,
+			"sha256": "f8b8a9b9fb1d04b340a0a03f5b0141637b525de0bfca0f7661a18c8d8d2af894"
+		},
+		{
+			"path": ".codex-tmp/shared-text-large-trial-20260927/expected.json",
+			"bytes": 70609,
+			"sha256": "8b6bcacd1b4d066d8871bfc8f03c6949f716c99036a318ed541eea10da88d2fa"
+		},
+		{
+			"path": ".codex-tmp/shared-text-large-trial-20260927/baseline.json",
+			"bytes": 538174,
+			"sha256": "b2fa0be7cba3742c97f2763cf9fe72653b8f5e7705a125ea2dd00a3c1d832096"
+		},
+		{
+			"path": ".codex-tmp/shared-text-large-trial-20260927/direct-contract.md",
+			"bytes": 1252,
+			"sha256": "315164d385763be705444eb1f2951a83a4f5df32de527a9c8989ab8bedd2e935"
+		},
+		{
+			"path": ".codex-tmp/shared-text-large-trial-20260927/shared-contract.md",
+			"bytes": 1742,
+			"sha256": "6ff4ed037238a91e3ed52500e5f0ca8a5f2380f77118abbac0a1989242cb9a06"
+		},
+		{
+			"path": ".codex-tmp/shared-text-large-trial-20260927/direct/actions.json",
+			"bytes": 55849,
+			"sha256": "2d6159e98a3dbfc3495910702c7bb58ef70be95ae07963427934a8c8e1768a5e"
+		},
+		{
+			"path": ".codex-tmp/shared-text-large-trial-20260927/shared/actions.json",
+			"bytes": 43978,
+			"sha256": "2df72d7ed3a31834de9638829d2aaca0a000d25cff74d45a81dd340aae2a42c3"
+		},
+		{
+			"path": ".codex-tmp/shared-text-large-trial-20260927/direct-result.json",
+			"bytes": 303,
+			"sha256": "aaff939f4e42b62c4b2970907520ef3df86845c7be22f95df35b3da9f4e7daa4"
+		},
+		{
+			"path": ".codex-tmp/shared-text-large-trial-20260927/shared-result.json",
+			"bytes": 313,
+			"sha256": "c746651f0bc7fdcb23ce966240848e420addb9a688605554da37163004aa14e3"
+		},
+		{
+			"path": ".codex-tmp/performance-diagnosis-20260927/analyze.py",
+			"bytes": 10157,
+			"sha256": "e8d488028d124406483fedbc60bb9a9581011e0b901a29d115293877ce09e96b"
+		}
+	],
+	"threads": [
+		{
+			"label": "direct",
+			"threadId": "01a0e4bf-b3a2-7642-9aa3-bb17d6843544",
+			"rolloutPath": "C:\\Users\\gande\\.codex\\sessions\\2026\\09\\27\\rollout-2026-09-27T14-22-43-01a0e4bf-b3a2-7642-9aa3-bb17d6843544.jsonl",
+			"rolloutSha256": "3ccf87422834a39a379e1672dc4802b4eef7df9e5812167bc65b7761fa80b4b6",
+			"turns": [
+				{
+					"id": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"start": 1790544164.303,
+					"model": "gpt-6-astra",
+					"effort": "xhigh",
+					"end": 1790544621.556,
+					"outcome": "complete",
+					"runtimeDurationMs": 457582,
+					"firstTokenMs": 3215,
+					"seconds": {
+						"output": 364.3314037322998,
+						"reasoning-item": 10.485105514526367,
+						"tool": 63.12000060081482
+					},
+					"coveredSeconds": 437.936509847641,
+					"wallSeconds": 457.25300002098083,
+					"unattributedSeconds": 19.316490173339844,
+					"usageResponses": 10,
+					"usage": {
+						"input_tokens": 376354,
+						"cached_input_tokens": 325504,
+						"output_tokens": 12538,
+						"reasoning_output_tokens": 315
+					}
+				}
+			],
+			"calls": [
+				{
+					"id": "call_EzqR9zDvDCfsT4Movnr2a5TL",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"name": "exec",
+					"start": 1790544169.846,
+					"argumentBytes": 258,
+					"end": 1790544170.446,
+					"outputBytes": 42626,
+					"runtimeMs": 598.0,
+					"timingLogId": 511325515
+				},
+				{
+					"id": "call_AVV4k0RIAQsM7GMEVZh8jkCL",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"name": "send_message",
+					"start": 1790544181.891,
+					"argumentBytes": 643,
+					"end": 1790544181.941,
+					"outputBytes": 0,
+					"runtimeMs": 48.0,
+					"timingLogId": 511325723
+				},
+				{
+					"id": "call_Q1vb5t59Rbip5QDzg7LROOkb",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"name": "wait_agent",
+					"start": 1790544184.596,
+					"argumentBytes": 20,
+					"end": 1790544205.805,
+					"outputBytes": 47,
+					"runtimeMs": 21206.0,
+					"timingLogId": 511325798
+				},
+				{
+					"id": "call_2hT6GCzMRlrrVNXsohgYUDu2",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"name": "exec",
+					"start": 1790544210.079,
+					"argumentBytes": 297,
+					"end": 1790544210.662,
+					"outputBytes": 71055,
+					"runtimeMs": 580.0,
+					"timingLogId": 511327878
+				},
+				{
+					"id": "call_LiIk7JVAo5ydw78M0yyuGBfc",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"name": "send_message",
+					"start": 1790544219.569,
+					"argumentBytes": 707,
+					"end": 1790544219.631,
+					"outputBytes": 0,
+					"runtimeMs": 60.0,
+					"timingLogId": 511328056
+				},
+				{
+					"id": "call_WVpmK6wWsypRejpnTeq4Zpph",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"name": "wait_agent",
+					"start": 1790544221.314,
+					"argumentBytes": 20,
+					"end": 1790544260.762,
+					"outputBytes": 47,
+					"runtimeMs": 39446.0,
+					"timingLogId": 511328129
+				},
+				{
+					"id": "call_4xVqU2CNnomQQBeVCCckySQ7",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"name": "exec",
+					"start": 1790544265.146,
+					"argumentBytes": 297,
+					"end": 1790544265.574,
+					"outputBytes": 31081,
+					"runtimeMs": 426.0,
+					"timingLogId": 511328224
+				},
+				{
+					"id": "call_DyERrBZJGyVJZ7hBhwCP1iXo",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"name": "exec",
+					"start": 1790544270.222,
+					"argumentBytes": 298,
+					"end": 1790544270.663,
+					"outputBytes": 30605,
+					"runtimeMs": 438.0,
+					"timingLogId": 511328349
+				},
+				{
+					"id": "call_NTh6kVlK3s9TxYRvkkUKT2Eh",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"name": "exec",
+					"start": 1790544618.638,
+					"argumentBytes": 60046,
+					"end": 1790544618.937,
+					"outputBytes": 124,
+					"runtimeMs": 295.0,
+					"timingLogId": 511329169
+				}
+			],
+			"items": [
+				{
+					"id": "ctc_03fe9d9bb7e22349016ab98927548487d18160ce0452098f79",
+					"kind": "custom_tool_call",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"end": 1790544169.846,
+					"start": 1790544167.1897256,
+					"startLogId": 511323458
+				},
+				{
+					"id": "rs_03fe9d9bb7e22349016ab9892dd7dc87d1886e06a184cb9532",
+					"kind": "reasoning",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"end": 1790544179.399811,
+					"start": 1790544173.7020702,
+					"startLogId": 511325574,
+					"finishLogId": 511325712
+				},
+				{
+					"id": "fc_03fe9d9bb7e22349016ab989338a8487d1b3ffc70551ccc564",
+					"kind": "function_call",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"end": 1790544181.891,
+					"start": 1790544179.4058845,
+					"startLogId": 511325714
+				},
+				{
+					"id": "rs_03fe9d9bb7e22349016ab989372cc087d1803de83a7126f7c5",
+					"kind": "reasoning",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"end": 1790544184.3186107,
+					"start": 1790544183.0619638,
+					"startLogId": 511325731,
+					"finishLogId": 511325736
+				},
+				{
+					"id": "fc_03fe9d9bb7e22349016ab98938727087d19aa14be5cde267c5",
+					"kind": "function_call",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"end": 1790544184.596,
+					"start": 1790544184.3219523,
+					"startLogId": 511325738
+				},
+				{
+					"id": "ctc_03fe9d9bb7e22349016ab9894f6d5c87d1be9cd78e403cf888",
+					"kind": "custom_tool_call",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"end": 1790544210.079,
+					"start": 1790544207.284101,
+					"startLogId": 511325816
+				},
+				{
+					"id": "rs_03fe9d9bb7e22349016ab98955497887d1abeea379e1aa8fde",
+					"kind": "reasoning",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"end": 1790544216.673653,
+					"start": 1790544213.142935,
+					"startLogId": 511327911,
+					"finishLogId": 511328021
+				},
+				{
+					"id": "fc_03fe9d9bb7e22349016ab98958d09c87d19738b937c4a783bb",
+					"kind": "function_call",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"end": 1790544219.569,
+					"start": 1790544216.6782153,
+					"startLogId": 511328023
+				},
+				{
+					"id": "fc_03fe9d9bb7e22349016ab9895d25d487d18d2f6ed70a2a1238",
+					"kind": "function_call",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"end": 1790544221.314,
+					"start": 1790544221.0080836,
+					"startLogId": 511328069
+				},
+				{
+					"id": "ctc_03fe9d9bb7e22349016ab98986561887d1af10d50f266556fb",
+					"kind": "custom_tool_call",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"end": 1790544265.146,
+					"start": 1790544262.192566,
+					"startLogId": 511328147
+				},
+				{
+					"id": "ctc_03fe9d9bb7e22349016ab9898b68b487d1ba27f47d1bcbf8f7",
+					"kind": "custom_tool_call",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"end": 1790544270.222,
+					"start": 1790544267.2631574,
+					"startLogId": 511328231
+				},
+				{
+					"id": "ctc_03fe9d9bb7e22349016ab98990a06487d1a1396ae28dc62eb7",
+					"kind": "custom_tool_call",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"end": 1790544618.638,
+					"start": 1790544272.4824584,
+					"startLogId": 511328451
+				},
+				{
+					"id": "msg_03fe9d9bb7e22349016ab98aecd13c87d18a0ecc1ef5997c40",
+					"kind": "message",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"end": 1790544621.5241957,
+					"start": 1790544620.6676476,
+					"startLogId": 511329177,
+					"finishLogId": 511329205
+				}
+			],
+			"responses": [
+				{
+					"responseId": "resp_03fe9d9bb7e22349016ab98925b1e087d1bf19a35970a05ad6",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"at": 1790544169.921,
+					"usage": {
+						"input_tokens": 17729,
+						"cached_input_tokens": 15744,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 87,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 17816
+					}
+				},
+				{
+					"responseId": "resp_03fe9d9bb7e22349016ab9892ac89487d19a6b90dc211fd3c6",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"at": 1790544181.939,
+					"usage": {
+						"input_tokens": 27049,
+						"cached_input_tokens": 15744,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 274,
+						"reasoning_output_tokens": 177,
+						"total_tokens": 27323
+					}
+				},
+				{
+					"responseId": "resp_03fe9d9bb7e22349016ab989364d2487d1974e999561c6570e",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"at": 1790544184.661,
+					"usage": {
+						"input_tokens": 27335,
+						"cached_input_tokens": 26880,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 54,
+						"reasoning_output_tokens": 31,
+						"total_tokens": 27389
+					}
+				},
+				{
+					"responseId": "resp_03fe9d9bb7e22349016ab9894e427487d1848a60750d13a1e1",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"at": 1790544210.122,
+					"usage": {
+						"input_tokens": 27542,
+						"cached_input_tokens": 27136,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 100,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 27642
+					}
+				},
+				{
+					"responseId": "resp_03fe9d9bb7e22349016ab98952fe1887d1acfec2cfc9b4e1cf",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"at": 1790544219.629,
+					"usage": {
+						"input_tokens": 38634,
+						"cached_input_tokens": 27392,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 217,
+						"reasoning_output_tokens": 107,
+						"total_tokens": 38851
+					}
+				},
+				{
+					"responseId": "resp_03fe9d9bb7e22349016ab9895bf51887d1a26f5a1453592511",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"at": 1790544221.386,
+					"usage": {
+						"input_tokens": 38863,
+						"cached_input_tokens": 38400,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 21,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 38884
+					}
+				},
+				{
+					"responseId": "resp_03fe9d9bb7e22349016ab9898542a087d1b9a990b9d3ab99b4",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"at": 1790544265.219,
+					"usage": {
+						"input_tokens": 39098,
+						"cached_input_tokens": 38656,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 105,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 39203
+					}
+				},
+				{
+					"responseId": "resp_03fe9d9bb7e22349016ab98989f65887d1b01688ebaec3a0f6",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"at": 1790544270.294,
+					"usage": {
+						"input_tokens": 45381,
+						"cached_input_tokens": 38912,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 105,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 45486
+					}
+				},
+				{
+					"responseId": "resp_03fe9d9bb7e22349016ab9898efbe487d1b44d429b4907f0d1",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"at": 1790544618.66,
+					"usage": {
+						"input_tokens": 51577,
+						"cached_input_tokens": 45184,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 11545,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 63122
+					}
+				},
+				{
+					"responseId": "resp_03fe9d9bb7e22349016ab98aeb78f087d1bb494130574bbb73",
+					"turn": "01a0e4bf-b47b-7a70-91db-645c7f80e9ee",
+					"at": 1790544621.548,
+					"usage": {
+						"input_tokens": 63146,
+						"cached_input_tokens": 51456,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 30,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 63176
+					}
+				}
+			],
+			"unmatchedItemIds": [],
+			"seconds": {
+				"output": 364.3314037322998,
+				"reasoning-item": 10.485105514526367,
+				"tool": 63.12000060081482
+			},
+			"usage": {
+				"input_tokens": 376354,
+				"cached_input_tokens": 325504,
+				"output_tokens": 12538,
+				"reasoning_output_tokens": 315
+			},
+			"limitations": "Output/reasoning item intervals are client-observed stream intervals, not provider compute time or a classification of design thought. Usage deduplicates response IDs and excludes cumulative snapshots; interrupted responses may lack usage. Tools contain nested script work. Cross-agent sums are not wall time.",
+			"turnWindowSeconds": 457.25300002098083,
+			"betweenTurnSeconds": 0.0,
+			"unfinishedItems": []
+		},
+		{
+			"label": "shared",
+			"threadId": "01a0e4bf-d708-7ca1-baf7-bcff06bfe19f",
+			"rolloutPath": "C:\\Users\\gande\\.codex\\sessions\\2026\\09\\27\\rollout-2026-09-27T14-22-52-01a0e4bf-d708-7ca1-baf7-bcff06bfe19f.jsonl",
+			"rolloutSha256": "42701f12d9adc4b22966bad89db09a4c0bb558769d05fe2725dfe3b93a5a25da",
+			"turns": [
+				{
+					"id": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"start": 1790544173.19,
+					"model": "gpt-6-astra",
+					"effort": "xhigh",
+					"end": 1790544574.23,
+					"outcome": "complete",
+					"runtimeDurationMs": 401219,
+					"firstTokenMs": 2364,
+					"seconds": {
+						"output": 297.7601819038391,
+						"reasoning-item": 21.945669651031494,
+						"tool": 65.94700026512146
+					},
+					"coveredSeconds": 385.65285181999207,
+					"wallSeconds": 401.039999961853,
+					"unattributedSeconds": 15.387148141860962,
+					"usageResponses": 10,
+					"usage": {
+						"input_tokens": 368307,
+						"cached_input_tokens": 321920,
+						"output_tokens": 10703,
+						"reasoning_output_tokens": 687
+					}
+				}
+			],
+			"calls": [
+				{
+					"id": "call_tELmXYtLdUpgPuNOOMocMFE9",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"name": "exec",
+					"start": 1790544177.841,
+					"argumentBytes": 262,
+					"end": 1790544178.232,
+					"outputBytes": 42028,
+					"runtimeMs": 388.0,
+					"timingLogId": 511325703
+				},
+				{
+					"id": "call_30AMypEY44QHGXkxdvZSWlm8",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"name": "send_message",
+					"start": 1790544185.832,
+					"argumentBytes": 643,
+					"end": 1790544185.921,
+					"outputBytes": 0,
+					"runtimeMs": 86.0,
+					"timingLogId": 511325752
+				},
+				{
+					"id": "call_FdmQLoPW3juCRHZvUEuL5ZYY",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"name": "wait_agent",
+					"start": 1790544189.824,
+					"argumentBytes": 20,
+					"end": 1790544210.818,
+					"outputBytes": 47,
+					"runtimeMs": 20991.0,
+					"timingLogId": 511327892
+				},
+				{
+					"id": "call_3zLNH4Z2WW5xkh9heO1pfsyJ",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"name": "exec",
+					"start": 1790544215.117,
+					"argumentBytes": 301,
+					"end": 1790544215.521,
+					"outputBytes": 68376,
+					"runtimeMs": 400.0,
+					"timingLogId": 511328014
+				},
+				{
+					"id": "call_QvP1xHUv4Kl6Sm8xBLley9WC",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"name": "send_message",
+					"start": 1790544222.855,
+					"argumentBytes": 619,
+					"end": 1790544222.864,
+					"outputBytes": 0,
+					"runtimeMs": 6.0,
+					"timingLogId": 511328083
+				},
+				{
+					"id": "call_MqV3lLca1DIbPY1qOJVAURF6",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"name": "wait_agent",
+					"start": 1790544224.771,
+					"argumentBytes": 20,
+					"end": 1790544267.684,
+					"outputBytes": 47,
+					"runtimeMs": 42911.0,
+					"timingLogId": 511328238
+				},
+				{
+					"id": "call_t3dJlkMdpe8iCXycQcC28A83",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"name": "exec",
+					"start": 1790544271.909,
+					"argumentBytes": 283,
+					"end": 1790544272.296,
+					"outputBytes": 31081,
+					"runtimeMs": 384.0,
+					"timingLogId": 511328444
+				},
+				{
+					"id": "call_Evi67479JNNILpQmhIB4EbKp",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"name": "exec",
+					"start": 1790544276.766,
+					"argumentBytes": 284,
+					"end": 1790544277.223,
+					"outputBytes": 30605,
+					"runtimeMs": 454.0,
+					"timingLogId": 511328605
+				},
+				{
+					"id": "call_K94JlOtOe2F7W7nWi83uqiYh",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"name": "exec",
+					"start": 1790544571.609,
+					"argumentBytes": 44144,
+					"end": 1790544571.912,
+					"outputBytes": 124,
+					"runtimeMs": 300.0,
+					"timingLogId": 511328987
+				}
+			],
+			"items": [
+				{
+					"id": "ctc_0be5703870d763a1016ab9892f84d087d1a97aacb373a8fd35",
+					"kind": "custom_tool_call",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"end": 1790544177.841,
+					"start": 1790544175.3748891,
+					"startLogId": 511325605
+				},
+				{
+					"id": "rs_0be5703870d763a1016ab9893360f087d182475f2188654253",
+					"kind": "reasoning",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"end": 1790544183.2526965,
+					"start": 1790544179.2283084,
+					"startLogId": 511325710,
+					"finishLogId": 511325733
+				},
+				{
+					"id": "fc_0be5703870d763a1016ab98937670487d19a7e4ab44cc4fad1",
+					"kind": "function_call",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"end": 1790544185.832,
+					"start": 1790544183.257633,
+					"startLogId": 511325735
+				},
+				{
+					"id": "rs_0be5703870d763a1016ab9893b154887d189dcdb1483be4866",
+					"kind": "reasoning",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"end": 1790544189.5539458,
+					"start": 1790544186.9333565,
+					"startLogId": 511325760,
+					"finishLogId": 511325762
+				},
+				{
+					"id": "fc_0be5703870d763a1016ab9893db49c87d18f107ff4fc6daeeb",
+					"kind": "function_call",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"end": 1790544189.824,
+					"start": 1790544189.5587316,
+					"startLogId": 511325764
+				},
+				{
+					"id": "ctc_0be5703870d763a1016ab989546ad087d1b1acfc8c02728a54",
+					"kind": "custom_tool_call",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"end": 1790544215.117,
+					"start": 1790544212.2627444,
+					"startLogId": 511327910
+				},
+				{
+					"id": "rs_0be5703870d763a1016ab9895a124487d1ba8ffb922b41840e",
+					"kind": "reasoning",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"end": 1790544220.193745,
+					"start": 1790544217.9171474,
+					"startLogId": 511328027,
+					"finishLogId": 511328064
+				},
+				{
+					"id": "fc_0be5703870d763a1016ab9895c58f087d19a7b7354ea6d4fcc",
+					"kind": "function_call",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"end": 1790544222.855,
+					"start": 1790544220.1975195,
+					"startLogId": 511328066
+				},
+				{
+					"id": "fc_0be5703870d763a1016ab98960a41087d18133ea3dc4db9400",
+					"kind": "function_call",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"end": 1790544224.771,
+					"start": 1790544224.4900427,
+					"startLogId": 511328091
+				},
+				{
+					"id": "ctc_0be5703870d763a1016ab9898d2c3087d18af0a6829429314c",
+					"kind": "custom_tool_call",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"end": 1790544271.909,
+					"start": 1790544269.018823,
+					"startLogId": 511328257
+				},
+				{
+					"id": "ctc_0be5703870d763a1016ab98992048087d1aef1a91958b28340",
+					"kind": "custom_tool_call",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"end": 1790544276.766,
+					"start": 1790544273.861715,
+					"startLogId": 511328452
+				},
+				{
+					"id": "rs_0be5703870d763a1016ab98996a72c87d183776464c776d83a",
+					"kind": "reasoning",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"end": 1790544291.5917823,
+					"start": 1790544278.5676875,
+					"startLogId": 511328636,
+					"finishLogId": 511328638
+				},
+				{
+					"id": "ctc_0be5703870d763a1016ab989a3ba5887d19ba6c7467f6a8892",
+					"kind": "custom_tool_call",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"end": 1790544571.609,
+					"start": 1790544291.5970387,
+					"startLogId": 511328640
+				},
+				{
+					"id": "msg_0be5703870d763a1016ab98abd7d9087d19d96efe68767ce06",
+					"kind": "message",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"end": 1790544574.187467,
+					"start": 1790544573.332148,
+					"startLogId": 511328998,
+					"finishLogId": 511329026
+				}
+			],
+			"responses": [
+				{
+					"responseId": "resp_0be5703870d763a1016ab9892e594487d18e4b295ca402895f",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"at": 1790544177.903,
+					"usage": {
+						"input_tokens": 17729,
+						"cached_input_tokens": 15744,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 90,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 17819
+					}
+				},
+				{
+					"responseId": "resp_0be5703870d763a1016ab98932946487d1b4b0a59c6c436f65",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"at": 1790544185.919,
+					"usage": {
+						"input_tokens": 26676,
+						"cached_input_tokens": 17536,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 222,
+						"reasoning_output_tokens": 122,
+						"total_tokens": 26898
+					}
+				},
+				{
+					"responseId": "resp_0be5703870d763a1016ab9893a4bf487d19684f18ae7fb02f2",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"at": 1790544189.886,
+					"usage": {
+						"input_tokens": 26910,
+						"cached_input_tokens": 26496,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 98,
+						"reasoning_output_tokens": 75,
+						"total_tokens": 27008
+					}
+				},
+				{
+					"responseId": "resp_0be5703870d763a1016ab9895332e887d1a8fce9cf9872a6ed",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"at": 1790544215.174,
+					"usage": {
+						"input_tokens": 27161,
+						"cached_input_tokens": 26752,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 103,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 27264
+					}
+				},
+				{
+					"responseId": "resp_0be5703870d763a1016ab98957d99887d1a5a0af708e08b8bf",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"at": 1790544222.861,
+					"usage": {
+						"input_tokens": 37834,
+						"cached_input_tokens": 27008,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 159,
+						"reasoning_output_tokens": 64,
+						"total_tokens": 37993
+					}
+				},
+				{
+					"responseId": "resp_0be5703870d763a1016ab9895f3f4487d184e03949686da6af",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"at": 1790544224.87,
+					"usage": {
+						"input_tokens": 38005,
+						"cached_input_tokens": 37632,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 21,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 38026
+					}
+				},
+				{
+					"responseId": "resp_0be5703870d763a1016ab9898c0f6887d1b9d32e321ad37615",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"at": 1790544271.963,
+					"usage": {
+						"input_tokens": 38240,
+						"cached_input_tokens": 37888,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 104,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 38344
+					}
+				},
+				{
+					"responseId": "resp_0be5703870d763a1016ab98990b66c87d18f68132ac7cb573b",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"at": 1790544276.844,
+					"usage": {
+						"input_tokens": 44522,
+						"cached_input_tokens": 38016,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 104,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 44626
+					}
+				},
+				{
+					"responseId": "resp_0be5703870d763a1016ab989959dd487d1acde6f0057565ff6",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"at": 1790544571.648,
+					"usage": {
+						"input_tokens": 50717,
+						"cached_input_tokens": 44288,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 9772,
+						"reasoning_output_tokens": 426,
+						"total_tokens": 60489
+					}
+				},
+				{
+					"responseId": "resp_0be5703870d763a1016ab98abc911087d1a53c232dd62044b6",
+					"turn": "01a0e4bf-d7c8-79b1-8096-7f146e4878cd",
+					"at": 1790544574.221,
+					"usage": {
+						"input_tokens": 60513,
+						"cached_input_tokens": 50560,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 30,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 60543
+					}
+				}
+			],
+			"unmatchedItemIds": [],
+			"seconds": {
+				"output": 297.7601819038391,
+				"reasoning-item": 21.945669651031494,
+				"tool": 65.94700026512146
+			},
+			"usage": {
+				"input_tokens": 368307,
+				"cached_input_tokens": 321920,
+				"output_tokens": 10703,
+				"reasoning_output_tokens": 687
+			},
+			"limitations": "Output/reasoning item intervals are client-observed stream intervals, not provider compute time or a classification of design thought. Usage deduplicates response IDs and excludes cumulative snapshots; interrupted responses may lack usage. Tools contain nested script work. Cross-agent sums are not wall time.",
+			"turnWindowSeconds": 401.039999961853,
+			"betweenTurnSeconds": 0.0,
+			"unfinishedItems": []
+		}
+	],
+	"limitations": [
+		"One matched pair with40 fixed saved actions; not new UX design, not a full refinement, not statistical replication.",
+		"Both arms suffered two input-display truncations and waited for parent correction. Full task times retain that overhead; the post-input measure excludes it.",
+		"Corrected reads left extra context in both sessions. This was not a clean first-attempt benchmark; caching, queueing and provider variability were uncontrolled.",
+		"Both large arms write with apply_patch; the smaller trial used a PowerShell write. Cross-size absolute timing is not a pure size-only comparison.",
+		"Writers independently chose the JavaScript string quoting used for the patch. Different escaping contributes to emitted tool-call bytes/tokens; total output reduction is not attributable to dictionary substitution alone.",
+		"Client-observed stream intervals do not isolate provider compute, reading or transfer time. Tool totals include explicit agent waits.",
+		"Whole-turn token totals sum responses with repeated/cached context, not unique input size or credits.",
+		"Conversion and validation timings are in-process and exclude imports, startup and parent scheduling."
+	]
+}

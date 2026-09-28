@@ -1,0 +1,447 @@
+{
+	"threadId": "01a0de10-e775-74e3-9d59-a3f6baaba8ee",
+	"sourceSession": "C:\\Users\\gande\\.codex\\sessions\\2026\\09\\26\\rollout-2026-09-26T07-14-05-01a0de10-e775-74e3-9d59-a3f6baaba8ee.jsonl",
+	"sourceSessionBytes": 60658851,
+	"windowStart": "2026-09-28T00:02:51.773+00:00",
+	"windowEnd": "2026-09-28T00:07:24.000+00:00",
+	"windowSeconds": 272.22699999809265,
+	"seconds": {
+		"output": 162.84760642051697,
+		"reasoning-item": 83.79703950881958,
+		"tool": 7.697000741958618,
+		"unattributed": 17.885353326797485
+	},
+	"items": [
+		{
+			"id": "rs_0b1a9a3ac91ed0ad016ab9ae9bca9087d1b1f2a09ca15fa904",
+			"kind": "reasoning",
+			"end": 1790553771.2836637,
+			"finishLogId": 511349169
+		},
+		{
+			"id": "fc_0b1a9a3ac91ed0ad016ab9aeab88d087d1b42804835430b65d",
+			"kind": "function_call",
+			"end": 1790553771.656,
+			"start": 1790553771.2879395,
+			"startLogId": 511349171
+		},
+		{
+			"id": "msg_0b1a9a3ac91ed0ad016ab9aead7a8487d194ca240b095c29a4",
+			"kind": "message",
+			"end": 1790553776.7994556,
+			"start": 1790553773.228933,
+			"startLogId": 511349206,
+			"finishLogId": 511349311
+		},
+		{
+			"id": "rs_0b1a9a3ac91ed0ad016ab9aeb0aeb887d18e25c8bdd3016f99",
+			"kind": "reasoning",
+			"end": 1790553788.6825216,
+			"start": 1790553776.8042052,
+			"startLogId": 511349313,
+			"finishLogId": 511349315
+		},
+		{
+			"id": "fc_0b1a9a3ac91ed0ad016ab9aebcea8c87d186c66fa71ed0d3b3",
+			"kind": "function_call",
+			"end": 1790553788.909,
+			"start": 1790553788.6887064,
+			"startLogId": 511349317
+		},
+		{
+			"id": "rs_0b1a9a3ac91ed0ad016ab9aebf835c87d18cdd067acf09a139",
+			"kind": "reasoning",
+			"end": 1790553798.8506186,
+			"start": 1790553791.2567759,
+			"startLogId": 511349330,
+			"finishLogId": 511349332
+		},
+		{
+			"id": "ctc_0b1a9a3ac91ed0ad016ab9aec71ae087d18c658c082467786f",
+			"kind": "custom_tool_call",
+			"end": 1790553809.378,
+			"start": 1790553798.8558042,
+			"startLogId": 511349334
+		},
+		{
+			"id": "rs_0b1a9a3ac91ed0ad016ab9aed4629887d1b5fcc3e3f6337940",
+			"kind": "reasoning",
+			"end": 1790553827.8688633,
+			"start": 1790553812.1404116,
+			"startLogId": 511349369,
+			"finishLogId": 511349371
+		},
+		{
+			"id": "ctc_0b1a9a3ac91ed0ad016ab9aee41fe887d1b282135c5d5ad275",
+			"kind": "custom_tool_call",
+			"end": 1790553847.866,
+			"start": 1790553827.8735158,
+			"startLogId": 511349373
+		},
+		{
+			"id": "rs_0b1a9a3ac91ed0ad016ab9af0103b087d1bbf711dcc7ee6b6b",
+			"kind": "reasoning",
+			"end": 1790553859.245468,
+			"start": 1790553856.757089,
+			"startLogId": 511349406,
+			"finishLogId": 511349408
+		},
+		{
+			"id": "ctc_0b1a9a3ac91ed0ad016ab9af03800c87d190b4d674131ad2c0",
+			"kind": "custom_tool_call",
+			"end": 1790553871.935,
+			"start": 1790553859.2499077,
+			"startLogId": 511349410
+		},
+		{
+			"id": "rs_0b1a9a3ac91ed0ad016ab9af127c1c87d19a6435fdd245d391",
+			"kind": "reasoning",
+			"end": 1790553885.6193476,
+			"start": 1790553874.2391076,
+			"startLogId": 511349431,
+			"finishLogId": 511349433
+		},
+		{
+			"id": "ctc_0b1a9a3ac91ed0ad016ab9af1dc68487d1abd92db00f5f32c0",
+			"kind": "custom_tool_call",
+			"end": 1790553890.517,
+			"start": 1790553885.6240487,
+			"startLogId": 511349435
+		},
+		{
+			"id": "rs_0b1a9a3ac91ed0ad016ab9af253bb487d1a9a48fda6da40ae3",
+			"kind": "reasoning",
+			"end": 1790553908.55214,
+			"start": 1790553892.9792778,
+			"startLogId": 511349455,
+			"finishLogId": 511349458
+		},
+		{
+			"id": "msg_0b1a9a3ac91ed0ad016ab9af34ca9087d1ac4733c8e79a7107",
+			"kind": "message",
+			"end": 1790553910.9730191,
+			"start": 1790553908.556522,
+			"startLogId": 511349460,
+			"finishLogId": 511349531
+		},
+		{
+			"id": "ctc_0b1a9a3ac91ed0ad016ab9af373bdc87d1b4dac223aa843011",
+			"kind": "custom_tool_call",
+			"end": 1790553974.347,
+			"start": 1790553910.976238,
+			"startLogId": 511349533
+		},
+		{
+			"id": "rs_0b1a9a3ac91ed0ad016ab9af78f39087d1b209b24e45e63ff5",
+			"kind": "reasoning",
+			"end": 1790553992.412165,
+			"start": 1790553976.7008705,
+			"startLogId": 511349558,
+			"finishLogId": 511349561
+		},
+		{
+			"id": "ctc_0b1a9a3ac91ed0ad016ab9af88aadc87d1b6b331505ccd1fc1",
+			"kind": "custom_tool_call",
+			"end": 1790554015.827,
+			"start": 1790553992.4199424,
+			"startLogId": 511349563
+		},
+		{
+			"id": "rs_0b1a9a3ac91ed0ad016ab9afa18cc887d19cb85ea69acd24d6",
+			"kind": "reasoning",
+			"end": 1790554020.7323823,
+			"start": 1790554017.2887292,
+			"startLogId": 511349579,
+			"finishLogId": 511349581
+		},
+		{
+			"id": "ctc_0b1a9a3ac91ed0ad016ab9afa4fd3487d19336109d4c867ac3",
+			"kind": "custom_tool_call",
+			"end": 1790554042.505,
+			"start": 1790554020.7352498,
+			"startLogId": 511349583
+		}
+	],
+	"calls": [
+		{
+			"id": "call_NWI8KcmN6bYmvGwZIB6A5w4u",
+			"name": "interrupt_agent",
+			"start": 1790553771.656,
+			"argumentBytes": 31,
+			"boundedRead": false,
+			"end": 1790553771.773,
+			"outputBytes": 29,
+			"runtimeMs": 114.0,
+			"timingLogId": 511349191
+		},
+		{
+			"id": "call_t5XKptRU0pljjY9kPYit3AJt",
+			"name": "list_agents",
+			"start": 1790553788.909,
+			"argumentBytes": 2,
+			"boundedRead": false,
+			"end": 1790553789.164,
+			"outputBytes": 1457,
+			"runtimeMs": 252.0,
+			"timingLogId": 511349321
+		},
+		{
+			"id": "call_aQppaeiBY3zUPd4M68ewG1jK",
+			"name": "exec",
+			"start": 1790553809.378,
+			"argumentBytes": 1019,
+			"boundedRead": false,
+			"end": 1790553810.411,
+			"outputBytes": 2278,
+			"runtimeMs": 1027.0,
+			"timingLogId": 511349361
+		},
+		{
+			"id": "call_LydezF9TAGOGkXfX2BkNaWlT",
+			"name": "exec",
+			"start": 1790553847.866,
+			"argumentBytes": 1911,
+			"boundedRead": false,
+			"end": 1790553849.413,
+			"outputBytes": 1232,
+			"runtimeMs": 1543.0,
+			"timingLogId": 511349398
+		},
+		{
+			"id": "call_O5EmwogK7z0f0CYyq0W9bg8o",
+			"name": "exec",
+			"start": 1790553871.935,
+			"argumentBytes": 1113,
+			"boundedRead": false,
+			"end": 1790553872.788,
+			"outputBytes": 3729,
+			"runtimeMs": 849.0,
+			"timingLogId": 511349423
+		},
+		{
+			"id": "call_US2NBBOHPG5D3Mhq2rilAT8M",
+			"name": "exec",
+			"start": 1790553890.517,
+			"argumentBytes": 567,
+			"boundedRead": false,
+			"end": 1790553891.923,
+			"outputBytes": 1149,
+			"runtimeMs": 1404.0,
+			"timingLogId": 511349447
+		},
+		{
+			"id": "call_QxT1o9UcguwXuBES5CJbkzAZ",
+			"name": "exec",
+			"start": 1790553974.347,
+			"argumentBytes": 8852,
+			"boundedRead": false,
+			"end": 1790553975.354,
+			"outputBytes": 124,
+			"runtimeMs": 1003.0,
+			"timingLogId": 511349550
+		},
+		{
+			"id": "call_phq9FQmjZQJuYhPMwt0M8xBx",
+			"name": "exec",
+			"start": 1790554015.827,
+			"argumentBytes": 2762,
+			"boundedRead": false,
+			"end": 1790554015.928,
+			"outputBytes": 313,
+			"runtimeMs": 97.0,
+			"timingLogId": 511349570
+		},
+		{
+			"id": "call_rBp2lnhFyA6J5qSD3XtG19tN",
+			"name": "exec",
+			"start": 1790554042.505,
+			"argumentBytes": 2610,
+			"boundedRead": false,
+			"end": 1790554044.951,
+			"outputBytes": 1556,
+			"runtimeMs": 2442.0,
+			"timingLogId": 511349609
+		}
+	],
+	"responses": [
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab9ae9a974487d1b6460ed33bb2eb01",
+			"at": 1790553771.77,
+			"turn": "01a0e53e-e3ca-7440-8a4e-406bd1d5f5e5",
+			"usage": {
+				"input_tokens": 107711,
+				"cached_input_tokens": 106624,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 542,
+				"reasoning_output_tokens": 516,
+				"total_tokens": 108253
+			}
+		},
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab9aeac4cb487d197a71d1c06db574d",
+			"at": 1790553789.162,
+			"turn": "01a0e53e-e3ca-7440-8a4e-406bd1d5f5e5",
+			"usage": {
+				"input_tokens": 108272,
+				"cached_input_tokens": 107648,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 498,
+				"reasoning_output_tokens": 375,
+				"total_tokens": 108770
+			}
+		},
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab9aebdddcc87d1aa9996833d70a41b",
+			"at": 1790553809.554,
+			"turn": "01a0e53e-e3ca-7440-8a4e-406bd1d5f5e5",
+			"usage": {
+				"input_tokens": 109157,
+				"cached_input_tokens": 108160,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 548,
+				"reasoning_output_tokens": 244,
+				"total_tokens": 109705
+			}
+		},
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab9aed2f00c87d198b6129c44fe05b2",
+			"at": 1790553847.995,
+			"turn": "01a0e53e-e3ca-7440-8a4e-406bd1d5f5e5",
+			"usage": {
+				"input_tokens": 110528,
+				"cached_input_tokens": 109056,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 1190,
+				"reasoning_output_tokens": 516,
+				"total_tokens": 111718
+			}
+		},
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab9aef9db1487d1b00f12bb8ff7df67",
+			"at": 1790553872.025,
+			"turn": "01a0e53e-e3ca-7440-8a4e-406bd1d5f5e5",
+			"usage": {
+				"input_tokens": 112077,
+				"cached_input_tokens": 110464,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 506,
+				"reasoning_output_tokens": 75,
+				"total_tokens": 112583
+			}
+		},
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab9af11536487d1b68a92a8130d5200",
+			"at": 1790553890.62,
+			"turn": "01a0e53e-e3ca-7440-8a4e-406bd1d5f5e5",
+			"usage": {
+				"input_tokens": 113695,
+				"cached_input_tokens": 112000,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 544,
+				"reasoning_output_tokens": 369,
+				"total_tokens": 114239
+			}
+		},
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab9af245c3087d1967815361095503a",
+			"at": 1790553974.451,
+			"turn": "01a0e53e-e3ca-7440-8a4e-406bd1d5f5e5",
+			"usage": {
+				"input_tokens": 114575,
+				"cached_input_tokens": 113536,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 2713,
+				"reasoning_output_tokens": 516,
+				"total_tokens": 117288
+			}
+		},
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab9af77cce487d18f60633b06852c59",
+			"at": 1790554015.913,
+			"turn": "01a0e53e-e3ca-7440-8a4e-406bd1d5f5e5",
+			"usage": {
+				"input_tokens": 117312,
+				"cached_input_tokens": 114432,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 1305,
+				"reasoning_output_tokens": 516,
+				"total_tokens": 118617
+			}
+		},
+		{
+			"id": "resp_0b1a9a3ac91ed0ad016ab9afa07d1487d1876d4cf035c11e5b",
+			"at": 1790554042.623,
+			"turn": "01a0e53e-e3ca-7440-8a4e-406bd1d5f5e5",
+			"usage": {
+				"input_tokens": 118685,
+				"cached_input_tokens": 117248,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 841,
+				"reasoning_output_tokens": 107,
+				"total_tokens": 119526
+			}
+		}
+	],
+	"resultToNextItem": [
+		{
+			"callId": "call_NWI8KcmN6bYmvGwZIB6A5w4u",
+			"resultAt": "2026-09-28T00:02:51.773+00:00",
+			"nextItemAt": "2026-09-28T00:02:53.228+00:00",
+			"seconds": 1.4559330940246582
+		},
+		{
+			"callId": "call_t5XKptRU0pljjY9kPYit3AJt",
+			"resultAt": "2026-09-28T00:03:09.164+00:00",
+			"nextItemAt": "2026-09-28T00:03:11.256+00:00",
+			"seconds": 2.092775821685791
+		},
+		{
+			"callId": "call_aQppaeiBY3zUPd4M68ewG1jK",
+			"resultAt": "2026-09-28T00:03:30.411+00:00",
+			"nextItemAt": "2026-09-28T00:03:32.140+00:00",
+			"seconds": 1.7294116020202637
+		},
+		{
+			"callId": "call_LydezF9TAGOGkXfX2BkNaWlT",
+			"resultAt": "2026-09-28T00:04:09.413+00:00",
+			"nextItemAt": "2026-09-28T00:04:16.757+00:00",
+			"seconds": 7.344088792800903
+		},
+		{
+			"callId": "call_O5EmwogK7z0f0CYyq0W9bg8o",
+			"resultAt": "2026-09-28T00:04:32.788+00:00",
+			"nextItemAt": "2026-09-28T00:04:34.239+00:00",
+			"seconds": 1.4511075019836426
+		},
+		{
+			"callId": "call_US2NBBOHPG5D3Mhq2rilAT8M",
+			"resultAt": "2026-09-28T00:04:51.923+00:00",
+			"nextItemAt": "2026-09-28T00:04:52.979+00:00",
+			"seconds": 1.0562777519226074
+		},
+		{
+			"callId": "call_QxT1o9UcguwXuBES5CJbkzAZ",
+			"resultAt": "2026-09-28T00:06:15.354+00:00",
+			"nextItemAt": "2026-09-28T00:06:16.700+00:00",
+			"seconds": 1.3468704223632812
+		},
+		{
+			"callId": "call_phq9FQmjZQJuYhPMwt0M8xBx",
+			"resultAt": "2026-09-28T00:06:55.928+00:00",
+			"nextItemAt": "2026-09-28T00:06:57.288+00:00",
+			"seconds": 1.3607292175292969
+		}
+	],
+	"resultToNextItemSeconds": 17.837194204330444,
+	"usageForResponsesCompletedWithinClockWindow": {
+		"input_tokens": 904301,
+		"cached_input_tokens": 892544,
+		"output_tokens": 8145,
+		"reasoning_output_tokens": 2718
+	},
+	"databaseQueryPlan": [
+		[4, 0, 0, "SEARCH TABLE logs USING INDEX idx_logs_thread_id_ts (thread_id=? AND ts>? AND ts<?)"]
+	],
+	"extractionSeconds": 0.4648056000005454,
+	"limitations": "Client-observed item stream intervals, not provider compute or semantic thought. Tools include nested command work. Clock boundaries have one-second precision. Usage is by response completion and can include boundary-crossing work. No raw message, prompt, tool argument or reasoning content is retained."
+}

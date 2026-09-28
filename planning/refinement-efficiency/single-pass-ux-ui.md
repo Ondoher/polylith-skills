@@ -11,6 +11,10 @@ The implementation uses atomic per-record JSON files in place of the initial JSO
 suggestion below. The later [native model migration](canonical-flow-migration-summary.md) replaces the prior projection into expanded legacy consumer schemas.
 Foundation overlap is supported; reviewed per-batch composition remains deferred.
 
+The later [streaming assembly discussion](streaming-assembly-notes.md) explores
+smaller partial contributions and forward references reconciled by a parallel
+assembler. It does not change this method's current executable contracts.
+
 ## 1. Operating rule
 
 UX makes one forward authoring pass through the supplied facts. UI makes one
@@ -383,10 +387,17 @@ implementation scope, rather than further alternatives to investigate:
 
 1. **Change UX/UI authoring contracts.** Replace the monolithic response and
    repeated graph/frame authoring with the records above. Give the agents a
-   supported way to write only their assigned staging files. Their current
-   read-only/JSON-only modes do not support this yet. A parent-owned record writer
-   can provide persistence when direct file writes are unavailable; it must save
-   the exact bounded response without retyping or redesigning it.
+   supported way to write only their assigned staging files. Corrected on
+   2026-09-27: UX/UI roles now permit proposal JSON in an explicitly assigned
+   temporary directory, with parent-owned canonical persistence. The
+   [delivery contract](../../skills/refine-design/references/single-pass-design.md#proposal-file-permission-and-delivery)
+   requires effective-permission verification and direct consumption of saved files.
+   Parent-owned text delivery remains a disclosed fallback when direct writes are
+   unavailable; it must save the exact bounded response without redesigning it.
+   Verification: both role TOMLs parse with `workspace-write`; managed installation
+   links point to this checkout; all 22 existing single-pass tests pass. A fresh
+   named-agent run must verify direct writing with its first real batch after the
+   host reloads the definitions. No new live product-design trial was commissioned.
 2. **Adapt dependent contracts together.** Update UX validation/review, UI
    bindings, comp rendering, component reuse, product-context packaging, document
    inventory, and implementation/technical handoffs. Map current frame/action

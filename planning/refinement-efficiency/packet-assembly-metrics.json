@@ -1,0 +1,110 @@
+{
+	"date": "2026-09-27",
+	"scope": "One saved UX flow representation replay; no fresh design, UI consultation, independent UX review, live product mutation or timed direct-authoring baseline.",
+	"source": "alexa/product/Alexa/runs/run-20260927-160806-multitrack/final-ux-spec.json",
+	"authorRole": "Temporary writing worker; not the deployed UX planner role",
+	"usage": null,
+	"firstDeliverySeconds": 36.763,
+	"prototypePreparationSeconds": 177.1,
+	"packetByteIncreasePercent": 11.155234657039713,
+	"trial": {
+		"completedAt": "2026-09-27T19:38:05.469Z",
+		"packets": 18,
+		"deliveries": 2,
+		"compactPacketBytes": 6158,
+		"canonicalFlowBytes": 5540,
+		"inheritedDefaultsBytes": 194,
+		"canonicalDocumentBytes": 389418,
+		"validationMs": 32.437799999999996,
+		"renderMs": 19.4234,
+		"elapsedMs": 69.51150000000001,
+		"exactFlowEquality": true,
+		"newIndependentReview": false
+	},
+	"authorTiming": {
+		"taskStart": "2026-09-27T19:36:15.8072246Z",
+		"readComplete": "2026-09-27T19:36:15.9361346Z",
+		"firstDeliveryStart": "2026-09-27T19:36:52.2152659Z",
+		"firstDeliveryComplete": "2026-09-27T19:36:52.5700564Z",
+		"secondDeliveryStart": "2026-09-27T19:38:04.7761808Z",
+		"secondDeliveryComplete": "2026-09-27T19:38:05.1386577Z",
+		"finalCompletionStart": "2026-09-27T19:38:05.1386577Z",
+		"finalCompletionEnd": "2026-09-27T19:38:05.4839484Z",
+		"observedElapsedSeconds": 109.67672379999999,
+		"readToolWallTimeSeconds": 0.2989171,
+		"firstDeliveryToolWallTimeSeconds": 0.4710898,
+		"secondDeliveryShellSpanSeconds": 0.3624769,
+		"completionShellSpanSeconds": 0.3452907,
+		"reasoningTimeSeconds": null,
+		"tokenUsage": null,
+		"repairs": 0
+	},
+	"recoveryReplays": {
+		"completedAt": "2026-09-27T19:47:36.663Z",
+		"results": [
+			"Missing forward references remain pending; completion fails; retained partial data resumes to exact equality.",
+			"Reordered deliveries and duplicate delivery reconstruct the same 18 unique packets.",
+			"Conflicting definitions are rejected rather than silently overwriting meaning.",
+			"Saved baseline detects lost meaning; targeted scratch-file correction restores equality without regeneration."
+		],
+		"processCount": 14,
+		"processMs": 1291.3958
+	},
+	"existingAssembly": {
+		"deliveredRecords": 16,
+		"first": {
+			"valid": true,
+			"elapsedMs": 90.22689999999997,
+			"stages": {
+				"readMs": 26.404200000000003,
+				"identityMs": 0.5331999999999937,
+				"cacheCheckMs": 0.08050000000000068,
+				"assemblyMs": 16.345699999999994,
+				"validationMs": 32.926800000000014,
+				"serializationMs": 2.592800000000011,
+				"persistMs": 9.013900000000007
+			},
+			"bytesRead": 386090,
+			"recordCount": 16
+		},
+		"reuse": {
+			"valid": true,
+			"reused": true,
+			"elapsedMs": 28.744399999999985,
+			"stages": {
+				"readMs": 22.256099999999947,
+				"identityMs": 0.5990000000000464,
+				"cacheCheckMs": 5.2549000000000206
+			},
+			"bytesRead": 386090,
+			"recordCount": 16
+		},
+		"processWindow": {
+			"id": "span-c679d70e-1c79-491f-96a4-d1d2a347cef2",
+			"actor": "parent",
+			"stage": "ux",
+			"operation": "saved-data-assembly",
+			"kind": "process",
+			"purpose": "execution",
+			"startedAt": "2026-09-27T19:48:25.126Z",
+			"finishedAt": "2026-09-27T19:48:25.477Z",
+			"outcome": "complete",
+			"measurements": {
+				"process-ms": 348.7243,
+				"exit-code": 0
+			},
+			"usage": null
+		}
+	},
+	"localEvidence": ".codex-tmp/packet-assembly-20260927/",
+	"evidenceSha256": {
+		"source-flow.json": "438af0abb64e569c1ae682112f813f5907c399992e572ad75669de9b3c529f5f",
+		"packets-a.json": "8fc17d185df4a4685aa9cb7f0ace4d385df36e84231acc5b1ab0aa21afc4ed80",
+		"packets-b.json": "b1eb4259e51e313efba615b17b9002d3be899aa33aae369ba26647d28a4a81c6",
+		"author-timing.json": "f231d3a617ed23797ee74b62ca101aaaa681a8dc47ac0f16dc4de794cee245b8",
+		"result.json": "1c57ed5971f4f2d8d0715c07b2e5122ae9ead1e60f62cf7935bbecda96662733",
+		"events.jsonl": "9d576101a179a563d38dbc8ab95da470d17180f00a95da46337063da95576e6a",
+		"existing-performance.json": "b12d210ba300e01f14ec719b45f22d41a60fe0c5c7747f31b2900ea938bf621a",
+		"replay-result.json": "b4a1f3241052f27bb687604cc5c591220479a0b243158414093d89a65aeeaee8"
+	}
+}

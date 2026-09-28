@@ -1,0 +1,25 @@
+{
+	"runId": "run-20260927-215515-modest-edit",
+	"attemptId": "attempt-01",
+	"phase": "diagnostic-recording",
+	"firstObservedUtc": "2026-09-27T21:55:15Z",
+	"lastObservedUtc": "2026-09-27T21:57:38Z",
+	"observedWindowSeconds": 143,
+	"limitation": "Between second-precision clock observations; not exact turn duration. Includes setup and diagnostic recording, with no product refinement. Parent generation/reasoning/waiting are not separately attributed.",
+	"priorEvidenceWriteCellSecondsReported": 1.4,
+	"formattingAndDiffCheck": {
+		"wallTimeSeconds": 0.837784,
+		"exitCode": 0,
+		"outputTokensReported": 66,
+		"output": "planning/refinement-efficiency/attended-run-20260927.md 52ms\nplanning/refinement-efficiency/attended-run-20260927-metrics.json 23ms\nplanning/refinement-efficiency/diagnostic-run-rules.md 56ms (unchanged)\nplanning/refinement-efficiency/plan.md 136ms (unchanged)\n"
+	},
+	"individualFormattingMilliseconds": {
+		"report": 52,
+		"metrics": 23,
+		"rules": 56,
+		"plan": 136
+	},
+	"enclosingValidationCellSecondsReported": 1.4,
+	"overlap": "Formatter durations, command duration and enclosing cell are nested, not additive.",
+	"recordingBoundary": "This metadata append and final response occur after the last observed clock and are not included."
+}

@@ -44,6 +44,14 @@ UX; scene authoring retains the exact independent UX-review prerequisite.
 
 ## Reuse and migration evidence
 
+Owner clarification, 2026-09-27: the import work described here preserved
+development evidence; it is not an ongoing backward-compatibility deliverable.
+This is greenfield work, and the intended full Alexa reprocess will use the
+current product description and current schemas without importing prior derived
+design. The historical conversion notices below do not have to be repaired as a
+prerequisite for that rebuild. Older recommendations to upgrade or repair imported
+Alexa records are superseded by this direction. No reset is started here.
+
 The explicit `single-pass-design.mjs migrate` command preserves original bytes,
 identity mappings, an unreviewed candidate and actionable repair notices in an owned
 output directory. Repeating it reuses matching evidence; changed input cannot silently

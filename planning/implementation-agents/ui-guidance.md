@@ -36,6 +36,8 @@ Resolve applicable canonical obligations and overlays. Our [CSS/layout rules](..
 
 ## Scope And Handoff
 
+For MUI outlined controls, apply the [label/outline state mapping](../../skills/refine-design/references/design-language-mui.md#outlined-field-labels-and-outlines) in foundations, comps and component handoffs. Focused labels share the outline's selected theme color; enabled error labels share its error color. Resting and disabled grays remain distinct. A floating label is not evidence of focus. Preserve this behavior even when the current renderer requires a partial wireframe.
+
 Ordinary controls retain semantic/native behavior, keyboard access and visible focus even without a separate accessibility requirement. Favor readily accessible technology when otherwise comparable. Full equivalents for specialized app surfaces are not automatically commissioned; this never waives applicable standards or an agreed conformance target. See the established [accessibility scope](ux-guidance.md).
 
 For app-wide planning, synthesize only foundations supported by supplied UX: shared scales, roles and recurring patterns, illustrated on representative surfaces. Explain variants and owner choices; preserve the [proposal/acceptance boundary](design.md#app-wide-ui-foundations-proposal). Reuse the accepted application reference in later specifications.

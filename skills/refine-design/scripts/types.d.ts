@@ -1,3 +1,109 @@
+/** Observation boundary, distinct from the purpose of its work.
+ * - **"agent-window"** - Elapsed dispatch/work window; not isolated inference.
+ * - **"tool"** - Caller-observed tool request through response.
+ * - **"process"** - Local subprocess lifetime.
+ * - **"helper"** - Instrumented in-process operation.
+ * - **"coordination"** - Observed parent routing or handoff handling.
+ * - **"wait"** - Explicit dependency wait.
+ */
+type PerformanceSpanKind = 'agent-window' | 'tool' | 'process' | 'helper' | 'coordination' | 'wait';
+
+/** Assigned work purpose; not a measurement of hidden model activity.
+ * - **"design"** - Choosing or reviewing product behavior or appearance.
+ * - **"representation"** - Encoding already-decided meaning.
+ * - **"execution"** - Deterministic commands and transport.
+ * - **"unknown"** - Mixed or unclassified work.
+ */
+type PerformancePurpose = 'design' | 'representation' | 'execution' | 'unknown';
+
+/** Observed completion condition.
+ * - **"complete"** - Operation returned successfully; not design approval.
+ * - **"failed"** - Operation failed.
+ * - **"needs-repair"** - Partial usable output with reported issues.
+ * - **"incomplete"** - No finish observation available.
+ */
+type PerformanceOutcome = 'complete' | 'failed' | 'needs-repair' | 'incomplete';
+
+/** Usage for this observation only; never an overlapping session aggregate. */
+type PerformanceUsage = {
+	/** Runtime/provider evidence identifying where counts came from. */
+	source: string;
+	/** All input tokens, or unavailable. */
+	inputTokens: number | null;
+	/** Subset of input tokens served from cache, or unavailable. */
+	cachedInputTokens: number | null;
+	/** All output tokens, or unavailable. */
+	outputTokens: number | null;
+	/** Subset of output tokens classified by provider as reasoning, or unavailable. */
+	reasoningTokens: number | null;
+};
+
+/** Immutable run-local observation. Contains no prompts or product payloads. */
+type PerformanceSpan = {
+	/** Unique ID for this observation; retries use new IDs. */
+	id: string;
+	/** Agent or parent responsible for the observation. */
+	actor: string;
+	/** Workflow stage, such as ux, review, ui or publication. */
+	stage: string;
+	/** Short operation label without source content. */
+	operation: string;
+	/** Actual measured boundary. */
+	kind: PerformanceSpanKind;
+	/** Assigned task purpose; mixed tasks remain unknown. */
+	purpose: PerformancePurpose;
+	/** Observed UTC start timestamp. */
+	startedAt: string;
+	/** Observed UTC finish, or null for interrupted/missing completion. */
+	finishedAt: string | null;
+	/** Outcome without granting semantic acceptance. */
+	outcome: PerformanceOutcome;
+	/** Nonnegative observed numbers with unit-bearing keys, e.g. process-ms or input-bytes. */
+	measurements: Record<string, number>;
+	/** Sourced usage or null; no inferred tokens or cost. */
+	usage: PerformanceUsage | null;
+};
+
+/** Optional explicit bounds; default is the extent of available observations. */
+type PerformanceWindow = {
+	/** Run start, including startup when observed. */
+	startedAt?: string;
+	/** Run end, including trailing work when observed. */
+	finishedAt?: string;
+};
+
+/** Overlapping activity group; totals cannot be added across groups. */
+type PerformanceGroup = {
+	/** Number of observations, including incomplete ones. */
+	count: number;
+	/** Sum of completed durations; includes overlap. */
+	summedMs: number;
+	/** Union of completed time intervals. */
+	coveredMs: number;
+};
+
+/** Measured coverage plus original evidence; no guessed reasoning or cost. */
+type PerformanceSummary = {
+	/** Report window start. */
+	startedAt: string;
+	/** Report window end. */
+	finishedAt: string;
+	/** Total window duration. */
+	wallMs: number;
+	/** Wall time covered by at least one completed observation. */
+	coveredMs: number;
+	/** Wall time outside completed observations; not automatically idle time. */
+	unobservedMs: number;
+	/** IDs without observed completion. */
+	incompleteIds: string[];
+	/** Nonadditive breakdowns by kind, actor and assigned purpose. */
+	groups: Record<string, Record<string, PerformanceGroup>>;
+	/** Deduplicated observations preserving usage and measurements. */
+	observations: PerformanceSpan[];
+	/** Interpretation limits needed to avoid double counting. */
+	note: string;
+};
+
 /** Stage that owns one design record store.
  * - **"ux"** - Interaction authoring.
  * - **"ui"** - Visual composition authoring.
@@ -225,4 +331,84 @@ type DesignRunReport = {
 	elapsedMs: number;
 	/** Assembly, validation, and optional render durations from the producing run. */
 	stages: Record<string, number>;
+};
+
+/** Caller-owned limits and continuation for one bounded source read. */
+type BoundedReadOptions = {
+	/** Complete rendered output budget in UTF-8 bytes; default 4096, range 512–8192. */
+	maxBytes?: number;
+	/** Unmodified continuation from the preceding page of the same ordered files. */
+	cursor?: string;
+};
+
+/** Test runner cleanup capability used by bounded-read filesystem fixtures. */
+type BoundedReadTestContext = {
+	/** Register cleanup of test-owned resources after the scenario finishes. */
+	after(callback: () => void): void;
+};
+
+/** Internal position bound to the ordered batch's paths, sizes and content digests. */
+type BoundedReadPosition = {
+	/** Batch digest, or empty before the initial inspection. */
+	b: string;
+	/** Zero-based source index. */
+	i: number;
+	/** Zero-based byte offset, on a UTF-8 code point boundary. */
+	o: number;
+};
+
+/** Read-only source identity and a bounded captured window from its hashing pass. */
+type BoundedReadSource = {
+	/** Resolved absolute source path. */
+	path: string;
+	/** Complete source length in bytes. */
+	size: number;
+	/** Digest of the complete source bytes. */
+	sha256: string;
+	/** Captured bytes at the requested offset, including code point boundary lookahead. */
+	window: Buffer;
+};
+
+/** One exact source fragment; framing newlines are not part of its text. */
+type BoundedReadPart = {
+	/** Zero-based source index within the ordered batch. */
+	index: number;
+	/** Resolved source path. */
+	path: string;
+	/** Digest of the complete source. */
+	sha256: string;
+	/** Inclusive source byte offset. */
+	start: number;
+	/** Exclusive source byte offset. */
+	end: number;
+	/** Complete source length in bytes. */
+	total: number;
+	/** Exact decoded UTF-8 fragment, preserving BOMs and line endings. */
+	text: string;
+};
+
+/** Internal candidate page used to account for content and all framing together. */
+type BoundedReadCandidate = {
+	/** Proposed next source fragment. */
+	part: BoundedReadPart;
+	/** Next unread position, or null at batch completion. */
+	cursor: string | null;
+	/** Complete proposed output. */
+	text: string;
+	/** UTF-8 length of the complete output. */
+	bytes: number;
+};
+
+/** One bounded response; only text should be forwarded into a tool result. */
+type BoundedReadPage = {
+	/** Digest binding the ordered source paths, sizes, and content hashes. */
+	batch: string;
+	/** Complete raw output, including framing and continuation. */
+	text: string;
+	/** UTF-8 byte length of text, including all metadata. */
+	bytes: number;
+	/** Next unread position; null only after every source is emitted. */
+	next: string | null;
+	/** Contiguous source fragments for programmatic validation and coverage tracking. */
+	parts: BoundedReadPart[];
 };

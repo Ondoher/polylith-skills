@@ -15,10 +15,11 @@ reconstructs the old flow graph or saves expanded scene copies.
    and record material decisions while authoring. Research unfamiliar patterns only
    when needed. Do not add separate full-product inventory, graph, pruning or rewrite
    passes.
-3. Persist each complete unit. Read-only specialists return bounded JSON arrays;
-   the parent saves them with `deliver`. Continue the same author with remaining
-   IDs and file paths, without resending accumulated JSON. A replacement author
-   resumes from the saved manifest and records.
+3. Save each complete unit in the author's assigned `proposalDirectory`. The author
+   returns paths and record IDs; the parent consumes the exact files with `deliver`,
+   without retyping their JSON. Continue the same author with remaining IDs and file
+   paths, without resending accumulated JSON. A replacement author resumes from the
+   saved manifest and records.
 4. Optionally scan outstanding issues once. Replace only affected records and actual
    dependents, naming each previous digest. Unresolved issues remain repair notices;
    continue independent work without an automatic full-run retry.
@@ -36,6 +37,49 @@ There is one UX author and one UI author. Foundation work can overlap UX today;
 scene authoring waits for the exact UX review binding. A transport manifest is not
 a review receipt. Independent scene rendering can run in parallel after inputs
 are fixed, without starting more design agents.
+
+## Proposal-file permission and delivery
+
+The UX/UI author roles use `sandbox_mode = "workspace-write"` with a narrower
+instruction-level write scope: only proposal files in the directory assigned by
+the parent. This is not a filesystem sandbox restricted to that one directory;
+effective host permissions still apply. Other assessment and reviewer roles remain
+read-only. See [Codex custom-agent configuration](https://learn.chatgpt.com/docs/agent-configuration/subagents),
+checked 2026-09-27.
+
+Before substantive authoring, the parent supplies the mode, exact input paths,
+requested record IDs and one absolute `proposalDirectory` per author, for example
+`<writable-workspace>/.codex-tmp/<run>/ux-proposals/` and `ui-proposals/`. Create and
+verify those directories under an effective writable root; keep them separate from
+canonical product data, the parent-owned record store and other agents' output.
+Preserve completed files when continuing the same run. If the product checkout is
+outside the writable workspace, stage proposals in the writable workspace and let
+the parent handle authorized promotion.
+
+Use a fresh role loaded from the updated definition. Existing agents keep their
+previous instructions; verify their effective write authority before reusing one.
+If the host still exposes the old blanket prohibition, refresh/restart the role's
+configuration before launching it. Do not tell an agent to disregard a live
+higher-priority prohibition or claim that editing the TOML changed its current
+instructions.
+
+The first real proposal batch doubles as the write/read check: the author saves
+complete JSON, then the parent reads it and passes it directly to `deliver`. No
+separate design trial or large chat copy is needed. Use one record or a bounded
+record array per file. Write to a pending filename and rename after completion;
+the parent consumes only announced complete files. Return a small receipt with
+`files`, `recordRefs`, `status` and any repair issues. Do not repeat saved contents
+in messages. Corrections use new files and the supplied prior record digests;
+the parent applies them with `--repairs`. The parent computes file identities and
+retains durable copies before temporary cleanup.
+
+Agents may use filesystem tools or small serialization commands for these proposal
+files. They cannot edit canonical artifacts, human descriptions, reviews, app code,
+configuration or Git, or run rendering, publication or canonical-persistence tools.
+Without an assigned directory, assessment remains read-only. If effective access
+blocks delivery, report that concrete limitation and preserve progress; the parent
+may save bounded textual batches as an explicitly recorded fallback. Do not silently
+restart design work or describe that fallback as successful direct file delivery.
 
 ## Records and identity
 
@@ -113,14 +157,16 @@ MUI/design-language controls, placeholder disclosure and exact UX bindings intac
 
 ## Commands and recovery
 
+For timing experiments or performance-sensitive runs, use the lightweight
+[performance trace](performance-measurement.md) around existing commands and
+agent delivery boundaries. It requires no assembly agent or new authoring format.
+
 ```text
 node scripts/single-pass-design.mjs init --store <dir> --stage ux --binding <json>
 node scripts/single-pass-design.mjs deliver --store <dir> --input <records.json>
 node scripts/single-pass-design.mjs handoff --store <dir> --refs flow:edit-entry
 node scripts/single-pass-design.mjs assemble --store <dir> --output-dir <owned-dir>
 node scripts/single-pass-design.mjs import --store <dir> --stage ux --input <native-ux.json>
-node scripts/single-pass-design.mjs migrate --stage ux --input <old-ux.json> --output-dir <empty-dir>
-node scripts/single-pass-design.mjs migrate --stage ui --input <old-ui.json> --output-dir <empty-dir> --ux <native-ux.json> --migration <ux-migration-report.json>
 ```
 
 UI assembly also accepts `--ux`, `--design`, and `--render`; asset-bearing designs
@@ -128,12 +174,19 @@ require explicit authorized source/asset roots. `deliver --repairs <json>` names
 prior digests by kind:ID; corrupt records use their returned `raw:` repair digest.
 Unchanged records and generated output are reused, including within the same run.
 
-`import` accepts current canonical data. `migrate` is the explicit one-time route for
-old schema 0.3. It preserves original bytes, mappings, an unreviewed candidate and
-repair notices in its owned output directory. Ambiguous nested branches, cycles or
-unmapped relations need local repair. Ordinary validators reject obsolete schemas;
-no hidden conversion happens during publication or rendering. Old review receipts
-remain evidence of their original inputs and cannot approve the changed candidate.
+`import` accepts current canonical data. Ordinary validators reject obsolete schemas;
+no hidden conversion happens during loading, persistence, publication or rendering.
+This greenfield toolchain has no supported backward-compatibility requirement.
+For an explicitly requested full reprocess, follow the reset workflow and build
+current artifacts from the human-owned description. Reuse valid work generated
+during that run; do not import obsolete derived data as a prerequisite.
+
+The existing `migrate` helper is retained only as a development preservation aid,
+outside the ordinary workflow. Do not expand it into a maintained upgrade path.
+If expressly used to preserve development work, its saved originals, mappings,
+unreviewed candidates and repair notices remain development evidence. Old review
+receipts cannot approve a changed candidate, and ambiguous conversions need not
+be resolved when the owner instead chooses a fresh reprocess.
 
 Assembly saves usable candidates and actionable notices. Missing/corrupt units do
 not discard valid siblings; continue through the enclosing element or next available

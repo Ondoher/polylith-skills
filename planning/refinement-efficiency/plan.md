@@ -1,5 +1,199 @@
 # Refinement efficiency: autonomous execution plan
 
+Current proposal: [self-driven MCP migration plan](mcp-migration-plan.md).
+Six reportable goals organize the work: shared service, direct
+retrieval, delivery/assembly, integrated refinement, agent/skill connection, and
+evidence/reporting. Optimize credit use: start with positive cases, review larger completed
+units, and defer the comprehensive test pass. During execution, use the checkpoint adviser
+for reasonable units of functionality; the owner has preapproved suggested commit messages.
+During execution the owner will be AFK: resolve questions independently using best
+judgment, record material decisions and their reasons, and include them with results,
+performance measurements in the completion report. Finish the entire agreed migration
+scope with no required work remaining; intermediate checkpoints and reports are not
+stopping points.
+Service implementation has not started, and the attended Alexa refinement remains paused.
+The separately authorized permission preparation is complete: all 16 managed agents now
+allow scoped file/MCP result delivery, with `workspace-write` defaults and healthy live
+installation links. See the migration plan for verification and restart notes.
+After the VS Code restart, all 16 fresh role instances passed the owner's requested
+[live file write/read check](agent-write-check-20260927.md). The parent verified exact
+bytes; MCP service operations remain untested until implementation.
+
+Assessment only: [MCP migration effort and scope](mcp-migration-assessment.md).
+The owner expects practical, proportionate execution without a fixed time budget.
+The previous engineering-day estimates are withdrawn. Reuse the existing server probe and domain modules, prioritize
+working refinement preparation and UX/UI handoffs, and track verified coverage across
+the full catalog. The inventory covers 16 agents, 17 skill entry documents and 134 runtime
+modules. No migration has started; the attended refinement remains paused.
+
+Latest transport experiment: [localhost HTTP MCP round-trip measurements](mcp-http-latency-experiment.md).
+Direct requests took about 3–5 ms median with connection reuse, including a 58,388-byte
+payload case. Five real Codex calls took 4.85–6.99 ms each inside a 30.592-second
+agent sequence; most time was outside the observed tool intervals. Reusable probe
+source and all samples are saved. No storage integration was installed; refinement
+remains paused below.
+
+Latest storage experiment: [STDIO MCP instance sharing](mcp-stdio-sharing-experiment.md).
+An isolated test with the installed Codex runtime gave the parent and two child
+agents three distinct resident server processes. Each retained its own RAM markers;
+one child retained its process across a follow-up turn, but no markers crossed
+agents. A common store requires an explicit shared backend. The 68.027-second test
+and raw observations are saved; no shared service was installed and the attended
+refinement remains paused below.
+
+Latest pause: [segment 05 product-fact retrieval](attended-run-20260927-segment-05.md).
+The same UX agent finished its remaining instruction reads, then spent 41.713 seconds
+retrieving 58,388 bytes of compact product facts and a manifest through eight bounded
+reads. It was interrupted 70.998 seconds into product work without a saved proposal.
+Model 7 and canonical Alexa data are unchanged. Preserve loaded facts and flow-read
+progress; discuss retrieval round trips before continuing.
+
+Previous continuation: the owner authorized resuming the attended experiment after
+deferring startup optimizations and the [specialist coordination tradeoff](attended-run-20260927-segment-04.md#deferred-question-specialist-agents-versus-coordination-cost).
+Reuse model 7, the existing UX author and saved inputs. Correct ordinary errors and
+continue; stop on a new performance concern during actual refinement work. Do not
+repeat completed setup or implement the deferred architecture ideas now.
+
+Earlier pause: [segment 04 parent preparation](attended-run-20260927-segment-04.md).
+Model 7 is persisted and validated. A 423.351-second preparation window before UX
+dispatch was dominated by generated commands/scripts and reasoning-item streams;
+the local persistence/validation took 329 ms. UX is interrupted before delivery,
+with all imported units and input files retained. Discuss reusable parent execution
+before continuing; ordinary errors are fixed without pausing.
+
+Deferred optimization: [prepared agent reserve](attended-run-20260927-segment-04.md#deferred-optimization-prepared-agent-reserve).
+Keep fresh agents with instructions already loaded available before a refinement
+request, then prepare replacements after the skill completes. The owner chose to
+save this idea for later. It could move startup outside request latency; it does
+not remove preparation cost. No reserve has been implemented or measured.
+
+Deferred optimization: [prepared product-model refinement agent](attended-run-20260927-segment-04.md#deferred-optimization-prepared-product-model-refinement-agent).
+Assign product-model interpretation and proposal delivery to a waiting agent with
+update contracts already loaded, using a reusable assembly helper and file-path
+handoffs. The owner requested recording this candidate for later; its net benefit
+has not been measured and no role or workflow implementation has started.
+
+Earlier execution: [segment 03 baseline and model discovery](attended-run-20260927-segment-03.md).
+The 418-file baseline is captured and restore-tested; current-model validation took
+116 ms. A diagnostic buffer-index output error is corrected. The owner directed
+that ordinary errors be fixed and execution continue. Resume from saved data;
+pause only for a new suspected performance bottleneck. No Alexa mutation yet.
+
+Deferred optimization: [segment 02, instruction-loading cost](attended-run-20260927-segment-02.md).
+The bounded reader delivered the complete 52,876-byte skill in seven pages without
+truncation, but preparation consumed 62 seconds before Alexa processing. All
+measured command durations and coverage are saved. The owner chose to defer this
+optimization and continue downstream. Reuse the completed read and stop on the
+next new suspicious performance measurement.
+
+Earlier execution: [attended Alexa run, first diagnostic pause](attended-run-20260927.md).
+The owner authorized starting after updating the description. Instruction discovery
+exceeded the outer tool response budget and truncated input, triggering the first
+pause. At that boundary no design agents, product writes, baseline backup,
+or restore verification had run. The authorized [bounded reader](bounded-reader-validation.md)
+is now implemented: exact local reconstruction stayed within every page budget,
+and the package fast gate passed 152 tests. Later segments above record resumption.
+
+Current discussion: [proposed diagnostic-run rules](diagnostic-run-rules.md).
+The next modest Alexa edit will be an attended investigation across the complete
+refinement. Pause when a potential inefficiency is identified and discuss the next
+step with the owner; proving its root cause first is unnecessary. Preserve resumable
+work and every collected performance measurement, including successful operations,
+for later holistic analysis. Capture a restorable pre-run product baseline and
+freeze the edited description separately so the same change can be rerun. Keep
+attempt outputs and measurements outside rollback, and distinguish reruns from
+resuming saved work. Timing thresholds remain proposed. Starting was subsequently
+authorized; the current execution entry above records the pause awaiting discussion.
+
+Latest count: [action reuse in the actual full run](full-run-action-reuse.md).
+The frozen multitrack UX has 79 action definitions and 132 frame placements;
+21 actions occur in multiple frames. Separately, 50 actions were unchanged from
+the run's reconciled baseline, 18 changed and 11 were added. These are existing
+reuse counts, not additional dictionary savings or timing measurements.
+
+Latest experiment: [shared text with 40 actions](shared-text-large-trial.md).
+Ten times the prior action count produced exactly equivalent output with 19%
+fewer non-reasoning writing tokens and 15% less time after complete input delivery
+(348.274 versus 294.689 seconds). Two truncated reads per author exposed a separate
+input-delivery problem; tool-string escaping also differed. Retain selective reuse
+as a candidate, with these caveats, rather than generalizing the small trial's weak
+result. No production rollout occurred.
+
+Earlier experiment: [shared-text authoring](shared-text-authoring-trial.md).
+Four saved actions authored with a text dictionary were 11.7% smaller, but only
+3.4% fewer non-reasoning writing tokens; extra reasoning slightly increased total
+output tokens. Delivery fell from 48.876 to 47.439 seconds, too small a difference
+in one pair to establish a practical speedup. Both outputs passed without repair.
+That small trial alone did not support rollout; the larger result above supplies
+additional evidence. Retain the stronger compact-structure result as well.
+
+Latest evidence: [exact repetition](repetition-evaluation.md). In saved UX, 50 of
+79 actions repeat identical purpose/outcome/interaction text, and an offline
+shared-text representation saves 17.4% of minified UX bytes. UI long text offers
+negligible savings; structural reuse needs separate evaluation. These are size
+results, not authoring-time measurements, and overlap earlier compacting results.
+
+Latest assessment: [reduced data passing](reduced-data-passing-evaluation.md).
+Lossless offline packing of current saved records reduced UX bytes by 10.2% and
+UI bytes by 7.3%; these are size measurements, not authoring-speed results.
+Action/frame catalogs and UI parts hold most of the data. Expand compact authoring
+through explicit type-specific mappings; the evaluation made no production changes
+and remains separate from proposed monitoring/interruption work.
+
+Latest completed test: [direct JSON versus compact authoring](authoring-format-comparison.md).
+Matched authors produced exactly equivalent flows; compact rows plus scripted
+expansion reduced file-ready time from 67.833 to 40.759 seconds and writing-response
+output from 1,895 to 1,016 tokens. Expansion took 1.522 ms, with no author repairs.
+This single pair supports a narrow compact authoring contract; production adoption
+and full-refinement performance remain unverified.
+
+Owner follow-up: retain this measured gain as part of cumulative optimization.
+The [scaling assessment](authoring-format-comparison.md#scaling-and-cumulative-improvements)
+records expected roughly linear growth, the limits of applying stage savings to
+the whole run, and opportunities to reduce repeated authoring beyond formatting.
+Those opportunities remain unmeasured; preserve the current results as evidence
+when choosing and assessing subsequent improvements.
+
+Earlier investigation: [runtime performance diagnosis](performance-diagnosis.md).
+Existing records identified output generation as the main cost in the packet
+trial, substantial UI reasoning in the real design run, and a long uncompleted
+UX message before interruption. No new paid trial or model-setting change was
+needed. This supported investigating smaller authored output with durable unit
+delivery. The next actual refinement will test where time goes across the whole
+process under the proposed diagnostic rules above, without assuming output size
+explains every delay.
+
+Current discussion: [streaming assembly notes](streaming-assembly-notes.md) capture
+the proposed parallel assembler, smallest useful packets, partial delivery and
+forward references. The later authorized [bounded experiment](packet-assembly-experiment.md)
+preserved meaning but did not establish a speedup. Granular timing is implemented
+and locally verified; a production assembly-agent role remains unselected.
+
+Owner performance target, 2026-09-27: `refine-design` should complete well under
+one minute, ideally allowing a conversation change to update the description
+and flow through refinement immediately. This is an engineering target, not a
+measured capability. Measure small conversational changes and full initial
+processing separately without silently narrowing the owner's overall ambition.
+Direct file delivery removes duplicate transcription but does not establish that
+reasoning is already fast. Prioritize evidence separating authoring/delivery,
+review, tool execution and orchestration, then remove unnecessary whole-product
+work from local changes. See the [performance-target assessment](performance-findings.md#interactive-refinement-target).
+
+Current owner direction, 2026-09-27: this is greenfield development. Maintain only
+the current artifact schemas; automated backward compatibility and migration are
+not deliverables. One-off mutations or conversions to preserve development work
+are allowed. Keep their helpers disposable and outside shipped runtime code;
+validate the converted results against current contracts and reuse them. Do not
+add legacy readers, compatibility branches or permanent migration APIs. Update
+obsolete fixtures rather than expanding ordinary loaders/writers, and preserve
+the attended experiment's rollback baseline.
+The owner intends a full reprocess of the Alexa product description. When that
+rebuild is requested, generate fresh current-schema artifacts from the human-owned
+description without importing prior derived design. Reuse valid data produced
+during that new run. This direction records the intended rebuild; it does not
+start a reset now. Older migration and repair follow-ups below are historical
+where they conflict with this decision.
+
 Current completion: [native flow model migration](canonical-flow-migration-summary.md), following the [autonomous migration plan](canonical-flow-migration.md). The previous execution was the [single-pass UX/UI autonomous plan](single-pass-execution-plan.md),
 authorized 2026-09-27 for self-directed implementation, measurement, reuse, and
 adviser-triggered checkpoints with preapproved messages. This document retains

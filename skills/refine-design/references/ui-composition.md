@@ -14,7 +14,7 @@ Begin composition only after the exact UX schema 0.4 revision and requested scop
 
 ## Composition Response Mode
 
-For an explicit UI composition assignment, the named `ui-designer` returns only one schema 0.4 JSON proposal. It reads the supplied UX, passing UX-review evidence, and design-language sources in full, selects concrete hierarchy and layout within accepted UX, and does not write files or render HTML. Every selected UI decision is accepted working design by inclusion. It preserves supplied `locked` documents and records exactly unless the current user explicitly requests a change to that scope, and it never creates a lock from its own confidence. Product behavior remains owned by UX; behavior-changing suggestions use explicit UX change requests and return to the parent.
+For an explicit UI composition assignment, the named `ui-designer` returns only one schema 0.4 JSON proposal. It reads the supplied UX, passing UX-review evidence, and design-language sources in full, selects concrete hierarchy and layout within accepted UX, and may write only assigned temporary proposal JSON under the [file-delivery boundary](single-pass-design.md#proposal-file-permission-and-delivery). The parent consumes saved files directly and owns canonical persistence and HTML rendering. Every selected UI decision is accepted working design by inclusion. It preserves supplied `locked` documents and records exactly unless the current user explicitly requests a change to that scope, and it never creates a lock from its own confidence. Product behavior remains owned by UX; behavior-changing suggestions use explicit UX change requests and return to the parent.
 
 The response contains:
 

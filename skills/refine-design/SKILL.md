@@ -5,6 +5,17 @@ description: Refine human-owned product descriptions into canonical persisted pr
 
 # Refine Design
 
+For long instructions and batched file reads, use `scripts/bounded-read.mjs`
+with all requested paths in one invocation. It caps the complete raw response at
+4096 UTF-8 bytes by default, including source labels and continuation. Forward
+only its raw output, one page per tool response; do not aggregate pages or serialize
+the full tool-result object. Follow `NEXT` with the same ordered paths and
+`--cursor <token>` until `DONE`. Keep existing inner and outer tool restrictions,
+check for truncation, and track delivered ranges. See the
+[bounded-reader contract](references/performance-measurement.md#bounded-batch-reader).
+Scripts should inspect large design files directly and return only the records
+or summaries needed for the next decision.
+
 For initial or substantial UX/UI authoring after the trusted product facts are ready,
 use [single-pass authoring and resumable file handoff](references/single-pass-design.md).
 Request `single-pass-ux` and `single-pass-ui` modes: one forward authoring pass per
@@ -12,9 +23,20 @@ stage, at most one optional issue-directed repair pass, then deterministic assem
 into the current consumer schemas. Persist and reuse completed units during the run.
 Keep parsing, semantic review and product publication under their existing contracts.
 
+For structured UX/UI authoring, assign each author an absolute `proposalDirectory`
+inside an effective writable root, separate from canonical product data and the
+parent-owned record store. The author writes proposal JSON there and returns paths
+and status; consume those files directly. Follow the single-pass contract's startup
+and delivery checks so an inherited read-only role cannot silently restore a large
+text-only handoff. The parent retains validation, review, rendering and permanent
+persistence. This task-scoped temporary-file assignment needs no additional owner
+approval within an already authorized refinement.
+
 Run one bounded design-refinement cycle. For a whole-product refinement, complete both the UX and UI passes in this skill: persist UX, obtain its independent review, then compose UI from the reviewed UX. A request confined to one decision or artifact may update only the affected scope; preserve and revalidate dependent artifacts before treating them as current. Treat the user's current input as a fresh, potentially unstructured design input and reconstruct context from durable documents rather than conversation shape. Reuse product meaning and prior evidence recorded there; consult only specialists whose input can materially change the result. The workflow is planning-only, with a bounded design-language artifact path. It does not require a complete specification or a repository implementation opt-in.
 
 For product refinement, follow [the efficient stage sequence](references/refinement-cycle.md): interpret changed source once, plan from structured authority, consolidate writeback and freeze inputs before independent review, then compose UI and assemble packages deterministically. Use its planner-input and run-evidence helpers; preserve whole-product coverage and exact validation.
+
+For performance-sensitive refinement, capture [granular performance evidence](references/performance-measurement.md) during the work: agent windows, deliveries, tool/process durations and deterministic substeps. Preserve unknown measurements and overlap; do not infer reasoning time from a broad stage duration.
 
 ## Product Neutrality And Anti-Overfitting
 

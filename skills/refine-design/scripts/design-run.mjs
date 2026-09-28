@@ -148,8 +148,12 @@ export const DesignRun = {
 			storeRoot.startsWith(`${destination}${path.sep}`)
 		)
 			throw new Error('Keep record and assembly directories separate and nonnested');
+		const stages = {};
 		const root = outputRoot(directory);
+		const readAt = performance.now();
 		const input = DesignRecords.read(store);
+		stages.readMs = performance.now() - readAt;
+		const identityAt = performance.now();
 		const sourceRoot = options.sourceRoot ? path.resolve(options.sourceRoot) : undefined;
 		const assetRoot = options.assetRoot ? path.resolve(options.assetRoot) : undefined;
 		// External assets are not covered by JSON identities; runs using them deliberately bypass cache reuse.
@@ -168,6 +172,8 @@ export const DesignRun = {
 			}),
 		);
 		const reportPath = outputPath(root, `${identity}/report.json`);
+		stages.identityMs = performance.now() - identityAt;
+		const cacheAt = performance.now();
 		if (!externalAssets && fs.existsSync(reportPath)) {
 			try {
 				const prior = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
@@ -179,14 +185,20 @@ export const DesignRun = {
 						(output) => digest(fs.readFileSync(outputPath(root, output.relative))) === output.sha256,
 					)
 				)
-					return {...prior, reused: true, elapsedMs: performance.now() - started, bytesRead: input.bytesRead};
+					return {
+						...prior,
+						reused: true,
+						elapsedMs: performance.now() - started,
+						bytesRead: input.bytesRead,
+						stages: {...stages, cacheCheckMs: performance.now() - cacheAt},
+					};
 			} catch {
 				/* An interrupted or changed generated cache is rebuilt from retained records. */
 			}
 		}
+		stages.cacheCheckMs = performance.now() - cacheAt;
 		let document = null;
 		const issues = [...input.issues];
-		const stages = {};
 		let valid = false;
 		const assembledAt = performance.now();
 		try {
@@ -224,7 +236,9 @@ export const DesignRun = {
 		}
 		stages.validationMs = performance.now() - validatedAt;
 		const outputs = new Map();
+		const serializationAt = performance.now();
 		if (document) outputs.set('candidate.json', `${JSON.stringify(document, null, 2)}\n`);
+		stages.serializationMs = performance.now() - serializationAt;
 		if (options.render && input.header.stage === 'ui' && valid) {
 			const renderedAt = performance.now();
 			try {
@@ -252,11 +266,13 @@ export const DesignRun = {
 			`# Candidate repair notices\n\n${issues.length ? issues.map((entry) => `- ${entry.reference}: ${entry.reason}\n  Remedy: ${entry.remedy}`).join('\n') : 'No structural repairs reported. Independent semantic review remains required.'}\n`,
 		);
 		const saved = [];
+		const persistAt = performance.now();
 		for (const [relative, bytes] of outputs) {
 			const output = `${identity}/${relative}`;
 			write(outputPath(root, output), bytes);
 			saved.push({relative: output, sha256: digest(bytes), bytes: Buffer.byteLength(bytes)});
 		}
+		stages.persistMs = performance.now() - persistAt;
 		const report = {
 			version: VERSION,
 			producerVersion: ASSEMBLY_VERSION,

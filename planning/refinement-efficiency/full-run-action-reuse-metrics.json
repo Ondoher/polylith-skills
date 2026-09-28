@@ -1,0 +1,2689 @@
+{
+	"capturedAt": "2026-09-27T21:39:12.453Z",
+	"run": "C:/dev/alexa/product/Alexa/runs/run-20260927-160806-multitrack",
+	"sourceFiles": [
+		{
+			"path": "C:\\dev\\alexa\\product\\Alexa\\runs\\run-20260927-160806-multitrack\\final-ux-spec.json",
+			"sha256": "b2fa0be7cba3742c97f2763cf9fe72653b8f5e7705a125ea2dd00a3c1d832096"
+		},
+		{
+			"path": "C:\\dev\\alexa\\product\\Alexa\\runs\\run-20260927-160806-multitrack\\reconciled-base-ux.json",
+			"sha256": "70ef0f3c45ee1c4278682dea24f383fef9c3bdadfff7b9e2b1fe51691415127f"
+		},
+		{
+			"path": "C:\\dev\\alexa\\product\\Alexa\\runs\\run-20260927-160806-multitrack\\previous-ux-spec-0.3.json",
+			"sha256": "180b5d08a3a295d11b35036e3e17a806e77d8b80c85b98b467a53015d11002b8"
+		},
+		{
+			"path": "C:\\dev\\alexa\\product\\Alexa\\runs\\run-20260927-160806-multitrack\\ux-changed-records.json",
+			"sha256": "2202da64e523863049f806e17e48e1bd0541387fcde734d4a9a5996a0a1fc3ec"
+		},
+		{
+			"path": "C:\\dev\\alexa\\product\\Alexa\\runs\\run-20260927-160806-multitrack\\ux-assembly-performance.json",
+			"sha256": "88be78828b01ff1af7125b275e55de484e6686c4220ef17e4d2f5f59523d25c8"
+		},
+		{
+			"path": "C:\\dev\\alexa\\product\\Alexa\\runs\\run-20260927-160806-multitrack\\run-report.md",
+			"sha256": "af4af6b3fa031213b0d1cb0f9d612af2d66fbcf293554be3922cb30ac852ec5f"
+		}
+	],
+	"uniqueActions": 79,
+	"frames": 29,
+	"flows": 11,
+	"frameUsage": {
+		"distinctActionsUsed": 79,
+		"totalOccurrences": 132,
+		"actionsInMultipleFrames": 21,
+		"extraOccurrencesBeyondFirstPerAction": 53,
+		"distributionByDistinctFrameCount": {
+			"1": 58,
+			"2": 11,
+			"4": 5,
+			"6": 4,
+			"8": 1
+		}
+	},
+	"flowUsage": {
+		"distinctActionsUsed": 79,
+		"primaryStepOccurrences": 35,
+		"alternateStepOccurrences": 56,
+		"actionsInMultipleFlows": 6,
+		"actionsInMultipleSteps": 6,
+		"extraStepOccurrencesBeyondFirstPerAction": 12,
+		"stepsWithoutActionRef": 17,
+		"distributionByDistinctFlowCount": {
+			"1": 73,
+			"2": 4,
+			"3": 1,
+			"4": 1
+		}
+	},
+	"baselineComparison": {
+		"baselineActions": 68,
+		"finalActions": 79,
+		"unchangedCount": 50,
+		"changedCount": 18,
+		"newCount": 11,
+		"removedCount": 0,
+		"unchangedIds": [
+			"navigate",
+			"new-project",
+			"open-project",
+			"save-project",
+			"save-project-as",
+			"keep-draft",
+			"discard-draft",
+			"discard-project",
+			"cancel-transition",
+			"add-files",
+			"select-content",
+			"open-content",
+			"choose-video",
+			"name-video",
+			"set-range-boundary",
+			"clear-selection",
+			"scrub",
+			"step-frame",
+			"selection-actions",
+			"stop-preview",
+			"zoom-player-in",
+			"zoom-player-out",
+			"fit-player",
+			"pan-player",
+			"pan-timeline",
+			"follow-playhead",
+			"save-video",
+			"name-clip",
+			"choose-playlist",
+			"name-playlist",
+			"add-playlist-items",
+			"reorder-playlist",
+			"remove-playlist-items",
+			"save-playlist",
+			"choose-playback",
+			"play-pause",
+			"stop-playback",
+			"previous-item",
+			"next-item",
+			"shuffle",
+			"repeat",
+			"choose-export-video",
+			"choose-destination",
+			"export",
+			"replace-output",
+			"choose-another-destination",
+			"cancel-export-decision",
+			"request-cancel-export",
+			"confirm-cancel-export",
+			"continue-export"
+		],
+		"changedIds": [
+			"add-timeline",
+			"insert-content",
+			"select-range",
+			"select-objects",
+			"trim-occurrence",
+			"delete-selection",
+			"split-selection",
+			"reorder-objects",
+			"undo",
+			"redo",
+			"play-preview",
+			"zoom-timeline",
+			"dismiss-editor",
+			"open-save-clip",
+			"create-clip",
+			"open-update-clip",
+			"confirm-update",
+			"set-insertion"
+		],
+		"newIds": [
+			"select-track",
+			"choose-timeline-content",
+			"edit-track-rectangle",
+			"edit-source-rectangle",
+			"adjust-rectangle",
+			"reset-rectangle",
+			"apply-rectangle",
+			"set-track-volume",
+			"mute-track",
+			"set-clip-volume",
+			"mute-clip"
+		],
+		"removedIds": [],
+		"recordedChangedActionIds": [
+			"select-range",
+			"select-objects",
+			"set-insertion",
+			"insert-content",
+			"trim-occurrence",
+			"reorder-objects",
+			"delete-selection",
+			"split-selection",
+			"play-preview",
+			"undo",
+			"redo",
+			"open-save-clip",
+			"create-clip",
+			"open-update-clip",
+			"confirm-update",
+			"dismiss-editor",
+			"select-track",
+			"choose-timeline-content",
+			"edit-track-rectangle",
+			"edit-source-rectangle",
+			"adjust-rectangle",
+			"reset-rectangle",
+			"apply-rectangle",
+			"set-track-volume",
+			"mute-track",
+			"set-clip-volume",
+			"mute-clip",
+			"add-timeline",
+			"zoom-timeline"
+		],
+		"baseChangedFromOriginalPriorArtifact": [
+			"navigate",
+			"new-project",
+			"open-project",
+			"save-project",
+			"save-project-as",
+			"keep-draft",
+			"discard-draft",
+			"discard-project",
+			"cancel-transition",
+			"add-files",
+			"select-content",
+			"open-content",
+			"choose-video",
+			"name-video",
+			"add-timeline",
+			"insert-content",
+			"select-range",
+			"set-range-boundary",
+			"clear-selection",
+			"select-objects",
+			"scrub",
+			"step-frame",
+			"trim-occurrence",
+			"selection-actions",
+			"delete-selection",
+			"split-selection",
+			"reorder-objects",
+			"undo",
+			"redo",
+			"play-preview",
+			"stop-preview",
+			"zoom-player-in",
+			"zoom-player-out",
+			"fit-player",
+			"pan-player",
+			"zoom-timeline",
+			"pan-timeline",
+			"follow-playhead",
+			"save-video",
+			"dismiss-editor",
+			"open-save-clip",
+			"name-clip",
+			"create-clip",
+			"open-update-clip",
+			"confirm-update",
+			"choose-playlist",
+			"name-playlist",
+			"add-playlist-items",
+			"reorder-playlist",
+			"remove-playlist-items",
+			"save-playlist",
+			"choose-playback",
+			"play-pause",
+			"stop-playback",
+			"previous-item",
+			"next-item",
+			"shuffle",
+			"repeat",
+			"choose-export-video",
+			"choose-destination",
+			"export",
+			"replace-output",
+			"choose-another-destination",
+			"cancel-export-decision",
+			"request-cancel-export",
+			"confirm-cancel-export",
+			"continue-export",
+			"set-insertion"
+		]
+	},
+	"mostReusedInFrames": [
+		{
+			"id": "save-project",
+			"name": "Save",
+			"frameCount": 8,
+			"flowCount": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "dismiss-editor",
+			"name": "Cancel or close",
+			"frameCount": 6,
+			"flowCount": 4,
+			"flowStepOccurrences": 6
+		},
+		{
+			"id": "navigate",
+			"name": "Workspace",
+			"frameCount": 6,
+			"flowCount": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "new-project",
+			"name": "New",
+			"frameCount": 6,
+			"flowCount": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "open-project",
+			"name": "Open",
+			"frameCount": 6,
+			"flowCount": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "cancel-transition",
+			"name": "Cancel",
+			"frameCount": 4,
+			"flowCount": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "discard-draft",
+			"name": "Discard draft",
+			"frameCount": 4,
+			"flowCount": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "discard-project",
+			"name": "Discard project changes",
+			"frameCount": 4,
+			"flowCount": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "keep-draft",
+			"name": "Keep Editing",
+			"frameCount": 4,
+			"flowCount": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "save-project-as",
+			"name": "Save As",
+			"frameCount": 4,
+			"flowCount": 1,
+			"flowStepOccurrences": 1
+		}
+	],
+	"usages": [
+		{
+			"id": "navigate",
+			"name": "Workspace",
+			"frames": [
+				"library-view",
+				"video-view",
+				"playback-view",
+				"export-view",
+				"export-running-view",
+				"export-canceling-view"
+			],
+			"flows": ["navigate-work"],
+			"frameUses": [
+				{
+					"frameId": "library-view",
+					"regionId": "library-view-project-header",
+					"affordanceId": "library-view-navigate"
+				},
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-project-header",
+					"affordanceId": "video-view-navigate"
+				},
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-project-header",
+					"affordanceId": "playback-view-navigate"
+				},
+				{
+					"frameId": "export-view",
+					"regionId": "export-view-project-header",
+					"affordanceId": "export-view-navigate"
+				},
+				{
+					"frameId": "export-running-view",
+					"regionId": "export-running-view-project-header",
+					"affordanceId": "export-running-view-navigate"
+				},
+				{
+					"frameId": "export-canceling-view",
+					"regionId": "export-canceling-view-project-header",
+					"affordanceId": "export-canceling-view-navigate"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "navigate-work",
+					"alternateId": null,
+					"stepId": "navigate-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 6,
+			"flowCount": 1,
+			"frameOccurrences": 6,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "new-project",
+			"name": "New",
+			"frames": [
+				"library-view",
+				"video-view",
+				"playback-view",
+				"export-view",
+				"export-running-view",
+				"export-canceling-view"
+			],
+			"flows": ["protect-project"],
+			"frameUses": [
+				{
+					"frameId": "library-view",
+					"regionId": "library-view-project-header",
+					"affordanceId": "library-view-new-project"
+				},
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-project-header",
+					"affordanceId": "video-view-new-project"
+				},
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-project-header",
+					"affordanceId": "playback-view-new-project"
+				},
+				{
+					"frameId": "export-view",
+					"regionId": "export-view-project-header",
+					"affordanceId": "export-view-new-project"
+				},
+				{
+					"frameId": "export-running-view",
+					"regionId": "export-running-view-project-header",
+					"affordanceId": "export-running-view-new-project"
+				},
+				{
+					"frameId": "export-canceling-view",
+					"regionId": "export-canceling-view-project-header",
+					"affordanceId": "export-canceling-view-new-project"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "protect-project",
+					"alternateId": "edge-11",
+					"stepId": "protect-project-new-project-step"
+				}
+			],
+			"frameCount": 6,
+			"flowCount": 1,
+			"frameOccurrences": 6,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "open-project",
+			"name": "Open",
+			"frames": [
+				"library-view",
+				"video-view",
+				"playback-view",
+				"export-view",
+				"export-running-view",
+				"export-canceling-view"
+			],
+			"flows": ["protect-project"],
+			"frameUses": [
+				{
+					"frameId": "library-view",
+					"regionId": "library-view-project-header",
+					"affordanceId": "library-view-open-project"
+				},
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-project-header",
+					"affordanceId": "video-view-open-project"
+				},
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-project-header",
+					"affordanceId": "playback-view-open-project"
+				},
+				{
+					"frameId": "export-view",
+					"regionId": "export-view-project-header",
+					"affordanceId": "export-view-open-project"
+				},
+				{
+					"frameId": "export-running-view",
+					"regionId": "export-running-view-project-header",
+					"affordanceId": "export-running-view-open-project"
+				},
+				{
+					"frameId": "export-canceling-view",
+					"regionId": "export-canceling-view-project-header",
+					"affordanceId": "export-canceling-view-open-project"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "protect-project",
+					"alternateId": null,
+					"stepId": "open-project-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 6,
+			"flowCount": 1,
+			"frameOccurrences": 6,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "save-project",
+			"name": "Save",
+			"frames": [
+				"library-view",
+				"video-view",
+				"playback-view",
+				"export-view",
+				"library-project-guard",
+				"video-project-guard",
+				"playback-project-guard",
+				"export-project-guard"
+			],
+			"flows": ["protect-project"],
+			"frameUses": [
+				{
+					"frameId": "library-view",
+					"regionId": "library-view-project-header",
+					"affordanceId": "library-view-save-project"
+				},
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-project-header",
+					"affordanceId": "video-view-save-project"
+				},
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-project-header",
+					"affordanceId": "playback-view-save-project"
+				},
+				{
+					"frameId": "export-view",
+					"regionId": "export-view-project-header",
+					"affordanceId": "export-view-save-project"
+				},
+				{
+					"frameId": "library-project-guard",
+					"regionId": "library-project-guard-decision",
+					"affordanceId": "library-project-guard-save-project"
+				},
+				{
+					"frameId": "video-project-guard",
+					"regionId": "video-project-guard-decision",
+					"affordanceId": "video-project-guard-save-project"
+				},
+				{
+					"frameId": "playback-project-guard",
+					"regionId": "playback-project-guard-decision",
+					"affordanceId": "playback-project-guard-save-project"
+				},
+				{
+					"frameId": "export-project-guard",
+					"regionId": "export-project-guard-decision",
+					"affordanceId": "export-project-guard-save-project"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "protect-project",
+					"alternateId": null,
+					"stepId": "protect-project-save-project-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 8,
+			"flowCount": 1,
+			"frameOccurrences": 8,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "save-project-as",
+			"name": "Save As",
+			"frames": ["library-view", "video-view", "playback-view", "export-view"],
+			"flows": ["protect-project"],
+			"frameUses": [
+				{
+					"frameId": "library-view",
+					"regionId": "library-view-project-header",
+					"affordanceId": "library-view-save-project-as"
+				},
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-project-header",
+					"affordanceId": "video-view-save-project-as"
+				},
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-project-header",
+					"affordanceId": "playback-view-save-project-as"
+				},
+				{
+					"frameId": "export-view",
+					"regionId": "export-view-project-header",
+					"affordanceId": "export-view-save-project-as"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "protect-project",
+					"alternateId": "edge-12",
+					"stepId": "protect-project-save-project-as-step"
+				}
+			],
+			"frameCount": 4,
+			"flowCount": 1,
+			"frameOccurrences": 4,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "keep-draft",
+			"name": "Keep Editing",
+			"frames": ["library-guard", "video-guard", "playback-guard", "export-guard"],
+			"flows": ["protect-project"],
+			"frameUses": [
+				{
+					"frameId": "library-guard",
+					"regionId": "library-guard-decision",
+					"affordanceId": "library-guard-keep-draft"
+				},
+				{
+					"frameId": "video-guard",
+					"regionId": "video-guard-decision",
+					"affordanceId": "video-guard-keep-draft"
+				},
+				{
+					"frameId": "playback-guard",
+					"regionId": "playback-guard-decision",
+					"affordanceId": "playback-guard-keep-draft"
+				},
+				{
+					"frameId": "export-guard",
+					"regionId": "export-guard-decision",
+					"affordanceId": "export-guard-keep-draft"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "protect-project",
+					"alternateId": "edge-13",
+					"stepId": "protect-project-keep-draft-step"
+				}
+			],
+			"frameCount": 4,
+			"flowCount": 1,
+			"frameOccurrences": 4,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "discard-draft",
+			"name": "Discard draft",
+			"frames": ["library-guard", "video-guard", "playback-guard", "export-guard"],
+			"flows": ["protect-project"],
+			"frameUses": [
+				{
+					"frameId": "library-guard",
+					"regionId": "library-guard-decision",
+					"affordanceId": "library-guard-discard-draft"
+				},
+				{
+					"frameId": "video-guard",
+					"regionId": "video-guard-decision",
+					"affordanceId": "video-guard-discard-draft"
+				},
+				{
+					"frameId": "playback-guard",
+					"regionId": "playback-guard-decision",
+					"affordanceId": "playback-guard-discard-draft"
+				},
+				{
+					"frameId": "export-guard",
+					"regionId": "export-guard-decision",
+					"affordanceId": "export-guard-discard-draft"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "protect-project",
+					"alternateId": "edge-14",
+					"stepId": "protect-project-discard-draft-step"
+				}
+			],
+			"frameCount": 4,
+			"flowCount": 1,
+			"frameOccurrences": 4,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "discard-project",
+			"name": "Discard project changes",
+			"frames": [
+				"library-project-guard",
+				"video-project-guard",
+				"playback-project-guard",
+				"export-project-guard"
+			],
+			"flows": ["protect-project"],
+			"frameUses": [
+				{
+					"frameId": "library-project-guard",
+					"regionId": "library-project-guard-decision",
+					"affordanceId": "library-project-guard-discard-project"
+				},
+				{
+					"frameId": "video-project-guard",
+					"regionId": "video-project-guard-decision",
+					"affordanceId": "video-project-guard-discard-project"
+				},
+				{
+					"frameId": "playback-project-guard",
+					"regionId": "playback-project-guard-decision",
+					"affordanceId": "playback-project-guard-discard-project"
+				},
+				{
+					"frameId": "export-project-guard",
+					"regionId": "export-project-guard-decision",
+					"affordanceId": "export-project-guard-discard-project"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "protect-project",
+					"alternateId": "edge-15",
+					"stepId": "protect-project-discard-project-step"
+				}
+			],
+			"frameCount": 4,
+			"flowCount": 1,
+			"frameOccurrences": 4,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "cancel-transition",
+			"name": "Cancel",
+			"frames": [
+				"library-project-guard",
+				"video-project-guard",
+				"playback-project-guard",
+				"export-project-guard"
+			],
+			"flows": ["protect-project"],
+			"frameUses": [
+				{
+					"frameId": "library-project-guard",
+					"regionId": "library-project-guard-decision",
+					"affordanceId": "library-project-guard-cancel-transition"
+				},
+				{
+					"frameId": "video-project-guard",
+					"regionId": "video-project-guard-decision",
+					"affordanceId": "video-project-guard-cancel-transition"
+				},
+				{
+					"frameId": "playback-project-guard",
+					"regionId": "playback-project-guard-decision",
+					"affordanceId": "playback-project-guard-cancel-transition"
+				},
+				{
+					"frameId": "export-project-guard",
+					"regionId": "export-project-guard-decision",
+					"affordanceId": "export-project-guard-cancel-transition"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "protect-project",
+					"alternateId": "edge-16",
+					"stepId": "protect-project-cancel-transition-step"
+				}
+			],
+			"frameCount": 4,
+			"flowCount": 1,
+			"frameOccurrences": 4,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "add-files",
+			"name": "Add Video Files",
+			"frames": ["library-view"],
+			"flows": ["browse-content"],
+			"frameUses": [
+				{
+					"frameId": "library-view",
+					"regionId": "library-view-library-content",
+					"affordanceId": "library-view-add-files"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "browse-content",
+					"alternateId": null,
+					"stepId": "add-files-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "select-content",
+			"name": "Select content",
+			"frames": ["library-view"],
+			"flows": ["browse-content"],
+			"frameUses": [
+				{
+					"frameId": "library-view",
+					"regionId": "library-view-library-content",
+					"affordanceId": "library-view-select-content"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "browse-content",
+					"alternateId": null,
+					"stepId": "browse-content-select-content-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "open-content",
+			"name": "Open selected content",
+			"frames": ["library-view"],
+			"flows": ["browse-content"],
+			"frameUses": [
+				{
+					"frameId": "library-view",
+					"regionId": "library-view-library-detail",
+					"affordanceId": "library-view-open-content"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "browse-content",
+					"alternateId": null,
+					"stepId": "browse-content-open-content-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "choose-video",
+			"name": "New or open video",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-identity",
+					"affordanceId": "video-view-choose-video"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": null,
+					"stepId": "choose-video-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "name-video",
+			"name": "Video name",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-identity",
+					"affordanceId": "video-view-name-video"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-56",
+					"stepId": "edit-video-name-video-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "add-timeline",
+			"name": "Add to Timeline",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-operations",
+					"affordanceId": "video-view-add-timeline"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": null,
+					"stepId": "edit-video-add-timeline-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "insert-content",
+			"name": "Add",
+			"frames": ["timeline-add"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "timeline-add",
+					"regionId": "timeline-add-decision",
+					"affordanceId": "timeline-add-insert-content"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": null,
+					"stepId": "edit-video-insert-content-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "select-range",
+			"name": "Select range",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-range",
+					"affordanceId": "video-view-select-range"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-58",
+					"stepId": "edit-video-select-range-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "set-range-boundary",
+			"name": "Selection Start and End",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-range",
+					"affordanceId": "video-view-set-range-boundary"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-59",
+					"stepId": "edit-video-set-range-boundary-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "clear-selection",
+			"name": "Clear selection",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-range",
+					"affordanceId": "video-view-clear-selection"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-60",
+					"stepId": "edit-video-clear-selection-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "select-objects",
+			"name": "Select timeline objects",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-track",
+					"affordanceId": "video-view-select-objects"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": null,
+					"stepId": "edit-video-select-objects-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "scrub",
+			"name": "Playhead",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-range",
+					"affordanceId": "video-view-scrub"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-61",
+					"stepId": "edit-video-scrub-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "step-frame",
+			"name": "Previous or next frame",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-range",
+					"affordanceId": "video-view-step-frame"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-62",
+					"stepId": "edit-video-step-frame-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "trim-occurrence",
+			"name": "Trim occurrence Start or End",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-track",
+					"affordanceId": "video-view-trim-occurrence"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": null,
+					"stepId": "edit-video-trim-occurrence-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "selection-actions",
+			"name": "Selection actions",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-operations",
+					"affordanceId": "video-view-selection-actions"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-63",
+					"stepId": "edit-video-selection-actions-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "delete-selection",
+			"name": "Delete",
+			"frames": ["selection-menu"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "selection-menu",
+					"regionId": "selection-menu-decision",
+					"affordanceId": "selection-menu-delete-selection"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-64",
+					"stepId": "edit-video-delete-selection-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "split-selection",
+			"name": "Split",
+			"frames": ["selection-menu"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "selection-menu",
+					"regionId": "selection-menu-decision",
+					"affordanceId": "selection-menu-split-selection"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-65",
+					"stepId": "edit-video-split-selection-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "reorder-objects",
+			"name": "Reorder",
+			"frames": ["video-view", "selection-menu"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-track",
+					"affordanceId": "video-view-reorder-objects"
+				},
+				{
+					"frameId": "selection-menu",
+					"regionId": "selection-menu-decision",
+					"affordanceId": "selection-menu-reorder-objects"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-66",
+					"stepId": "edit-video-reorder-objects-step"
+				}
+			],
+			"frameCount": 2,
+			"flowCount": 1,
+			"frameOccurrences": 2,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "undo",
+			"name": "Undo",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-operations",
+					"affordanceId": "video-view-undo"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-67",
+					"stepId": "edit-video-undo-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "redo",
+			"name": "Redo",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-operations",
+					"affordanceId": "video-view-redo"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-68",
+					"stepId": "edit-video-redo-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "play-preview",
+			"name": "Play",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-range",
+					"affordanceId": "video-view-play-preview"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-69",
+					"stepId": "edit-video-play-preview-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "stop-preview",
+			"name": "Stop",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-range",
+					"affordanceId": "video-view-stop-preview"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-70",
+					"stepId": "edit-video-stop-preview-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "zoom-player-in",
+			"name": "Player Zoom In",
+			"frames": ["video-view", "video-saving-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-player",
+					"affordanceId": "video-view-zoom-player-in"
+				},
+				{
+					"frameId": "video-saving-view",
+					"regionId": "video-saving-view-video-player",
+					"affordanceId": "video-saving-view-zoom-player-in"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-71",
+					"stepId": "edit-video-zoom-player-in-step"
+				}
+			],
+			"frameCount": 2,
+			"flowCount": 1,
+			"frameOccurrences": 2,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "zoom-player-out",
+			"name": "Player Zoom Out",
+			"frames": ["video-view", "video-saving-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-player",
+					"affordanceId": "video-view-zoom-player-out"
+				},
+				{
+					"frameId": "video-saving-view",
+					"regionId": "video-saving-view-video-player",
+					"affordanceId": "video-saving-view-zoom-player-out"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-72",
+					"stepId": "edit-video-zoom-player-out-step"
+				}
+			],
+			"frameCount": 2,
+			"flowCount": 1,
+			"frameOccurrences": 2,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "fit-player",
+			"name": "Player Fit",
+			"frames": ["video-view", "video-saving-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-player",
+					"affordanceId": "video-view-fit-player"
+				},
+				{
+					"frameId": "video-saving-view",
+					"regionId": "video-saving-view-video-player",
+					"affordanceId": "video-saving-view-fit-player"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-73",
+					"stepId": "edit-video-fit-player-step"
+				}
+			],
+			"frameCount": 2,
+			"flowCount": 1,
+			"frameOccurrences": 2,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "pan-player",
+			"name": "Pan magnified player",
+			"frames": ["video-view", "video-saving-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-player",
+					"affordanceId": "video-view-pan-player"
+				},
+				{
+					"frameId": "video-saving-view",
+					"regionId": "video-saving-view-video-player",
+					"affordanceId": "video-saving-view-pan-player"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-74",
+					"stepId": "edit-video-pan-player-step"
+				}
+			],
+			"frameCount": 2,
+			"flowCount": 1,
+			"frameOccurrences": 2,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "zoom-timeline",
+			"name": "Timeline zoom",
+			"frames": ["video-view", "video-saving-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-range",
+					"affordanceId": "video-view-zoom-timeline"
+				},
+				{
+					"frameId": "video-saving-view",
+					"regionId": "video-saving-view-video-range",
+					"affordanceId": "video-saving-view-zoom-timeline"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-75",
+					"stepId": "edit-video-zoom-timeline-step"
+				}
+			],
+			"frameCount": 2,
+			"flowCount": 1,
+			"frameOccurrences": 2,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "pan-timeline",
+			"name": "Pan timeline",
+			"frames": ["video-view", "video-saving-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-range",
+					"affordanceId": "video-view-pan-timeline"
+				},
+				{
+					"frameId": "video-saving-view",
+					"regionId": "video-saving-view-video-range",
+					"affordanceId": "video-saving-view-pan-timeline"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-76",
+					"stepId": "edit-video-pan-timeline-step"
+				}
+			],
+			"frameCount": 2,
+			"flowCount": 1,
+			"frameOccurrences": 2,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "follow-playhead",
+			"name": "Return to playhead",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-range",
+					"affordanceId": "video-view-follow-playhead"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-77",
+					"stepId": "edit-video-follow-playhead-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "save-video",
+			"name": "Save Video",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-operations",
+					"affordanceId": "video-view-save-video"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": null,
+					"stepId": "edit-video-save-video-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "dismiss-editor",
+			"name": "Cancel or close",
+			"frames": [
+				"timeline-add",
+				"selection-menu",
+				"clip-create",
+				"clip-update",
+				"track-rectangle",
+				"source-rectangle"
+			],
+			"flows": ["edit-video", "save-clip", "update-clip", "frame-composition"],
+			"frameUses": [
+				{
+					"frameId": "timeline-add",
+					"regionId": "timeline-add-decision",
+					"affordanceId": "timeline-add-dismiss-editor"
+				},
+				{
+					"frameId": "selection-menu",
+					"regionId": "selection-menu-decision",
+					"affordanceId": "selection-menu-dismiss-editor"
+				},
+				{
+					"frameId": "clip-create",
+					"regionId": "clip-create-decision",
+					"affordanceId": "clip-create-dismiss-editor"
+				},
+				{
+					"frameId": "clip-update",
+					"regionId": "clip-update-decision",
+					"affordanceId": "clip-update-dismiss-editor"
+				},
+				{
+					"frameId": "track-rectangle",
+					"regionId": "track-rectangle-fields",
+					"affordanceId": "track-rectangle-cancel"
+				},
+				{
+					"frameId": "source-rectangle",
+					"regionId": "source-rectangle-fields",
+					"affordanceId": "source-rectangle-cancel"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-78",
+					"stepId": "edit-video-dismiss-editor-step"
+				},
+				{
+					"flowId": "edit-video",
+					"alternateId": "add-canceled",
+					"stepId": "add-canceled-dismiss"
+				},
+				{
+					"flowId": "edit-video",
+					"alternateId": "add-crop-canceled",
+					"stepId": "add-crop-cancel"
+				},
+				{
+					"flowId": "save-clip",
+					"alternateId": "edge-85",
+					"stepId": "save-clip-dismiss-editor-step"
+				},
+				{
+					"flowId": "update-clip",
+					"alternateId": "edge-90",
+					"stepId": "update-clip-dismiss-editor-step"
+				},
+				{
+					"flowId": "frame-composition",
+					"alternateId": "framing-canceled",
+					"stepId": "framing-dismiss"
+				}
+			],
+			"frameCount": 6,
+			"flowCount": 4,
+			"frameOccurrences": 6,
+			"flowStepOccurrences": 6
+		},
+		{
+			"id": "open-save-clip",
+			"name": "Save Clip to Library",
+			"frames": ["selection-menu"],
+			"flows": ["save-clip"],
+			"frameUses": [
+				{
+					"frameId": "selection-menu",
+					"regionId": "selection-menu-decision",
+					"affordanceId": "selection-menu-open-save-clip"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "save-clip",
+					"alternateId": null,
+					"stepId": "open-save-clip-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "name-clip",
+			"name": "Clip name",
+			"frames": ["clip-create"],
+			"flows": ["save-clip"],
+			"frameUses": [
+				{
+					"frameId": "clip-create",
+					"regionId": "clip-create-decision",
+					"affordanceId": "clip-create-name-clip"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "save-clip",
+					"alternateId": null,
+					"stepId": "save-clip-name-clip-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "create-clip",
+			"name": "Save Clip",
+			"frames": ["clip-create"],
+			"flows": ["save-clip"],
+			"frameUses": [
+				{
+					"frameId": "clip-create",
+					"regionId": "clip-create-decision",
+					"affordanceId": "clip-create-create-clip"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "save-clip",
+					"alternateId": null,
+					"stepId": "save-clip-create-clip-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "open-update-clip",
+			"name": "Update Named Clip",
+			"frames": ["selection-menu"],
+			"flows": ["update-clip"],
+			"frameUses": [
+				{
+					"frameId": "selection-menu",
+					"regionId": "selection-menu-decision",
+					"affordanceId": "selection-menu-open-update-clip"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "update-clip",
+					"alternateId": null,
+					"stepId": "open-update-clip-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "confirm-update",
+			"name": "Update Named Clip",
+			"frames": ["clip-update"],
+			"flows": ["update-clip"],
+			"frameUses": [
+				{
+					"frameId": "clip-update",
+					"regionId": "clip-update-decision",
+					"affordanceId": "clip-update-confirm-update"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "update-clip",
+					"alternateId": null,
+					"stepId": "update-clip-confirm-update-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "choose-playlist",
+			"name": "New or open playlist",
+			"frames": ["playback-view"],
+			"flows": ["edit-playlist"],
+			"frameUses": [
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-playlist-editor",
+					"affordanceId": "playback-view-choose-playlist"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "edit-playlist",
+					"alternateId": null,
+					"stepId": "choose-playlist-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "name-playlist",
+			"name": "Playlist name",
+			"frames": ["playback-view"],
+			"flows": ["edit-playlist"],
+			"frameUses": [
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-playlist-editor",
+					"affordanceId": "playback-view-name-playlist"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "edit-playlist",
+					"alternateId": null,
+					"stepId": "edit-playlist-name-playlist-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "add-playlist-items",
+			"name": "Add playlist items",
+			"frames": ["playback-view"],
+			"flows": ["edit-playlist"],
+			"frameUses": [
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-playlist-editor",
+					"affordanceId": "playback-view-add-playlist-items"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "edit-playlist",
+					"alternateId": null,
+					"stepId": "edit-playlist-add-playlist-items-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "reorder-playlist",
+			"name": "Reorder playlist items",
+			"frames": ["playback-view"],
+			"flows": ["edit-playlist"],
+			"frameUses": [
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-playlist-editor",
+					"affordanceId": "playback-view-reorder-playlist"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-playlist",
+					"alternateId": "edge-100",
+					"stepId": "edit-playlist-reorder-playlist-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "remove-playlist-items",
+			"name": "Remove playlist items",
+			"frames": ["playback-view"],
+			"flows": ["edit-playlist"],
+			"frameUses": [
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-playlist-editor",
+					"affordanceId": "playback-view-remove-playlist-items"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-playlist",
+					"alternateId": "edge-101",
+					"stepId": "edit-playlist-remove-playlist-items-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "save-playlist",
+			"name": "Save Playlist",
+			"frames": ["playback-view"],
+			"flows": ["edit-playlist"],
+			"frameUses": [
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-playlist-editor",
+					"affordanceId": "playback-view-save-playlist"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "edit-playlist",
+					"alternateId": null,
+					"stepId": "edit-playlist-save-playlist-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "choose-playback",
+			"name": "Playback content",
+			"frames": ["playback-view"],
+			"flows": ["play-content"],
+			"frameUses": [
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-playback-browser",
+					"affordanceId": "playback-view-choose-playback"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "play-content",
+					"alternateId": null,
+					"stepId": "choose-playback-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "play-pause",
+			"name": "Play or Pause",
+			"frames": ["playback-view"],
+			"flows": ["play-content"],
+			"frameUses": [
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-playback-player",
+					"affordanceId": "playback-view-play-pause"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "play-content",
+					"alternateId": null,
+					"stepId": "play-content-play-pause-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "stop-playback",
+			"name": "Stop",
+			"frames": ["playback-view"],
+			"flows": ["play-content"],
+			"frameUses": [
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-playback-player",
+					"affordanceId": "playback-view-stop-playback"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "play-content",
+					"alternateId": null,
+					"stepId": "play-content-stop-playback-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "previous-item",
+			"name": "Previous",
+			"frames": ["playback-view"],
+			"flows": ["play-content"],
+			"frameUses": [
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-playback-player",
+					"affordanceId": "playback-view-previous-item"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "play-content",
+					"alternateId": "edge-111",
+					"stepId": "play-content-previous-item-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "next-item",
+			"name": "Next",
+			"frames": ["playback-view"],
+			"flows": ["play-content"],
+			"frameUses": [
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-playback-player",
+					"affordanceId": "playback-view-next-item"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "play-content",
+					"alternateId": "edge-112",
+					"stepId": "play-content-next-item-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "shuffle",
+			"name": "Shuffle",
+			"frames": ["playback-view"],
+			"flows": ["play-content"],
+			"frameUses": [
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-playback-player",
+					"affordanceId": "playback-view-shuffle"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "play-content",
+					"alternateId": "edge-113",
+					"stepId": "play-content-shuffle-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "repeat",
+			"name": "Repeat",
+			"frames": ["playback-view"],
+			"flows": ["play-content"],
+			"frameUses": [
+				{
+					"frameId": "playback-view",
+					"regionId": "playback-view-playback-player",
+					"affordanceId": "playback-view-repeat"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "play-content",
+					"alternateId": "edge-114",
+					"stepId": "play-content-repeat-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "choose-export-video",
+			"name": "Saved video",
+			"frames": ["export-view"],
+			"flows": ["export-video"],
+			"frameUses": [
+				{
+					"frameId": "export-view",
+					"regionId": "export-view-export-choices",
+					"affordanceId": "export-view-choose-export-video"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "export-video",
+					"alternateId": null,
+					"stepId": "choose-export-video-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "choose-destination",
+			"name": "Output filename and location",
+			"frames": ["export-view"],
+			"flows": ["export-video"],
+			"frameUses": [
+				{
+					"frameId": "export-view",
+					"regionId": "export-view-export-choices",
+					"affordanceId": "export-view-choose-destination"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "export-video",
+					"alternateId": null,
+					"stepId": "export-video-choose-destination-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "export",
+			"name": "Export",
+			"frames": ["export-view"],
+			"flows": ["export-video"],
+			"frameUses": [
+				{
+					"frameId": "export-view",
+					"regionId": "export-view-export-summary",
+					"affordanceId": "export-view-export"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "export-video",
+					"alternateId": null,
+					"stepId": "export-video-export-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "replace-output",
+			"name": "Replace",
+			"frames": ["export-replacement"],
+			"flows": ["export-video"],
+			"frameUses": [
+				{
+					"frameId": "export-replacement",
+					"regionId": "export-replacement-decision",
+					"affordanceId": "export-replacement-replace-output"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "export-video",
+					"alternateId": "edge-126",
+					"stepId": "export-video-replace-output-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "choose-another-destination",
+			"name": "Choose Another Location",
+			"frames": ["export-replacement"],
+			"flows": ["export-video"],
+			"frameUses": [
+				{
+					"frameId": "export-replacement",
+					"regionId": "export-replacement-decision",
+					"affordanceId": "export-replacement-choose-another-destination"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "export-video",
+					"alternateId": "edge-127",
+					"stepId": "export-video-choose-another-destination-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "cancel-export-decision",
+			"name": "Cancel",
+			"frames": ["export-replacement"],
+			"flows": ["export-video"],
+			"frameUses": [
+				{
+					"frameId": "export-replacement",
+					"regionId": "export-replacement-decision",
+					"affordanceId": "export-replacement-cancel-export-decision"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "export-video",
+					"alternateId": "edge-128",
+					"stepId": "export-video-cancel-export-decision-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "request-cancel-export",
+			"name": "Cancel Export",
+			"frames": ["export-running-view"],
+			"flows": ["export-video"],
+			"frameUses": [
+				{
+					"frameId": "export-running-view",
+					"regionId": "export-running-view-export-status",
+					"affordanceId": "export-running-view-request-cancel-export"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "export-video",
+					"alternateId": "edge-129",
+					"stepId": "export-video-request-cancel-export-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "confirm-cancel-export",
+			"name": "Cancel Export",
+			"frames": ["export-cancel-confirm"],
+			"flows": ["export-video"],
+			"frameUses": [
+				{
+					"frameId": "export-cancel-confirm",
+					"regionId": "export-cancel-confirm-decision",
+					"affordanceId": "export-cancel-confirm-confirm-cancel-export"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "export-video",
+					"alternateId": "edge-130",
+					"stepId": "export-video-confirm-cancel-export-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "continue-export",
+			"name": "Keep Exporting",
+			"frames": ["export-cancel-confirm"],
+			"flows": ["export-video"],
+			"frameUses": [
+				{
+					"frameId": "export-cancel-confirm",
+					"regionId": "export-cancel-confirm-decision",
+					"affordanceId": "export-cancel-confirm-continue-export"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "export-video",
+					"alternateId": "edge-131",
+					"stepId": "export-video-continue-export-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "set-insertion",
+			"name": "Insertion point",
+			"frames": ["video-view"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-track",
+					"affordanceId": "video-view-set-insertion"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "edge-57",
+					"stepId": "edit-video-set-insertion-step"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "select-track",
+			"name": "Track",
+			"frames": ["video-view"],
+			"flows": ["edit-video", "frame-composition", "mix-audio"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-track",
+					"affordanceId": "video-view-select-track"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": null,
+					"stepId": "edit-video-select-track-step"
+				},
+				{
+					"flowId": "frame-composition",
+					"alternateId": null,
+					"stepId": "framing-select-track"
+				},
+				{
+					"flowId": "mix-audio",
+					"alternateId": null,
+					"stepId": "audio-select-track"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 3,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 3
+		},
+		{
+			"id": "choose-timeline-content",
+			"name": "Content",
+			"frames": ["timeline-add"],
+			"flows": ["edit-video"],
+			"frameUses": [
+				{
+					"frameId": "timeline-add",
+					"regionId": "timeline-add-decision",
+					"affordanceId": "timeline-add-choose-content"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": null,
+					"stepId": "edit-video-choose-content-step"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "edit-track-rectangle",
+			"name": "Output rectangle",
+			"frames": ["track-properties"],
+			"flows": ["frame-composition"],
+			"frameUses": [
+				{
+					"frameId": "track-properties",
+					"regionId": "track-properties-context",
+					"affordanceId": "track-properties-output"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "frame-composition",
+					"alternateId": null,
+					"stepId": "framing-open"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "edit-source-rectangle",
+			"name": "Source rectangle",
+			"frames": ["timeline-add", "clip-properties"],
+			"flows": ["edit-video", "frame-composition"],
+			"frameUses": [
+				{
+					"frameId": "timeline-add",
+					"regionId": "timeline-add-decision",
+					"affordanceId": "timeline-add-source-rectangle"
+				},
+				{
+					"frameId": "clip-properties",
+					"regionId": "clip-properties-context",
+					"affordanceId": "clip-properties-source"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "add-crop",
+					"stepId": "add-crop-open"
+				},
+				{
+					"flowId": "frame-composition",
+					"alternateId": "frame-source",
+					"stepId": "frame-source-open"
+				}
+			],
+			"frameCount": 2,
+			"flowCount": 2,
+			"frameOccurrences": 2,
+			"flowStepOccurrences": 2
+		},
+		{
+			"id": "adjust-rectangle",
+			"name": "Rectangle",
+			"frames": ["track-rectangle", "source-rectangle"],
+			"flows": ["edit-video", "frame-composition"],
+			"frameUses": [
+				{
+					"frameId": "track-rectangle",
+					"regionId": "track-rectangle-fields",
+					"affordanceId": "track-rectangle-adjust"
+				},
+				{
+					"frameId": "source-rectangle",
+					"regionId": "source-rectangle-fields",
+					"affordanceId": "source-rectangle-adjust"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "frame-composition",
+					"alternateId": null,
+					"stepId": "framing-adjust"
+				}
+			],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "add-crop",
+					"stepId": "add-crop-adjust"
+				}
+			],
+			"frameCount": 2,
+			"flowCount": 2,
+			"frameOccurrences": 2,
+			"flowStepOccurrences": 2
+		},
+		{
+			"id": "reset-rectangle",
+			"name": "Full frame",
+			"frames": ["track-rectangle", "source-rectangle"],
+			"flows": ["edit-video", "frame-composition"],
+			"frameUses": [
+				{
+					"frameId": "track-rectangle",
+					"regionId": "track-rectangle-fields",
+					"affordanceId": "track-rectangle-reset"
+				},
+				{
+					"frameId": "source-rectangle",
+					"regionId": "source-rectangle-fields",
+					"affordanceId": "source-rectangle-reset"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "add-crop-full-frame",
+					"stepId": "add-crop-reset"
+				},
+				{
+					"flowId": "frame-composition",
+					"alternateId": "framing-full-frame",
+					"stepId": "framing-reset"
+				}
+			],
+			"frameCount": 2,
+			"flowCount": 2,
+			"frameOccurrences": 2,
+			"flowStepOccurrences": 2
+		},
+		{
+			"id": "apply-rectangle",
+			"name": "Apply",
+			"frames": ["track-rectangle", "source-rectangle"],
+			"flows": ["edit-video", "frame-composition"],
+			"frameUses": [
+				{
+					"frameId": "track-rectangle",
+					"regionId": "track-rectangle-fields",
+					"affordanceId": "track-rectangle-apply"
+				},
+				{
+					"frameId": "source-rectangle",
+					"regionId": "source-rectangle-fields",
+					"affordanceId": "source-rectangle-apply"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "frame-composition",
+					"alternateId": null,
+					"stepId": "framing-apply"
+				}
+			],
+			"alternateSteps": [
+				{
+					"flowId": "edit-video",
+					"alternateId": "add-crop",
+					"stepId": "add-crop-apply"
+				},
+				{
+					"flowId": "edit-video",
+					"alternateId": "add-crop-full-frame",
+					"stepId": "add-crop-reset-apply"
+				}
+			],
+			"frameCount": 2,
+			"flowCount": 2,
+			"frameOccurrences": 2,
+			"flowStepOccurrences": 3
+		},
+		{
+			"id": "set-track-volume",
+			"name": "Track volume",
+			"frames": ["track-properties"],
+			"flows": ["mix-audio"],
+			"frameUses": [
+				{
+					"frameId": "track-properties",
+					"regionId": "track-properties-context",
+					"affordanceId": "track-properties-volume"
+				}
+			],
+			"primarySteps": [
+				{
+					"flowId": "mix-audio",
+					"alternateId": null,
+					"stepId": "audio-track-volume"
+				}
+			],
+			"alternateSteps": [],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "mute-track",
+			"name": "Mute track",
+			"frames": ["video-view"],
+			"flows": ["mix-audio"],
+			"frameUses": [
+				{
+					"frameId": "video-view",
+					"regionId": "video-view-video-track",
+					"affordanceId": "video-view-mute-track"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "mix-audio",
+					"alternateId": "audio-track-mute",
+					"stepId": "audio-toggle-track"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "set-clip-volume",
+			"name": "Clip volume",
+			"frames": ["clip-properties"],
+			"flows": ["mix-audio"],
+			"frameUses": [
+				{
+					"frameId": "clip-properties",
+					"regionId": "clip-properties-context",
+					"affordanceId": "clip-properties-volume"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "mix-audio",
+					"alternateId": "audio-occurrence",
+					"stepId": "audio-occurrence-volume"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		},
+		{
+			"id": "mute-clip",
+			"name": "Mute clip",
+			"frames": ["clip-properties"],
+			"flows": ["mix-audio"],
+			"frameUses": [
+				{
+					"frameId": "clip-properties",
+					"regionId": "clip-properties-context",
+					"affordanceId": "clip-properties-mute"
+				}
+			],
+			"primarySteps": [],
+			"alternateSteps": [
+				{
+					"flowId": "mix-audio",
+					"alternateId": "audio-occurrence-mute",
+					"stepId": "audio-toggle-occurrence"
+				}
+			],
+			"frameCount": 1,
+			"flowCount": 1,
+			"frameOccurrences": 1,
+			"flowStepOccurrences": 1
+		}
+	],
+	"method": "Frame uses count only regions[].affordances[].actionRef; distinct frames establish cross-frame reuse. Flow uses count only primary/alternate steps[].actionRef; distinct flows establish cross-flow reuse. Exclude task indexes, focus/trigger references, feedback ownership, decisions and UI projections. Baseline comparison uses exact action JSON equality ignoring object-key order, preserving array order.",
+	"limitations": [
+		"Frame and flow uses overlap the same behavior and must not be added as unique user interactions.",
+		"An unchanged stored action does not by itself prove zero model rereading or reserialization.",
+		"A reference occurrence is not an additional action definition or a repeated-text count."
+	],
+	"probe": {
+		"path": ".codex-tmp/action-reuse-count-20260927/count.mjs",
+		"sha256": "360d55b199ce5f1c864d6db39087be764be5998921815a3a315017e68fb12baa"
+	}
+}
