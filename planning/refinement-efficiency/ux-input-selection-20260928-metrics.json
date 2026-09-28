@@ -1,0 +1,2409 @@
+{
+	"kind": "deterministic-ux-selection-comparison",
+	"startedAt": "2026-09-28T18:25:23.779Z",
+	"completedAt": "2026-09-28T18:25:26.614Z",
+	"wallMs": 2834.5809999999997,
+	"modelCalls": 0,
+	"productionPageLimit": 7000,
+	"inputs": {
+		"facts": {
+			"path": "C:\\dev\\polylith-skills\\.codex-tmp\\ux-comparison-replay-20260928-160822\\inputs\\facts.json",
+			"sha256": "0a93131e55d107256cd22569659a860a6a927a5e30a01e8800a30ca5e9782e2a"
+		},
+		"ux": {
+			"path": "C:\\dev\\polylith-skills\\.codex-tmp\\ux-comparison-replay-20260928-160822\\inputs\\ux.json",
+			"sha256": "b2fa0be7cba3742c97f2763cf9fe72653b8f5e7705a125ea2dd00a3c1d832096"
+		}
+	},
+	"full": {
+		"facts": {
+			"bytes": 125008,
+			"sha256": "0a93131e55d107256cd22569659a860a6a927a5e30a01e8800a30ca5e9782e2a",
+			"pages": 18,
+			"clientReadMs": 101.5488,
+			"httpHandlingMs": 17.60069999999996,
+			"reassembledExactly": true
+		},
+		"ux": {
+			"bytes": 389418,
+			"sha256": "5892a95485b1358f454ec59f71dc096acb7ab5e92033f831b437070ea895dc4c",
+			"pages": 56,
+			"clientReadMs": 322.2685,
+			"httpHandlingMs": 86.94200000000018,
+			"reassembledExactly": true
+		}
+	},
+	"trials": [
+		{
+			"name": "actual-update",
+			"input": {},
+			"bytes": 492371,
+			"sha256": "a709dc06114041e1d7e5ec6350c73eac02e800aad7aebc302288bd683cd798be",
+			"pages": 71,
+			"clientReadMs": 556.8806999999999,
+			"httpHandlingMs": 227.42079999999964,
+			"reassembledExactly": true,
+			"preparationRoundTripMs": 1106.9218999999998,
+			"serverOperationMs": 1094.2497,
+			"counts": {
+				"features": {
+					"full": 5,
+					"selected": 4
+				},
+				"surfaces": {
+					"full": 4,
+					"selected": 4
+				},
+				"components": {
+					"full": 9,
+					"selected": 9
+				},
+				"actions": {
+					"full": 79,
+					"selected": 76
+				},
+				"interactionFrames": {
+					"full": 29,
+					"selected": 27
+				},
+				"states": {
+					"full": 11,
+					"selected": 11
+				},
+				"feedback": {
+					"full": 105,
+					"selected": 99
+				},
+				"flows": {
+					"full": 11,
+					"selected": 10
+				},
+				"patternResearch": {
+					"full": 5,
+					"selected": 5
+				}
+			},
+			"selectedFlowIds": [
+				"edit-video",
+				"save-clip",
+				"update-clip",
+				"frame-composition",
+				"mix-audio",
+				"navigate-work",
+				"protect-project",
+				"browse-content",
+				"edit-playlist",
+				"play-content"
+			],
+			"omittedDetailRefs": [
+				"ux:feature:exporting",
+				"ux:action:replace-output",
+				"ux:action:choose-another-destination",
+				"ux:action:cancel-export-decision",
+				"ux:frame:export-replacement",
+				"ux:frame:export-cancel-confirm",
+				"ux:feedback:replace-output-result",
+				"ux:feedback:choose-another-destination-result",
+				"ux:feedback:cancel-export-decision-result",
+				"ux:feedback:replace-output-progress",
+				"ux:feedback:replace-output-failure",
+				"ux:feedback:replace-output-canceled",
+				"ux:flow:export-video"
+			],
+			"notices": [
+				{
+					"kind": "broadened-through-product-relations",
+					"ref": "product:clip-management"
+				},
+				{
+					"kind": "broadened-through-product-relations",
+					"ref": "product:clip-persistence-invariants"
+				},
+				{
+					"kind": "broadened-through-product-relations",
+					"ref": "product:grouped-assembly-editing"
+				},
+				{
+					"kind": "broadened-through-product-relations",
+					"ref": "product:shared-clip-update-collision"
+				}
+			],
+			"breakdownBytes": {
+				"facts": 116644,
+				"ux": 368660,
+				"overview": 5655,
+				"notices": 351
+			},
+			"inclusions": [
+				{
+					"ref": "ux:flow:edit-video",
+					"reason": "affected-element:ux:surface:video-workspace"
+				},
+				{
+					"ref": "ux:flow:save-clip",
+					"reason": "affected-element:ux:surface:video-workspace"
+				},
+				{
+					"ref": "ux:flow:update-clip",
+					"reason": "affected-element:ux:surface:video-workspace"
+				},
+				{
+					"ref": "ux:flow:frame-composition",
+					"reason": "affected-element:ux:surface:video-workspace"
+				},
+				{
+					"ref": "ux:flow:mix-audio",
+					"reason": "affected-element:ux:surface:video-workspace"
+				},
+				{
+					"ref": "ux:flow:navigate-work",
+					"reason": "affected-element:ux:surface:library-workspace"
+				},
+				{
+					"ref": "ux:flow:protect-project",
+					"reason": "affected-element:ux:surface:library-workspace"
+				},
+				{
+					"ref": "ux:flow:browse-content",
+					"reason": "affected-element:ux:surface:library-workspace"
+				},
+				{
+					"ref": "ux:flow:edit-playlist",
+					"reason": "affected-element:ux:surface:playback-workspace"
+				},
+				{
+					"ref": "ux:flow:play-content",
+					"reason": "affected-element:ux:surface:playback-workspace"
+				},
+				{
+					"ref": "ux:action:add-timeline",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:adjust-rectangle",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:apply-rectangle",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:choose-timeline-content",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:choose-video",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:clear-selection",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:delete-selection",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:dismiss-editor",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:edit-source-rectangle",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:fit-player",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:follow-playhead",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:insert-content",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:name-video",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:pan-player",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:pan-timeline",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:play-preview",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:redo",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:reorder-objects",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:reset-rectangle",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:save-video",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:scrub",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:select-objects",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:select-range",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:select-track",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:selection-actions",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:set-insertion",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:set-range-boundary",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:split-selection",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:step-frame",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:stop-preview",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:trim-occurrence",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:undo",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:zoom-player-in",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:zoom-player-out",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:zoom-timeline",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:state:video-editing",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:state:video-framing",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:state:video-saving",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:add-timeline-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:adjust-rectangle-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:apply-rectangle-failure",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:apply-rectangle-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:choose-timeline-content-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:choose-video-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:clear-selection-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:delete-selection-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:dismiss-editor-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:edit-source-rectangle-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:fit-player-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:follow-playhead-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:insert-content-failure",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:insert-content-progress",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:insert-content-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:name-video-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:pan-player-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:pan-timeline-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:play-preview-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:redo-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:reorder-objects-canceled",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:reorder-objects-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:reset-rectangle-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:save-video-failure",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:save-video-progress",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:save-video-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:scrub-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:select-objects-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:select-range-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:select-track-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:selection-actions-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:set-insertion-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:set-range-boundary-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:split-selection-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:step-frame-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:stop-preview-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:trim-occurrence-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:undo-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:zoom-player-in-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:zoom-player-out-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feedback:zoom-timeline-result",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:frame:clip-create",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:frame:clip-update",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:frame:selection-menu",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:frame:source-rectangle",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:frame:timeline-add",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:frame:video-framing-view",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:frame:video-saving-view",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:frame:video-view",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:feature:editing",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:surface:video-workspace",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:component:project-guard",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:component:timeline",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:component:rectangle-editor",
+					"reason": "ux:flow:edit-video"
+				},
+				{
+					"ref": "ux:action:create-clip",
+					"reason": "ux:flow:save-clip"
+				},
+				{
+					"ref": "ux:action:name-clip",
+					"reason": "ux:flow:save-clip"
+				},
+				{
+					"ref": "ux:action:open-save-clip",
+					"reason": "ux:flow:save-clip"
+				},
+				{
+					"ref": "ux:feedback:create-clip-failure",
+					"reason": "ux:flow:save-clip"
+				},
+				{
+					"ref": "ux:feedback:create-clip-progress",
+					"reason": "ux:flow:save-clip"
+				},
+				{
+					"ref": "ux:feedback:create-clip-result",
+					"reason": "ux:flow:save-clip"
+				},
+				{
+					"ref": "ux:feedback:name-clip-result",
+					"reason": "ux:flow:save-clip"
+				},
+				{
+					"ref": "ux:feedback:open-save-clip-result",
+					"reason": "ux:flow:save-clip"
+				},
+				{
+					"ref": "ux:action:confirm-update",
+					"reason": "ux:flow:update-clip"
+				},
+				{
+					"ref": "ux:action:open-update-clip",
+					"reason": "ux:flow:update-clip"
+				},
+				{
+					"ref": "ux:feedback:confirm-update-failure",
+					"reason": "ux:flow:update-clip"
+				},
+				{
+					"ref": "ux:feedback:confirm-update-progress",
+					"reason": "ux:flow:update-clip"
+				},
+				{
+					"ref": "ux:feedback:confirm-update-result",
+					"reason": "ux:flow:update-clip"
+				},
+				{
+					"ref": "ux:feedback:open-update-clip-result",
+					"reason": "ux:flow:update-clip"
+				},
+				{
+					"ref": "ux:action:edit-track-rectangle",
+					"reason": "ux:flow:frame-composition"
+				},
+				{
+					"ref": "ux:feedback:edit-track-rectangle-result",
+					"reason": "ux:flow:frame-composition"
+				},
+				{
+					"ref": "ux:frame:clip-properties",
+					"reason": "ux:flow:frame-composition"
+				},
+				{
+					"ref": "ux:frame:track-properties",
+					"reason": "ux:flow:frame-composition"
+				},
+				{
+					"ref": "ux:frame:track-rectangle",
+					"reason": "ux:flow:frame-composition"
+				},
+				{
+					"ref": "ux:action:mute-clip",
+					"reason": "ux:flow:mix-audio"
+				},
+				{
+					"ref": "ux:action:mute-track",
+					"reason": "ux:flow:mix-audio"
+				},
+				{
+					"ref": "ux:action:set-clip-volume",
+					"reason": "ux:flow:mix-audio"
+				},
+				{
+					"ref": "ux:action:set-track-volume",
+					"reason": "ux:flow:mix-audio"
+				},
+				{
+					"ref": "ux:feedback:mute-clip-result",
+					"reason": "ux:flow:mix-audio"
+				},
+				{
+					"ref": "ux:feedback:mute-track-result",
+					"reason": "ux:flow:mix-audio"
+				},
+				{
+					"ref": "ux:feedback:set-clip-volume-result",
+					"reason": "ux:flow:mix-audio"
+				},
+				{
+					"ref": "ux:feedback:set-track-volume-result",
+					"reason": "ux:flow:mix-audio"
+				},
+				{
+					"ref": "ux:component:audio-controls",
+					"reason": "ux:flow:mix-audio"
+				},
+				{
+					"ref": "ux:action:navigate",
+					"reason": "ux:flow:navigate-work"
+				},
+				{
+					"ref": "ux:state:export-canceling",
+					"reason": "ux:flow:navigate-work"
+				},
+				{
+					"ref": "ux:state:export-exporting",
+					"reason": "ux:flow:navigate-work"
+				},
+				{
+					"ref": "ux:state:export-viewing",
+					"reason": "ux:flow:navigate-work"
+				},
+				{
+					"ref": "ux:state:library-viewing",
+					"reason": "ux:flow:navigate-work"
+				},
+				{
+					"ref": "ux:state:playback-viewing",
+					"reason": "ux:flow:navigate-work"
+				},
+				{
+					"ref": "ux:feedback:navigate-result",
+					"reason": "ux:flow:navigate-work"
+				},
+				{
+					"ref": "ux:frame:export-canceling-view",
+					"reason": "ux:flow:navigate-work"
+				},
+				{
+					"ref": "ux:frame:export-running-view",
+					"reason": "ux:flow:navigate-work"
+				},
+				{
+					"ref": "ux:frame:export-view",
+					"reason": "ux:flow:navigate-work"
+				},
+				{
+					"ref": "ux:frame:library-view",
+					"reason": "ux:flow:navigate-work"
+				},
+				{
+					"ref": "ux:frame:playback-view",
+					"reason": "ux:flow:navigate-work"
+				},
+				{
+					"ref": "ux:feature:project",
+					"reason": "ux:flow:navigate-work"
+				},
+				{
+					"ref": "ux:surface:library-workspace",
+					"reason": "ux:flow:navigate-work"
+				},
+				{
+					"ref": "ux:action:cancel-transition",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:action:discard-draft",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:action:discard-project",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:action:keep-draft",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:action:new-project",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:action:open-project",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:action:save-project",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:action:save-project-as",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:state:export-saving",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:state:library-saving",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:state:playback-saving",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:feedback:cancel-transition-result",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:feedback:discard-draft-result",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:feedback:discard-project-result",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:feedback:keep-draft-result",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:feedback:new-project-result",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:feedback:open-project-result",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:feedback:save-project-as-failure",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:feedback:save-project-as-progress",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:feedback:save-project-as-result",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:feedback:save-project-failure",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:feedback:save-project-progress",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:feedback:save-project-result",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:frame:export-guard",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:frame:export-project-guard",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:frame:export-saving-view",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:frame:library-guard",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:frame:library-project-guard",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:frame:library-saving-view",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:frame:playback-guard",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:frame:playback-project-guard",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:frame:playback-saving-view",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:frame:video-guard",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:frame:video-project-guard",
+					"reason": "ux:flow:protect-project"
+				},
+				{
+					"ref": "ux:action:add-files",
+					"reason": "ux:flow:browse-content"
+				},
+				{
+					"ref": "ux:action:open-content",
+					"reason": "ux:flow:browse-content"
+				},
+				{
+					"ref": "ux:action:select-content",
+					"reason": "ux:flow:browse-content"
+				},
+				{
+					"ref": "ux:feedback:add-files-result",
+					"reason": "ux:flow:browse-content"
+				},
+				{
+					"ref": "ux:feedback:open-content-result",
+					"reason": "ux:flow:browse-content"
+				},
+				{
+					"ref": "ux:feedback:select-content-result",
+					"reason": "ux:flow:browse-content"
+				},
+				{
+					"ref": "ux:feature:library",
+					"reason": "ux:flow:browse-content"
+				},
+				{
+					"ref": "ux:action:add-playlist-items",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:action:choose-playlist",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:action:name-playlist",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:action:remove-playlist-items",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:action:reorder-playlist",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:action:save-playlist",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:feedback:add-playlist-items-result",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:feedback:choose-playlist-result",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:feedback:name-playlist-result",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:feedback:remove-playlist-items-result",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:feedback:reorder-playlist-canceled",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:feedback:reorder-playlist-result",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:feedback:save-playlist-failure",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:feedback:save-playlist-progress",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:feedback:save-playlist-result",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:feature:playback",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:surface:playback-workspace",
+					"reason": "ux:flow:edit-playlist"
+				},
+				{
+					"ref": "ux:action:choose-playback",
+					"reason": "ux:flow:play-content"
+				},
+				{
+					"ref": "ux:action:next-item",
+					"reason": "ux:flow:play-content"
+				},
+				{
+					"ref": "ux:action:play-pause",
+					"reason": "ux:flow:play-content"
+				},
+				{
+					"ref": "ux:action:previous-item",
+					"reason": "ux:flow:play-content"
+				},
+				{
+					"ref": "ux:action:repeat",
+					"reason": "ux:flow:play-content"
+				},
+				{
+					"ref": "ux:action:shuffle",
+					"reason": "ux:flow:play-content"
+				},
+				{
+					"ref": "ux:action:stop-playback",
+					"reason": "ux:flow:play-content"
+				},
+				{
+					"ref": "ux:feedback:choose-playback-result",
+					"reason": "ux:flow:play-content"
+				},
+				{
+					"ref": "ux:feedback:next-item-result",
+					"reason": "ux:flow:play-content"
+				},
+				{
+					"ref": "ux:feedback:play-pause-failure",
+					"reason": "ux:flow:play-content"
+				},
+				{
+					"ref": "ux:feedback:play-pause-result",
+					"reason": "ux:flow:play-content"
+				},
+				{
+					"ref": "ux:feedback:previous-item-result",
+					"reason": "ux:flow:play-content"
+				},
+				{
+					"ref": "ux:feedback:repeat-result",
+					"reason": "ux:flow:play-content"
+				},
+				{
+					"ref": "ux:feedback:shuffle-result",
+					"reason": "ux:flow:play-content"
+				},
+				{
+					"ref": "ux:feedback:stop-playback-result",
+					"reason": "ux:flow:play-content"
+				},
+				{
+					"ref": "ux:alternate:add-canceled",
+					"reason": "ux:action:add-timeline"
+				},
+				{
+					"ref": "ux:alternate:framing-invalid",
+					"reason": "ux:action:adjust-rectangle"
+				},
+				{
+					"ref": "ux:alternate:framing-canceled",
+					"reason": "ux:action:adjust-rectangle"
+				},
+				{
+					"ref": "ux:research:spatial-framing",
+					"reason": "ux:action:adjust-rectangle"
+				},
+				{
+					"ref": "ux:alternate:framing-failed",
+					"reason": "ux:action:apply-rectangle"
+				},
+				{
+					"ref": "ux:research:multitrack-editing",
+					"reason": "ux:action:delete-selection"
+				},
+				{
+					"ref": "ux:alternate:add-crop",
+					"reason": "ux:action:edit-source-rectangle"
+				},
+				{
+					"ref": "ux:alternate:insert-content-recovery",
+					"reason": "ux:action:insert-content"
+				},
+				{
+					"ref": "ux:alternate:reorder-objects-recovery",
+					"reason": "ux:action:reorder-objects"
+				},
+				{
+					"ref": "ux:alternate:save-video-recovery",
+					"reason": "ux:action:save-video"
+				},
+				{
+					"ref": "ux:research:timeline-pattern",
+					"reason": "ux:action:set-range-boundary"
+				},
+				{
+					"ref": "ux:alternate:trim-occurrence-recovery",
+					"reason": "ux:action:trim-occurrence"
+				},
+				{
+					"ref": "ux:research:shared-clip-review",
+					"reason": "ux:frame:clip-update"
+				},
+				{
+					"ref": "ux:component:project-status",
+					"reason": "ux:surface:video-workspace"
+				},
+				{
+					"ref": "ux:component:video-status",
+					"reason": "ux:surface:video-workspace"
+				},
+				{
+					"ref": "ux:component:export-status",
+					"reason": "ux:surface:video-workspace"
+				},
+				{
+					"ref": "ux:alternate:create-clip-recovery",
+					"reason": "ux:action:create-clip"
+				},
+				{
+					"ref": "ux:alternate:confirm-update-recovery",
+					"reason": "ux:action:confirm-update"
+				},
+				{
+					"ref": "ux:research:audio-scope",
+					"reason": "ux:frame:clip-properties"
+				},
+				{
+					"ref": "ux:alternate:audio-invalid",
+					"reason": "ux:action:set-clip-volume"
+				},
+				{
+					"ref": "ux:surface:export-workspace",
+					"reason": "ux:frame:export-canceling-view"
+				},
+				{
+					"ref": "ux:action:confirm-cancel-export",
+					"reason": "ux:frame:export-canceling-view"
+				},
+				{
+					"ref": "ux:action:request-cancel-export",
+					"reason": "ux:frame:export-running-view"
+				},
+				{
+					"ref": "ux:action:choose-export-video",
+					"reason": "ux:frame:export-view"
+				},
+				{
+					"ref": "ux:action:choose-destination",
+					"reason": "ux:frame:export-view"
+				},
+				{
+					"ref": "ux:action:export",
+					"reason": "ux:frame:export-view"
+				},
+				{
+					"ref": "ux:alternate:open-project-recovery",
+					"reason": "ux:action:open-project"
+				},
+				{
+					"ref": "ux:alternate:save-project-recovery",
+					"reason": "ux:action:save-project"
+				},
+				{
+					"ref": "ux:alternate:edge-12",
+					"reason": "ux:action:save-project-as"
+				},
+				{
+					"ref": "ux:alternate:save-project-as-recovery",
+					"reason": "ux:action:save-project-as"
+				},
+				{
+					"ref": "ux:alternate:add-files-recovery",
+					"reason": "ux:action:add-files"
+				},
+				{
+					"ref": "ux:alternate:save-playlist-recovery",
+					"reason": "ux:action:save-playlist"
+				},
+				{
+					"ref": "ux:component:playlist-status",
+					"reason": "ux:surface:playback-workspace"
+				},
+				{
+					"ref": "ux:component:playback-transport",
+					"reason": "ux:surface:playback-workspace"
+				},
+				{
+					"ref": "ux:alternate:play-pause-recovery",
+					"reason": "ux:action:play-pause"
+				},
+				{
+					"ref": "ux:feedback:confirm-cancel-export-result",
+					"reason": "ux:action:confirm-cancel-export"
+				},
+				{
+					"ref": "ux:feedback:confirm-cancel-export-canceled",
+					"reason": "ux:action:confirm-cancel-export"
+				},
+				{
+					"ref": "ux:feedback:confirm-cancel-export-failure",
+					"reason": "ux:action:confirm-cancel-export"
+				},
+				{
+					"ref": "ux:feedback:request-cancel-export-result",
+					"reason": "ux:action:request-cancel-export"
+				},
+				{
+					"ref": "ux:action:continue-export",
+					"reason": "ux:action:request-cancel-export"
+				},
+				{
+					"ref": "ux:feedback:choose-export-video-result",
+					"reason": "ux:action:choose-export-video"
+				},
+				{
+					"ref": "ux:feedback:choose-destination-result",
+					"reason": "ux:action:choose-destination"
+				},
+				{
+					"ref": "ux:feedback:export-result",
+					"reason": "ux:action:export"
+				},
+				{
+					"ref": "ux:feedback:export-progress",
+					"reason": "ux:action:export"
+				},
+				{
+					"ref": "ux:feedback:export-failure",
+					"reason": "ux:action:export"
+				},
+				{
+					"ref": "ux:feedback:export-canceled",
+					"reason": "ux:action:export"
+				},
+				{
+					"ref": "ux:alternate:export-recovery",
+					"reason": "ux:action:export"
+				},
+				{
+					"ref": "ux:feedback:continue-export-result",
+					"reason": "ux:action:continue-export"
+				}
+			],
+			"seedImpacts": [
+				{
+					"ref": "product:add-timeline-content",
+					"flowIds": ["edit-video"]
+				},
+				{
+					"ref": "product:clip-management",
+					"flowIds": ["edit-video", "protect-project", "save-clip", "update-clip", "frame-composition"]
+				},
+				{
+					"ref": "product:clip-persistence-invariants",
+					"flowIds": ["edit-video", "protect-project", "save-clip", "update-clip", "frame-composition"]
+				},
+				{
+					"ref": "product:content-types",
+					"flowIds": ["browse-content", "navigate-work", "protect-project"]
+				},
+				{
+					"ref": "product:grouped-assembly-editing",
+					"flowIds": [
+						"edit-video",
+						"protect-project",
+						"save-clip",
+						"update-clip",
+						"browse-content",
+						"edit-playlist",
+						"navigate-work",
+						"frame-composition",
+						"mix-audio"
+					]
+				},
+				{
+					"ref": "product:occurrence-trim",
+					"flowIds": ["edit-video"]
+				},
+				{
+					"ref": "product:save-library-clip",
+					"flowIds": ["save-clip"]
+				},
+				{
+					"ref": "product:shared-clip-update-collision",
+					"flowIds": ["update-clip"]
+				},
+				{
+					"ref": "product:timeline-occurrences",
+					"flowIds": ["edit-video"]
+				},
+				{
+					"ref": "product:timeline-trim-push",
+					"flowIds": ["edit-video"]
+				},
+				{
+					"ref": "product:update-named-clip",
+					"flowIds": ["update-clip"]
+				}
+			],
+			"checks": {
+				"selectedUxRecordsExact": true,
+				"globalRulesExact": true,
+				"globalGapsExact": true
+			}
+		},
+		{
+			"name": "export-assignment-only",
+			"input": {
+				"changedRefs": [],
+				"flowIds": ["export-video"]
+			},
+			"bytes": 408791,
+			"sha256": "43ff37952b8f09ddf74982b4de85d24d8fb5069eaca2df6ccac96c5ea2d2299a",
+			"pages": 59,
+			"clientReadMs": 399.67509999999993,
+			"httpHandlingMs": 147.05589999999847,
+			"reassembledExactly": true,
+			"preparationRoundTripMs": 220.98479999999972,
+			"serverOperationMs": 208.17039999999997,
+			"counts": {
+				"features": {
+					"full": 5,
+					"selected": 1
+				},
+				"surfaces": {
+					"full": 4,
+					"selected": 4
+				},
+				"components": {
+					"full": 9,
+					"selected": 9
+				},
+				"actions": {
+					"full": 79,
+					"selected": 74
+				},
+				"interactionFrames": {
+					"full": 29,
+					"selected": 20
+				},
+				"states": {
+					"full": 11,
+					"selected": 11
+				},
+				"feedback": {
+					"full": 105,
+					"selected": 98
+				},
+				"flows": {
+					"full": 11,
+					"selected": 1
+				},
+				"patternResearch": {
+					"full": 5,
+					"selected": 5
+				}
+			},
+			"selectedFlowIds": ["export-video"],
+			"omittedDetailRefs": [
+				"ux:feature:project",
+				"ux:feature:library",
+				"ux:feature:editing",
+				"ux:feature:playback",
+				"ux:action:keep-draft",
+				"ux:action:discard-draft",
+				"ux:action:discard-project",
+				"ux:action:name-clip",
+				"ux:action:create-clip",
+				"ux:frame:library-guard",
+				"ux:frame:video-guard",
+				"ux:frame:playback-guard",
+				"ux:frame:export-guard",
+				"ux:frame:clip-create",
+				"ux:frame:library-project-guard",
+				"ux:frame:video-project-guard",
+				"ux:frame:playback-project-guard",
+				"ux:frame:export-project-guard",
+				"ux:feedback:keep-draft-result",
+				"ux:feedback:discard-draft-result",
+				"ux:feedback:discard-project-result",
+				"ux:feedback:name-clip-result",
+				"ux:feedback:create-clip-result",
+				"ux:feedback:create-clip-progress",
+				"ux:feedback:create-clip-failure",
+				"ux:flow:navigate-work",
+				"ux:flow:protect-project",
+				"ux:flow:browse-content",
+				"ux:flow:edit-video",
+				"ux:flow:save-clip",
+				"ux:flow:update-clip",
+				"ux:flow:edit-playlist",
+				"ux:flow:play-content",
+				"ux:flow:frame-composition",
+				"ux:flow:mix-audio"
+			],
+			"notices": [],
+			"breakdownBytes": {
+				"facts": 99853,
+				"ux": 289920,
+				"overview": 18289,
+				"notices": 2
+			},
+			"inclusions": [
+				{
+					"ref": "ux:flow:export-video",
+					"reason": "affected-element:ux:surface:export-workspace"
+				},
+				{
+					"ref": "ux:action:cancel-export-decision",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:action:choose-another-destination",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:action:choose-destination",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:action:choose-export-video",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:action:confirm-cancel-export",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:action:continue-export",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:action:export",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:action:replace-output",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:action:request-cancel-export",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:state:export-canceling",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:state:export-exporting",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:state:export-viewing",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:cancel-export-decision-result",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:choose-another-destination-result",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:choose-destination-result",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:choose-export-video-result",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:confirm-cancel-export-canceled",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:confirm-cancel-export-failure",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:confirm-cancel-export-result",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:continue-export-result",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:export-canceled",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:export-failure",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:export-progress",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:export-result",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:replace-output-canceled",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:replace-output-failure",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:replace-output-progress",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:replace-output-result",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feedback:request-cancel-export-result",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:frame:export-cancel-confirm",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:frame:export-canceling-view",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:frame:export-replacement",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:frame:export-running-view",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:frame:export-saving-view",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:frame:export-view",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:frame:library-saving-view",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:frame:library-view",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:frame:playback-saving-view",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:frame:playback-view",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:frame:video-saving-view",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:frame:video-view",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:feature:exporting",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:surface:export-workspace",
+					"reason": "ux:flow:export-video"
+				},
+				{
+					"ref": "ux:alternate:export-recovery",
+					"reason": "ux:action:export"
+				},
+				{
+					"ref": "ux:alternate:replace-output-recovery",
+					"reason": "ux:action:replace-output"
+				},
+				{
+					"ref": "ux:action:new-project",
+					"reason": "ux:frame:export-canceling-view"
+				},
+				{
+					"ref": "ux:action:open-project",
+					"reason": "ux:frame:export-canceling-view"
+				},
+				{
+					"ref": "ux:action:navigate",
+					"reason": "ux:frame:export-canceling-view"
+				},
+				{
+					"ref": "ux:state:export-saving",
+					"reason": "ux:frame:export-saving-view"
+				},
+				{
+					"ref": "ux:action:save-project",
+					"reason": "ux:frame:export-view"
+				},
+				{
+					"ref": "ux:action:save-project-as",
+					"reason": "ux:frame:export-view"
+				},
+				{
+					"ref": "ux:surface:library-workspace",
+					"reason": "ux:frame:library-saving-view"
+				},
+				{
+					"ref": "ux:state:library-saving",
+					"reason": "ux:frame:library-saving-view"
+				},
+				{
+					"ref": "ux:state:library-viewing",
+					"reason": "ux:frame:library-view"
+				},
+				{
+					"ref": "ux:action:add-files",
+					"reason": "ux:frame:library-view"
+				},
+				{
+					"ref": "ux:action:select-content",
+					"reason": "ux:frame:library-view"
+				},
+				{
+					"ref": "ux:action:open-content",
+					"reason": "ux:frame:library-view"
+				},
+				{
+					"ref": "ux:surface:playback-workspace",
+					"reason": "ux:frame:playback-saving-view"
+				},
+				{
+					"ref": "ux:state:playback-saving",
+					"reason": "ux:frame:playback-saving-view"
+				},
+				{
+					"ref": "ux:state:playback-viewing",
+					"reason": "ux:frame:playback-view"
+				},
+				{
+					"ref": "ux:action:choose-playback",
+					"reason": "ux:frame:playback-view"
+				},
+				{
+					"ref": "ux:action:play-pause",
+					"reason": "ux:frame:playback-view"
+				},
+				{
+					"ref": "ux:action:stop-playback",
+					"reason": "ux:frame:playback-view"
+				},
+				{
+					"ref": "ux:action:previous-item",
+					"reason": "ux:frame:playback-view"
+				},
+				{
+					"ref": "ux:action:next-item",
+					"reason": "ux:frame:playback-view"
+				},
+				{
+					"ref": "ux:action:shuffle",
+					"reason": "ux:frame:playback-view"
+				},
+				{
+					"ref": "ux:action:repeat",
+					"reason": "ux:frame:playback-view"
+				},
+				{
+					"ref": "ux:action:choose-playlist",
+					"reason": "ux:frame:playback-view"
+				},
+				{
+					"ref": "ux:action:name-playlist",
+					"reason": "ux:frame:playback-view"
+				},
+				{
+					"ref": "ux:action:add-playlist-items",
+					"reason": "ux:frame:playback-view"
+				},
+				{
+					"ref": "ux:action:reorder-playlist",
+					"reason": "ux:frame:playback-view"
+				},
+				{
+					"ref": "ux:action:remove-playlist-items",
+					"reason": "ux:frame:playback-view"
+				},
+				{
+					"ref": "ux:action:save-playlist",
+					"reason": "ux:frame:playback-view"
+				},
+				{
+					"ref": "ux:surface:video-workspace",
+					"reason": "ux:frame:video-saving-view"
+				},
+				{
+					"ref": "ux:state:video-saving",
+					"reason": "ux:frame:video-saving-view"
+				},
+				{
+					"ref": "ux:action:zoom-player-in",
+					"reason": "ux:frame:video-saving-view"
+				},
+				{
+					"ref": "ux:action:zoom-player-out",
+					"reason": "ux:frame:video-saving-view"
+				},
+				{
+					"ref": "ux:action:fit-player",
+					"reason": "ux:frame:video-saving-view"
+				},
+				{
+					"ref": "ux:action:pan-player",
+					"reason": "ux:frame:video-saving-view"
+				},
+				{
+					"ref": "ux:action:zoom-timeline",
+					"reason": "ux:frame:video-saving-view"
+				},
+				{
+					"ref": "ux:action:pan-timeline",
+					"reason": "ux:frame:video-saving-view"
+				},
+				{
+					"ref": "ux:state:video-editing",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:research:multitrack-editing",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:choose-video",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:name-video",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:play-preview",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:stop-preview",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:select-range",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:set-range-boundary",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:clear-selection",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:scrub",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:step-frame",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:follow-playhead",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:select-objects",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:trim-occurrence",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:reorder-objects",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:set-insertion",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:select-track",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:mute-track",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:add-timeline",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:selection-actions",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:undo",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:redo",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:action:save-video",
+					"reason": "ux:frame:video-view"
+				},
+				{
+					"ref": "ux:component:project-guard",
+					"reason": "ux:surface:export-workspace"
+				},
+				{
+					"ref": "ux:component:project-status",
+					"reason": "ux:surface:export-workspace"
+				},
+				{
+					"ref": "ux:component:export-status",
+					"reason": "ux:surface:export-workspace"
+				},
+				{
+					"ref": "ux:feedback:new-project-result",
+					"reason": "ux:action:new-project"
+				},
+				{
+					"ref": "ux:action:cancel-transition",
+					"reason": "ux:action:new-project"
+				},
+				{
+					"ref": "ux:feedback:open-project-result",
+					"reason": "ux:action:open-project"
+				},
+				{
+					"ref": "ux:alternate:open-project-recovery",
+					"reason": "ux:action:open-project"
+				},
+				{
+					"ref": "ux:feedback:navigate-result",
+					"reason": "ux:action:navigate"
+				},
+				{
+					"ref": "ux:feedback:save-project-result",
+					"reason": "ux:action:save-project"
+				},
+				{
+					"ref": "ux:feedback:save-project-progress",
+					"reason": "ux:action:save-project"
+				},
+				{
+					"ref": "ux:feedback:save-project-failure",
+					"reason": "ux:action:save-project"
+				},
+				{
+					"ref": "ux:alternate:save-project-recovery",
+					"reason": "ux:action:save-project"
+				},
+				{
+					"ref": "ux:feedback:save-project-as-result",
+					"reason": "ux:action:save-project-as"
+				},
+				{
+					"ref": "ux:feedback:save-project-as-progress",
+					"reason": "ux:action:save-project-as"
+				},
+				{
+					"ref": "ux:feedback:save-project-as-failure",
+					"reason": "ux:action:save-project-as"
+				},
+				{
+					"ref": "ux:alternate:edge-12",
+					"reason": "ux:action:save-project-as"
+				},
+				{
+					"ref": "ux:alternate:save-project-as-recovery",
+					"reason": "ux:action:save-project-as"
+				},
+				{
+					"ref": "ux:feedback:add-files-result",
+					"reason": "ux:action:add-files"
+				},
+				{
+					"ref": "ux:alternate:add-files-recovery",
+					"reason": "ux:action:add-files"
+				},
+				{
+					"ref": "ux:feedback:select-content-result",
+					"reason": "ux:action:select-content"
+				},
+				{
+					"ref": "ux:feedback:open-content-result",
+					"reason": "ux:action:open-content"
+				},
+				{
+					"ref": "ux:component:playlist-status",
+					"reason": "ux:surface:playback-workspace"
+				},
+				{
+					"ref": "ux:component:playback-transport",
+					"reason": "ux:surface:playback-workspace"
+				},
+				{
+					"ref": "ux:feedback:choose-playback-result",
+					"reason": "ux:action:choose-playback"
+				},
+				{
+					"ref": "ux:feedback:play-pause-result",
+					"reason": "ux:action:play-pause"
+				},
+				{
+					"ref": "ux:feedback:play-pause-failure",
+					"reason": "ux:action:play-pause"
+				},
+				{
+					"ref": "ux:alternate:play-pause-recovery",
+					"reason": "ux:action:play-pause"
+				},
+				{
+					"ref": "ux:feedback:stop-playback-result",
+					"reason": "ux:action:stop-playback"
+				},
+				{
+					"ref": "ux:feedback:previous-item-result",
+					"reason": "ux:action:previous-item"
+				},
+				{
+					"ref": "ux:feedback:next-item-result",
+					"reason": "ux:action:next-item"
+				},
+				{
+					"ref": "ux:feedback:shuffle-result",
+					"reason": "ux:action:shuffle"
+				},
+				{
+					"ref": "ux:feedback:repeat-result",
+					"reason": "ux:action:repeat"
+				},
+				{
+					"ref": "ux:feedback:choose-playlist-result",
+					"reason": "ux:action:choose-playlist"
+				},
+				{
+					"ref": "ux:feedback:name-playlist-result",
+					"reason": "ux:action:name-playlist"
+				},
+				{
+					"ref": "ux:feedback:add-playlist-items-result",
+					"reason": "ux:action:add-playlist-items"
+				},
+				{
+					"ref": "ux:feedback:reorder-playlist-result",
+					"reason": "ux:action:reorder-playlist"
+				},
+				{
+					"ref": "ux:feedback:reorder-playlist-canceled",
+					"reason": "ux:action:reorder-playlist"
+				},
+				{
+					"ref": "ux:feedback:remove-playlist-items-result",
+					"reason": "ux:action:remove-playlist-items"
+				},
+				{
+					"ref": "ux:feedback:save-playlist-result",
+					"reason": "ux:action:save-playlist"
+				},
+				{
+					"ref": "ux:feedback:save-playlist-progress",
+					"reason": "ux:action:save-playlist"
+				},
+				{
+					"ref": "ux:feedback:save-playlist-failure",
+					"reason": "ux:action:save-playlist"
+				},
+				{
+					"ref": "ux:alternate:save-playlist-recovery",
+					"reason": "ux:action:save-playlist"
+				},
+				{
+					"ref": "ux:component:timeline",
+					"reason": "ux:surface:video-workspace"
+				},
+				{
+					"ref": "ux:component:video-status",
+					"reason": "ux:surface:video-workspace"
+				},
+				{
+					"ref": "ux:component:rectangle-editor",
+					"reason": "ux:surface:video-workspace"
+				},
+				{
+					"ref": "ux:component:audio-controls",
+					"reason": "ux:surface:video-workspace"
+				},
+				{
+					"ref": "ux:state:video-framing",
+					"reason": "ux:surface:video-workspace"
+				},
+				{
+					"ref": "ux:feedback:zoom-player-in-result",
+					"reason": "ux:action:zoom-player-in"
+				},
+				{
+					"ref": "ux:feedback:zoom-player-out-result",
+					"reason": "ux:action:zoom-player-out"
+				},
+				{
+					"ref": "ux:feedback:fit-player-result",
+					"reason": "ux:action:fit-player"
+				},
+				{
+					"ref": "ux:feedback:pan-player-result",
+					"reason": "ux:action:pan-player"
+				},
+				{
+					"ref": "ux:feedback:zoom-timeline-result",
+					"reason": "ux:action:zoom-timeline"
+				},
+				{
+					"ref": "ux:feedback:pan-timeline-result",
+					"reason": "ux:action:pan-timeline"
+				},
+				{
+					"ref": "ux:action:insert-content",
+					"reason": "ux:research:multitrack-editing"
+				},
+				{
+					"ref": "ux:action:delete-selection",
+					"reason": "ux:research:multitrack-editing"
+				},
+				{
+					"ref": "ux:action:split-selection",
+					"reason": "ux:research:multitrack-editing"
+				},
+				{
+					"ref": "ux:frame:timeline-add",
+					"reason": "ux:research:multitrack-editing"
+				},
+				{
+					"ref": "ux:frame:selection-menu",
+					"reason": "ux:research:multitrack-editing"
+				},
+				{
+					"ref": "ux:feedback:choose-video-result",
+					"reason": "ux:action:choose-video"
+				},
+				{
+					"ref": "ux:feedback:name-video-result",
+					"reason": "ux:action:name-video"
+				},
+				{
+					"ref": "ux:feedback:play-preview-result",
+					"reason": "ux:action:play-preview"
+				},
+				{
+					"ref": "ux:feedback:stop-preview-result",
+					"reason": "ux:action:stop-preview"
+				},
+				{
+					"ref": "ux:feedback:select-range-result",
+					"reason": "ux:action:select-range"
+				},
+				{
+					"ref": "ux:feedback:set-range-boundary-result",
+					"reason": "ux:action:set-range-boundary"
+				},
+				{
+					"ref": "ux:research:timeline-pattern",
+					"reason": "ux:action:set-range-boundary"
+				},
+				{
+					"ref": "ux:feedback:clear-selection-result",
+					"reason": "ux:action:clear-selection"
+				},
+				{
+					"ref": "ux:feedback:scrub-result",
+					"reason": "ux:action:scrub"
+				},
+				{
+					"ref": "ux:feedback:step-frame-result",
+					"reason": "ux:action:step-frame"
+				},
+				{
+					"ref": "ux:feedback:follow-playhead-result",
+					"reason": "ux:action:follow-playhead"
+				},
+				{
+					"ref": "ux:feedback:select-objects-result",
+					"reason": "ux:action:select-objects"
+				},
+				{
+					"ref": "ux:feedback:trim-occurrence-result",
+					"reason": "ux:action:trim-occurrence"
+				},
+				{
+					"ref": "ux:alternate:trim-occurrence-recovery",
+					"reason": "ux:action:trim-occurrence"
+				},
+				{
+					"ref": "ux:feedback:reorder-objects-result",
+					"reason": "ux:action:reorder-objects"
+				},
+				{
+					"ref": "ux:feedback:reorder-objects-canceled",
+					"reason": "ux:action:reorder-objects"
+				},
+				{
+					"ref": "ux:alternate:reorder-objects-recovery",
+					"reason": "ux:action:reorder-objects"
+				},
+				{
+					"ref": "ux:feedback:set-insertion-result",
+					"reason": "ux:action:set-insertion"
+				},
+				{
+					"ref": "ux:feedback:select-track-result",
+					"reason": "ux:action:select-track"
+				},
+				{
+					"ref": "ux:feedback:mute-track-result",
+					"reason": "ux:action:mute-track"
+				},
+				{
+					"ref": "ux:research:audio-scope",
+					"reason": "ux:action:mute-track"
+				},
+				{
+					"ref": "ux:feedback:add-timeline-result",
+					"reason": "ux:action:add-timeline"
+				},
+				{
+					"ref": "ux:action:dismiss-editor",
+					"reason": "ux:action:add-timeline"
+				},
+				{
+					"ref": "ux:alternate:add-canceled",
+					"reason": "ux:action:add-timeline"
+				},
+				{
+					"ref": "ux:feedback:selection-actions-result",
+					"reason": "ux:action:selection-actions"
+				},
+				{
+					"ref": "ux:feedback:undo-result",
+					"reason": "ux:action:undo"
+				},
+				{
+					"ref": "ux:feedback:redo-result",
+					"reason": "ux:action:redo"
+				},
+				{
+					"ref": "ux:feedback:save-video-result",
+					"reason": "ux:action:save-video"
+				},
+				{
+					"ref": "ux:feedback:save-video-progress",
+					"reason": "ux:action:save-video"
+				},
+				{
+					"ref": "ux:feedback:save-video-failure",
+					"reason": "ux:action:save-video"
+				},
+				{
+					"ref": "ux:alternate:save-video-recovery",
+					"reason": "ux:action:save-video"
+				},
+				{
+					"ref": "ux:feedback:cancel-transition-result",
+					"reason": "ux:action:cancel-transition"
+				},
+				{
+					"ref": "ux:feedback:insert-content-result",
+					"reason": "ux:action:insert-content"
+				},
+				{
+					"ref": "ux:feedback:insert-content-progress",
+					"reason": "ux:action:insert-content"
+				},
+				{
+					"ref": "ux:feedback:insert-content-failure",
+					"reason": "ux:action:insert-content"
+				},
+				{
+					"ref": "ux:alternate:insert-content-recovery",
+					"reason": "ux:action:insert-content"
+				},
+				{
+					"ref": "ux:feedback:delete-selection-result",
+					"reason": "ux:action:delete-selection"
+				},
+				{
+					"ref": "ux:feedback:split-selection-result",
+					"reason": "ux:action:split-selection"
+				},
+				{
+					"ref": "ux:action:choose-timeline-content",
+					"reason": "ux:frame:timeline-add"
+				},
+				{
+					"ref": "ux:action:edit-source-rectangle",
+					"reason": "ux:frame:timeline-add"
+				},
+				{
+					"ref": "ux:action:open-save-clip",
+					"reason": "ux:frame:selection-menu"
+				},
+				{
+					"ref": "ux:action:open-update-clip",
+					"reason": "ux:frame:selection-menu"
+				},
+				{
+					"ref": "ux:action:set-track-volume",
+					"reason": "ux:research:audio-scope"
+				},
+				{
+					"ref": "ux:action:set-clip-volume",
+					"reason": "ux:research:audio-scope"
+				},
+				{
+					"ref": "ux:action:mute-clip",
+					"reason": "ux:research:audio-scope"
+				},
+				{
+					"ref": "ux:frame:clip-properties",
+					"reason": "ux:research:audio-scope"
+				},
+				{
+					"ref": "ux:feedback:dismiss-editor-result",
+					"reason": "ux:action:dismiss-editor"
+				},
+				{
+					"ref": "ux:feedback:choose-timeline-content-result",
+					"reason": "ux:action:choose-timeline-content"
+				},
+				{
+					"ref": "ux:alternate:framing-canceled",
+					"reason": "ux:action:edit-source-rectangle"
+				},
+				{
+					"ref": "ux:alternate:add-crop",
+					"reason": "ux:action:edit-source-rectangle"
+				},
+				{
+					"ref": "ux:feedback:edit-source-rectangle-result",
+					"reason": "ux:action:edit-source-rectangle"
+				},
+				{
+					"ref": "ux:research:spatial-framing",
+					"reason": "ux:action:edit-source-rectangle"
+				},
+				{
+					"ref": "ux:feedback:open-save-clip-result",
+					"reason": "ux:action:open-save-clip"
+				},
+				{
+					"ref": "ux:feedback:open-update-clip-result",
+					"reason": "ux:action:open-update-clip"
+				},
+				{
+					"ref": "ux:research:shared-clip-review",
+					"reason": "ux:action:open-update-clip"
+				},
+				{
+					"ref": "ux:alternate:audio-invalid",
+					"reason": "ux:action:set-track-volume"
+				},
+				{
+					"ref": "ux:feedback:set-track-volume-result",
+					"reason": "ux:action:set-track-volume"
+				},
+				{
+					"ref": "ux:feedback:set-clip-volume-result",
+					"reason": "ux:action:set-clip-volume"
+				},
+				{
+					"ref": "ux:feedback:mute-clip-result",
+					"reason": "ux:action:mute-clip"
+				},
+				{
+					"ref": "ux:frame:source-rectangle",
+					"reason": "ux:alternate:add-crop"
+				},
+				{
+					"ref": "ux:action:adjust-rectangle",
+					"reason": "ux:alternate:add-crop"
+				},
+				{
+					"ref": "ux:feedback:adjust-rectangle-result",
+					"reason": "ux:alternate:add-crop"
+				},
+				{
+					"ref": "ux:action:apply-rectangle",
+					"reason": "ux:alternate:add-crop"
+				},
+				{
+					"ref": "ux:feedback:apply-rectangle-result",
+					"reason": "ux:alternate:add-crop"
+				},
+				{
+					"ref": "ux:action:edit-track-rectangle",
+					"reason": "ux:research:spatial-framing"
+				},
+				{
+					"ref": "ux:frame:track-properties",
+					"reason": "ux:research:spatial-framing"
+				},
+				{
+					"ref": "ux:frame:track-rectangle",
+					"reason": "ux:research:spatial-framing"
+				},
+				{
+					"ref": "ux:frame:video-framing-view",
+					"reason": "ux:research:spatial-framing"
+				},
+				{
+					"ref": "ux:action:confirm-update",
+					"reason": "ux:research:shared-clip-review"
+				},
+				{
+					"ref": "ux:frame:clip-update",
+					"reason": "ux:research:shared-clip-review"
+				},
+				{
+					"ref": "ux:action:reset-rectangle",
+					"reason": "ux:frame:source-rectangle"
+				},
+				{
+					"ref": "ux:alternate:framing-invalid",
+					"reason": "ux:action:adjust-rectangle"
+				},
+				{
+					"ref": "ux:alternate:framing-failed",
+					"reason": "ux:action:apply-rectangle"
+				},
+				{
+					"ref": "ux:feedback:apply-rectangle-failure",
+					"reason": "ux:action:apply-rectangle"
+				},
+				{
+					"ref": "ux:feedback:edit-track-rectangle-result",
+					"reason": "ux:action:edit-track-rectangle"
+				},
+				{
+					"ref": "ux:feedback:confirm-update-result",
+					"reason": "ux:action:confirm-update"
+				},
+				{
+					"ref": "ux:feedback:confirm-update-progress",
+					"reason": "ux:action:confirm-update"
+				},
+				{
+					"ref": "ux:feedback:confirm-update-failure",
+					"reason": "ux:action:confirm-update"
+				},
+				{
+					"ref": "ux:alternate:confirm-update-recovery",
+					"reason": "ux:action:confirm-update"
+				},
+				{
+					"ref": "ux:feedback:reset-rectangle-result",
+					"reason": "ux:action:reset-rectangle"
+				}
+			],
+			"seedImpacts": [],
+			"checks": {
+				"selectedUxRecordsExact": true,
+				"globalRulesExact": true,
+				"globalGapsExact": true
+			}
+		}
+	],
+	"fullAnswerReferenceCoverage": {
+		"detailed": [
+			"insert-content",
+			"timeline-add",
+			"edit-video",
+			"save-video",
+			"timeline",
+			"claim-copied-assembly-update",
+			"product:add-timeline-content",
+			"product:timeline-occurrences",
+			"product:clip-persistence-invariants",
+			"select-objects",
+			"video-view",
+			"clip-properties",
+			"delete-selection",
+			"split-selection",
+			"reorder-objects",
+			"product:content-types",
+			"product:grouped-assembly-editing",
+			"trim-occurrence",
+			"trim-occurrence-result",
+			"trim-occurrence-recovery",
+			"edit-video-trim-occurrence-step",
+			"product:occurrence-trim",
+			"product:timeline-trim-push",
+			"open-update-clip",
+			"confirm-update",
+			"clip-update",
+			"update-clip",
+			"open-update-clip-result",
+			"confirm-update-result",
+			"confirm-update-progress",
+			"confirm-update-failure",
+			"confirm-update-recovery",
+			"product:update-named-clip",
+			"clip-update-followers",
+			"clip-update-overrides",
+			"clip-update-collisions",
+			"shared-clip-update-collision",
+			"shared-clip-review",
+			"editing",
+			"video-workspace",
+			"video-framing-view",
+			"claim-shared-clip-collision-question",
+			"product:shared-clip-update-collision",
+			"selection-menu",
+			"selection-actions",
+			"undo",
+			"redo",
+			"video-status",
+			"alexa-ux",
+			"realization-5",
+			"realization-18",
+			"realization-25",
+			"realization-29",
+			"realization-30",
+			"trim-push"
+		],
+		"overviewOnly": [],
+		"missing": [],
+		"notInBaseline": []
+	},
+	"limits": [
+		"No model reading, reasoning, output generation or review was rerun.",
+		"Reference coverage is not evidence of semantic sufficiency or equivalent design quality.",
+		"The export-only assignment is a narrower demonstration, not equivalent to the actual update.",
+		"Selection is not enabled automatically in refine-design; canonical artifacts and live Alexa were not written.",
+		"One observed local build per scope; worker/module startup and cache state differ between scopes."
+	]
+}

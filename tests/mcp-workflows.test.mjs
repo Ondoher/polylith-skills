@@ -189,6 +189,85 @@ test('two HTTP clients share a run, exact handles, assigned delivery, bounded re
 	assert.ok(f.service.measurements[0].operationMs > 0);
 });
 
+test('UX selection keeps complete assigned flows, expands changed shared behavior and exposes uncertain scope through MCP', async (scenario) => {
+	const f = await fixture(scenario);
+	const fixtureRoot = new URL(
+		'../skills/refine-design/references/fixtures/product-model/garden-log/',
+		import.meta.url,
+	);
+	fs.copyFileSync(new URL('product-description.md', fixtureRoot), path.join(f.root, 'product-description.md'));
+	const proposal = JSON.parse(fs.readFileSync(new URL('product-model-proposal.json', fixtureRoot)));
+	await f.execute('model.persist', {proposal, outputRoot: 'product', sourceLabel: 'product-description.md'});
+	const factsReceipt = await f.execute('product.prepare');
+	const facts = f.value(factsReceipt);
+	const ux = gardenUx();
+	ux.productModelBinding = facts.productModelBinding;
+	// A second local interaction uses the same actions. Reading those actions must not pull in its flow.
+	const otherFlow = {...structuredClone(ux.flows[0]), id: 'other-flow', elementRef: 'ux:surface:other-surface'};
+	// Step and alternate identities are global in the current UX contract.
+	const renamed = new Map(
+		[...otherFlow.steps, ...otherFlow.alternates, ...otherFlow.alternates.flatMap((item) => item.steps)].map(
+			(item) => [item.id, `other-${item.id}`],
+		),
+	);
+	const collectIds = (value) => {
+		if (Array.isArray(value)) value.forEach(collectIds);
+		else if (value && typeof value === 'object') {
+			if (value.id) renamed.set(value.id, value.id === ux.surfaces[0].id ? 'other-surface' : `other-${value.id}`);
+			Object.values(value).forEach(collectIds);
+		}
+	};
+	[ux.surfaces, ux.states, ux.interactionFrames].forEach(collectIds);
+	renamed.set(`ux:surface:${ux.surfaces[0].id}`, 'ux:surface:other-surface');
+	const rename = (value) =>
+		typeof value === 'string'
+			? (renamed.get(value) ?? value)
+			: Array.isArray(value)
+				? value.map(rename)
+				: value && typeof value === 'object'
+					? Object.fromEntries(Object.entries(value).map(([key, child]) => [key, rename(child)]))
+					: value;
+	ux.flows.push(rename(otherFlow));
+	for (const action of ux.actions) {
+		action.taskRefs.push('other-flow');
+		action.applicableStateRefs.push(...action.applicableStateRefs.map((ref) => renamed.get(ref)));
+	}
+	ux.interactionFrames.push({...rename(ux.interactionFrames[0]), taskRefs: ['other-flow']});
+	ux.states.push(rename(ux.states[0]));
+	ux.surfaces.push(rename(ux.surfaces[0]));
+	ux.features[0].flowRefs.push('other-flow');
+	ux.features[0].surfaceRefs.push('other-surface');
+	ux.application.areas[0].surfaceRefs.push('other-surface');
+	const uxReceipt = await f.call('store', {access: f.access, run: f.run, value: ux});
+	const before = JSON.stringify({facts, ux});
+	const handles = {facts: factsReceipt.handle, ux: uxReceipt.handle};
+	const selected = f.value(await f.execute('ux.select-input', {changedRefs: [], flowIds: [ux.flows[0].id]}, handles));
+	assert.deepEqual(selected.packet.ux.flows, [ux.flows[0]]);
+	assert.ok(selected.packet.overview.ux.some((item) => item.ref === 'ux:flow:other-flow'));
+	assert.deepEqual(selected.packet.facts.productModel.rules, facts.productModel.rules);
+	assert.deepEqual(selected.packet.ux.openQuestions, ux.openQuestions);
+	assert.equal(selected.packet.canonical, false);
+	const shared = ux.flows[0].steps.find((step) => step.actionRef).actionRef;
+	const expanded = f.value(await f.execute('ux.select-input', {changedRefs: [`ux:action:${shared}`]}, handles));
+	assert.ok(expanded.packet.ux.flows.some((item) => item.id === 'other-flow'));
+	const uncertain = f.value(await f.execute('ux.select-input', {changedRefs: ['product:not-yet-mapped']}, handles));
+	assert.deepEqual(uncertain.packet.ux.flows, ux.flows);
+	assert.ok(uncertain.packet.notices.some((item) => item.kind === 'unmapped-change-full-ux'));
+	assert.deepEqual(uncertain.packet.facts.productModel.requirements, facts.productModel.requirements);
+	const staleUx = {...ux, productModelBinding: {...ux.productModelBinding, sha256: '0'.repeat(64), revision: 99}};
+	const staleReceipt = await f.call('store', {access: f.access, run: f.run, value: staleUx});
+	const stale = f.value(
+		await f.execute(
+			'ux.select-input',
+			{changedRefs: [], flowIds: [ux.flows[0].id]},
+			{...handles, ux: staleReceipt.handle},
+		),
+	);
+	assert.ok(stale.packet.notices.some((item) => item.kind === 'unmatched-baseline-full-ux'));
+	assert.deepEqual(stale.packet.ux.flows, ux.flows);
+	assert.equal(JSON.stringify({facts, ux}), before);
+});
+
 test('current product preparation, scoped facts, exact review and canonical artifact persistence preserve existing contracts', async (scenario) => {
 	const f = await fixture(scenario);
 	const fixtureRoot = new URL(

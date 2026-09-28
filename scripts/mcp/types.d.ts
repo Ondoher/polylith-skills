@@ -237,3 +237,22 @@ interface WorkflowOperation {
 		context: WorkflowOperationContext,
 	) => WorkflowJson | Promise<WorkflowJson>;
 }
+/** Inputs for a read-only UX selection; saved handles can bind facts and ux. */
+type UxSelectionRequest = {
+	/** Current validated planner facts. */
+	facts: Record<string, WorkflowJson>;
+	/** Current-schema UX from the current or immediately preceding product revision. */
+	ux: Record<string, WorkflowJson>;
+	/** Explicit changed references; omitted uses the saved product change ledger. */
+	changedRefs?: string[];
+	/** Additional flows requested by the parent or consumer. */
+	flowIds?: string[];
+};
+
+/** Noncanonical agent input and separately readable scope evidence. */
+type UxSelectionResult = {
+	/** Selected exact records, overview, bindings and uncertainty notices. */
+	packet: Record<string, WorkflowJson>;
+	/** Inclusion reasons and counts; does not establish semantic sufficiency. */
+	receipt: Record<string, WorkflowJson>;
+};

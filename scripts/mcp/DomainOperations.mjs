@@ -288,6 +288,18 @@ export class DomainOperations {
 			},
 		);
 		this._add(
+			'ux.select-input',
+			'Prepare a read-only UX work package from current facts and prior UX handles. Read /packet; /receipt explains scope. Does not replace canonical data or establish review sufficiency.',
+			{facts: object, ux: object, changedRefs: list, flowIds: list},
+			['facts', 'ux'],
+			true,
+			false,
+			async (input) => {
+				const {UxInputSelection} = await this._module('scripts/mcp/UxInputSelection.mjs');
+				return UxInputSelection.select(input);
+			},
+		);
+		this._add(
 			'units.open',
 			'Initialize a current UX/UI authoring store with exact source binding.',
 			{stage, binding: object},
