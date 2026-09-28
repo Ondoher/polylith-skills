@@ -1,0 +1,306 @@
+{
+	"experiment": "Native independent MCP tool-call exposure in the installed client",
+	"modelCatalogMetadata": {
+		"slug": "gpt-6-astra",
+		"tool_mode": "code_mode_only"
+	},
+	"attempts": [
+		{
+			"attempt": "native-default-01",
+			"control": {
+				"experiment": "ux-read-window",
+				"pageBytes": 28000,
+				"probe": true,
+				"parallelProbe": false,
+				"nativeProbe": true,
+				"disableCodeHost": false,
+				"startedAt": "2026-09-28T19:38:01.020Z",
+				"run": "ux-mcp-replay-20260928",
+				"workspace": "C:\\dev\\polylith-skills\\",
+				"transport": "resident workflow MCP over localhost HTTP",
+				"status": "native-unavailable",
+				"smoke": false,
+				"serverPid": 18304,
+				"instance": "a1a7faf0-d509-4b6e-b2d0-b5553ea7294a",
+				"serverStartupMs": 134.1621,
+				"readLimits": {
+					"pageBytes": 28000,
+					"envelopeBytes": 31200,
+					"toolBytes": 32768
+				},
+				"childPid": 24140,
+				"agentStartedAt": "2026-09-28T19:38:01.288Z",
+				"threadId": "01a0e986-336e-7360-8639-03da17ea175b",
+				"reportedUsage": {
+					"input_tokens": 18248,
+					"cached_input_tokens": 7296,
+					"cache_write_input_tokens": 0,
+					"output_tokens": 80,
+					"reasoning_output_tokens": 59
+				},
+				"exitCode": 0,
+				"agentCompletedAt": "2026-09-28T19:38:08.791Z",
+				"agentWindowMs": 7515.7522,
+				"completedAt": "2026-09-28T19:38:08.807Z"
+			},
+			"reportedResult": "NATIVE_UNAVAILABLE: MCP tools are exposed only through the code wrapper.",
+			"modelToolCalls": 0,
+			"dataReads": 0,
+			"inputHashes": {
+				"facts": "0a93131e55d107256cd22569659a860a6a927a5e30a01e8800a30ca5e9782e2a",
+				"ux": "5892a95485b1358f454ec59f71dc096acb7ab5e92033f831b437070ea895dc4c"
+			},
+			"runtime": {
+				"capturedAt": "2026-09-28T19:39:50.157215+00:00",
+				"attemptStartedAt": "2026-09-28T19:38:01.288Z",
+				"attemptEndedAt": "2026-09-28T19:38:08.791Z",
+				"threads": [
+					{
+						"threadId": "01a0e986-336e-7360-8639-03da17ea175b",
+						"role": null,
+						"agentPath": null,
+						"model": "gpt-6-astra",
+						"effort": "xhigh",
+						"sourceSession": "C:\\Users\\gande\\.codex\\sessions\\2026\\09\\28\\rollout-2026-09-28T12-38-01-01a0e986-336e-7360-8639-03da17ea175b.jsonl",
+						"windowStart": "2026-09-28T19:38:01.288+00:00",
+						"windowEnd": "2026-09-28T19:38:08.791+00:00",
+						"windowSeconds": 7.502999782562256,
+						"activeTurnSeconds": 5.474999904632568,
+						"outsideRecordedTurnsSeconds": 2.0279998779296875,
+						"activeSeconds": {
+							"output": 0.5408718585968018,
+							"reasoning-item": 1.8539319038391113,
+							"tool": 0
+						},
+						"activeUnattributedSeconds": 3.0801961421966553,
+						"streamIntervalsObserved": true,
+						"seconds": {
+							"output": 0.5408718585968018,
+							"reasoning-item": 1.8539319038391113,
+							"tool": 0
+						},
+						"unattributedSeconds": 5.108196020126343,
+						"items": [
+							{
+								"id": "rs_07b8b9beb920f5b8016abac21c080087d2a9dd845f355de965",
+								"kind": "reasoning",
+								"end": 1790624286.919,
+								"turn": "01a0e986-3525-7642-b16c-6daad5bbdd47",
+								"callId": null,
+								"start": 1790624285.065068,
+								"streamEvents": 2
+							},
+							{
+								"id": "msg_07b8b9beb920f5b8016abac21de23087d29867ab439247bfc7",
+								"kind": "message",
+								"end": 1790624287.462,
+								"turn": "01a0e986-3525-7642-b16c-6daad5bbdd47",
+								"callId": null,
+								"start": 1790624286.921128,
+								"streamEvents": 2
+							}
+						],
+						"calls": [],
+						"responses": [
+							{
+								"id": "resp_07b8b9beb920f5b8016abac21b07ac87d2a361a1e3122a8520",
+								"at": "2026-09-28T19:38:07.483+00:00",
+								"turn": "01a0e986-3525-7642-b16c-6daad5bbdd47",
+								"usage": {
+									"input_tokens": 18248,
+									"cached_input_tokens": 7296,
+									"cache_write_input_tokens": 0,
+									"output_tokens": 80,
+									"reasoning_output_tokens": 59,
+									"total_tokens": 18328
+								}
+							}
+						],
+						"usageByCompletedResponse": {
+							"input_tokens": 18248,
+							"cached_input_tokens": 7296,
+							"output_tokens": 80,
+							"reasoning_output_tokens": 59
+						},
+						"turns": {
+							"01a0e986-3525-7642-b16c-6daad5bbdd47": [
+								{
+									"at": "2026-09-28T19:38:02.016+00:00",
+									"event": "task_started"
+								},
+								{
+									"at": "2026-09-28T19:38:07.491+00:00",
+									"event": "task_complete"
+								}
+							]
+						}
+					}
+				],
+				"limits": [
+					"Client-observed streams, not isolated provider computation or semantic reasoning.",
+					"Parent and child windows overlap and are nonadditive.",
+					"Child windows start at recorded thread creation and end at task completion when observed, otherwise the capture boundary.",
+					"Incomplete output lacks a completed interval; response usage may straddle boundaries.",
+					"First stream event is used with the persisted item completion; stderr does not expose the desktop logger event labels.",
+					"Raw logs and capabilities remain private; this output includes metadata only."
+				]
+			}
+		},
+		{
+			"attempt": "native-host-off-01",
+			"control": {
+				"experiment": "ux-read-window",
+				"pageBytes": 28000,
+				"probe": true,
+				"parallelProbe": false,
+				"nativeProbe": true,
+				"disableCodeHost": true,
+				"startedAt": "2026-09-28T19:38:22.665Z",
+				"run": "ux-mcp-replay-20260928",
+				"workspace": "C:\\dev\\polylith-skills\\",
+				"transport": "resident workflow MCP over localhost HTTP",
+				"status": "native-unavailable",
+				"smoke": false,
+				"serverPid": 52168,
+				"instance": "7de1c2fe-ea88-4f6e-9598-ef7e2a7bec52",
+				"serverStartupMs": 132.1921,
+				"readLimits": {
+					"pageBytes": 28000,
+					"envelopeBytes": 31200,
+					"toolBytes": 32768
+				},
+				"childPid": 65076,
+				"agentStartedAt": "2026-09-28T19:38:22.938Z",
+				"threadId": "01a0e986-87ea-78a2-8caf-1e4602f052e9",
+				"reportedUsage": {
+					"input_tokens": 18244,
+					"cached_input_tokens": 7296,
+					"cache_write_input_tokens": 0,
+					"output_tokens": 80,
+					"reasoning_output_tokens": 59
+				},
+				"exitCode": 0,
+				"agentCompletedAt": "2026-09-28T19:38:31.575Z",
+				"agentWindowMs": 8655.1401,
+				"completedAt": "2026-09-28T19:38:31.591Z"
+			},
+			"reportedResult": "NATIVE_UNAVAILABLE: MCP tools are exposed only through the code wrapper.",
+			"modelToolCalls": 0,
+			"dataReads": 0,
+			"inputHashes": {
+				"facts": "0a93131e55d107256cd22569659a860a6a927a5e30a01e8800a30ca5e9782e2a",
+				"ux": "5892a95485b1358f454ec59f71dc096acb7ab5e92033f831b437070ea895dc4c"
+			},
+			"runtime": {
+				"capturedAt": "2026-09-28T19:39:50.253223+00:00",
+				"attemptStartedAt": "2026-09-28T19:38:22.938Z",
+				"attemptEndedAt": "2026-09-28T19:38:31.575Z",
+				"threads": [
+					{
+						"threadId": "01a0e986-87ea-78a2-8caf-1e4602f052e9",
+						"role": null,
+						"agentPath": null,
+						"model": "gpt-6-astra",
+						"effort": "xhigh",
+						"sourceSession": "C:\\Users\\gande\\.codex\\sessions\\2026\\09\\28\\rollout-2026-09-28T12-38-23-01a0e986-87ea-78a2-8caf-1e4602f052e9.jsonl",
+						"windowStart": "2026-09-28T19:38:22.938+00:00",
+						"windowEnd": "2026-09-28T19:38:31.575+00:00",
+						"windowSeconds": 8.63700008392334,
+						"activeTurnSeconds": 7.172999858856201,
+						"outsideRecordedTurnsSeconds": 1.4640002250671387,
+						"activeSeconds": {
+							"output": 0.5522420406341553,
+							"reasoning-item": 1.617534875869751,
+							"tool": 0
+						},
+						"activeUnattributedSeconds": 5.003222942352295,
+						"streamIntervalsObserved": true,
+						"seconds": {
+							"output": 0.5522420406341553,
+							"reasoning-item": 1.617534875869751,
+							"tool": 0
+						},
+						"unattributedSeconds": 6.467223167419434,
+						"items": [
+							{
+								"id": "rs_0f5f51cf3d9d310d016abac23351e887d2b837fbd2869a6a01",
+								"kind": "reasoning",
+								"end": 1790624310.199,
+								"turn": "01a0e986-8997-7c90-a115-5c1eb3e542ca",
+								"callId": null,
+								"start": 1790624308.581465,
+								"streamEvents": 2
+							},
+							{
+								"id": "msg_0f5f51cf3d9d310d016abac23528d087d281de17c0426fbd68",
+								"kind": "message",
+								"end": 1790624310.754,
+								"turn": "01a0e986-8997-7c90-a115-5c1eb3e542ca",
+								"callId": null,
+								"start": 1790624310.201758,
+								"streamEvents": 2
+							}
+						],
+						"calls": [],
+						"responses": [
+							{
+								"id": "resp_0f5f51cf3d9d310d016abac23075f887d289cdba8f288db0b5",
+								"at": "2026-09-28T19:38:30.802+00:00",
+								"turn": "01a0e986-8997-7c90-a115-5c1eb3e542ca",
+								"usage": {
+									"input_tokens": 18244,
+									"cached_input_tokens": 7296,
+									"cache_write_input_tokens": 0,
+									"output_tokens": 80,
+									"reasoning_output_tokens": 59,
+									"total_tokens": 18324
+								}
+							}
+						],
+						"usageByCompletedResponse": {
+							"input_tokens": 18244,
+							"cached_input_tokens": 7296,
+							"output_tokens": 80,
+							"reasoning_output_tokens": 59
+						},
+						"turns": {
+							"01a0e986-8997-7c90-a115-5c1eb3e542ca": [
+								{
+									"at": "2026-09-28T19:38:23.647+00:00",
+									"event": "task_started"
+								},
+								{
+									"at": "2026-09-28T19:38:30.820+00:00",
+									"event": "task_complete"
+								}
+							]
+						}
+					}
+				],
+				"limits": [
+					"Client-observed streams, not isolated provider computation or semantic reasoning.",
+					"Parent and child windows overlap and are nonadditive.",
+					"Child windows start at recorded thread creation and end at task completion when observed, otherwise the capture boundary.",
+					"Incomplete output lacks a completed interval; response usage may straddle boundaries.",
+					"First stream event is used with the persisted item completion; stderr does not expose the desktop logger event labels.",
+					"Raw logs and capabilities remain private; this output includes metadata only."
+				]
+			}
+		}
+	],
+	"officialReferences": [
+		"https://developers.openai.com/api/docs/guides/function-calling",
+		"https://developers.openai.com/api/docs/guides/tools-programmatic-tool-calling"
+	],
+	"tooling": {
+		"planning\\refinement-efficiency\\experiments\\ux-read-window\\native.py": "bb35d3b69f49f2c10627fd633d35abefa641f18d04fde30da55bc2ed642cf21c",
+		"planning\\refinement-efficiency\\experiments\\ux-read-window\\native-assignment.md": "a3c1b35778943e838cfece57f935e14388201e145b27a92469e23337008c7fed",
+		"planning\\refinement-efficiency\\experiments\\ux-collection-phase\\run.mjs": "b23df0d3df575b8c0525ca9761068220476ab3af4495cb4c2eb946a5f5649007",
+		".codex-tmp\\alexa-mcp-refinement-20260928-133745\\collect-runtime.py": "97d42b39b6a1ad0c87e7f6f50723bedc07169cedd335b9f992831031a03b1bc1"
+	},
+	"limits": [
+		"These probes establish that no native call path was exercised under the two tested configurations; no separate-envelope size or throughput measurement occurred.",
+		"Client model metadata and the agents stated exposure limitation agree, but these observations are not a proof that no other client configuration or implementation can expose direct calls.",
+		"No different model, model-catalog override, direct Responses API application, global configuration edit or output-limit increase was attempted."
+	]
+}

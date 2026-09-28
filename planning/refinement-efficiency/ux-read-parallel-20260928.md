@@ -62,6 +62,7 @@ Keep roughly 28 KB of tested total content per outer command for this client and
 
 - [Metrics, per-command timing and delivery checks](ux-read-window-20260928-parallel-01.json)
 - [Exact assignment template](experiments/ux-read-window/parallel-assignment.md)
+- [Follow-up: native independent tool-call exposure](ux-native-mcp-20260928.md)
 - Private instantiated prompt, source receipts and original logs: `.codex-tmp/ux-read-window-20260928/parallel-01/`
 
 ```text
