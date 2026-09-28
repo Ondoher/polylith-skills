@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"startedAt": "2026-09-28T02:51:36.630658+00:00",
+	"baselineCommit": "7954073db5c886d74fc9691c89ae4d61502d73a6",
+	"goals": {
+		"G1": {
+			"status": "verified",
+			"verifiedAt": "2026-09-28T03:26:25.994205+00:00",
+			"evidence": "tests/mcp-workflows.test.mjs: real HTTP discovery, shared clients, handles, saved UX/UI, exact review, persistence and publication"
+		},
+		"G2": {
+			"status": "verified",
+			"verifiedAt": "2026-09-28T03:26:25.994205+00:00",
+			"evidence": "tests/mcp-workflows.test.mjs: real HTTP discovery, shared clients, handles, saved UX/UI, exact review, persistence and publication"
+		},
+		"G3": {
+			"status": "verified",
+			"verifiedAt": "2026-09-28T03:26:25.994205+00:00",
+			"evidence": "tests/mcp-workflows.test.mjs: real HTTP discovery, shared clients, handles, saved UX/UI, exact review, persistence and publication"
+		},
+		"G4": {
+			"status": "verified",
+			"verifiedAt": "2026-09-28T03:26:25.994205+00:00",
+			"evidence": "tests/mcp-workflows.test.mjs: real HTTP discovery, shared clients, handles, saved UX/UI, exact review, persistence and publication"
+		},
+		"G5": {
+			"status": "in progress",
+			"startedAt": "2026-09-28T03:26:25.994205+00:00"
+		},
+		"G6": {
+			"status": "pending"
+		}
+	},
+	"decisions": [
+		{
+			"choice": "Use seven small MCP tools over shared loopback HTTP, with a closed domain operation registry.",
+			"reason": "Reuse measured transport and existing exported APIs; avoid per-agent stores and generic shell execution."
+		},
+		{
+			"choice": "Use parent-issued run capabilities and record scopes; retain canonical writes with the parent.",
+			"reason": "Preserve existing role restrictions while allowing direct file/handle delivery."
+		},
+		{
+			"choice": "Keep synchronous domain engines in one maintained worker and durable results in the existing workspace.",
+			"reason": "Keep HTTP/status responsive and permit reuse across service restarts without database or compatibility work."
+		},
+		{
+			"choice": "Retain host execution of installers, Git mutations, reset application and scaffold installation.",
+			"reason": "These cross host permission, recovery or process-lifecycle boundaries; use maintained dedicated workers and exact plans, not agent-generated wrappers."
+		},
+		{
+			"choice": "Reuse and extract current synthetic test fixtures.",
+			"reason": "Verify the same contracts through MCP without a paid full-product run or regenerating Alexa."
+		},
+		{
+			"choice": "Repair installed-agent/skill directory fingerprinting.",
+			"reason": "The real review request failed because the existing helper accepted the documentation junction but rejected installed agent and skill junctions. Keep physical namespace confinement."
+		}
+	],
+	"checks": [
+		{
+			"at": "2026-09-28T03:26:25.994205+00:00",
+			"command": "npm run test:mcp",
+			"passed": 9,
+			"failed": 0,
+			"testDurationMs": 6802.616,
+			"limits": "Synthetic current fixtures; loopback tools, not a live full refinement. Earlier failed attempts repaired; sandbox child-process permission was required."
+		}
+	],
+	"checkpoints": [],
+	"usage": null
+}

@@ -47,12 +47,18 @@ async function hashInput(kind, root, value) {
 	const normalized = normalizeRelative(value);
 	const candidate = path.resolve(root, ...normalized.split('/'));
 	if (!isWithin(root, candidate)) throw new Error(`${kind} input escapes its root: ${normalized}`);
-	// Installation links this namespace to the governance checkout. Treat its
-	// physical directory as the boundary, without accepting arbitrary file links.
-	const boundary =
-		kind === 'codex' && normalized.startsWith('documentation/')
-			? await realpath(path.join(root, 'documentation'))
-			: root;
+	// Installation links the documentation/agents directories and individual
+	// skill packages. Follow those owned namespace roots, never arbitrary files.
+	const segments = normalized.split('/');
+	const namespace =
+		kind === 'codex'
+			? ['documentation', 'agents'].includes(segments[0]) && segments.length > 1
+				? segments[0]
+				: segments[0] === 'skills' && segments.length > 2
+					? path.join('skills', segments[1])
+					: null
+			: null;
+	const boundary = namespace ? await realpath(path.join(root, namespace)) : root;
 	const resolved = await realpath(candidate);
 	if (!isWithin(boundary, resolved) || !(await stat(resolved)).isFile()) {
 		throw new Error(`${kind} input is not a file beneath its root: ${normalized}`);

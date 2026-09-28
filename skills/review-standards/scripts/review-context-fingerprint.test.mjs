@@ -36,6 +36,29 @@ function fixture(t, linked = true) {
 	return {repo, codex, documentation, run};
 }
 
+test('fingerprints installed agent and individual skill directory links', (t) => {
+	const {codex, documentation, run} = fixture(t);
+	const governance = path.dirname(documentation);
+	const agents = path.join(governance, 'agents');
+	const skill = path.join(governance, 'skills', 'review-standards');
+	mkdirSync(agents, {recursive: true});
+	mkdirSync(skill, {recursive: true});
+	mkdirSync(path.join(codex, 'skills'));
+	const linkType = process.platform === 'win32' ? 'junction' : 'dir';
+	symlinkSync(agents, path.join(codex, 'agents'), linkType);
+	symlinkSync(skill, path.join(codex, 'skills', 'review-standards'), linkType);
+	writeFileSync(path.join(agents, 'architecture-reviewer.toml'), 'Assigned role');
+	writeFileSync(path.join(skill, 'SKILL.md'), 'Current review instructions');
+	const result = run(
+		'--codex-input',
+		'agents/architecture-reviewer.toml',
+		'--codex-input',
+		'skills/review-standards/SKILL.md',
+	);
+	assert.equal(result.ok, true);
+	assert.equal(result.inputs.length, 2);
+});
+
 for (const linked of [false, true]) {
 	test(`fingerprints ${linked ? 'linked' : 'local'} documentation and detects changed canonical bytes`, (t) => {
 		const {documentation, run} = fixture(t, linked);
