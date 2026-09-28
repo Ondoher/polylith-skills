@@ -1,0 +1,135 @@
+{
+	"changes": [
+		{
+			"refs": [
+				"insert-content",
+				"choose-timeline-content",
+				"timeline-add",
+				"insert-content-result",
+				"edit-video-insert-content-step",
+				"edit-video-insert-content-step-completed",
+				"save-video",
+				"edit-video-save-video-step",
+				"save-clip"
+			],
+			"sourceRefs": [
+				"add-timeline-content",
+				"timeline-occurrences",
+				"clip-persistence-invariants",
+				"save-library-clip"
+			],
+			"decision": "Replace live named-clip use with a fresh video-owned copy of its definition, retaining underlying media references without copying source files. An optional origin association supports explicit library updates only. Composed clips insert as one grouped occurrence; saved-video expansion remains fresh four-track occurrences with existing compatibility checks. Save Video preserves copied definitions, resolved boundaries and retained composition. Later library edits affect future additions only; saving a reusable clip still leaves the active timeline intact."
+		},
+		{
+			"refs": [
+				"timeline",
+				"select-objects",
+				"selection-menu",
+				"clip-properties",
+				"edit-video",
+				"delete-selection",
+				"split-selection",
+				"reorder-objects"
+			],
+			"sourceRefs": ["content-types", "grouped-assembly-editing", "timeline-occurrences", "delete-split-reorder"],
+			"decision": "Represent a copied composition as a grouped clip within the existing editor and content vocabulary. Selection and ordinary edits address the group, retaining grouping of surviving portions rather than exposing internal parts implicitly. Preserve existing composition-range versus active-track object scope. Assembly remains an internal construction, with no additional library category, editor mode or work surface."
+		},
+		{
+			"refs": [
+				"trim-occurrence",
+				"trim-occurrence-result",
+				"trim-occurrence-recovery",
+				"edit-video-trim-occurrence-step",
+				"edit-video-trim-occurrence-step-completed",
+				"timeline"
+			],
+			"sourceRefs": [
+				"occurrence-trim",
+				"timeline-trim-push",
+				"grouped-assembly-editing",
+				"clip-persistence-invariants"
+			],
+			"decision": "Extend the existing trim contract to grouped clips: inward trim hides, rather than discards, copied constituent content; outward trim restores it and may extend into available source content at the corresponding edge. Preserve one-frame minimum, fixed End during Start adjustment, preceding-gap limits, forward End collision push, and one-operation Undo/Redo. Explain actual bounds locally and preserve the draft on invalid input or failure. Exact bounds for complex composed edges require clarification below."
+		},
+		{
+			"refs": [
+				"new:ungroup-assembly",
+				"new:ungroup-assembly-result",
+				"new:ungroup-assembly-recovery",
+				"selection-menu",
+				"edit-video",
+				"undo",
+				"redo",
+				"video-saving"
+			],
+			"sourceRefs": [
+				"grouped-assembly-editing",
+				"content-types",
+				"four-track-editing",
+				"commit-edit-availability"
+			],
+			"decision": "Plan one contextual Ungroup command for a selected grouped clip, with ordinary keyboard invocation of the same command. Materialize only included constituent parts as separate timeline clips; omit wholly excluded parts. Recommend one undoable draft conversion with synchronized preview, selection and duration; cancellation or failure retains the original group. Placement and preservation of composition settings remain unresolved for overlapping parts, so defer detailed interaction authoring until those dependencies and pattern research are resolved."
+		},
+		{
+			"refs": [
+				"open-update-clip",
+				"confirm-update",
+				"clip-update",
+				"update-clip",
+				"open-update-clip-result",
+				"confirm-update-result",
+				"confirm-update-progress",
+				"confirm-update-failure",
+				"confirm-update-recovery",
+				"update-clip-confirm-update-step-completed"
+			],
+			"sourceRefs": ["update-named-clip", "timeline-occurrences", "clip-persistence-invariants"],
+			"decision": "Keep the existing contextual action, identity and boundary comparison, confirmation, commit freeze and captured-context recovery. Publish only the selected occurrence's Start/End to the stable library definition. Confirmation states that all existing copies, including the selected occurrence and locally trimmed copies, remain unchanged; only future additions use the update. Remove follower propagation, selected-occurrence relinking and downstream collision validation from every action, flow and feedback description. Crop, volume, mute and track settings remain excluded."
+		},
+		{
+			"refs": [
+				"clip-update-followers",
+				"clip-update-overrides",
+				"clip-update-collisions",
+				"shared-clip-update-collision",
+				"shared-clip-review",
+				"editing",
+				"video-workspace",
+				"video-view",
+				"video-framing-view",
+				"edit-video",
+				"update-clip"
+			],
+			"sourceRefs": ["update-named-clip", "shared-clip-update-collision", "content-types"],
+			"decision": "Remove follower/override inventories and collision status from the update dialog. Retire the superseded collision question and trace gap, removing their incoming references. Preserve shared-clip-review's identity, source observations and historical verification, but narrow current applicability to explicit library-change review; retire propagation-specific adaptations and claims. Existing research cannot establish the new grouped-copy semantics, which derive from product authority."
+		},
+		{
+			"refs": [
+				"alexa-ux",
+				"realization-5",
+				"realization-18",
+				"realization-25",
+				"realization-29",
+				"realization-30",
+				"trim-push",
+				"new:grouped-assembly-realization"
+			],
+			"sourceRefs": [
+				"add-timeline-content",
+				"occurrence-trim",
+				"save-library-clip",
+				"timeline-occurrences",
+				"update-named-clip",
+				"timeline-trim-push",
+				"grouped-assembly-editing"
+			],
+			"decision": "On later assembly, bind the UX to the exact supplied product revision 7 and refresh affected realizations, adding grouped-editing coverage. Preserve surviving record IDs and unaffected accepted behavior, research and unresolved limits. This plan authorizes no canonical write or full-artifact expansion."
+		}
+	],
+	"questions": [
+		"How should Ungroup place simultaneously contributing constituent parts while preserving timing, stacking, source/output rectangles and group-level crop/audio within four tracks whose individual clips cannot overlap?",
+		"For a grouped clip edge containing multiple sources or a gap, which constituent source boundaries determine the permitted outward extension and resulting composition?",
+		"Research dependency: before detailed grouped-trim and Ungroup authoring, obtain bounded nested/grouped-clip precedents and assess their applicability; existing timeline and multitrack research establishes primitives, not this decomposition behavior.",
+		"Preserve existing unresolved source ownership, media repair, cross-source playback and application-close-during-export questions. Saved-video expansion settings conflicts still refuse the addition atomically; automatic resolution remains open."
+	]
+}
