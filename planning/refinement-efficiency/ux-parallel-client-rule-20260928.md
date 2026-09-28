@@ -1,5 +1,7 @@
 # Why Codex disables parallel model tool calls
 
+**Live follow-up:** [The first backend compatibility test](ux-native-no-lite-live-20260928.md) completed one native read and a subsequent model response, but the agent stopped without producing the requested batch. Basic request compatibility is established; parallel-read success remains unproven.
+
 **The cause is the model's Responses Lite metadata. Codex explicitly disables parallel model tool calls whenever that mode is enabled. A documented custom-catalog override changed the outgoing flag to true in an isolated local capture, but backend compatibility remains untested.**
 
 ## Source trace

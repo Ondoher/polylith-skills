@@ -14,6 +14,8 @@ const nativeProbe = process.argv.includes('--native-probe');
 const disableCodeHost = process.argv.includes('--disable-code-host');
 const directNamespace = process.argv.find((value) => value.startsWith('--direct-namespace='))?.slice(19);
 if (directNamespace && !/^[a-zA-Z0-9_]+$/.test(directNamespace)) throw new Error('Invalid direct tool namespace');
+const catalogArgument = process.argv.find((value) => value.startsWith('--model-catalog='))?.slice(16);
+const catalogPath = catalogArgument ? path.resolve(workspace, catalogArgument) : null;
 const probe = process.argv.includes('--probe') || parallelProbe || nativeProbe;
 const windowExperiment = Boolean(pageArgument) || probe;
 const output = path.join(
@@ -48,6 +50,9 @@ const control = {
 	nativeProbe,
 	disableCodeHost,
 	directNamespace: directNamespace ?? null,
+	modelCatalogOverride: catalogPath
+		? {path: catalogPath, sha256: createHash('sha256').update(fs.readFileSync(catalogPath)).digest('hex')}
+		: null,
 	startedAt: new Date().toISOString(),
 	run,
 	workspace,
@@ -227,6 +232,7 @@ Wait for READY and the inputs-ready marker handle, then return the child identit
 			'-',
 		];
 		if (disableCodeHost) args.splice(1, 0, '--disable', 'code_mode_host');
+		if (catalogPath) args.splice(1, 0, '-c', `model_catalog_json=${JSON.stringify(catalogPath)}`);
 		if (directNamespace)
 			args.splice(
 				1,
@@ -284,12 +290,11 @@ Wait for READY and the inputs-ready marker handle, then return the child identit
 			agentWindowMs: performance.now() - agentStart,
 		});
 		if (control.lastPhase !== 'inputs-ready') {
-			if (
-				nativeProbe &&
-				exitCode === 0 &&
-				fs.readFileSync(path.join(attempt, 'result.md'), 'utf8').includes('NATIVE_UNAVAILABLE')
-			)
+			const nativeResult =
+				nativeProbe && exitCode === 0 ? fs.readFileSync(path.join(attempt, 'result.md'), 'utf8') : '';
+			if (nativeProbe && exitCode === 0 && nativeResult.includes('NATIVE_UNAVAILABLE'))
 				control.status = 'native-unavailable';
+			else if (nativeResult.startsWith('NATIVE_NOT_COMPLETED:')) control.status = 'native-incomplete';
 			else throw new Error('Collection did not reach inputs-ready');
 		}
 		if (control.planHandle) {

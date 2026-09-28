@@ -1,0 +1,230 @@
+{
+	"experiment": "Native MCP namespace exposure and independent result verification",
+	"control": {
+		"experiment": "ux-read-window",
+		"pageBytes": 28000,
+		"probe": true,
+		"parallelProbe": false,
+		"nativeProbe": true,
+		"disableCodeHost": false,
+		"directNamespace": "mcp__polylith_workflows",
+		"modelCatalogOverride": {
+			"path": "C:\\dev\\polylith-skills\\.codex-tmp\\codex-parallel-rule-20260928\\catalog-without-lite.private.json",
+			"sha256": "e467b2b152eed8aa7378fb0fd42e1c366818634d31d99904d9d4f4910f97b6aa"
+		},
+		"startedAt": "2026-09-28T21:44:17.761Z",
+		"run": "ux-mcp-replay-20260928",
+		"workspace": "C:\\dev\\polylith-skills\\",
+		"transport": "resident workflow MCP over localhost HTTP",
+		"status": "error",
+		"smoke": false,
+		"serverPid": 56592,
+		"instance": "82f4671d-8bc8-4db7-81ed-fa318d0569e4",
+		"serverStartupMs": 141.12199999999999,
+		"readLimits": {
+			"pageBytes": 28000,
+			"envelopeBytes": 31200,
+			"toolBytes": 32768
+		},
+		"childPid": 55360,
+		"agentStartedAt": "2026-09-28T21:44:18.038Z",
+		"threadId": "01a0e9f9-d040-7d72-921d-a606926658c6",
+		"reportedUsage": {
+			"input_tokens": 47556,
+			"cached_input_tokens": 24320,
+			"cache_write_input_tokens": 0,
+			"output_tokens": 489,
+			"reasoning_output_tokens": 315
+		},
+		"exitCode": 0,
+		"agentCompletedAt": "2026-09-28T21:44:41.538Z",
+		"agentWindowMs": 23510.172499999997,
+		"error": "Collection did not reach inputs-ready",
+		"completedAt": "2026-09-28T21:44:41.555Z"
+	},
+	"inputHashes": {
+		"facts": "0a93131e55d107256cd22569659a860a6a927a5e30a01e8800a30ca5e9782e2a",
+		"ux": "5892a95485b1358f454ec59f71dc096acb7ab5e92033f831b437070ea895dc4c"
+	},
+	"results": [
+		{
+			"source": "facts",
+			"callId": "call_56gVcSedGaOG0dG4i0Fj6xXk",
+			"responseId": "resp_0cce6d84431c0897016abadfb4666487d2afa529f60ffc1b76",
+			"nativeFunctionCall": true,
+			"argumentBytes": 204,
+			"textBytes": 28000,
+			"clientLoggedOutputBytes": 31392,
+			"byteExact": true,
+			"sha256": "64a3f592c20ca61919b746689eca47c7cf32bbf799de2eb20af85b87ae586d41",
+			"commandGenerationSeconds": 3.1733479499816895,
+			"toolRoundTripSeconds": 0.06599998474121094,
+			"serverMs": 0.6597000000001572
+		}
+	],
+	"outcome": "native-incomplete",
+	"reportedResult": "NATIVE_NOT_COMPLETED: The first native read returned before the second call was emitted. No completion marker was stored.",
+	"nativeReadCount": 1,
+	"completionMarkerStored": false,
+	"nativeExposureVerified": true,
+	"singleResponseReadGroup": false,
+	"bothCallsPreparedBeforeFirstResult": null,
+	"targetMet": false,
+	"toolIntervalsOverlap": null,
+	"betweenReads": null,
+	"groupingMethod": "Pair completed function-call items with the next response.completed event. A shared model response establishes generation without an intervening model-response cycle. A shared Codex turn ID is insufficient. Early tool completion can overlap continued generation within the same response; before-result timing and execution overlap are separate observations, not batch-success requirements.",
+	"runtime": {
+		"capturedAt": "2026-09-28T21:45:06.951755+00:00",
+		"attemptStartedAt": "2026-09-28T21:44:18.038Z",
+		"attemptEndedAt": "2026-09-28T21:44:41.538Z",
+		"threads": [
+			{
+				"threadId": "01a0e9f9-d040-7d72-921d-a606926658c6",
+				"role": null,
+				"agentPath": null,
+				"model": "gpt-6-astra",
+				"effort": "xhigh",
+				"sourceSession": "C:\\Users\\gande\\.codex\\sessions\\2026\\09\\28\\rollout-2026-09-28T14-44-18-01a0e9f9-d040-7d72-921d-a606926658c6.jsonl",
+				"windowStart": "2026-09-28T21:44:18.038+00:00",
+				"windowEnd": "2026-09-28T21:44:41.538+00:00",
+				"windowSeconds": 23.5,
+				"activeTurnSeconds": 20.855000019073486,
+				"outsideRecordedTurnsSeconds": 2.6449999809265137,
+				"activeSeconds": {
+					"output": 5.065768003463745,
+					"reasoning-item": 9.485929012298584,
+					"tool": 0.06599998474121094
+				},
+				"activeUnattributedSeconds": 6.237303018569946,
+				"streamIntervalsObserved": true,
+				"seconds": {
+					"output": 5.065768003463745,
+					"reasoning-item": 9.485929012298584,
+					"tool": 0.06599998474121094
+				},
+				"unattributedSeconds": 8.88230299949646,
+				"items": [
+					{
+						"id": "msg_0cce6d84431c0897016abadfb6a2ec87d294818a19d3d71280",
+						"kind": "message",
+						"end": 1790631864.641,
+						"turn": "01a0e9f9-d265-7911-b211-b21a9984d867",
+						"callId": null,
+						"start": 1790631863.586483,
+						"streamEvents": 2
+					},
+					{
+						"id": "fc_0cce6d84431c0897016abadfb7b1c487d28dbe5d427afe525c",
+						"kind": "function_call",
+						"end": 1790631867.816,
+						"turn": "01a0e9f9-d265-7911-b211-b21a9984d867",
+						"callId": "call_56gVcSedGaOG0dG4i0Fj6xXk",
+						"start": 1790631864.642652,
+						"streamEvents": 1
+					},
+					{
+						"id": "rs_0cce6d84431c0897016abadfbcd31c87d2b0273d09de622468",
+						"kind": "reasoning",
+						"end": 1790631879.262,
+						"turn": "01a0e9f9-d265-7911-b211-b21a9984d867",
+						"callId": null,
+						"start": 1790631869.776071,
+						"streamEvents": 2
+					},
+					{
+						"id": "msg_0cce6d84431c0897016abadfc64fd487d2bf2eeca47e711283",
+						"kind": "message",
+						"end": 1790631880.101,
+						"turn": "01a0e9f9-d265-7911-b211-b21a9984d867",
+						"callId": null,
+						"start": 1790631879.263097,
+						"streamEvents": 2
+					}
+				],
+				"calls": [
+					{
+						"id": "call_56gVcSedGaOG0dG4i0Fj6xXk",
+						"name": "workflow_read",
+						"start": 1790631867.816,
+						"argumentBytes": 204,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 62.0,
+						"handler_duration_ms": 62.0,
+						"dispatch_duration_ms": 0.0,
+						"end": 1790631867.882,
+						"outputBytes": 31392
+					}
+				],
+				"responses": [
+					{
+						"id": "resp_0cce6d84431c0897016abadfb4666487d2afa529f60ffc1b76",
+						"at": "2026-09-28T21:44:27.880+00:00",
+						"turn": "01a0e9f9-d265-7911-b211-b21a9984d867",
+						"usage": {
+							"input_tokens": 20568,
+							"cached_input_tokens": 3968,
+							"cache_write_input_tokens": 0,
+							"output_tokens": 144,
+							"reasoning_output_tokens": 0,
+							"total_tokens": 20712
+						}
+					},
+					{
+						"id": "resp_0cce6d84431c0897016abadfbb3e4887d2a7b51b3319c69a59",
+						"at": "2026-09-28T21:44:40.136+00:00",
+						"turn": "01a0e9f9-d265-7911-b211-b21a9984d867",
+						"usage": {
+							"input_tokens": 26988,
+							"cached_input_tokens": 20352,
+							"cache_write_input_tokens": 0,
+							"output_tokens": 345,
+							"reasoning_output_tokens": 315,
+							"total_tokens": 27333
+						}
+					}
+				],
+				"usageByCompletedResponse": {
+					"input_tokens": 47556,
+					"cached_input_tokens": 24320,
+					"output_tokens": 489,
+					"reasoning_output_tokens": 315
+				},
+				"turns": {
+					"01a0e9f9-d265-7911-b211-b21a9984d867": [
+						{
+							"at": "2026-09-28T21:44:19.286+00:00",
+							"event": "task_started"
+						},
+						{
+							"at": "2026-09-28T21:44:40.141+00:00",
+							"event": "task_complete"
+						}
+					]
+				}
+			}
+		],
+		"limits": [
+			"Client-observed streams, not isolated provider computation or semantic reasoning.",
+			"Parent and child windows overlap and are nonadditive.",
+			"Child windows start at recorded thread creation and end at task completion when observed, otherwise the capture boundary.",
+			"Incomplete output lacks a completed interval; response usage may straddle boundaries.",
+			"First stream event is used with the persisted item completion; stderr does not expose the desktop logger event labels.",
+			"Raw logs and capabilities remain private; this output includes metadata only."
+		]
+	},
+	"officialReference": "https://learn.chatgpt.com/docs/config-file/config-reference",
+	"tooling": {
+		"planning\\refinement-efficiency\\experiments\\ux-read-window\\direct.py": "7f996dde49267b56de2c38bf86e90e63bf0e4a6ec0b5c360406982700368ed02",
+		"planning\\refinement-efficiency\\experiments\\ux-read-window\\native-assignment.md": "a3c1b35778943e838cfece57f935e14388201e145b27a92469e23337008c7fed",
+		"planning\\refinement-efficiency\\experiments\\ux-collection-phase\\run.mjs": "6b18bf226581f0138508786d56954f4283c6fc56a815dabd835c6442058105f6"
+	},
+	"limits": [
+		"At most two first pages; not a full acquisition or UX reasoning run.",
+		"The two-read sequence was incomplete.",
+		"A fast first tool can finish while the model is still emitting a second call in the same response. Completion order does not imply intervening interpretation.",
+		"This live transcript does not itself capture the outgoing parallel-call flag; any request-construction capture is separate evidence.",
+		"The native tool path differs from the combined-wrapper path. This run does not establish an end-to-end UX speedup or a universal return-size ceiling.",
+		"No global configuration, model selection, client output budget or live Alexa state was changed. Any temporary model-catalog override is identified in control metadata."
+	]
+}
