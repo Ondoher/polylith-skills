@@ -2,6 +2,14 @@
 
 Owner direction, 2026-09-29: test only the first UX round for now.
 
+Later owner direction defers the multi-read skill and forced-parallelism
+investigation. Preserve their evidence and the larger return window; inconsistent
+batching must not block other performance work. The next proposed direction is
+[incremental UX contributions](../incremental-ux-contributions-plan.md), which
+first tests deterministic construction and reuse using saved data. Reduced
+model reasoning/representation work is the goal; smaller payloads are secondary
+and do not justify added reasoning or bookkeeping.
+
 Measure preparation/instruction loading, input collection, initial UX reasoning,
 and generation/delivery of the first complete UX proposal. Stop when that first
 authoring output is saved and available. Keep the output, exact input identities,

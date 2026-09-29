@@ -15,6 +15,11 @@ The later [streaming assembly discussion](streaming-assembly-notes.md) explores
 smaller partial contributions and forward references reconciled by a parallel
 assembler. It does not change this method's current executable contracts.
 
+The [incremental UX contribution plan](incremental-ux-contributions-plan.md)
+turns that direction into a proposed implementation focused on reducing generated
+replacement data. It extends the current unit store with smaller contributions;
+implementation and a new first-pass model test have not started.
+
 ## 1. Operating rule
 
 UX makes one forward authoring pass through the supplied facts. UI makes one
