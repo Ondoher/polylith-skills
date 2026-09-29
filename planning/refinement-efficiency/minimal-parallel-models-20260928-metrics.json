@@ -1,0 +1,1176 @@
+{
+	"experiment": "Minimal native batching model comparison",
+	"runs": [
+		{
+			"model": "gpt-6-astra",
+			"effort": "xhigh",
+			"prompt": "Call probe(id) for IDs 1 through 8 in parallel, in one model response. All calls are independent. Do nothing else.",
+			"endpoint": "https://chatgpt.com/backend-api/codex/responses",
+			"transport": "WebSocket",
+			"instructions": "",
+			"tools": [
+				{
+					"type": "function",
+					"name": "probe",
+					"description": "Read-only probe. Calls are independent and safe to execute concurrently.",
+					"strict": true,
+					"parameters": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "integer",
+								"minimum": 1,
+								"maximum": 8
+							}
+						},
+						"required": ["id"],
+						"additionalProperties": false
+					}
+				}
+			],
+			"parallelToolCalls": true,
+			"toolChoice": "auto",
+			"probeDelayMs": 250,
+			"startedAt": "2026-09-29T01:56:16.625Z",
+			"requests": [
+				{
+					"atMs": 385.5432,
+					"body": {
+						"type": "response.create",
+						"model": "gpt-6-astra",
+						"instructions": "",
+						"input": [
+							{
+								"role": "user",
+								"content": "Call probe(id) for IDs 1 through 8 in parallel, in one model response. All calls are independent. Do nothing else."
+							}
+						],
+						"tools": [
+							{
+								"type": "function",
+								"name": "probe",
+								"description": "Read-only probe. Calls are independent and safe to execute concurrently.",
+								"strict": true,
+								"parameters": {
+									"type": "object",
+									"properties": {
+										"id": {
+											"type": "integer",
+											"minimum": 1,
+											"maximum": 8
+										}
+									},
+									"required": ["id"],
+									"additionalProperties": false
+								}
+							}
+						],
+						"tool_choice": "auto",
+						"parallel_tool_calls": true,
+						"reasoning": {
+							"effort": "xhigh"
+						},
+						"store": false
+					}
+				}
+			],
+			"responses": [
+				{
+					"id": "resp_0701bd252585a70f016abb1ac0712c87d186036b9280e3fa19",
+					"model": "gpt-6-astra",
+					"status": "completed",
+					"parallelToolCalls": true,
+					"completedMs": 6557.4612,
+					"calls": 8,
+					"usage": {
+						"attribution": {
+							"items": {
+								"msg_0701bd252585a70f016abb1ac0777487d1863e9bc977635b6e": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"content": [
+										{
+											"cache_write_tokens": 0,
+											"cached_tokens": 0,
+											"input_tokens": 32,
+											"output_tokens": 0
+										}
+									],
+									"input_tokens": 32,
+									"output_tokens": 0
+								},
+								"fc_0701bd252585a70f016abb1ac65a2487d1acfd4c5f6a3f0de2": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 2,
+									"output_tokens": 32
+								},
+								"fc_0701bd252585a70f016abb1ac65a3487d19f76ac51924763e7": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_0701bd252585a70f016abb1ac65a3c87d1b76810065ceacc76": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_0701bd252585a70f016abb1ac65a4487d1a49febe29de814b5": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_0701bd252585a70f016abb1ac65a4c87d1bf481ef2bb4708cb": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_0701bd252585a70f016abb1ac65a5487d18e3c606eb7f016a7": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_0701bd252585a70f016abb1ac65a5887d183942e1035c20408": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_0701bd252585a70f016abb1ac65a6087d1babb22898b3a781d": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 16
+								}
+							},
+							"request_fields": {
+								"tools": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 54,
+									"output_tokens": 0
+								}
+							}
+						},
+						"input_tokens": 88,
+						"input_tokens_details": {
+							"cache_write_tokens": 0,
+							"cached_tokens": 0
+						},
+						"output_tokens": 132,
+						"output_tokens_details": {
+							"reasoning_tokens": 0
+						},
+						"total_tokens": 220
+					}
+				}
+			],
+			"calls": [
+				{
+					"responseId": "resp_0701bd252585a70f016abb1ac0712c87d186036b9280e3fa19",
+					"callId": "call_7VSN4ve7FwueQCPyy9TfkuPX",
+					"id": 1,
+					"startMs": 6542.1103,
+					"endMs": 6807.4128,
+					"output": "{\"id\":1}"
+				},
+				{
+					"responseId": "resp_0701bd252585a70f016abb1ac0712c87d186036b9280e3fa19",
+					"callId": "call_0WQdZEUGhi2MFjnSs86aL75D",
+					"id": 2,
+					"startMs": 6553.9369,
+					"endMs": 6807.4771,
+					"output": "{\"id\":2}"
+				},
+				{
+					"responseId": "resp_0701bd252585a70f016abb1ac0712c87d186036b9280e3fa19",
+					"callId": "call_BgcZjV4efCfCq8VP4lpU6A9H",
+					"id": 3,
+					"startMs": 6553.9893,
+					"endMs": 6807.4923,
+					"output": "{\"id\":3}"
+				},
+				{
+					"responseId": "resp_0701bd252585a70f016abb1ac0712c87d186036b9280e3fa19",
+					"callId": "call_QCv7GdDRoYmYtMbyrpZntyk6",
+					"id": 4,
+					"startMs": 6554.0182,
+					"endMs": 6807.502,
+					"output": "{\"id\":4}"
+				},
+				{
+					"responseId": "resp_0701bd252585a70f016abb1ac0712c87d186036b9280e3fa19",
+					"callId": "call_jmcBt337JQwmbphgc5BKtQDq",
+					"id": 5,
+					"startMs": 6554.048,
+					"endMs": 6807.5174,
+					"output": "{\"id\":5}"
+				},
+				{
+					"responseId": "resp_0701bd252585a70f016abb1ac0712c87d186036b9280e3fa19",
+					"callId": "call_MXeQ4IdwTIoc1yrMoMyLCMAv",
+					"id": 6,
+					"startMs": 6557.2096,
+					"endMs": 6807.5344000000005,
+					"output": "{\"id\":6}"
+				},
+				{
+					"responseId": "resp_0701bd252585a70f016abb1ac0712c87d186036b9280e3fa19",
+					"callId": "call_bwPgKoJkh1HXhqWJc9k2pLkU",
+					"id": 7,
+					"startMs": 6557.2625,
+					"endMs": 6807.5504,
+					"output": "{\"id\":7}"
+				},
+				{
+					"responseId": "resp_0701bd252585a70f016abb1ac0712c87d186036b9280e3fa19",
+					"callId": "call_J2Zcmb80J8lr8YnuPF2cEL2c",
+					"id": 8,
+					"startMs": 6557.29,
+					"endMs": 6807.6146,
+					"output": "{\"id\":8}"
+				}
+			],
+			"events": [
+				{
+					"atMs": 632.0391999999999,
+					"type": "response.created",
+					"responseId": "resp_0701bd252585a70f016abb1ac0712c87d186036b9280e3fa19",
+					"itemType": null,
+					"callId": null
+				},
+				{
+					"atMs": 6540.892,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_7VSN4ve7FwueQCPyy9TfkuPX"
+				},
+				{
+					"atMs": 6541.4222,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_7VSN4ve7FwueQCPyy9TfkuPX"
+				},
+				{
+					"atMs": 6542.5960000000005,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_0WQdZEUGhi2MFjnSs86aL75D"
+				},
+				{
+					"atMs": 6553.9193000000005,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_0WQdZEUGhi2MFjnSs86aL75D"
+				},
+				{
+					"atMs": 6553.962500000001,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_BgcZjV4efCfCq8VP4lpU6A9H"
+				},
+				{
+					"atMs": 6553.9845000000005,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_BgcZjV4efCfCq8VP4lpU6A9H"
+				},
+				{
+					"atMs": 6554.0014,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_QCv7GdDRoYmYtMbyrpZntyk6"
+				},
+				{
+					"atMs": 6554.0145,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_QCv7GdDRoYmYtMbyrpZntyk6"
+				},
+				{
+					"atMs": 6554.031300000001,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_jmcBt337JQwmbphgc5BKtQDq"
+				},
+				{
+					"atMs": 6554.0446,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_jmcBt337JQwmbphgc5BKtQDq"
+				},
+				{
+					"atMs": 6554.0584,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_MXeQ4IdwTIoc1yrMoMyLCMAv"
+				},
+				{
+					"atMs": 6557.2011,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_MXeQ4IdwTIoc1yrMoMyLCMAv"
+				},
+				{
+					"atMs": 6557.2337,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_bwPgKoJkh1HXhqWJc9k2pLkU"
+				},
+				{
+					"atMs": 6557.2578,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_bwPgKoJkh1HXhqWJc9k2pLkU"
+				},
+				{
+					"atMs": 6557.2729,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_J2Zcmb80J8lr8YnuPF2cEL2c"
+				},
+				{
+					"atMs": 6557.2864,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_J2Zcmb80J8lr8YnuPF2cEL2c"
+				},
+				{
+					"atMs": 6557.4201,
+					"type": "response.completed",
+					"responseId": "resp_0701bd252585a70f016abb1ac0712c87d186036b9280e3fa19",
+					"itemType": null,
+					"callId": null
+				}
+			],
+			"usage": {
+				"inputTokens": 88,
+				"cachedInputTokens": 0,
+				"outputTokens": 132,
+				"reasoningOutputTokens": 0
+			},
+			"credentialsPersisted": false,
+			"connectedMs": 385.5254,
+			"status": "finished",
+			"resourcesClosed": true,
+			"elapsedMs": 6809.2013,
+			"completedAt": "2026-09-29T01:56:23.434Z",
+			"allEightVerified": true,
+			"callsPerResponse": {
+				"resp_0701bd252585a70f016abb1ac0712c87d186036b9280e3fa19": 8
+			},
+			"maxCallsPerResponse": 8,
+			"maxConcurrentExecutions": 8
+		},
+		{
+			"model": "gpt-5.6-sol",
+			"effort": "xhigh",
+			"prompt": "Call probe(id) for IDs 1 through 8 in parallel, in one model response. All calls are independent. Do nothing else.",
+			"endpoint": "https://chatgpt.com/backend-api/codex/responses",
+			"transport": "WebSocket",
+			"instructions": "",
+			"tools": [
+				{
+					"type": "function",
+					"name": "probe",
+					"description": "Read-only probe. Calls are independent and safe to execute concurrently.",
+					"strict": true,
+					"parameters": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "integer",
+								"minimum": 1,
+								"maximum": 8
+							}
+						},
+						"required": ["id"],
+						"additionalProperties": false
+					}
+				}
+			],
+			"parallelToolCalls": true,
+			"toolChoice": "auto",
+			"probeDelayMs": 250,
+			"startedAt": "2026-09-29T01:56:23.435Z",
+			"requests": [
+				{
+					"atMs": 353.1354000000001,
+					"body": {
+						"type": "response.create",
+						"model": "gpt-5.6-sol",
+						"instructions": "",
+						"input": [
+							{
+								"role": "user",
+								"content": "Call probe(id) for IDs 1 through 8 in parallel, in one model response. All calls are independent. Do nothing else."
+							}
+						],
+						"tools": [
+							{
+								"type": "function",
+								"name": "probe",
+								"description": "Read-only probe. Calls are independent and safe to execute concurrently.",
+								"strict": true,
+								"parameters": {
+									"type": "object",
+									"properties": {
+										"id": {
+											"type": "integer",
+											"minimum": 1,
+											"maximum": 8
+										}
+									},
+									"required": ["id"],
+									"additionalProperties": false
+								}
+							}
+						],
+						"tool_choice": "auto",
+						"parallel_tool_calls": true,
+						"reasoning": {
+							"effort": "xhigh"
+						},
+						"store": false
+					}
+				}
+			],
+			"responses": [
+				{
+					"id": "resp_034775c11b38a4ec016abb1ac742f087d19e1ca1e993fe0501",
+					"model": "gpt-5.6-sol",
+					"status": "completed",
+					"parallelToolCalls": true,
+					"completedMs": 4098.9384,
+					"calls": 8,
+					"usage": {
+						"attribution": {
+							"items": {
+								"msg_034775c11b38a4ec016abb1ac753dc87d19dddaa17793e73ca": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"content": [
+										{
+											"cache_write_tokens": 0,
+											"cached_tokens": 0,
+											"input_tokens": 32,
+											"output_tokens": 0
+										}
+									],
+									"input_tokens": 32,
+									"output_tokens": 0
+								},
+								"fc_034775c11b38a4ec016abb1acab85087d1a1045e0e0c86ea00": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 2,
+									"output_tokens": 32
+								},
+								"fc_034775c11b38a4ec016abb1acab86087d1aec820efb8d769b7": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_034775c11b38a4ec016abb1acab86887d19a035243f41cb2d9": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_034775c11b38a4ec016abb1acab87087d192450781850b5390": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_034775c11b38a4ec016abb1acab87487d18153ff6480f67172": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_034775c11b38a4ec016abb1acab87c87d1990cde700657356a": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_034775c11b38a4ec016abb1acab88087d1985a77bbf6e46147": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_034775c11b38a4ec016abb1acab88887d1b0e753feb8181cb6": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 16
+								}
+							},
+							"request_fields": {
+								"tools": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 54,
+									"output_tokens": 0
+								}
+							}
+						},
+						"input_tokens": 88,
+						"input_tokens_details": {
+							"cache_write_tokens": 0,
+							"cached_tokens": 0
+						},
+						"output_tokens": 132,
+						"output_tokens_details": {
+							"reasoning_tokens": 0
+						},
+						"total_tokens": 220
+					}
+				}
+			],
+			"calls": [
+				{
+					"responseId": "resp_034775c11b38a4ec016abb1ac742f087d19e1ca1e993fe0501",
+					"callId": "call_3zLLnvFXNIPZbFCRTN7pu3fd",
+					"id": 1,
+					"startMs": 4071.4332999999997,
+					"endMs": 4332.033699999999,
+					"output": "{\"id\":1}"
+				},
+				{
+					"responseId": "resp_034775c11b38a4ec016abb1ac742f087d19e1ca1e993fe0501",
+					"callId": "call_oupGUtLYkfxstSAR66IY7g0f",
+					"id": 2,
+					"startMs": 4073.6359,
+					"endMs": 4332.128,
+					"output": "{\"id\":2}"
+				},
+				{
+					"responseId": "resp_034775c11b38a4ec016abb1ac742f087d19e1ca1e993fe0501",
+					"callId": "call_INJGQ42CkRWkX8ea589yVJW5",
+					"id": 3,
+					"startMs": 4086.1580000000004,
+					"endMs": 4348.0814,
+					"output": "{\"id\":3}"
+				},
+				{
+					"responseId": "resp_034775c11b38a4ec016abb1ac742f087d19e1ca1e993fe0501",
+					"callId": "call_X2PeA6j8hldY4mOL93PhGB5O",
+					"id": 4,
+					"startMs": 4086.1971999999996,
+					"endMs": 4348.1311,
+					"output": "{\"id\":4}"
+				},
+				{
+					"responseId": "resp_034775c11b38a4ec016abb1ac742f087d19e1ca1e993fe0501",
+					"callId": "call_I72BD3Zp2fw0kxq8SjPaBX0m",
+					"id": 5,
+					"startMs": 4086.2408000000005,
+					"endMs": 4348.1423,
+					"output": "{\"id\":5}"
+				},
+				{
+					"responseId": "resp_034775c11b38a4ec016abb1ac742f087d19e1ca1e993fe0501",
+					"callId": "call_5hzhH3Tm1wGhSu9doyQEZIYy",
+					"id": 6,
+					"startMs": 4086.2712,
+					"endMs": 4348.1464000000005,
+					"output": "{\"id\":6}"
+				},
+				{
+					"responseId": "resp_034775c11b38a4ec016abb1ac742f087d19e1ca1e993fe0501",
+					"callId": "call_MH4mHyfAiu26ZCwsiHfosFAj",
+					"id": 7,
+					"startMs": 4086.2931,
+					"endMs": 4348.150000000001,
+					"output": "{\"id\":7}"
+				},
+				{
+					"responseId": "resp_034775c11b38a4ec016abb1ac742f087d19e1ca1e993fe0501",
+					"callId": "call_4AUYZ3FlfeWKBcXHK8ef1RQu",
+					"id": 8,
+					"startMs": 4096.434699999999,
+					"endMs": 4348.188499999999,
+					"output": "{\"id\":8}"
+				}
+			],
+			"events": [
+				{
+					"atMs": 683.7474000000002,
+					"type": "response.created",
+					"responseId": "resp_034775c11b38a4ec016abb1ac742f087d19e1ca1e993fe0501",
+					"itemType": null,
+					"callId": null
+				},
+				{
+					"atMs": 4071.1904999999997,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_3zLLnvFXNIPZbFCRTN7pu3fd"
+				},
+				{
+					"atMs": 4071.3633,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_3zLLnvFXNIPZbFCRTN7pu3fd"
+				},
+				{
+					"atMs": 4071.640699999999,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_oupGUtLYkfxstSAR66IY7g0f"
+				},
+				{
+					"atMs": 4073.6266000000005,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_oupGUtLYkfxstSAR66IY7g0f"
+				},
+				{
+					"atMs": 4073.6537,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_INJGQ42CkRWkX8ea589yVJW5"
+				},
+				{
+					"atMs": 4086.1369999999997,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_INJGQ42CkRWkX8ea589yVJW5"
+				},
+				{
+					"atMs": 4086.175,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_X2PeA6j8hldY4mOL93PhGB5O"
+				},
+				{
+					"atMs": 4086.1925,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_X2PeA6j8hldY4mOL93PhGB5O"
+				},
+				{
+					"atMs": 4086.2064,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_I72BD3Zp2fw0kxq8SjPaBX0m"
+				},
+				{
+					"atMs": 4086.2367000000004,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_I72BD3Zp2fw0kxq8SjPaBX0m"
+				},
+				{
+					"atMs": 4086.2555999999995,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_5hzhH3Tm1wGhSu9doyQEZIYy"
+				},
+				{
+					"atMs": 4086.2676,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_5hzhH3Tm1wGhSu9doyQEZIYy"
+				},
+				{
+					"atMs": 4086.278299999999,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_MH4mHyfAiu26ZCwsiHfosFAj"
+				},
+				{
+					"atMs": 4086.289899999999,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_MH4mHyfAiu26ZCwsiHfosFAj"
+				},
+				{
+					"atMs": 4086.3002000000006,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_4AUYZ3FlfeWKBcXHK8ef1RQu"
+				},
+				{
+					"atMs": 4096.4258,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_4AUYZ3FlfeWKBcXHK8ef1RQu"
+				},
+				{
+					"atMs": 4098.9027,
+					"type": "response.completed",
+					"responseId": "resp_034775c11b38a4ec016abb1ac742f087d19e1ca1e993fe0501",
+					"itemType": null,
+					"callId": null
+				}
+			],
+			"usage": {
+				"inputTokens": 88,
+				"cachedInputTokens": 0,
+				"outputTokens": 132,
+				"reasoningOutputTokens": 0
+			},
+			"credentialsPersisted": false,
+			"connectedMs": 353.1259999999993,
+			"status": "finished",
+			"resourcesClosed": true,
+			"elapsedMs": 4348.961899999999,
+			"completedAt": "2026-09-29T01:56:27.784Z",
+			"allEightVerified": true,
+			"callsPerResponse": {
+				"resp_034775c11b38a4ec016abb1ac742f087d19e1ca1e993fe0501": 8
+			},
+			"maxCallsPerResponse": 8,
+			"maxConcurrentExecutions": 8
+		},
+		{
+			"model": "gpt-5.5",
+			"effort": "xhigh",
+			"prompt": "Call probe(id) for IDs 1 through 8 in parallel, in one model response. All calls are independent. Do nothing else.",
+			"endpoint": "https://chatgpt.com/backend-api/codex/responses",
+			"transport": "WebSocket",
+			"instructions": "",
+			"tools": [
+				{
+					"type": "function",
+					"name": "probe",
+					"description": "Read-only probe. Calls are independent and safe to execute concurrently.",
+					"strict": true,
+					"parameters": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "integer",
+								"minimum": 1,
+								"maximum": 8
+							}
+						},
+						"required": ["id"],
+						"additionalProperties": false
+					}
+				}
+			],
+			"parallelToolCalls": true,
+			"toolChoice": "auto",
+			"probeDelayMs": 250,
+			"startedAt": "2026-09-29T01:56:27.785Z",
+			"requests": [
+				{
+					"atMs": 339.22619999999915,
+					"body": {
+						"type": "response.create",
+						"model": "gpt-5.5",
+						"instructions": "",
+						"input": [
+							{
+								"role": "user",
+								"content": "Call probe(id) for IDs 1 through 8 in parallel, in one model response. All calls are independent. Do nothing else."
+							}
+						],
+						"tools": [
+							{
+								"type": "function",
+								"name": "probe",
+								"description": "Read-only probe. Calls are independent and safe to execute concurrently.",
+								"strict": true,
+								"parameters": {
+									"type": "object",
+									"properties": {
+										"id": {
+											"type": "integer",
+											"minimum": 1,
+											"maximum": 8
+										}
+									},
+									"required": ["id"],
+									"additionalProperties": false
+								}
+							}
+						],
+						"tool_choice": "auto",
+						"parallel_tool_calls": true,
+						"reasoning": {
+							"effort": "xhigh"
+						},
+						"store": false
+					}
+				}
+			],
+			"responses": [
+				{
+					"id": "resp_04aa919f580e3a6f016abb1acb92a487d18f0b6dba82bb17c4",
+					"model": "gpt-5.5",
+					"status": "completed",
+					"parallelToolCalls": true,
+					"completedMs": 4224.1705999999995,
+					"calls": 8,
+					"usage": {
+						"attribution": {
+							"items": {
+								"msg_04aa919f580e3a6f016abb1acb9bcc87d1a983c2902c62a8ae": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"content": [
+										{
+											"cache_write_tokens": 0,
+											"cached_tokens": 0,
+											"input_tokens": 32,
+											"output_tokens": 0
+										}
+									],
+									"input_tokens": 32,
+									"output_tokens": 0
+								},
+								"fc_04aa919f580e3a6f016abb1acf34ec87d19956eefcfc2af1dd": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 2,
+									"output_tokens": 32
+								},
+								"fc_04aa919f580e3a6f016abb1acf34fc87d1b4a67645657896eb": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_04aa919f580e3a6f016abb1acf350487d19859861168da5999": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_04aa919f580e3a6f016abb1acf350c87d1a9670184e88cea1f": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_04aa919f580e3a6f016abb1acf351487d1b2dc6b916263acef": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_04aa919f580e3a6f016abb1acf351c87d191a09a8054f8ac16": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_04aa919f580e3a6f016abb1acf352087d18f81259ca3df446d": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 14
+								},
+								"fc_04aa919f580e3a6f016abb1acf352887d1ad919fc5eee33982": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 0,
+									"output_tokens": 16
+								}
+							},
+							"request_fields": {
+								"tools": {
+									"cache_write_tokens": 0,
+									"cached_tokens": 0,
+									"input_tokens": 54,
+									"output_tokens": 0
+								}
+							}
+						},
+						"input_tokens": 88,
+						"input_tokens_details": {
+							"cache_write_tokens": 0,
+							"cached_tokens": 0
+						},
+						"output_tokens": 132,
+						"output_tokens_details": {
+							"reasoning_tokens": 0
+						},
+						"total_tokens": 220
+					}
+				}
+			],
+			"calls": [
+				{
+					"responseId": "resp_04aa919f580e3a6f016abb1acb92a487d18f0b6dba82bb17c4",
+					"callId": "call_namR6LYyIOfkCJCk6wHcj6k0",
+					"id": 1,
+					"startMs": 4222.130800000001,
+					"endMs": 4478.6170999999995,
+					"output": "{\"id\":1}"
+				},
+				{
+					"responseId": "resp_04aa919f580e3a6f016abb1acb92a487d18f0b6dba82bb17c4",
+					"callId": "call_eNihWfYBPQYKQWCowNgO6glB",
+					"id": 2,
+					"startMs": 4222.2112,
+					"endMs": 4478.6278999999995,
+					"output": "{\"id\":2}"
+				},
+				{
+					"responseId": "resp_04aa919f580e3a6f016abb1acb92a487d18f0b6dba82bb17c4",
+					"callId": "call_CCYL4GY9Q9Gz5qwIY5bXNkr6",
+					"id": 3,
+					"startMs": 4222.2354,
+					"endMs": 4478.630499999999,
+					"output": "{\"id\":3}"
+				},
+				{
+					"responseId": "resp_04aa919f580e3a6f016abb1acb92a487d18f0b6dba82bb17c4",
+					"callId": "call_iDelECfjfpjDPq48dp6rmGWk",
+					"id": 4,
+					"startMs": 4222.275600000001,
+					"endMs": 4478.632600000001,
+					"output": "{\"id\":4}"
+				},
+				{
+					"responseId": "resp_04aa919f580e3a6f016abb1acb92a487d18f0b6dba82bb17c4",
+					"callId": "call_GGYCgMJ5V2EmQqvRYWdFywWu",
+					"id": 5,
+					"startMs": 4222.3696,
+					"endMs": 4478.6353,
+					"output": "{\"id\":5}"
+				},
+				{
+					"responseId": "resp_04aa919f580e3a6f016abb1acb92a487d18f0b6dba82bb17c4",
+					"callId": "call_tCqhhqAcZP3FFlbnJKbgAq9e",
+					"id": 6,
+					"startMs": 4222.444100000001,
+					"endMs": 4478.637500000001,
+					"output": "{\"id\":6}"
+				},
+				{
+					"responseId": "resp_04aa919f580e3a6f016abb1acb92a487d18f0b6dba82bb17c4",
+					"callId": "call_YEozw013HMIoTYkzLzr0TAZI",
+					"id": 7,
+					"startMs": 4222.5111,
+					"endMs": 4478.6399,
+					"output": "{\"id\":7}"
+				},
+				{
+					"responseId": "resp_04aa919f580e3a6f016abb1acb92a487d18f0b6dba82bb17c4",
+					"callId": "call_H5WHamAEGXGnLORpav08s8jP",
+					"id": 8,
+					"startMs": 4222.9902999999995,
+					"endMs": 4478.659799999999,
+					"output": "{\"id\":8}"
+				}
+			],
+			"events": [
+				{
+					"atMs": 617.1826000000001,
+					"type": "response.created",
+					"responseId": "resp_04aa919f580e3a6f016abb1acb92a487d18f0b6dba82bb17c4",
+					"itemType": null,
+					"callId": null
+				},
+				{
+					"atMs": 4205.202300000001,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_namR6LYyIOfkCJCk6wHcj6k0"
+				},
+				{
+					"atMs": 4222.0849,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_namR6LYyIOfkCJCk6wHcj6k0"
+				},
+				{
+					"atMs": 4222.1900000000005,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_eNihWfYBPQYKQWCowNgO6glB"
+				},
+				{
+					"atMs": 4222.2062000000005,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_eNihWfYBPQYKQWCowNgO6glB"
+				},
+				{
+					"atMs": 4222.222100000001,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_CCYL4GY9Q9Gz5qwIY5bXNkr6"
+				},
+				{
+					"atMs": 4222.2341,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_CCYL4GY9Q9Gz5qwIY5bXNkr6"
+				},
+				{
+					"atMs": 4222.2415,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_iDelECfjfpjDPq48dp6rmGWk"
+				},
+				{
+					"atMs": 4222.2528999999995,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_iDelECfjfpjDPq48dp6rmGWk"
+				},
+				{
+					"atMs": 4222.352999999999,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_GGYCgMJ5V2EmQqvRYWdFywWu"
+				},
+				{
+					"atMs": 4222.3681,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_GGYCgMJ5V2EmQqvRYWdFywWu"
+				},
+				{
+					"atMs": 4222.430700000001,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_tCqhhqAcZP3FFlbnJKbgAq9e"
+				},
+				{
+					"atMs": 4222.442800000001,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_tCqhhqAcZP3FFlbnJKbgAq9e"
+				},
+				{
+					"atMs": 4222.450699999999,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_YEozw013HMIoTYkzLzr0TAZI"
+				},
+				{
+					"atMs": 4222.5098,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_YEozw013HMIoTYkzLzr0TAZI"
+				},
+				{
+					"atMs": 4222.5371,
+					"type": "response.output_item.added",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_H5WHamAEGXGnLORpav08s8jP"
+				},
+				{
+					"atMs": 4222.986800000001,
+					"type": "response.output_item.done",
+					"responseId": null,
+					"itemType": "function_call",
+					"callId": "call_H5WHamAEGXGnLORpav08s8jP"
+				},
+				{
+					"atMs": 4224.147999999999,
+					"type": "response.completed",
+					"responseId": "resp_04aa919f580e3a6f016abb1acb92a487d18f0b6dba82bb17c4",
+					"itemType": null,
+					"callId": null
+				}
+			],
+			"usage": {
+				"inputTokens": 88,
+				"cachedInputTokens": 0,
+				"outputTokens": 132,
+				"reasoningOutputTokens": 0
+			},
+			"credentialsPersisted": false,
+			"connectedMs": 339.21689999999944,
+			"status": "finished",
+			"resourcesClosed": true,
+			"elapsedMs": 4479.821,
+			"completedAt": "2026-09-29T01:56:32.265Z",
+			"allEightVerified": true,
+			"callsPerResponse": {
+				"resp_04aa919f580e3a6f016abb1acb92a487d18f0b6dba82bb17c4": 8
+			},
+			"maxCallsPerResponse": 8,
+			"maxConcurrentExecutions": 8
+		}
+	],
+	"allControlsIdenticalExceptModel": true,
+	"inputKind": "Synthetic probe identifiers only; no product data",
+	"client": "Standalone diagnostic using the same official Codex backend WebSocket endpoint; not the Codex CLI",
+	"modelOrder": ["gpt-6-astra", "gpt-5.6-sol", "gpt-5.5"],
+	"codeModeControlRun": false,
+	"codeModeControlOmissionReason": "All three native tests succeeded; no failure required the extra control",
+	"repeatCountPerModel": 1,
+	"sourceHashes": {
+		"planning/refinement-efficiency/experiments/minimal-parallel/native-prompt.txt": "b5af70ae50726bdd6be58467a0c979883ebb7c67c9636ea46797bb4511073783",
+		"planning/refinement-efficiency/experiments/minimal-parallel/run.mjs": "86042d7764ee3becace18ba546b8fa7f4d9ee992783297ee2cc707e20cec533c",
+		"planning/refinement-efficiency/experiments/minimal-parallel/run.test.mjs": "fa9db32c9edcadc455eab0d9a280b6ebe34e613fb68be333d14249bfe9d6ab07"
+	},
+	"limits": [
+		"One observation per model; not a model speed benchmark.",
+		"Probe execution is a local synthetic function, not MCP transport.",
+		"A 250 ms timer makes execution overlap observable. Native batching is established independently by response IDs.",
+		"Model input is identical except model identifier; connection and per-request IDs necessarily differ.",
+		"This establishes backend native-batching capability, not which part of the fuller Codex request caused sequential behavior.",
+		"Cumulative token counters are reported usage, not billing measurements."
+	],
+	"postRunToolingChange": {
+		"file": "planning/refinement-efficiency/experiments/minimal-parallel/run.mjs",
+		"description": "Return a nonzero process exit status after a recorded run error; successful-run behavior unchanged. No live rerun.",
+		"currentSha256": "9af30877b2281ee6dbc23c00cb649d8213b18bf2e6caabe29ca03812ff6c53ea"
+	}
+}

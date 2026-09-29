@@ -1,5 +1,7 @@
 # Direct-mode live request observation: completed, reads still sequential
 
+**Later finding:** the [minimal three-model control](minimal-parallel-models-20260928.md) successfully emitted all eight native calls in one response on Astra, Sol and GPT-5.5. The failures below describe the fuller Codex/MCP setup; they do not imply that Astra or this backend lacks native-batching capability.
+
 **The explicitly authorized live probe completed in 24.318 seconds. All four generation requests carried `parallel_tool_calls: true`, and their completed backend responses echoed `true`. The code execution wrapper was absent. Nevertheless, the model emitted the two independent reads in separate responses. Both 28,000-byte pages arrived byte-exact, with no truncation.**
 
 This rules out a disabled outgoing parallel-call flag and the presence of the code wrapper as explanations for this attempt. It does not identify why the model/backend emitted one call per response, or prove that native batching is universally unsupported. The user subsequently requested the eight-read follow-up below; it also produced one read per response.
