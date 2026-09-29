@@ -137,3 +137,13 @@ The CLI and catalog-field behavior was additionally checked against the installe
 0.155.0-alpha.16.3 client and its matching source. Use the shared workflow guide's
 launcher command for subsequent native collection; a running IDE thread cannot
 retroactively reload its startup tool configuration.
+
+## Subsequent full UX replay
+
+The [full UX replay](ux-full-native-replay-20260929.md) exercised authoring,
+validation, persistence, independent review and repair. Its long combined author
+assignment collected the initial 19 pages serially despite the enabled parallel
+flag; later author reads batched up to five. The small-test results above remain
+valid, but they do not establish reliable batching for the full specialist
+workflow. The follow-up report records this integration gap and the much larger
+cost of generating complete replacement JSON records.
