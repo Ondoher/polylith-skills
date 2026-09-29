@@ -10,6 +10,7 @@ import {createHash, randomBytes} from 'node:crypto';
 import {prepareNativeWorkflowCatalog} from '../../../../scripts/native-workflow-catalog.mjs';
 import {startLiveRequestObserver} from '../ux-read-window/live-request-observer.mjs';
 import {verifyObserverTrust} from './observer-trust.mjs';
+import {loadPilot, storePilotInputs, availableSources, pilotPrompt, checkPilotProtocol} from './pilot.mjs';
 
 const governance = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
 const option = (name) => process.argv.find((arg) => arg.startsWith(`--${name}=`))?.slice(name.length + 3);
@@ -18,10 +19,16 @@ assert(attemptName && /^[a-z0-9-]+$/.test(attemptName), 'Supply --attempt=<uniqu
 assert(
 	process.argv
 		.slice(2)
-		.every((arg) => arg === '--execute' || /^(--attempt=|--requested-at=|--binary=|--resume=)/.test(arg)),
+		.every(
+			(arg) =>
+				arg === '--execute' ||
+				/^(--attempt=|--requested-at=|--binary=|--resume=|--pilot=|--condition=)/.test(arg),
+		),
 	'Unknown argument',
 );
 const resumeName = option('resume');
+const pilot = option('pilot') ? loadPilot(option('pilot'), option('condition')) : null;
+assert(!pilot || !resumeName, 'Pilot conditions require separate pristine stores; thread continuation is automatic');
 assert(!resumeName || /^[a-z0-9-]+$/.test(resumeName), 'Invalid resume name');
 const previousDirectory = resumeName && path.join(governance, '.codex-tmp/incremental-ux-replay', resumeName);
 const previous = previousDirectory && JSON.parse(fs.readFileSync(path.join(previousDirectory, 'control.json')));
@@ -58,6 +65,7 @@ const control = {
 	pageBytes: 28000,
 	coordination: 'Supervisor prepares and assigns; one direct CLI author with native UX role instructions.',
 	boundary: 'Through the first units.finish receipt; no parent assembly, promotion, review or rework.',
+	...(pilot ? {pilot: {condition: pilot.condition, manifest: pilot.manifest}, turns: [], phases: []} : {}),
 	...(previous
 		? {
 				resumedFrom: resumeName,
@@ -130,6 +138,20 @@ try {
 		if (message.phase) {
 			control.lastPhase = message.phase;
 			control.lastPhaseAt = message.endedAt;
+			if (pilot) {
+				const value = JSON.parse(
+					fs.readFileSync(
+						path.join(
+							workspace,
+							'.codex-tmp/mcp-workflows/runs',
+							control.run,
+							'results',
+							message.handle.split(':')[1] + '.json',
+						),
+					),
+				);
+				control.phases.push({at: message.endedAt, handle: message.handle, ...value});
+			}
 			save();
 		}
 		if (
@@ -205,6 +227,7 @@ try {
 		const imported = await execute('units.import', {stage: 'ux'}, {document: ux.handle});
 		const units = JSON.parse(fs.readFileSync(imported.path));
 		references = units.map((unit) => `${unit.kind}:${unit.id}`);
+		if (pilot) references = references.filter((ref) => pilot.manifest.references.includes(ref));
 		await execute('units.open', {stage: 'ux', binding: {factsSha256: facts.sha256, uxSha256: ux.sha256}});
 		const seeded = await execute('units.deliver', {stage: 'ux'}, {records: imported.handle});
 		assert.equal(JSON.parse(fs.readFileSync(seeded.path)).issues.length, 0, 'Baseline import delivery failed');
@@ -216,9 +239,15 @@ try {
 			path.join(previousDirectory, 'imported-units-receipt.json'),
 			path.join(attempt, 'imported-units-receipt.json'),
 		);
-	const inputs = {facts, ux, identities};
+	const inputs = pilot ? await storePilotInputs(call, owner, pilot, identities) : {facts, ux, identities};
 	fs.writeFileSync(path.join(attempt, 'input-receipts.json'), JSON.stringify(inputs, null, 2));
-	const operations = ['result.store', 'units.read', 'units.status', 'units.contribute', 'units.finish'];
+	const operations = [
+		'result.store',
+		...(pilot ? [] : ['units.read']),
+		'units.status',
+		'units.contribute',
+		'units.finish',
+	];
 	const assignment = await call('assign', {
 		...owner,
 		operations,
@@ -245,6 +274,10 @@ try {
 		assert.equal(sha(Buffer.concat(parts)), receipt.sha256, 'Input paging differs from saved bytes');
 	}
 	fs.writeFileSync(path.join(attempt, 'input-read-plan.json'), JSON.stringify(plan, null, 2));
+	if (pilot && !process.argv.includes('--execute')) {
+		control.protocolCheck = await checkPilotProtocol({call, owner, pilot, inputs, plan, references});
+		save();
+	}
 	const rolePath = path.join(governance, 'agents/ux-planner.toml');
 	const role = fs.readFileSync(rolePath, 'utf8');
 	const instructions = role.match(/developer_instructions = """\r?\n([\s\S]*?)"""/)[1];
@@ -293,14 +326,13 @@ try {
 			model: control.model,
 		});
 		observer = await startLiveRequestObserver(path.join(attempt, 'live-request-metadata.json'));
-		const args = [
+		const commonArgs = [
 			path.join(governance, 'scripts/codex-native-workflows.mjs'),
 			`--model=${control.model}`,
 			`--binary=${binary}`,
 			`--cache=${control.catalog.path}`,
 			'--',
 			'exec',
-			'--json',
 			'-C',
 			workspace,
 			'--approve-for-me',
@@ -316,49 +348,141 @@ try {
 			'mcp_servers.polylith_workflows.required=true',
 			'-c',
 			`openai_base_url=${JSON.stringify(observer.url)}`,
-			'-o',
-			path.join(attempt, 'result.md'),
-			'-',
 		];
+
 		const started = performance.now();
-		child = spawn(process.execPath, args, {
-			cwd: workspace,
-			env: environment,
-			stdio: ['pipe', 'pipe', 'pipe'],
-			windowsHide: true,
-		});
-		control.childPid = child.pid;
 		control.status = 'running';
 		control.agentStartedAt = new Date().toISOString();
-		save();
 		events = fs.createWriteStream(path.join(attempt, 'events.private.jsonl'));
-		child.stderr.pipe(fs.createWriteStream(path.join(attempt, 'codex-stderr.log')));
-		createInterface({input: child.stdout}).on('line', (line) => {
-			let data;
-			try {
-				data = JSON.parse(line);
-			} catch {
-				data = {type: 'unparsed'};
+		const seen = new Set(),
+			extra = [];
+		let ordinal = 1,
+			retry = 0;
+		while (ordinal <= (pilot ? 3 : 1)) {
+			let currentPrompt = prompt;
+			if (pilot) {
+				const available = availableSources(pilot, ordinal, extra);
+				const taskGrant = await call('assign', {
+					...owner,
+					operations: operations.filter((op) => ordinal === 3 || op !== 'units.finish'),
+					handles: available.map((name) => inputs[name].handle),
+					outputDirectory: '.codex-tmp/ux-author',
+					scope: {stage: 'ux', recordRefs: references},
+				});
+				currentPrompt = pilotPrompt({
+					pilot,
+					ordinal,
+					access: taskGrant.access,
+					run: control.run,
+					references,
+					readPlan: plan.filter((page) => available.includes(page.source) && !seen.has(page.source)),
+					available,
+					initial: !control.threadId,
+					governance,
+					workspace,
+				});
+				for (const name of available) seen.add(name);
 			}
-			events.write(
-				JSON.stringify({at: new Date().toISOString(), observedMs: performance.now() - started, data}) + '\n',
-			);
-			if (data.type === 'thread.started') control.threadId = data.thread_id;
-			if (data.type === 'turn.completed') control.reportedUsage = data.usage;
-			if (data.type === 'item.completed' && data.item?.type === 'agent_message')
-				fs.appendFileSync(
-					path.join(attempt, 'progress.log'),
-					`${new Date().toISOString()} ${data.item.text}\n`,
+			const turn = {
+				ordinal,
+				retry,
+				startedAt: new Date().toISOString(),
+				resumed: Boolean(control.threadId),
+				promptSha256: sha(currentPrompt),
+			};
+			if (pilot) control.turns.push(turn);
+			const stem = pilot ? `task-${ordinal}-${retry}` : 'result';
+			fs.writeFileSync(path.join(attempt, stem + '.prompt.private.txt'), currentPrompt);
+			const args = [
+				...commonArgs,
+				...(control.threadId ? ['resume', control.threadId] : []),
+				'--json',
+				'-o',
+				path.join(attempt, stem + '.md'),
+				'-',
+			];
+			child = spawn(process.execPath, args, {
+				cwd: workspace,
+				env: environment,
+				stdio: ['pipe', 'pipe', 'pipe'],
+				windowsHide: true,
+			});
+			control.childPid = child.pid;
+			child.stderr.pipe(fs.createWriteStream(path.join(attempt, 'codex-stderr.log'), {flags: 'a'}));
+			createInterface({input: child.stdout}).on('line', (line) => {
+				let data;
+				try {
+					data = JSON.parse(line);
+				} catch {
+					data = {type: 'unparsed'};
+				}
+				events.write(
+					JSON.stringify({at: new Date().toISOString(), observedMs: performance.now() - started, data}) +
+						'\n',
 				);
+				if (data.type === 'thread.started') {
+					assert(
+						!control.threadId || control.threadId === data.thread_id,
+						'Continuation changed thread identity',
+					);
+					control.threadId = data.thread_id;
+				}
+				if (data.type === 'turn.completed') {
+					control.reportedUsage = data.usage;
+					turn.usage = data.usage;
+				}
+				if (data.type === 'item.completed' && data.item?.type === 'agent_message')
+					fs.appendFileSync(
+						path.join(attempt, 'progress.log'),
+						`${new Date().toISOString()} ${data.item.text}\n`,
+					);
+				save();
+			});
+			child.stdin.end(currentPrompt);
 			save();
-		});
-		child.stdin.end(prompt);
-		console.log(JSON.stringify({status: 'running', attempt, pages: plan.length, inputBytes: control.inputBytes}));
-		const [exitCode] = await once(child, 'close');
-		control.exitCode = exitCode;
-		control.agentWindowMs = performance.now() - started;
-		control.agentCompletedAt = new Date().toISOString();
-		control.status = exitCode === 0 && control.firstFinishAt ? 'finished' : 'incomplete-first-pass';
+			console.log(JSON.stringify({status: 'running', attempt, condition: pilot?.condition, ordinal}));
+			const [exitCode] = await once(child, 'close');
+			turn.exitCode = exitCode;
+			turn.completedAt = new Date().toISOString();
+			control.exitCode = exitCode;
+			control.agentCompletedAt = turn.completedAt;
+			control.agentWindowMs = performance.now() - started;
+			save();
+			assert.equal(exitCode, 0, 'Author process failed; preserve this thread for targeted recovery');
+			if (pilot) {
+				const last = control.phases.at(-1);
+				if (last?.phase === 'ux:pilot-needs') {
+					assert(++retry <= 2, 'Repeated missing-context requests require diagnosis');
+					assert(
+						last.packetIds?.length &&
+							last.packetIds.every((id) => pilot.manifest.tasks.some((task) => task.id === id)),
+						'Unknown requested packet',
+					);
+					extra.push(...last.packetIds);
+					continue;
+				}
+				assert(
+					control.phases.some((p) => p.phase === `ux:task-${ordinal}-complete`),
+					'Task completion receipt missing',
+				);
+				fs.appendFileSync(
+					path.join(attempt, 'pilot-progress.jsonl'),
+					JSON.stringify({ordinal, ...turn, phase: last}) + '\n',
+				);
+				console.log(
+					JSON.stringify({
+						status: 'task-complete',
+						ordinal,
+						condition: pilot.condition,
+						completedAt: turn.completedAt,
+					}),
+				);
+			}
+			ordinal++;
+			retry = 0;
+		}
+		control.status = control.firstFinishAt ? 'finished' : 'incomplete-first-pass';
+
 		if (control.firstFinishHandle) {
 			const digest = control.firstFinishHandle.split(':')[1];
 			const source = path.join(
