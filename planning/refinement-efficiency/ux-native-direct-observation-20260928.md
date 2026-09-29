@@ -2,11 +2,40 @@
 
 **The explicitly authorized live probe completed in 24.318 seconds. All four generation requests carried `parallel_tool_calls: true`, and their completed backend responses echoed `true`. The code execution wrapper was absent. Nevertheless, the model emitted the two independent reads in separate responses. Both 28,000-byte pages arrived byte-exact, with no truncation.**
 
-This rules out a disabled outgoing parallel-call flag and the presence of the code wrapper as explanations for this attempt. It does not identify why the model/backend emitted one call per response, or prove that native batching is universally unsupported. No additional live probe was run.
+This rules out a disabled outgoing parallel-call flag and the presence of the code wrapper as explanations for this attempt. It does not identify why the model/backend emitted one call per response, or prove that native batching is universally unsupported. The user subsequently requested the eight-read follow-up below; it also produced one read per response.
 
 The run occurred on September 28 in the local timezone (September 29, 01:19 UTC). [Machine-readable metrics](ux-native-mcp-20260928-native-direct-observed-01-metrics.json) preserve the client timing, sanitized live request/response metadata, tool inventory, call identities, and verification results.
 
-## Observed result
+## Eight-read follow-up
+
+At the user's request, the same observed configuration was repeated with eight independent 28,000-byte reads: facts and UX pages at offsets 0, 28,000, 56,000 and 84,000. The model, effort, temporary catalog, assignment template and return limits were unchanged. Only the requested count, supplied page list and attempt directory changed. This ran at 01:31–01:32 UTC on September 29 (September 28 locally).
+
+**All eight reads arrived in eight separate model responses.** No response contained two reads. All 224,000 bytes matched the saved sources exactly, with no truncation, and the completion marker was stored. The ten actual generation requests all carried `parallel_tool_calls: true`, and all ten completed backend responses echoed it; the code wrapper remained absent. The remaining two generated responses handled the completion marker and final reply. Prewarm requests are excluded.
+
+| Measurement                      |    Two reads |   Eight reads |
+| -------------------------------- | -----------: | ------------: |
+| Harness agent window             |     24.318 s |      73.402 s |
+| Client runtime window            |     24.307 s |      73.394 s |
+| Maximum reads per response       |            1 |             1 |
+| Exact page contents returned     | 56,000 bytes | 224,000 bytes |
+| Observed output-item streams     |      9.224 s |      28.783 s |
+| Tool intervals, including marker |      0.242 s |       1.050 s |
+| Unattributed runtime             |     14.841 s |      43.561 s |
+| Read command streams, combined   |      5.841 s |      25.173 s |
+| Read tool round trips, combined  |      0.155 s |       0.948 s |
+| Server read work, combined       |     1.832 ms |      5.591 ms |
+
+The eight-read run's median read-command stream was 3.133 seconds, and the median gap from one read result to the next command stream was 2.938 seconds. One gap, before the sixth read, was 12.727 seconds; its result-to-result cycle was 15.908 seconds. That gap is preserved as unattributed time, not assigned to reasoning, network transfer or server work without evidence. There were no visible reasoning-item streams.
+
+Reported usage was 498,287 input tokens, including 422,784 cached input tokens; 1,089 output tokens; zero separately reported reasoning output tokens. Workflow server startup took 141.831 ms outside the agent window. Observer parsing, projection and metadata writes took 73.662 ms; that is not a measurement of total relay transport overhead.
+
+The existing analyzer verified the returned bytes, all requested ranges, request flags and agreement between streamed wire call identities and client response grouping. Complete saved source hashes were unchanged. The observer recorded no errors, closed its resources, and both child processes exited. No diagnostic code or permanent configuration change was needed for this repeat.
+
+This eight-read result provides no support for the hypothesis that increasing the call count triggers native batching in this configuration. These single observations are not sufficient to attribute timing differences to direct mode or establish a scaling law. [Eight-read metrics](ux-native-mcp-20260928-native-direct-observed-eight-01-metrics.json) preserve all per-call and transition measurements. Private evidence remains in `.codex-tmp/ux-read-window-20260928/native-direct-observed-eight-01/`.
+
+The repeat used the command below with `--native-read-count=8` and `--attempt=native-direct-observed-eight-01`; all other flags were identical. No further live run followed it.
+
+## Original two-read result
 
 | Check                          | Result                                           |
 | ------------------------------ | ------------------------------------------------ |
@@ -68,7 +97,7 @@ The observer's earlier focused verification used `node --test --test-isolation=n
 
 ## Authorization boundary and preserved evidence
 
-The first attempted launch was rejected by automatic approval review because forwarding saved product data and existing authentication through the new observer route had not been explicitly authorized. It did not execute. The user subsequently answered “yes, do it” to the concrete authorization request naming the official endpoint and in-memory credential handling. The following single live run then proceeded with that explicit authorization.
+The first attempted launch was rejected by automatic approval review because forwarding saved product data and existing authentication through the new observer route had not been explicitly authorized. It did not execute. The user subsequently answered “yes, do it” to the concrete authorization request naming the official endpoint and in-memory credential handling. The initial live run then proceeded with that explicit authorization. The later instruction “bump it to 8 just to see” authorized the eight-read repeat through the same route.
 
 The executed command was:
 
