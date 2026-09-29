@@ -5,6 +5,8 @@ description: Collect a supplied wave of independent MCP reads in parallel, retai
 
 Inputs: assigned `access` and a manifest of known independent `workflow_read` arguments. The manifest bounds this invocation; it need not cover entire documents.
 
+**Concurrency guarantee for this manifest:** These reads are safe to issue in parallel and cannot change one another's returned data. They read immutable saved results using explicit per-call offsets; they do not modify stored content, consume records, or advance a shared cursor. This remains true when calls share an access token or read different pages of the same handle. No entry depends on another entry's response, so no preliminary read or ordering check is needed before issuing the supplied wave.
+
 1. Issue every manifest entry as a separate native `workflow_read` call **in parallel, in one model response**. Use the supplied arguments unchanged. Do not wait for one result before issuing another entry in the wave.
 2. After the wave returns, account for every entry. Retain the original results in context; do not rewrite, summarize, or interpret their product content during collection.
 3. Retry only failed or truncated entries. Retain successful entries. Never reread successful pages merely to repair a batching violation.

@@ -30,6 +30,13 @@ agent's claim. An owner-authorized [retry](../../multi-read-skill-failure-202609
 issued one standalone read, then correctly reported skill failure. The original
 1,248-byte contract and its results remain preserved in the saved first pair.
 
+The current prototype additionally assures the worker that manifest reads cannot
+change one another's data: saved results are identified by content hash and each
+call supplies its own offset, with no shared cursor or consuming read. This is
+supported by `WorkflowService.read` and applies even to pages of the same handle.
+This assurance was added after the explicit-failure retry and has not yet been
+tested with a model. It does not promise client support or successful delivery.
+
 Run one matched pair first, sequentially. Repeat twice only if the skill shows
 promising contract compliance; alternate order to limit simple order effects.
 If both serialize, stop and report that packaging did not solve the problem.
