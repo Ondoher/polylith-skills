@@ -11,6 +11,18 @@ const pageArgument = process.argv.find((value) => value.startsWith('--page-bytes
 const pageBytes = Number(pageArgument?.slice(13) ?? 7000);
 const parallelProbe = process.argv.includes('--parallel-probe');
 const nativeProbe = process.argv.includes('--native-probe');
+const nativeCountArgument = process.argv.find((value) => value.startsWith('--native-read-count='));
+const nativeReadCount = Number(nativeCountArgument?.slice(20) ?? 2);
+if (![2, 4, 8].includes(nativeReadCount) || (nativeCountArgument && !nativeProbe))
+	throw new Error('Use --native-read-count=2, 4 or 8 with --native-probe');
+if (nativeProbe && pageBytes !== 28000) throw new Error('Native probes require --page-bytes=28000');
+const nativeReadRequests = nativeProbe
+	? Array.from({length: nativeReadCount}, (_, index) => ({
+			source: index % 2 === 0 ? 'facts' : 'ux',
+			offset: Math.floor(index / 2) * pageBytes,
+			maxBytes: pageBytes,
+		}))
+	: null;
 const disableCodeHost = process.argv.includes('--disable-code-host');
 const directNamespace = process.argv.find((value) => value.startsWith('--direct-namespace='))?.slice(19);
 if (directNamespace && !/^[a-zA-Z0-9_]+$/.test(directNamespace)) throw new Error('Invalid direct tool namespace');
@@ -48,6 +60,7 @@ const control = {
 	probe,
 	parallelProbe,
 	nativeProbe,
+	nativeReadRequests,
 	disableCodeHost,
 	directNamespace: directNamespace ?? null,
 	modelCatalogOverride: catalogPath
@@ -155,6 +168,13 @@ try {
 		const saved = JSON.parse(fs.readFileSync(inputs[name].path));
 		if (JSON.stringify(saved) !== JSON.stringify(JSON.parse(raw))) throw new Error(`Lossy input ${name}`);
 	}
+	for (const request of nativeReadRequests ?? []) {
+		const bytes = fs
+			.readFileSync(inputs[request.source].path)
+			.subarray(request.offset, request.offset + request.maxBytes);
+		if (bytes.length !== request.maxBytes) throw new Error('Native probe page is outside its saved source');
+		new TextDecoder('utf-8', {fatal: true}).decode(bytes);
+	}
 	const assigned = await call('assign', {
 		access: ready.access,
 		run,
@@ -197,6 +217,13 @@ try {
 			FACTS: inputs.facts.handle,
 			UX: inputs.ux.handle,
 			PAGE_BYTES: String(pageBytes),
+			READ_COUNT: String(nativeReadCount),
+			READ_REQUESTS: (nativeReadRequests ?? [])
+				.map(
+					(request) =>
+						`- ${request.source === 'facts' ? 'Facts' : 'UX'} handle: offset ${request.offset}, maxBytes ${request.maxBytes}`,
+				)
+				.join('\n'),
 		}))
 			assignment = assignment.replaceAll(`{{${name}}}`, value);
 		const prompt =

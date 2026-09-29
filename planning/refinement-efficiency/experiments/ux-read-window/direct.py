@@ -2,6 +2,7 @@
 import hashlib
 import json
 import sys
+from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
@@ -13,6 +14,11 @@ read = lambda file: json.loads(file.read_text(encoding='utf-8'))
 rows = lambda file: [json.loads(line) for line in file.read_text(encoding='utf-8').splitlines() if line.strip()]
 stamp = lambda value: datetime.fromisoformat(value.replace('Z', '+00:00')).timestamp()
 control = read(attempt / 'control.json')
+requested = control.get('nativeReadRequests') or [
+    {'source': source, 'offset': 0, 'maxBytes': 28000} for source in ['facts', 'ux']
+]
+request_keys = {(item['source'], item['offset'], item['maxBytes']) for item in requested}
+assert len(request_keys) == len(requested) and len(requested) in [2, 4, 8]
 reported_result = (attempt / 'result.md').read_text(encoding='utf-8').strip()
 incomplete = control['exitCode'] == 0 and reported_result.startswith('NATIVE_NOT_COMPLETED:')
 assert control['nativeProbe'] and (control['status'] == 'finished' or incomplete)
@@ -27,9 +33,9 @@ events = rows(Path(actor['sourceSession']))
 calls = [event['payload'] for event in events if event.get('payload', {}).get('type') in ['function_call', 'custom_tool_call']]
 assert calls and all(call['type'] == 'function_call' for call in calls)
 if incomplete:
-    assert len(calls) <= 2 and all(call['name'] == 'workflow_read' for call in calls)
+    assert len(calls) <= len(requested) and all(call['name'] == 'workflow_read' for call in calls)
 else:
-    assert [call['name'] for call in calls] == ['workflow_read', 'workflow_read', 'workflow_store']
+    assert [call['name'] for call in calls] == ['workflow_read'] * len(requested) + ['workflow_store']
 read_calls = [call for call in calls if call['name'] == 'workflow_read']
 assert all(call['namespace'] == control['directNamespace'] for call in calls)
 outputs = {event['payload']['call_id']: event['payload']['output'] for event in events if event.get('payload', {}).get('type') == 'function_call_output'}
@@ -58,6 +64,7 @@ def find_pages(value):
 
 
 results = []
+delivered = set()
 for call in read_calls:
     call_id = call['call_id']
     arguments = json.loads(call['arguments'])
@@ -68,25 +75,38 @@ for call in read_calls:
     pages = list(find_pages(output))
     assert pages and all(page == pages[0] for page in pages)
     page = pages[0]
-    assert page['handle'] == arguments['handle'] and page['offset'] == arguments['offset'] == 0
-    assert arguments['maxBytes'] == page['nextOffset'] == 28000
+    assert page['handle'] == arguments['handle'] and page['offset'] == arguments['offset']
+    assert arguments['maxBytes'] == page['nextOffset'] - page['offset'] == 28000
     source = handles[page['handle']]
-    expected = Path(inputs[source]['path']).read_bytes()[:28000]
+    key = (source, page['offset'], arguments['maxBytes'])
+    assert key in request_keys and key not in delivered
+    delivered.add(key)
+    expected = Path(inputs[source]['path']).read_bytes()[page['offset']:page['nextOffset']]
     assert page['text'].encode('utf-8') == expected
     assert not any(marker in json.dumps(output) for marker in ['Warning: truncated output', 'tokens truncated', 'Output truncated'])
-    server = [row for row in observations if row['handle'] == page['handle']]
+    server = [row for row in observations if row['handle'] == page['handle'] and timing['start'] <= stamp(row['startedAt']) <= timing['end']]
     assert len(server) == 1 and timing['start'] <= stamp(server[0]['startedAt']) <= timing['end']
     # A call item completes before its enclosing response.completed event.
     response = next(row for row in actor['responses'] if stamp(row['at']) >= item['end'])
-    results.append({'source': source, 'callId': call_id, 'responseId': response['id'], 'nativeFunctionCall': True, 'argumentBytes': timing['argumentBytes'], 'textBytes': len(expected), 'clientLoggedOutputBytes': timing['outputBytes'], 'byteExact': True, 'sha256': hashlib.sha256(expected).hexdigest(), 'commandGenerationSeconds': item['end']-item['start'], 'toolRoundTripSeconds': timing['end']-timing['start'], 'serverMs': server[0]['serviceMs']})
+    results.append({'source': source, 'offset': page['offset'], 'callId': call_id, 'responseId': response['id'], 'nativeFunctionCall': True, 'argumentBytes': timing['argumentBytes'], 'textBytes': len(expected), 'clientLoggedOutputBytes': timing['outputBytes'], 'byteExact': True, 'sha256': hashlib.sha256(expected).hexdigest(), 'commandGenerationSeconds': item['end']-item['start'], 'toolRoundTripSeconds': timing['end']-timing['start'], 'serverMs': server[0]['serviceMs']})
 
-two_reads = len(read_calls) == 2
+all_requested_reads = delivered == request_keys
+assert incomplete or all_requested_reads
+groups = Counter(result['responseId'] for result in results)
+any_batch = any(count > 1 for count in groups.values())
+two_reads = len(read_calls) >= 2
 first = timings[read_calls[0]['call_id']]
 second = timings[read_calls[1]['call_id']] if two_reads else None
 second_item = items[second['id']] if two_reads else None
-same_response = two_reads and results[0]['responseId'] == results[1]['responseId']
+same_response = all_requested_reads and len(groups) == 1
 before_result = second_item['end'] <= first['end'] if two_reads else None
 completion_marker = control.get('lastPhase') == 'inputs-ready'
+transitions = []
+for previous_call, next_call in zip(read_calls, read_calls[1:]):
+    previous = timings[previous_call['call_id']]
+    following = timings[next_call['call_id']]
+    following_item = items[following['id']]
+    transitions.append({'fromCallId': previous['id'], 'toCallId': following['id'], 'preCommandGapSeconds': following_item['start']-previous['end'], 'commandGenerationSeconds': following_item['end']-following_item['start'], 'toolRoundTripSeconds': following['end']-following['start'], 'wholeCycleSeconds': following['end']-previous['end']})
 report = {
     'experiment': 'Native MCP namespace exposure and independent result verification',
     'control': control,
@@ -95,20 +115,27 @@ report = {
     'outcome': 'native-incomplete' if incomplete else 'completed',
     'reportedResult': reported_result,
     'nativeReadCount': len(read_calls),
+    'requestedReadCount': len(requested),
+    'allRequestedReadsVerified': all_requested_reads,
+    'readResponseGroups': dict(groups),
+    'maxReadsPerResponse': max(groups.values()),
+    'anyReadBatch': any_batch,
+    'readTransitions': transitions,
     'completionMarkerStored': completion_marker,
     'nativeExposureVerified': True,
     'singleResponseReadGroup': same_response,
     'bothCallsPreparedBeforeFirstResult': before_result,
-    'targetMet': same_response and completion_marker,
+    'targetMet': any_batch and all_requested_reads and completion_marker,
     'toolIntervalsOverlap': max(first['start'], second['start']) < min(first['end'], second['end']) if two_reads else None,
     'betweenReads': {'preCommandGapSeconds': second_item['start']-first['end'], 'commandGenerationSeconds': second_item['end']-second_item['start'], 'toolRoundTripSeconds': second['end']-second['start'], 'wholeCycleSeconds': second['end']-first['end']} if two_reads else None,
     'groupingMethod': 'Pair completed function-call items with the next response.completed event. A shared model response establishes generation without an intervening model-response cycle. A shared Codex turn ID is insufficient. Early tool completion can overlap continued generation within the same response; before-result timing and execution overlap are separate observations, not batch-success requirements.',
     'runtime': runtime,
     'officialReference': 'https://learn.chatgpt.com/docs/config-file/config-reference',
     'tooling': {str(file.relative_to(ROOT)): hashlib.sha256(file.read_bytes()).hexdigest() for file in [Path(__file__), Path(__file__).with_name('native-assignment.md'), Path(__file__).parent.parent / 'ux-collection-phase/run.mjs']},
-    'limits': ['At most two first pages; not a full acquisition or UX reasoning run.', 'Both native reads were generated in one model response.' if same_response else 'The two-read sequence was incomplete.' if not two_reads else 'The native reads were generated in separate model responses.', 'A fast first tool can finish while the model is still emitting a second call in the same response. Completion order does not imply intervening interpretation.', 'This live transcript does not itself capture the outgoing parallel-call flag; any request-construction capture is separate evidence.', 'The native tool path differs from the combined-wrapper path. This run does not establish an end-to-end UX speedup or a universal return-size ceiling.', 'No global configuration, model selection, client output budget or live Alexa state was changed. Any temporary model-catalog override is identified in control metadata.'],
+    'limits': [f'At most {len(requested)} predetermined pages; not a full acquisition or UX reasoning run.', 'All native reads were generated in one model response.' if same_response else 'Some reads shared a model response.' if any_batch else 'No model response contained multiple reads.', 'The requested sequence was incomplete.' if not all_requested_reads else 'All requested reads were verified.', 'The bothCallsPreparedBeforeFirstResult, toolIntervalsOverlap and betweenReads fields describe only the first pair. readTransitions and readResponseGroups cover all reads.', 'A fast first tool can finish while the model is still emitting a second call in the same response. Completion order does not imply intervening interpretation.', 'This live transcript does not itself capture the outgoing parallel-call flag; any request-construction capture is separate evidence.', 'The native tool path differs from the combined-wrapper path. This run does not establish an end-to-end UX speedup or a universal return-size ceiling.', 'No global configuration, model selection, client output budget or live Alexa state was changed. Any temporary model-catalog override is identified in control metadata.'],
 }
 destination = ROOT / ('planning/refinement-efficiency/ux-native-mcp-20260928-' + name + '-metrics.json')
-assert not destination.exists(), 'Preserve existing experiment evidence'
-destination.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
-print(json.dumps({key: report[key] for key in ['outcome', 'nativeReadCount', 'completionMarkerStored', 'nativeExposureVerified', 'singleResponseReadGroup', 'bothCallsPreparedBeforeFirstResult', 'targetMet', 'results', 'betweenReads']}, indent=2))
+if '--verify-only' not in sys.argv:
+    assert not destination.exists(), 'Preserve existing experiment evidence'
+    destination.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
+print(json.dumps({key: report[key] for key in ['outcome', 'nativeReadCount', 'completionMarkerStored', 'nativeExposureVerified', 'singleResponseReadGroup', 'anyReadBatch', 'maxReadsPerResponse', 'targetMet', 'results', 'betweenReads']}, indent=2))

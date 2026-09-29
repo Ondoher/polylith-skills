@@ -1,5 +1,7 @@
 # Native MCP probe with simpler instructions
 
+**Follow-up:** [Four and eight pending reads](ux-native-read-count-20260928.md) also completed sequentially. Increasing call count did not trigger batching in either attempt.
+
 **Both reads completed, but they were still generated in separate model responses. Removing the instruction to judge delivery order avoided the previous early stop in this attempt; it did not demonstrate parallel call generation.**
 
 This follows the [incomplete live probe](ux-native-no-lite-live-20260928.md). The user suggested that checking the first result could discourage issuing the second call together with it. The revised assignment asks for two independent native reads in parallel, followed by a completion marker once both results are available. An external observer alone evaluates batching and data integrity. The agent no longer judges delivery order between calls.

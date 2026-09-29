@@ -1,0 +1,473 @@
+{
+	"experiment": "Native MCP namespace exposure and independent result verification",
+	"control": {
+		"experiment": "ux-read-window",
+		"pageBytes": 28000,
+		"probe": true,
+		"parallelProbe": false,
+		"nativeProbe": true,
+		"nativeReadRequests": [
+			{
+				"source": "facts",
+				"offset": 0,
+				"maxBytes": 28000
+			},
+			{
+				"source": "ux",
+				"offset": 0,
+				"maxBytes": 28000
+			},
+			{
+				"source": "facts",
+				"offset": 28000,
+				"maxBytes": 28000
+			},
+			{
+				"source": "ux",
+				"offset": 28000,
+				"maxBytes": 28000
+			}
+		],
+		"disableCodeHost": false,
+		"directNamespace": "mcp__polylith_workflows",
+		"modelCatalogOverride": {
+			"path": "C:\\dev\\polylith-skills\\.codex-tmp\\codex-parallel-rule-20260928\\catalog-without-lite.private.json",
+			"sha256": "e467b2b152eed8aa7378fb0fd42e1c366818634d31d99904d9d4f4910f97b6aa"
+		},
+		"startedAt": "2026-09-29T00:42:31.844Z",
+		"run": "ux-mcp-replay-20260928",
+		"workspace": "C:\\dev\\polylith-skills\\",
+		"transport": "resident workflow MCP over localhost HTTP",
+		"status": "finished",
+		"smoke": false,
+		"serverPid": 58104,
+		"instance": "f4a94bd4-a175-41ba-ac21-053ecba77436",
+		"serverStartupMs": 160.0215,
+		"readLimits": {
+			"pageBytes": 28000,
+			"envelopeBytes": 31200,
+			"toolBytes": 32768
+		},
+		"childPid": 17684,
+		"agentStartedAt": "2026-09-29T00:42:32.162Z",
+		"threadId": "01a0ea9c-fe91-7f83-af39-d1152c4e1fcb",
+		"lastPhase": "inputs-ready",
+		"lastPhaseAt": "2026-09-29T00:43:03.106Z",
+		"reportedUsage": {
+			"input_tokens": 211842,
+			"cached_input_tokens": 168704,
+			"cache_write_input_tokens": 0,
+			"output_tokens": 596,
+			"reasoning_output_tokens": 0
+		},
+		"exitCode": 0,
+		"agentCompletedAt": "2026-09-29T00:43:05.862Z",
+		"agentWindowMs": 33714.959599999995,
+		"completedAt": "2026-09-29T00:43:05.880Z"
+	},
+	"inputHashes": {
+		"facts": "0a93131e55d107256cd22569659a860a6a927a5e30a01e8800a30ca5e9782e2a",
+		"ux": "5892a95485b1358f454ec59f71dc096acb7ab5e92033f831b437070ea895dc4c"
+	},
+	"results": [
+		{
+			"source": "facts",
+			"offset": 0,
+			"callId": "call_xzpA5zpVTzaSOfzZDwfMPRKS",
+			"responseId": "resp_0f86b784c09a934b016abb097a76d087d29e77b3bbb34a0c89",
+			"nativeFunctionCall": true,
+			"argumentBytes": 204,
+			"textBytes": 28000,
+			"clientLoggedOutputBytes": 31392,
+			"byteExact": true,
+			"sha256": "64a3f592c20ca61919b746689eca47c7cf32bbf799de2eb20af85b87ae586d41",
+			"commandGenerationSeconds": 3.0675089359283447,
+			"toolRoundTripSeconds": 0.05900001525878906,
+			"serverMs": 0.8608000000003813
+		},
+		{
+			"source": "ux",
+			"offset": 0,
+			"callId": "call_PaG5lZ0EXvmw2p6QMdv8owfW",
+			"responseId": "resp_0f86b784c09a934b016abb098102e087d2bf27c1f81dbfbba1",
+			"nativeFunctionCall": true,
+			"argumentBytes": 204,
+			"textBytes": 28000,
+			"clientLoggedOutputBytes": 31859,
+			"byteExact": true,
+			"sha256": "311dd27aed2da6e7bcf328baa028ee4df0cb9f037a521644065d6544b7082f96",
+			"commandGenerationSeconds": 3.005380868911743,
+			"toolRoundTripSeconds": 0.06200003623962402,
+			"serverMs": 2.2736000000004424
+		},
+		{
+			"source": "facts",
+			"offset": 28000,
+			"callId": "call_HIzIt1TOZ83MhGsP9vW5o4Yn",
+			"responseId": "resp_0f86b784c09a934b016abb0985f62887d2b16ade01b3d62b3c",
+			"nativeFunctionCall": true,
+			"argumentBytes": 208,
+			"textBytes": 28000,
+			"clientLoggedOutputBytes": 31429,
+			"byteExact": true,
+			"sha256": "fc5bdcfb78fe50aeb15f48aacbc4808e8ca1f25e078075db7b98fd226135bf19",
+			"commandGenerationSeconds": 3.1540329456329346,
+			"toolRoundTripSeconds": 0.07299995422363281,
+			"serverMs": 0.5010000000002037
+		},
+		{
+			"source": "ux",
+			"offset": 28000,
+			"callId": "call_zpqQ1VQoOk2lTI4twD7TMhxS",
+			"responseId": "resp_0f86b784c09a934b016abb098b1cb087d2a92120515848a3de",
+			"nativeFunctionCall": true,
+			"argumentBytes": 208,
+			"textBytes": 28000,
+			"clientLoggedOutputBytes": 32373,
+			"byteExact": true,
+			"sha256": "ac49583a5da1610f0bff20d9df05d268c90155991d7c3abda8ed28f3b5a0dbad",
+			"commandGenerationSeconds": 3.0263900756835938,
+			"toolRoundTripSeconds": 0.06200003623962402,
+			"serverMs": 1.4521999999997206
+		}
+	],
+	"outcome": "completed",
+	"reportedResult": "NATIVE_COMPLETED",
+	"nativeReadCount": 4,
+	"requestedReadCount": 4,
+	"allRequestedReadsVerified": true,
+	"readResponseGroups": {
+		"resp_0f86b784c09a934b016abb097a76d087d29e77b3bbb34a0c89": 1,
+		"resp_0f86b784c09a934b016abb098102e087d2bf27c1f81dbfbba1": 1,
+		"resp_0f86b784c09a934b016abb0985f62887d2b16ade01b3d62b3c": 1,
+		"resp_0f86b784c09a934b016abb098b1cb087d2a92120515848a3de": 1
+	},
+	"maxReadsPerResponse": 1,
+	"anyReadBatch": false,
+	"readTransitions": [
+		{
+			"fromCallId": "call_xzpA5zpVTzaSOfzZDwfMPRKS",
+			"toCallId": "call_PaG5lZ0EXvmw2p6QMdv8owfW",
+			"preCommandGapSeconds": 1.8416190147399902,
+			"commandGenerationSeconds": 3.005380868911743,
+			"toolRoundTripSeconds": 0.06200003623962402,
+			"wholeCycleSeconds": 4.908999919891357
+		},
+		{
+			"fromCallId": "call_PaG5lZ0EXvmw2p6QMdv8owfW",
+			"toCallId": "call_HIzIt1TOZ83MhGsP9vW5o4Yn",
+			"preCommandGapSeconds": 1.8589670658111572,
+			"commandGenerationSeconds": 3.1540329456329346,
+			"toolRoundTripSeconds": 0.07299995422363281,
+			"wholeCycleSeconds": 5.085999965667725
+		},
+		{
+			"fromCallId": "call_HIzIt1TOZ83MhGsP9vW5o4Yn",
+			"toCallId": "call_zpqQ1VQoOk2lTI4twD7TMhxS",
+			"preCommandGapSeconds": 2.1536099910736084,
+			"commandGenerationSeconds": 3.0263900756835938,
+			"toolRoundTripSeconds": 0.06200003623962402,
+			"wholeCycleSeconds": 5.242000102996826
+		}
+	],
+	"completionMarkerStored": true,
+	"nativeExposureVerified": true,
+	"singleResponseReadGroup": false,
+	"bothCallsPreparedBeforeFirstResult": false,
+	"targetMet": false,
+	"toolIntervalsOverlap": false,
+	"betweenReads": {
+		"preCommandGapSeconds": 1.8416190147399902,
+		"commandGenerationSeconds": 3.005380868911743,
+		"toolRoundTripSeconds": 0.06200003623962402,
+		"wholeCycleSeconds": 4.908999919891357
+	},
+	"groupingMethod": "Pair completed function-call items with the next response.completed event. A shared model response establishes generation without an intervening model-response cycle. A shared Codex turn ID is insufficient. Early tool completion can overlap continued generation within the same response; before-result timing and execution overlap are separate observations, not batch-success requirements.",
+	"runtime": {
+		"capturedAt": "2026-09-29T00:43:11.972170+00:00",
+		"attemptStartedAt": "2026-09-29T00:42:32.162Z",
+		"attemptEndedAt": "2026-09-29T00:43:05.862Z",
+		"threads": [
+			{
+				"threadId": "01a0ea9c-fe91-7f83-af39-d1152c4e1fcb",
+				"role": null,
+				"agentPath": null,
+				"model": "gpt-6-astra",
+				"effort": "xhigh",
+				"sourceSession": "C:\\Users\\gande\\.codex\\sessions\\2026\\09\\28\\rollout-2026-09-28T17-42-32-01a0ea9c-fe91-7f83-af39-d1152c4e1fcb.jsonl",
+				"windowStart": "2026-09-29T00:42:32.162+00:00",
+				"windowEnd": "2026-09-29T00:43:05.862+00:00",
+				"windowSeconds": 33.700000047683716,
+				"activeTurnSeconds": 31.543999910354614,
+				"outsideRecordedTurnsSeconds": 2.1560001373291016,
+				"activeSeconds": {
+					"output": 15.880028486251831,
+					"reasoning-item": 0,
+					"tool": 0.3250000476837158
+				},
+				"activeUnattributedSeconds": 15.338971376419067,
+				"streamIntervalsObserved": true,
+				"seconds": {
+					"output": 15.880028486251831,
+					"reasoning-item": 0,
+					"tool": 0.3250000476837158
+				},
+				"unattributedSeconds": 17.49497151374817,
+				"items": [
+					{
+						"id": "msg_0f86b784c09a934b016abb097c555087d2bf1d76af7972e03d",
+						"kind": "message",
+						"end": 1790642558.487,
+						"turn": "01a0ea9d-00dd-7842-a0ef-5e7953cce209",
+						"callId": null,
+						"start": 1790642557.170509,
+						"streamEvents": 2
+					},
+					{
+						"id": "fc_0f86b784c09a934b016abb097da67487d2b9409bf495fecb71",
+						"kind": "function_call",
+						"end": 1790642561.556,
+						"turn": "01a0ea9d-00dd-7842-a0ef-5e7953cce209",
+						"callId": "call_xzpA5zpVTzaSOfzZDwfMPRKS",
+						"start": 1790642558.488491,
+						"streamEvents": 1
+					},
+					{
+						"id": "fc_0f86b784c09a934b016abb0982a20087d2aeb4a71ee0719094",
+						"kind": "function_call",
+						"end": 1790642566.462,
+						"turn": "01a0ea9d-00dd-7842-a0ef-5e7953cce209",
+						"callId": "call_PaG5lZ0EXvmw2p6QMdv8owfW",
+						"start": 1790642563.456619,
+						"streamEvents": 1
+					},
+					{
+						"id": "fc_0f86b784c09a934b016abb09878f8487d2b82929e3d957c39c",
+						"kind": "function_call",
+						"end": 1790642571.537,
+						"turn": "01a0ea9d-00dd-7842-a0ef-5e7953cce209",
+						"callId": "call_HIzIt1TOZ83MhGsP9vW5o4Yn",
+						"start": 1790642568.382967,
+						"streamEvents": 1
+					},
+					{
+						"id": "fc_0f86b784c09a934b016abb098cf0a087d29f3b8138d0988765",
+						"kind": "function_call",
+						"end": 1790642576.79,
+						"turn": "01a0ea9d-00dd-7842-a0ef-5e7953cce209",
+						"callId": "call_zpqQ1VQoOk2lTI4twD7TMhxS",
+						"start": 1790642573.76361,
+						"streamEvents": 1
+					},
+					{
+						"id": "fc_0f86b784c09a934b016abb099433d887d28b2d95a644eac146",
+						"kind": "function_call",
+						"end": 1790642583.095,
+						"turn": "01a0ea9d-00dd-7842-a0ef-5e7953cce209",
+						"callId": "call_38mlCHcqwuGhhuuL6gZgLzo4",
+						"start": 1790642581.024434,
+						"streamEvents": 1
+					},
+					{
+						"id": "msg_0f86b784c09a934b016abb099800bc87d2ac93286f2a64adbe",
+						"kind": "message",
+						"end": 1790642585.064,
+						"turn": "01a0ea9d-00dd-7842-a0ef-5e7953cce209",
+						"callId": null,
+						"start": 1790642584.824341,
+						"streamEvents": 2
+					}
+				],
+				"calls": [
+					{
+						"id": "call_xzpA5zpVTzaSOfzZDwfMPRKS",
+						"name": "workflow_read",
+						"start": 1790642561.556,
+						"argumentBytes": 204,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 53.0,
+						"handler_duration_ms": 53.0,
+						"dispatch_duration_ms": 0.0,
+						"end": 1790642561.615,
+						"outputBytes": 31392
+					},
+					{
+						"id": "call_PaG5lZ0EXvmw2p6QMdv8owfW",
+						"name": "workflow_read",
+						"start": 1790642566.462,
+						"argumentBytes": 204,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 60.0,
+						"handler_duration_ms": 60.0,
+						"dispatch_duration_ms": 0.0,
+						"end": 1790642566.524,
+						"outputBytes": 31859
+					},
+					{
+						"id": "call_HIzIt1TOZ83MhGsP9vW5o4Yn",
+						"name": "workflow_read",
+						"start": 1790642571.537,
+						"argumentBytes": 208,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 68.0,
+						"handler_duration_ms": 68.0,
+						"dispatch_duration_ms": 0.0,
+						"end": 1790642571.61,
+						"outputBytes": 31429
+					},
+					{
+						"id": "call_zpqQ1VQoOk2lTI4twD7TMhxS",
+						"name": "workflow_read",
+						"start": 1790642576.79,
+						"argumentBytes": 208,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 58.0,
+						"handler_duration_ms": 58.0,
+						"dispatch_duration_ms": 0.0,
+						"end": 1790642576.852,
+						"outputBytes": 32373
+					},
+					{
+						"id": "call_38mlCHcqwuGhhuuL6gZgLzo4",
+						"name": "workflow_store",
+						"start": 1790642583.095,
+						"argumentBytes": 166,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 64.0,
+						"handler_duration_ms": 64.0,
+						"dispatch_duration_ms": 0.0,
+						"end": 1790642583.164,
+						"outputBytes": 494
+					}
+				],
+				"responses": [
+					{
+						"id": "resp_0f86b784c09a934b016abb097a76d087d29e77b3bbb34a0c89",
+						"at": "2026-09-29T00:42:41.613+00:00",
+						"turn": "01a0ea9d-00dd-7842-a0ef-5e7953cce209",
+						"usage": {
+							"input_tokens": 20572,
+							"cached_input_tokens": 3968,
+							"cache_write_input_tokens": 0,
+							"output_tokens": 149,
+							"reasoning_output_tokens": 0,
+							"total_tokens": 20721
+						}
+					},
+					{
+						"id": "resp_0f86b784c09a934b016abb098102e087d2bf27c1f81dbfbba1",
+						"at": "2026-09-29T00:42:46.522+00:00",
+						"turn": "01a0ea9d-00dd-7842-a0ef-5e7953cce209",
+						"usage": {
+							"input_tokens": 26997,
+							"cached_input_tokens": 20352,
+							"cache_write_input_tokens": 0,
+							"output_tokens": 116,
+							"reasoning_output_tokens": 0,
+							"total_tokens": 27113
+						}
+					},
+					{
+						"id": "resp_0f86b784c09a934b016abb0985f62887d2b16ade01b3d62b3c",
+						"at": "2026-09-29T00:42:51.608+00:00",
+						"turn": "01a0ea9d-00dd-7842-a0ef-5e7953cce209",
+						"usage": {
+							"input_tokens": 33140,
+							"cached_input_tokens": 26752,
+							"cache_write_input_tokens": 0,
+							"output_tokens": 121,
+							"reasoning_output_tokens": 0,
+							"total_tokens": 33261
+						}
+					},
+					{
+						"id": "resp_0f86b784c09a934b016abb098b1cb087d2a92120515848a3de",
+						"at": "2026-09-29T00:42:56.850+00:00",
+						"turn": "01a0ea9d-00dd-7842-a0ef-5e7953cce209",
+						"usage": {
+							"input_tokens": 39636,
+							"cached_input_tokens": 32896,
+							"cache_write_input_tokens": 0,
+							"output_tokens": 117,
+							"reasoning_output_tokens": 0,
+							"total_tokens": 39753
+						}
+					},
+					{
+						"id": "resp_0f86b784c09a934b016abb099045b887d28f527b5f92ca626c",
+						"at": "2026-09-29T00:43:03.162+00:00",
+						"turn": "01a0ea9d-00dd-7842-a0ef-5e7953cce209",
+						"usage": {
+							"input_tokens": 45606,
+							"cached_input_tokens": 39424,
+							"cache_write_input_tokens": 0,
+							"output_tokens": 85,
+							"reasoning_output_tokens": 0,
+							"total_tokens": 45691
+						}
+					},
+					{
+						"id": "resp_0f86b784c09a934b016abb0996ad4887d2a06999716a062748",
+						"at": "2026-09-29T00:43:05.097+00:00",
+						"turn": "01a0ea9d-00dd-7842-a0ef-5e7953cce209",
+						"usage": {
+							"input_tokens": 45891,
+							"cached_input_tokens": 45312,
+							"cache_write_input_tokens": 0,
+							"output_tokens": 8,
+							"reasoning_output_tokens": 0,
+							"total_tokens": 45899
+						}
+					}
+				],
+				"usageByCompletedResponse": {
+					"input_tokens": 211842,
+					"cached_input_tokens": 168704,
+					"output_tokens": 596,
+					"reasoning_output_tokens": 0
+				},
+				"turns": {
+					"01a0ea9d-00dd-7842-a0ef-5e7953cce209": [
+						{
+							"at": "2026-09-29T00:42:33.561+00:00",
+							"event": "task_started"
+						},
+						{
+							"at": "2026-09-29T00:43:05.105+00:00",
+							"event": "task_complete"
+						}
+					]
+				}
+			}
+		],
+		"limits": [
+			"Client-observed streams, not isolated provider computation or semantic reasoning.",
+			"Parent and child windows overlap and are nonadditive.",
+			"Child windows start at recorded thread creation and end at task completion when observed, otherwise the capture boundary.",
+			"Incomplete output lacks a completed interval; response usage may straddle boundaries.",
+			"First stream event is used with the persisted item completion; stderr does not expose the desktop logger event labels.",
+			"Raw logs and capabilities remain private; this output includes metadata only."
+		]
+	},
+	"officialReference": "https://learn.chatgpt.com/docs/config-file/config-reference",
+	"tooling": {
+		"planning\\refinement-efficiency\\experiments\\ux-read-window\\direct.py": "140a647279d2a20fcc178295f1d2a8cbb823f00e6b172b82590cad610316a0b1",
+		"planning\\refinement-efficiency\\experiments\\ux-read-window\\native-assignment.md": "9876f8aeecf81a9da914afc9a788a8705fc62e33d4062a42f2ac2b26df48f437",
+		"planning\\refinement-efficiency\\experiments\\ux-collection-phase\\run.mjs": "e2e54a8a2fa60c6a317c1e3dd66bdd5af28cce9a94395119ec7a39466e400565"
+	},
+	"limits": [
+		"At most 4 predetermined pages; not a full acquisition or UX reasoning run.",
+		"No model response contained multiple reads.",
+		"All requested reads were verified.",
+		"The bothCallsPreparedBeforeFirstResult, toolIntervalsOverlap and betweenReads fields describe only the first pair. readTransitions and readResponseGroups cover all reads.",
+		"A fast first tool can finish while the model is still emitting a second call in the same response. Completion order does not imply intervening interpretation.",
+		"This live transcript does not itself capture the outgoing parallel-call flag; any request-construction capture is separate evidence.",
+		"The native tool path differs from the combined-wrapper path. This run does not establish an end-to-end UX speedup or a universal return-size ceiling.",
+		"No global configuration, model selection, client output budget or live Alexa state was changed. Any temporary model-catalog override is identified in control metadata."
+	]
+}
