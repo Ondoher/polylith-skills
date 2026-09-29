@@ -57,6 +57,35 @@ this preparation-only resume path. Preserve their output for focused continuatio
 
 ## Evidence and interpretation
 
+### Matched staged-input pilot
+
+The [staged-input plan](../../staged-ux-input-plan.md) reuses this harness with
+three source-projected tasks. Prepare immutable packets once, then run the two
+conditions sequentially using distinct attempt names:
+
+```powershell
+python -B planning/refinement-efficiency/experiments/incremental-ux-replay/prepare-pilot.py .codex-tmp/staged-ux-pilot/packets-unique
+node planning/refinement-efficiency/experiments/incremental-ux-replay/run.mjs --attempt=all-unique --pilot=.codex-tmp/staged-ux-pilot/packets-unique --condition=all --execute
+node planning/refinement-efficiency/experiments/incremental-ux-replay/run.mjs --attempt=staged-unique --pilot=.codex-tmp/staged-ux-pilot/packets-unique --condition=staged --execute
+python -B planning/refinement-efficiency/experiments/incremental-ux-replay/analyze-pilot.py .codex-tmp/incremental-ux-replay/all-unique .codex-tmp/incremental-ux-replay/staged-unique --output=.codex-tmp/staged-ux-pilot/comparison-unique.json
+```
+
+Omit `--execute` to check real MCP grants, packet reads and eventual coverage
+without an author. Pilot runs do not accept the preparation-only `--resume`
+option. The driver uses the supported `codex exec resume <thread-id>` command
+internally between tasks, retaining the same author context and contribution
+store. Both conditions use identical continuation boundaries; staged input
+withholds future packet handles until needed. It does not erase earlier context.
+
+The pilot author receives five assigned units, compact identities, shared rules
+and the three task packets. The entire baseline remains in the isolated store
+for deterministic final materialization. `units.finish` runs once after task 3;
+its first receipt is the measurement boundary. Original and revised proposals
+are retained without a review or repair round. This is a partial-product
+experiment, not a full refinement or product acceptance.
+
+### Original full-scope experiment
+
 `sources.json` identifies the retained offline inputs by path and content hash.
 It supplies no old output to the live launcher. `offline.mjs` mechanically
 converts retained values into the production schema's named record operations,
@@ -109,8 +138,9 @@ attempt folders. Commit only source and deliberately selected metadata reports.
 ## Current local decisions
 
 - Reuse production `units.*` operations and native launch infrastructure.
-- Keep one owner per unit; the current live assignment grants all existing units
-  so it does not disclose the historical affected-unit selection.
+- Keep one owner per unit. The default full-scope assignment grants all existing
+  units so it does not disclose the historical affected-unit selection; the
+  staged-input pilot grants its five explicitly scoped units.
 - Use the same model and effort for comparison; record the direct-author launch
   difference explicitly.
 - Treat mechanical packing as code-owned. Compare meaning and canonical order,

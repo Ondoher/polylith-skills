@@ -1,7 +1,9 @@
 # Test staged UX input with early evidence
 
-Status: proposed, 2026-09-29. This is a test plan; no new paid authoring run has
-been launched. It follows the completed
+Status: stages 1–3 complete, 2026-09-29. The matched pilot found less than 1%
+overall saving and retained first-proposal defects; see the
+[execution report](staged-ux-input-execution.md). Stages 4–5 have not been run.
+This plan follows the completed
 [incremental contribution experiment](incremental-ux-contributions-execution.md).
 
 ## Question and scope
