@@ -215,6 +215,10 @@ test('a misspelled field rejects its unit group while valid siblings remain reus
 		['context:document'],
 	);
 	assert.match(receipt.issues[0].reason, /outcomecome/);
+	const journal = JSON.parse(fs.readFileSync(path.join(`${f.store}.contributions`, '00000001.json'), 'utf8'));
+	assert.equal(journal.rejected[0].reference, ref);
+	assert.equal(journal.rejected[0].changes[1].fields.outcomecome, 'Invalid spelling');
+	DesignContributions.close(f.store);
 	DesignContributions.finish(f.store, [ref, 'context:document']);
 	assert.deepEqual(DesignRecords.read(f.store, [ref]).records[0], before);
 	assert.equal(

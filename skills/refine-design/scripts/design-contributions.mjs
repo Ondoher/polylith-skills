@@ -230,6 +230,7 @@ export const DesignContributions = {
 			grouped.get(change.unit).push(change);
 		}
 		const groups = [],
+			rejected = [],
 			issues = [],
 			candidates = new Map();
 		for (const [reference, changes] of grouped) {
@@ -244,6 +245,7 @@ export const DesignContributions = {
 				candidates.set(reference, unit);
 			} catch (error) {
 				issues.push(issue(reference, error.message));
+				rejected.push({reference, changes, reason: error.message});
 			}
 		}
 		const receipt = {
@@ -254,7 +256,7 @@ export const DesignContributions = {
 			pending: 'Required fields and references are checked at units.finish.',
 			preparationMs: performance.now() - started,
 		};
-		const journalBytes = append(state, {kind: 'batch', batchId: input.batchId, digest, groups, receipt});
+		const journalBytes = append(state, {kind: 'batch', batchId: input.batchId, digest, groups, rejected, receipt});
 		for (const [reference, unit] of candidates) state.units.set(reference, unit);
 		for (const group of groups) state.revisions.set(group.reference, group.revision);
 		state.batches.set(input.batchId, {digest, receipt});

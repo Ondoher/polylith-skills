@@ -36,12 +36,14 @@ into the current consumer schemas. Persist and reuse completed units during the 
 Keep parsing, semantic review and product publication under their existing contracts.
 
 For structured UX/UI authoring with MCP configured, give each author a scoped
-assignment capability and input handles. Deliver completed records through
-`units.deliver` and return handles, record IDs and status. For an incremental UX
-contribution assignment, follow [the contribution contract](references/ux-contributions.md)
-instead: grant `units.status`, `units.contribute` and `units.finish`, supply the
-prepared baseline and revisions, and let code materialize authoring units. This
-does not authorize canonical promotion or bypass the existing UX review. Otherwise, assign an
+assignment capability and input handles. For UX updates against a saved baseline,
+prefer [incremental contributions](references/ux-contributions.md): grant
+`units.status`, `units.contribute` and `units.finish`, supply the prepared baseline
+and revisions, and let code materialize authoring units. Contributions also support
+empty stores, but live cold-start performance has not been measured. UI and other
+complete-unit assignments use `units.deliver`. Return handles, record IDs and
+status. Neither route authorizes canonical promotion or bypasses the existing UX
+review. When MCP is unavailable, assign an
 absolute `proposalDirectory` inside an effective writable root, separate from
 canonical product data and the parent-owned record store; consume the author's
 completed files directly. Follow the single-pass contract's startup and delivery

@@ -95,10 +95,115 @@ def result_value(attempt, control, handle):
     return json.loads(raw)
 
 
+def tool_inventory(values):
+    """Retain exposure names and types, never descriptions or parameter schemas."""
+    return [{key: value[key] for key in ['type', 'name'] if key in value} |
+            ({'tools': tool_inventory(value['tools'])} if isinstance(value.get('tools'), list) else {})
+            for value in values]
+
+
+def compact_wire(wire, events, start, end, group_sizes):
+    catalogs = {}
+
+    def catalog_id(values):
+        inventory = tool_inventory(values)
+        digest = hashlib.sha256(encode(inventory)).hexdigest()
+        if digest not in catalogs:
+            catalogs[digest] = {'id': f"catalog-{len(catalogs) + 1}", 'sha256': digest, 'tools': inventory}
+        return catalogs[digest]['id']
+
+    requests = []
+    for request in wire['requests']:
+        # Full hashes/continuation IDs remain in the retained, hashed wire file.
+        requests.append({key: request.get(key) for key in ['at', 'elapsedMs', 'connection', 'messageBytes',
+                        'type', 'model', 'generate', 'parallelToolCalls', 'toolChoice', 'reasoningEffort']} |
+                        {'catalogId': catalog_id(request.get('tools', []))})
+    exposures = []
+    for event in events:
+        payload = event.get('payload', {})
+        if start <= stamp(event['timestamp']) <= end and payload.get('type') == 'tool_search_output':
+            exposures.append({'at': event['timestamp'], 'callId': payload.get('call_id'),
+                              'catalogId': catalog_id(payload.get('tools', []))})
+    return {'requestCount': len(requests), 'generatingRequestCount': sum(item.get('generate') is not False for item in requests),
+            'requestMessageBytes': sum(item.get('messageBytes', 0) for item in requests),
+            'requestsByModel': dict(collections.Counter(item.get('model') for item in requests)),
+            'requestsByCatalog': dict(collections.Counter(item['catalogId'] for item in requests)),
+            'requests': requests, 'catalogs': list(catalogs.values()), 'deferredExposures': exposures,
+            'errorCount': len(wire['errors']), 'toolGrouping': dict(collections.Counter(group_sizes.values()))}
+
+
+def auto_review_timing(wire, calls, contribution_ids, finish_id):
+    requests = [item for item in wire['requests'] if item.get('model') == 'codex-auto-review']
+    starts = {item['responseId']: item for item in wire['responses']
+              if item.get('model') == 'codex-auto-review' and item['type'] == 'response.created'}
+    finishes = {item['responseId']: item for item in wire['responses']
+                if item.get('model') == 'codex-auto-review' and item['type'] in ['response.completed', 'response.failed', 'response.incomplete']}
+    contribution_tools = [(call['start'], call['end']) for call in calls if call['id'] in contribution_ids and 'end' in call]
+    finish_tools = [(call['start'], call['end']) for call in calls if call['id'] == finish_id and 'end' in call]
+    overlap = lambda a, b, intervals: union([(max(a, x), min(b, y)) for x, y in intervals if max(a, x) < min(b, y)])
+    result = []
+    for identity, created in starts.items():
+        if identity not in finishes:
+            continue
+        request = max((item for item in requests if item['connection'] == created['connection'] and stamp(item['at']) <= stamp(created['at'])),
+                      key=lambda item: item['at'], default=None)
+        if request is None:
+            continue
+        done = finishes[identity]
+        a, b = stamp(request['at']), stamp(done['at'])
+        result.append({'requestAt': request['at'], 'createdAt': created['at'], 'completedAt': done['at'],
+                       'generate': request.get('generate'), 'status': done.get('status'),
+                       'requestToCompletionSeconds': b - a, 'responseLifetimeSeconds': b - stamp(created['at']),
+                       'overlapWithContributionToolsSeconds': overlap(a, b, contribution_tools),
+                       'overlapWithFinishToolSeconds': overlap(a, b, finish_tools)})
+    return {'requestCount': len(requests), 'nonGeneratingRequestCount': sum(item.get('generate') is False for item in requests),
+            'generatingRequestCount': sum(item.get('generate') is not False for item in requests),
+            'completedResponses': len(result), 'responses': result,
+            'generatingRequestToCompletionSeconds': sum(item['requestToCompletionSeconds'] for item in result if item['generate'] is not False),
+            'contributionToolIntervalSeconds': union(contribution_tools),
+            'overlapWithContributionToolsSeconds': sum(item['overlapWithContributionToolsSeconds'] for item in result),
+            'overlapWithFinishToolSeconds': sum(item['overlapWithFinishToolSeconds'] for item in result),
+            'interpretation': 'Observed auto-review request-to-completion intervals overlap tool intervals. This does not attribute every nonservice millisecond to approvals or isolate provider computation.'}
+
+
+def harness_overhead(attempt, control):
+    prior = []
+    for directory in sorted(attempt.parent.iterdir()):
+        file = directory / 'control.json'
+        if not file.is_file() or directory == attempt:
+            continue
+        value = read(file)
+        if value.get('workspace') != control['workspace'] or not value.get('completedAt') or stamp(value['completedAt']) > stamp(control['startedAt']):
+            continue
+        item = {'attempt': directory.name, 'status': value['status'], 'startedAt': value['startedAt'], 'completedAt': value['completedAt'],
+                'wallSeconds': stamp(value['completedAt']) - stamp(value['startedAt']),
+                'preparationMs': value.get('preparationMs'), 'liveUnchanged': value.get('liveUnchanged'),
+                'controlSha256': hashlib.sha256(file.read_bytes()).hexdigest()}
+        if value.get('agentStartedAt') and value.get('agentCompletedAt'):
+            item['clientSeconds'] = stamp(value['agentCompletedAt']) - stamp(value['agentStartedAt'])
+        wire_file = directory / 'live-request-metadata.json'
+        if wire_file.exists():
+            wire = read(wire_file)
+            item['wire'] = {'requests': len(wire['requests']), 'responses': len(wire['responses']),
+                            'connections': len(wire['connections']), 'errorCodes': dict(collections.Counter(error.get('code', error.get('phase')) for error in wire['errors'])),
+                            'sha256': hashlib.sha256(wire_file.read_bytes()).hexdigest()}
+            item['failedBeforeModelFrames'] = not wire['requests'] and not wire['responses']
+        elif value.get('error') == 'spawn EPERM':
+            item['failure'] = 'Local child-process start denied before model launch'
+        prior.append(item)
+    prior.sort(key=lambda item: item['startedAt'])
+    current_setup = stamp(control['agentStartedAt']) - stamp(control['startedAt'])
+    return {'priorAttempts': prior, 'priorRecordedAttemptWallSeconds': sum(item['wallSeconds'] for item in prior),
+            'currentAttemptSetupSeconds': current_setup, 'currentTlsPreflight': control.get('observerTrust'),
+            'outsideRecordedHarnessAttemptsBeforeAuthorSeconds': max(0, stamp(control['agentStartedAt']) - stamp(control['requestedAt']) - current_setup - sum(item['wallSeconds'] for item in prior)),
+            'accounting': 'Prior failed/setup attempts and current setup are separate measured intervals. TLS preflight is inside current setup; client time is inside its attempt. The remainder includes waiting and work outside the recorded harness and is not model reasoning.'}
+
+
 def first_pass(attempt, extract=True):
     control = read(attempt / 'control.json')
     observations = rows(attempt / 'service-observations.jsonl')
-    report = {'status': control['status'], 'model': control['model'], 'effort': control.get('effort'),
+    report = {'experiment': 'incremental-ux-first-pass', 'attempt': attempt.name,
+              'status': control['status'], 'model': control['model'], 'effort': control.get('effort'),
               'coordination': control.get('coordination'), 'boundary': control.get('boundary'),
               'liveUnchanged': control.get('liveUnchanged'), 'protectedFileCount': control.get('protectedFileCount'),
               'requestedAt': control['requestedAt'], 'preparationMs': control.get('preparationMs'),
@@ -136,10 +241,15 @@ def first_pass(attempt, extract=True):
     report['windows'] = {name: activity(actor, a, b, discovered) for (name, a), (_, b) in zip(boundaries, boundaries[1:])}
     report['authorWindow'] = activity(actor, control['agentStartedAt'], boundary, discovered)
     report['preparationThroughDeliverySeconds'] = stamp(boundary) - stamp(control['requestedAt'])
-    report['supervisorSetupSeconds'] = start - stamp(control['requestedAt'])
+    report['originalRequestToAuthorStartSeconds'] = start - stamp(control['requestedAt'])
     report['postDeliveryClientSeconds'] = stamp(control.get('agentCompletedAt', boundary)) - end
     report['firstFinishAt'] = finish
     report['toolCalls'] = {'ordinary': len(ordinary), 'builtinDiscovery': len(discovered), 'total': len(calls),
+                           'startedByFirstFinish': len(calls),
+                           'completedByFirstFinish': sum(call.get('end', float('inf')) <= end for call in calls),
+                           'crossingFirstFinish': [{'callId': call['id'], 'name': call['name'],
+                                                    'secondsAfterBoundary': call['end'] - end}
+                                                   for call in calls if call.get('end', 0) > end],
                            'generatedArgumentBytes': sum(call.get('argumentBytes', 0) for call in calls),
                            'byName': dict(collections.Counter(call['name'] for call in calls))}
     report['reportedTurnUsage'] = control.get('reportedUsage')
@@ -158,9 +268,12 @@ def first_pass(attempt, extract=True):
             detail['acceptedUnitGroups'] = len(receipt.get('accepted', []))
             detail['receiptReused'] = receipt.get('reused')
         batch_details.append(detail)
+    first_durable = next((item['endedAt'] for item in batch_details if item.get('acceptedUnitGroups')), None)
     report['contributions'] = {'calls': len(batches), 'count': sum(item.get('contributionCount', 0) or 0 for item in batches),
                                'operationInputBytes': sum(item.get('inputBytes', 0) for item in batches), 'batches': batch_details,
-                               'timeToFirstDurableSeconds': next((stamp(item['endedAt']) - stamp(control['requestedAt']) for item in batch_details if item.get('acceptedUnitGroups')), None)}
+                               'firstDurableAt': first_durable,
+                               'timeToFirstDurableFromAuthorStartSeconds': stamp(first_durable) - start if first_durable else None,
+                               'timeToFirstDurableFromRequestedSeconds': stamp(first_durable) - stamp(control['requestedAt']) if first_durable else None}
     report['service'] = {'calls': len(scoped), 'milliseconds': sum(item['serviceMs'] for item in scoped),
                          'operationCounts': dict(collections.Counter(item['operation'] for item in scoped if item.get('operation'))),
                          'failures': sum(item['failed'] for item in scoped), 'firstFinishMs': control.get('firstFinishServiceMs')}
@@ -186,6 +299,7 @@ def first_pass(attempt, extract=True):
     retransmitted = 0
     native_contribution_calls = 0
     call_details = []
+    finish_id = None
     wire = read(attempt / 'live-request-metadata.json')
     wire_calls = {item['callId']: item for item in wire['responses'] if item.get('callId') and item.get('itemType') in ['function_call', 'custom_tool_call', 'tool_search_call']}
     group_sizes = collections.Counter(item.get('responseId') for item in wire_calls.values())
@@ -199,6 +313,8 @@ def first_pass(attempt, extract=True):
             arguments = json.loads(payload.get('arguments', '{}'))
         except json.JSONDecodeError:
             continue
+        if arguments.get('operation') == 'units.finish':
+            finish_id = payload['call_id']
         if arguments.get('operation') != 'units.contribute':
             continue
         native_contribution_calls += 1
@@ -221,14 +337,30 @@ def first_pass(attempt, extract=True):
                               'previousResultToCommandStartSeconds': stream['start'] - prior if 'start' in stream else None,
                               'callsInResponse': group_sizes.get(wire_call.get('responseId'), 0)})
     report['contributionCalls'] = call_details
+    report['contributionTiming'] = {key: sum(item[key] or 0 for item in call_details)
+                                   for key in ['argumentBytes', 'commandStreamSeconds', 'toolIntervalSeconds', 'previousResultToCommandStartSeconds']}
+    report['contributionTiming']['serviceMs'] = sum(item['serviceMs'] for item in batches)
+    report['contributionTiming']['singleCallResponses'] = sum(item['callsInResponse'] == 1 for item in call_details)
+    if finish_id:
+        finish_call = next((call for call in calls if call['id'] == finish_id), {})
+        finish_service = next((item for item in scoped if item.get('operation') == 'units.finish'), {})
+        report['finishTiming'] = {'callId': finish_id, 'serverFirstFinishAt': finish,
+                                  'productionMaterializationMs': report['firstProposal'].get('elapsedMs'),
+                                  'serviceMs': finish_service.get('serviceMs'),
+                                  'clientToolIntervalSeconds': finish_call.get('end', end) - finish_call.get('start', end),
+                                  'clientResultAfterServerFinishSeconds': finish_call.get('end', end) - end,
+                                  'interpretation': 'Production materialization is nested inside service execution. The client tool interval also includes dispatch, auto-review and result delivery; the server receipt boundary can precede client completion.'}
     receipt_handles = {item['handle'] for item in batches if item.get('handle')}
     inline_handles = {item['handle'] for item in batches if item.get('handle') and item.get('inlineReceipt')}
     report['contributions']['receiptReadCalls'] = sum(item['method'] == 'read' and item.get('handle') in receipt_handles for item in scoped)
     report['contributions']['inlineReceiptReadCalls'] = sum(item['method'] == 'read' and item.get('handle') in inline_handles for item in scoped)
     report['unchangedDataRetransmitted'] = {'equalSubtreeValueBytes': retransmitted, 'nativeCallsInspected': native_contribution_calls,
                                            'method': 'Compare supplied fields at named semantic targets with the imported baseline. Counts values only; excludes envelope/property overhead. Does not compare against preceding contributions.'}
-    report['wire'] = {'requestCount': len(wire['requests']), 'requests': wire['requests'],
-                      'errorCount': len(wire['errors']), 'toolGrouping': dict(collections.Counter(group_sizes.values()))}
+    report['wire'] = compact_wire(wire, events, start, end, group_sizes)
+    report['autoReviewTiming'] = auto_review_timing(wire, calls, {item['callId'] for item in call_details}, finish_id)
+    report['harnessOverhead'] = harness_overhead(attempt, control)
+    response_models = {item['responseId']: item.get('model') for item in wire['responses'] if item.get('responseId') and item.get('model')}
+    report['usageCounterCoverageByModel'] = dict(collections.Counter(response_models.get(item['id'], 'unknown') for item in actor.get('responses', [])))
     initial = read(attempt / 'input-receipts.json')
     report['inputIdentities'] = {name: {key: receipt[key] for key in ['sha256', 'bytes']} for name, receipt in initial.items()}
     report['inputCollection'] = {}
@@ -282,7 +414,11 @@ def first_pass(attempt, extract=True):
         'Marker names label visible activity, not proof that useful UX reasoning ended. Later contributions can include further decisions.',
         'Built-in discovery completion-to-result intervals are included; missing stream-start evidence remains unattributed.',
         'Usage counts are actual runtime counters, not credits or prices. Cached input and reasoning output are subsets. Response completion boundaries can straddle phases.',
-        'Input coverage here is server byte-range coverage; inspect saved client results for truncation before asserting client-visible exact coverage.',
+        'Initial client-visible page strings are reconstructed and hash-checked against immutable input receipts; coverage does not prove semantic comprehension.',
+        'Tool totals count calls started by the server finish boundary; completed-call totals can exclude the final client result that arrives milliseconds later.',
+        'Wire request summaries include warmup and auto-review requests plus post-delivery acknowledgement; actor-window timings end at server finish.',
+        'Auto-review timings are observed network intervals, not a causal allocation of every nonservice delay. Runtime usage may cover only the primary model; model coverage is explicit.',
+        'One update run with changed coordination and output scope does not isolate the contribution method or establish equivalent quality; unresolved first-output issues remain retained.',
         'Artifact defects are retained without review or another authoring round. No live cold-start performance conclusion follows from this update test.',
         'No payload, prompt, capability, argument body or raw reasoning is copied into this report.',
     ]

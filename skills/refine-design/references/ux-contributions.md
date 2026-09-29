@@ -77,6 +77,8 @@ Valid independent unit groups are retained when another group fails. Inspect
 `accepted` and `issues`; preserve accepted revisions. Related changes spanning
 units can remain pending until their counterparts arrive. No receipt claims
 that partial records are complete or semantically approved.
+Rejected groups remain in the durable journal with their input and reason for
+targeted recovery; they are never replayed as accepted edits.
 
 Unknown fields and malformed supplied values produce targeted repair notices.
 Required fields and cross-references may be supplied later. Keep contributing

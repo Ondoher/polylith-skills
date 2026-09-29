@@ -45,6 +45,11 @@ from end-to-end time. This is an explicit coordination difference, not a paired
 unchanged-protocol test. There is no model sweep.
 
 An installed Codex binary can be supplied with `--binary=<absolute-path>`.
+Before any model launch, the observer verifies a credential-free TLS handshake
+to its fixed upstream using Node's configured roots plus operating-system trust.
+Certificate and hostname verification stay enabled. This accommodates the
+machine's trusted certificate chain without disabling TLS checks; failure stops
+before the model starts. The preflight sends no HTTP/model request.
 Attempts must have unique names; prior artifacts are never replaced. A failed
 sandbox child-process start can be resumed after normal execution approval;
 its copied baseline is reused. Model-started attempts are not restartable through
@@ -80,9 +85,19 @@ costs, first durable contribution, restart evidence and completeness.
 End-to-end wall time starts at the original requested timestamp and includes
 preparation. A prepare/execute hold is reported explicitly; it is not model
 reasoning. Stream intervals and activity markers also do not measure private
-thought or isolated provider computation. Server read coverage alone does not
-prove client-visible completeness; inspect retained client outputs for truncation.
+thought or isolated provider computation. The analyzer separately reconstructs
+client-visible input pages and verifies their exact hashes; this establishes
+received content, not semantic comprehension.
 Actual usage counters remain separate from credits or price estimates.
+
+Public reports keep per-request scalar wire summaries and one deduplicated tool
+catalog/exposure inventory. Tool totals count calls started by first finish;
+completed-call totals can be lower when the final client result crosses that
+server boundary. First durable contribution time is reported from both author
+start and the original request. Auto-review request intervals and their overlap
+with contribution/finish tools are diagnostic observations, without attributing
+all nonservice delay to approvals. Prior failed harness attempts, current setup
+and TLS preflight remain separate overhead evidence.
 
 The analyzer depends on the retained runtime extractor at
 `.codex-tmp/alexa-mcp-refinement-20260928-133745/collect-runtime.py` and its original

@@ -1,0 +1,1642 @@
+{
+	"experiment": "incremental-ux-first-pass",
+	"attempt": "first-02",
+	"status": "finished",
+	"model": "gpt-6-astra",
+	"effort": "ultra",
+	"coordination": "Supervisor prepares and assigns; one direct CLI author with native UX role instructions.",
+	"boundary": "Through the first units.finish receipt; no parent assembly, promotion, review or rework.",
+	"liveUnchanged": true,
+	"protectedFileCount": 611,
+	"requestedAt": "2026-09-29T19:56:55.330Z",
+	"preparationMs": 219.4256,
+	"cumulativePreparationMs": 2433.3002,
+	"preparationHoldSeconds": 518.869,
+	"inputBytes": 526503,
+	"inputReadCount": 20,
+	"contractsSha256": "f18b06b8298429de1c317183ecc3b6a81ca69160cd3f0b71685d0fe0a19070dc",
+	"roleSha256": "1f1b425e7fe4972f12be84b8c773328bbb855ac69cc689a7b2f0d6ab778b3797",
+	"guidanceSha256": {
+		"ux-contributions.md": "379b40d0ebab6e87cee76dcb5247febf2a804e56b41c6c3be0e224652d79c7d5",
+		"single-pass-design.md": "dfe4504ec5b5b8cdc33411cd9bd4f53088137107601e65661c3762adec214843"
+	},
+	"windows": {
+		"instructions": {
+			"start": "2026-09-29T20:06:11.970Z",
+			"end": "2026-09-29T20:09:27.752Z",
+			"wallSeconds": 195.78200006484985,
+			"observedSeconds": {
+				"output": 115.91495132446289,
+				"reasoning-item": 2.954340934753418,
+				"tool": 11.724000453948975
+			},
+			"unattributedSeconds": 65.18870735168457,
+			"toolCallsCompleted": 25,
+			"usageByResponsesCompletedInWindow": {
+				"input_tokens": 943420,
+				"cached_input_tokens": 879872,
+				"output_tokens": 4189,
+				"reasoning_output_tokens": 84
+			}
+		},
+		"collection": {
+			"start": "2026-09-29T20:09:27.752Z",
+			"end": "2026-09-29T20:11:24.886Z",
+			"wallSeconds": 117.13399982452393,
+			"observedSeconds": {
+				"output": 63.18086886405945,
+				"reasoning-item": 0.7011151313781738,
+				"tool": 4.389000654220581
+			},
+			"unattributedSeconds": 48.86301517486572,
+			"toolCallsCompleted": 21,
+			"usageByResponsesCompletedInWindow": {
+				"input_tokens": 2604960,
+				"cached_input_tokens": 2473600,
+				"output_tokens": 2445,
+				"reasoning_output_tokens": 20
+			}
+		},
+		"comparison-handoff": {
+			"start": "2026-09-29T20:11:24.886Z",
+			"end": "2026-09-29T20:11:30.525Z",
+			"wallSeconds": 5.639000177383423,
+			"observedSeconds": {
+				"output": 2.0249199867248535,
+				"reasoning-item": 0,
+				"tool": 0.15900015830993652
+			},
+			"unattributedSeconds": 3.455080032348633,
+			"toolCallsCompleted": 1,
+			"usageByResponsesCompletedInWindow": {
+				"input_tokens": 190883,
+				"cached_input_tokens": 187136,
+				"output_tokens": 84,
+				"reasoning_output_tokens": 0
+			}
+		},
+		"initial-decisions": {
+			"start": "2026-09-29T20:11:30.525Z",
+			"end": "2026-09-29T20:11:56.087Z",
+			"wallSeconds": 25.561999797821045,
+			"observedSeconds": {
+				"output": 4.19841194152832,
+				"reasoning-item": 15.71150803565979,
+				"tool": 0.1269998550415039
+			},
+			"unattributedSeconds": 5.525079965591431,
+			"toolCallsCompleted": 1,
+			"usageByResponsesCompletedInWindow": {
+				"input_tokens": 191182,
+				"cached_input_tokens": 190592,
+				"output_tokens": 84,
+				"reasoning_output_tokens": 0
+			}
+		},
+		"contribution-generation": {
+			"start": "2026-09-29T20:11:56.087Z",
+			"end": "2026-09-29T20:19:55.227Z",
+			"wallSeconds": 479.1400001049042,
+			"observedSeconds": {
+				"output": 334.84932017326355,
+				"reasoning-item": 81.75325012207031,
+				"tool": 27.46999955177307
+			},
+			"unattributedSeconds": 35.06743025779724,
+			"toolCallsCompleted": 6,
+			"usageByResponsesCompletedInWindow": {
+				"input_tokens": 1308906,
+				"cached_input_tokens": 1230208,
+				"output_tokens": 14417,
+				"reasoning_output_tokens": 3198
+			}
+		},
+		"final-materialization": {
+			"start": "2026-09-29T20:19:55.227Z",
+			"end": "2026-09-29T20:20:06.679Z",
+			"wallSeconds": 11.45199990272522,
+			"observedSeconds": {
+				"output": 4.640099048614502,
+				"reasoning-item": 0,
+				"tool": 3.7799997329711914
+			},
+			"unattributedSeconds": 3.0319011211395264,
+			"toolCallsCompleted": 1,
+			"usageByResponsesCompletedInWindow": {
+				"input_tokens": 479498,
+				"cached_input_tokens": 475392,
+				"output_tokens": 693,
+				"reasoning_output_tokens": 376
+			}
+		}
+	},
+	"authorWindow": {
+		"start": "2026-09-29T20:06:11.970Z",
+		"end": "2026-09-29T20:20:06.679Z",
+		"wallSeconds": 834.7089998722076,
+		"observedSeconds": {
+			"output": 524.8085713386536,
+			"reasoning-item": 101.1202142238617,
+			"tool": 47.64900040626526
+		},
+		"unattributedSeconds": 161.13121390342712,
+		"toolCallsCompleted": 55,
+		"usageByResponsesCompletedInWindow": {
+			"input_tokens": 5718849,
+			"cached_input_tokens": 5436800,
+			"output_tokens": 21912,
+			"reasoning_output_tokens": 3678
+		}
+	},
+	"preparationThroughDeliverySeconds": 1391.3489999771118,
+	"originalRequestToAuthorStartSeconds": 556.6400001049042,
+	"postDeliveryClientSeconds": 12.196000099182129,
+	"firstFinishAt": "2026-09-29T20:20:06.679Z",
+	"toolCalls": {
+		"ordinary": 54,
+		"builtinDiscovery": 2,
+		"total": 56,
+		"startedByFirstFinish": 56,
+		"completedByFirstFinish": 55,
+		"crossingFirstFinish": [
+			{
+				"callId": "call_Ms3CyxqcP7nWCNvi5WD7by0p",
+				"name": "workflow_execute",
+				"secondsAfterBoundary": 0.009000062942504883
+			}
+		],
+		"generatedArgumentBytes": 68314,
+		"byName": {
+			"tool_search": 2,
+			"exec_command": 18,
+			"workflow_catalog": 5,
+			"workflow_store": 5,
+			"workflow_read": 20,
+			"workflow_execute": 6
+		}
+	},
+	"reportedTurnUsage": {
+		"input_tokens": 5961224,
+		"cached_input_tokens": 5676672,
+		"cache_write_input_tokens": 0,
+		"output_tokens": 22192,
+		"reasoning_output_tokens": 3850
+	},
+	"actualRuntimeModel": "gpt-6-astra",
+	"actualRuntimeEffort": "ultra",
+	"contributions": {
+		"calls": 5,
+		"count": 87,
+		"operationInputBytes": 51476,
+		"batches": [
+			{
+				"batchId": "clip-update-scope",
+				"startedAt": "2026-09-29T20:13:02.037Z",
+				"endedAt": "2026-09-29T20:13:02.124Z",
+				"serviceMs": 87.23159999999916,
+				"inputBytes": 8978,
+				"contributionCount": 18,
+				"failed": false,
+				"receiptSha256": "6af0e826aa455a2aabcc913ae8fe371f5bb9817629aeb95a5bcbe799a725626f",
+				"receiptBytes": 483,
+				"issueCount": 0,
+				"acceptedUnitGroups": 2,
+				"receiptReused": false
+			},
+			{
+				"batchId": "clip-copy-context",
+				"startedAt": "2026-09-29T20:14:38.048Z",
+				"endedAt": "2026-09-29T20:14:38.061Z",
+				"serviceMs": 12.48430000001099,
+				"inputBytes": 6733,
+				"contributionCount": 15,
+				"failed": false,
+				"receiptSha256": "0a5ba6f8096fc67c6977bd7467520c9f4e9a334615cdf0db288fe8dc72498053",
+				"receiptBytes": 603,
+				"issueCount": 0,
+				"acceptedUnitGroups": 3,
+				"receiptReused": false
+			},
+			{
+				"batchId": "grouped-copy-and-trim",
+				"startedAt": "2026-09-29T20:16:39.088Z",
+				"endedAt": "2026-09-29T20:16:39.100Z",
+				"serviceMs": 12.454400000046007,
+				"inputBytes": 15484,
+				"contributionCount": 19,
+				"failed": false,
+				"receiptSha256": "071681634653e2b34647cc28f8c017a03b69cd69ed4a598a1b9f53260caddf21",
+				"receiptBytes": 609,
+				"issueCount": 0,
+				"acceptedUnitGroups": 3,
+				"receiptReused": false
+			},
+			{
+				"batchId": "ungroup-interaction",
+				"startedAt": "2026-09-29T20:18:21.700Z",
+				"endedAt": "2026-09-29T20:18:21.714Z",
+				"serviceMs": 14.105699999956414,
+				"inputBytes": 12234,
+				"contributionCount": 17,
+				"failed": false,
+				"receiptSha256": "5e0468f31f3feac12698ed48a23af539d88964c7de36c0a12654c6ed66ea5a3c",
+				"receiptBytes": 483,
+				"issueCount": 0,
+				"acceptedUnitGroups": 2,
+				"receiptReused": false
+			},
+			{
+				"batchId": "copied-content-flows",
+				"startedAt": "2026-09-29T20:19:37.457Z",
+				"endedAt": "2026-09-29T20:19:37.467Z",
+				"serviceMs": 9.789600000018254,
+				"inputBytes": 8047,
+				"contributionCount": 18,
+				"failed": false,
+				"receiptSha256": "f252f093be45e4835b9d152c1fac0bba23faeef6be470744eeb2fb630d8f20b8",
+				"receiptBytes": 727,
+				"issueCount": 0,
+				"acceptedUnitGroups": 4,
+				"receiptReused": false
+			}
+		],
+		"firstDurableAt": "2026-09-29T20:13:02.124Z",
+		"timeToFirstDurableFromAuthorStartSeconds": 410.154000043869,
+		"timeToFirstDurableFromRequestedSeconds": 966.7940001487732,
+		"receiptReadCalls": 0,
+		"inlineReceiptReadCalls": 0
+	},
+	"service": {
+		"calls": 36,
+		"milliseconds": 323.15590000013253,
+		"operationCounts": {
+			"units.contribute": 5,
+			"units.finish": 1
+		},
+		"failures": 0,
+		"firstFinishMs": 145.73340000002645
+	},
+	"recovery": {
+		"failedServiceCalls": 0,
+		"reusedContributionReceipts": 0,
+		"costSeconds": null,
+		"note": "Targeted recovery needs observed activity annotation; failed calls alone do not identify all repair work."
+	},
+	"firstProposal": {
+		"receiptSha256": "fc819d39eac21c9dce29ee8cb9fe31c11adfc85d5cf3653a5d1ad6202e4ee6dd",
+		"issueCount": 1,
+		"savedUnitCount": 16,
+		"status": "needs-repair",
+		"approval": "unreviewed",
+		"elapsedMs": 139.78899999998976
+	},
+	"contributionCalls": [
+		{
+			"callId": "call_i0Yf1HHMt7HnUsdnQ3IHUknl",
+			"batchId": "clip-update-scope",
+			"argumentBytes": 9129,
+			"commandStreamSeconds": 56.032378911972046,
+			"toolIntervalSeconds": 6.07699990272522,
+			"previousResultToCommandStartSeconds": 3.7096211910247803,
+			"callsInResponse": 1
+		},
+		{
+			"callId": "call_ncnPkFR6fBTE0EO9oJiUYQvZ",
+			"batchId": "clip-copy-context",
+			"argumentBytes": 6884,
+			"commandStreamSeconds": 46.566580057144165,
+			"toolIntervalSeconds": 4.95199990272522,
+			"previousResultToCommandStartSeconds": 44.41742014884949,
+			"callsInResponse": 1
+		},
+		{
+			"callId": "call_aP5MWKbgOLf5gFM9WXx7JeuA",
+			"batchId": "grouped-copy-and-trim",
+			"argumentBytes": 15635,
+			"commandStreamSeconds": 93.83970308303833,
+			"toolIntervalSeconds": 7.502999782562256,
+			"previousResultToCommandStartSeconds": 19.698297023773193,
+			"callsInResponse": 1
+		},
+		{
+			"callId": "call_WbGd5aZcv6PYI7qQZf3XwCXw",
+			"batchId": "ungroup-interaction",
+			"argumentBytes": 12385,
+			"commandStreamSeconds": 78.03745007514954,
+			"toolIntervalSeconds": 4.522000074386597,
+			"previousResultToCommandStartSeconds": 20.05655002593994,
+			"callsInResponse": 1
+		},
+		{
+			"callId": "call_RWxOljv9jOqN1nT5PbZwbI03",
+			"batchId": "copied-content-flows",
+			"argumentBytes": 8198,
+			"commandStreamSeconds": 54.02426600456238,
+			"toolIntervalSeconds": 4.173999786376953,
+			"previousResultToCommandStartSeconds": 17.550734043121338,
+			"callsInResponse": 1
+		}
+	],
+	"contributionTiming": {
+		"argumentBytes": 52231,
+		"commandStreamSeconds": 328.50037813186646,
+		"toolIntervalSeconds": 27.227999448776245,
+		"previousResultToCommandStartSeconds": 105.43262243270874,
+		"serviceMs": 136.06560000003083,
+		"singleCallResponses": 5
+	},
+	"finishTiming": {
+		"callId": "call_Ms3CyxqcP7nWCNvi5WD7by0p",
+		"serverFirstFinishAt": "2026-09-29T20:20:06.679Z",
+		"productionMaterializationMs": 139.78899999998976,
+		"serviceMs": 145.73340000002645,
+		"clientToolIntervalSeconds": 3.619999885559082,
+		"clientResultAfterServerFinishSeconds": 0.009000062942504883,
+		"interpretation": "Production materialization is nested inside service execution. The client tool interval also includes dispatch, auto-review and result delivery; the server receipt boundary can precede client completion."
+	},
+	"unchangedDataRetransmitted": {
+		"equalSubtreeValueBytes": 392,
+		"nativeCallsInspected": 5,
+		"method": "Compare supplied fields at named semantic targets with the imported baseline. Counts values only; excludes envelope/property overhead. Does not compare against preceding contributions."
+	},
+	"wire": {
+		"requestCount": 65,
+		"generatingRequestCount": 63,
+		"requestMessageBytes": 4531186,
+		"requestsByModel": {
+			"gpt-6-astra": 58,
+			"codex-auto-review": 7
+		},
+		"requestsByCatalog": {
+			"catalog-1": 58,
+			"catalog-2": 7
+		},
+		"requests": [
+			{
+				"at": "2026-09-29T20:06:13.695Z",
+				"elapsedMs": 1734.5852,
+				"connection": 0,
+				"messageBytes": 57974,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": false,
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:06:13.921Z",
+				"elapsedMs": 1960.8157,
+				"connection": 1,
+				"messageBytes": 30549,
+				"type": "response.create",
+				"model": "codex-auto-review",
+				"generate": false,
+				"parallelToolCalls": false,
+				"toolChoice": "auto",
+				"reasoningEffort": "low",
+				"catalogId": "catalog-2"
+			},
+			{
+				"at": "2026-09-29T20:06:14.686Z",
+				"elapsedMs": 2725.7764,
+				"connection": 0,
+				"messageBytes": 102938,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:06:18.960Z",
+				"elapsedMs": 6999.6613,
+				"connection": 0,
+				"messageBytes": 59630,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:06:25.960Z",
+				"elapsedMs": 13999.419899999999,
+				"connection": 0,
+				"messageBytes": 63617,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:06:29.477Z",
+				"elapsedMs": 17516.9786,
+				"connection": 0,
+				"messageBytes": 58994,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:06:34.761Z",
+				"elapsedMs": 22801.0435,
+				"connection": 0,
+				"messageBytes": 62185,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:06:43.245Z",
+				"elapsedMs": 31284.7547,
+				"connection": 0,
+				"messageBytes": 67147,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:06:47.555Z",
+				"elapsedMs": 35594.48,
+				"connection": 0,
+				"messageBytes": 60090,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:06:51.125Z",
+				"elapsedMs": 39165.097,
+				"connection": 0,
+				"messageBytes": 59378,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:06:54.835Z",
+				"elapsedMs": 42874.6946,
+				"connection": 0,
+				"messageBytes": 59251,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:07:04.694Z",
+				"elapsedMs": 52733.1897,
+				"connection": 0,
+				"messageBytes": 67141,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:07:07.994Z",
+				"elapsedMs": 56033.1362,
+				"connection": 0,
+				"messageBytes": 60058,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:07:17.397Z",
+				"elapsedMs": 65436.37920000001,
+				"connection": 0,
+				"messageBytes": 67133,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:07:27.146Z",
+				"elapsedMs": 75185.6302,
+				"connection": 0,
+				"messageBytes": 67165,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:07:36.832Z",
+				"elapsedMs": 84871.6717,
+				"connection": 0,
+				"messageBytes": 67209,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:07:46.681Z",
+				"elapsedMs": 94720.2841,
+				"connection": 0,
+				"messageBytes": 67220,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:07:58.858Z",
+				"elapsedMs": 106897.4734,
+				"connection": 0,
+				"messageBytes": 67284,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:08:02.784Z",
+				"elapsedMs": 110823.31850000001,
+				"connection": 0,
+				"messageBytes": 59342,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:08:12.778Z",
+				"elapsedMs": 120817.3169,
+				"connection": 0,
+				"messageBytes": 67189,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:08:22.499Z",
+				"elapsedMs": 130538.19050000001,
+				"connection": 0,
+				"messageBytes": 67104,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:08:32.694Z",
+				"elapsedMs": 140733.20479999998,
+				"connection": 0,
+				"messageBytes": 59929,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:08:40.528Z",
+				"elapsedMs": 148567.077,
+				"connection": 0,
+				"messageBytes": 69350,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:08:49.154Z",
+				"elapsedMs": 157193.3002,
+				"connection": 0,
+				"messageBytes": 70163,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:08:56.340Z",
+				"elapsedMs": 164379.3383,
+				"connection": 0,
+				"messageBytes": 69977,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:09:03.818Z",
+				"elapsedMs": 171856.949,
+				"connection": 0,
+				"messageBytes": 70221,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:09:10.280Z",
+				"elapsedMs": 178319.60499999998,
+				"connection": 0,
+				"messageBytes": 70094,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:09:18.703Z",
+				"elapsedMs": 186742.61039999998,
+				"connection": 0,
+				"messageBytes": 61815,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:09:27.886Z",
+				"elapsedMs": 195925.5955,
+				"connection": 0,
+				"messageBytes": 59329,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:09:33.033Z",
+				"elapsedMs": 201072.5459,
+				"connection": 0,
+				"messageBytes": 91662,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:09:38.390Z",
+				"elapsedMs": 206429.7997,
+				"connection": 0,
+				"messageBytes": 91709,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:09:43.714Z",
+				"elapsedMs": 211753.5446,
+				"connection": 0,
+				"messageBytes": 94117,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:09:49.284Z",
+				"elapsedMs": 217323.4569,
+				"connection": 0,
+				"messageBytes": 95229,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:09:54.385Z",
+				"elapsedMs": 222424.55599999998,
+				"connection": 0,
+				"messageBytes": 76086,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:09:59.154Z",
+				"elapsedMs": 227193.704,
+				"connection": 0,
+				"messageBytes": 92416,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:10:06.106Z",
+				"elapsedMs": 234145.40769999998,
+				"connection": 0,
+				"messageBytes": 93179,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:10:11.564Z",
+				"elapsedMs": 239603.57869999998,
+				"connection": 0,
+				"messageBytes": 93098,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:10:16.633Z",
+				"elapsedMs": 244672.6612,
+				"connection": 0,
+				"messageBytes": 93441,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:10:22.543Z",
+				"elapsedMs": 250583.31259999998,
+				"connection": 0,
+				"messageBytes": 94504,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:10:28.414Z",
+				"elapsedMs": 256453.40039999998,
+				"connection": 0,
+				"messageBytes": 96626,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:10:34.775Z",
+				"elapsedMs": 262814.61480000004,
+				"connection": 0,
+				"messageBytes": 95730,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:10:40.093Z",
+				"elapsedMs": 268131.92470000003,
+				"connection": 0,
+				"messageBytes": 95755,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:10:45.710Z",
+				"elapsedMs": 273749.7501,
+				"connection": 0,
+				"messageBytes": 92590,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:10:51.195Z",
+				"elapsedMs": 279234.0636,
+				"connection": 0,
+				"messageBytes": 93886,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:10:58.364Z",
+				"elapsedMs": 286403.0016,
+				"connection": 0,
+				"messageBytes": 93629,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:11:03.891Z",
+				"elapsedMs": 291930.57420000003,
+				"connection": 0,
+				"messageBytes": 93655,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:11:09.173Z",
+				"elapsedMs": 297212.32930000004,
+				"connection": 0,
+				"messageBytes": 93909,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:11:14.574Z",
+				"elapsedMs": 302612.9342,
+				"connection": 0,
+				"messageBytes": 91085,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:11:20.468Z",
+				"elapsedMs": 308507.55350000004,
+				"connection": 0,
+				"messageBytes": 74643,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:11:25.054Z",
+				"elapsedMs": 313093.2172,
+				"connection": 0,
+				"messageBytes": 59329,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:11:30.663Z",
+				"elapsedMs": 318702.3152,
+				"connection": 0,
+				"messageBytes": 59329,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:11:56.333Z",
+				"elapsedMs": 344372.2123,
+				"connection": 0,
+				"messageBytes": 59329,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:12:56.171Z",
+				"elapsedMs": 404211.1151,
+				"connection": 1,
+				"messageBytes": 106401,
+				"type": "response.create",
+				"model": "codex-auto-review",
+				"generate": "omitted",
+				"parallelToolCalls": false,
+				"toolChoice": "auto",
+				"reasoningEffort": "low",
+				"catalogId": "catalog-2"
+			},
+			{
+				"at": "2026-09-29T20:13:02.153Z",
+				"elapsedMs": 410192.75560000003,
+				"connection": 0,
+				"messageBytes": 59865,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:14:33.152Z",
+				"elapsedMs": 501191.3556,
+				"connection": 1,
+				"messageBytes": 22157,
+				"type": "response.create",
+				"model": "codex-auto-review",
+				"generate": "omitted",
+				"parallelToolCalls": false,
+				"toolChoice": "auto",
+				"reasoningEffort": "low",
+				"catalogId": "catalog-2"
+			},
+			{
+				"at": "2026-09-29T20:14:38.090Z",
+				"elapsedMs": 506129.17740000004,
+				"connection": 0,
+				"messageBytes": 59995,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:16:31.961Z",
+				"elapsedMs": 620000.4225,
+				"connection": 1,
+				"messageBytes": 32882,
+				"type": "response.create",
+				"model": "codex-auto-review",
+				"generate": "omitted",
+				"parallelToolCalls": false,
+				"toolChoice": "auto",
+				"reasoningEffort": "low",
+				"catalogId": "catalog-2"
+			},
+			{
+				"at": "2026-09-29T20:16:39.130Z",
+				"elapsedMs": 627169.1129,
+				"connection": 0,
+				"messageBytes": 60000,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:18:17.243Z",
+				"elapsedMs": 725282.7489,
+				"connection": 1,
+				"messageBytes": 30068,
+				"type": "response.create",
+				"model": "codex-auto-review",
+				"generate": "omitted",
+				"parallelToolCalls": false,
+				"toolChoice": "auto",
+				"reasoningEffort": "low",
+				"catalogId": "catalog-2"
+			},
+			{
+				"at": "2026-09-29T20:18:21.750Z",
+				"elapsedMs": 729789.6758,
+				"connection": 0,
+				"messageBytes": 59865,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:19:33.335Z",
+				"elapsedMs": 801374.1769999999,
+				"connection": 1,
+				"messageBytes": 22200,
+				"type": "response.create",
+				"model": "codex-auto-review",
+				"generate": "omitted",
+				"parallelToolCalls": false,
+				"toolChoice": "auto",
+				"reasoningEffort": "low",
+				"catalogId": "catalog-2"
+			},
+			{
+				"at": "2026-09-29T20:19:37.493Z",
+				"elapsedMs": 805532.757,
+				"connection": 0,
+				"messageBytes": 60129,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:19:55.416Z",
+				"elapsedMs": 823455.5861,
+				"connection": 0,
+				"messageBytes": 59327,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			},
+			{
+				"at": "2026-09-29T20:20:03.100Z",
+				"elapsedMs": 831139.2688999999,
+				"connection": 1,
+				"messageBytes": 8505,
+				"type": "response.create",
+				"model": "codex-auto-review",
+				"generate": "omitted",
+				"parallelToolCalls": false,
+				"toolChoice": "auto",
+				"reasoningEffort": "low",
+				"catalogId": "catalog-2"
+			},
+			{
+				"at": "2026-09-29T20:20:06.706Z",
+				"elapsedMs": 834744.9585,
+				"connection": 0,
+				"messageBytes": 65380,
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"catalogId": "catalog-1"
+			}
+		],
+		"catalogs": [
+			{
+				"id": "catalog-1",
+				"sha256": "525bfb104628099038f37bce791e65ce8cdfa4605ba597a270be0b2cae3248dc",
+				"tools": [
+					{
+						"type": "function",
+						"name": "exec_command"
+					},
+					{
+						"type": "function",
+						"name": "write_stdin"
+					},
+					{
+						"type": "function",
+						"name": "list_mcp_resources"
+					},
+					{
+						"type": "function",
+						"name": "list_mcp_resource_templates"
+					},
+					{
+						"type": "function",
+						"name": "read_mcp_resource"
+					},
+					{
+						"type": "function",
+						"name": "request_user_input"
+					},
+					{
+						"type": "function",
+						"name": "request_user_input_async"
+					},
+					{
+						"type": "namespace",
+						"name": "clock",
+						"tools": [
+							{
+								"type": "function",
+								"name": "curr_time"
+							},
+							{
+								"type": "function",
+								"name": "sleep"
+							}
+						]
+					},
+					{
+						"type": "function",
+						"name": "request_plugin_install"
+					},
+					{
+						"type": "custom",
+						"name": "apply_patch"
+					},
+					{
+						"type": "function",
+						"name": "view_image"
+					},
+					{
+						"type": "namespace",
+						"name": "collaboration",
+						"tools": [
+							{
+								"type": "function",
+								"name": "followup_task"
+							},
+							{
+								"type": "function",
+								"name": "interrupt_agent"
+							},
+							{
+								"type": "function",
+								"name": "list_agents"
+							},
+							{
+								"type": "function",
+								"name": "send_message"
+							},
+							{
+								"type": "function",
+								"name": "spawn_agent"
+							},
+							{
+								"type": "function",
+								"name": "wait_agent"
+							}
+						]
+					},
+					{
+						"type": "function",
+						"name": "get_goal"
+					},
+					{
+						"type": "function",
+						"name": "create_goal"
+					},
+					{
+						"type": "function",
+						"name": "update_goal"
+					},
+					{
+						"type": "namespace",
+						"name": "image_gen",
+						"tools": [
+							{
+								"type": "function",
+								"name": "imagegen"
+							}
+						]
+					},
+					{
+						"type": "tool_search",
+						"name": null
+					},
+					{
+						"type": "web_search",
+						"name": null
+					}
+				]
+			},
+			{
+				"id": "catalog-2",
+				"sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+				"tools": []
+			},
+			{
+				"id": "catalog-3",
+				"sha256": "58be545f62c787c8299b793668ac166776b7f1b01abda4f45b6afcb47ded8845",
+				"tools": [
+					{
+						"type": "namespace",
+						"name": "mcp__polylith_workflows",
+						"tools": [
+							{
+								"type": "function",
+								"name": "workflow_store"
+							},
+							{
+								"type": "function",
+								"name": "workflow_catalog"
+							}
+						]
+					}
+				]
+			},
+			{
+				"id": "catalog-4",
+				"sha256": "6d42a441c561bf892b1c41d952cb8b9baf8bffd2c038aca7bb9d310342699787",
+				"tools": [
+					{
+						"type": "namespace",
+						"name": "mcp__polylith_workflows",
+						"tools": [
+							{
+								"type": "function",
+								"name": "workflow_execute"
+							},
+							{
+								"type": "function",
+								"name": "workflow_read"
+							}
+						]
+					}
+				]
+			}
+		],
+		"deferredExposures": [
+			{
+				"at": "2026-09-29T20:06:18.944Z",
+				"callId": "call_HuwNOnX5wPcI1TCqfqNrtEcK",
+				"catalogId": "catalog-3"
+			},
+			{
+				"at": "2026-09-29T20:07:07.977Z",
+				"callId": "call_wUFl8IV54FimTYZHLIZrJ9OG",
+				"catalogId": "catalog-4"
+			}
+		],
+		"errorCount": 0,
+		"toolGrouping": {
+			"1": 56
+		}
+	},
+	"autoReviewTiming": {
+		"requestCount": 7,
+		"nonGeneratingRequestCount": 1,
+		"generatingRequestCount": 6,
+		"completedResponses": 7,
+		"responses": [
+			{
+				"requestAt": "2026-09-29T20:06:13.921Z",
+				"createdAt": "2026-09-29T20:06:14.229Z",
+				"completedAt": "2026-09-29T20:06:14.309Z",
+				"generate": false,
+				"status": "completed",
+				"requestToCompletionSeconds": 0.3880000114440918,
+				"responseLifetimeSeconds": 0.07999992370605469,
+				"overlapWithContributionToolsSeconds": 0,
+				"overlapWithFinishToolSeconds": 0
+			},
+			{
+				"requestAt": "2026-09-29T20:12:56.171Z",
+				"createdAt": "2026-09-29T20:12:56.637Z",
+				"completedAt": "2026-09-29T20:13:02.012Z",
+				"generate": "omitted",
+				"status": "completed",
+				"requestToCompletionSeconds": 5.841000080108643,
+				"responseLifetimeSeconds": 5.375,
+				"overlapWithContributionToolsSeconds": 5.841000080108643,
+				"overlapWithFinishToolSeconds": 0
+			},
+			{
+				"requestAt": "2026-09-29T20:14:33.152Z",
+				"createdAt": "2026-09-29T20:14:33.674Z",
+				"completedAt": "2026-09-29T20:14:38.028Z",
+				"generate": "omitted",
+				"status": "completed",
+				"requestToCompletionSeconds": 4.876000165939331,
+				"responseLifetimeSeconds": 4.354000091552734,
+				"overlapWithContributionToolsSeconds": 4.876000165939331,
+				"overlapWithFinishToolSeconds": 0
+			},
+			{
+				"requestAt": "2026-09-29T20:16:31.961Z",
+				"createdAt": "2026-09-29T20:16:32.271Z",
+				"completedAt": "2026-09-29T20:16:39.063Z",
+				"generate": "omitted",
+				"status": "completed",
+				"requestToCompletionSeconds": 7.101999998092651,
+				"responseLifetimeSeconds": 6.79200005531311,
+				"overlapWithContributionToolsSeconds": 7.101999998092651,
+				"overlapWithFinishToolSeconds": 0
+			},
+			{
+				"requestAt": "2026-09-29T20:18:17.243Z",
+				"createdAt": "2026-09-29T20:18:17.577Z",
+				"completedAt": "2026-09-29T20:18:21.673Z",
+				"generate": "omitted",
+				"status": "completed",
+				"requestToCompletionSeconds": 4.430000066757202,
+				"responseLifetimeSeconds": 4.0960001945495605,
+				"overlapWithContributionToolsSeconds": 4.430000066757202,
+				"overlapWithFinishToolSeconds": 0
+			},
+			{
+				"requestAt": "2026-09-29T20:19:33.335Z",
+				"createdAt": "2026-09-29T20:19:33.633Z",
+				"completedAt": "2026-09-29T20:19:37.432Z",
+				"generate": "omitted",
+				"status": "completed",
+				"requestToCompletionSeconds": 4.096999883651733,
+				"responseLifetimeSeconds": 3.7990000247955322,
+				"overlapWithContributionToolsSeconds": 4.096999883651733,
+				"overlapWithFinishToolSeconds": 0
+			},
+			{
+				"requestAt": "2026-09-29T20:20:03.100Z",
+				"createdAt": "2026-09-29T20:20:03.393Z",
+				"completedAt": "2026-09-29T20:20:06.506Z",
+				"generate": "omitted",
+				"status": "completed",
+				"requestToCompletionSeconds": 3.4060001373291016,
+				"responseLifetimeSeconds": 3.1130001544952393,
+				"overlapWithContributionToolsSeconds": 0,
+				"overlapWithFinishToolSeconds": 3.4060001373291016
+			}
+		],
+		"generatingRequestToCompletionSeconds": 29.752000331878662,
+		"contributionToolIntervalSeconds": 27.227999448776245,
+		"overlapWithContributionToolsSeconds": 26.34600019454956,
+		"overlapWithFinishToolSeconds": 3.4060001373291016,
+		"interpretation": "Observed auto-review request-to-completion intervals overlap tool intervals. This does not attribute every nonservice millisecond to approvals or isolate provider computation."
+	},
+	"harnessOverhead": {
+		"priorAttempts": [
+			{
+				"attempt": "prepare-01",
+				"status": "error",
+				"startedAt": "2026-09-29T19:56:55.332Z",
+				"completedAt": "2026-09-29T19:56:56.640Z",
+				"wallSeconds": 1.308000087738037,
+				"preparationMs": null,
+				"liveUnchanged": true,
+				"controlSha256": "dd69d1db283986526713432bd464f9bf3de07639c4286771eb3920f110945ac0",
+				"failure": "Local child-process start denied before model launch"
+			},
+			{
+				"attempt": "prepare-02",
+				"status": "prepared",
+				"startedAt": "2026-09-29T19:57:31.316Z",
+				"completedAt": "2026-09-29T19:57:32.578Z",
+				"wallSeconds": 1.2620000839233398,
+				"preparationMs": 905.8746,
+				"liveUnchanged": true,
+				"controlSha256": "70135df2dc316aee8523ba7a06643634de9a55d9bdbfe998b2345662e8b5d066"
+			},
+			{
+				"attempt": "first-01",
+				"status": "incomplete-first-pass",
+				"startedAt": "2026-09-29T20:03:14.427Z",
+				"completedAt": "2026-09-29T20:03:23.695Z",
+				"wallSeconds": 9.26799988746643,
+				"preparationMs": 259.7356,
+				"liveUnchanged": true,
+				"controlSha256": "0efd66a15f368d81e5d5eeecb541c54285e3eee97a5f4090473d54c866a6e361",
+				"clientSeconds": 8.641999959945679,
+				"wire": {
+					"requests": 0,
+					"responses": 0,
+					"connections": 8,
+					"errorCodes": {
+						"UNABLE_TO_VERIFY_LEAF_SIGNATURE": 8,
+						"non-websocket-request": 1
+					},
+					"sha256": "88fc9ac20fbfe7313197ccb05aa54d301ab90d60c911b5efea5c5b642229554a"
+				},
+				"failedBeforeModelFrames": true
+			}
+		],
+		"priorRecordedAttemptWallSeconds": 11.838000059127808,
+		"currentAttemptSetupSeconds": 0.5230000019073486,
+		"currentTlsPreflight": {
+			"trust": "node-configured-and-operating-system",
+			"configuredCertificates": 148,
+			"systemCertificates": 176,
+			"trustedCertificates": 252,
+			"upstream": "chatgpt.com:443",
+			"certificateVerification": true,
+			"modelRequestSent": false,
+			"elapsedMs": 81.24240000000003
+		},
+		"outsideRecordedHarnessAttemptsBeforeAuthorSeconds": 544.279000043869,
+		"accounting": "Prior failed/setup attempts and current setup are separate measured intervals. TLS preflight is inside current setup; client time is inside its attempt. The remainder includes waiting and work outside the recorded harness and is not model reasoning."
+	},
+	"usageCounterCoverageByModel": {
+		"gpt-6-astra": 57
+	},
+	"inputIdentities": {
+		"facts": {
+			"sha256": "0a93131e55d107256cd22569659a860a6a927a5e30a01e8800a30ca5e9782e2a",
+			"bytes": 125008
+		},
+		"ux": {
+			"sha256": "5892a95485b1358f454ec59f71dc096acb7ab5e92033f831b437070ea895dc4c",
+			"bytes": 389418
+		},
+		"identities": {
+			"sha256": "9cf8fcddadaaf968c200bdb36cd47e0bf0e2a9622cc97ea7921b3cf5c72f41dc",
+			"bytes": 12077
+		}
+	},
+	"inputCollection": {
+		"facts": {
+			"pages": 5,
+			"serverBytes": 125008,
+			"serverCoverageComplete": true,
+			"clientPages": 5,
+			"clientBytes": 125008,
+			"clientExactCoverage": true,
+			"conflictingClientPages": 0
+		},
+		"ux": {
+			"pages": 14,
+			"serverBytes": 389418,
+			"serverCoverageComplete": true,
+			"clientPages": 14,
+			"clientBytes": 389418,
+			"clientExactCoverage": true,
+			"conflictingClientPages": 0
+		},
+		"identities": {
+			"pages": 1,
+			"serverBytes": 12077,
+			"serverCoverageComplete": true,
+			"clientPages": 1,
+			"clientBytes": 12077,
+			"clientExactCoverage": true,
+			"conflictingClientPages": 0
+		}
+	},
+	"limits": [
+		"Direct author execution removes historical coordinating-parent model overhead; report author and end-to-end boundaries separately.",
+		"Observed output/reasoning-item/tool intervals are not private design thought or isolated provider computation. Overlaps are unioned; categories may overlap.",
+		"Marker names label visible activity, not proof that useful UX reasoning ended. Later contributions can include further decisions.",
+		"Built-in discovery completion-to-result intervals are included; missing stream-start evidence remains unattributed.",
+		"Usage counts are actual runtime counters, not credits or prices. Cached input and reasoning output are subsets. Response completion boundaries can straddle phases.",
+		"Initial client-visible page strings are reconstructed and hash-checked against immutable input receipts; coverage does not prove semantic comprehension.",
+		"Tool totals count calls started by the server finish boundary; completed-call totals can exclude the final client result that arrives milliseconds later.",
+		"Wire request summaries include warmup and auto-review requests plus post-delivery acknowledgement; actor-window timings end at server finish.",
+		"Auto-review timings are observed network intervals, not a causal allocation of every nonservice delay. Runtime usage may cover only the primary model; model coverage is explicit.",
+		"One update run with changed coordination and output scope does not isolate the contribution method or establish equivalent quality; unresolved first-output issues remain retained.",
+		"Artifact defects are retained without review or another authoring round. No live cold-start performance conclusion follows from this update test.",
+		"No payload, prompt, capability, argument body or raw reasoning is copied into this report."
+	],
+	"evidence": {
+		"control.json": {
+			"sha256": "00c39b559a2b8e259a94faeadaf676335c9a239a87a8fb22645866ffc973e297",
+			"bytes": 3134
+		},
+		"runtime-metrics.json": {
+			"sha256": "52073de459acf6ac0aa52fd2e23859fbe444efeef6d999a1bf1bd1e7d42976a7",
+			"bytes": 78106
+		},
+		"live-request-metadata.json": {
+			"sha256": "04d47069c401feb523173cd28779c422434bb1e6b0f8290099ae36b05b8f4140",
+			"bytes": 273361
+		},
+		"service-observations.jsonl": {
+			"sha256": "6c86dc9d67a42e867033ab555956d2a85cc955a2081344637d6c6d60a9a96881",
+			"bytes": 15302
+		},
+		"contracts.json": {
+			"sha256": "f18b06b8298429de1c317183ecc3b6a81ca69160cd3f0b71685d0fe0a19070dc",
+			"bytes": 4718
+		},
+		"input-receipts.json": {
+			"sha256": "3893cdde774de30e750019bea63e9aa46166d1dbe7e70528033d10bb10586302",
+			"bytes": 1464
+		}
+	}
+}

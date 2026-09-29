@@ -1,8 +1,12 @@
 # Incremental UX contributions: implementation plan
 
-Status: proposed, 2026-09-29. This documents the next implementation; no code or
-new model replay has been run for it. The multi-read skill and forced-batching
-investigation are deferred. Retain the larger read window and use parallel reads
+Status: completed, 2026-09-29. Implementation, deterministic reconstruction and
+one isolated first UX authoring round are complete; see the
+[execution report](incremental-ux-contributions-execution.md) for measurements,
+decisions, verification and retained defects. Contributions are now the preferred
+MCP transport for UX updates against a saved baseline. The canonical UX schema
+and its review gates remain unchanged. The multi-read skill and forced-batching
+investigation remain deferred. Retain the larger read window and use parallel reads
 when available, without making successful batching an authoring prerequisite.
 
 ## Objective and evidence
@@ -66,9 +70,10 @@ can follow measured results without expanding the first experiment.
 
 ## Concrete authoring contract
 
-Introduce one batched operation, provisionally `units.contribute`, and an
-assignment-completion operation, provisionally `units.finish`. These are new
-operation names proposed here, not currently available tools.
+Implemented operations are `units.status`, `units.contribute` and `units.finish`.
+Their maintained contract is [incremental UX authoring](../../skills/refine-design/references/ux-contributions.md).
+The original milestones and decision rule below describe the completed work;
+the execution report records deviations and evidence limits.
 
 The parent imports the current baseline once, or opens an empty bound store for
 initial processing. It supplies the agent with assigned unit IDs and compact
@@ -85,7 +90,7 @@ legal targets from the current schema. Common typed variants map values directly
 to canonical fields. Do not introduce an endpoint per field or permit executable
 transformations and arbitrary JSON paths from the author.
 
-For example, a proposed batch can express this correction without reproducing
+For example, a batch can express this correction without reproducing
 the flow. The IDs below illustrate the shape:
 
 ```json
@@ -95,16 +100,17 @@ the flow. The IDs below illustrate the shape:
   "base": { "flow:edit-video": "revision-2" },
   "changes": [
     {
-      "type": "alternate.outcome",
-      "flowId": "edit-video",
-      "alternateId": "resume-follow",
-      "text": "Bring the resolved playhead into view and resume following."
+      "unit": "flow:edit-video",
+      "op": "set",
+      "target": [{ "collection": "alternates", "id": "resume-follow" }],
+      "fields": { "outcome": "Bring the resolved playhead into view and resume following." }
     }
   ]
 }
 ```
 
-Here code writes `outcome`; the agent supplies the value and target. Unknown
+Here the agent names the schema field, value and stable target; code validates
+the field and edits the existing record without reconstructing its siblings. Unknown
 operation types or fields are rejected before they enter the working record.
 Other supported changes share the same batch rather than requiring separate
 calls. Existing field values remain untouched unless explicitly changed.

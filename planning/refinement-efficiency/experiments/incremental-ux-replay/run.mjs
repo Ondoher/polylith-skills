@@ -9,6 +9,7 @@ import {createInterface} from 'node:readline';
 import {createHash, randomBytes} from 'node:crypto';
 import {prepareNativeWorkflowCatalog} from '../../../../scripts/native-workflow-catalog.mjs';
 import {startLiveRequestObserver} from '../ux-read-window/live-request-observer.mjs';
+import {verifyObserverTrust} from './observer-trust.mjs';
 
 const governance = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
 const option = (name) => process.argv.find((arg) => arg.startsWith(`--${name}=`))?.slice(name.length + 3);
@@ -280,6 +281,8 @@ try {
 	control.status = 'prepared';
 	save();
 	if (process.argv.includes('--execute')) {
+		control.observerTrust = await verifyObserverTrust();
+		save();
 		const binary =
 			option('binary') ??
 			'C:/Users/gande/.vscode/extensions/openai.chatgpt-26.917.62051-win32-x64/bin/windows-x86_64/codex.exe';

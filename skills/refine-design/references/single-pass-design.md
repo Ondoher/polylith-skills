@@ -7,6 +7,7 @@ reconstructs the old flow graph or saves expanded scene copies.
 When configured, use the shared MCP protocol in `documentation/workflows/mcp.md`
 under the governance checkout. The parent opens each store with `units.open` and
 assigns input handles, stage and record references through `workflow_assign`.
+Prefer incremental contributions for UX updates against a saved baseline.
 UX authors assigned `units.contribute` use the
 [incremental contribution contract](ux-contributions.md), which replaces the
 complete-unit delivery and replacement steps below. Other authors use
