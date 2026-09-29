@@ -1,5 +1,7 @@
 # Live native-call compatibility check with Responses Lite disabled
 
+**Follow-up:** [Simpler instructions completed both reads](ux-native-simple-instructions-20260928.md), but the reads still occurred in separate model responses. The original incomplete result below is preserved.
+
 **The backend accepted the altered request format and completed one native read, but the agent did not produce the requested two-call batch. The test is incomplete, and this configuration is not yet a demonstrated parallel-read solution.**
 
 This follows the [client-rule trace and local capture](ux-parallel-client-rule-20260928.md). The live test reused the exact temporary catalog, existing saved facts/UX data, original native-call assignment, 28,000-byte page window, same installed Codex executable, and `gpt-6-astra` at xhigh effort. The catalog changes only Astra's `use_responses_lite` field to false; native MCP namespace exposure remains enabled.
