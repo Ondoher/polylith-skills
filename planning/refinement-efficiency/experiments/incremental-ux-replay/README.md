@@ -57,6 +57,35 @@ this preparation-only resume path. Preserve their output for focused continuatio
 
 ## Evidence and interpretation
 
+### Bounded input-reasoning test
+
+The [input-reasoning plan](../../ux-input-reasoning-test-plan.md) compares the same
+short UX decision with broad versus focused context. It uses two fresh authors,
+one complete input read each, and one saved answer each. No contribution assembly
+or review follows the answers. The focused input is an exact subset of the broad
+input; both contain the relevant current requirements and conflicting prior UX.
+
+```powershell
+python -B planning/refinement-efficiency/experiments/incremental-ux-replay/prepare-decision.py .codex-tmp/ux-decision-test/inputs-unique
+node planning/refinement-efficiency/experiments/incremental-ux-replay/run.mjs --attempt=decision-broad-unique --decision=.codex-tmp/ux-decision-test/inputs-unique --condition=broad --execute
+node planning/refinement-efficiency/experiments/incremental-ux-replay/run.mjs --attempt=decision-focused-unique --decision=.codex-tmp/ux-decision-test/inputs-unique --condition=focused --execute
+python -B planning/refinement-efficiency/experiments/incremental-ux-replay/analyze-decision.py .codex-tmp/incremental-ux-replay/decision-broad-unique --output=.codex-tmp/ux-decision-test/broad-metrics.json
+python -B planning/refinement-efficiency/experiments/incremental-ux-replay/analyze-decision.py .codex-tmp/incremental-ux-replay/decision-focused-unique --output=.codex-tmp/ux-decision-test/focused-metrics.json
+```
+
+Omit `--execute` for an isolated, real MCP grant/read/store check without model
+calls. The rubric is frozen in the private manifest before execution and is never
+included in an author's prompt. Both authors receive the unchanged UX role and
+identical bounded-assessment instructions. Only the parent's capability can access
+the complete baseline; authors receive one input handle and `result.store`.
+
+The analyzer verifies exact client-visible input bytes and starts measurement at
+that tool result, ending at receipt of the saved answer. It associates unique
+usage counters with model responses created inside the decision window, including
+the response that submits the answer. Startup and acknowledgement remain separate.
+Inspect answers against the frozen rubric before interpreting performance. One
+pair is an early signal; it cannot establish a repeatable or general input-size effect.
+
 ### Matched staged-input pilot
 
 The [staged-input plan](../../staged-ux-input-plan.md) reuses this harness with

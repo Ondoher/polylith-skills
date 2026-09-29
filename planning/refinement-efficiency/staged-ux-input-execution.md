@@ -18,6 +18,11 @@ See the [plan](staged-ux-input-plan.md),
 [complete metrics](staged-ux-input-metrics.json) and
 [reproduction commands](experiments/incremental-ux-replay/README.md).
 
+The subsequent [input-size reasoning test](ux-input-reasoning-execution.md) is now
+complete. It held one UX decision and a short output contract fixed while varying
+supplied context, producing a promising single-pair result. This earlier pilot's
+aggregate timing did not settle that narrower question.
+
 ## Implementation and matched scope
 
 The packet builder selects exact source-addressed projections from the original

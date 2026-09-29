@@ -1,0 +1,359 @@
+{
+	"experiment": "bounded-ux-input-reasoning",
+	"capturedAt": "2026-09-29T23:00:30.006925+00:00",
+	"scope": "One frozen decision; two fresh authors; A broad then B focused; no review/rework/full UX run.",
+	"frozenManifest": {
+		"schema": 1,
+		"frozenAt": "2026-09-29T22:50:50.532791+00:00",
+		"question": "Exactly one selected occurrence is associated with a named library clip. Its Start/End and local rectangle, volume, mute and track settings have changed. Other videos already contain copies. Decide the Update Named Clip behavior: eligibility, what confirming it changes or preserves, and what its confirmation must communicate. Reconcile current requirements with the supplied prior UX. Include cancellation/failure and success feedback; identify any essential unresolved dependency.",
+		"answerFields": ["eligibility", "operation", "preserved", "confirmation", "recovery", "baselineChanges"],
+		"maxWordsPerField": 70,
+		"maxTotalWords": 350,
+		"entries": [
+			{
+				"id": "broad",
+				"file": "broad.json",
+				"bytes": 26392,
+				"sha256": "9b312125059532a9aa845b573e395d852fa0ec13059c842081995bbfadc58002",
+				"records": 24
+			},
+			{
+				"id": "focused",
+				"file": "focused.json",
+				"bytes": 13013,
+				"sha256": "e3939637fe2742a75b89de23c9ec1634f684ba68a4e3725862d03e2952268999",
+				"records": 10
+			}
+		],
+		"conditionOrder": ["broad", "focused"],
+		"sources": {
+			"facts": {
+				"path": ".codex-tmp/ux-comparison-replay-20260928-160822/inputs/facts.json",
+				"sha256": "0a93131e55d107256cd22569659a860a6a927a5e30a01e8800a30ca5e9782e2a"
+			},
+			"ux": {
+				"path": ".codex-tmp/alexa-mcp-refinement-20260928-133745/baseline/files/product/Alexa/ux/ux-spec.json",
+				"sha256": "b2fa0be7cba3742c97f2763cf9fe72653b8f5e7705a125ea2dd00a3c1d832096"
+			}
+		},
+		"commonRecordHashes": {
+			"facts:/productModel/requirements/2": "3a36c509a0e43821fc2d21d9f39e0ae6db84a4618b72b5024b1d9cf357270b1b",
+			"facts:/productModel/requirements/35": "34963eb7808f556a233f1b553967259df5858b60b2d679bfe8d82fd4b85b0295",
+			"facts:/productModel/sourceClaims/23": "5d07d9db7dddbe3fa96aa1b9a229610408314c071defc9966fb8c8bf28d09e47",
+			"facts:/productModel/sourceClaims/25": "caaa50c0fe104b1a7292535ae667e8e83ef4318985839f8ee75fa46383a3e578",
+			"facts:/productModel/sourceClaims/50": "2502513f6ac5fe84ba4089982df8367374e63840edb834b4fd50bafea69814e8",
+			"facts:/productModel/gaps/4": "1803473e40b8000c3c5bbd5ea552bd6317864bb56fecb68db5f0a35346e34af8",
+			"ux:/actions/43": "4fc8d2f99cac02e434dfd78bf2dff300d031af1ab77dc83d32bdbb8071d38bd7",
+			"ux:/actions/44": "72c4e97f9209971281853d03b5366cad0db1cf8f06af40826e9d01ee78770299",
+			"ux:/interactionFrames/17": "659b9c7684dc558aeec2c30244fc8787d815b60773330196514804e6e1fc0712",
+			"ux:/openQuestions/7": "5bc3a4c3c98dc83cd0f28d545d322bf9852a0265ed4942b6722af9bc1887a0d1"
+		},
+		"rubric": [
+			"Exactly one associated occurrence with differing Start or End enables the operation; other local settings alone do not.",
+			"Only selected Start/End update the existing saved library definition, preserving stable identity.",
+			"Rectangle, volume, mute and track settings are not published.",
+			"All existing video occurrences, including selected and locally trimmed copies, remain unchanged; only future additions use the updated definition.",
+			"Confirmation identifies the named target, shows current/proposed Start and inclusive End, and explains future-only scope.",
+			"Remove follower propagation and downstream collision blocking from prior UX; no unresolved collision policy is needed.",
+			"Cancel/failure changes nothing and retains draft/selection for correction or retry; success identifies updated clip and stays in editor.",
+			"Cite supplied requirement and prior UX records; do not invent an essential blocker or unsupported behavior."
+		],
+		"selectionNotes": "Focused contains complete current update/persistence requirements and their claims, old update actions/dialog/question, and superseded product gap. Broad adds adjacent editor/save/selection context; no additional unique evidence is required for the fixed decision. No historical finished answer is included."
+	},
+	"manifestSha256": "75a58117e7d770fd83125ea0fe50f527ecd8421a07a615b6c8ae50c4de2ad801",
+	"localPreparationChecks": [
+		{
+			"condition": "broad",
+			"status": "prepared",
+			"preparationMs": 4047.976,
+			"protocolCheck": {
+				"inputReads": 1,
+				"exactBytes": 26392,
+				"resultStore": true
+			},
+			"liveUnchanged": true
+		},
+		{
+			"condition": "focused",
+			"status": "prepared",
+			"preparationMs": 3531.1979,
+			"protocolCheck": {
+				"inputReads": 1,
+				"exactBytes": 13013,
+				"resultStore": true
+			},
+			"liveUnchanged": true
+		}
+	],
+	"conditions": [
+		{
+			"condition": "broad",
+			"attempt": "decision-broad-live-01",
+			"model": "gpt-6-astra",
+			"configuredEffort": "ultra",
+			"effectiveWireEfforts": ["xhigh"],
+			"roleSha256": "1f1b425e7fe4972f12be84b8c773328bbb855ac69cc689a7b2f0d6ab778b3797",
+			"contractsSha256": "c5ddb8297c3facfc9c3aadda5beb10da4ac769e41dc11f329c3c7735a74fec2b",
+			"input": {
+				"bytes": 26392,
+				"records": 24,
+				"sha256": "9b312125059532a9aa845b573e395d852fa0ec13059c842081995bbfadc58002",
+				"clientExact": true,
+				"reads": 1,
+				"receivedAt": "2026-09-29T22:53:10.966Z"
+			},
+			"decisionWindow": {
+				"start": "2026-09-29T22:53:10.966Z",
+				"end": "2026-09-29T22:54:11.050Z",
+				"wallSeconds": 60.08399987220764,
+				"observedSeconds": {
+					"output": 18.387420177459717,
+					"reasoning-item": 38.6039502620697,
+					"tool": 0.09099984169006348
+				},
+				"unattributedSeconds": 3.001629590988159,
+				"toolCallsCompleted": 1
+			},
+			"serverSavedAt": "2026-09-29T22:54:10.971Z",
+			"decisionResponseCount": 1,
+			"decisionUsage": {
+				"input_tokens": 45319,
+				"cached_input_tokens": 38912,
+				"output_tokens": 1901,
+				"reasoning_output_tokens": 1284
+			},
+			"wholeAuthorUsage": {
+				"input_tokens": 539859,
+				"cached_input_tokens": 490880,
+				"output_tokens": 3920,
+				"reasoning_output_tokens": 1284
+			},
+			"responseUsage": [
+				{
+					"responseId": "resp_0043cf8610ec8c34016abc4157660c87d19f17a92e7982a0c8",
+					"createdAt": "2026-09-29T22:53:11.374Z",
+					"counterRecordedAt": "2026-09-29T22:54:11.049+00:00",
+					"usage": {
+						"input_tokens": 45319,
+						"cached_input_tokens": 38912,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 1901,
+						"reasoning_output_tokens": 1284,
+						"total_tokens": 47220
+					},
+					"counterOutsideWindow": false
+				}
+			],
+			"startupThroughInputSeconds": 94.18200016021729,
+			"acknowledgementSeconds": 4.539999961853027,
+			"wholeAuthorSeconds": 158.80599999427795,
+			"harnessPreparationMs": 3701.9573,
+			"answer": {
+				"bytes": 2624,
+				"wordsByField": {
+					"eligibility": 47,
+					"operation": 56,
+					"preserved": 43,
+					"confirmation": 59,
+					"recovery": 56,
+					"baselineChanges": 40
+				},
+				"proseWords": 301,
+				"schemaAndLengthValid": true,
+				"sourceRefsValid": true,
+				"unresolvedCount": 0,
+				"sha256": "46345f4e06eb15e029ea93acc92827f9bf93f3ed158af18ddb3393caa7b3d3d5"
+			},
+			"service": {
+				"assignedCalls": 4,
+				"assignedServiceMs": 6.439600000012433,
+				"storeCalls": 2,
+				"failedCalls": 0
+			},
+			"decisionCalls": [
+				{
+					"name": "workflow_store",
+					"argumentBytes": 2809,
+					"toolSeconds": 0.09099984169006348
+				}
+			],
+			"liveUnchanged": true,
+			"protectedFileCount": 611,
+			"evidenceHashes": {
+				"control.json": "2b7610ce80882d17dd124c785710997a2d6a450864c81a3c9734c5423e94207a",
+				"input-receipts.json": "827d1df734bdb7cade93eeac7bd2a3f4b6e5e7e9c9b276f40d479aec74ed3946",
+				"first-finish-receipt.json": "d22c066f8fe16192bca9a0e80fc3def5109f4d7a998243c3edf0959433033aa5",
+				"service-observations.jsonl": "e73b63126dfce464cd916e305e41dc24b50074c5a0192c3d307c343c3d10b8b5",
+				"runtime-metrics.json": "61b7cb6a88c45618eb1b93e4027b8bf4f33f19409c6850c79181f4d9aa27c69e",
+				"live-request-metadata.json": "b804c2d9b6c9f9573d06c3d07280cdb3e28546eb6d05d468bb464cffc4476094"
+			}
+		},
+		{
+			"condition": "focused",
+			"attempt": "decision-focused-live-01",
+			"model": "gpt-6-astra",
+			"configuredEffort": "ultra",
+			"effectiveWireEfforts": ["xhigh"],
+			"roleSha256": "1f1b425e7fe4972f12be84b8c773328bbb855ac69cc689a7b2f0d6ab778b3797",
+			"contractsSha256": "c5ddb8297c3facfc9c3aadda5beb10da4ac769e41dc11f329c3c7735a74fec2b",
+			"input": {
+				"bytes": 13013,
+				"records": 10,
+				"sha256": "e3939637fe2742a75b89de23c9ec1634f684ba68a4e3725862d03e2952268999",
+				"clientExact": true,
+				"reads": 1,
+				"receivedAt": "2026-09-29T22:56:34.481Z"
+			},
+			"decisionWindow": {
+				"start": "2026-09-29T22:56:34.481Z",
+				"end": "2026-09-29T22:57:19.434Z",
+				"wallSeconds": 44.95300006866455,
+				"observedSeconds": {
+					"output": 16.92652702331543,
+					"reasoning-item": 25.68866491317749,
+					"tool": 0.20099997520446777
+				},
+				"unattributedSeconds": 2.136808156967163,
+				"toolCallsCompleted": 1
+			},
+			"serverSavedAt": "2026-09-29T22:57:19.247Z",
+			"decisionResponseCount": 1,
+			"decisionUsage": {
+				"input_tokens": 41483,
+				"cached_input_tokens": 38144,
+				"output_tokens": 1421,
+				"reasoning_output_tokens": 850
+			},
+			"wholeAuthorUsage": {
+				"input_tokens": 490607,
+				"cached_input_tokens": 447872,
+				"output_tokens": 3512,
+				"reasoning_output_tokens": 1007
+			},
+			"responseUsage": [
+				{
+					"responseId": "resp_00b8f1d4a79328ec016abc4222eff087d189dad069665736d7",
+					"createdAt": "2026-09-29T22:56:34.975Z",
+					"counterRecordedAt": "2026-09-29T22:57:19.432+00:00",
+					"usage": {
+						"input_tokens": 41483,
+						"cached_input_tokens": 38144,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 1421,
+						"reasoning_output_tokens": 850,
+						"total_tokens": 42904
+					},
+					"counterOutsideWindow": false
+				}
+			],
+			"startupThroughInputSeconds": 91.83200001716614,
+			"acknowledgementSeconds": 3.5239999294281006,
+			"wholeAuthorSeconds": 140.3090000152588,
+			"harnessPreparationMs": 2751.8024,
+			"answer": {
+				"bytes": 2504,
+				"wordsByField": {
+					"eligibility": 41,
+					"operation": 43,
+					"preserved": 47,
+					"confirmation": 58,
+					"recovery": 53,
+					"baselineChanges": 51
+				},
+				"proseWords": 293,
+				"schemaAndLengthValid": true,
+				"sourceRefsValid": true,
+				"unresolvedCount": 0,
+				"sha256": "ce21b4917f7569319b7327ecbead8492b3a5e4a220404000bf925559a4813b24"
+			},
+			"service": {
+				"assignedCalls": 4,
+				"assignedServiceMs": 6.611299999993207,
+				"storeCalls": 2,
+				"failedCalls": 0
+			},
+			"decisionCalls": [
+				{
+					"name": "workflow_store",
+					"argumentBytes": 2689,
+					"toolSeconds": 0.20099997520446777
+				}
+			],
+			"liveUnchanged": true,
+			"protectedFileCount": 611,
+			"evidenceHashes": {
+				"control.json": "e4ee7fcddc59797bfa81c17316a212acebc1aedde3424b0dd30e76fc3613807f",
+				"input-receipts.json": "40c5ca0d5b9f9b0ef3ea8444916d7043189f3030ab5f42c0ad6931fcb70de038",
+				"first-finish-receipt.json": "252cf006b139e4c93ee7fb22bf00f211f8a7abe90cc753561349ac2d2158da11",
+				"service-observations.jsonl": "4387b2af26186e455abf47e457dd9cb3b3321a527628f72023ab23594839a635",
+				"runtime-metrics.json": "d82e2b123ca308ff3ed65566c5a59ef3e647a66b848751815cb956cd9557851a",
+				"live-request-metadata.json": "8aa029577e95034cafd90603f7f17622ab3b3820facd7e847818c36398552915"
+			}
+		}
+	],
+	"comparison": {
+		"inputBytesReductionPercent": 50.69339193695059,
+		"reasoningTokensReductionPercent": 33.8006230529595,
+		"decisionSecondsReductionPercent": 25.183076752088972,
+		"visibleOutputTokens": {
+			"broad": 617,
+			"focused": 571
+		},
+		"wholeRequestInputTokensReductionPercent": 8.464440962951524
+	},
+	"quality": {
+		"method": "Parent inspection of first saved answers against the frozen source-based rubric; no extra model review or repairs.",
+		"rubricResults": [
+			{
+				"criterion": "Exactly one associated occurrence with differing Start or End enables the operation; other local settings alone do not.",
+				"broad": "pass",
+				"focused": "pass"
+			},
+			{
+				"criterion": "Only selected Start/End update the existing saved library definition, preserving stable identity.",
+				"broad": "pass",
+				"focused": "pass"
+			},
+			{
+				"criterion": "Rectangle, volume, mute and track settings are not published.",
+				"broad": "pass",
+				"focused": "pass"
+			},
+			{
+				"criterion": "All existing video occurrences, including selected and locally trimmed copies, remain unchanged; only future additions use the updated definition.",
+				"broad": "pass",
+				"focused": "pass"
+			},
+			{
+				"criterion": "Confirmation identifies the named target, shows current/proposed Start and inclusive End, and explains future-only scope.",
+				"broad": "pass",
+				"focused": "pass"
+			},
+			{
+				"criterion": "Remove follower propagation and downstream collision blocking from prior UX; no unresolved collision policy is needed.",
+				"broad": "pass",
+				"focused": "pass"
+			},
+			{
+				"criterion": "Cancel/failure changes nothing and retains draft/selection for correction or retry; success identifies updated clip and stays in editor.",
+				"broad": "pass",
+				"focused": "pass"
+			},
+			{
+				"criterion": "Cite supplied requirement and prior UX records; do not invent an essential blocker or unsupported behavior.",
+				"broad": "pass",
+				"focused": "pass"
+			}
+		],
+		"extraDetail": "Broad elaborates commit-time control freezing, stopped-editor recovery and preserving Save Clip behavior using its additional records. Focused still covers the fixed decision and asks for no missing context."
+	},
+	"limitations": [
+		"One sequential A/B pair is an early signal; sampling, cache, startup and provider variation remain.",
+		"Reported reasoning tokens and visible reasoning-item stream intervals are proxies; they do not isolate pure comprehension or expose why reasoning happened.",
+		"Task requirements/output contract are matched, not byte-identical answers.",
+		"Input bytes are exact packet sizes; reported input tokens count whole model request context, including instructions and prior tool results.",
+		"Only the decision response is the primary comparison; startup, acknowledgement and harness preparation are separate.",
+		"The selected decision reconciles explicit current requirements with prior UX; this does not establish gains for open-ended discovery or full-product design.",
+		"Raw source data, prompts, capabilities, saved answers and logs remain in ignored .codex-tmp folders."
+	]
+}

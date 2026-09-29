@@ -1,6 +1,14 @@
 # Refinement efficiency: autonomous execution plan
 
-Current proposal: [self-driven MCP migration plan](mcp-migration-plan.md).
+Latest completed test, 2026-09-29: [input size and UX reasoning effort](ux-input-reasoning-execution.md).
+One matched decision with 50.7% less product input used 33.8% fewer reported reasoning
+tokens and 25.2% less time after input receipt; both answers met the frozen rubric.
+This is an initial single-pair result, not an established scaling rule. The preceding
+[staged-input pilot](staged-ux-input-execution.md) is complete through stage 3.
+
+The entries below retain their original planning-time status.
+
+Earlier proposal: [self-driven MCP migration plan](mcp-migration-plan.md).
 Six reportable goals organize the work: shared service, direct
 retrieval, delivery/assembly, integrated refinement, agent/skill connection, and
 evidence/reporting. Optimize credit use: start with positive cases, review larger completed

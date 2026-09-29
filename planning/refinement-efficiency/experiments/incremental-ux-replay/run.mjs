@@ -11,6 +11,7 @@ import {prepareNativeWorkflowCatalog} from '../../../../scripts/native-workflow-
 import {startLiveRequestObserver} from '../ux-read-window/live-request-observer.mjs';
 import {verifyObserverTrust} from './observer-trust.mjs';
 import {loadPilot, storePilotInputs, availableSources, pilotPrompt, checkPilotProtocol} from './pilot.mjs';
+import {loadDecision, decisionPrompt, checkDecisionProtocol} from './decision.mjs';
 
 const governance = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
 const option = (name) => process.argv.find((arg) => arg.startsWith(`--${name}=`))?.slice(name.length + 3);
@@ -22,12 +23,14 @@ assert(
 		.every(
 			(arg) =>
 				arg === '--execute' ||
-				/^(--attempt=|--requested-at=|--binary=|--resume=|--pilot=|--condition=)/.test(arg),
+				/^(--attempt=|--requested-at=|--binary=|--resume=|--pilot=|--decision=|--condition=)/.test(arg),
 		),
 	'Unknown argument',
 );
 const resumeName = option('resume');
 const pilot = option('pilot') ? loadPilot(option('pilot'), option('condition')) : null;
+const decision = option('decision') ? loadDecision(option('decision'), option('condition')) : null;
+assert(!decision || (!pilot && !resumeName), 'Decision test requires its own fresh condition');
 assert(!pilot || !resumeName, 'Pilot conditions require separate pristine stores; thread continuation is automatic');
 assert(!resumeName || /^[a-z0-9-]+$/.test(resumeName), 'Invalid resume name');
 const previousDirectory = resumeName && path.join(governance, '.codex-tmp/incremental-ux-replay', resumeName);
@@ -66,6 +69,14 @@ const control = {
 	coordination: 'Supervisor prepares and assigns; one direct CLI author with native UX role instructions.',
 	boundary: 'Through the first units.finish receipt; no parent assembly, promotion, review or rework.',
 	...(pilot ? {pilot: {condition: pilot.condition, manifest: pilot.manifest}, turns: [], phases: []} : {}),
+	...(decision
+		? {
+				decision: {condition: decision.condition, manifest: decision.manifest},
+				turns: [],
+				phases: [],
+				boundary: 'One supplied input read through one saved bounded UX answer; no review or rework.',
+			}
+		: {}),
 	...(previous
 		? {
 				resumedFrom: resumeName,
@@ -138,7 +149,7 @@ try {
 		if (message.phase) {
 			control.lastPhase = message.phase;
 			control.lastPhaseAt = message.endedAt;
-			if (pilot) {
+			if (pilot || decision) {
 				const value = JSON.parse(
 					fs.readFileSync(
 						path.join(
@@ -155,7 +166,7 @@ try {
 			save();
 		}
 		if (
-			message.operation === 'units.finish' &&
+			(message.operation === 'units.finish' || (decision && message.phase === 'ux:decision-result')) &&
 			message.actor === 'assigned' &&
 			!message.failed &&
 			!control.firstFinishAt
@@ -239,15 +250,15 @@ try {
 			path.join(previousDirectory, 'imported-units-receipt.json'),
 			path.join(attempt, 'imported-units-receipt.json'),
 		);
-	const inputs = pilot ? await storePilotInputs(call, owner, pilot, identities) : {facts, ux, identities};
+	const inputs = decision
+		? {input: await call('store', {...owner, value: decision.value})}
+		: pilot
+			? await storePilotInputs(call, owner, pilot, identities)
+			: {facts, ux, identities};
 	fs.writeFileSync(path.join(attempt, 'input-receipts.json'), JSON.stringify(inputs, null, 2));
-	const operations = [
-		'result.store',
-		...(pilot ? [] : ['units.read']),
-		'units.status',
-		'units.contribute',
-		'units.finish',
-	];
+	const operations = decision
+		? ['result.store']
+		: ['result.store', ...(pilot ? [] : ['units.read']), 'units.status', 'units.contribute', 'units.finish'];
 	const assignment = await call('assign', {
 		...owner,
 		operations,
@@ -274,6 +285,10 @@ try {
 		assert.equal(sha(Buffer.concat(parts)), receipt.sha256, 'Input paging differs from saved bytes');
 	}
 	fs.writeFileSync(path.join(attempt, 'input-read-plan.json'), JSON.stringify(plan, null, 2));
+	if (decision && !process.argv.includes('--execute')) {
+		control.protocolCheck = await checkDecisionProtocol({call, assignment, run: control.run, plan, inputs});
+		save();
+	}
 	if (pilot && !process.argv.includes('--execute')) {
 		control.protocolCheck = await checkPilotProtocol({call, owner, pilot, inputs, plan, references});
 		save();
@@ -288,9 +303,10 @@ try {
 		fs.writeFileSync(path.join(attempt, name), raw);
 		control.guidanceSha256[name] = sha(raw);
 	}
-	const prompt =
-		fs.readFileSync(new URL('./assignment.md', import.meta.url), 'utf8') +
-		`\nGovernance: ${governance}\nWorkspace: ${workspace}\nAssigned MCP access: ${assignment.access}\nRun: ${control.run}\nOutput directory: ${assignment.outputDirectory}\nAssigned references: ${JSON.stringify(references)}\nInput read plan: ${JSON.stringify(plan.map(({nextOffset, ...entry}) => entry))}\n`;
+	const prompt = decision
+		? decisionPrompt({decision, access: assignment.access, run: control.run, plan, governance, workspace})
+		: fs.readFileSync(new URL('./assignment.md', import.meta.url), 'utf8') +
+			`\nGovernance: ${governance}\nWorkspace: ${workspace}\nAssigned MCP access: ${assignment.access}\nRun: ${control.run}\nOutput directory: ${assignment.outputDirectory}\nAssigned references: ${JSON.stringify(references)}\nInput read plan: ${JSON.stringify(plan.map(({nextOffset, ...entry}) => entry))}\n`;
 	fs.writeFileSync(path.join(attempt, 'prompt.private.txt'), prompt);
 	control.roleSha256 = sha(role);
 	control.promptSha256 = sha(prompt);
@@ -390,7 +406,7 @@ try {
 				resumed: Boolean(control.threadId),
 				promptSha256: sha(currentPrompt),
 			};
-			if (pilot) control.turns.push(turn);
+			if (pilot || decision) control.turns.push(turn);
 			const stem = pilot ? `task-${ordinal}-${retry}` : 'result';
 			fs.writeFileSync(path.join(attempt, stem + '.prompt.private.txt'), currentPrompt);
 			const args = [
@@ -440,7 +456,9 @@ try {
 			});
 			child.stdin.end(currentPrompt);
 			save();
-			console.log(JSON.stringify({status: 'running', attempt, condition: pilot?.condition, ordinal}));
+			console.log(
+				JSON.stringify({status: 'running', attempt, condition: (pilot || decision)?.condition, ordinal}),
+			);
 			const [exitCode] = await once(child, 'close');
 			turn.exitCode = exitCode;
 			turn.completedAt = new Date().toISOString();
