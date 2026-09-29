@@ -5,12 +5,15 @@ import {fork, spawn} from 'node:child_process';
 import {once} from 'node:events';
 import {createInterface} from 'node:readline';
 import {randomBytes, createHash} from 'node:crypto';
+import {startLiveRequestObserver} from '../ux-read-window/live-request-observer.mjs';
 
 const workspace = fileURLToPath(new URL('../../../../', import.meta.url));
 const pageArgument = process.argv.find((value) => value.startsWith('--page-bytes='));
 const pageBytes = Number(pageArgument?.slice(13) ?? 7000);
 const parallelProbe = process.argv.includes('--parallel-probe');
 const nativeProbe = process.argv.includes('--native-probe');
+const observeLiveRequest = process.argv.includes('--observe-live-request');
+if (observeLiveRequest && !nativeProbe) throw new Error('Live request observation requires a native probe');
 const nativeCountArgument = process.argv.find((value) => value.startsWith('--native-read-count='));
 const nativeReadCount = Number(nativeCountArgument?.slice(20) ?? 2);
 if (![2, 4, 8].includes(nativeReadCount) || (nativeCountArgument && !nativeProbe))
@@ -60,6 +63,7 @@ const control = {
 	probe,
 	parallelProbe,
 	nativeProbe,
+	observeLiveRequest,
 	nativeReadRequests,
 	disableCodeHost,
 	directNamespace: directNamespace ?? null,
@@ -155,7 +159,7 @@ const call = async (name, args) => {
 	);
 	return result;
 };
-let child, eventLog;
+let child, eventLog, liveObserver;
 try {
 	await call('open', {access: ready.access, run});
 	const manifest = JSON.parse(fs.readFileSync(path.join(prior, 'manifest.json')));
@@ -269,6 +273,10 @@ Wait for READY and the inputs-ready marker handle, then return the child identit
 				'-c',
 				`features.code_mode.direct_only_tool_namespaces=${JSON.stringify([directNamespace])}`,
 			);
+		if (observeLiveRequest) {
+			liveObserver = await startLiveRequestObserver(path.join(attempt, 'live-request-metadata.json'));
+			args.splice(1, 0, '-c', `openai_base_url=${JSON.stringify(liveObserver.url)}`);
+		}
 		const agentStart = performance.now();
 		child = spawn(codexBinary, args, {env: environment, stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true});
 		Object.assign(control, {status: 'running', childPid: child.pid, agentStartedAt: new Date().toISOString()});
@@ -338,6 +346,7 @@ Wait for READY and the inputs-ready marker handle, then return the child identit
 	Object.assign(control, {status: 'error', error: error.message});
 	process.exitCode = 1;
 } finally {
+	await liveObserver?.close();
 	eventLog?.end();
 	if (server.connected) {
 		const closed = once(server, 'exit');
