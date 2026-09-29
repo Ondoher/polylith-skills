@@ -57,6 +57,25 @@ this preparation-only resume path. Preserve their output for focused continuatio
 
 ## Evidence and interpretation
 
+### Larger bounded-decision suite
+
+The [larger suite plan](../../ux-input-reasoning-suite-plan.md) adds Save Clip and
+grouped-trim cases, then runs two fresh matched pairs per case in reversed order.
+`prepare-decision-suite.py` reuses the original frozen input hashes and validates
+all exact source projections before writing. It never starts an author.
+
+```powershell
+python -B -X utf8 planning/refinement-efficiency/experiments/incremental-ux-replay/prepare-decision-suite.py .codex-tmp/ux-decision-suite/inputs-unique
+node planning/refinement-efficiency/experiments/incremental-ux-replay/run.mjs --attempt=suite-save-range-r1-broad-unique --decision=.codex-tmp/ux-decision-suite/inputs-unique/save-range --condition=broad --execute
+python -B -X utf8 planning/refinement-efficiency/experiments/incremental-ux-replay/analyze-decision.py .codex-tmp/incremental-ux-replay/suite-save-range-r1-broad-unique --output=.codex-tmp/ux-decision-suite/save-range-r1-broad-metrics.json
+```
+
+This illustrates one scheduled author. Follow `suite.json` for the complete order;
+keep authors sequential and stop at each first answer. Omit `--execute` for local
+MCP grant/read/store checks. The first four author runs cover both new decisions;
+report those before completing the 12-run schedule. Correctness is judged against
+the frozen parent-only rubric, with no answer repair or separate model review.
+
 ### Bounded input-reasoning test
 
 The [input-reasoning plan](../../ux-input-reasoning-test-plan.md) compares the same

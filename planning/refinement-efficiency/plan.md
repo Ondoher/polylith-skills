@@ -1,5 +1,10 @@
 # Refinement efficiency: autonomous execution plan
 
+Next prepared test: [larger UX input-reasoning suite](ux-input-reasoning-suite-plan.md).
+Three frozen cases, two matched pairs per case, and an early report after the two
+new cases. Input construction and local MCP checks are complete; the 12 author
+runs have not started.
+
 Latest completed test, 2026-09-29: [input size and UX reasoning effort](ux-input-reasoning-execution.md).
 One matched decision with 50.7% less product input used 33.8% fewer reported reasoning
 tokens and 25.2% less time after input receipt; both answers met the frozen rubric.
