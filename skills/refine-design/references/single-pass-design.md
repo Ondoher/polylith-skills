@@ -7,7 +7,10 @@ reconstructs the old flow graph or saves expanded scene copies.
 When configured, use the shared MCP protocol in `documentation/workflows/mcp.md`
 under the governance checkout. The parent opens each store with `units.open` and
 assigns input handles, stage and record references through `workflow_assign`.
-Authors use `units.read` and `units.deliver` within that capability; the parent
+UX authors assigned `units.contribute` use the
+[incremental contribution contract](ux-contributions.md), which replaces the
+complete-unit delivery and replacement steps below. Other authors use
+`units.read` and `units.deliver` within their capability; the parent
 owns `units.import`, `units.handoff`, `units.assemble` and canonical persistence.
 This route replaces the file-transfer mechanics below, not their ownership,
 review or reuse rules. The maintained CLI/file route remains available for

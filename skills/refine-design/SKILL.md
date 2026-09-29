@@ -37,7 +37,11 @@ Keep parsing, semantic review and product publication under their existing contr
 
 For structured UX/UI authoring with MCP configured, give each author a scoped
 assignment capability and input handles. Deliver completed records through
-`units.deliver` and return handles, record IDs and status. Otherwise, assign an
+`units.deliver` and return handles, record IDs and status. For an incremental UX
+contribution assignment, follow [the contribution contract](references/ux-contributions.md)
+instead: grant `units.status`, `units.contribute` and `units.finish`, supply the
+prepared baseline and revisions, and let code materialize authoring units. This
+does not authorize canonical promotion or bypass the existing UX review. Otherwise, assign an
 absolute `proposalDirectory` inside an effective writable root, separate from
 canonical product data and the parent-owned record store; consume the author's
 completed files directly. Follow the single-pass contract's startup and delivery

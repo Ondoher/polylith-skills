@@ -20,6 +20,8 @@ export class DomainOperations {
 		this._registerPublication();
 		this._registerStandards();
 		this._registerProject();
+		for (const name of ['units.status', 'units.contribute', 'units.finish'])
+			this.operations[name].inlineResult = true;
 	}
 
 	/** Adds one maintained operation with a closed argument shape.
@@ -335,6 +337,79 @@ export class DomainOperations {
 			async (input, context) => {
 				const {DesignRun} = await this._module('skills/refine-design/scripts/design-run.mjs');
 				return DesignRun.deliver(this._store(input, context), input.records, input.repairs ?? {});
+			},
+		);
+		this._add(
+			'units.status',
+			'Initialize/resume UX contributions and return only assigned unit revisions and record IDs. No authored content is echoed.',
+			{stage: {const: 'ux', type: 'string', enum: ['ux']}, references: list},
+			['stage', 'references'],
+			true,
+			true,
+			async (input, context) => {
+				const {DesignContributions} = await this._module(
+					'skills/refine-design/scripts/design-contributions.mjs',
+				);
+				return DesignContributions.status(this._store(input, context), input.references);
+			},
+		);
+		this._add(
+			'units.contribute',
+			'Save changed UX meaning in batches. set merges fields; remove deletes an ID-selected record; order names its collection IDs. Reuse receipt revisions; finish assembles existing units.',
+			{
+				stage: {type: 'string', enum: ['ux']},
+				batchId: text,
+				base: object,
+				changes: {
+					type: 'array',
+					items: {
+						type: 'object',
+						additionalProperties: false,
+						properties: {
+							unit: text,
+							op: {type: 'string', enum: ['set', 'remove', 'order', 'catalog-order']},
+							target: {
+								type: 'array',
+								items: {
+									type: 'object',
+									additionalProperties: false,
+									properties: {collection: text, id: text},
+									required: ['collection', 'id'],
+								},
+							},
+							fields: object,
+							unset: list,
+							before: {},
+							collection: text,
+							ids: list,
+						},
+						required: ['unit', 'op'],
+					},
+				},
+			},
+			['stage', 'batchId', 'base', 'changes'],
+			true,
+			true,
+			async (input, context) => {
+				const {DesignContributions} = await this._module(
+					'skills/refine-design/scripts/design-contributions.mjs',
+				);
+				const references = input.changes.map((change) => change.unit);
+				return DesignContributions.contribute(this._store({stage: input.stage, references}, context), input);
+			},
+		);
+		this._add(
+			'units.finish',
+			'Materialize assigned UX contributions into existing units; return saved identities and repair notices, without a combined model-authored document. This is not review approval.',
+			{stage: {type: 'string', enum: ['ux']}, references: list},
+			['stage', 'references'],
+			true,
+			true,
+			async (input, context) => {
+				const {DesignContributions} = await this._module(
+					'skills/refine-design/scripts/design-contributions.mjs',
+				);
+				return DesignContributions.finish(this._store(input, context), input.references);
 			},
 		);
 		this._add(

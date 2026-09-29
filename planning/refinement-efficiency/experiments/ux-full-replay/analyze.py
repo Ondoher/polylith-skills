@@ -43,6 +43,8 @@ for actor in runtime['threads']:
         continue
     events = [entry for entry in rows(Path(actor['sourceSession']))
               if stamp(actor['windowStart']) <= stamp(entry['timestamp']) <= stamp(actor['windowEnd'])]
+    discovery_calls = {entry['payload']['call_id'] for entry in events
+                       if entry.get('payload', {}).get('type') == 'tool_search_call'}
     outputs = {entry['payload']['call_id']: entry['payload'].get('output') for entry in events
                if entry.get('payload', {}).get('type') == 'function_call_output'}
     calls = [entry['payload'] for entry in events
@@ -101,7 +103,8 @@ for actor in runtime['threads']:
                    'windowSeconds': actor['windowSeconds'], 'activeTurnSeconds': actor.get('activeTurnSeconds'),
                    'seconds': actor['seconds'], 'unattributedSeconds': actor.get('unattributedSeconds'),
                    'activeSeconds': actor.get('activeSeconds'), 'activeUnattributedSeconds': actor.get('activeUnattributedSeconds'),
-                   'usage': usage, 'toolCalls': len(actor['calls']),
+                   'usage': usage, 'toolCalls': len(actor['calls']) + len(discovery_calls),
+                   'builtinDiscoveryCallCount': len(discovery_calls),
                    'boundedInstructionReads': sum(bool(item.get('boundedRead')) for item in actor['calls']),
                    'waitCalls': sum(bool(item.get('waitRelated')) for item in actor['calls']),
                    'largestCommands': largest_commands,

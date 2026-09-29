@@ -81,6 +81,8 @@ interface WorkflowResultReceipt {
 	path: string;
 	/** Whether identical bytes already existed. */
 	reused: boolean;
+	/** Small opted-in operation result, omitted when the complete receipt exceeds its byte budget. */
+	inline?: WorkflowJson;
 }
 
 /** Private resident cache entry. */
@@ -249,6 +251,8 @@ interface WorkflowOperation {
 	assignable: boolean;
 	/** Whether workspace bytes may change. */
 	writes: boolean;
+	/** Whether a bounded result can also be returned inline to avoid another model tool turn. */
+	inlineResult?: boolean;
 	/** Maintained adapter, possibly worker-backed. */
 	execute: (
 		input: Record<string, WorkflowJson>,

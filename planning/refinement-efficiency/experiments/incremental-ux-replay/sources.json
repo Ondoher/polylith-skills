@@ -1,0 +1,14 @@
+{
+	"baselineManifest": ".codex-tmp/alexa-mcp-refinement-20260928-133745/baseline/manifest.json",
+	"facts": ".codex-tmp/ux-comparison-replay-20260928-160822/inputs/facts.json",
+	"priorUx": ".codex-tmp/alexa-mcp-refinement-20260928-133745/baseline/files/product/Alexa/ux/ux-spec.json",
+	"results": ".codex-tmp/ux-full-native-20260929/full-01/workspace/.codex-tmp/mcp-workflows/runs/ux-full-native-replay/results",
+	"baselineUnits": "66669228fcb8c14a3c49075725b249a850d103f7ff836b0a9eea66a565c7eb9a",
+	"firstOutputs": {
+		"context:document": "812e91d7e9f388622ebacdbb9dc564b736a565a2f9c3f1384bce0e4a347d840f",
+		"flow:update-clip": "90cb177106c7b658252f10450fbfc21ac3112879b12a99bd18b1ca7f6900fa5c",
+		"element:video-workspace": "98c0bb7b36116e9316a44f958bebb8b0b93d258bff833fc7f7729f1164c830f3",
+		"flow:edit-video": "5b4983fc22fa04b6e2d2bf56addfaf153007868a5dbf0d6eeb2431cdf704a914"
+	},
+	"originalTypoOutput": "ccbf7e8f8ec7611904ee8e6791861b9a3be2178944ea9c8a69b0241d043275d0"
+}

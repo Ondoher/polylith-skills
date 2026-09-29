@@ -139,6 +139,56 @@ async function fixture(scenario, extraOperations = {}, serviceOptions = {}) {
 	return {root, worker, service, server, url, token, rpc, call, access, run, execute, value};
 }
 
+test('assigned UX contributions save small changes and materialize through the resident MCP worker', async (scenario) => {
+	const f = await fixture(scenario),
+		ux = createUxTestSpec();
+	await f.execute('units.open', {stage: 'ux', binding: {source: 'contribution-test'}});
+	const imported = await f.execute('units.import', {stage: 'ux', document: ux});
+	await f.execute('units.deliver', {stage: 'ux'}, {records: imported.handle});
+	const ref = 'context:document';
+	const assignment = await f.call('assign', {
+		access: f.access,
+		run: f.run,
+		operations: ['units.status', 'units.contribute', 'units.finish'],
+		scope: {stage: 'ux', recordRefs: [ref]},
+	});
+	const execute = async (operation, input) => {
+		const receipt = await f.call('execute', {access: assignment.access, run: f.run, operation, input});
+		assert.deepEqual(receipt.inline, f.value(receipt));
+		assert.ok(Buffer.byteLength(JSON.stringify(receipt)) <= 7000);
+		return receipt.inline;
+	};
+	const status = await execute('units.status', {stage: 'ux', references: [ref]});
+	const receipt = await execute('units.contribute', {
+		stage: 'ux',
+		batchId: 'title',
+		base: {[ref]: status.units[0].revision},
+		changes: [{unit: ref, op: 'set', fields: {title: 'Incrementally authored product'}}],
+	});
+	assert.deepEqual(receipt.issues, []);
+	const finished = await execute('units.finish', {stage: 'ux', references: [ref]});
+	assert.equal(finished.status, 'structurally-ready');
+	const saved = f.value(await f.execute('units.read', {stage: 'ux', references: [ref]}));
+	assert.equal(saved.records[0].data.document.title, 'Incrementally authored product');
+	const flowRef = `flow:${ux.flows[0].id}`;
+	await assert.rejects(
+		execute('units.contribute', {
+			stage: 'ux',
+			batchId: 'outside-scope',
+			base: {[ref]: receipt.accepted[0].revision, [flowRef]: null},
+			changes: [
+				{unit: ref, op: 'set', fields: {title: 'Must not apply'}},
+				{unit: flowRef, op: 'set', fields: {goal: 'Unassigned edit'}},
+			],
+		}),
+		/outside the assignment/,
+	);
+	assert.equal(
+		f.value(await f.execute('units.read', {stage: 'ux', references: [ref]})).records[0].data.document.title,
+		'Incrementally authored product',
+	);
+});
+
 test('configured read windows advertise their cap and preserve escaped UTF-8 across pages', async (scenario) => {
 	const f = await fixture(scenario, {}, {pageBytes: 28000});
 	const catalog = await f.rpc('tools/list', {});

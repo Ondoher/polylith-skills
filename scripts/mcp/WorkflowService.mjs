@@ -236,8 +236,13 @@ export class WorkflowService {
 		);
 		if (operation && !names.includes(operation)) throw new Error('Operation is not available');
 		return (operation ? [operation] : names).map((name) => {
-			const {description, inputSchema, assignable, writes} = this._operations[name];
-			return {name, ...(operation ? {description, inputSchema, assignable, writes} : {})};
+			const {description, inputSchema, assignable, writes, inlineResult} = this._operations[name];
+			return {
+				name,
+				...(operation
+					? {description, inputSchema, assignable, writes, ...(inlineResult ? {inlineResult: true} : {})}
+					: {}),
+			};
 		});
 	}
 
@@ -285,6 +290,12 @@ export class WorkflowService {
 					};
 					const value = await definition.execute(values, context);
 					const receipt = this._saveResult(run, value ?? null);
+					if (
+						definition.inlineResult &&
+						Buffer.byteLength(JSON.stringify({...receipt, inline: value})) <=
+							Math.min(8192, this.readLimits.pageBytes)
+					)
+						receipt.inline = value;
 					if (!capability.owner) capability.handles.add(receipt.handle);
 					job.result = receipt;
 					job.status = 'complete';

@@ -40,6 +40,19 @@ actors = [thread for thread in runtime['threads'] if thread['role'] == 'ux-plann
 assert len(actors) == 1
 actor = actors[0]
 assert actor['model'] == 'gpt-6-astra' and actor['effort'] == 'ultra'
+# Built-in discovery is a separate rollout item, omitted by the older extractor.
+discovery_calls = {}
+for event in rows(Path(actor['sourceSession'])):
+    payload = event.get('payload', {})
+    at = stamp(event['timestamp'])
+    identity = payload.get('call_id')
+    if payload.get('type') == 'tool_search_call' and stamp(actor['windowStart']) <= at <= stamp(actor['windowEnd']):
+        arguments = payload.get('arguments', '')
+        encoded = arguments if isinstance(arguments, str) else json.dumps(arguments, separators=(',', ':'))
+        discovery_calls[identity] = {'id': identity, 'name': 'tool_search', 'start': at, 'argumentBytes': len(encoded.encode('utf-8'))}
+    elif payload.get('type') == 'tool_search_output' and identity in discovery_calls:
+        discovery_calls[identity]['end'] = at
+actor['calls'].extend(discovery_calls.values())
 service = rows(ATTEMPT / 'service-observations.jsonl')
 assert not any(item.get('isPlan') for item in service)
 markers = {item['phase']: item for item in service if item.get('phase')}
@@ -194,6 +207,7 @@ report = {
     'experiment': 'Larger-window collection-only UX acquisition' if window_trial else 'Prescribed collection-only UX acquisition, same full inputs and bounded MCP reads',
     'capturedAt': datetime.now(timezone.utc).isoformat(), 'control': control,
     'windows': windows, 'coverage': coverage, 'clientCoverage': client_coverage,
+    'builtinDiscoveryCallCount': len(discovery_calls),
     'truncationWarnings': truncation_warnings, 'phaseObservations': list(markers.values()),
     'explicitOutputBudgetValues': explicit_output_budgets,
     'readCommandAnalysis': {'readCount': len(pages), 'generatedCommandCount': len(commands),
