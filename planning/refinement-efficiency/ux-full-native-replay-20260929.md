@@ -12,6 +12,10 @@ setup adds 5m19.803s, for **2h14m19.610s** from request to client completion.
 Supervisor analysis, this report and checkpoint time are additional. This is a
 completed experiment, not a demonstrated performance improvement.
 
+Subsequent owner direction limits upcoming tests to the first UX authoring round,
+ending at initial output delivery. See the [current test scope](experiments/README.md).
+The review and repair stages below remain historical measurements of this run.
+
 ## Inputs and isolation
 
 The working copy is `.codex-tmp/ux-full-native-20260929/full-01/workspace`.

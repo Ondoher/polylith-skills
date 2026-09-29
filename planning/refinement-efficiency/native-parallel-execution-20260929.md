@@ -147,3 +147,8 @@ flag; later author reads batched up to five. The small-test results above remain
 valid, but they do not establish reliable batching for the full specialist
 workflow. The follow-up report records this integration gap and the much larger
 cost of generating complete replacement JSON records.
+
+The subsequent [multi-read skill test](multi-read-skill-20260929.md) compared an
+identical inline contract with skill loading in prepared UX contexts. Both
+serialized; the skill completed all eight reads and reported the violation.
+That test stopped after one pair and did not run UX authoring or review.
