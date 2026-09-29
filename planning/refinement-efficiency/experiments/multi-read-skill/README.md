@@ -34,8 +34,10 @@ The current prototype additionally assures the worker that manifest reads cannot
 change one another's data: saved results are identified by content hash and each
 call supplies its own offset, with no shared cursor or consuming read. This is
 supported by `WorkflowService.read` and applies even to pages of the same handle.
-This assurance was added after the explicit-failure retry and has not yet been
-tested with a model. It does not promise client support or successful delivery.
+An owner-authorized [assurance retry](../../multi-read-skill-isolation-20260929.md)
+loaded the complete updated skill but again issued one standalone read and then
+reported failure. The assurance does not promise client support or successful
+delivery.
 
 Run one matched pair first, sequentially. Repeat twice only if the skill shows
 promising contract compliance; alternate order to limit simple order effects.

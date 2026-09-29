@@ -5,6 +5,9 @@ alone, recognized the contract violation, stored `collection-failed`, and return
 `MULTI_READ_FAILED`. Seven pages remained unread. The explicit failure wording
 produced an honest failure outcome in this trial, but no parallel execution.
 
+A later [retry with an explicit concurrency assurance](multi-read-skill-isolation-20260929.md)
+produced the same one-page failure. The original evidence below is unchanged.
+
 ## Scope and controls
 
 The owner authorized one retry after commit `9d927ee` made serialization an

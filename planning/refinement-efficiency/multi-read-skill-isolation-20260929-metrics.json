@@ -1,0 +1,240 @@
+{
+	"experiment": "Multi-read concurrency-assurance retry",
+	"implementationCommit": "b4f1fbdaed098ec1b2780b90ac1ca908443c0816",
+	"status": "complete",
+	"outcome": "One standalone read followed by explicit skill failure; concurrency assurance did not produce batching in this attempt",
+	"matchedInputsAndRoleVerified": true,
+	"baseline": {
+		"attempt": "skill-failure-01",
+		"preparationSeconds": 97.0939635,
+		"collection": {
+			"passed": false,
+			"deliveredPages": 1,
+			"missingPages": 7,
+			"maxReadsPerResponse": 1,
+			"clientSecondsIncludingLoading": 39.640000104904175,
+			"generationRequests": 5,
+			"toolCalls": 3,
+			"skillReads": [
+				{
+					"callId": "call_wXdx0JUCPi4K300o16O4hB5v",
+					"name": "exec_command",
+					"argumentBytes": 198,
+					"outputBytes": 1890,
+					"toolStart": 1790705731.175,
+					"toolEnd": 1790705731.693,
+					"toolSeconds": 0.5180001258850098,
+					"commandStreamSeconds": 1.972545862197876,
+					"completeContractObserved": true
+				}
+			]
+		}
+	},
+	"retry": {
+		"attempt": "skill-isolation-01",
+		"condition": "skill",
+		"control": {
+			"experiment": "multi-read-skill",
+			"condition": "skill",
+			"name": "skill-isolation-01",
+			"smoke": false,
+			"workspace": "C:\\dev\\polylith-skills\\.codex-tmp\\multi-read-skill-20260929\\skill-isolation-01\\workspace",
+			"run": "multi-read-trial",
+			"model": "gpt-6-astra",
+			"effort": "ultra",
+			"roleSha256": "3790c2693056a82bf70d0447ec4e4bcb97d32d166901143020f6416e8e9b85fd",
+			"contractSha256": "6065cc1b64b54bd543300866c6b354279c11002986ae047c09eb59ab973191b1",
+			"contractBytes": 2292,
+			"skillFile": "C:\\dev\\polylith-skills\\.codex-tmp\\multi-read-skill-20260929\\skill-isolation-01\\workspace\\.agents\\skills\\multi-read\\SKILL.md",
+			"startedAt": "2026-09-29T18:27:15.873Z",
+			"status": "collection-failed",
+			"clientPhases": [
+				{
+					"name": "prepare",
+					"startedAt": "2026-09-29T18:27:16.436Z",
+					"reportedUsage": {
+						"input_tokens": 357140,
+						"cached_input_tokens": 320768,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 1868,
+						"reasoning_output_tokens": 0
+					},
+					"exitCode": 0,
+					"completedAt": "2026-09-29T18:28:49.612Z",
+					"elapsedMs": 93176.1217
+				},
+				{
+					"name": "collect",
+					"startedAt": "2026-09-29T18:28:49.614Z",
+					"reportedUsage": {
+						"input_tokens": 566386,
+						"cached_input_tokens": 519552,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 2804,
+						"reasoning_output_tokens": 508
+					},
+					"exitCode": 0,
+					"completedAt": "2026-09-29T18:29:29.887Z",
+					"elapsedMs": 40272.92989999999
+				}
+			],
+			"serverPid": 53448,
+			"instance": "d177f90b-1f45-4308-bc63-a8d941fcbf1d",
+			"inputBytes": 224000,
+			"readCount": 8,
+			"catalog": {
+				"path": "C:\\dev\\polylith-skills\\.codex-tmp\\multi-read-skill-20260929\\skill-isolation-01\\catalog\\b84600889eff895f7b145825f20fda09cf8331a8fc3a5642b39ad3d0c2e99e46.json",
+				"sha256": "b84600889eff895f7b145825f20fda09cf8331a8fc3a5642b39ad3d0c2e99e46",
+				"sourceSha256": "6b05c99757ab9aa250b476f2648f8843735934da0dbad38610e2f939c38681d8",
+				"model": "gpt-6-astra",
+				"changedFields": ["tool_mode", "use_responses_lite"]
+			},
+			"agentStartedAt": "2026-09-29T18:27:16.436Z",
+			"childPid": 20052,
+			"threadId": "01a0ee6b-ca59-7a73-825f-8024ec36ea04",
+			"lastPhase": "collection-failed",
+			"lastPhaseAt": "2026-09-29T18:29:24.882Z",
+			"exitCode": 0,
+			"agentCompletedAt": "2026-09-29T18:29:29.887Z",
+			"agentWindowMs": 133451,
+			"liveUnchanged": true,
+			"protectedFileCount": 611,
+			"completedAt": "2026-09-29T18:29:30.068Z"
+		},
+		"collection": {
+			"passed": false,
+			"eightReadsOneResponse": false,
+			"native": true,
+			"duplicateReads": 0,
+			"deliveredPages": 1,
+			"missingPages": 7,
+			"allDeliveredPagesByteExact": true,
+			"readGroups": {
+				"resp_0dfa33a8feb20966016abc036a96c087d2aacd3f56f0388f4d": 1
+			},
+			"maxReadsPerResponse": 1,
+			"recordedEffort": "ultra",
+			"wireEfforts": {
+				"xhigh": 5
+			},
+			"selectedModelParallelFlags": {
+				"True": 5
+			},
+			"otherCalls": [],
+			"clientSecondsIncludingLoading": 40.27300000190735,
+			"dispatchToFirstReadExecutionSeconds": 15.780999898910522,
+			"firstReadExecutionThroughLastReadReturnSeconds": 0.10199999809265137,
+			"dispatchToCompletionMarkerSeconds": null,
+			"generationRequests": 5,
+			"modelResponsesWithUsage": 5,
+			"toolCalls": 3,
+			"usage": {
+				"input_tokens": 209246,
+				"cached_input_tokens": 198784,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 936,
+				"reasoning_output_tokens": 508,
+				"total_tokens": 210182
+			},
+			"skillReads": [
+				{
+					"callId": "call_BqlZgHbmwdSznmoykPI4mWfu",
+					"name": "exec_command",
+					"argumentBytes": 200,
+					"outputBytes": 2398,
+					"toolStart": 1790706536.869,
+					"toolEnd": 1790706537.336,
+					"toolSeconds": 0.46700000762939453,
+					"commandStreamSeconds": 1.9554250240325928,
+					"completeContractObserved": true
+				}
+			],
+			"loadingThroughFirstReadSeconds": 15.780999898910522,
+			"reads": [
+				{
+					"callId": "call_swsZ2WigRvKl4dX1Y14Cpa96",
+					"source": "facts",
+					"offset": 0,
+					"bytes": 28000,
+					"sha256": "64a3f592c20ca61919b746689eca47c7cf32bbf799de2eb20af85b87ae586d41",
+					"byteExact": true,
+					"responseId": "resp_0dfa33a8feb20966016abc036a96c087d2aacd3f56f0388f4d",
+					"argumentBytes": 198,
+					"toolSeconds": 0.10199999809265137,
+					"toolStart": 1790706545.395,
+					"toolEnd": 1790706545.497,
+					"outputItemStart": 1790706542.347472,
+					"outputItemEnd": 1790706545.395,
+					"commandStreamSeconds": 3.047528028488159
+				}
+			]
+		},
+		"phaseMarkers": [
+			{
+				"phase": "instructions-ready",
+				"startedAt": "2026-09-29T18:28:47.454Z",
+				"endedAt": "2026-09-29T18:28:47.457Z",
+				"serviceMs": 2.761099999988801
+			},
+			{
+				"phase": "collection-failed",
+				"startedAt": "2026-09-29T18:29:24.879Z",
+				"endedAt": "2026-09-29T18:29:24.882Z",
+				"serviceMs": 2.501399999993737
+			}
+		],
+		"preparationSeconds": 93.17612170000001,
+		"preparationBoundedReadCalls": 9,
+		"runtimeActivity": {
+			"windowSeconds": 133.45099997520447,
+			"activeTurnSeconds": 130.6340000629425,
+			"activeSeconds": {
+				"output": 63.14839720726013,
+				"reasoning-item": 15.75715684890747,
+				"tool": 6.090000152587891
+			},
+			"activeUnattributedSeconds": 45.63844585418701
+		},
+		"service": {
+			"calls": 15,
+			"assignedReadMs": 0.47449999999662396
+		},
+		"limits": [
+			"One eight-page wave, not full product acquisition or UX authoring.",
+			"Same role and required guidance, but independently generated preparation histories can differ.",
+			"Time to first read includes client startup, model processing and command generation; it is not pure skill-loading time.",
+			"Coalesced batch item timestamps do not reliably measure individual command-generation intervals."
+		],
+		"evidence": {
+			"control.json": {
+				"path": "C:\\dev\\polylith-skills\\.codex-tmp\\multi-read-skill-20260929\\skill-isolation-01\\control.json",
+				"sha256": "23dfab1a938cd63aff5e23d6e69860d2d307b545a80f308971a40ba59d11d313"
+			},
+			"runtime-metrics.json": {
+				"path": "C:\\dev\\polylith-skills\\.codex-tmp\\multi-read-skill-20260929\\skill-isolation-01\\runtime-metrics.json",
+				"sha256": "62aca4d136de4815fb0aed43e92feafb4ff6a821c3e9a06dfa12471e08b3a2d4"
+			},
+			"input-read-plan.json": {
+				"path": "C:\\dev\\polylith-skills\\.codex-tmp\\multi-read-skill-20260929\\skill-isolation-01\\input-read-plan.json",
+				"sha256": "bfc04ddd45e13f8d3e53c692b6d4b4a60ef06788d7153d2993fb619b21dbff84"
+			},
+			"live-request-metadata.json": {
+				"path": "C:\\dev\\polylith-skills\\.codex-tmp\\multi-read-skill-20260929\\skill-isolation-01\\live-request-metadata.json",
+				"sha256": "bfbdc5582bd1416283d51b88b3ab12e839ffead931ee7b031e88742eb9ca9bb4"
+			},
+			"service-observations.jsonl": {
+				"path": "C:\\dev\\polylith-skills\\.codex-tmp\\multi-read-skill-20260929\\skill-isolation-01\\service-observations.jsonl",
+				"sha256": "fb63f027c563904527004c2c454a4167cb203ee7260e69695f7d9aa9af908777"
+			}
+		}
+	},
+	"finalResponse": "MULTI_READ_FAILED\n\nI issued entry 1 alone, violating the required parallel-wave contract.\n\n- Delivered intact and retained: entry 1.\n- Missing: entries 2\u20138.\n- Returned continuation: first handle, `nextOffset=28000` (entry 3). Later continuations remain unknown.\n- Stored phase: `collection-failed`.\n\nNo rereads, interpretation, or authoring performed.",
+	"limits": [
+		"One fresh retry with independently generated preparation history; not a controlled latency distribution.",
+		"Both comparison attempts delivered only one of eight pages; neither measured successful collection throughput.",
+		"The result does not establish that native parallel calls are unavailable.",
+		"No further paid repeats, UX authoring, review, rework, downstream processing or live product mutation.",
+		"Stream activity cannot isolate internal reasoning time.",
+		"Client reportedUsage fields retain raw counters; collection.usage sums selected collection response events, not a billing estimate."
+	]
+}
