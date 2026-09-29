@@ -15,7 +15,7 @@ read = lambda file: json.loads(file.read_text(encoding='utf-8'))
 rows = lambda file: [json.loads(line) for line in file.read_text(encoding='utf-8').splitlines() if line.strip()]
 stamp = lambda value: datetime.fromisoformat(value.replace('Z', '+00:00')).timestamp()
 control = read(attempt / 'control.json')
-assert control['status'] in ['finished', 'collection-incomplete', 'error'] and control['liveUnchanged']
+assert control['status'] in ['finished', 'collection-failed', 'collection-incomplete', 'error'] and control['liveUnchanged']
 assert control['clientPhases'][-1]['name'] == 'collect' and control['clientPhases'][-1]['exitCode'] == 0
 subprocess.run([sys.executable, '-X', 'utf8', str(ROOT / '.codex-tmp/alexa-mcp-refinement-20260928-133745/collect-runtime.py'), str(attempt)],
                cwd=ROOT, check=True, capture_output=True)
@@ -115,6 +115,7 @@ other_calls = [call['name'] for call in calls if call['name'] not in ['workflow_
                and call['call_id'] not in {item['callId'] for item in skill_reads}]
 markers = [item for item in rows(attempt / 'service-observations.jsonl') if item.get('phase')]
 ready = next((item for item in markers if item['phase'] == 'inputs-ready'), None)
+failed = any(item['phase'] == 'collection-failed' for item in markers)
 responses = [response for response in actor['responses'] if start <= stamp(response['at']) <= end]
 usage = collections.Counter()
 for response in responses:
@@ -123,7 +124,7 @@ same_response = len(groups) == 1 and len(reads) == 8
 report = {
     'attempt': name, 'condition': control['condition'], 'control': control,
     'collection': {
-        'passed': same_response and native and not duplicates and not other_calls and ready is not None,
+        'passed': same_response and native and not duplicates and not other_calls and ready is not None and not failed,
         'eightReadsOneResponse': same_response, 'native': native, 'duplicateReads': duplicates,
         'deliveredPages': len(seen), 'missingPages': len(plan) - len(seen),
         'allDeliveredPagesByteExact': True, 'readGroups': dict(groups), 'maxReadsPerResponse': max(groups.values(), default=0),

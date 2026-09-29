@@ -271,9 +271,14 @@ try {
 				: `Use $multi-read. Load its instructions once from ${skillFile}, then apply them to this wave.`;
 		await phase(
 			'collect',
-			`${body}\nAssigned access=${access}. Manifest: ${JSON.stringify(reads)}\nThis invocation covers exactly these eight pages; later continuations are outside this trial. After all entries return, call workflow_store with access=${access}, run=${run}, value={"kind":"ux-replay-phase","phase":"inputs-ready"}. Return only READY plus any contract deviation. Stop before UX interpretation or authoring. Do not copy the payloads or compute hashes; external instrumentation verifies exact results.`,
+			`${body}\nAssigned access=${access}. Manifest: ${JSON.stringify(reads)}\nThis invocation covers exactly these eight pages; later continuations are outside this trial. Only after all entries return intact and the parallel-wave contract was met, call workflow_store with access=${access}, run=${run}, value={"kind":"ux-replay-phase","phase":"inputs-ready"} and return MULTI_READ_COMPLETE. On skill failure, store phase="collection-failed" instead and return MULTI_READ_FAILED with the reason and delivered/missing entries. Serialization is failure even when all pages arrive; retain successful results without rereading them. Stop before UX interpretation or authoring. Do not copy the payloads or compute hashes; external instrumentation verifies exact results and batching.`,
 		);
-		control.status = control.lastPhase === 'inputs-ready' ? 'finished' : 'collection-incomplete';
+		control.status =
+			control.lastPhase === 'inputs-ready'
+				? 'finished'
+				: control.lastPhase === 'collection-failed'
+					? 'collection-failed'
+					: 'collection-incomplete';
 		control.exitCode = 0;
 		control.agentCompletedAt = control.clientPhases.at(-1).completedAt;
 		control.agentWindowMs = Date.parse(control.agentCompletedAt) - Date.parse(control.agentStartedAt);
