@@ -1,0 +1,832 @@
+{
+	"experiment": "Native MCP namespace exposure and independent result verification",
+	"control": {
+		"experiment": "ux-read-window",
+		"pageBytes": 28000,
+		"probe": true,
+		"parallelProbe": false,
+		"nativeProbe": true,
+		"observeLiveRequest": true,
+		"nativeReadRequests": [
+			{
+				"source": "facts",
+				"offset": 0,
+				"maxBytes": 28000
+			},
+			{
+				"source": "ux",
+				"offset": 0,
+				"maxBytes": 28000
+			}
+		],
+		"disableCodeHost": false,
+		"directNamespace": "mcp__polylith_workflows",
+		"modelCatalogOverride": {
+			"path": "C:\\dev\\polylith-skills\\.codex-tmp\\codex-parallel-rule-20260928\\catalog-direct-without-lite.private.json",
+			"sha256": "825a4edc8b33ca5e019dff16f53ddd5cfac857df0f1e8abb3c7b79baafd69d49"
+		},
+		"startedAt": "2026-09-29T01:19:15.544Z",
+		"run": "ux-mcp-replay-20260928",
+		"workspace": "C:\\dev\\polylith-skills\\",
+		"transport": "resident workflow MCP over localhost HTTP",
+		"status": "finished",
+		"smoke": false,
+		"serverPid": 52316,
+		"instance": "37a1a7c8-6fb1-43ea-b994-98848f496855",
+		"serverStartupMs": 148.2004,
+		"readLimits": {
+			"pageBytes": 28000,
+			"envelopeBytes": 31200,
+			"toolBytes": 32768
+		},
+		"childPid": 52608,
+		"agentStartedAt": "2026-09-29T01:19:15.827Z",
+		"threadId": "01a0eabe-9e01-7bf3-9157-9c8dbcd4b7cb",
+		"lastPhase": "inputs-ready",
+		"lastPhaseAt": "2026-09-29T01:19:36.956Z",
+		"reportedUsage": {
+			"input_tokens": 109301,
+			"cached_input_tokens": 80128,
+			"cache_write_input_tokens": 0,
+			"output_tokens": 343,
+			"reasoning_output_tokens": 0
+		},
+		"exitCode": 0,
+		"agentCompletedAt": "2026-09-29T01:19:40.134Z",
+		"agentWindowMs": 24317.5104,
+		"completedAt": "2026-09-29T01:19:40.153Z"
+	},
+	"inputHashes": {
+		"facts": "0a93131e55d107256cd22569659a860a6a927a5e30a01e8800a30ca5e9782e2a",
+		"ux": "5892a95485b1358f454ec59f71dc096acb7ab5e92033f831b437070ea895dc4c"
+	},
+	"results": [
+		{
+			"source": "facts",
+			"offset": 0,
+			"callId": "call_s6pXg6DMivyENaHmPJhvJW17",
+			"responseId": "resp_043b4205732a4d07016abb1216a18487d2951882e4390f7627",
+			"nativeFunctionCall": true,
+			"argumentBytes": 204,
+			"textBytes": 28000,
+			"clientLoggedOutputBytes": 31392,
+			"byteExact": true,
+			"sha256": "64a3f592c20ca61919b746689eca47c7cf32bbf799de2eb20af85b87ae586d41",
+			"commandGenerationSeconds": 2.9716570377349854,
+			"toolRoundTripSeconds": 0.07399988174438477,
+			"serverMs": 0.8280000000013388
+		},
+		{
+			"source": "ux",
+			"offset": 0,
+			"callId": "call_fwQYnKbXhfAkYICp38q9iELA",
+			"responseId": "resp_043b4205732a4d07016abb121eb0a487d2ba4bb4bef0a36751",
+			"nativeFunctionCall": true,
+			"argumentBytes": 204,
+			"textBytes": 28000,
+			"clientLoggedOutputBytes": 31859,
+			"byteExact": true,
+			"sha256": "311dd27aed2da6e7bcf328baa028ee4df0cb9f037a521644065d6544b7082f96",
+			"commandGenerationSeconds": 2.8692870140075684,
+			"toolRoundTripSeconds": 0.08100008964538574,
+			"serverMs": 1.0036000000000058
+		}
+	],
+	"outcome": "completed",
+	"reportedResult": "NATIVE_COMPLETED",
+	"nativeReadCount": 2,
+	"requestedReadCount": 2,
+	"allRequestedReadsVerified": true,
+	"readResponseGroups": {
+		"resp_043b4205732a4d07016abb1216a18487d2951882e4390f7627": 1,
+		"resp_043b4205732a4d07016abb121eb0a487d2ba4bb4bef0a36751": 1
+	},
+	"maxReadsPerResponse": 1,
+	"anyReadBatch": false,
+	"readTransitions": [
+		{
+			"fromCallId": "call_s6pXg6DMivyENaHmPJhvJW17",
+			"toCallId": "call_fwQYnKbXhfAkYICp38q9iELA",
+			"preCommandGapSeconds": 2.3717129230499268,
+			"commandGenerationSeconds": 2.8692870140075684,
+			"toolRoundTripSeconds": 0.08100008964538574,
+			"wholeCycleSeconds": 5.322000026702881
+		}
+	],
+	"completionMarkerStored": true,
+	"nativeExposureVerified": true,
+	"singleResponseReadGroup": false,
+	"bothCallsPreparedBeforeFirstResult": false,
+	"targetMet": false,
+	"toolIntervalsOverlap": false,
+	"betweenReads": {
+		"preCommandGapSeconds": 2.3717129230499268,
+		"commandGenerationSeconds": 2.8692870140075684,
+		"toolRoundTripSeconds": 0.08100008964538574,
+		"wholeCycleSeconds": 5.322000026702881
+	},
+	"groupingMethod": "Pair completed function-call items with the next response.completed event. A shared model response establishes generation without an intervening model-response cycle. A shared Codex turn ID is insufficient. Early tool completion can overlap continued generation within the same response; before-result timing and execution overlap are separate observations, not batch-success requirements.",
+	"runtime": {
+		"capturedAt": "2026-09-29T01:20:04.279398+00:00",
+		"attemptStartedAt": "2026-09-29T01:19:15.827Z",
+		"attemptEndedAt": "2026-09-29T01:19:40.134Z",
+		"threads": [
+			{
+				"threadId": "01a0eabe-9e01-7bf3-9157-9c8dbcd4b7cb",
+				"role": null,
+				"agentPath": null,
+				"model": "gpt-6-astra",
+				"effort": "xhigh",
+				"sourceSession": "C:\\Users\\gande\\.codex\\sessions\\2026\\09\\28\\rollout-2026-09-28T18-19-16-01a0eabe-9e01-7bf3-9157-9c8dbcd4b7cb.jsonl",
+				"windowStart": "2026-09-29T01:19:15.827+00:00",
+				"windowEnd": "2026-09-29T01:19:40.134+00:00",
+				"windowSeconds": 24.307000160217285,
+				"activeTurnSeconds": 22.1729998588562,
+				"outsideRecordedTurnsSeconds": 2.134000301361084,
+				"activeSeconds": {
+					"output": 9.223842144012451,
+					"reasoning-item": 0,
+					"tool": 0.24199986457824707
+				},
+				"activeUnattributedSeconds": 12.707157850265503,
+				"streamIntervalsObserved": true,
+				"seconds": {
+					"output": 9.223842144012451,
+					"reasoning-item": 0,
+					"tool": 0.24199986457824707
+				},
+				"unattributedSeconds": 14.841158151626587,
+				"items": [
+					{
+						"id": "msg_043b4205732a4d07016abb121a060c87d285f2496bd46d157f",
+						"kind": "message",
+						"end": 1790644764.061,
+						"turn": "01a0eabe-a08b-7b72-b806-01f7fcc868d2",
+						"callId": null,
+						"start": 1790644762.832148,
+						"streamEvents": 2
+					},
+					{
+						"id": "fc_043b4205732a4d07016abb121b3fc487d2b5884e73c3760687",
+						"kind": "function_call",
+						"end": 1790644767.035,
+						"turn": "01a0eabe-a08b-7b72-b806-01f7fcc868d2",
+						"callId": "call_s6pXg6DMivyENaHmPJhvJW17",
+						"start": 1790644764.063343,
+						"streamEvents": 1
+					},
+					{
+						"id": "fc_043b4205732a4d07016abb1220ab8487d2b170e525b8ab2e56",
+						"kind": "function_call",
+						"end": 1790644772.35,
+						"turn": "01a0eabe-a08b-7b72-b806-01f7fcc868d2",
+						"callId": "call_fwQYnKbXhfAkYICp38q9iELA",
+						"start": 1790644769.480713,
+						"streamEvents": 1
+					},
+					{
+						"id": "fc_043b4205732a4d07016abb122632dc87d28090eb6856abb291",
+						"kind": "function_call",
+						"end": 1790644776.95,
+						"turn": "01a0eabe-a08b-7b72-b806-01f7fcc868d2",
+						"callId": "call_W2qnBIOg0RdH6ywoR8VjgMKD",
+						"start": 1790644775.009216,
+						"streamEvents": 1
+					},
+					{
+						"id": "msg_043b4205732a4d07016abb122a3b6887d2991ff91595298603",
+						"kind": "message",
+						"end": 1790644779.255,
+						"turn": "01a0eabe-a08b-7b72-b806-01f7fcc868d2",
+						"callId": null,
+						"start": 1790644779.041738,
+						"streamEvents": 2
+					}
+				],
+				"calls": [
+					{
+						"id": "call_s6pXg6DMivyENaHmPJhvJW17",
+						"name": "workflow_read",
+						"start": 1790644767.035,
+						"argumentBytes": 204,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 72.0,
+						"handler_duration_ms": 72.0,
+						"dispatch_duration_ms": 0.0,
+						"end": 1790644767.109,
+						"outputBytes": 31392
+					},
+					{
+						"id": "call_fwQYnKbXhfAkYICp38q9iELA",
+						"name": "workflow_read",
+						"start": 1790644772.35,
+						"argumentBytes": 204,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 78.0,
+						"handler_duration_ms": 78.0,
+						"dispatch_duration_ms": 0.0,
+						"end": 1790644772.431,
+						"outputBytes": 31859
+					},
+					{
+						"id": "call_W2qnBIOg0RdH6ywoR8VjgMKD",
+						"name": "workflow_store",
+						"start": 1790644776.95,
+						"argumentBytes": 166,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 85.0,
+						"handler_duration_ms": 85.0,
+						"dispatch_duration_ms": 0.0,
+						"end": 1790644777.037,
+						"outputBytes": 494
+					}
+				],
+				"responses": [
+					{
+						"id": "resp_043b4205732a4d07016abb1216a18487d2951882e4390f7627",
+						"at": "2026-09-29T01:19:27.107+00:00",
+						"turn": "01a0eabe-a08b-7b72-b806-01f7fcc868d2",
+						"usage": {
+							"input_tokens": 19372,
+							"cached_input_tokens": 3712,
+							"cache_write_input_tokens": 0,
+							"output_tokens": 142,
+							"reasoning_output_tokens": 0,
+							"total_tokens": 19514
+						}
+					},
+					{
+						"id": "resp_043b4205732a4d07016abb121eb0a487d2ba4bb4bef0a36751",
+						"at": "2026-09-29T01:19:32.430+00:00",
+						"turn": "01a0eabe-a08b-7b72-b806-01f7fcc868d2",
+						"usage": {
+							"input_tokens": 25790,
+							"cached_input_tokens": 19072,
+							"cache_write_input_tokens": 0,
+							"output_tokens": 112,
+							"reasoning_output_tokens": 0,
+							"total_tokens": 25902
+						}
+					},
+					{
+						"id": "resp_043b4205732a4d07016abb12240ab087d2ab4915520b141f8c",
+						"at": "2026-09-29T01:19:37.035+00:00",
+						"turn": "01a0eabe-a08b-7b72-b806-01f7fcc868d2",
+						"usage": {
+							"input_tokens": 31929,
+							"cached_input_tokens": 25600,
+							"cache_write_input_tokens": 0,
+							"output_tokens": 81,
+							"reasoning_output_tokens": 0,
+							"total_tokens": 32010
+						}
+					},
+					{
+						"id": "resp_043b4205732a4d07016abb12288af887d2aa3e0796bc3fb047",
+						"at": "2026-09-29T01:19:39.310+00:00",
+						"turn": "01a0eabe-a08b-7b72-b806-01f7fcc868d2",
+						"usage": {
+							"input_tokens": 32210,
+							"cached_input_tokens": 31744,
+							"cache_write_input_tokens": 0,
+							"output_tokens": 8,
+							"reasoning_output_tokens": 0,
+							"total_tokens": 32218
+						}
+					}
+				],
+				"usageByCompletedResponse": {
+					"input_tokens": 109301,
+					"cached_input_tokens": 80128,
+					"output_tokens": 343,
+					"reasoning_output_tokens": 0
+				},
+				"turns": {
+					"01a0eabe-a08b-7b72-b806-01f7fcc868d2": [
+						{
+							"at": "2026-09-29T01:19:17.144+00:00",
+							"event": "task_started"
+						},
+						{
+							"at": "2026-09-29T01:19:39.317+00:00",
+							"event": "task_complete"
+						}
+					]
+				}
+			}
+		],
+		"limits": [
+			"Client-observed streams, not isolated provider computation or semantic reasoning.",
+			"Parent and child windows overlap and are nonadditive.",
+			"Child windows start at recorded thread creation and end at task completion when observed, otherwise the capture boundary.",
+			"Incomplete output lacks a completed interval; response usage may straddle boundaries.",
+			"First stream event is used with the persisted item completion; stderr does not expose the desktop logger event labels.",
+			"Raw logs and capabilities remain private; this output includes metadata only."
+		]
+	},
+	"liveRequestEvidence": {
+		"sourceSha256": "d6f82bac865e480181af1fa2f788bcb1ec5a81e22ea4b2aa6844dbc21043947b",
+		"upstream": "https://chatgpt.com/backend-api/codex/responses",
+		"generationRequestCount": 4,
+		"allGenerationRequestsPermitParallelCalls": true,
+		"allCompletedGenerationResponsesEchoParallelCalls": true,
+		"codeWrapperAbsent": true,
+		"wireCallGroupingMatchesClientRuntime": true,
+		"toolInventory": [
+			{
+				"type": "function",
+				"name": "exec_command"
+			},
+			{
+				"type": "function",
+				"name": "write_stdin"
+			},
+			{
+				"type": "function",
+				"name": "list_mcp_resources"
+			},
+			{
+				"type": "function",
+				"name": "list_mcp_resource_templates"
+			},
+			{
+				"type": "function",
+				"name": "read_mcp_resource"
+			},
+			{
+				"type": "function",
+				"name": "request_user_input"
+			},
+			{
+				"type": "function",
+				"name": "request_user_input_async"
+			},
+			{
+				"type": "namespace",
+				"name": "clock",
+				"tools": [
+					{
+						"type": "function",
+						"name": "curr_time"
+					},
+					{
+						"type": "function",
+						"name": "sleep"
+					}
+				]
+			},
+			{
+				"type": "function",
+				"name": "request_plugin_install"
+			},
+			{
+				"type": "custom",
+				"name": "apply_patch"
+			},
+			{
+				"type": "function",
+				"name": "view_image"
+			},
+			{
+				"type": "namespace",
+				"name": "collaboration",
+				"tools": [
+					{
+						"type": "function",
+						"name": "followup_task"
+					},
+					{
+						"type": "function",
+						"name": "interrupt_agent"
+					},
+					{
+						"type": "function",
+						"name": "list_agents"
+					},
+					{
+						"type": "function",
+						"name": "send_message"
+					},
+					{
+						"type": "function",
+						"name": "spawn_agent"
+					},
+					{
+						"type": "function",
+						"name": "wait_agent"
+					}
+				]
+			},
+			{
+				"type": "namespace",
+				"name": "mcp__polylith_workflows",
+				"tools": [
+					{
+						"type": "function",
+						"name": "workflow_assign"
+					},
+					{
+						"type": "function",
+						"name": "workflow_catalog"
+					},
+					{
+						"type": "function",
+						"name": "workflow_execute"
+					},
+					{
+						"type": "function",
+						"name": "workflow_open"
+					},
+					{
+						"type": "function",
+						"name": "workflow_read"
+					},
+					{
+						"type": "function",
+						"name": "workflow_status"
+					},
+					{
+						"type": "function",
+						"name": "workflow_store"
+					}
+				]
+			},
+			{
+				"type": "function",
+				"name": "get_goal"
+			},
+			{
+				"type": "function",
+				"name": "create_goal"
+			},
+			{
+				"type": "function",
+				"name": "update_goal"
+			},
+			{
+				"type": "namespace",
+				"name": "image_gen",
+				"tools": [
+					{
+						"type": "function",
+						"name": "imagegen"
+					}
+				]
+			},
+			{
+				"type": "tool_search",
+				"name": null
+			},
+			{
+				"type": "web_search",
+				"name": null
+			}
+		],
+		"requests": [
+			{
+				"at": "2026-09-29T01:19:17.856Z",
+				"elapsedMs": 2051.1234,
+				"connection": 1,
+				"messageBytes": 30549,
+				"sha256": "93a3290968401a87cfb7a8e15f3e1ad547790b0e22f84f52aa9975def7fc64b9",
+				"type": "response.create",
+				"model": "codex-auto-review",
+				"generate": false,
+				"parallelToolCalls": false,
+				"toolChoice": "auto",
+				"reasoningEffort": "low",
+				"previousResponseId": null
+			},
+			{
+				"at": "2026-09-29T01:19:18.058Z",
+				"elapsedMs": 2253.1989,
+				"connection": 0,
+				"messageBytes": 60751,
+				"sha256": "8c7f72b809e746be8251dbf76ca0e7d8cf5878d3ab14ecb335f0c6d1ce98a90a",
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": false,
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"previousResponseId": null
+			},
+			{
+				"at": "2026-09-29T01:19:19.021Z",
+				"elapsedMs": 3216.5969,
+				"connection": 0,
+				"messageBytes": 81904,
+				"sha256": "427f3a3b036f00f682372536c2843f4fb814ab53bc6e5e6d7776697f1b0a3efc",
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"previousResponseId": "resp_043b4205732a4d07016abb1215853087d2ade95b6aae250610"
+			},
+			{
+				"at": "2026-09-29T01:19:27.128Z",
+				"elapsedMs": 11322.7458,
+				"connection": 0,
+				"messageBytes": 94438,
+				"sha256": "6dd364dfcdff5ec0101bfbeba97b31924f004f5d89f34d173b5f745eb13cd362",
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"previousResponseId": "resp_043b4205732a4d07016abb1216a18487d2951882e4390f7627"
+			},
+			{
+				"at": "2026-09-29T01:19:32.450Z",
+				"elapsedMs": 16644.9227,
+				"connection": 0,
+				"messageBytes": 95191,
+				"sha256": "8956921f249927162cff645622ee0697fde30cfa0ebb13dace8db8a1a86874a6",
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"previousResponseId": "resp_043b4205732a4d07016abb121eb0a487d2ba4bb4bef0a36751"
+			},
+			{
+				"at": "2026-09-29T01:19:37.056Z",
+				"elapsedMs": 21251.1378,
+				"connection": 0,
+				"messageBytes": 62034,
+				"sha256": "2d59fa6d303a0f19bca61e2f47a95365badb083995ced03981c77d419365b2a7",
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"previousResponseId": "resp_043b4205732a4d07016abb12240ab087d2ab4915520b141f8c"
+			}
+		],
+		"responses": [
+			{
+				"at": "2026-09-29T01:19:18.207Z",
+				"elapsedMs": 2401.8938,
+				"connection": 1,
+				"messageBytes": 11222,
+				"type": "response.created",
+				"responseId": "resp_0995185447654325016abb1215561887d18f1f66a38d1e3d52",
+				"model": "codex-auto-review",
+				"status": "in_progress",
+				"parallelToolCalls": false,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T01:19:18.353Z",
+				"elapsedMs": 2548.3401999999996,
+				"connection": 1,
+				"messageBytes": 11396,
+				"type": "response.completed",
+				"responseId": "resp_0995185447654325016abb1215561887d18f1f66a38d1e3d52",
+				"model": "codex-auto-review",
+				"status": "completed",
+				"parallelToolCalls": false,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T01:19:18.533Z",
+				"elapsedMs": 2728.3495,
+				"connection": 0,
+				"messageBytes": 61383,
+				"type": "response.created",
+				"responseId": "resp_043b4205732a4d07016abb1215853087d2ade95b6aae250610",
+				"model": "gpt-6-astra",
+				"status": "in_progress",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T01:19:18.699Z",
+				"elapsedMs": 2893.7612,
+				"connection": 0,
+				"messageBytes": 61559,
+				"type": "response.completed",
+				"responseId": "resp_043b4205732a4d07016abb1215853087d2ade95b6aae250610",
+				"model": "gpt-6-astra",
+				"status": "completed",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T01:19:19.644Z",
+				"elapsedMs": 3838.9160999999995,
+				"connection": 0,
+				"messageBytes": 61557,
+				"type": "response.created",
+				"responseId": "resp_043b4205732a4d07016abb1216a18487d2951882e4390f7627",
+				"model": "gpt-6-astra",
+				"status": "in_progress",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T01:19:24.057Z",
+				"elapsedMs": 8252.0138,
+				"connection": 0,
+				"messageBytes": 588,
+				"type": "response.output_item.done",
+				"responseId": "resp_043b4205732a4d07016abb1216a18487d2951882e4390f7627",
+				"itemType": "message",
+				"itemId": "msg_043b4205732a4d07016abb121a060c87d285f2496bd46d157f",
+				"callId": null,
+				"name": null,
+				"namespace": null
+			},
+			{
+				"at": "2026-09-29T01:19:27.034Z",
+				"elapsedMs": 11229.0952,
+				"connection": 0,
+				"messageBytes": 713,
+				"type": "response.output_item.done",
+				"responseId": "resp_043b4205732a4d07016abb1216a18487d2951882e4390f7627",
+				"itemType": "function_call",
+				"itemId": "fc_043b4205732a4d07016abb121b3fc487d2b5884e73c3760687",
+				"callId": "call_s6pXg6DMivyENaHmPJhvJW17",
+				"name": "workflow_read",
+				"namespace": "mcp__polylith_workflows"
+			},
+			{
+				"at": "2026-09-29T01:19:27.106Z",
+				"elapsedMs": 11300.83,
+				"connection": 0,
+				"messageBytes": 63786,
+				"type": "response.completed",
+				"responseId": "resp_043b4205732a4d07016abb1216a18487d2951882e4390f7627",
+				"model": "gpt-6-astra",
+				"status": "completed",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T01:19:27.654Z",
+				"elapsedMs": 11848.8513,
+				"connection": 0,
+				"messageBytes": 61557,
+				"type": "response.created",
+				"responseId": "resp_043b4205732a4d07016abb121eb0a487d2ba4bb4bef0a36751",
+				"model": "gpt-6-astra",
+				"status": "in_progress",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T01:19:32.349Z",
+				"elapsedMs": 16543.8788,
+				"connection": 0,
+				"messageBytes": 712,
+				"type": "response.output_item.done",
+				"responseId": "resp_043b4205732a4d07016abb121eb0a487d2ba4bb4bef0a36751",
+				"itemType": "function_call",
+				"itemId": "fc_043b4205732a4d07016abb1220ab8487d2b170e525b8ab2e56",
+				"callId": "call_fwQYnKbXhfAkYICp38q9iELA",
+				"name": "workflow_read",
+				"namespace": "mcp__polylith_workflows"
+			},
+			{
+				"at": "2026-09-29T01:19:32.428Z",
+				"elapsedMs": 16622.9234,
+				"connection": 0,
+				"messageBytes": 64251,
+				"type": "response.completed",
+				"responseId": "resp_043b4205732a4d07016abb121eb0a487d2ba4bb4bef0a36751",
+				"model": "gpt-6-astra",
+				"status": "completed",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T01:19:32.994Z",
+				"elapsedMs": 17188.7278,
+				"connection": 0,
+				"messageBytes": 61557,
+				"type": "response.created",
+				"responseId": "resp_043b4205732a4d07016abb12240ab087d2ab4915520b141f8c",
+				"model": "gpt-6-astra",
+				"status": "in_progress",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T01:19:36.948Z",
+				"elapsedMs": 21143.4199,
+				"connection": 0,
+				"messageBytes": 681,
+				"type": "response.output_item.done",
+				"responseId": "resp_043b4205732a4d07016abb12240ab087d2ab4915520b141f8c",
+				"itemType": "function_call",
+				"itemId": "fc_043b4205732a4d07016abb122632dc87d28090eb6856abb291",
+				"callId": "call_W2qnBIOg0RdH6ywoR8VjgMKD",
+				"name": "workflow_store",
+				"namespace": "mcp__polylith_workflows"
+			},
+			{
+				"at": "2026-09-29T01:19:37.033Z",
+				"elapsedMs": 21227.7573,
+				"connection": 0,
+				"messageBytes": 64692,
+				"type": "response.completed",
+				"responseId": "resp_043b4205732a4d07016abb12240ab087d2ab4915520b141f8c",
+				"model": "gpt-6-astra",
+				"status": "completed",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T01:19:37.461Z",
+				"elapsedMs": 21655.8828,
+				"connection": 0,
+				"messageBytes": 61557,
+				"type": "response.created",
+				"responseId": "resp_043b4205732a4d07016abb12288af887d2aa3e0796bc3fb047",
+				"model": "gpt-6-astra",
+				"status": "in_progress",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T01:19:39.247Z",
+				"elapsedMs": 23442.5781,
+				"connection": 0,
+				"messageBytes": 507,
+				"type": "response.output_item.done",
+				"responseId": "resp_043b4205732a4d07016abb12288af887d2aa3e0796bc3fb047",
+				"itemType": "message",
+				"itemId": "msg_043b4205732a4d07016abb122a3b6887d2991ff91595298603",
+				"callId": null,
+				"name": null,
+				"namespace": null
+			},
+			{
+				"at": "2026-09-29T01:19:39.307Z",
+				"elapsedMs": 23502.382,
+				"connection": 0,
+				"messageBytes": 65219,
+				"type": "response.completed",
+				"responseId": "resp_043b4205732a4d07016abb12288af887d2aa3e0796bc3fb047",
+				"model": "gpt-6-astra",
+				"status": "completed",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			}
+		],
+		"connections": [
+			{
+				"connection": 0,
+				"startedAt": "2026-09-29T01:19:17.140Z",
+				"httpStatus": 101
+			},
+			{
+				"connection": 1,
+				"startedAt": "2026-09-29T01:19:17.477Z",
+				"httpStatus": 101
+			}
+		],
+		"observationMs": 31.39070000000629,
+		"resourcesClosed": true,
+		"errors": [],
+		"credentialsPersisted": false,
+		"requestBodiesModified": false,
+		"limits": "Observation time measures parsing, projection and metadata writes, not total proxy transport overhead. Echoing the flag does not establish backend enforcement. Prewarm requests with generate:false are excluded from generation counts."
+	},
+	"officialReference": "https://learn.chatgpt.com/docs/config-file/config-reference",
+	"tooling": {
+		"planning\\refinement-efficiency\\experiments\\ux-read-window\\direct.py": "c971459b83307b1efd8bd6aedbb14c6b93b30e6f5bcd7316e004d419200e98bb",
+		"planning\\refinement-efficiency\\experiments\\ux-read-window\\native-assignment.md": "9876f8aeecf81a9da914afc9a788a8705fc62e33d4062a42f2ac2b26df48f437",
+		"planning\\refinement-efficiency\\experiments\\ux-collection-phase\\run.mjs": "1654d5ccd49d4ba0ca29b0362ae3f428445b7e1f40c6ff61235fbf4d70d69a85"
+	},
+	"limits": [
+		"At most 2 predetermined pages; not a full acquisition or UX reasoning run.",
+		"No model response contained multiple reads.",
+		"All requested reads were verified.",
+		"The bothCallsPreparedBeforeFirstResult, toolIntervalsOverlap and betweenReads fields describe only the first pair. readTransitions and readResponseGroups cover all reads.",
+		"A fast first tool can finish while the model is still emitting a second call in the same response. Completion order does not imply intervening interpretation.",
+		"Actual outgoing flags and streamed response identities were independently observed; this does not establish backend enforcement of the flag.",
+		"The native tool path differs from the combined-wrapper path. This run does not establish an end-to-end UX speedup or a universal return-size ceiling.",
+		"No global configuration, model selection, client output budget or live Alexa state was changed. Any temporary model-catalog override is identified in control metadata."
+	]
+}

@@ -101,6 +101,53 @@ second_item = items[second['id']] if two_reads else None
 same_response = all_requested_reads and len(groups) == 1
 before_result = second_item['end'] <= first['end'] if two_reads else None
 completion_marker = control.get('lastPhase') == 'inputs-ready'
+live_evidence = None
+if control.get('observeLiveRequest'):
+    metadata_path = attempt / 'live-request-metadata.json'
+    metadata = read(metadata_path)
+    assert metadata['resourcesClosed'] and not metadata['errors']
+    assert not metadata['credentialsPersisted'] and not metadata['requestBodiesModified']
+    assert metadata['connections'] and all(row['httpStatus'] == 101 for row in metadata['connections'])
+    generation_requests = [row for row in metadata['requests'] if row['generate'] is not False]
+    assert len(generation_requests) == len(actor['responses'])
+    inventory = generation_requests[0]['tools']
+    assert not any(tool['name'] in ['exec', 'wait'] for tool in inventory)
+    workflow = next(tool for tool in inventory if tool['name'] == control['directNamespace'])
+    assert any(tool['name'] == 'workflow_read' and tool['type'] == 'function' for tool in workflow['tools'])
+    assert all(row['model'] == actor['model'] and row['reasoningEffort'] == actor['effort']
+               and row['parallelToolCalls'] is True and row['tools'] == inventory for row in generation_requests)
+    completed = [row for row in metadata['responses'] if row['type'] == 'response.completed'
+                 and row['responseId'] in {response['id'] for response in actor['responses']}]
+    assert len(completed) == len(actor['responses'])
+    assert all(row['parallelToolCalls'] is True and row['model'] == actor['model'] for row in completed)
+    # completed.output is empty on this route; streamed item identities carry the calls.
+    wire_calls = [row for row in metadata['responses'] if row['type'] == 'response.output_item.done'
+                  and row['itemType'] == 'function_call']
+    assert len(wire_calls) == len(calls)
+    assert {row['callId'] for row in wire_calls} == {call['call_id'] for call in calls}
+    for result in results:
+        wire = next(row for row in wire_calls if row['callId'] == result['callId'])
+        assert wire['responseId'] == result['responseId']
+        assert wire['name'] == 'workflow_read' and wire['namespace'] == control['directNamespace']
+    live_evidence = {
+        'sourceSha256': hashlib.sha256(metadata_path.read_bytes()).hexdigest(),
+        'upstream': metadata['upstream'],
+        'generationRequestCount': len(generation_requests),
+        'allGenerationRequestsPermitParallelCalls': True,
+        'allCompletedGenerationResponsesEchoParallelCalls': True,
+        'codeWrapperAbsent': True,
+        'wireCallGroupingMatchesClientRuntime': True,
+        'toolInventory': inventory,
+        'requests': [{key: value for key, value in row.items() if key != 'tools'} for row in metadata['requests']],
+        'responses': metadata['responses'],
+        'connections': metadata['connections'],
+        'observationMs': metadata['observationMs'],
+        'resourcesClosed': metadata['resourcesClosed'],
+        'errors': metadata['errors'],
+        'credentialsPersisted': metadata['credentialsPersisted'],
+        'requestBodiesModified': metadata['requestBodiesModified'],
+        'limits': 'Observation time measures parsing, projection and metadata writes, not total proxy transport overhead. Echoing the flag does not establish backend enforcement. Prewarm requests with generate:false are excluded from generation counts.',
+    }
 transitions = []
 for previous_call, next_call in zip(read_calls, read_calls[1:]):
     previous = timings[previous_call['call_id']]
@@ -130,9 +177,10 @@ report = {
     'betweenReads': {'preCommandGapSeconds': second_item['start']-first['end'], 'commandGenerationSeconds': second_item['end']-second_item['start'], 'toolRoundTripSeconds': second['end']-second['start'], 'wholeCycleSeconds': second['end']-first['end']} if two_reads else None,
     'groupingMethod': 'Pair completed function-call items with the next response.completed event. A shared model response establishes generation without an intervening model-response cycle. A shared Codex turn ID is insufficient. Early tool completion can overlap continued generation within the same response; before-result timing and execution overlap are separate observations, not batch-success requirements.',
     'runtime': runtime,
+    'liveRequestEvidence': live_evidence,
     'officialReference': 'https://learn.chatgpt.com/docs/config-file/config-reference',
     'tooling': {str(file.relative_to(ROOT)): hashlib.sha256(file.read_bytes()).hexdigest() for file in [Path(__file__), Path(__file__).with_name('native-assignment.md'), Path(__file__).parent.parent / 'ux-collection-phase/run.mjs']},
-    'limits': [f'At most {len(requested)} predetermined pages; not a full acquisition or UX reasoning run.', 'All native reads were generated in one model response.' if same_response else 'Some reads shared a model response.' if any_batch else 'No model response contained multiple reads.', 'The requested sequence was incomplete.' if not all_requested_reads else 'All requested reads were verified.', 'The bothCallsPreparedBeforeFirstResult, toolIntervalsOverlap and betweenReads fields describe only the first pair. readTransitions and readResponseGroups cover all reads.', 'A fast first tool can finish while the model is still emitting a second call in the same response. Completion order does not imply intervening interpretation.', 'This live transcript does not itself capture the outgoing parallel-call flag; any request-construction capture is separate evidence.', 'The native tool path differs from the combined-wrapper path. This run does not establish an end-to-end UX speedup or a universal return-size ceiling.', 'No global configuration, model selection, client output budget or live Alexa state was changed. Any temporary model-catalog override is identified in control metadata.'],
+    'limits': [f'At most {len(requested)} predetermined pages; not a full acquisition or UX reasoning run.', 'All native reads were generated in one model response.' if same_response else 'Some reads shared a model response.' if any_batch else 'No model response contained multiple reads.', 'The requested sequence was incomplete.' if not all_requested_reads else 'All requested reads were verified.', 'The bothCallsPreparedBeforeFirstResult, toolIntervalsOverlap and betweenReads fields describe only the first pair. readTransitions and readResponseGroups cover all reads.', 'A fast first tool can finish while the model is still emitting a second call in the same response. Completion order does not imply intervening interpretation.', 'Actual outgoing flags and streamed response identities were independently observed; this does not establish backend enforcement of the flag.' if live_evidence else 'This live transcript does not itself capture the outgoing parallel-call flag; any request-construction capture is separate evidence.', 'The native tool path differs from the combined-wrapper path. This run does not establish an end-to-end UX speedup or a universal return-size ceiling.', 'No global configuration, model selection, client output budget or live Alexa state was changed. Any temporary model-catalog override is identified in control metadata.'],
 }
 destination = ROOT / ('planning/refinement-efficiency/ux-native-mcp-20260928-' + name + '-metrics.json')
 if '--verify-only' not in sys.argv:
