@@ -84,7 +84,10 @@ for call in read_calls:
     expected = Path(inputs[source]['path']).read_bytes()[page['offset']:page['nextOffset']]
     assert page['text'].encode('utf-8') == expected
     assert not any(marker in json.dumps(output) for marker in ['Warning: truncated output', 'tokens truncated', 'Output truncated'])
-    server = [row for row in observations if row['handle'] == page['handle'] and timing['start'] <= stamp(row['startedAt']) <= timing['end']]
+    server = [row for row in observations if row['handle'] == page['handle']
+              and row['offset'] == page['offset'] and row['maxBytes'] == arguments['maxBytes']
+              and row.get('pointer', '') == arguments.get('pointer', '')
+              and timing['start'] <= stamp(row['startedAt']) <= timing['end']]
     assert len(server) == 1 and timing['start'] <= stamp(server[0]['startedAt']) <= timing['end']
     # A call item completes before its enclosing response.completed event.
     response = next(row for row in actor['responses'] if stamp(row['at']) >= item['end'])
@@ -94,6 +97,12 @@ all_requested_reads = delivered == request_keys
 assert incomplete or all_requested_reads
 groups = Counter(result['responseId'] for result in results)
 any_batch = any(count > 1 for count in groups.values())
+for result in results:
+    if groups[result['responseId']] > 1:
+        # Codex may materialize batched call items together, with sub-ms timestamp
+        # skew. Those boundaries cannot measure per-command model generation.
+        result['clientItemIntervalSeconds'] = result['commandGenerationSeconds']
+        result['commandGenerationSeconds'] = None
 two_reads = len(read_calls) >= 2
 first = timings[read_calls[0]['call_id']]
 second = timings[read_calls[1]['call_id']] if two_reads else None
@@ -153,7 +162,10 @@ for previous_call, next_call in zip(read_calls, read_calls[1:]):
     previous = timings[previous_call['call_id']]
     following = timings[next_call['call_id']]
     following_item = items[following['id']]
-    transitions.append({'fromCallId': previous['id'], 'toCallId': following['id'], 'preCommandGapSeconds': following_item['start']-previous['end'], 'commandGenerationSeconds': following_item['end']-following_item['start'], 'toolRoundTripSeconds': following['end']-following['start'], 'wholeCycleSeconds': following['end']-previous['end']})
+    result = next(row for row in results if row['callId'] == following['id'])
+    prior_result = next(row for row in results if row['callId'] == previous['id'])
+    shared = result['responseId'] == prior_result['responseId']
+    transitions.append({'fromCallId': previous['id'], 'toCallId': following['id'], 'sharedModelResponse': shared, 'preCommandGapSeconds': None if shared else following_item['start']-previous['end'], 'commandGenerationSeconds': result['commandGenerationSeconds'], 'toolRoundTripSeconds': following['end']-following['start'], 'wholeCycleSeconds': None if shared else following['end']-previous['end'], 'signedStartAfterPreviousResultSeconds': following_item['start']-previous['end']})
 report = {
     'experiment': 'Native MCP namespace exposure and independent result verification',
     'control': control,
@@ -174,7 +186,8 @@ report = {
     'bothCallsPreparedBeforeFirstResult': before_result,
     'targetMet': any_batch and all_requested_reads and completion_marker,
     'toolIntervalsOverlap': max(first['start'], second['start']) < min(first['end'], second['end']) if two_reads else None,
-    'betweenReads': {'preCommandGapSeconds': second_item['start']-first['end'], 'commandGenerationSeconds': second_item['end']-second_item['start'], 'toolRoundTripSeconds': second['end']-second['start'], 'wholeCycleSeconds': second['end']-first['end']} if two_reads else None,
+    'betweenReads': transitions[0] if transitions else None,
+    'timingQualification': 'For shared model responses, per-command generation and sequential gap/cycle metrics are unavailable. Codex may materialize these items together; signed item intervals are preserved as observations, not model-generation durations.',
     'groupingMethod': 'Pair completed function-call items with the next response.completed event. A shared model response establishes generation without an intervening model-response cycle. A shared Codex turn ID is insufficient. Early tool completion can overlap continued generation within the same response; before-result timing and execution overlap are separate observations, not batch-success requirements.',
     'runtime': runtime,
     'liveRequestEvidence': live_evidence,

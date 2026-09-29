@@ -1,0 +1,363 @@
+{
+	"experiment": "Native workflow parallelism implementation",
+	"startedAt": "2026-09-29T13:20:35Z",
+	"compiledAt": "2026-09-29T13:47:16.944Z",
+	"baselineCommit": "b69518f",
+	"isolation": [
+		{
+			"profile": "namespace",
+			"source": ".codex-tmp/native-isolation-20260929/namespace-01/metrics.json",
+			"sourceSha256": "dd5c08542b63f86d05d06ad3282494d584a0d2ff68df96e5ff350220198a6afc",
+			"elapsedMs": 7496.2631,
+			"verified": true,
+			"requests": 1,
+			"maxCallsPerResponse": 8,
+			"maxConcurrentExecutions": 8,
+			"usage": {
+				"inputTokens": 104,
+				"cachedInputTokens": 0,
+				"outputTokens": 188,
+				"reasoningOutputTokens": 0
+			}
+		},
+		{
+			"profile": "workflow-schema",
+			"source": ".codex-tmp/native-isolation-20260929/workflow-schema-01/metrics.json",
+			"sourceSha256": "a7a8ab23b2d46ec52d1d0461c7ba0f8222e67d563630db4668c2f101895650aa",
+			"elapsedMs": 11864.6046,
+			"verified": true,
+			"requests": 1,
+			"maxCallsPerResponse": 8,
+			"maxConcurrentExecutions": 8,
+			"usage": {
+				"inputTokens": 177,
+				"cachedInputTokens": 0,
+				"outputTokens": 332,
+				"reasoningOutputTokens": 0
+			}
+		},
+		{
+			"profile": "workflow-mcp",
+			"source": ".codex-tmp/native-isolation-20260929/workflow-mcp-01/metrics.json",
+			"sourceSha256": "9fa9a5d0d5c392c4f5f3df9c06816d5723a750992e65097ae7d7c8a282a4deda",
+			"elapsedMs": 11902.1519,
+			"verified": true,
+			"requests": 1,
+			"maxCallsPerResponse": 8,
+			"maxConcurrentExecutions": 8,
+			"usage": {
+				"inputTokens": 177,
+				"cachedInputTokens": 0,
+				"outputTokens": 332,
+				"reasoningOutputTokens": 0
+			}
+		},
+		{
+			"profile": "full-tools",
+			"source": ".codex-tmp/native-isolation-20260929/full-tools-01/metrics.json",
+			"sourceSha256": "9d78c577c6644da47288936c79a2ad39edb75ac88def8270d1345407ccab5a07",
+			"elapsedMs": 12594.8768,
+			"verified": true,
+			"requests": 1,
+			"maxCallsPerResponse": 8,
+			"maxConcurrentExecutions": 8,
+			"usage": {
+				"inputTokens": 11188,
+				"cachedInputTokens": 3712,
+				"outputTokens": 332,
+				"reasoningOutputTokens": 0
+			}
+		},
+		{
+			"profile": "base-instructions",
+			"source": ".codex-tmp/native-isolation-20260929/base-instructions-01/metrics.json",
+			"sourceSha256": "f0b068ec3ec9a0960e70591dbc357f2b5767c2e5e73b8b17967d4b60f305e62e",
+			"elapsedMs": 12786.0123,
+			"verified": true,
+			"requests": 1,
+			"maxCallsPerResponse": 8,
+			"maxConcurrentExecutions": 8,
+			"usage": {
+				"inputTokens": 4329,
+				"cachedInputTokens": 0,
+				"outputTokens": 332,
+				"reasoningOutputTokens": 0
+			}
+		},
+		{
+			"profile": "full-context",
+			"source": ".codex-tmp/native-isolation-20260929/full-context-01/metrics.json",
+			"sourceSha256": "bde0b8d9811a33e206ce348806b31557a1812e0ee827c56808e158415df3dbb8",
+			"elapsedMs": 13378.6455,
+			"verified": true,
+			"requests": 1,
+			"maxCallsPerResponse": 8,
+			"maxConcurrentExecutions": 8,
+			"usage": {
+				"inputTokens": 15340,
+				"cachedInputTokens": 3712,
+				"outputTokens": 351,
+				"reasoningOutputTokens": 0
+			}
+		},
+		{
+			"profile": "conversation",
+			"source": ".codex-tmp/native-isolation-20260929/conversation-01/metrics.json",
+			"sourceSha256": "feafbc4bc016041e5cac838bdd7ca27482e4470f93aa100fa1416244c16cc98a",
+			"elapsedMs": 13115.3913,
+			"verified": true,
+			"requests": 1,
+			"maxCallsPerResponse": 8,
+			"maxConcurrentExecutions": 8,
+			"usage": {
+				"inputTokens": 19311,
+				"cachedInputTokens": 3712,
+				"outputTokens": 349,
+				"reasoningOutputTokens": 0
+			}
+		}
+	],
+	"live": [
+		{
+			"attempt": "native-brief-eight-20260929-01",
+			"source": ".codex-tmp/ux-read-window-20260928/native-brief-eight-20260929-01",
+			"controlSha256": "c65668c55412044af27938c6dcafabf83a017a07b877bfc2430c84202a9abd2e",
+			"status": "host-launch-error",
+			"error": "EPERM",
+			"elapsedMs": null,
+			"generationRequests": 0,
+			"allGenerationRequestsPermitParallelCalls": false,
+			"readResponseGroups": {},
+			"maxReadsPerResponse": 0,
+			"returnedBytesVerified": null,
+			"allRequestedReadsVerified": null,
+			"verificationReport": null,
+			"usage": null,
+			"observerErrors": []
+		},
+		{
+			"attempt": "native-brief-eight-20260929-02",
+			"source": ".codex-tmp/ux-read-window-20260928/native-brief-eight-20260929-02",
+			"controlSha256": "cccc8dd687ba376e599ab80adcdc9da646900deee59fd6da922190e95ccccab8",
+			"status": "error",
+			"error": "Collection did not reach inputs-ready",
+			"elapsedMs": 8361.247,
+			"generationRequests": 0,
+			"allGenerationRequestsPermitParallelCalls": false,
+			"readResponseGroups": {},
+			"maxReadsPerResponse": 0,
+			"returnedBytesVerified": null,
+			"allRequestedReadsVerified": null,
+			"verificationReport": null,
+			"usage": null,
+			"observerErrors": [
+				{
+					"phase": "upstream-connect",
+					"code": "UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+					"name": "Error"
+				},
+				{
+					"phase": "upstream-connect",
+					"code": "UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+					"name": "Error"
+				},
+				{
+					"phase": "upstream-connect",
+					"code": "UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+					"name": "Error"
+				},
+				{
+					"phase": "upstream-connect",
+					"code": "UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+					"name": "Error"
+				},
+				{
+					"phase": "upstream-connect",
+					"code": "UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+					"name": "Error"
+				},
+				{
+					"phase": "upstream-connect",
+					"code": "UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+					"name": "Error"
+				},
+				{
+					"phase": "upstream-connect",
+					"code": "UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+					"name": "Error"
+				},
+				{
+					"phase": "upstream-connect",
+					"code": "UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+					"name": "Error"
+				},
+				{
+					"phase": "non-websocket-request",
+					"method": "POST"
+				}
+			]
+		},
+		{
+			"attempt": "native-brief-eight-20260929-03",
+			"source": ".codex-tmp/ux-read-window-20260928/native-brief-eight-20260929-03",
+			"controlSha256": "a17df832ab2a39c7a6a7e2669b4f2eda640a3fa607d993563e2b1120788825bd",
+			"status": "finished",
+			"error": null,
+			"elapsedMs": 46427.9404,
+			"generationRequests": 3,
+			"allGenerationRequestsPermitParallelCalls": true,
+			"readResponseGroups": {
+				"resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386": 8
+			},
+			"maxReadsPerResponse": 8,
+			"returnedBytesVerified": 224000,
+			"allRequestedReadsVerified": true,
+			"verificationReport": "planning/refinement-efficiency/ux-native-mcp-20260928-native-brief-eight-20260929-03-metrics.json",
+			"usage": {
+				"input_tokens": 172823,
+				"cached_input_tokens": 99200,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 1078,
+				"reasoning_output_tokens": 0
+			},
+			"observerErrors": []
+		},
+		{
+			"attempt": "native-brief-eight-20260929-04",
+			"source": ".codex-tmp/ux-read-window-20260928/native-brief-eight-20260929-04",
+			"controlSha256": "c7bd672e48df47d9de963ae811f5424dfae5bdab1752aaeda3ce6545da5abfbe",
+			"status": "finished",
+			"error": null,
+			"elapsedMs": 43571.607200000006,
+			"generationRequests": 3,
+			"allGenerationRequestsPermitParallelCalls": true,
+			"readResponseGroups": {
+				"resp_00a133785e1c5387016abbbe5fd50887d18d25b305c97ff751": 8
+			},
+			"maxReadsPerResponse": 8,
+			"returnedBytesVerified": 224000,
+			"allRequestedReadsVerified": true,
+			"verificationReport": "planning/refinement-efficiency/ux-native-mcp-20260928-native-brief-eight-20260929-04-metrics.json",
+			"usage": {
+				"input_tokens": 172846,
+				"cached_input_tokens": 99200,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 1087,
+				"reasoning_output_tokens": 0
+			},
+			"observerErrors": []
+		},
+		{
+			"attempt": "native-launcher-eight-20260929-01",
+			"source": ".codex-tmp/ux-read-window-20260928/native-launcher-eight-20260929-01",
+			"controlSha256": "2a9c55c401ad23592ff1524b248f8a2bca2cbc61a81a5b5df29b823a8479e484",
+			"status": "finished",
+			"error": null,
+			"elapsedMs": 51022.561799999996,
+			"generationRequests": 10,
+			"allGenerationRequestsPermitParallelCalls": false,
+			"readResponseGroups": {
+				"resp_03b606fa4ba1593d016abbbfce050c87d183c787abb673d059": 1,
+				"resp_03b606fa4ba1593d016abbbfd3c2f887d1b5c6a01f6d8cd76f": 1,
+				"resp_03b606fa4ba1593d016abbbfd8a5bc87d1bb99338034b1abbb": 1,
+				"resp_03b606fa4ba1593d016abbbfde989c87d1998e553cfcb52930": 1,
+				"resp_03b606fa4ba1593d016abbbfe3b79c87d1ac98a35a22434965": 1,
+				"resp_03b606fa4ba1593d016abbbfe93c7887d1a83a7a8d544ece37": 1,
+				"resp_03b606fa4ba1593d016abbbfee488887d19d24e852bfdb51e8": 1,
+				"resp_03b606fa4ba1593d016abbbff3a58487d1913763c60cdb2256": 1
+			},
+			"maxReadsPerResponse": 1,
+			"returnedBytesVerified": null,
+			"allRequestedReadsVerified": null,
+			"verificationReport": null,
+			"usage": {
+				"input_tokens": 491729,
+				"cached_input_tokens": 421376,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 1051,
+				"reasoning_output_tokens": 0
+			},
+			"observerErrors": [
+				{
+					"phase": "non-websocket-request",
+					"method": "GET"
+				},
+				{
+					"phase": "non-websocket-request",
+					"method": "GET"
+				},
+				{
+					"phase": "non-websocket-request",
+					"method": "GET"
+				},
+				{
+					"phase": "non-websocket-request",
+					"method": "GET"
+				},
+				{
+					"phase": "non-websocket-request",
+					"method": "GET"
+				},
+				{
+					"phase": "non-websocket-request",
+					"method": "GET"
+				},
+				{
+					"phase": "non-websocket-request",
+					"method": "GET"
+				},
+				{
+					"phase": "non-websocket-request",
+					"method": "GET"
+				},
+				{
+					"phase": "non-websocket-request",
+					"method": "GET"
+				},
+				{
+					"phase": "non-websocket-request",
+					"method": "GET"
+				},
+				{
+					"phase": "non-websocket-request",
+					"method": "GET"
+				},
+				{
+					"phase": "non-websocket-request",
+					"method": "GET"
+				}
+			]
+		},
+		{
+			"attempt": "native-launcher-eight-20260929-02",
+			"source": ".codex-tmp/ux-read-window-20260928/native-launcher-eight-20260929-02",
+			"controlSha256": "a0159db331ec9a49fb1f3864b64cd5fff19618db90cac42d1011eeba9127f2b7",
+			"status": "finished",
+			"error": null,
+			"elapsedMs": 53688.300299999995,
+			"generationRequests": 3,
+			"allGenerationRequestsPermitParallelCalls": true,
+			"readResponseGroups": {
+				"resp_03748d571d029b1e016abbc04fc3a487d294927a8ddcb701e2": 8
+			},
+			"maxReadsPerResponse": 8,
+			"returnedBytesVerified": 224000,
+			"allRequestedReadsVerified": true,
+			"verificationReport": "planning/refinement-efficiency/ux-native-mcp-20260928-native-launcher-eight-20260929-02-metrics.json",
+			"usage": {
+				"input_tokens": 174192,
+				"cached_input_tokens": 100224,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 1084,
+				"reasoning_output_tokens": 0
+			},
+			"observerErrors": []
+		}
+	],
+	"limits": [
+		"Synthetic isolation tests exclude Codex client scheduling.",
+		"Live trials reuse eight predetermined saved pages; they do not measure full UX reasoning.",
+		"Cached input tokens are a subset of input tokens, not an additional total.",
+		"Per-call model-generation duration is unavailable for coalesced native batches."
+	]
+}

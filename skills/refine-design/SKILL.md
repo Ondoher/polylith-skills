@@ -9,6 +9,14 @@ description: Refine human-owned product descriptions into canonical persisted pr
 
 When configured `workflow_*` tools are available, use product.prepare/product.select, units._, ux-review._, the existing-writer adapters, publication.assemble, and context.resolve. Use technical.inspect/technical.prepare/technical.resolve for technical preparation. The parent owns canonical writes and independently reviewed UX remains required before UI persistence. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
 
+For UX input collection, supply a compact list of independent reads with assigned
+handles, known offsets and page budgets. Ask the author to issue the entire list
+**in parallel, in one model response**, then assess the collected results. Keep
+collection separate from comparison, repair and delivery instructions. Follow the
+[MCP read-wave protocol](../../documentation/workflows/mcp.md#parallel-input-collection)
+for continuations, client modes and output limits. Do not reconstruct large inputs
+in messages or interpret each page before scheduling the other independent reads.
+
 For long instructions and batched file reads, use `scripts/bounded-read.mjs`
 with all requested paths in one invocation. It caps the complete raw response at
 4096 UTF-8 bytes by default, including source labels and continuation. Forward

@@ -1,0 +1,1184 @@
+{
+	"experiment": "Native MCP namespace exposure and independent result verification",
+	"control": {
+		"experiment": "ux-read-window",
+		"pageBytes": 28000,
+		"probe": true,
+		"parallelProbe": false,
+		"nativeProbe": true,
+		"briefNative": true,
+		"observeLiveRequest": true,
+		"nativeReadRequests": [
+			{
+				"source": "facts",
+				"offset": 0,
+				"maxBytes": 28000
+			},
+			{
+				"source": "ux",
+				"offset": 0,
+				"maxBytes": 28000
+			},
+			{
+				"source": "facts",
+				"offset": 28000,
+				"maxBytes": 28000
+			},
+			{
+				"source": "ux",
+				"offset": 28000,
+				"maxBytes": 28000
+			},
+			{
+				"source": "facts",
+				"offset": 56000,
+				"maxBytes": 28000
+			},
+			{
+				"source": "ux",
+				"offset": 56000,
+				"maxBytes": 28000
+			},
+			{
+				"source": "facts",
+				"offset": 84000,
+				"maxBytes": 28000
+			},
+			{
+				"source": "ux",
+				"offset": 84000,
+				"maxBytes": 28000
+			}
+		],
+		"disableCodeHost": false,
+		"directNamespace": "mcp__polylith_workflows",
+		"modelCatalogOverride": {
+			"path": "C:\\dev\\polylith-skills\\.codex-tmp\\codex-parallel-rule-20260928\\catalog-direct-without-lite.private.json",
+			"sha256": "825a4edc8b33ca5e019dff16f53ddd5cfac857df0f1e8abb3c7b79baafd69d49"
+		},
+		"startedAt": "2026-09-29T13:32:27.706Z",
+		"run": "ux-mcp-replay-20260928",
+		"workspace": "C:\\dev\\polylith-skills\\",
+		"transport": "resident workflow MCP over localhost HTTP",
+		"status": "finished",
+		"smoke": false,
+		"serverPid": 37876,
+		"instance": "349a71a6-d662-4adb-9d6e-e9e113fc9e92",
+		"serverStartupMs": 155.3605,
+		"readLimits": {
+			"pageBytes": 28000,
+			"envelopeBytes": 31200,
+			"toolBytes": 32768
+		},
+		"childPid": 62736,
+		"agentStartedAt": "2026-09-29T13:32:28.005Z",
+		"threadId": "01a0ed5d-e27d-7ca1-a282-512faa48fdcb",
+		"lastPhase": "inputs-ready",
+		"lastPhaseAt": "2026-09-29T13:33:10.096Z",
+		"reportedUsage": {
+			"input_tokens": 172823,
+			"cached_input_tokens": 99200,
+			"cache_write_input_tokens": 0,
+			"output_tokens": 1078,
+			"reasoning_output_tokens": 0
+		},
+		"exitCode": 0,
+		"agentCompletedAt": "2026-09-29T13:33:14.414Z",
+		"agentWindowMs": 46427.9404,
+		"completedAt": "2026-09-29T13:33:14.431Z"
+	},
+	"inputHashes": {
+		"facts": "0a93131e55d107256cd22569659a860a6a927a5e30a01e8800a30ca5e9782e2a",
+		"ux": "5892a95485b1358f454ec59f71dc096acb7ab5e92033f831b437070ea895dc4c"
+	},
+	"results": [
+		{
+			"source": "facts",
+			"offset": 0,
+			"callId": "call_sU0eFDO8nUc7jcXO39PTcGdP",
+			"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+			"nativeFunctionCall": true,
+			"argumentBytes": 204,
+			"textBytes": 28000,
+			"clientLoggedOutputBytes": 31392,
+			"byteExact": true,
+			"sha256": "64a3f592c20ca61919b746689eca47c7cf32bbf799de2eb20af85b87ae586d41",
+			"commandGenerationSeconds": null,
+			"toolRoundTripSeconds": 0.04900002479553223,
+			"serverMs": 0.8294999999998254,
+			"clientItemIntervalSeconds": -0.0004489421844482422
+		},
+		{
+			"source": "ux",
+			"offset": 0,
+			"callId": "call_rf4o5DTRKJ7i25joTgZmZzMp",
+			"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+			"nativeFunctionCall": true,
+			"argumentBytes": 204,
+			"textBytes": 28000,
+			"clientLoggedOutputBytes": 31859,
+			"byteExact": true,
+			"sha256": "311dd27aed2da6e7bcf328baa028ee4df0cb9f037a521644065d6544b7082f96",
+			"commandGenerationSeconds": null,
+			"toolRoundTripSeconds": 0.04900002479553223,
+			"serverMs": 1.5740000000005239,
+			"clientItemIntervalSeconds": -0.0002789497375488281
+		},
+		{
+			"source": "facts",
+			"offset": 28000,
+			"callId": "call_8X70lRoE8oBgFIJek8AEBqno",
+			"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+			"nativeFunctionCall": true,
+			"argumentBytes": 208,
+			"textBytes": 28000,
+			"clientLoggedOutputBytes": 31429,
+			"byteExact": true,
+			"sha256": "fc5bdcfb78fe50aeb15f48aacbc4808e8ca1f25e078075db7b98fd226135bf19",
+			"commandGenerationSeconds": null,
+			"toolRoundTripSeconds": 0.04699993133544922,
+			"serverMs": 0.47730000000592554,
+			"clientItemIntervalSeconds": -0.0002129077911376953
+		},
+		{
+			"source": "ux",
+			"offset": 28000,
+			"callId": "call_BDvi5RFMFY47zyHG31oxJXLr",
+			"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+			"nativeFunctionCall": true,
+			"argumentBytes": 208,
+			"textBytes": 28000,
+			"clientLoggedOutputBytes": 32373,
+			"byteExact": true,
+			"sha256": "ac49583a5da1610f0bff20d9df05d268c90155991d7c3abda8ed28f3b5a0dbad",
+			"commandGenerationSeconds": null,
+			"toolRoundTripSeconds": 0.046000003814697266,
+			"serverMs": 1.055000000000291,
+			"clientItemIntervalSeconds": -0.0002810955047607422
+		},
+		{
+			"source": "facts",
+			"offset": 56000,
+			"callId": "call_Q7j473cdit2kXwBzEy0TSQzx",
+			"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+			"nativeFunctionCall": true,
+			"argumentBytes": 208,
+			"textBytes": 28000,
+			"clientLoggedOutputBytes": 32998,
+			"byteExact": true,
+			"sha256": "45dd8364269b8ec8592306dca8e89b1502fbd4c86f72cfbcb3c269fe46f2d586",
+			"commandGenerationSeconds": null,
+			"toolRoundTripSeconds": 0.04500007629394531,
+			"serverMs": 0.5089000000007218,
+			"clientItemIntervalSeconds": -0.0006771087646484375
+		},
+		{
+			"source": "ux",
+			"offset": 56000,
+			"callId": "call_yVpRpYXTELxvNEHlYMMQ41N5",
+			"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+			"nativeFunctionCall": true,
+			"argumentBytes": 208,
+			"textBytes": 28000,
+			"clientLoggedOutputBytes": 32319,
+			"byteExact": true,
+			"sha256": "f67c71e78b6fcc5a5349aa34643b0a1d89a718ba4fede0532af06971774fa379",
+			"commandGenerationSeconds": null,
+			"toolRoundTripSeconds": 0.04399991035461426,
+			"serverMs": 0.9480000000039581,
+			"clientItemIntervalSeconds": -0.00061798095703125
+		},
+		{
+			"source": "facts",
+			"offset": 84000,
+			"callId": "call_jsRtP76oUtdQho3ERRD0GkVV",
+			"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+			"nativeFunctionCall": true,
+			"argumentBytes": 208,
+			"textBytes": 28000,
+			"clientLoggedOutputBytes": 33736,
+			"byteExact": true,
+			"sha256": "4f4ec23de1c4f5706fbadf439b6a3c4c117515aceba1f3f26682fd1e0052c2f5",
+			"commandGenerationSeconds": null,
+			"toolRoundTripSeconds": 0.04200005531311035,
+			"serverMs": 0.3845000000001164,
+			"clientItemIntervalSeconds": -0.000010967254638671875
+		},
+		{
+			"source": "ux",
+			"offset": 84000,
+			"callId": "call_aYDPlD8FnauoSoEpMuX4oZs2",
+			"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+			"nativeFunctionCall": true,
+			"argumentBytes": 208,
+			"textBytes": 28000,
+			"clientLoggedOutputBytes": 32547,
+			"byteExact": true,
+			"sha256": "00faa762f0a2e3de97cc8790d147edb8dd1455c63a3fca0a509dbf70c7c83096",
+			"commandGenerationSeconds": null,
+			"toolRoundTripSeconds": 0.039999961853027344,
+			"serverMs": 1.0175000000017462,
+			"clientItemIntervalSeconds": 0.00005507469177246094
+		}
+	],
+	"outcome": "completed",
+	"reportedResult": "",
+	"nativeReadCount": 8,
+	"requestedReadCount": 8,
+	"allRequestedReadsVerified": true,
+	"readResponseGroups": {
+		"resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386": 8
+	},
+	"maxReadsPerResponse": 8,
+	"anyReadBatch": true,
+	"readTransitions": [
+		{
+			"fromCallId": "call_sU0eFDO8nUc7jcXO39PTcGdP",
+			"toCallId": "call_rf4o5DTRKJ7i25joTgZmZzMp",
+			"preCommandGapSeconds": null,
+			"commandGenerationSeconds": null,
+			"toolRoundTripSeconds": 0.04900002479553223,
+			"wholeCycleSeconds": null,
+			"signedStartAfterPreviousResultSeconds": -0.04672098159790039,
+			"sharedModelResponse": true
+		},
+		{
+			"fromCallId": "call_rf4o5DTRKJ7i25joTgZmZzMp",
+			"toCallId": "call_8X70lRoE8oBgFIJek8AEBqno",
+			"preCommandGapSeconds": null,
+			"commandGenerationSeconds": null,
+			"toolRoundTripSeconds": 0.04699993133544922,
+			"wholeCycleSeconds": null,
+			"signedStartAfterPreviousResultSeconds": -0.04578709602355957,
+			"sharedModelResponse": true
+		},
+		{
+			"fromCallId": "call_8X70lRoE8oBgFIJek8AEBqno",
+			"toCallId": "call_BDvi5RFMFY47zyHG31oxJXLr",
+			"preCommandGapSeconds": null,
+			"commandGenerationSeconds": null,
+			"toolRoundTripSeconds": 0.046000003814697266,
+			"wholeCycleSeconds": null,
+			"signedStartAfterPreviousResultSeconds": -0.04471898078918457,
+			"sharedModelResponse": true
+		},
+		{
+			"fromCallId": "call_BDvi5RFMFY47zyHG31oxJXLr",
+			"toCallId": "call_Q7j473cdit2kXwBzEy0TSQzx",
+			"preCommandGapSeconds": null,
+			"commandGenerationSeconds": null,
+			"toolRoundTripSeconds": 0.04500007629394531,
+			"wholeCycleSeconds": null,
+			"signedStartAfterPreviousResultSeconds": -0.04332280158996582,
+			"sharedModelResponse": true
+		},
+		{
+			"fromCallId": "call_Q7j473cdit2kXwBzEy0TSQzx",
+			"toCallId": "call_yVpRpYXTELxvNEHlYMMQ41N5",
+			"preCommandGapSeconds": null,
+			"commandGenerationSeconds": null,
+			"toolRoundTripSeconds": 0.04399991035461426,
+			"wholeCycleSeconds": null,
+			"signedStartAfterPreviousResultSeconds": -0.0413820743560791,
+			"sharedModelResponse": true
+		},
+		{
+			"fromCallId": "call_yVpRpYXTELxvNEHlYMMQ41N5",
+			"toCallId": "call_jsRtP76oUtdQho3ERRD0GkVV",
+			"preCommandGapSeconds": null,
+			"commandGenerationSeconds": null,
+			"toolRoundTripSeconds": 0.04200005531311035,
+			"wholeCycleSeconds": null,
+			"signedStartAfterPreviousResultSeconds": -0.040988922119140625,
+			"sharedModelResponse": true
+		},
+		{
+			"fromCallId": "call_jsRtP76oUtdQho3ERRD0GkVV",
+			"toCallId": "call_aYDPlD8FnauoSoEpMuX4oZs2",
+			"preCommandGapSeconds": null,
+			"commandGenerationSeconds": null,
+			"toolRoundTripSeconds": 0.039999961853027344,
+			"wholeCycleSeconds": null,
+			"signedStartAfterPreviousResultSeconds": -0.03905510902404785,
+			"sharedModelResponse": true
+		}
+	],
+	"completionMarkerStored": true,
+	"nativeExposureVerified": true,
+	"singleResponseReadGroup": true,
+	"bothCallsPreparedBeforeFirstResult": true,
+	"targetMet": true,
+	"toolIntervalsOverlap": true,
+	"betweenReads": {
+		"fromCallId": "call_sU0eFDO8nUc7jcXO39PTcGdP",
+		"toCallId": "call_rf4o5DTRKJ7i25joTgZmZzMp",
+		"preCommandGapSeconds": null,
+		"commandGenerationSeconds": null,
+		"toolRoundTripSeconds": 0.04900002479553223,
+		"wholeCycleSeconds": null,
+		"signedStartAfterPreviousResultSeconds": -0.04672098159790039,
+		"sharedModelResponse": true
+	},
+	"groupingMethod": "Pair completed function-call items with the next response.completed event. A shared model response establishes generation without an intervening model-response cycle. A shared Codex turn ID is insufficient. Early tool completion can overlap continued generation within the same response; before-result timing and execution overlap are separate observations, not batch-success requirements.",
+	"runtime": {
+		"capturedAt": "2026-09-29T13:33:45.197182+00:00",
+		"attemptStartedAt": "2026-09-29T13:32:28.005Z",
+		"attemptEndedAt": "2026-09-29T13:33:14.414Z",
+		"threads": [
+			{
+				"threadId": "01a0ed5d-e27d-7ca1-a282-512faa48fdcb",
+				"role": null,
+				"agentPath": null,
+				"model": "gpt-6-astra",
+				"effort": "xhigh",
+				"sourceSession": "C:\\Users\\gande\\.codex\\sessions\\2026\\09\\29\\rollout-2026-09-29T06-32-28-01a0ed5d-e27d-7ca1-a282-512faa48fdcb.jsonl",
+				"windowStart": "2026-09-29T13:32:28.005+00:00",
+				"windowEnd": "2026-09-29T13:33:14.414+00:00",
+				"windowSeconds": 46.40899991989136,
+				"activeTurnSeconds": 44.93899989128113,
+				"outsideRecordedTurnsSeconds": 1.4700000286102295,
+				"activeSeconds": {
+					"output": 31.80505132675171,
+					"reasoning-item": 0,
+					"tool": 0.13899993896484375
+				},
+				"activeUnattributedSeconds": 12.995003700256348,
+				"streamIntervalsObserved": true,
+				"seconds": {
+					"output": 31.80505132675171,
+					"reasoning-item": 0,
+					"tool": 0.13899993896484375
+				},
+				"unattributedSeconds": 14.465003728866577,
+				"items": [
+					{
+						"id": "msg_0e2a4669adee30ef016abbbdeeb11487d1849041c5adc25fc1",
+						"kind": "message",
+						"end": 1790688782.159,
+						"turn": "01a0ed5d-e43b-7c42-9fc6-b6c6c95efe64",
+						"callId": null,
+						"start": 1790688752.535327,
+						"streamEvents": 2
+					},
+					{
+						"id": "fc_0e2a4669adee30ef016abbbe0c4a2487d1b8cdc054aace8c61",
+						"kind": "function_call",
+						"end": 1790688782.162,
+						"turn": "01a0ed5d-e43b-7c42-9fc6-b6c6c95efe64",
+						"callId": "call_sU0eFDO8nUc7jcXO39PTcGdP",
+						"start": 1790688782.162449,
+						"streamEvents": 1
+					},
+					{
+						"id": "fc_0e2a4669adee30ef016abbbe0c4a3487d1a4abc591fcc2c788",
+						"kind": "function_call",
+						"end": 1790688782.164,
+						"turn": "01a0ed5d-e43b-7c42-9fc6-b6c6c95efe64",
+						"callId": "call_rf4o5DTRKJ7i25joTgZmZzMp",
+						"start": 1790688782.164279,
+						"streamEvents": 1
+					},
+					{
+						"id": "fc_0e2a4669adee30ef016abbbe0c4a3c87d1b312d7a57bf77d0f",
+						"kind": "function_call",
+						"end": 1790688782.167,
+						"turn": "01a0ed5d-e43b-7c42-9fc6-b6c6c95efe64",
+						"callId": "call_8X70lRoE8oBgFIJek8AEBqno",
+						"start": 1790688782.167213,
+						"streamEvents": 1
+					},
+					{
+						"id": "fc_0e2a4669adee30ef016abbbe0c4a4487d19b110fdd9ca94e42",
+						"kind": "function_call",
+						"end": 1790688782.169,
+						"turn": "01a0ed5d-e43b-7c42-9fc6-b6c6c95efe64",
+						"callId": "call_BDvi5RFMFY47zyHG31oxJXLr",
+						"start": 1790688782.169281,
+						"streamEvents": 1
+					},
+					{
+						"id": "fc_0e2a4669adee30ef016abbbe0c4a4c87d1b43809c416fec530",
+						"kind": "function_call",
+						"end": 1790688782.171,
+						"turn": "01a0ed5d-e43b-7c42-9fc6-b6c6c95efe64",
+						"callId": "call_Q7j473cdit2kXwBzEy0TSQzx",
+						"start": 1790688782.171677,
+						"streamEvents": 1
+					},
+					{
+						"id": "fc_0e2a4669adee30ef016abbbe0c4a5487d190979a214da36a5d",
+						"kind": "function_call",
+						"end": 1790688782.174,
+						"turn": "01a0ed5d-e43b-7c42-9fc6-b6c6c95efe64",
+						"callId": "call_yVpRpYXTELxvNEHlYMMQ41N5",
+						"start": 1790688782.174618,
+						"streamEvents": 1
+					},
+					{
+						"id": "fc_0e2a4669adee30ef016abbbe0c4a5887d1ba34791440ea5202",
+						"kind": "function_call",
+						"end": 1790688782.177,
+						"turn": "01a0ed5d-e43b-7c42-9fc6-b6c6c95efe64",
+						"callId": "call_jsRtP76oUtdQho3ERRD0GkVV",
+						"start": 1790688782.177011,
+						"streamEvents": 1
+					},
+					{
+						"id": "fc_0e2a4669adee30ef016abbbe0c4a6087d1be600b5ae7df7f57",
+						"kind": "function_call",
+						"end": 1790688782.18,
+						"turn": "01a0ed5d-e43b-7c42-9fc6-b6c6c95efe64",
+						"callId": "call_aYDPlD8FnauoSoEpMuX4oZs2",
+						"start": 1790688782.179945,
+						"streamEvents": 1
+					},
+					{
+						"id": "fc_0e2a4669adee30ef016abbbe12209087d18e1db033ca6f85ad",
+						"kind": "function_call",
+						"end": 1790688790.088,
+						"turn": "01a0ed5d-e43b-7c42-9fc6-b6c6c95efe64",
+						"callId": "call_crvirSO3Maau1UvqTGxy9a1L",
+						"start": 1790688787.971721,
+						"streamEvents": 1
+					},
+					{
+						"id": "msg_0e2a4669adee30ef016abbbe17b02487d1ae5c25e82be8f9cf",
+						"kind": "message",
+						"end": 1790688793.601,
+						"turn": "01a0ed5d-e43b-7c42-9fc6-b6c6c95efe64",
+						"callId": null,
+						"start": 1790688793.535956,
+						"streamEvents": 2
+					}
+				],
+				"calls": [
+					{
+						"id": "call_sU0eFDO8nUc7jcXO39PTcGdP",
+						"name": "workflow_read",
+						"start": 1790688782.162,
+						"argumentBytes": 204,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 47,
+						"handler_duration_ms": 46,
+						"dispatch_duration_ms": 0,
+						"end": 1790688782.211,
+						"outputBytes": 31392
+					},
+					{
+						"id": "call_rf4o5DTRKJ7i25joTgZmZzMp",
+						"name": "workflow_read",
+						"start": 1790688782.164,
+						"argumentBytes": 204,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 45,
+						"handler_duration_ms": 45,
+						"dispatch_duration_ms": 0,
+						"end": 1790688782.213,
+						"outputBytes": 31859
+					},
+					{
+						"id": "call_8X70lRoE8oBgFIJek8AEBqno",
+						"name": "workflow_read",
+						"start": 1790688782.167,
+						"argumentBytes": 208,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 45,
+						"handler_duration_ms": 44,
+						"dispatch_duration_ms": 0,
+						"end": 1790688782.214,
+						"outputBytes": 31429
+					},
+					{
+						"id": "call_BDvi5RFMFY47zyHG31oxJXLr",
+						"name": "workflow_read",
+						"start": 1790688782.169,
+						"argumentBytes": 208,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 43,
+						"handler_duration_ms": 43,
+						"dispatch_duration_ms": 0,
+						"end": 1790688782.215,
+						"outputBytes": 32373
+					},
+					{
+						"id": "call_Q7j473cdit2kXwBzEy0TSQzx",
+						"name": "workflow_read",
+						"start": 1790688782.171,
+						"argumentBytes": 208,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 42,
+						"handler_duration_ms": 42,
+						"dispatch_duration_ms": 0,
+						"end": 1790688782.216,
+						"outputBytes": 32998
+					},
+					{
+						"id": "call_yVpRpYXTELxvNEHlYMMQ41N5",
+						"name": "workflow_read",
+						"start": 1790688782.174,
+						"argumentBytes": 208,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 41,
+						"handler_duration_ms": 40,
+						"dispatch_duration_ms": 0,
+						"end": 1790688782.218,
+						"outputBytes": 32319
+					},
+					{
+						"id": "call_jsRtP76oUtdQho3ERRD0GkVV",
+						"name": "workflow_read",
+						"start": 1790688782.177,
+						"argumentBytes": 208,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 39,
+						"handler_duration_ms": 39,
+						"dispatch_duration_ms": 0,
+						"end": 1790688782.219,
+						"outputBytes": 33736
+					},
+					{
+						"id": "call_aYDPlD8FnauoSoEpMuX4oZs2",
+						"name": "workflow_read",
+						"start": 1790688782.18,
+						"argumentBytes": 208,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 35,
+						"handler_duration_ms": 35,
+						"dispatch_duration_ms": 0,
+						"end": 1790688782.22,
+						"outputBytes": 32547
+					},
+					{
+						"id": "call_crvirSO3Maau1UvqTGxy9a1L",
+						"name": "workflow_store",
+						"start": 1790688790.088,
+						"argumentBytes": 166,
+						"boundedRead": false,
+						"waitRelated": false,
+						"total_duration_ms": 77,
+						"handler_duration_ms": 77,
+						"dispatch_duration_ms": 0,
+						"end": 1790688790.169,
+						"outputBytes": 494
+					}
+				],
+				"responses": [
+					{
+						"id": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+						"at": "2026-09-29T13:33:02.210+00:00",
+						"turn": "01a0ed5d-e43b-7c42-9fc6-b6c6c95efe64",
+						"usage": {
+							"input_tokens": 19462,
+							"cached_input_tokens": 3712,
+							"cache_write_input_tokens": 0,
+							"output_tokens": 987,
+							"reasoning_output_tokens": 0,
+							"total_tokens": 20449
+						}
+					},
+					{
+						"id": "resp_0e2a4669adee30ef016abbbe0cb3cc87d1882545b627f59e05",
+						"at": "2026-09-29T13:33:10.167+00:00",
+						"turn": "01a0ed5d-e43b-7c42-9fc6-b6c6c95efe64",
+						"usage": {
+							"input_tokens": 76537,
+							"cached_input_tokens": 19200,
+							"cache_write_input_tokens": 0,
+							"output_tokens": 87,
+							"reasoning_output_tokens": 0,
+							"total_tokens": 76624
+						}
+					},
+					{
+						"id": "resp_0e2a4669adee30ef016abbbe14b77887d1a47836b21c7424c1",
+						"at": "2026-09-29T13:33:13.650+00:00",
+						"turn": "01a0ed5d-e43b-7c42-9fc6-b6c6c95efe64",
+						"usage": {
+							"input_tokens": 76824,
+							"cached_input_tokens": 76288,
+							"cache_write_input_tokens": 0,
+							"output_tokens": 4,
+							"reasoning_output_tokens": 0,
+							"total_tokens": 76828
+						}
+					}
+				],
+				"usageByCompletedResponse": {
+					"input_tokens": 172823,
+					"cached_input_tokens": 99200,
+					"output_tokens": 1078,
+					"reasoning_output_tokens": 0
+				},
+				"turns": {
+					"01a0ed5d-e43b-7c42-9fc6-b6c6c95efe64": [
+						{
+							"at": "2026-09-29T13:32:28.716+00:00",
+							"event": "task_started"
+						},
+						{
+							"at": "2026-09-29T13:33:13.655+00:00",
+							"event": "task_complete"
+						}
+					]
+				}
+			}
+		],
+		"limits": [
+			"Client-observed streams, not isolated provider computation or semantic reasoning.",
+			"Parent and child windows overlap and are nonadditive.",
+			"Child windows start at recorded thread creation and end at task completion when observed, otherwise the capture boundary.",
+			"Incomplete output lacks a completed interval; response usage may straddle boundaries.",
+			"First stream event is used with the persisted item completion; stderr does not expose the desktop logger event labels.",
+			"Raw logs and capabilities remain private; this output includes metadata only."
+		]
+	},
+	"liveRequestEvidence": {
+		"sourceSha256": "bf1818632b4f6243262c4227553276477f1e019af8058fa203fd95f91180a503",
+		"upstream": "https://chatgpt.com/backend-api/codex/responses",
+		"generationRequestCount": 3,
+		"allGenerationRequestsPermitParallelCalls": true,
+		"allCompletedGenerationResponsesEchoParallelCalls": true,
+		"codeWrapperAbsent": true,
+		"wireCallGroupingMatchesClientRuntime": true,
+		"toolInventory": [
+			{
+				"type": "function",
+				"name": "exec_command"
+			},
+			{
+				"type": "function",
+				"name": "write_stdin"
+			},
+			{
+				"type": "function",
+				"name": "list_mcp_resources"
+			},
+			{
+				"type": "function",
+				"name": "list_mcp_resource_templates"
+			},
+			{
+				"type": "function",
+				"name": "read_mcp_resource"
+			},
+			{
+				"type": "function",
+				"name": "request_user_input"
+			},
+			{
+				"type": "function",
+				"name": "request_user_input_async"
+			},
+			{
+				"type": "namespace",
+				"name": "clock",
+				"tools": [
+					{
+						"type": "function",
+						"name": "curr_time"
+					},
+					{
+						"type": "function",
+						"name": "sleep"
+					}
+				]
+			},
+			{
+				"type": "function",
+				"name": "request_plugin_install"
+			},
+			{
+				"type": "custom",
+				"name": "apply_patch"
+			},
+			{
+				"type": "function",
+				"name": "view_image"
+			},
+			{
+				"type": "namespace",
+				"name": "collaboration",
+				"tools": [
+					{
+						"type": "function",
+						"name": "followup_task"
+					},
+					{
+						"type": "function",
+						"name": "interrupt_agent"
+					},
+					{
+						"type": "function",
+						"name": "list_agents"
+					},
+					{
+						"type": "function",
+						"name": "send_message"
+					},
+					{
+						"type": "function",
+						"name": "spawn_agent"
+					},
+					{
+						"type": "function",
+						"name": "wait_agent"
+					}
+				]
+			},
+			{
+				"type": "namespace",
+				"name": "mcp__polylith_workflows",
+				"tools": [
+					{
+						"type": "function",
+						"name": "workflow_assign"
+					},
+					{
+						"type": "function",
+						"name": "workflow_catalog"
+					},
+					{
+						"type": "function",
+						"name": "workflow_execute"
+					},
+					{
+						"type": "function",
+						"name": "workflow_open"
+					},
+					{
+						"type": "function",
+						"name": "workflow_read"
+					},
+					{
+						"type": "function",
+						"name": "workflow_status"
+					},
+					{
+						"type": "function",
+						"name": "workflow_store"
+					}
+				]
+			},
+			{
+				"type": "function",
+				"name": "get_goal"
+			},
+			{
+				"type": "function",
+				"name": "create_goal"
+			},
+			{
+				"type": "function",
+				"name": "update_goal"
+			},
+			{
+				"type": "namespace",
+				"name": "image_gen",
+				"tools": [
+					{
+						"type": "function",
+						"name": "imagegen"
+					}
+				]
+			},
+			{
+				"type": "tool_search",
+				"name": null
+			},
+			{
+				"type": "web_search",
+				"name": null
+			}
+		],
+		"requests": [
+			{
+				"at": "2026-09-29T13:32:29.199Z",
+				"elapsedMs": 1225.7170999999998,
+				"connection": 0,
+				"messageBytes": 30549,
+				"sha256": "1288b9acd328953297b838c73c972a2ca9d3b6b06c3eb9d1fec295ece77f386e",
+				"type": "response.create",
+				"model": "codex-auto-review",
+				"generate": false,
+				"parallelToolCalls": false,
+				"toolChoice": "auto",
+				"reasoningEffort": "low",
+				"previousResponseId": null
+			},
+			{
+				"at": "2026-09-29T13:32:29.813Z",
+				"elapsedMs": 1839.8804999999998,
+				"connection": 1,
+				"messageBytes": 60939,
+				"sha256": "1dea0e055ef0408283bc3efdf93ba502e7c2aec2ba6ba6f571950f4f653e8a8a",
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": false,
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"previousResponseId": null
+			},
+			{
+				"at": "2026-09-29T13:32:30.648Z",
+				"elapsedMs": 2674.6209,
+				"connection": 1,
+				"messageBytes": 81249,
+				"sha256": "dc13eb8a00c19804b61bcfe6980396a11e2b36533ccd7d6152590e9de70d04e4",
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"previousResponseId": "resp_0e2a4669adee30ef016abbbdec395887d1bfe2f46928bc719b"
+			},
+			{
+				"at": "2026-09-29T13:33:02.278Z",
+				"elapsedMs": 34304.8485,
+				"connection": 1,
+				"messageBytes": 338347,
+				"sha256": "def6cc92072ba8857f47a525be583446b4ee49d77a4498807495da02c191a332",
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"previousResponseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386"
+			},
+			{
+				"at": "2026-09-29T13:33:10.185Z",
+				"elapsedMs": 42211.5841,
+				"connection": 1,
+				"messageBytes": 62221,
+				"sha256": "55106e57a5d5b214bf2373ae24d1a1b5a2fb414f16a738e145c2e8df17a9b355",
+				"type": "response.create",
+				"model": "gpt-6-astra",
+				"generate": "omitted",
+				"parallelToolCalls": true,
+				"toolChoice": "auto",
+				"reasoningEffort": "xhigh",
+				"previousResponseId": "resp_0e2a4669adee30ef016abbbe0cb3cc87d1882545b627f59e05"
+			}
+		],
+		"responses": [
+			{
+				"at": "2026-09-29T13:32:29.558Z",
+				"elapsedMs": 1584.8889,
+				"connection": 0,
+				"messageBytes": 11222,
+				"type": "response.created",
+				"responseId": "resp_0a6cec5e603ed708016abbbdeba03487d1bc456d78e025fe26",
+				"model": "codex-auto-review",
+				"status": "in_progress",
+				"parallelToolCalls": false,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T13:32:29.670Z",
+				"elapsedMs": 1696.4718,
+				"connection": 0,
+				"messageBytes": 11396,
+				"type": "response.completed",
+				"responseId": "resp_0a6cec5e603ed708016abbbdeba03487d1bc456d78e025fe26",
+				"model": "codex-auto-review",
+				"status": "completed",
+				"parallelToolCalls": false,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T13:32:30.270Z",
+				"elapsedMs": 2297.0146,
+				"connection": 1,
+				"messageBytes": 61571,
+				"type": "response.created",
+				"responseId": "resp_0e2a4669adee30ef016abbbdec395887d1bfe2f46928bc719b",
+				"model": "gpt-6-astra",
+				"status": "in_progress",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T13:32:30.353Z",
+				"elapsedMs": 2379.94,
+				"connection": 1,
+				"messageBytes": 61747,
+				"type": "response.completed",
+				"responseId": "resp_0e2a4669adee30ef016abbbdec395887d1bfe2f46928bc719b",
+				"model": "gpt-6-astra",
+				"status": "completed",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T13:32:30.956Z",
+				"elapsedMs": 2982.8871,
+				"connection": 1,
+				"messageBytes": 61745,
+				"type": "response.created",
+				"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+				"model": "gpt-6-astra",
+				"status": "in_progress",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T13:33:02.141Z",
+				"elapsedMs": 34167.5904,
+				"connection": 1,
+				"messageBytes": 566,
+				"type": "response.output_item.done",
+				"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+				"itemType": "message",
+				"itemId": "msg_0e2a4669adee30ef016abbbdeeb11487d1849041c5adc25fc1",
+				"callId": null,
+				"name": null,
+				"namespace": null
+			},
+			{
+				"at": "2026-09-29T13:33:02.143Z",
+				"elapsedMs": 34170.094600000004,
+				"connection": 1,
+				"messageBytes": 680,
+				"type": "response.output_item.done",
+				"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+				"itemType": "function_call",
+				"itemId": "fc_0e2a4669adee30ef016abbbe0c4a2487d1b8cdc054aace8c61",
+				"callId": "call_sU0eFDO8nUc7jcXO39PTcGdP",
+				"name": "workflow_read",
+				"namespace": "mcp__polylith_workflows"
+			},
+			{
+				"at": "2026-09-29T13:33:02.147Z",
+				"elapsedMs": 34174.328700000005,
+				"connection": 1,
+				"messageBytes": 680,
+				"type": "response.output_item.done",
+				"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+				"itemType": "function_call",
+				"itemId": "fc_0e2a4669adee30ef016abbbe0c4a3487d1a4abc591fcc2c788",
+				"callId": "call_rf4o5DTRKJ7i25joTgZmZzMp",
+				"name": "workflow_read",
+				"namespace": "mcp__polylith_workflows"
+			},
+			{
+				"at": "2026-09-29T13:33:02.150Z",
+				"elapsedMs": 34176.937300000005,
+				"connection": 1,
+				"messageBytes": 684,
+				"type": "response.output_item.done",
+				"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+				"itemType": "function_call",
+				"itemId": "fc_0e2a4669adee30ef016abbbe0c4a3c87d1b312d7a57bf77d0f",
+				"callId": "call_8X70lRoE8oBgFIJek8AEBqno",
+				"name": "workflow_read",
+				"namespace": "mcp__polylith_workflows"
+			},
+			{
+				"at": "2026-09-29T13:33:02.152Z",
+				"elapsedMs": 34179.014500000005,
+				"connection": 1,
+				"messageBytes": 684,
+				"type": "response.output_item.done",
+				"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+				"itemType": "function_call",
+				"itemId": "fc_0e2a4669adee30ef016abbbe0c4a4487d19b110fdd9ca94e42",
+				"callId": "call_BDvi5RFMFY47zyHG31oxJXLr",
+				"name": "workflow_read",
+				"namespace": "mcp__polylith_workflows"
+			},
+			{
+				"at": "2026-09-29T13:33:02.164Z",
+				"elapsedMs": 34190.701400000005,
+				"connection": 1,
+				"messageBytes": 684,
+				"type": "response.output_item.done",
+				"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+				"itemType": "function_call",
+				"itemId": "fc_0e2a4669adee30ef016abbbe0c4a4c87d1b43809c416fec530",
+				"callId": "call_Q7j473cdit2kXwBzEy0TSQzx",
+				"name": "workflow_read",
+				"namespace": "mcp__polylith_workflows"
+			},
+			{
+				"at": "2026-09-29T13:33:02.164Z",
+				"elapsedMs": 34191.252700000005,
+				"connection": 1,
+				"messageBytes": 684,
+				"type": "response.output_item.done",
+				"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+				"itemType": "function_call",
+				"itemId": "fc_0e2a4669adee30ef016abbbe0c4a5487d190979a214da36a5d",
+				"callId": "call_yVpRpYXTELxvNEHlYMMQ41N5",
+				"name": "workflow_read",
+				"namespace": "mcp__polylith_workflows"
+			},
+			{
+				"at": "2026-09-29T13:33:02.165Z",
+				"elapsedMs": 34191.7111,
+				"connection": 1,
+				"messageBytes": 684,
+				"type": "response.output_item.done",
+				"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+				"itemType": "function_call",
+				"itemId": "fc_0e2a4669adee30ef016abbbe0c4a5887d1ba34791440ea5202",
+				"callId": "call_jsRtP76oUtdQho3ERRD0GkVV",
+				"name": "workflow_read",
+				"namespace": "mcp__polylith_workflows"
+			},
+			{
+				"at": "2026-09-29T13:33:02.169Z",
+				"elapsedMs": 34195.7347,
+				"connection": 1,
+				"messageBytes": 684,
+				"type": "response.output_item.done",
+				"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+				"itemType": "function_call",
+				"itemId": "fc_0e2a4669adee30ef016abbbe0c4a6087d1be600b5ae7df7f57",
+				"callId": "call_aYDPlD8FnauoSoEpMuX4oZs2",
+				"name": "workflow_read",
+				"namespace": "mcp__polylith_workflows"
+			},
+			{
+				"at": "2026-09-29T13:33:02.208Z",
+				"elapsedMs": 34234.7419,
+				"connection": 1,
+				"messageBytes": 64925,
+				"type": "response.completed",
+				"responseId": "resp_0e2a4669adee30ef016abbbded05c487d19420837f9c95a386",
+				"model": "gpt-6-astra",
+				"status": "completed",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T13:33:02.646Z",
+				"elapsedMs": 34673.2987,
+				"connection": 1,
+				"messageBytes": 61745,
+				"type": "response.created",
+				"responseId": "resp_0e2a4669adee30ef016abbbe0cb3cc87d1882545b627f59e05",
+				"model": "gpt-6-astra",
+				"status": "in_progress",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T13:33:10.087Z",
+				"elapsedMs": 42113.7057,
+				"connection": 1,
+				"messageBytes": 681,
+				"type": "response.output_item.done",
+				"responseId": "resp_0e2a4669adee30ef016abbbe0cb3cc87d1882545b627f59e05",
+				"itemType": "function_call",
+				"itemId": "fc_0e2a4669adee30ef016abbbe12209087d18e1db033ca6f85ad",
+				"callId": "call_crvirSO3Maau1UvqTGxy9a1L",
+				"name": "workflow_store",
+				"namespace": "mcp__polylith_workflows"
+			},
+			{
+				"at": "2026-09-29T13:33:10.165Z",
+				"elapsedMs": 42191.8029,
+				"connection": 1,
+				"messageBytes": 67463,
+				"type": "response.completed",
+				"responseId": "resp_0e2a4669adee30ef016abbbe0cb3cc87d1882545b627f59e05",
+				"model": "gpt-6-astra",
+				"status": "completed",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T13:33:10.669Z",
+				"elapsedMs": 42695.9319,
+				"connection": 1,
+				"messageBytes": 61745,
+				"type": "response.created",
+				"responseId": "resp_0e2a4669adee30ef016abbbe14b77887d1a47836b21c7424c1",
+				"model": "gpt-6-astra",
+				"status": "in_progress",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			},
+			{
+				"at": "2026-09-29T13:33:13.589Z",
+				"elapsedMs": 45616.2931,
+				"connection": 1,
+				"messageBytes": 490,
+				"type": "response.output_item.done",
+				"responseId": "resp_0e2a4669adee30ef016abbbe14b77887d1a47836b21c7424c1",
+				"itemType": "message",
+				"itemId": "msg_0e2a4669adee30ef016abbbe17b02487d1ae5c25e82be8f9cf",
+				"callId": null,
+				"name": null,
+				"namespace": null
+			},
+			{
+				"at": "2026-09-29T13:33:13.647Z",
+				"elapsedMs": 45674.3511,
+				"connection": 1,
+				"messageBytes": 68056,
+				"type": "response.completed",
+				"responseId": "resp_0e2a4669adee30ef016abbbe14b77887d1a47836b21c7424c1",
+				"model": "gpt-6-astra",
+				"status": "completed",
+				"parallelToolCalls": true,
+				"errorCode": null,
+				"output": []
+			}
+		],
+		"connections": [
+			{
+				"connection": 0,
+				"startedAt": "2026-09-29T13:32:28.817Z",
+				"httpStatus": 101
+			},
+			{
+				"connection": 1,
+				"startedAt": "2026-09-29T13:32:29.461Z",
+				"httpStatus": 101
+			}
+		],
+		"observationMs": 43.71829999999454,
+		"resourcesClosed": true,
+		"errors": [],
+		"credentialsPersisted": false,
+		"requestBodiesModified": false,
+		"limits": "Observation time measures parsing, projection and metadata writes, not total proxy transport overhead. Echoing the flag does not establish backend enforcement. Prewarm requests with generate:false are excluded from generation counts."
+	},
+	"officialReference": "https://learn.chatgpt.com/docs/config-file/config-reference",
+	"tooling": {
+		"planning\\refinement-efficiency\\experiments\\ux-read-window\\direct.py": "ee3067a5fc2e7bb4df82fd27931fa1fa8ac05094a36014afa2c7e101054e09c6",
+		"planning\\refinement-efficiency\\experiments\\ux-read-window\\native-assignment.md": "9876f8aeecf81a9da914afc9a788a8705fc62e33d4062a42f2ac2b26df48f437",
+		"planning\\refinement-efficiency\\experiments\\ux-collection-phase\\run.mjs": "1b2358e6dbbf51f4ff50ec5895b1b20d3e1ea6a558de41a1e97b6c5c6b8fb364"
+	},
+	"limits": [
+		"At most 8 predetermined pages; not a full acquisition or UX reasoning run.",
+		"All native reads were generated in one model response.",
+		"All requested reads were verified.",
+		"The bothCallsPreparedBeforeFirstResult, toolIntervalsOverlap and betweenReads fields describe only the first pair. readTransitions and readResponseGroups cover all reads.",
+		"A fast first tool can finish while the model is still emitting a second call in the same response. Completion order does not imply intervening interpretation.",
+		"Actual outgoing flags and streamed response identities were independently observed; this does not establish backend enforcement of the flag.",
+		"The native tool path differs from the combined-wrapper path. This run does not establish an end-to-end UX speedup or a universal return-size ceiling.",
+		"No global configuration, model selection, client output budget or live Alexa state was changed. Any temporary model-catalog override is identified in control metadata."
+	],
+	"timingQualification": "Derived timing corrected after discovering that Codex materializes batched calls together. Per-command generation and sequential gaps are unavailable. Raw source evidence is unchanged; signed observed intervals are retained."
+}

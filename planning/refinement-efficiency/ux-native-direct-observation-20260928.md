@@ -1,5 +1,10 @@
 # Direct-mode live request observation: completed, reads still sequential
 
+**Implemented follow-up:** [native parallel UX collection](native-parallel-execution-20260929.md)
+now has three verified eight-read batches through the actual Codex/MCP client,
+including the maintained launcher and compact assignment formatter. The original
+serial measurements below remain as historical evidence.
+
 **Later finding:** the [minimal three-model control](minimal-parallel-models-20260928.md) successfully emitted all eight native calls in one response on Astra, Sol and GPT-5.5. The failures below describe the fuller Codex/MCP setup; they do not imply that Astra or this backend lacks native-batching capability.
 
 **The explicitly authorized live probe completed in 24.318 seconds. All four generation requests carried `parallel_tool_calls: true`, and their completed backend responses echoed `true`. The code execution wrapper was absent. Nevertheless, the model emitted the two independent reads in separate responses. Both 28,000-byte pages arrived byte-exact, with no truncation.**

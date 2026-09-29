@@ -169,6 +169,26 @@ if (savedAttempt) {
 	if (!attemptName || !/^[a-z0-9-]+$/.test(attemptName)) throw new Error('Supply a fresh --attempt=name');
 	const output = path.join(workspace, '.codex-tmp/ux-request-capture-20260928', attemptName);
 	const websocket = process.argv.includes('--websocket');
+	const saveContext = process.argv.includes('--save-context');
+	const captureContext = (body) => {
+		if (!saveContext || body.generate === false || body.model !== 'gpt-6-astra') return;
+		fs.writeFileSync(
+			path.join(output, 'context.private.json'),
+			JSON.stringify(
+				{
+					instructions: body.instructions,
+					tools: body.tools,
+					input: body.input,
+					text: body.text,
+					include: body.include,
+					stream_options: body.stream_options,
+					client_metadata: body.client_metadata,
+				},
+				null,
+				2,
+			),
+		);
+	};
 	const catalogArgument = process.argv.find((value) => value.startsWith('--model-catalog='))?.slice(16);
 	const catalogPath = catalogArgument ? path.resolve(workspace, catalogArgument) : null;
 	if (fs.existsSync(output)) throw new Error('Preserve the existing capture');
@@ -223,6 +243,7 @@ if (savedAttempt) {
 			const encoding = request.headers['content-encoding'] ?? 'identity';
 			const decoded = decodeBody(Buffer.concat(chunks), encoding);
 			const body = JSON.parse(decoded.toString('utf8'));
+			captureContext(body);
 			requests.push({
 				at: new Date().toISOString(),
 				elapsedMs: performance.now() - started,
@@ -290,6 +311,7 @@ if (savedAttempt) {
 					assert(messageBytes <= 16 * 1024 * 1024);
 					if (!frame.final) continue;
 					const body = JSON.parse(Buffer.concat(fragments).toString('utf8'));
+					captureContext(body);
 					requests.push({
 						at: new Date().toISOString(),
 						elapsedMs: performance.now() - started,

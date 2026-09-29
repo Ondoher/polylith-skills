@@ -163,6 +163,22 @@ interface WorkflowReadRequest extends WorkflowAccessRequest {
 	maxBytes?: number;
 }
 
+/** One known independent read with explicit byte boundaries. */
+type WorkflowReadBatchEntry = Omit<WorkflowReadRequest, 'access' | 'run' | 'offset' | 'maxBytes'> & {
+	/** First-page zero or exact returned continuation byte offset. */
+	offset: number;
+	/** Source-byte ceiling no greater than the assigned server/client budget. */
+	maxBytes: number;
+};
+
+/** Caller-owned independent read wave, without copied product payloads. */
+type WorkflowReadBatch = {
+	/** Parent-issued assignment capability, shared by this wave. */
+	access: string;
+	/** Independent known pages; explicit offsets and byte budgets are mandatory. */
+	reads: WorkflowReadBatchEntry[];
+};
+
 /** One page with enough information to resume without truncation. */
 interface WorkflowReadResult {
 	/** Exact result handle. */

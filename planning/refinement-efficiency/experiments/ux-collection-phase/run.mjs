@@ -6,12 +6,17 @@ import {once} from 'node:events';
 import {createInterface} from 'node:readline';
 import {randomBytes, createHash} from 'node:crypto';
 import {startLiveRequestObserver} from '../ux-read-window/live-request-observer.mjs';
+import os from 'node:os';
+import {prepareNativeWorkflowCatalog} from '../../../../scripts/native-workflow-catalog.mjs';
+import {readBatchAssignment} from '../../../../scripts/mcp/read-batch.mjs';
 
 const workspace = fileURLToPath(new URL('../../../../', import.meta.url));
 const pageArgument = process.argv.find((value) => value.startsWith('--page-bytes='));
 const pageBytes = Number(pageArgument?.slice(13) ?? 7000);
 const parallelProbe = process.argv.includes('--parallel-probe');
 const nativeProbe = process.argv.includes('--native-probe');
+const briefNative = process.argv.includes('--brief-native');
+if (briefNative && !nativeProbe) throw new Error('--brief-native requires --native-probe');
 const observeLiveRequest = process.argv.includes('--observe-live-request');
 if (observeLiveRequest && !nativeProbe) throw new Error('Live request observation requires a native probe');
 const nativeCountArgument = process.argv.find((value) => value.startsWith('--native-read-count='));
@@ -30,7 +35,17 @@ const disableCodeHost = process.argv.includes('--disable-code-host');
 const directNamespace = process.argv.find((value) => value.startsWith('--direct-namespace='))?.slice(19);
 if (directNamespace && !/^[a-zA-Z0-9_]+$/.test(directNamespace)) throw new Error('Invalid direct tool namespace');
 const catalogArgument = process.argv.find((value) => value.startsWith('--model-catalog='))?.slice(16);
-const catalogPath = catalogArgument ? path.resolve(workspace, catalogArgument) : null;
+const nativeLauncher = process.argv.includes('--native-launcher');
+if (nativeLauncher && (!nativeProbe || catalogArgument))
+	throw new Error('--native-launcher needs --native-probe without --model-catalog');
+const preparedCatalog = nativeLauncher
+	? prepareNativeWorkflowCatalog({
+			sourcePath: path.join(process.env.CODEX_HOME ?? path.join(os.homedir(), '.codex'), 'models_cache.json'),
+			directory: path.join(workspace, '.codex-tmp/native-workflow-catalogs'),
+			model: 'gpt-6-astra',
+		})
+	: null;
+const catalogPath = preparedCatalog?.path ?? (catalogArgument ? path.resolve(workspace, catalogArgument) : null);
 const probe = process.argv.includes('--probe') || parallelProbe || nativeProbe;
 const windowExperiment = Boolean(pageArgument) || probe;
 const output = path.join(
@@ -63,6 +78,9 @@ const control = {
 	probe,
 	parallelProbe,
 	nativeProbe,
+	briefNative,
+	nativeLauncher,
+	preparedCatalog,
 	observeLiveRequest,
 	nativeReadRequests,
 	disableCodeHost,
@@ -230,8 +248,9 @@ try {
 				.join('\n'),
 		}))
 			assignment = assignment.replaceAll(`{{${name}}}`, value);
-		const prompt =
-			parallelProbe || nativeProbe
+		const prompt = briefNative
+			? `${readBatchAssignment({access: assigned.access, reads: nativeReadRequests.map(({source, offset, maxBytes}) => ({handle: inputs[source].handle, offset, maxBytes}))})}\nAfter all reads complete, call mcp__polylith_workflows.workflow_store with access=${JSON.stringify(assigned.access)}, run=${JSON.stringify(run)}, value={"kind":"ux-replay-phase","phase":"inputs-ready"}. Do nothing else.`
+			: parallelProbe || nativeProbe
 				? assignment
 				: probe
 					? `Run ONLY this authorized MCP client delivery probe. Do not spawn agents, load role guidance, inspect product files or perform product reasoning. No file fallback. The test server explicitly permits larger windows; leave client output-token limits at their existing defaults.
@@ -263,7 +282,8 @@ Wait for READY and the inputs-ready marker handle, then return the child identit
 			'-',
 		];
 		if (disableCodeHost) args.splice(1, 0, '--disable', 'code_mode_host');
-		if (catalogPath) args.splice(1, 0, '-c', `model_catalog_json=${JSON.stringify(catalogPath)}`);
+		if (catalogPath && !nativeLauncher)
+			args.splice(1, 0, '-c', `model_catalog_json=${JSON.stringify(catalogPath)}`);
 		if (directNamespace)
 			args.splice(
 				1,
@@ -278,7 +298,18 @@ Wait for READY and the inputs-ready marker handle, then return the child identit
 			args.splice(1, 0, '-c', `openai_base_url=${JSON.stringify(liveObserver.url)}`);
 		}
 		const agentStart = performance.now();
-		child = spawn(codexBinary, args, {env: environment, stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true});
+		const command = nativeLauncher ? process.execPath : codexBinary;
+		const launchArgs = nativeLauncher
+			? [
+					path.join(workspace, 'scripts/codex-native-workflows.mjs'),
+					'--model=gpt-6-astra',
+					`--binary=${codexBinary}`,
+					`--cache=${catalogPath}`,
+					'--',
+					...args,
+				]
+			: args;
+		child = spawn(command, launchArgs, {env: environment, stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true});
 		Object.assign(control, {status: 'running', childPid: child.pid, agentStartedAt: new Date().toISOString()});
 		save();
 		eventLog = fs.createWriteStream(path.join(attempt, 'events.private.jsonl'));

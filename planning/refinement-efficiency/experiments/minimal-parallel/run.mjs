@@ -13,7 +13,7 @@ const prompt = fs.readFileSync(path.join(directory, 'native-prompt.txt'), 'utf8'
 const models = ['gpt-6-astra', 'gpt-5.6-sol', 'gpt-5.5'];
 const effort = 'xhigh';
 const delayMs = 250;
-const tool = {
+export const probeTool = {
 	type: 'function',
 	name: 'probe',
 	description: 'Read-only probe. Calls are independent and safe to execute concurrently.',
@@ -42,7 +42,7 @@ export function textFrame(value) {
 }
 
 /** Open the same backend transport, with credentials held only in memory. */
-async function connect(auth, onEvent) {
+export async function connect(auth, onEvent) {
 	let socket;
 	let receive;
 	let rejectPending;
@@ -152,16 +152,21 @@ export function summarizeCalls(calls) {
 	};
 }
 
-async function runModel(model, auth, destination) {
+export async function runModel(model, auth, destination, options = {}) {
+	const tool = options.tool ?? probeTool;
+	const requestTools = options.tools ?? [tool];
+	const requestPrompt = options.prompt ?? prompt;
+	const instructions = options.instructions ?? '';
 	const started = performance.now();
 	const report = {
 		model,
 		effort,
-		prompt,
+		prompt: requestPrompt,
 		endpoint,
 		transport: 'WebSocket',
-		instructions: '',
-		tools: [tool],
+		instructions,
+		tools: requestTools,
+		profile: options.profile ?? 'minimal',
 		parallelToolCalls: true,
 		toolChoice: 'auto',
 		probeDelayMs: delayMs,
@@ -199,15 +204,15 @@ async function runModel(model, auth, destination) {
 			}
 		});
 		report.connectedMs = performance.now() - started;
-		let input = [{role: 'user', content: prompt}];
+		let input = [...(options.inputPrefix ?? []), {role: 'user', content: requestPrompt}];
 		let previousResponseId;
 		for (let index = 0; index < 12; index++) {
 			const body = {
 				type: 'response.create',
 				model,
-				instructions: '',
+				instructions,
 				input,
-				tools: [tool],
+				tools: requestTools,
 				tool_choice: 'auto',
 				parallel_tool_calls: true,
 				reasoning: {effort},
@@ -219,24 +224,27 @@ async function runModel(model, auth, destination) {
 			const outcome = await client.generate(body, (item, responseId) => {
 				const operation = (async () => {
 					const args = JSON.parse(item.arguments);
+					const id = options.decode ? options.decode(item, args) : args.id;
 					if (
-						item.name !== 'probe' ||
-						Object.keys(args).length !== 1 ||
-						!Number.isInteger(args.id) ||
-						args.id < 1 ||
-						args.id > 8
+						(!options.decode && (item.name !== 'probe' || Object.keys(args).length !== 1)) ||
+						!Number.isInteger(id) ||
+						id < 1 ||
+						id > 8
 					)
 						throw new Error('Unexpected probe call');
 					const record = {
 						responseId,
 						callId: item.call_id,
-						id: args.id,
+						id,
+						name: item.name,
+						namespace: item.namespace ?? null,
 						startMs: performance.now() - started,
 					};
 					report.calls.push(record);
-					await new Promise((resolve) => setTimeout(resolve, delayMs));
+					if (options.execute) await options.execute(id, args);
+					else await new Promise((resolve) => setTimeout(resolve, delayMs));
 					record.endMs = performance.now() - started;
-					record.output = JSON.stringify({id: args.id});
+					record.output = JSON.stringify({id});
 					return {type: 'function_call_output', call_id: item.call_id, output: record.output};
 				})();
 				pending.push(operation);

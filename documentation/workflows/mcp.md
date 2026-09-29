@@ -56,6 +56,59 @@ An execution returns a small `{handle, sha256, bytes, path, reused}` receipt, no
 
 Requests are limited to 2 MiB; saved JSON results to 16 MiB. Larger deliveries should use completed authoring units, or an assigned file under the saved-result limit. Reads bound their escaped tool text below 8 KiB and return a continuation instead of truncating it. Call `workflow_catalog` for one operation at a time when inspecting contracts. HTTP responses contain one copy of result text, not duplicate structured and text payloads.
 
+## Parallel input collection
+
+Plan the independent reads once, then collect that wave before design reasoning.
+With native tools, explicitly request **all calls in parallel, in one model
+response**, each with its own result. This wording and a compact argument list
+produced eight real UX reads in one response in the saved Codex trials. Merely
+asking for parallel reads in a longer assignment had produced serial calls.
+This is a tested prompting pattern, not a guarantee that every model response
+will batch; record response grouping when measuring performance.
+
+Give shared `access` once and list `{handle, pointer?, offset, maxBytes}` entries.
+`scripts/mcp/read-batch.mjs` supplies the maintained assignment formatter; callers
+can use the same short template without invoking a separate planning tool.
+Choose only the inputs needed for the task. First pages from independent handles
+or pointers can start together. For subsequent pages, use each result's actual
+`nextOffset`: escaped-text limits and UTF-8 boundaries can shorten pages, so do
+not predict offsets by adding `maxBytes`. Collect the next known continuations
+as another wave. Retain successful pages; retry only failed or truncated reads.
+Dependent writes, validation and acceptance stay after collection.
+
+`readOnlyHint` describes the operation; it does not enable client/model batching.
+For native collection, the client must expose native tools and allow parallel
+function calls. The tested Codex build reads both decisions from its model
+catalog. Use the task-scoped launcher when starting a native workflow session:
+
+```text
+node <governance-root>/scripts/codex-native-workflows.mjs --model=<selected model> --binary=<Codex executable> -- [Codex arguments]
+```
+
+It derives a catalog from the current local `models_cache.json`, changes only the
+selected model's `tool_mode` to `direct` and `use_responses_lite` to `false`, and
+passes the documented `model_catalog_json` startup override to Codex. It leaves
+authentication, approvals, the source cache and global configuration untouched.
+Use `--prepare-only` to inspect the receipt without launching; `--cache=<path>`
+selects an explicit current catalog. Generated catalogs stay in the workspace's
+ignored `.codex-tmp/native-workflow-catalogs/`. Missing/changed catalog contracts
+are errors. Refresh and recheck after client upgrades; these internal catalog
+fields are version-sensitive. No proxy or custom model backend is used by the
+launcher. MCP URL/authentication must already be configured normally.
+
+Existing sessions retain their startup configuration. In a code-mode session,
+prepare independent calls in one `functions.exec` using `Promise.allSettled`,
+inspect every result, and preserve each raw result. The combined wrapper output
+still has its own limit: use bounded waves whose **combined** output fits that
+limit. Do not combine individually large native pages into an oversized wrapper
+or raise client limits silently. Use a newly launched native session when separate
+large result allowances are required. Do not label wrapper execution as native
+multi-call generation.
+
+For evidence, count calls per model response separately from overlapping tool
+intervals. A millisecond read may finish before another starts even within one
+prepared batch. Full-return hashes and truncation checks remain necessary.
+
 ## Refinement sequence
 
 1. Parent opens a run, using `product.location` where a named product location is needed. `model.persist` handles current model proposals with the existing authority and lock checks. The service does not parse or reinterpret the owner's description.

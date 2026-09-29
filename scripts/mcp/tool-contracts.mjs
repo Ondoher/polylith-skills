@@ -26,7 +26,7 @@ const definitions = {
 		['access', 'run'],
 	],
 	read: [
-		'Read one bounded UTF-8 page of a saved result, optionally selected by JSON pointer.',
+		'Read one bounded UTF-8 page of a saved result, optionally selected by JSON pointer. Prepare independent reads together and issue them in parallel in one model response; each retains its own bounded result. A continuation depends on the preceding nextOffset.',
 		{
 			access: string,
 			handle: string,
