@@ -5,6 +5,10 @@ The skill packaged a reusable contract and the agent reported its violation, but
 skill invocation did not enforce parallel execution in this test. Stop after the
 first matched pair under the agreed decision rule; no repeats or larger UX run.
 
+Later follow-up: the owner authorized a [retry with explicit skill-failure
+wording](multi-read-skill-failure-20260929.md). It issued one standalone read and
+then reported failure. The original pair and metrics below remain unchanged.
+
 ## What ran
 
 Two isolated CLI workers loaded the unchanged `ux-planner.toml` developer

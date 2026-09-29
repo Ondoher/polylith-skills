@@ -26,7 +26,8 @@ must return `MULTI_READ_FAILED` and a `collection-failed` marker, even when all
 pages arrive. Only a compliant wave can return `MULTI_READ_COMPLETE` and
 `inputs-ready`. Successful pages remain reusable and are not reread to repair
 the trace. The external analyzer still verifies batching independently of the
-agent's claim. This wording change has not been rerun with a model; the original
+agent's claim. An owner-authorized [retry](../../multi-read-skill-failure-20260929.md)
+issued one standalone read, then correctly reported skill failure. The original
 1,248-byte contract and its results remain preserved in the saved first pair.
 
 Run one matched pair first, sequentially. Repeat twice only if the skill shows
