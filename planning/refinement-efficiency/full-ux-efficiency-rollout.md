@@ -3,6 +3,10 @@
 Status: implemented and locally verified, 2026-09-29. Scope: the maintained UX workflow through planning,
 structural repair, independent review, review-directed correction and UI handoff.
 
+The subsequently authorized [full UX rerun](full-ux-rerun-20260929.md) is now
+complete through a fresh passing review. It exercised these changes with normal
+Codex connectivity and no model-request observer, while preserving live Alexa.
+
 ## Completed work
 
 1. Make the measured 28,000-byte MCP content window the default, retaining
