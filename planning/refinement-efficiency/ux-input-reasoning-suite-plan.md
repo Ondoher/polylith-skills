@@ -1,7 +1,13 @@
 # Larger UX input-reasoning test
 
-Status: **constructed and locally checked; author runs have not started**,
-2026-09-29. This expands the [first matched test](ux-input-reasoning-execution.md)
+Status: **complete**, authorized and executed 2026-09-29. See the
+[results and decisions](ux-input-reasoning-suite-execution.md) and
+[complete measurements](ux-input-reasoning-suite-metrics.json). All 12 authors
+finished; focused input improved four of six pairs, with only Update Clip
+improving in both repeats. The sections below retain the frozen protocol.
+
+This expands the
+[first matched test](ux-input-reasoning-execution.md)
 to three decisions and two fresh matched pairs per decision: **12 author runs**.
 An early report follows the first four runs, which cover the two new decisions.
 

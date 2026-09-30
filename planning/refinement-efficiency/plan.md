@@ -1,11 +1,14 @@
 # Refinement efficiency: autonomous execution plan
 
-Next prepared test: [larger UX input-reasoning suite](ux-input-reasoning-suite-plan.md).
-Three frozen cases, two matched pairs per case, and an early report after the two
-new cases. Input construction and local MCP checks are complete; the 12 author
-runs have not started.
+Latest completed test, 2026-09-29:
+[larger UX input-reasoning suite](ux-input-reasoning-suite-execution.md).
+All 12 authors finished across three cases and reversed-order repeats. Focused
+input reduced reasoning in four of six pairs; only Update Clip improved twice.
+Aggregate decision reasoning was 15.0% lower and time 11.8% lower, including one
+partial answer. Both regressions and quality results remain visible in the report.
+This is a mixed result, not an established general speedup. No further run is scheduled.
 
-Latest completed test, 2026-09-29: [input size and UX reasoning effort](ux-input-reasoning-execution.md).
+Earlier single-pair test, 2026-09-29: [input size and UX reasoning effort](ux-input-reasoning-execution.md).
 One matched decision with 50.7% less product input used 33.8% fewer reported reasoning
 tokens and 25.2% less time after input receipt; both answers met the frozen rubric.
 This is an initial single-pair result, not an established scaling rule. The preceding

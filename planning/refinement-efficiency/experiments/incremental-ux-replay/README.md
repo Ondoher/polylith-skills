@@ -76,6 +76,20 @@ MCP grant/read/store checks. The first four author runs cover both new decisions
 report those before completing the 12-run schedule. Correctness is judged against
 the frozen parent-only rubric, with no answer repair or separate model review.
 
+The completed suite is reported in
+[execution results](../../ux-input-reasoning-suite-execution.md). To aggregate
+already saved results without any model calls, keep the frozen schedule at
+`<suite-directory>/inputs-01/suite.json`, put analyzer results under
+`<suite-directory>/metrics/<case>-r<repeat>-<condition>.json`, and record parent
+rubric assessments in `<suite-directory>/quality.json`. Each assessment has a
+`criteria` array of eight `pass`, `partial`, or `fail` values, with `method` and
+`notes` explaining the judgment. The collector preserves partial results and
+reports all pairs alongside a separately labeled quality-matched summary.
+
+```powershell
+python -B -X utf8 planning/refinement-efficiency/experiments/incremental-ux-replay/collect-suite.py .codex-tmp/ux-decision-suite --output=planning/refinement-efficiency/ux-input-reasoning-suite-metrics.json
+```
+
 ### Bounded input-reasoning test
 
 The [input-reasoning plan](../../ux-input-reasoning-test-plan.md) compares the same
