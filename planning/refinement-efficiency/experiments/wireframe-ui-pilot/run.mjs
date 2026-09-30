@@ -156,7 +156,7 @@ const assign = (role, handles = [], scope = {}) =>
 			'result.store',
 			'pilot.mark',
 			...(role === 'wireframe'
-				? ['pilot.scope', 'pilot.contribute', 'pilot.submit']
+				? ['pilot.contribute', 'pilot.submit']
 				: role === 'ui'
 					? ['pilot.contribute', 'pilot.submit']
 					: ['pilot.review']),

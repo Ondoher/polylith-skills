@@ -468,7 +468,7 @@ export function renderPreview(document, options = {}) {
 			'</style>',
 			dialogStyles +
 				choiceStyles +
-				'.ui-choice-group.ui-is-focus{outline:2px solid var(--pilot-primary);outline-offset:2px}.ui-choice-group.ui-is-disabled{opacity:.5}.ui-button:disabled,.ui-icon-button:disabled{opacity:1;background:var(--pilot-disabledBackground);color:var(--pilot-disabledForeground);border-color:var(--pilot-disabledBackground)}' +
+				'.ui-choice-group.ui-is-focus,.ui-visual.ui-is-focus{outline:2px solid var(--pilot-primary);outline-offset:2px}.ui-choice-group.ui-is-disabled{opacity:.5}.ui-button:disabled,.ui-icon-button:disabled{opacity:1;background:var(--pilot-disabledBackground);color:var(--pilot-disabledForeground);border-color:var(--pilot-disabledBackground)}.ui-button-secondary:disabled{background:var(--pilot-surface);border-color:var(--pilot-border)}' +
 				'</style>',
 		),
 		sceneIds: scenes.map((scene) => scene.id),

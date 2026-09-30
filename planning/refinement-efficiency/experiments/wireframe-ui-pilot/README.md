@@ -86,7 +86,7 @@ the prototype is not implemented application behavior.
 ## Local verification
 
 ```powershell
-node --test --test-isolation=none planning/refinement-efficiency/experiments/wireframe-ui-pilot/native-client.test.mjs planning/refinement-efficiency/experiments/wireframe-ui-pilot/render.test.mjs planning/refinement-efficiency/experiments/wireframe-ui-pilot/pilot.test.mjs planning/refinement-efficiency/experiments/wireframe-ui-pilot/analyze.test.mjs
+node --test --test-isolation=none planning/refinement-efficiency/experiments/wireframe-ui-pilot/native-client.test.mjs planning/refinement-efficiency/experiments/wireframe-ui-pilot/render.test.mjs planning/refinement-efficiency/experiments/wireframe-ui-pilot/pilot.test.mjs planning/refinement-efficiency/experiments/wireframe-ui-pilot/analyze.test.mjs planning/refinement-efficiency/experiments/wireframe-ui-pilot/analyze-reviewed.test.mjs
 ```
 
 These tests exercise rendering, incremental storage, exact-handle handoff and
