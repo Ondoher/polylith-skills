@@ -15,6 +15,7 @@ const governance = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '.
 const attemptName = process.argv.find((arg) => arg.startsWith('--attempt='))?.slice(10);
 assert(attemptName && /^[a-z0-9-]+$/.test(attemptName), 'Supply a unique attempt');
 const executeModel = process.argv.includes('--execute');
+const observeModelRequests = process.argv.includes('--observe-model-requests');
 const requestedAt =
 	process.argv.find((arg) => arg.startsWith('--requested-at='))?.slice(15) ?? new Date().toISOString();
 assert(Number.isFinite(Date.parse(requestedAt)) && Date.parse(requestedAt) <= Date.now(), 'Invalid request start time');
@@ -47,6 +48,8 @@ const control = {
 	run: 'ux-full-native-replay',
 	status: 'preparing',
 	model: 'gpt-6-astra',
+	modelRequestObserver: observeModelRequests,
+	resumingAgent: Boolean(previous?.threadId),
 	boundary:
 		'Full UX authoring, structural repair, independent review and review-directed rework through an exact passing receipt; no UI generation.',
 	...(previous
@@ -219,9 +222,11 @@ try {
 	control.preparedAt = new Date().toISOString();
 	save();
 	if (executeModel) {
-		control.observerTrust = await verifyObserverTrust();
-		save();
-		observer = await startLiveRequestObserver(path.join(attempt, 'live-request-metadata.json'));
+		if (observeModelRequests) {
+			control.observerTrust = await verifyObserverTrust();
+			save();
+			observer = await startLiveRequestObserver(path.join(attempt, 'live-request-metadata.json'));
+		}
 		const prompt = previous?.threadId
 			? fs.readFileSync(new URL('./resume-assignment.md', import.meta.url), 'utf8') +
 				`\nWorkspace: ${workspace}\nNew parent MCP access: ${ready.access}\nExisting run: ${control.run}\nSupervisor attempt: ${attempt}\n`
@@ -256,8 +261,7 @@ try {
 			'mcp_servers.polylith_workflows.bearer_token_env_var="POLYLITH_MCP_TOKEN"',
 			'-c',
 			'mcp_servers.polylith_workflows.required=true',
-			'-c',
-			`openai_base_url=${JSON.stringify(observer.url)}`,
+			...(observer ? ['-c', `openai_base_url=${JSON.stringify(observer.url)}`] : []),
 			...(previous?.threadId ? ['resume'] : []),
 			'-o',
 			path.join(attempt, 'result.md'),

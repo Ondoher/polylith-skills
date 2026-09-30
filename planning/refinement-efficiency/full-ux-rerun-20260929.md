@@ -1,7 +1,8 @@
 # Full UX rerun with progressive delivery
 
-Status: local preparation verified; live launch awaits the explicit payload/destination
-approval requested by automatic approval review. No model replay has started.
+Status: full UX replay running since 2026-09-30T02:24:53.247Z through normal
+Codex connectivity, with the model-request observer disabled as requested.
+Runtime logs and local MCP instrumentation remain enabled.
 
 ## Scope and starting point
 
@@ -13,9 +14,12 @@ are outside this request. The first observed setup timestamp is
 2026-09-30T01:20:14Z; authorization holds are recorded separately from processing.
 
 Reuse the maintained full-stage harness and current roles. The harness now uses
-the maintained observer, normal TLS preflight and an explicit `--execute` switch.
+the maintained local MCP instrumentation and an explicit `--execute` switch.
 Without that switch it prepares and checks inputs locally without a model call.
 Prepared attempts and completed client segments can be resumed with `--resume`.
+The separate model-request relay remains available behind the optional
+`--observe-model-requests` flag; its TLS preflight and endpoint override are
+only used when that flag is supplied. This replay omits it.
 Assignments use progressive authoring and review delivery throughout; the prior
 complete-unit and temporary repair-script instructions no longer apply.
 
@@ -47,19 +51,26 @@ stage time with the earlier full replay, explicitly retaining protocol differenc
    separately from specialist time.
 3. **Does a launch rejection count as UX performance?** No. Record it as an
    authorization hold before process launch.
-4. **Why is explicit approval pending?** The first launch was rejected for an
+4. **Why was the earlier launch held?** The first launch was rejected for an
    unidentified trusted destination. Read-only inspection proved that the observer
    uses the fixed OpenAI endpoint `https://chatgpt.com/backend-api/codex/responses`,
    keeps certificate/hostname checks enabled, and saves only diagnostic metadata.
    A retry with that evidence was still rejected because approval review requires
    an explicit user statement naming both the Alexa payload and the destination.
-   An approval question is pending. No alternate launch or data transmission was
-   attempted after that rejection.
+   The user subsequently directed bypassing this diagnostic relay while keeping
+   it available for later use. The current run follows that instruction through
+   ordinary Codex connectivity; it does not retry the rejected relay route.
+5. **Which metrics remain available?** Runtime phase, command, usage and tool
+   intervals plus local MCP measurements. Missing wire-only fields are null,
+   not zero; actual outgoing flags and auxiliary approval requests are unobserved.
+6. **Why did the first unobserved launch fail?** The sandbox rejected spawning
+   the local service with EPERM before any model start. A fresh attempt with
+   ordinary execution approval started successfully; prepared data was reused.
 
 ## Results
 
 The local prepare and resume checks passed. No UX performance improvement or
-completed review is claimed at this point.
+completed review is claimed until the current run reaches its terminal gate.
 
 | Local measurement      |      Initial preparation |         Reopen saved preparation |
 | ---------------------- | -----------------------: | -------------------------------: |
@@ -76,13 +87,13 @@ its local resume check is in the sibling `progressive-full-resume-check-20260929
 Both owned service processes shut down cleanly. No credential or product payload
 is copied into the public metrics.
 
-After explicit payload/destination approval, resume the preparation with a new
-attempt name rather than copying or interpreting the source again:
+Current running command (the observer is off by default):
 
 ```text
-node planning/refinement-efficiency/experiments/ux-full-replay/run.mjs --attempt=progressive-full-live-20260929 --resume=progressive-full-prepared-20260929 --requested-at=2026-09-30T01:20:14Z --execute
+node planning/refinement-efficiency/experiments/ux-full-replay/run.mjs --attempt=progressive-full-unobserved-live-20260929 --resume=progressive-full-prepared-20260929 --execute
 ```
 
-The remaining work is the authorized model launch, full UX completion, exact
-terminal validation and detailed analysis of the captured runtime. Record the
-approval hold separately; it is not agent reasoning or UX tool execution.
+The current attempt reused preparation in 242.526 ms, without copying baseline
+files. Its command-start timestamp is 2026-09-30T02:24:52.817Z. Earlier permission
+discussion and sandbox recovery are outside this active replay window. Remaining
+work is full UX completion, exact terminal validation and detailed runtime analysis.

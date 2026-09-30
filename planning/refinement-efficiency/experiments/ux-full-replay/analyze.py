@@ -13,7 +13,9 @@ rows = lambda file: [json.loads(line) for line in file.read_text(encoding='utf-8
 stamp = lambda value: datetime.fromisoformat(value.replace('Z', '+00:00')).timestamp()
 control = read(attempt / 'control.json')
 runtime = read(attempt / 'runtime-metrics.json')
-wire = read(attempt / 'live-request-metadata.json')
+wire_path = attempt / 'live-request-metadata.json'
+wire_available = wire_path.exists()
+wire = read(wire_path) if wire_available else {'responses': [], 'requests': [], 'errors': []}
 wire_calls = {item['callId']: item for item in wire['responses'] if item.get('itemType') in ['function_call', 'custom_tool_call'] and item.get('callId')}
 wire_group_sizes = collections.Counter(item['responseId'] for item in wire_calls.values())
 observations = rows(attempt / 'service-observations.jsonl')
@@ -47,6 +49,30 @@ for actor in runtime['threads']:
                        if entry.get('payload', {}).get('type') == 'tool_search_call'}
     outputs = {entry['payload']['call_id']: entry['payload'].get('output') for entry in events
                if entry.get('payload', {}).get('type') == 'function_call_output'}
+    operations = {}
+    for entry in events:
+        payload = entry.get('payload', {})
+        if payload.get('type') != 'function_call':
+            continue
+        try:
+            arguments = json.loads(payload.get('arguments', '{}'))
+        except json.JSONDecodeError:
+            continue
+        if isinstance(arguments, dict) and isinstance(arguments.get('operation'), str):
+            operations[payload['call_id']] = arguments['operation']
+    command_details = []
+    for command in actor['calls']:
+        stream = next((item for item in actor['items'] if item.get('callId') == command['id']), {})
+        stream_start = stream.get('start')
+        previous_result = max((item['end'] for item in actor['calls'] if
+                               stream_start is not None and item.get('end', float('inf')) <= stream_start), default=None)
+        command_details.append({
+            **command, 'operation': operations.get(command['id']),
+            'commandStreamSeconds': stream['end'] - stream_start if stream_start is not None else None,
+            'toolIntervalSeconds': command['end'] - command['start'] if 'end' in command else None,
+            'previousResultToCommandStartSeconds': stream_start - previous_result
+                if stream_start is not None and previous_result is not None else None,
+        })
     calls = [entry['payload'] for entry in events
              if entry.get('payload', {}).get('type') == 'function_call' and entry['payload'].get('name') == 'workflow_read']
     verified = []
@@ -97,7 +123,7 @@ for actor in runtime['threads']:
         duration = stream.get('end', 0) - stream.get('start', 0) if 'start' in stream else -1
         largest_commands.append({**command, 'responseId': observed.get('responseId'), 'callsInResponse': batch_size,
                                  'outputItemSeconds': duration if batch_size == 1 and duration >= 0 else None})
-    initial_coverage_required = actor.get('role') == 'ux-planner' and not control.get('resumedFrom')
+    initial_coverage_required = actor.get('role') == 'ux-planner' and not control.get('resumingAgent', bool(control.get('resumedFrom')))
     actors.append({'role': actor.get('role'), 'threadId': actor.get('threadId', actor.get('id')),
                    'model': actor['model'], 'effort': actor['effort'],
                    'windowSeconds': actor['windowSeconds'], 'activeTurnSeconds': actor.get('activeTurnSeconds'),
@@ -108,7 +134,8 @@ for actor in runtime['threads']:
                    'boundedInstructionReads': sum(bool(item.get('boundedRead')) for item in actor['calls']),
                    'waitCalls': sum(bool(item.get('waitRelated')) for item in actor['calls']),
                    'largestCommands': largest_commands,
-                   'readGroups': dict(groups), 'maxReadsPerResponse': max(groups.values(), default=0), 'readVerification': verified,
+                   'commandDetails': command_details,
+                   'readGroups': dict(groups) if wire_available else None, 'maxReadsPerResponse': max(groups.values(), default=0) if wire_available else None, 'readVerification': verified,
                    'initialInputCoverageRequired': initial_coverage_required,
                    'initialInputCoverage': initial_coverage if initial_coverage_required else [],
                    'allInitialPagesReceived': all(item['byteExact'] for item in initial_coverage) if initial_coverage_required else None,
@@ -167,12 +194,15 @@ report = {'experiment': 'Full native UX replay', 'control': control,
           'serviceByActor': {actor: {'calls': len(items), 'serviceMs': sum(item['serviceMs'] for item in items)}
                              for actor in sorted({item.get('actor', 'unknown') for item in observations})
                              for items in [[item for item in observations if item.get('actor', 'unknown') == actor]]},
-          'wireRequestCount': len([item for item in wire['requests'] if item.get('generate') is not False]),
+          'modelRequestObserver': wire_available,
+          'wireRequestCount': len([item for item in wire['requests'] if item.get('generate') is not False]) if wire_available else None,
           'selectedModelParallelFlags': dict(collections.Counter(str(item.get('parallelToolCalls')) for item in wire['requests']
-                                             if item.get('generate') is not False and item.get('model') == control['model'])),
-          'wireErrors': wire['errors'],
+                                             if item.get('generate') is not False and item.get('model') == control['model'])) if wire_available else None,
+          'wireErrors': wire['errors'] if wire_available else None,
           'evidence': {name: {'path': str(attempt / name), 'sha256': hashlib.sha256((attempt / name).read_bytes()).hexdigest()}
-                       for name in ['control.json', 'runtime-metrics.json', 'live-request-metadata.json', 'service-observations.jsonl']},
-          'limits': ['Actor windows overlap and must not be summed.', 'Marker intervals include tool-call preparation and may cross actors; they are not pure reasoning time.', 'Pointer JSON-number normalization may require exact JavaScript rechecking if a verification mismatch is reported.', 'Independent review and full authoring exceed the scope of the earlier compact comparison experiment.']}
+                       for name in ['control.json', 'runtime-metrics.json', 'live-request-metadata.json', 'service-observations.jsonl'] if (attempt / name).exists()},
+          'limits': ['Actor windows overlap and must not be summed.', 'Marker intervals include tool-call preparation and may cross actors; they are not pure reasoning time.', 'Per-command streams and previous-result gaps can overlap for concurrent calls; do not sum them as elapsed time. Gaps can include idle time between turns.', 'Pointer JSON-number normalization may require exact JavaScript rechecking if a verification mismatch is reported.', 'Independent review and full authoring exceed the scope of the earlier compact comparison experiment.']}
+if not wire_available:
+    report['limits'].append('Model-request observer disabled: wire flags, auxiliary approval requests and wire-based response grouping are unobserved, not zero.')
 (attempt / 'replay-metrics.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
 print(json.dumps({'status': control['status'], 'actors': [{key: a[key] for key in ['role', 'windowSeconds', 'toolCalls', 'maxReadsPerResponse', 'allInitialPagesReceived']} for a in actors], 'markers': markers, 'readMismatches': sum(item['byteExact'] is False for a in actors for item in a['readVerification']), 'readsWithoutPage': sum(item['byteExact'] is None for a in actors for item in a['readVerification'])}))
