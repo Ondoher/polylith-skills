@@ -7,6 +7,48 @@ export function collectWireframeGeometry() {
 		for (const node of nodes) {
 			const rect = node.getBoundingClientRect();
 			const id = node.dataset.uiNode ?? node.querySelector('[data-ui-node]')?.dataset.uiNode ?? 'control';
+			// Grid/flex frames may fit while their text spills out of a compressed row.
+			// Inspect painted text as well as the frame, ignoring deliberately clipped
+			// or scrollable descendants and visual primitives that support overlays.
+			if (node.dataset.uiTemplate !== 'visual') {
+				const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+				let text;
+				while ((text = walker.nextNode())) {
+					if (!text.textContent.trim()) continue;
+					if (node.dataset.uiTemplate === 'text-field' && text.parentElement.closest('label')) continue;
+					let parent = text.parentElement;
+					let bounded = false;
+					while (parent && parent !== node) {
+						const style = getComputedStyle(parent);
+						if (
+							['auto', 'scroll', 'hidden', 'clip'].includes(style.overflowY) ||
+							['auto', 'scroll', 'hidden', 'clip'].includes(style.overflowX)
+						)
+							bounded = true;
+						parent = parent.parentElement;
+					}
+					if (bounded) continue;
+					const range = document.createRange();
+					range.selectNodeContents(text);
+					const exceeds = [...range.getClientRects()].some(
+						(r) =>
+							r.width &&
+							r.height &&
+							(r.left < rect.left - 2 ||
+								r.right > rect.right + 2 ||
+								r.top < rect.top - 2 ||
+								r.bottom > rect.bottom + 2),
+					);
+					if (exceeds) {
+						warnings.push({
+							nodeRef: id,
+							kind: 'text-overflow',
+							message: 'Visible text exceeds its allocated control frame; inspect overlap or clipping.',
+						});
+						break;
+					}
+				}
+			}
 			let parent = node.parentElement;
 			while (parent && viewport.contains(parent)) {
 				const style = getComputedStyle(parent);

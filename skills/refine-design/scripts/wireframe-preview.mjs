@@ -45,6 +45,8 @@ const uiTheme = {
 	border: '#bdc8d7',
 	accent: '#aa520b',
 	danger: '#b42318',
+	disabledBackground: '#e0e0e0',
+	disabledForeground: '#666666',
 	fieldBorder: '#bdc8d7',
 	fieldLabel: '#5d6778',
 	radius: 8,
@@ -61,6 +63,8 @@ const neutralTheme = {
 	border: '#888888',
 	accent: '#555555',
 	danger: '#333333',
+	disabledBackground: '#e0e0e0',
+	disabledForeground: '#666666',
 	fieldBorder: '#888888',
 	fieldLabel: '#555555',
 	radius: 0,
@@ -460,7 +464,13 @@ export function renderPreview(document, options = {}) {
 	const choiceStyles =
 		'.ui-choice-group{display:grid;gap:8px;align-content:start;min-width:0}.ui-choice-group [role=option]{padding:8px 12px;border:1px solid var(--pilot-border);white-space:normal;overflow-wrap:anywhere}.ui-choice-group [aria-selected=true]{border:2px solid var(--pilot-primary);font-weight:600}.ui-choice-group [aria-disabled=true]{opacity:.5}.ui-choice-group small{display:block;font-weight:400}.ui-choice-group[role=tablist]{display:flex;flex-wrap:wrap}.ui-choice-group button,.ui-choice-group select{font:inherit;padding:8px;color:inherit;background:var(--pilot-surface);border:1px solid var(--pilot-border)}';
 	return {
-		html: html.replace('</style>', dialogStyles + choiceStyles + '</style>'),
+		html: html.replace(
+			'</style>',
+			dialogStyles +
+				choiceStyles +
+				'.ui-choice-group.ui-is-focus{outline:2px solid var(--pilot-primary);outline-offset:2px}.ui-choice-group.ui-is-disabled{opacity:.5}.ui-button:disabled,.ui-icon-button:disabled{opacity:1;background:var(--pilot-disabledBackground);color:var(--pilot-disabledForeground);border-color:var(--pilot-disabledBackground)}' +
+				'</style>',
+		),
 		sceneIds: scenes.map((scene) => scene.id),
 		validation,
 		coverage,

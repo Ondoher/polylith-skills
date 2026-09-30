@@ -144,8 +144,10 @@ export const PilotAnalysis = {
 				if (event.type === 'run-start') coordinatorRun++;
 			}
 			if (event.type === 'ui-dispatch') elements.set('ui', event.elementId);
-			if (['phase', 'repair-start'].includes(event.type) && event.elementId)
+			if (['phase', 'author-start', 'repair-start'].includes(event.type) && event.elementId) {
 				elements.set(event.role, event.elementId);
+				if (active.has(event.role)) active.get(event.role).elementId = event.elementId;
+			}
 			if (event.type === 'native.started') {
 				const record = {
 					role: event.role,

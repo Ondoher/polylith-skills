@@ -2,7 +2,7 @@
 	"name": "polylith-skills",
 	"private": true,
 	"scripts": {
-		"test:mcp": "node --test --test-isolation=none tests/mcp-workflows.test.mjs tests/native-workflows.test.mjs",
+		"test:mcp": "node --test --test-isolation=none tests/mcp-workflows.test.mjs tests/native-workflows.test.mjs tests/wireframe-workflow.test.mjs",
 		"test:mcp:fixtures": "node --test --test-isolation=none skills/refine-design/scripts/technical-context.test.mjs skills/generate-prd/scripts/product-collection.test.mjs skills/create-app/scripts/scripts.spec.mjs skills/review-standards/scripts/review-context-fingerprint.test.mjs",
 		"test:mcp:host": "node --test --test-isolation=none --test-name-pattern=\"^(migrates identical copies|preserves Codex AGENTS additions|applies a scaffold|plan and apply are deterministic|an absent PID and matching token|first attestation)\" tests/install-polylith-skills.test.mjs skills/initialize-project/scripts/scripts.spec.mjs skills/reset-design/scripts/reset-design.test.mjs skills/normalize-standards/scripts/standards-attestation.spec.mjs",
 		"mcp:serve": "node scripts/mcp-server.mjs",

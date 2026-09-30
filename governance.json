@@ -35,10 +35,13 @@
 			"privacy-security-reviewer.toml",
 			"system-architect.toml",
 			"technical-researcher.toml",
+			"ui-design-reviewer.toml",
 			"ui-designer.toml",
 			"ui-reviewer.toml",
 			"ux-planner.toml",
 			"ux-reviewer.toml",
+			"ux-wireframe-planner.toml",
+			"ux-wireframe-reviewer.toml",
 			"verification-reviewer.toml",
 			"view-agent.toml"
 		],

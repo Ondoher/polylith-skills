@@ -195,7 +195,8 @@ function renderTemplate(node, template, context) {
 	}
 	if (template.html.renderer === 'icon-button') {
 		const label = parameters.accessibleLabel ?? parameters.label;
-		return `<button type="button" ${common} aria-label="${escapeHtml(label)}" title="${escapeHtml(parameters.tooltip ?? label)}"><span aria-hidden="true">${escapeHtml(parameters.glyph ?? '•')}</span></button>`;
+		const disabled = node.state === 'disabled' || parameters.disabled === true ? ' disabled' : '';
+		return `<button type="button" ${common}${disabled} aria-label="${escapeHtml(label)}" title="${escapeHtml(parameters.tooltip ?? label)}"><span aria-hidden="true">${escapeHtml(parameters.glyph ?? '•')}</span></button>`;
 	}
 	if (template.html.renderer === 'text-field') {
 		const inputId = `ui-field-${cssIdentifier(node.id)}`;
@@ -205,7 +206,7 @@ function renderTemplate(node, template, context) {
 	}
 	if (template.html.renderer === 'choice-group') {
 		const label = parameters.label;
-		const disabled = parameters.disabled === true;
+		const disabled = node.state === 'disabled' || parameters.disabled === true;
 		const options = parameters.options;
 		if (parameters.presentation === 'select') {
 			const inputId = `ui-choice-${cssIdentifier(node.id)}`;

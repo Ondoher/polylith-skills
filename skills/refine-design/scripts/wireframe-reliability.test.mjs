@@ -95,6 +95,21 @@ test('shared packet preserves source meaning and a dialog renders actual selecti
 	assert.equal(edited[0].root.children[2].children[0].parameters.label, 'Insert');
 });
 
+test('choice focus and disabled controls render the supported states', () => {
+	const doc = document();
+	doc.parts = editPart(doc.parts, [{partRef: 'dialog', nodeRef: 'items', set: {state: 'focus'}}]);
+	const focused = renderPreview(doc);
+	assert.match(focused.html, /ui-choice-group\s+ui-is-focus/);
+	assert.match(focused.html, /\.ui-choice-group\.ui-is-focus\{outline:2px/);
+	doc.parts = editPart(doc.parts, [
+		{partRef: 'dialog', nodeRef: 'items', set: {state: 'disabled'}},
+		{partRef: 'dialog', nodeRef: 'add', set: {state: 'disabled'}},
+	]);
+	const disabled = renderPreview(doc);
+	assert.equal((disabled.html.match(/aria-disabled="true"/g) ?? []).length, 2);
+	assert.match(disabled.html, /background:var\(--pilot-disabledBackground\)/);
+});
+
 test('inspected submission and independent acceptance release exact UI work once and survive resume', () => {
 	const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'wf-reliable-'));
 	try {

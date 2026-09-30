@@ -1,10 +1,10 @@
 # Wireframe/UI pilot
 
-Implements the [experiment plan](../../wireframe-ui-pilot-plan.md) using the saved
-Alexa UX update. The two design authors have persistent native Codex threads:
-wireframe Sol/medium and UI Astra/ultra. The coordinator resumes the UI thread for
-each immutable ready wireframe while the wireframe author continues. Independent
-wireframe and visual reviewers run only after the authoring happy path.
+Implements the [reliability plan](../../wireframe-ui-reliability-plan.md) using the
+saved Alexa UX update. Persistent native Codex threads are wireframe Sol/medium
+and UI/reviewers Astra/ultra. Authors preview, inspect and submit. Independent
+wireframe acceptance is mandatory before UI dispatch. Independent element
+pipelines overlap through one queue per role; selected dependencies go first.
 
 The localhost service is the repository MCP **data service**, not a model proxy.
 No model endpoint override or request-observer proxy is used. Launches go through
@@ -25,8 +25,9 @@ node planning/refinement-efficiency/experiments/wireframe-ui-pilot/run.mjs --exe
 # Resume saved authors and completed previews after a repair/interruption
 node planning/refinement-efficiency/experiments/wireframe-ui-pilot/run.mjs --execute --resume
 
-# Separate review and targeted rework after the happy path
-node planning/refinement-efficiency/experiments/wireframe-ui-pilot/run.mjs --execute --review
+# Run one bounded acceptance trial, then reuse it in the complete set
+node planning/refinement-efficiency/experiments/wireframe-ui-pilot/run.mjs --execute --attempt=wireframe-ui-reliability-20260930 --elements=timeline-add-dialog
+node planning/refinement-efficiency/experiments/wireframe-ui-pilot/run.mjs --execute --resume --attempt=wireframe-ui-reliability-20260930 --elements=all
 ```
 
 `--attempt=<name>` selects a separate private experiment directory beneath
@@ -38,7 +39,8 @@ contents are private and are not committed with the public report.
 
 Review continuation reuses exact-version findings. Repaired wireframes are
 reviewed before updating their dependent UI. Three distinct review revisions per
-element and role bound the experiment; unresolved findings produce an explicit
+element, role and source/render contract bound the experiment across resumes;
+unresolved findings produce an explicit
 `review-incomplete` result, never an approval. Later independent elements still
 continue. The parent returns a screenshot with a ready contribution when capture
 succeeds, so authors inspect it without creating browser scripts.
@@ -54,18 +56,22 @@ succeeds, so authors inspect it without creating browser scripts.
   rendering to neutral wireframes and designed component previews.
 - `native-client.mjs`: normal client launch/resume, role ownership, private logs,
   elapsed timings and available usage/settings metadata.
-- `run.mjs`: independent authors, ready queue, screenshots and later exact-version
-  review/rework. Successful completed reviews are reused on continuation.
+- `run.mjs` and `reviewed-pipeline.mjs`: progressive drafts, inspected submissions,
+  screenshots and exact-version review before UI dispatch. Matching reviews are
+  reused on continuation; contract changes require renewed inspection/review.
 - `analyze.mjs`: derive phase, overlap, queue, contribution and review measurements
   from saved events. Usage remains per-invocation snapshots because cumulative
   thread-count semantics have not been established.
 - `gallery.mjs`: link the saved wireframes and comps without regenerating them.
+- `analyze-reviewed.mjs`: report the revised pipeline's invocations, nested input
+  windows, local previews, submissions, review findings and contract-refresh work.
 
 After an execution or continuation:
 
 ```powershell
 node planning/refinement-efficiency/experiments/wireframe-ui-pilot/analyze.mjs --attempt=wireframe-ui-pilot-20260930
 node planning/refinement-efficiency/experiments/wireframe-ui-pilot/gallery.mjs .codex-tmp/wireframe-ui-pilot-20260930
+node planning/refinement-efficiency/experiments/wireframe-ui-pilot/analyze-reviewed.mjs .codex-tmp/wireframe-ui-reliability-20260930 planning/refinement-efficiency/wireframe-ui-reliability-20260930-metrics.json
 ```
 
 The analysis writes `metrics.json` and `report.md` inside the private attempt;

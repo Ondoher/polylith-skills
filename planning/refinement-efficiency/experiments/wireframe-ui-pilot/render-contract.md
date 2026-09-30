@@ -102,7 +102,8 @@ in `references`. The adapter registers and renders the child inline; no custom
 child node kind, duplicated internals, iframe or mutable latest reference is used.
 
 UI theme fields are `primary`, `onPrimary`, `surface`, `background`, `text`,
-`muted`, `border`, `accent`, `danger`, `fieldBorder`, `fieldLabel` (hex colors),
+`muted`, `border`, `accent`, `danger`, `fieldBorder`, `fieldLabel`,
+`disabledBackground`, `disabledForeground` (hex colors),
 plus `radius`, `fieldRadius` and `fontSize` (pixels).
 Pass these values from the frozen design language; defaults are only tooling
 fixture values. Theme is intentionally small and does not replace the design
@@ -117,3 +118,17 @@ frozen Alexa JSON. Its current `textField` contract supersedes the stale generat
 `colors.md` equality description: label `#636365`, outline `#BEBEC2`, focus
 `#B87152`, error `#D32F2F`, surface `#F7F7FC`, field radius 4px. The retained filled
 command-label token is `onPrimary: '#000000'`.
+
+Use the shared `wireframeCapabilities` contract for template states. A
+`choice-group` has `{label,presentation:'listbox'|'tabs'|'select',options:
+[{id,label,secondary?}],selectedId?,disabled?}`. It renders actual item choices,
+a visible outline for `focus`, and disabled controls for `disabled`. Selection
+and focus are separate states. Use `failed` for failed status messages.
+
+Progressive `pilot.contribute` accepts `dialog:{id,header:[nodes],body:[nodes],
+footer:[nodes],gap?,padding?}` and `partChanges:[{partRef,nodeRef,set}]`. The dialog
+pattern creates content-sized header/footer and a bounded scrolling body.
+`finish:true` only returns a draft preview with validation, coverage and a
+screenshot. Inspect and repair it, then `pilot.submit {elementId,revision,
+inspected:true}`. Only an independent exact wireframe pass releases UI. The same
+operations are available under `wireframes.*` in the normal MCP service.

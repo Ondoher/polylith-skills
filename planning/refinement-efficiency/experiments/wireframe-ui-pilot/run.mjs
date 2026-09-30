@@ -29,7 +29,6 @@ assert(/^[a-z0-9-]+$/.test(attemptName));
 const attempt = path.join(governance, '.codex-tmp', attemptName);
 const workspace = path.join(attempt, 'workspace');
 const execute = process.argv.includes('--execute');
-const reviewOnly = process.argv.includes('--review');
 const resume = process.argv.includes('--resume');
 const runId = 'wireframe-ui-pilot';
 const started = performance.now();
@@ -54,7 +53,7 @@ const event = (value) => {
 			}),
 		);
 };
-event({type: 'run-start', execute, reviewOnly, resume});
+event({type: 'run-start', execute, resume});
 const manifestPath = path.join(workspace, 'source-manifest.json');
 const readJson = (location) => JSON.parse(fs.readFileSync(location));
 const input = fs.existsSync(manifestPath)
@@ -76,19 +75,15 @@ const state = fs.existsSync(statePath)
 const saveState = () => fs.writeFileSync(statePath, JSON.stringify(state, null, 2));
 if (execute) {
 	delete state.error;
-	state.status = reviewOnly ? 'review-running' : 'authoring-running';
+	state.status = 'reviewed-authoring-running';
 	saveState();
 }
-let onReady = () => {};
-let activeUiChain = Promise.resolve();
-const queueErrors = [];
 const store = new PilotStore({
 	workspace,
 	context: input.context,
 	preview: (receipt) => screenshot(receipt),
 	event: (value) => {
 		event(value);
-		if (value.type === 'preview-ready') onReady(value);
 	},
 });
 const service = new WorkflowService({workspace, pageBytes: 28000, operations: store.operations()});
@@ -186,7 +181,6 @@ const contextPointers = (element) =>
 	);
 const connection = (assignment) =>
 	`MCP run=${runId}; assigned access=${assignment.access}. Use workflow_execute {access,run,operation,input}; operation results include inline small receipts. Use workflow_read {access,handle,pointer?,offset,maxBytes:28000}; pointer is an optional exact JSON pointer. Follow nextOffset, never ignore truncation. Normal native MCP only. Parallelize independent reads when supported. Do not use a model redirect, regenerate already saved data, write code/HTML, or access live products.`;
-const protocol = `Progressive contributions: operation pilot.contribute input {elementId,set?:{purpose,constraints,focusIntent,recoveryIntent,openQuestions,ui},parts?:[native parts],scenes?:[native scenes],nodeChanges?:[{sceneRef,nodeRef,set}],finish?:true}. Code owns envelope/revisions. Save completed parts/states as you decide them; finish:true validates and renders without a final combined response. The ready receipt includes screenshot for view_image when capture succeeds; inspect that supplied PNG. If screenshotError is returned, keep the valid HTML, report the capture limitation and continue independent work; the coordinator can retry. Do not write capture scripts or launch a browser yourself. For UI, parts replace same-ID wireframe parts only as needed; set.ui includes theme, fidelity, research and rationale. nodeChanges edits UI scenes without copying the full part. Read errors and repair affected fields. SourceFlowRefs use bare exact flow IDs. A ready result is provisional; not canonical approval. Use pilot.mark {phase,elementId?} at inputs-ready, boundaries-start, wireframe-start, ui-start, research-start/end, review-start, finished. Do not create extra marker calls per thought.`;
 const client = execute
 	? new NativeClient({
 			governance,
@@ -304,47 +298,6 @@ const screenshot = async (receipt) => {
 	} else delete receipt.screenshotError;
 	return result.path;
 };
-const loadReceipt = (elementId, stage) => {
-	const directory = path.join(workspace, 'outputs', elementId);
-	const receipt = readJson(path.join(directory, stage + '-ready.json'));
-	assert(
-		receipt.ready && fs.existsSync(receipt.path) && fs.existsSync(receipt.previewPath),
-		'Saved ready preview required',
-	);
-	return receipt;
-};
-const doUi = async (receipt, feedback = null) => {
-	const artifact = await service.store({access: service.ownerAccess, run: runId, file: receipt.path});
-	const previousUi = store.latest(receipt.elementId, 'ui');
-	const retainedUi = previousUi
-		? await service.store({
-				access: service.ownerAccess,
-				run: runId,
-				file: path.join(workspace, 'outputs', receipt.elementId, 'ui-r' + previousUi.revision + '.json'),
-			})
-		: null;
-	const assignment = assign('ui', [artifact.handle, ...(retainedUi ? [retainedUi.handle] : [])], {
-		elementId: receipt.elementId,
-		wireframeRevision: receipt.revision,
-	});
-	const before = previousUi?.revision ?? 0;
-	const retainedContext = retainedUi
-		? `Saved UI revision ${previousUi.revision} from wireframe revision ${previousUi.sourceWireframeRevision} is available at handle ${retainedUi.handle}. Preserve its existing visual overrides. ${previousUi.sourceWireframeRevision !== receipt.revision ? 'This is a targeted update to the newer assigned wireframe; correct only affected visual decisions and retain unaffected work.' : 'Continue with targeted contributions to this saved UI.'}`
-		: '';
-	const picture = await screenshot(receipt);
-	event({type: 'ui-dispatch', elementId: receipt.elementId, wireframeRevision: receipt.revision});
-	await runClient(
-		'ui',
-		'gpt-6-astra',
-		'ultra',
-		`Continue as the same UI design author. ${connection(assignment)}\n${protocol}\nDesign ONLY ${receipt.elementId} from exact wireframe revision ${receipt.revision}. ${retainedContext} Wireframe read plan: ${JSON.stringify(await readPlan(artifact.handle))}. Wireframe screenshot: ${picture ?? 'unavailable; inspect saved HTML'}. Use view_image to inspect the actual spatial wireframe. Shared frozen UX context handle ${contextReceipt.handle}; use JSON pointers for this element's linked flows/actions if needed, and retain prior shared context. Mark ui-start and inputs-ready for this element. Apply the Alexa design language, using authoritative foundations JSON, black primary labels, and its specified resting/focus/error outlined-field label and outline colors (the colors.md equality note is stale). Design credible representative content, meaningful state differences, sizing and visual hierarchy. Reuse saved research; if genuinely missing, do bounded official-source research and record URLs, observations, limitations, then research-end. Do not invent behavior. ${feedback ? 'Address these exact review findings by targeted contributions: ' + JSON.stringify(feedback) : ''}\nSave progressive contributions and finish all required scenes. End after a ready receipt; no independent review or implementation.`,
-	);
-	const ready = store.ready.get('ui:' + receipt.elementId);
-	assert(ready && ready.revision > before, 'UI author ended without a ready new preview for ' + receipt.elementId);
-	ready.screenshot = await screenshot(ready);
-	state.completed = [...new Set([...state.completed, receipt.elementId])];
-	saveState();
-};
 try {
 	if (execute) {
 		await runReviewedPipeline({
@@ -375,8 +328,6 @@ try {
 	event({type: 'error', error: error.message});
 	process.exitCode = 1;
 } finally {
-	onReady = () => {};
-	await activeUiChain;
 	await server.close();
 	await service.drain();
 	fs.writeFileSync(

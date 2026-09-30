@@ -18,6 +18,7 @@ export class DomainOperations {
 		this.codexRoot = path.resolve(process.env.CODEX_HOME ?? path.join(os.homedir(), '.codex'));
 		this._registerData();
 		this._registerDesign();
+		this._registerWireframes();
 		this._registerPublication();
 		this._registerStandards();
 		this._registerProject();
@@ -51,6 +52,67 @@ export class DomainOperations {
 	 */
 	_module(relative) {
 		return import(new URL(`../../${relative}`, import.meta.url));
+	}
+
+	/** Source-bound spatial authoring and review before downstream UI delivery. */
+	_registerWireframes() {
+		const schemas = {
+			prepare: [{context: object, scope: object}, ['context', 'scope'], false, true],
+			packet: [{elementId: text}, ['elementId'], true, false],
+			status: [{elementId: text}, ['elementId'], true, false],
+			contribute: [
+				{
+					elementId: text,
+					baseRevision: {type: 'integer'},
+					set: object,
+					parts: {type: 'array', items: object},
+					scenes: {type: 'array', items: object},
+					nodeChanges: {type: 'array', items: object},
+					partChanges: {type: 'array', items: object},
+					dialog: object,
+					finish: {type: 'boolean'},
+				},
+				['elementId'],
+				true,
+				true,
+			],
+			submit: [
+				{elementId: text, revision: {type: 'integer'}, inspected: {type: 'boolean'}},
+				['elementId', 'revision', 'inspected'],
+				true,
+				true,
+			],
+			review: [
+				{
+					elementId: text,
+					revision: {type: 'integer'},
+					verdict: {type: 'string', enum: ['pass', 'revise']},
+					findings: {type: 'array', items: object},
+					strengths: {type: 'array'},
+					limits: {type: 'array'},
+				},
+				['elementId', 'revision', 'verdict', 'findings'],
+				true,
+				true,
+			],
+		};
+		for (const [name, [properties, required, assignable, writes]] of Object.entries(schemas)) {
+			this._add(
+				'wireframes.' + name,
+				'Source-bound wireframe/UI ' +
+					name +
+					'; a rendered draft is not submission, and UI requires exact independent wireframe acceptance.',
+				properties,
+				required,
+				assignable,
+				writes,
+				async (input, context) => {
+					const {WireframeOperations} = await this._module('scripts/mcp/WireframeOperations.mjs');
+					return WireframeOperations.execute(name, input, context);
+				},
+			);
+			if (name !== 'packet') this.operations['wireframes.' + name].inlineResult = true;
+		}
 	}
 
 	/** Resolves an existing domain options object with an explicit path-field allowlist.
@@ -367,6 +429,10 @@ export class DomainOperations {
 			true,
 			true,
 			async (input, context) => {
+				if (input.stage === 'ui') {
+					const {WireframeOperations} = await this._module('scripts/mcp/WireframeOperations.mjs');
+					WireframeOperations.requireUiAcceptance(context);
+				}
 				const {DesignRun} = await this._module('skills/refine-design/scripts/design-run.mjs');
 				return DesignRun.deliver(this._store(input, context), input.records, input.repairs ?? {});
 			},

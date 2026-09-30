@@ -51,7 +51,7 @@ export async function runReviewedPipeline(c) {
 			missingActionRefs: packet.missingActionRefs,
 		});
 	}
-	const protocol = `Use pilot.contribute {elementId,set?,parts?,scenes?,nodeChanges?:[{sceneRef,nodeRef,set}],partChanges?:[{partRef,nodeRef,set}],dialog?:{id,header:[nodes],body:[nodes],footer:[nodes],gap?,padding?},finish?:true}. Save progressive changes. set contains purpose,focusIntent,recoveryIntent,openQuestions or ui metadata. Code owns all envelopes and revisions. dialog creates a shared part with content-sized header/footer and scrollable body; reference it by partRef in scenes. partChanges edits a node including children without resending its part. Scene changes use complete layout/parameters fields. finish:true returns a DRAFT screenshot, validation and coverage. Inspect that screenshot using view_image, check the source use cases with its actual controls, make targeted corrections if needed, then call pilot.submit {elementId,revision,inspected:true}. Rendering does not submit or approve anything. Do not end until submitted. Do not write renderer/browser scripts or access live products. On capture failure retain the draft and report the capture issue. Mark inputs-ready, wireframe-start or ui-start, inspection-start/end and finished via pilot.mark {phase,elementId}. Do not add markers per thought.`;
+	const protocol = `Use pilot.contribute {elementId,set?,parts?,scenes?,nodeChanges?:[{sceneRef,nodeRef,set}],partChanges?:[{partRef,nodeRef,set}],dialog?:{id,header:[nodes],body:[nodes],footer:[nodes],gap?,padding?},finish?:true}. Save progressive changes. set contains purpose,focusIntent,recoveryIntent,openQuestions or ui metadata. Code owns all envelopes and revisions. dialog creates a shared part with content-sized header/footer and scrollable body; reference it by partRef in scenes. partChanges edits a node including children without resending its part. Scene changes use complete layout/parameters fields. finish:true returns a DRAFT screenshot, validation and coverage. Inspect that screenshot using view_image, check the source use cases with its actual controls, make targeted corrections if needed, then call pilot.submit {elementId,revision,inspected:true}. Rendering does not submit or approve anything. End after submission. If a renderer/tool defect makes submission impossible, retain the draft and end with the exact blocker for the coordinator to repair; do not wait on a user question. Do not write renderer/browser scripts or access live products. On capture failure retain the draft and report the capture issue. Mark inputs-ready, wireframe-start or ui-start, inspection-start/end and finished via pilot.mark {phase,elementId}. Do not add markers per thought.`;
 	const sharedContract = `Renderer capabilities: ${JSON.stringify(c.capabilities)}\n${c.contractText}\nThe current progressive protocol below supersedes the old finish/ready wording in examples. choice-group template uses parameters {label,presentation:"listbox"|"tabs"|"select",options:[{id,label,secondary?}],selectedId?,disabled?}; use actual item options for selection. It is optional when another usable control better fits the source.`;
 	const author = async (element, stage, feedback = null) =>
 		serial(stage, async () => {
@@ -133,14 +133,40 @@ export async function runReviewedPipeline(c) {
 			return candidate;
 		}
 		if (
+			candidate &&
+			JSON.stringify(candidate.binding) !== JSON.stringify(store._binding(element.id, stage, candidate.revision))
+		) {
+			event({type: 'binding-refresh', role: stage, elementId: element.id});
+			candidate = await author(element, stage, [
+				{
+					issue: 'Renderer or source contract changed since this submission.',
+					remedy: 'Reuse the saved draft, rerender and inspect under the corrected contract. Choice focus now renders; disabledBackground/disabledForeground theme values are supported. Make only necessary targeted corrections, then resubmit. Prior acceptance must be renewed.',
+				},
+			]);
+		}
+		if (
 			!candidate ||
 			(stage === 'ui' &&
 				store.latest(element.id, 'ui')?.sourceWireframeRevision !== receipt(element.id, 'wireframe').revision)
 		)
 			candidate = await author(element, stage);
-		for (let round = 0; round < 3; round++) {
+		const reviewCount = () =>
+			fs.readdirSync(directory(element.id)).filter((name) => {
+				if (
+					!name.startsWith((stage === 'wireframe' ? 'wireframe-review' : 'visual-review') + '-r') ||
+					!name.endsWith('.json')
+				)
+					return false;
+				const binding = read(path.join(directory(element.id), name)).binding;
+				return ['source', 'contract', 'renderer'].every((key) => binding?.[key] === candidate.binding[key]);
+			}).length;
+		for (;;) {
+			const role = stage === 'wireframe' ? 'wireframe-review' : 'visual-review';
+			const savedReview = path.join(directory(element.id), role + '-r' + candidate.revision + '.json');
+			if (reviewCount() >= 3 && !fs.existsSync(savedReview)) break;
 			const result = await review(element, stage, candidate);
 			if (result.verdict === 'pass') return candidate;
+			if (reviewCount() >= 3) break;
 			if (stage === 'ui' && result.findings.some((x) => x.route === 'wireframe')) {
 				await author(
 					element,
@@ -149,15 +175,30 @@ export async function runReviewedPipeline(c) {
 				);
 				await acceptedStage(element, 'wireframe');
 			}
-			if (round < 2) candidate = await author(element, stage, result.findings);
+			candidate = await author(element, stage, result.findings);
 		}
 		throw new Error('Three review attempts exhausted; saved findings require repair');
+	};
+	// Schedule selected dependencies first; references outside this bounded trial
+	// continue to use the frozen source contract. Never regenerate accepted work.
+	const wireframes = new Map();
+	const visit = (element, ancestors = []) => {
+		assert(!ancestors.includes(element.id), 'Cyclic wireframe assignment dependency');
+		if (wireframes.has(element.id)) return wireframes.get(element.id);
+		const pending = Promise.all(
+			(element.dependencies ?? []).map((id) => {
+				const dependency = selected.find((x) => x.id === id);
+				return dependency ? visit(dependency, [...ancestors, element.id]) : null;
+			}),
+		).then(() => acceptedStage(element, 'wireframe'));
+		wireframes.set(element.id, pending);
+		return pending;
 	};
 	// Run independent pipelines through one queue per role. First trial selects one element.
 	await Promise.allSettled(
 		selected.map(async (element) => {
 			try {
-				await acceptedStage(element, 'wireframe');
+				await visit(element);
 				await acceptedStage(element, 'ui');
 				state.completed = [...new Set([...state.completed, element.id])];
 				event({type: 'element-accepted', elementId: element.id});

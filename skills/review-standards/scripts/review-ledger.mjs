@@ -143,7 +143,11 @@ export function infrastructure(codex) {
 			new RegExp(`^model_reasoning_effort\\s*=\\s*"${effort}"\\s*$`, 'm').test(definition),
 			`${name}: expected ${effort} reasoning`,
 		);
-		required(/^sandbox_mode\s*=\s*"read-only"\s*$/m.test(definition), `${name}: must be read-only`);
+		required(
+			/^sandbox_mode\s*=\s*"workspace-write"\s*$/m.test(definition),
+			`${name}: scoped result delivery requires workspace-write`,
+		);
+		required(definition.includes('Scoped delivery permission:'), `${name}: scoped delivery boundary is missing`);
 	}
 }
 

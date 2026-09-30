@@ -5,7 +5,12 @@ import {createHash} from 'node:crypto';
 import {renderPreview, validatePreview} from './wireframe-preview.mjs';
 import {dialogPart, editPart, wireframeCapabilities, wireframeDigest, wireframePacket} from './wireframe-contract.mjs';
 
-/** Experiment-only progressive contributions and immutable preview revisions. */
+const rendererFingerprint = createHash('sha256');
+for (const file of ['wireframe-preview.mjs', 'ui-composition-html.mjs', 'ui-parts.mjs'])
+	rendererFingerprint.update(fs.readFileSync(new URL('./' + file, import.meta.url)));
+const rendererVersion = rendererFingerprint.digest('hex');
+
+/** Progressive candidate contributions and immutable inspected preview revisions. */
 export class WireframeStore {
 	constructor({workspace, context, event = () => {}, preview = null}) {
 		this.workspace = workspace;
@@ -50,9 +55,7 @@ export class WireframeStore {
 			artifact: wireframeDigest(this._revision(elementId, stage, revision)),
 			source: this.packet(elementId).sha256,
 			contract: wireframeDigest(wireframeCapabilities),
-			renderer: createHash('sha256')
-				.update(fs.readFileSync(new URL('./wireframe-preview.mjs', import.meta.url)))
-				.digest('hex'),
+			renderer: rendererVersion,
 		};
 	}
 	/** Acceptance is bound to the latest submitted revision and current inputs. */

@@ -32,6 +32,29 @@ Status: running. Plan: [wireframe/UI reliability](wireframe-ui-reliability-plan.
    approval review then rejected the normal-client launch for ambiguous payload
    authorization. After inspecting the client and supplying the invoked plan's
    exact authorization, the retry was approved without changing the connection.
+9. Which reviewer should assess comps? Add `ui-design-reviewer` alongside the
+   requested wireframe roles. The existing `ui-reviewer` is a code-standards lane,
+   so using it for qualitative comp review would conflate responsibilities.
+10. Can the geometry check find the old defect? Its initial frame-only check
+    missed it. Inspect painted text bounds too, excluding intentional floating
+    field labels, clipping/scroll regions and visual overlays. Treat diagnostics
+    as warnings for inspection, not proof of usability.
+11. What if review discovers a renderer defect? The add-dialog UI review found
+    missing choice focus styling. Its author correctly saved a draft instead of
+    changing renderer code, but waited on a question outside its assignment.
+    Stop that identified trial client, preserve the draft, fix the renderer and
+    resume. Updated assignments explicitly return such blockers to the coordinator.
+12. Are old passes valid after a renderer repair? No. Bind acceptance to the
+    loaded preview/native renderer/parts code, rerender saved drafts and renew
+    affected reviews. Record this extra tooling-recovery work separately.
+13. How should retries and dependencies survive resume? Count up to three review
+    revisions per element/role/current source-render contract from saved files.
+    Schedule selected wireframe dependencies first; references outside a bounded
+    trial retain their frozen source contract.
+14. What about the broader gate's obsolete read-only requirement? Update the
+    reviewer infrastructure check to require the already-authorized workspace
+    write mode plus explicit scoped-delivery instructions. Do not revert agents'
+    delivery permissions or suppress the failing check.
 
 ## Evidence and timing
 
@@ -48,3 +71,15 @@ part of this work and will be retained in the next checkpoint.
 - Authorized add-dialog author started at 2026-09-30 19:32:00.749 UTC. Attempt:
   `.codex-tmp/wireframe-ui-reliability-20260930/`. All new artifacts remain there.
 - Checkpoint adviser recommended: `Harden wireframe authoring handoffs`.
+- Created checkpoint `bb9c3b1` with that preapproved message. No push.
+- First wireframe author: 282.776s; first independent wireframe review: 97.893s,
+  pass. Two draft previews and author inspection preceded submission; this is not
+  zero local correction effort.
+- First UI author: 228.204s; first visual review: 156.310s, revise for a renderer
+  focus defect, with two nonblocking content/token observations. UI repair saved
+  its draft, then waited for renderer ownership; the identified client was stopped
+  after 197.373s and protected inputs remained unchanged.
+- Renderer repair adds visible choice focus, disabled choice/icon behavior and
+  explicit disabled foreground/background theme tokens. Twenty focused checks
+  passed after the fix. Renewed wireframe inspection/submission: 80.334s; its
+  independent recheck: 69.158s, pass. These are additional recovery windows.
