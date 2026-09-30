@@ -24,7 +24,7 @@ Status: standalone UX planning and interaction-architecture role, with scoped fi
 
 Ask: "Use ux-planner to assess [idea, design, workflow, or question]." The main conversation spawns the named role with focused context and returns its report. No repository, orchestrator, complete specification, coding request, or implementation opt-in is required. Reuse accepted findings rather than rerunning general planning.
 
-The role is installed at `$CODEX_HOME/agents/ux-planner.toml`, falling back to `~/.codex`. Every named invocation uses `gpt-6-astra` with `ultra` reasoning because it owns consequential interaction decisions under incomplete requirements. Do not override that selection silently. If the named role is unavailable, report the limitation or use honest `parent-assessment` provenance; never claim the planner ran when it did not.
+The role is installed at `$CODEX_HOME/agents/ux-planner.toml`, falling back to `~/.codex`. Use the model and reasoning effort configured in that file unless the owner explicitly selects otherwise. Do not override that selection silently. If the named role is unavailable, report the limitation or use honest `parent-assessment` provenance; never claim the planner ran when it did not.
 
 ## Inputs And Product Authority
 

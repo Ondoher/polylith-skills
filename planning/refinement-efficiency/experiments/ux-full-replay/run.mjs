@@ -15,6 +15,7 @@ const governance = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '.
 const attemptName = process.argv.find((arg) => arg.startsWith('--attempt='))?.slice(10);
 assert(attemptName && /^[a-z0-9-]+$/.test(attemptName), 'Supply a unique attempt');
 const executeModel = process.argv.includes('--execute');
+const firstRoundOnly = process.argv.includes('--first-round');
 const observeModelRequests = process.argv.includes('--observe-model-requests');
 const requestedAt =
 	process.argv.find((arg) => arg.startsWith('--requested-at='))?.slice(15) ?? new Date().toISOString();
@@ -23,6 +24,8 @@ const resumeName = process.argv.find((arg) => arg.startsWith('--resume='))?.slic
 assert(!resumeName || /^[a-z0-9-]+$/.test(resumeName), 'Invalid resume attempt');
 const previousDirectory = resumeName && path.join(governance, '.codex-tmp/ux-full-native-20260929', resumeName);
 const previous = previousDirectory && JSON.parse(fs.readFileSync(path.join(previousDirectory, 'control.json')));
+assert(!previous || Boolean(previous.firstRoundOnly) === firstRoundOnly, 'Resume must preserve the run scope');
+assert(!firstRoundOnly || !previous?.threadId, 'First-round continuation needs an explicitly bounded assignment');
 assert(
 	!previous ||
 		(previous.liveUnchanged &&
@@ -48,10 +51,12 @@ const control = {
 	run: 'ux-full-native-replay',
 	status: 'preparing',
 	model: 'gpt-6-astra',
+	firstRoundOnly,
 	modelRequestObserver: observeModelRequests,
 	resumingAgent: Boolean(previous?.threadId),
-	boundary:
-		'Full UX authoring, structural repair, independent review and review-directed rework through an exact passing receipt; no UI generation.',
+	boundary: firstRoundOnly
+		? 'First UX authoring pass through initial proposal delivery only; no repair, persistence, review or downstream processing.'
+		: 'Full UX authoring, structural repair, independent review and review-directed rework through an exact passing receipt; no UI generation.',
 	...(previous
 		? {resumedFrom: resumeName, originalRequestedAt: previous.originalRequestedAt ?? previous.requestedAt}
 		: {}),
@@ -209,11 +214,31 @@ try {
 	fs.writeFileSync(path.join(attempt, 'input-receipts.json'), JSON.stringify(inputs, null, 2));
 	fs.writeFileSync(path.join(attempt, 'input-read-plan.json'), JSON.stringify(plan, null, 2));
 	const compactPlan = plan.map(({nextOffset, ...entry}) => entry);
-	const catalog = prepareNativeWorkflowCatalog({
-		sourcePath: path.join(process.env.CODEX_HOME ?? path.join(os.homedir(), '.codex'), 'models_cache.json'),
-		directory: path.join(attempt, 'catalog'),
-		model: control.model,
-	});
+	const roleNames = firstRoundOnly ? ['ux-planner'] : ['ux-planner', 'ux-reviewer'];
+	control.specialists = Object.fromEntries(
+		roleNames.map((name) => {
+			const source = fs.readFileSync(path.join(governance, 'agents', name + '.toml'), 'utf8');
+			return [
+				name,
+				{
+					model: source.match(/^model = "([^"]+)"/m)?.[1],
+					effort: source.match(/^model_reasoning_effort = "([^"]+)"/m)?.[1],
+				},
+			];
+		}),
+	);
+	let catalogSource = path.join(process.env.CODEX_HOME ?? path.join(os.homedir(), '.codex'), 'models_cache.json');
+	control.catalogs = [];
+	for (const model of new Set([...Object.values(control.specialists).map((role) => role.model), control.model])) {
+		const receipt = prepareNativeWorkflowCatalog({
+			sourcePath: catalogSource,
+			directory: path.join(attempt, 'catalog'),
+			model,
+		});
+		control.catalogs.push(receipt);
+		catalogSource = receipt.path;
+	}
+	const catalog = control.catalogs.at(-1);
 	control.catalog = catalog;
 	control.inputReadCount = plan.length;
 	control.inputBytes = facts.bytes + ux.bytes;
@@ -230,7 +255,10 @@ try {
 		const prompt = previous?.threadId
 			? fs.readFileSync(new URL('./resume-assignment.md', import.meta.url), 'utf8') +
 				`\nWorkspace: ${workspace}\nNew parent MCP access: ${ready.access}\nExisting run: ${control.run}\nSupervisor attempt: ${attempt}\n`
-			: fs.readFileSync(new URL('./assignment.md', import.meta.url), 'utf8') +
+			: fs.readFileSync(
+					new URL(firstRoundOnly ? './first-round-assignment.md' : './assignment.md', import.meta.url),
+					'utf8',
+				) +
 				`\nWorkspace: ${workspace}\nParent MCP access: ${ready.access}\nOpened run: ${control.run}\nFacts handle: ${facts.handle}\nPrior UX handle: ${ux.handle}\nComplete immutable input read plan (replace parent access with specialist access in its assignment):\n${JSON.stringify(compactPlan)}\n`;
 		fs.writeFileSync(path.join(attempt, 'prompt.private.txt'), prompt);
 		control.promptSha256 = sha(prompt);

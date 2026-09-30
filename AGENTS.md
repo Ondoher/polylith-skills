@@ -13,3 +13,7 @@ batches. Supply all paths together and forward one raw page per tool response;
 follow its continuation instead of combining large command outputs. Keep existing
 tool limits and check for truncation. The helper bounds its own output, not extra
 text added by callers.
+
+Use Codex's normal model connection for workflow runs and performance tests.
+Do not enable a local model redirect or model-request observer proxy unless the
+user explicitly requests it. This does not prohibit the local MCP data service.
