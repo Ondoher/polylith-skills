@@ -10,6 +10,12 @@ import {McpHttpServer} from '../../../../scripts/mcp/McpHttpServer.mjs';
 import {PilotInputs} from './prepare.mjs';
 import {PilotStore} from './PilotStore.mjs';
 import {NativeClient} from './native-client.mjs';
+import {runReviewedPipeline} from './reviewed-pipeline.mjs';
+import {wireframeCapabilities} from '../../../../skills/refine-design/scripts/wireframe-contract.mjs';
+import {
+	geometryInspectionHtml,
+	readGeometryInspection,
+} from '../../../../skills/refine-design/scripts/wireframe-inspection.mjs';
 
 const governance = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
 const argument = (name, fallback) =>
@@ -155,9 +161,9 @@ const assign = (role, handles = [], scope = {}) =>
 			'result.store',
 			'pilot.mark',
 			...(role === 'wireframe'
-				? ['pilot.scope', 'pilot.contribute']
+				? ['pilot.scope', 'pilot.contribute', 'pilot.submit']
 				: role === 'ui'
-					? ['pilot.contribute']
+					? ['pilot.contribute', 'pilot.submit']
 					: ['pilot.review']),
 		],
 		handles: [...sharedHandles, ...handles],
@@ -208,6 +214,9 @@ const captureScreenshot = async (receipt) => {
 	const target = receipt.previewPath.replace(/\.html$/, '.png');
 	if (fs.existsSync(target) && fs.statSync(target).size > 0) return {path: target};
 	const document = readJson(receipt.path);
+	const capturePath = receipt.previewPath.replace(/\.html$/, '-inspection.html');
+	fs.writeFileSync(capturePath, geometryInspectionHtml(fs.readFileSync(receipt.previewPath, 'utf8')));
+	let capturedDom = '';
 	const width = Math.max(900, ...document.scenes.map((scene) => scene.viewport.width + 100));
 	const height = Math.min(
 		12000,
@@ -222,14 +231,19 @@ const captureScreenshot = async (receipt) => {
 			'--disable-gpu',
 			'--no-first-run',
 			'--disable-extensions',
+			'--dump-dom',
+			'--virtual-time-budget=500',
 			'--user-data-dir=' +
 				path.join(attempt, 'browser', receipt.stage + '-' + receipt.elementId + '-r' + receipt.revision),
 			'--screenshot=' + target,
 			'--window-size=' + width + ',' + height,
-			new URL('file:///' + receipt.previewPath.replaceAll('\\', '/')).href,
+			new URL('file:///' + capturePath.replaceAll('\\', '/')).href,
 		],
-		{stdio: 'ignore', windowsHide: true},
+		{stdio: ['ignore', 'pipe', 'ignore'], windowsHide: true},
 	);
+	child.stdout.on('data', (chunk) => {
+		capturedDom += chunk;
+	});
 	let timedOut = false;
 	const timer = setTimeout(() => {
 		timedOut = true;
@@ -241,6 +255,18 @@ const captureScreenshot = async (receipt) => {
 	} finally {
 		clearTimeout(timer);
 	}
+	receipt.layoutDiagnostics = readGeometryInspection(capturedDom);
+	fs.writeFileSync(
+		receipt.previewPath.replace(/\.html$/, '-geometry.json'),
+		JSON.stringify(receipt.layoutDiagnostics),
+	);
+	event({
+		type: 'layout-check',
+		stage: receipt.stage,
+		elementId: receipt.elementId,
+		revision: receipt.revision,
+		...receipt.layoutDiagnostics,
+	});
 	const exists = fs.existsSync(target) && fs.statSync(target).size > 0;
 	const error = exists
 		? null
@@ -320,292 +346,29 @@ const doUi = async (receipt, feedback = null) => {
 	saveState();
 };
 try {
-	if (execute && !reviewOnly) {
-		delete state.error;
-		const uiAssignment = assign('ui');
-		activeUiChain =
-			resume && state.threads.ui
-				? Promise.resolve()
-				: runClient(
-						'ui',
-						'gpt-6-astra',
-						'ultra',
-						`You are the UI design specialist for a bounded provisional wireframe-to-UI experiment. This is not canonical publication. ${connection(uiAssignment)}\n${protocol}\nRead this complete renderer contract once: ${contractText}\nRead the frozen design language/research from these pages: ${JSON.stringify(await readPlan(designReceipt.handle))}. Prepare shared UI context, mark inputs-ready and then finish with a short ready acknowledgment. Do not poll, invent an element, or design yet. This same thread will receive one completed wireframe at a time. Research and concrete component design remain your job; wireframe owns usage/spatial structure.`,
-					).catch((error) => {
-						queueErrors.push(error);
-						event({type: 'error', role: 'ui', error: error.message});
-					});
-		onReady = (receipt) => {
-			if (receipt.stage === 'wireframe')
-				activeUiChain = activeUiChain
-					.then(() => {
-						const decision = store.uiDispatchDecision(receipt);
-						if (!decision.needed) {
-							event({
-								type: 'ui-queue-skipped',
-								elementId: receipt.elementId,
-								queuedWireframeRevision: receipt.revision,
-								...decision,
-							});
-							return;
-						}
-						return doUi(receipt);
-					})
-					.catch((error) => {
-						queueErrors.push(error);
-						event({type: 'error', role: 'ui', elementId: receipt.elementId, error: error.message});
-					});
-		};
-		const wireframeAssignment = assign('wireframe');
-		const remaining = resume
-			? (store.scope?.elements ?? [])
-					.filter(
-						(item) =>
-							item.disposition === 'update' &&
-							!fs.existsSync(path.join(workspace, 'outputs', item.id, 'wireframe-ready.json')),
-					)
-					.map((item) => item.id)
-			: null;
-		if (resume)
-			for (const element of store.scope?.elements ?? []) {
-				if (element.disposition === 'update' && !remaining.includes(element.id)) {
-					const receipt = loadReceipt(element.id, 'wireframe');
-					if (store.uiDispatchDecision(receipt).needed) onReady(receipt);
-				}
-			}
-		if (remaining === null || remaining.length > 0 || !store.scope)
-			await runClient(
-				'wireframe',
-				'gpt-6-sol',
-				'medium',
-				`You are the UX wireframe specialist in an isolated performance experiment. General-flow UX is already authored; reuse it. ${connection(wireframeAssignment)}\n${protocol}\nRenderer contract (read once):\n${contractText}\nRead saved changed-use-case context using all these independently addressable pages: ${JSON.stringify(await readPlan(contextReceipt.handle))}. This contains full relevant current flows/actions/frames plus field-level deltas; surrounding unchanged product is not new design scope. Mark inputs-ready then boundaries-start. ${resume && store.scope ? 'Keep prior boundaries; remaining elements: ' + JSON.stringify(remaining) : 'Determine coherent affected interface elements, then call pilot.scope with {elements:[{id,title,disposition:"update"|"reuse",sourceFlowRefs:[bare flow IDs],sourceActionRefs:[action IDs],frameRefs:[frame IDs],changeReason,requiredStates:[scene IDs],dependencies:[element IDs]}],coverage:[{sourceRef,elementIds,disposition,reason}]}. Cover all changed flows/actions/frames by explicit update or reasoned reuse; metadata alone is not a redraw. Timeline is one coherent component including tracks/objects/playhead; dialogs may be separate. Do not invent boundaries to inflate sample size. Include multiple genuine affected elements.'}\nThen author ALL selected update elements progressively, smallest meaningful first. Mark wireframe-start per element. Include required changed states and alternate/error flows as existing source requires. Produce real spatial wireframes, not annotated action lists. Store parts/states as complete; finish each coherent element immediately so UI can start while you design the next. The coordinator routes ready handles automatically. Do not wait for UI or rerun flow design. Use stable source refs, a named focus/return target and pending questions; preserve decisions and sources. Report uncovered dependencies explicitly. At end mark finished and return compact IDs/status only.`,
-			);
-		await activeUiChain;
-		assert.equal(queueErrors.length, 0, queueErrors.map((error) => error.message).join('; '));
-		assert(
-			store.scope?.elements.length &&
-				store.scope.elements
-					.filter((item) => item.disposition === 'update')
-					.every((item) => !store.uiDispatchDecision(loadReceipt(item.id, 'wireframe')).needed),
-			'Selected affected elements remain incomplete',
-		);
-		state.happyPathCompletedAt = new Date().toISOString();
-		saveState();
-	}
-	if (execute && reviewOnly) {
-		assert(store.scope && state.completed.length, 'Complete happy path before review');
-		state.unresolvedReviews = [];
-		const unresolved = (role, elementId, revision, reason) => {
-			const entry = {role, elementId, revision, reason};
-			state.unresolvedReviews.push(entry);
-			event({type: 'review-unresolved', ...entry});
-			saveState();
-		};
-		for (const role of ['wireframe-review', 'visual-review']) {
-			for (const element of store.scope.elements.filter((item) => item.disposition === 'update')) {
-				const stage = role === 'wireframe-review' ? 'wireframe' : 'ui';
-				if (stage === 'ui') {
-					const currentWireframe = loadReceipt(element.id, 'wireframe');
-					if (
-						!state.reviews.some(
-							(item) =>
-								item.role === 'wireframe-review' &&
-								item.elementId === element.id &&
-								item.revision === currentWireframe.revision &&
-								item.verdict === 'pass',
-						)
-					) {
-						unresolved(
-							role,
-							element.id,
-							currentWireframe.revision,
-							'Awaiting exact wireframe review pass before UI update',
-						);
-						continue;
-					}
-					if (store.uiDispatchDecision(currentWireframe).needed) {
-						event({
-							type: 'repair-start',
-							role: 'ui',
-							elementId: element.id,
-							reason: 'resume-wireframe-binding',
-						});
-						await doUi(currentWireframe, {
-							wireframeChanged: true,
-							reason: 'Resume from the latest saved wireframe before visual review.',
-						});
-						event({
-							type: 'repair-end',
-							role: 'ui',
-							elementId: element.id,
-							reason: 'resume-wireframe-binding',
-						});
-					}
-				}
-				let receipt = loadReceipt(element.id, stage);
-				const reviewDirectory = path.join(workspace, 'outputs', element.id);
-				const savedReviews = new Map();
-				for (const name of fs
-					.readdirSync(reviewDirectory)
-					.filter(
-						(name) => name.startsWith(role + '-r') && /^\d+\.json$/.test(name.slice(role.length + 2)),
-					)) {
-					const saved = readJson(path.join(reviewDirectory, name));
-					assert(
-						saved.role === role &&
-							saved.elementId === element.id &&
-							Number.isSafeInteger(saved.revision) &&
-							name === role + '-r' + saved.revision + '.json' &&
-							['pass', 'revise'].includes(saved.verdict) &&
-							Array.isArray(saved.findings),
-						'Saved review must match its exact artifact',
-					);
-					savedReviews.set(saved.revision, saved);
-					const recorded = state.reviews.find(
-						(item) =>
-							item.role === role && item.elementId === element.id && item.revision === saved.revision,
-					);
-					if (recorded) assert.equal(recorded.verdict, saved.verdict, 'Saved review and state disagree');
-					else
-						state.reviews.push({
-							role,
-							elementId: element.id,
-							revision: saved.revision,
-							verdict: saved.verdict,
-							recovered: true,
-						});
-				}
-				const reviewedRevisions = new Set(
-					state.reviews
-						.filter((item) => item.role === role && item.elementId === element.id)
-						.map((item) => item.revision),
-				);
-				saveState();
-				if (
-					state.reviews.some(
-						(item) =>
-							item.role === role &&
-							item.elementId === element.id &&
-							item.revision === receipt.revision &&
-							item.verdict === 'pass',
-					)
-				) {
-					event({
-						type: 'review-reused',
-						role,
-						elementId: element.id,
-						revision: receipt.revision,
-						verdict: 'pass',
-					});
-					continue;
-				}
-				for (;;) {
-					let review = savedReviews.get(receipt.revision);
-					if (!review && reviewedRevisions.size >= 3) {
-						unresolved(
-							role,
-							element.id,
-							receipt.revision,
-							'Three saved review revisions exhausted; current revision is not approved',
-						);
-						break;
-					}
-					if (!review && reviewedRevisions.has(receipt.revision)) {
-						unresolved(
-							role,
-							element.id,
-							receipt.revision,
-							'Saved review state has no durable findings file',
-						);
-						break;
-					}
-					const artifact = await service.store({access: service.ownerAccess, run: runId, file: receipt.path});
-					if (review)
-						event({
-							type: 'review-reused',
-							role,
-							elementId: element.id,
-							revision: receipt.revision,
-							verdict: review.verdict,
-						});
-					else {
-						const assignment = assign(role, [artifact.handle], {
-							elementId: element.id,
-							revision: receipt.revision,
-						});
-						const picture = await screenshot(receipt);
-						await runClient(
-							role,
-							'gpt-6-astra',
-							'ultra',
-							`You are an independent ${role === 'wireframe-review' ? 'UX wireframe' : 'visual component design'} reviewer for a provisional experiment, not a code-standards review. ${connection(assignment)}\nReview element ${element.id}, exact revision ${receipt.revision}. Scope: ${JSON.stringify(element)}. Read artifact pages ${JSON.stringify(await readPlan(artifact.handle))}. Inspect actual rendered screenshot using view_image: ${picture}. Shared UX context handle=${contextReceipt.handle}, design-language handle=${designReceipt.handle}; exact source pointers: ${JSON.stringify(contextPointers(element))}. Collections are arrays, not keyed objects. Retain context from prior elements. Call pilot.mark with input {phase:"review-start",elementId:"${element.id}"}. Check ${role === 'wireframe-review' ? 'changed-use-case coverage, discoverability, action/state hierarchy, focus and recovery, coherent component boundary; do not judge intentional neutral wireframe styling' : 'credible component representation, state distinctions, geometry/content treatment, visual affordances, Alexa design language and consistency with wireframe usage; do not invent new behavior'}. This uses unreviewed upstream UX and does not establish canonical approval. Submit pilot.review {elementId:"${element.id}",revision:${receipt.revision},verdict:"pass"|"revise",findings:[{id,severity,sceneRef,nodeRef,issue,remedy}],strengths:[...],limits:[...]}. Findings must be concrete and consequential. Re-review only earlier findings plus affected changes. End after saved receipt.`,
-						);
-						const reviewPath = path.join(
-							workspace,
-							'outputs',
-							element.id,
-							role + '-r' + receipt.revision + '.json',
-						);
-						review = readJson(reviewPath);
-						assert(
-							review.role === role &&
-								review.elementId === element.id &&
-								review.revision === receipt.revision &&
-								['pass', 'revise'].includes(review.verdict) &&
-								Array.isArray(review.findings),
-							'Reviewer must save findings for the assigned artifact',
-						);
-						savedReviews.set(receipt.revision, review);
-						state.reviews.push({
-							role,
-							elementId: element.id,
-							revision: receipt.revision,
-							round: reviewedRevisions.size,
-							verdict: review.verdict,
-						});
-						reviewedRevisions.add(receipt.revision);
-						saveState();
-					}
-					if (review.verdict === 'pass') break;
-					if (reviewedRevisions.size >= 3) {
-						unresolved(
-							role,
-							element.id,
-							receipt.revision,
-							'Three saved review revisions exhausted; remaining findings are unresolved',
-						);
-						break;
-					}
-					event({type: 'repair-start', role: stage, elementId: element.id});
-					if (stage === 'ui') await doUi(loadReceipt(element.id, 'wireframe'), review.findings);
-					else {
-						const author = assign('wireframe', [artifact.handle], {elementId: element.id});
-						await runClient(
-							'wireframe',
-							'gpt-6-sol',
-							'medium',
-							`Continue existing wireframe author context. ${connection(author)}\n${protocol}\nRepair ONLY ${element.id} after independent wireframe review: ${JSON.stringify(review.findings)}. Exact current artifact ${artifact.handle}. Preserve unaffected content, contribute only targeted edits and finish. Do not change scope or other elements.`,
-						);
-					}
-					event({type: 'repair-end', role: stage, elementId: element.id});
-					const repaired = loadReceipt(element.id, stage);
-					assert(repaired.revision > receipt.revision, 'Repair must save a newer ready artifact');
-					receipt = repaired;
-				}
-			}
-		}
-		state.reviewLastAttemptAt = new Date().toISOString();
-		if (state.unresolvedReviews.length) delete state.reviewCompletedAt;
-		else state.reviewCompletedAt = state.reviewLastAttemptAt;
-		saveState();
-	}
-	state.status = execute
-		? reviewOnly
-			? state.unresolvedReviews.length
-				? 'review-incomplete'
-				: 'review-complete'
-			: 'happy-path-complete'
-		: 'prepared';
+	if (execute) {
+		await runReviewedPipeline({
+			governance,
+			workspace,
+			store,
+			service,
+			runId,
+			input,
+			state,
+			saveState,
+			event,
+			assign,
+			runClient,
+			connection,
+			readPlan,
+			screenshot,
+			contractText,
+			designReceipt,
+			capabilities: wireframeCapabilities,
+			selected: argument('elements', 'all'),
+		});
+		state.status = state.unresolvedReviews?.length ? 'review-incomplete' : 'review-complete';
+	} else state.status = 'prepared';
 } catch (error) {
 	state.status = 'error';
 	state.error = error.message;

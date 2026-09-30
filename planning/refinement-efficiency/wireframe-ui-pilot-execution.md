@@ -295,6 +295,8 @@ equivalent reduction in model-side work.
 
 ## Recommendation
 
+Track proposed next work in the [living follow-up list](wireframe-ui-followups.md).
+
 Retain the experimental split and its saved element handoffs. It demonstrated
 coherent boundaries, early delivery and real overlap. It has not demonstrated a
 net speedup over the existing complete UI stage: this was a single exploratory

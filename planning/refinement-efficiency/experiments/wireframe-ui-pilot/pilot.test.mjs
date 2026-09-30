@@ -6,6 +6,18 @@ import path from 'node:path';
 import {WorkflowService} from '../../../../scripts/mcp/WorkflowService.mjs';
 import {PilotStore} from './PilotStore.mjs';
 
+function publish(store, draft, stage = 'wireframe') {
+	const result = store.submit(
+		{elementId: draft.elementId, revision: draft.revision, inspected: true},
+		{scope: {role: stage}},
+	);
+	if (stage === 'wireframe')
+		store.review(
+			{elementId: draft.elementId, revision: draft.revision, verdict: 'pass', findings: []},
+			{scope: {role: 'wireframe-review', elementId: draft.elementId, revision: draft.revision}},
+		);
+	return result;
+}
 function revisionFixture(workspace) {
 	const context = {flows: [{id: 'save-clip'}]};
 	const store = new PilotStore({workspace, context});
@@ -47,7 +59,7 @@ function revisionFixture(workspace) {
 			},
 		],
 	};
-	const original = store.contribute(
+	let original = store.contribute(
 		{
 			elementId: 'save-clip',
 			parts: [{id: 'dialog', root}],
@@ -64,7 +76,8 @@ function revisionFixture(workspace) {
 		},
 		wireframeOwner,
 	);
-	assert.equal(original.ready, true);
+	assert.equal(original.previewReady, true);
+	original = publish(store, original);
 	return {store, context, wireframeOwner, original};
 }
 
@@ -78,10 +91,12 @@ test('active UI work stays pinned when newer wireframes supersede queued receipt
 			{elementId: 'save-clip', set: {purpose: 'Updated purpose'}, finish: true},
 			wireframeOwner,
 		);
+		publish(store, second);
 		const third = store.contribute(
 			{elementId: 'save-clip', set: {purpose: 'Latest purpose'}, finish: true},
 			wireframeOwner,
 		);
+		publish(store, third);
 		const finished = store.contribute(
 			{
 				elementId: 'save-clip',
@@ -90,7 +105,7 @@ test('active UI work stays pinned when newer wireframes supersede queued receipt
 			},
 			owner,
 		);
-		assert.equal(finished.ready, true);
+		assert.equal(finished.previewReady, true);
 		const saved = store.latest('save-clip', 'ui');
 		assert.equal(saved.sourceWireframeRevision, original.revision);
 		assert.equal(saved.purpose, undefined);
@@ -119,7 +134,8 @@ test('resume rebases outdated completed UI onto the ready wireframe while retain
 			},
 			{scope: {role: 'ui', elementId: 'save-clip', wireframeRevision: original.revision}},
 		);
-		assert.equal(firstUi.ready, true);
+		assert.equal(firstUi.previewReady, true);
+		publish(store, firstUi, 'ui');
 		const readyWireframe = store.contribute(
 			{
 				elementId: 'save-clip',
@@ -128,13 +144,15 @@ test('resume rebases outdated completed UI onto the ready wireframe while retain
 			},
 			wireframeOwner,
 		);
+		publish(store, readyWireframe);
 		const resumed = new PilotStore({workspace, context});
 		assert.equal(resumed.uiDispatchDecision(readyWireframe).needed, true);
 		const nextUi = resumed.contribute(
 			{elementId: 'save-clip', set: {ui: {theme: {fieldRadius: 4}}}, finish: true},
 			{scope: {role: 'ui', elementId: 'save-clip', wireframeRevision: readyWireframe.revision}},
 		);
-		assert.equal(nextUi.ready, true);
+		assert.equal(nextUi.previewReady, true);
+		publish(resumed, nextUi, 'ui');
 		const saved = resumed.latest('save-clip', 'ui');
 		assert.equal(saved.sourceWireframeRevision, readyWireframe.revision);
 		assert.deepEqual(saved.ui.theme, {primary: '#B87152', onPrimary: '#000000', fieldRadius: 4});
@@ -164,7 +182,7 @@ test('progressive saved wireframe is delivered by exact handle and UI adds only 
 			context: {flows: [{id: 'save-clip'}]},
 			event: (event) => events.push(event),
 			preview: async (receipt) => {
-				assert.equal(receipt.ready, true);
+				assert.equal(receipt.previewReady, true);
 				assert.equal(fs.existsSync(receipt.previewPath), true);
 				captured.push({stage: receipt.stage, revision: receipt.revision});
 				await Promise.resolve();
@@ -243,7 +261,8 @@ test('progressive saved wireframe is delivered by exact handle and UI adds only 
 				finish: true,
 			},
 		});
-		assert.equal(finished.inline.ready, true);
+		assert.equal(finished.inline.previewReady, true);
+		publish(store, finished.inline);
 		assert.equal(finished.inline.revision, 2);
 		assert.equal(finished.inline.screenshot, finished.inline.previewPath.replace(/\.html$/, '.png'));
 		assert.equal(
@@ -269,7 +288,7 @@ test('progressive saved wireframe is delivered by exact handle and UI adds only 
 			operation: 'pilot.contribute',
 			input: {elementId: 'save-clip', set: {ui: {theme: {primary: '#B87152'}}}, finish: true},
 		});
-		assert.equal(comp.inline.ready, true);
+		assert.equal(comp.inline.previewReady, true);
 		assert.equal(comp.inline.screenshot, comp.inline.previewPath.replace(/\.html$/, '.png'));
 		assert.deepEqual(captured, [
 			{stage: 'wireframe', revision: 2},
@@ -278,7 +297,7 @@ test('progressive saved wireframe is delivered by exact handle and UI adds only 
 		assert.match(fs.readFileSync(comp.inline.previewPath, 'utf8'), /--pilot-primary:#B87152/);
 		assert.equal(fs.readFileSync(finished.inline.path, 'utf8'), bytes);
 		assert.deepEqual(
-			events.filter((event) => event.type === 'preview-ready').map((event) => event.stage),
+			events.filter((event) => event.type === 'draft-preview').map((event) => event.stage),
 			['wireframe', 'ui'],
 		);
 		await service.drain();
