@@ -1,0 +1,237 @@
+{
+	"runs": [
+		{
+			"directory": ".codex-tmp/wireframe-prevention-browser",
+			"captures": [
+				{
+					"name": "states-wireframe",
+					"mode": "wireframe",
+					"elapsedMs": 840.1171,
+					"fixtureSha256": "577212f42db9a03e6db5bcb09dd15f7fae6bd6a32d09598eed336f05f1de6a5e",
+					"screenshotSha256": "dc93df73ca76f3bdecc267ad00f18f0f9afa246d7186c40951e0245206847937"
+				},
+				{
+					"name": "states-ui",
+					"mode": "ui",
+					"elapsedMs": 862.8240000000001,
+					"fixtureSha256": "577212f42db9a03e6db5bcb09dd15f7fae6bd6a32d09598eed336f05f1de6a5e",
+					"screenshotSha256": "cd2a3e1094770b46ed505fc981f8f6e0a59ff07527a1d85931221a31eac9555a"
+				},
+				{
+					"name": "old-focus-defect",
+					"mode": "ui",
+					"elapsedMs": 863.2368000000001,
+					"fixtureSha256": "577212f42db9a03e6db5bcb09dd15f7fae6bd6a32d09598eed336f05f1de6a5e",
+					"screenshotSha256": "17e72215e8d9c5a34496b83d4bd00f82c7cf944c61b2597bda8db68be3bc036b"
+				},
+				{
+					"name": "clipped-focus",
+					"mode": "ui",
+					"elapsedMs": 1106.6344,
+					"fixtureSha256": "577212f42db9a03e6db5bcb09dd15f7fae6bd6a32d09598eed336f05f1de6a5e",
+					"screenshotSha256": "d4af414fd29ca8090f21b3638774c31acc38d61a9d42398cd5fff9b3475a0ba2"
+				},
+				{
+					"name": "occluded-focus",
+					"mode": "ui",
+					"elapsedMs": 1292.8796000000002,
+					"fixtureSha256": "577212f42db9a03e6db5bcb09dd15f7fae6bd6a32d09598eed336f05f1de6a5e",
+					"screenshotSha256": "0748731cc1adb9004909e43c3cd9ed58fbbc182dd5f65c7760e30a68a9e9675f"
+				},
+				{
+					"name": "measurement-400",
+					"mode": "wireframe",
+					"elapsedMs": 1873.1850999999997,
+					"fixtureSha256": "33af07369dc29a90994983fdb74740eda94aae7e7205f8900e806c9eedd69f9c",
+					"screenshotSha256": "ca7d87380d5431a72dd3cd7e44bb8e3f722a4db69c9ecfbf93e99445292acdb4"
+				},
+				{
+					"name": "temporal-400",
+					"mode": "wireframe",
+					"elapsedMs": 1596.0032999999994,
+					"fixtureSha256": "bb53935da95945caa192059261cfc5414e7da1d987731387e6d3abcbaada932d",
+					"screenshotSha256": "eaf702d35fd638eba72207c0ce3b65fcbc2400ad431e535f06343822dabc8eb6"
+				},
+				{
+					"name": "measurement-800",
+					"mode": "wireframe",
+					"elapsedMs": 1562.7369999999992,
+					"fixtureSha256": "fe7e04337355a6d492e927923478d4f8d46ceb18f71464f29484c29f0e781114",
+					"screenshotSha256": "2cd24eff075da85ef63442d22526f2ef9651d4de894fd7777bf7465b8a8b13de"
+				},
+				{
+					"name": "temporal-800",
+					"mode": "wireframe",
+					"elapsedMs": 13032.599500000002,
+					"fixtureSha256": "1757a002a12465fbf134353eff8f846575f62cb9aa0d7a8da47b5340e853e09a",
+					"screenshotSha256": "9ad6569a21a6ac1b1e299655a2f0386ef32cdd90363a30871e088588e1c034b5"
+				},
+				{
+					"name": "old-coordinate-defect",
+					"mode": "wireframe",
+					"elapsedMs": 6139.101599999998,
+					"fixtureSha256": "64cf24eebf2b4221509e0b0b9ec3511114bfb449fa5d28f96635c4d5e022e7e6",
+					"screenshotSha256": "f01bf3b41929e10b2eddb3686a34db3bae508141ecb33cb7f35ebbbdccb76306"
+				}
+			],
+			"totalMs": 29169.3184
+		},
+		{
+			"directory": ".codex-tmp\\wireframe-prevention-browser\\2026-09-30T21-38-04.775Z",
+			"captures": [
+				{
+					"name": "states-wireframe",
+					"mode": "wireframe",
+					"elapsedMs": 2517.1801,
+					"fixtureSha256": "577212f42db9a03e6db5bcb09dd15f7fae6bd6a32d09598eed336f05f1de6a5e",
+					"screenshotSha256": "dc93df73ca76f3bdecc267ad00f18f0f9afa246d7186c40951e0245206847937"
+				},
+				{
+					"name": "states-ui",
+					"mode": "ui",
+					"elapsedMs": 1508.5321000000004,
+					"fixtureSha256": "577212f42db9a03e6db5bcb09dd15f7fae6bd6a32d09598eed336f05f1de6a5e",
+					"screenshotSha256": "cd2a3e1094770b46ed505fc981f8f6e0a59ff07527a1d85931221a31eac9555a"
+				},
+				{
+					"name": "old-focus-defect",
+					"mode": "ui",
+					"elapsedMs": 8853.9251,
+					"fixtureSha256": "577212f42db9a03e6db5bcb09dd15f7fae6bd6a32d09598eed336f05f1de6a5e",
+					"screenshotSha256": "17e72215e8d9c5a34496b83d4bd00f82c7cf944c61b2597bda8db68be3bc036b"
+				},
+				{
+					"name": "clipped-focus",
+					"mode": "ui",
+					"elapsedMs": 14459.173400000001,
+					"fixtureSha256": "577212f42db9a03e6db5bcb09dd15f7fae6bd6a32d09598eed336f05f1de6a5e",
+					"screenshotSha256": "d4af414fd29ca8090f21b3638774c31acc38d61a9d42398cd5fff9b3475a0ba2"
+				},
+				{
+					"name": "occluded-focus",
+					"mode": "ui",
+					"elapsedMs": 1727.3254000000015,
+					"fixtureSha256": "577212f42db9a03e6db5bcb09dd15f7fae6bd6a32d09598eed336f05f1de6a5e",
+					"screenshotSha256": "0748731cc1adb9004909e43c3cd9ed58fbbc182dd5f65c7760e30a68a9e9675f"
+				},
+				{
+					"name": "measurement-400",
+					"mode": "wireframe",
+					"elapsedMs": 1413.0807000000023,
+					"fixtureSha256": "33af07369dc29a90994983fdb74740eda94aae7e7205f8900e806c9eedd69f9c",
+					"screenshotSha256": "ca7d87380d5431a72dd3cd7e44bb8e3f722a4db69c9ecfbf93e99445292acdb4"
+				},
+				{
+					"name": "temporal-400",
+					"mode": "wireframe",
+					"elapsedMs": 1777.7946999999986,
+					"fixtureSha256": "bb53935da95945caa192059261cfc5414e7da1d987731387e6d3abcbaada932d",
+					"screenshotSha256": "eaf702d35fd638eba72207c0ce3b65fcbc2400ad431e535f06343822dabc8eb6"
+				},
+				{
+					"name": "measurement-800",
+					"mode": "wireframe",
+					"elapsedMs": 1743.4734000000026,
+					"fixtureSha256": "fe7e04337355a6d492e927923478d4f8d46ceb18f71464f29484c29f0e781114",
+					"screenshotSha256": "2cd24eff075da85ef63442d22526f2ef9651d4de894fd7777bf7465b8a8b13de"
+				},
+				{
+					"name": "temporal-800",
+					"mode": "wireframe",
+					"elapsedMs": 1624.3169999999955,
+					"fixtureSha256": "1757a002a12465fbf134353eff8f846575f62cb9aa0d7a8da47b5340e853e09a",
+					"screenshotSha256": "9ad6569a21a6ac1b1e299655a2f0386ef32cdd90363a30871e088588e1c034b5"
+				},
+				{
+					"name": "old-coordinate-defect",
+					"mode": "wireframe",
+					"elapsedMs": 1949.4752999999982,
+					"fixtureSha256": "64cf24eebf2b4221509e0b0b9ec3511114bfb449fa5d28f96635c4d5e022e7e6",
+					"screenshotSha256": "f01bf3b41929e10b2eddb3686a34db3bae508141ecb33cb7f35ebbbdccb76306"
+				}
+			],
+			"totalMs": 37574.277200000004
+		},
+		{
+			"directory": ".codex-tmp\\wireframe-prevention-browser\\2026-09-30T21-48-43.210Z",
+			"captures": [
+				{
+					"name": "states-wireframe",
+					"mode": "wireframe",
+					"elapsedMs": 3019.6812,
+					"fixtureSha256": "577212f42db9a03e6db5bcb09dd15f7fae6bd6a32d09598eed336f05f1de6a5e",
+					"screenshotSha256": "145069b820775fb376fa4667e9cc959451ab59d94655bb619caf6f1f43b6f143"
+				},
+				{
+					"name": "states-ui",
+					"mode": "ui",
+					"elapsedMs": 1532.3957000000005,
+					"fixtureSha256": "577212f42db9a03e6db5bcb09dd15f7fae6bd6a32d09598eed336f05f1de6a5e",
+					"screenshotSha256": "8388e9587e74ad3ce5df235926b37c489e0ac0a2a13c6b1a358a147e1764df2c"
+				},
+				{
+					"name": "old-focus-defect",
+					"mode": "ui",
+					"elapsedMs": 1541.5889000000006,
+					"fixtureSha256": "577212f42db9a03e6db5bcb09dd15f7fae6bd6a32d09598eed336f05f1de6a5e",
+					"screenshotSha256": "6f762c2d5c39749863fd17be4009447d49001cdae438f583090e5a285f1916e0"
+				},
+				{
+					"name": "clipped-focus",
+					"mode": "ui",
+					"elapsedMs": 1268.3609999999999,
+					"fixtureSha256": "577212f42db9a03e6db5bcb09dd15f7fae6bd6a32d09598eed336f05f1de6a5e",
+					"screenshotSha256": "e1f55eef4f13a909be44ae9ff6cda64c4fad9b259f3edf35935b5da274faea14"
+				},
+				{
+					"name": "occluded-focus",
+					"mode": "ui",
+					"elapsedMs": 11107.267099999997,
+					"fixtureSha256": "577212f42db9a03e6db5bcb09dd15f7fae6bd6a32d09598eed336f05f1de6a5e",
+					"screenshotSha256": "622931e6c1f32c4e664500f6aa9b0e47ef0bce3f1946e0800955961feb9a07eb"
+				},
+				{
+					"name": "measurement-400",
+					"mode": "wireframe",
+					"elapsedMs": 9680.150099999999,
+					"fixtureSha256": "33af07369dc29a90994983fdb74740eda94aae7e7205f8900e806c9eedd69f9c",
+					"screenshotSha256": "ca7d87380d5431a72dd3cd7e44bb8e3f722a4db69c9ecfbf93e99445292acdb4"
+				},
+				{
+					"name": "temporal-400",
+					"mode": "wireframe",
+					"elapsedMs": 1171.7848000000013,
+					"fixtureSha256": "bb53935da95945caa192059261cfc5414e7da1d987731387e6d3abcbaada932d",
+					"screenshotSha256": "eaf702d35fd638eba72207c0ce3b65fcbc2400ad431e535f06343822dabc8eb6"
+				},
+				{
+					"name": "measurement-800",
+					"mode": "wireframe",
+					"elapsedMs": 1198.561600000001,
+					"fixtureSha256": "fe7e04337355a6d492e927923478d4f8d46ceb18f71464f29484c29f0e781114",
+					"screenshotSha256": "2cd24eff075da85ef63442d22526f2ef9651d4de894fd7777bf7465b8a8b13de"
+				},
+				{
+					"name": "temporal-800",
+					"mode": "wireframe",
+					"elapsedMs": 1896.8647999999994,
+					"fixtureSha256": "1757a002a12465fbf134353eff8f846575f62cb9aa0d7a8da47b5340e853e09a",
+					"screenshotSha256": "9ad6569a21a6ac1b1e299655a2f0386ef32cdd90363a30871e088588e1c034b5"
+				},
+				{
+					"name": "old-coordinate-defect",
+					"mode": "wireframe",
+					"elapsedMs": 1768.8729000000021,
+					"fixtureSha256": "64cf24eebf2b4221509e0b0b9ec3511114bfb449fa5d28f96635c4d5e022e7e6",
+					"screenshotSha256": "f01bf3b41929e10b2eddb3686a34db3bae508141ecb33cb7f35ebbbdccb76306"
+				}
+			],
+			"totalMs": 34185.528099999996
+		}
+	],
+	"knownLimits": [
+		"Computed styles, geometry, sampled occlusion and inspected fixture screenshots; no universal visual correctness claim.",
+		"Initial sandbox launch failed; initial outline probe was corrected to check outline style as well as width. Earlier failed capture timings are not individually recoverable."
+	],
+	"earlyLaunchWallSeconds": [0.451, 7.149]
+}
