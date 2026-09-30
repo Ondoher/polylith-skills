@@ -6,10 +6,12 @@ import {renderPreview, validatePreview} from './render.mjs';
 
 /** Experiment-only progressive contributions and immutable preview revisions. */
 export class PilotStore {
-	constructor({workspace, context, event = () => {}}) {
+	constructor({workspace, context, event = () => {}, preview = null}) {
 		this.workspace = workspace;
 		this.context = context;
 		this.event = event;
+		assert(preview === null || typeof preview === 'function', 'Preview callback must be a function');
+		this.preview = preview;
 		this.directory = path.join(workspace, 'outputs');
 		fs.mkdirSync(this.directory, {recursive: true});
 		this.scope = null;
@@ -34,6 +36,30 @@ export class PilotStore {
 	/** Read a saved draft for targeted continuation, without exposing internal maps. */
 	latest(elementId, stage) {
 		return this._latest(elementId, stage);
+	}
+	_revision(elementId, stage, revision) {
+		assert(Number.isSafeInteger(revision) && revision > 0, 'An exact positive artifact revision is required');
+		const location = path.join(this.directory, this._name(elementId), stage + '-r' + revision + '.json');
+		assert(fs.existsSync(location), 'Assigned artifact revision is missing');
+		return JSON.parse(fs.readFileSync(location));
+	}
+	/** Decide queued or resumed work from saved ready revisions, independently of element completion flags. */
+	uiDispatchDecision(receipt) {
+		const directory = path.join(this.directory, this._name(receipt.elementId));
+		const latestReady = JSON.parse(fs.readFileSync(path.join(directory, 'wireframe-ready.json')));
+		if (receipt.revision !== latestReady.revision)
+			return {needed: false, reason: 'superseded', wireframeRevision: latestReady.revision};
+		const uiReadyPath = path.join(directory, 'ui-ready.json');
+		const sourceWireframeRevision = fs.existsSync(uiReadyPath)
+			? this._revision(receipt.elementId, 'ui', JSON.parse(fs.readFileSync(uiReadyPath)).revision)
+					.sourceWireframeRevision
+			: null;
+		return {
+			needed: sourceWireframeRevision !== receipt.revision,
+			reason: sourceWireframeRevision === receipt.revision ? 'complete' : 'pending',
+			wireframeRevision: receipt.revision,
+			sourceWireframeRevision,
+		};
 	}
 	_references() {
 		const references = {};
@@ -90,11 +116,7 @@ export class PilotStore {
 		const previous = this._latest(elementId, role);
 		if (input.baseRevision !== undefined)
 			assert(input.baseRevision === previous?.revision, 'Stale contribution revision');
-		const wireframe = role === 'ui' ? this._latest(elementId, 'wireframe') : null;
-		if (role === 'ui') {
-			assert(wireframe, 'UI requires a saved wireframe');
-			assert(owner.scope.wireframeRevision === wireframe.revision, 'Assigned wireframe revision changed');
-		}
+		const wireframe = role === 'ui' ? this._revision(elementId, 'wireframe', owner.scope.wireframeRevision) : null;
 		const base =
 			role === 'ui' && previous && previous.sourceWireframeRevision !== wireframe.revision
 				? {...wireframe, ui: previous.ui}
@@ -116,7 +138,7 @@ export class PilotStore {
 		}
 		for (const [key, value] of Object.entries(input.set ?? {})) {
 			assert(
-				!['elementId', 'revision', 'schemaVersion', 'parts', 'scenes'].includes(key),
+				!['elementId', 'revision', 'schemaVersion', 'parts', 'scenes', 'sourceWireframeRevision'].includes(key),
 				'Use structured contribution fields',
 			);
 			if (key === 'ui') {
@@ -231,15 +253,49 @@ export class PilotStore {
 				(input, owner) => this.setScope(input, owner),
 			),
 			'pilot.mark': operation(
-				'Record a phase such as inputs-ready, boundaries-start, wireframe-start, ui-start, research-start/end, review-start, finished.',
+				'Record input {phase,elementId?}. phase is required: inputs-ready, boundaries-start, wireframe-start, ui-start, research-start, research-end, review-start or finished.',
 				(input, owner) => {
-					this.event({type: 'phase', role: owner.scope.role, ...input});
+					assert(
+						typeof input.phase === 'string' && input.phase.length > 0,
+						'pilot.mark requires input.phase',
+					);
+					this.event({...input, type: 'phase', role: owner.scope.role});
 					return {recorded: true};
 				},
 			),
 			'pilot.contribute': operation(
-				'Incrementally save elementId, optional set/parts/scenes/nodeChanges; finish:true validates and renders. No combined final JSON needed.',
-				(input, owner) => this.contribute(input, owner),
+				'Incrementally save elementId, optional set/parts/scenes/nodeChanges; finish:true validates, renders and returns the coordinator screenshot when available. No combined final JSON needed.',
+				async (input, owner) => {
+					const result = this.contribute(input, owner);
+					if (result.ready && this.preview) {
+						try {
+							result.screenshot = await this.preview(result);
+							assert(
+								typeof result.screenshot === 'string' && result.screenshot.length > 0,
+								result.screenshotError ?? 'Preview capture returned no screenshot path',
+							);
+							delete result.screenshotError;
+						} catch (error) {
+							result.screenshot = null;
+							result.screenshotError = error.message;
+							this.event({
+								type: 'preview-capture-failed',
+								stage: result.stage,
+								elementId: result.elementId,
+								revision: result.revision,
+								error: error.message,
+							});
+						}
+						// A later contribution may finish while this capture is pending.
+						const latest = this.ready.get(result.stage + ':' + result.elementId);
+						if (latest?.revision === result.revision)
+							this._write(
+								path.join(this.directory, result.elementId, result.stage + '-ready.json'),
+								result,
+							);
+					}
+					return result;
+				},
 			),
 			'pilot.review': operation(
 				'Save exact elementId/revision, verdict pass|revise and actionable findings after inspecting structured and rendered artifacts.',

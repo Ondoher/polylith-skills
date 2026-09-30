@@ -88,6 +88,36 @@ test('renders the same immutable dialog as neutral wireframe and styled UI with 
 	assert.doesNotMatch(wireframe.html, /class="[^"]*ui-surface-elevation-1/);
 });
 
+test('renders elevated dialog surfaces and failed status while retaining neutral wireframes', () => {
+	const document = fixture();
+	document.parts[0].root.surfaceTreatment = 'elevation-2';
+	document.parts[0].root.children[1] = {
+		...component('failure', 'status', {text: 'Update failed. Nothing changed.'}),
+		state: 'failed',
+	};
+	document.ui = {theme: {surface: '#F7F7FC', danger: '#D32F2F'}};
+	const ui = renderPreview(document, {mode: 'ui'}).html;
+	const wireframe = renderPreview(document, {mode: 'wireframe'}).html;
+	assert.match(ui, /<dialog class="ui-scene-root\s+ui-surface-elevation-2"/);
+	assert.match(ui, /--pilot-surface:#F7F7FC/);
+	assert.match(ui, /dialog\.ui-scene-root\{background:var\(--pilot-surface\)\}/);
+	assert.match(ui, /dialog\.ui-scene-root:not\(\.ui-surface-outlined\)\{border:0\}/);
+	assert.match(
+		ui,
+		/\.ui-surface-elevation-2\{box-shadow:0px 3px 1px -2px rgba\(0,0,0,\.2\),0px 2px 2px 0px rgba\(0,0,0,\.14\),0px 1px 5px 0px rgba\(0,0,0,\.12\)\}/,
+	);
+	assert.match(ui, /ui-status\s+ui-is-failed/);
+	assert.match(
+		ui,
+		/\.ui-status\.ui-is-failed,[^{]+\{border-color:var\(--pilot-danger\);background:color-mix\(in srgb,var\(--pilot-danger\) 12%,var\(--pilot-surface\)\)/,
+	);
+	assert.match(ui, /\.pilot-scroll:has\(dialog\.ui-scene-root\)\{padding:16px\}/);
+	assert.match(wireframe, /--pilot-surface:#ffffff/);
+	assert.match(wireframe, /--pilot-danger:#333333/);
+	assert.match(wireframe, /\.ui-surface-elevation-1,\.ui-surface-elevation-2\{box-shadow:none\}/);
+	assert.doesNotMatch(wireframe, /padding:16px\}\.ui-viewport:has/);
+});
+
 test('retains outlined field treatment, state colors and bare source action references', () => {
 	const document = fixture();
 	document.sourceFlowRefs = ['save-clip'];
@@ -195,6 +225,37 @@ test('renders coherent timeline geometry and state variations without repeating 
 	assert.match(result.html, /grid-row:1 \/ span 2;grid-column:6 \/ span 1/);
 	assert.match(result.html, /ui-visual--indicator/);
 	assert.match(result.html, /aria-label="Play"/);
+});
+
+test('disabled trim handles become muted without changing their geometry or selected clip treatment', () => {
+	const document = fixture();
+	document.parts[0].root.children = [
+		component('clip', 'visual', {role: 'item', variant: 'selected', text: 'Selected clip'}, {row: 1, column: 1}),
+		{...component('start', 'visual', {role: 'start-handle'}, {row: 1, column: 1}), state: 'disabled'},
+		{...component('end', 'visual', {role: 'end-handle'}, {row: 1, column: 1}), state: 'disabled'},
+	];
+	document.ui = {theme: {primary: '#B87152', muted: '#636365'}};
+	const before = structuredClone(document);
+	const ui = renderPreview(document, {mode: 'ui'}).html;
+	const wireframe = renderPreview(document, {mode: 'wireframe'}).html;
+	assert.deepEqual(document, before);
+	assert.match(ui, /ui-is-disabled ui-visual--start-handle/);
+	assert.match(ui, /ui-is-disabled ui-visual--end-handle/);
+	assert.match(
+		ui,
+		/\.ui-visual--start-handle\.ui-is-disabled,\.ui-visual--end-handle\.ui-is-disabled\{background:var\(--pilot-muted\);opacity:\.45\}/,
+	);
+	assert.match(
+		ui,
+		/\.ui-visual--start-handle,\.ui-visual--end-handle\{width:9px;background:var\(--pilot-primary\)\}/,
+	);
+	assert.match(ui, /ui-is-default ui-visual--item ui-visual-variant--selected/);
+	assert.match(
+		ui,
+		/\.ui-visual-variant--selected\.ui-visual--item\{border:3px solid var\(--pilot-primary\);font-weight:700\}/,
+	);
+	assert.match(wireframe, /--pilot-primary:#333333/);
+	assert.match(wireframe, /--pilot-muted:#555555/);
 });
 
 test('composes an exact child revision through the existing inline registration path', () => {

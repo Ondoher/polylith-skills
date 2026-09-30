@@ -1,9 +1,11 @@
 # Wireframe-to-UI pipeline: staged experiment
 
-Status: executing, 2026-09-30. The isolated toolchain is locally verified and the
-first wireframe/UI authors are running. See the
-[execution report](wireframe-ui-pilot-execution.md) for progress and measured
-results. No completed-run performance claim is made here.
+Status: completed, 2026-09-30. All six experimental goals are complete: four
+affected elements, eighteen final states, two explicit reuse decisions, and exact
+wireframe/visual review passes. See the
+[execution report](wireframe-ui-pilot-execution.md) and
+[metrics](wireframe-ui-pilot-20260930-metrics.json). Production integration and a
+controlled comparison with the old path remain subsequent decisions.
 
 ## Question and scope
 

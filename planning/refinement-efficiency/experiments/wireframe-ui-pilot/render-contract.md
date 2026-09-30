@@ -66,6 +66,10 @@ Text templates use `parameters.text`; buttons use `parameters.label`;
 icon buttons use `parameters.accessibleLabel` and `glyph`. Fields have visible
 labels and optional `value` and `helperText`. Controls are static illustrations.
 States are class names such as `default`, `focus`, `selected` and `disabled`.
+For a failure message using the `status` template, use `failed` (or `unavailable`
+when appropriate). `error` is a text-field state and does not style a status
+message. UI surfaces support `flat`, `outlined`, `elevation-1` and `elevation-2`;
+dialog backgrounds use the supplied surface role. Wireframes suppress elevation.
 
 `visual` uses the existing roles `surface`, `item`, `selection`, `start-handle`,
 `end-handle`, `indicator`, `thumbnail`, `trigger`, `label`, `track`, `thumb` and
@@ -85,6 +89,9 @@ Both layouts require `align` and `justify`. Optional node `constraints` accepts
 the existing `minWidthPx`, `maxWidthPx`, `minHeightPx`, `maxHeightPx` fields.
 Viewport dimensions describe the intended preview size; no responsive behavior
 is inferred. Additional state scenes reference the same part and use `changes`.
+The only supported `presentation` value is `dialog`; otherwise omit that field.
+A contextual menu is an ordinary scene containing its menu layout, not a new
+presentation enum value.
 
 For parent compositions, retain the existing placeholder registration mechanism.
 Add `childRefs: [{templateId, elementId, revision}]` to the envelope, and use a

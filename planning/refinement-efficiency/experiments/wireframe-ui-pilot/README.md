@@ -36,6 +36,13 @@ All source artifacts and live Alexa files are hash-checked; new output remains
 within the disposable workspace. Saved model transcripts, capabilities and input
 contents are private and are not committed with the public report.
 
+Review continuation reuses exact-version findings. Repaired wireframes are
+reviewed before updating their dependent UI. Three distinct review revisions per
+element and role bound the experiment; unresolved findings produce an explicit
+`review-incomplete` result, never an approval. Later independent elements still
+continue. The parent returns a screenshot with a ready contribution when capture
+succeeds, so authors inspect it without creating browser scripts.
+
 ## Small contract
 
 - `prepare.mjs`: assemble saved UX units; derive changed flows, actions and frames;
@@ -49,6 +56,21 @@ contents are private and are not committed with the public report.
   elapsed timings and available usage/settings metadata.
 - `run.mjs`: independent authors, ready queue, screenshots and later exact-version
   review/rework. Successful completed reviews are reused on continuation.
+- `analyze.mjs`: derive phase, overlap, queue, contribution and review measurements
+  from saved events. Usage remains per-invocation snapshots because cumulative
+  thread-count semantics have not been established.
+- `gallery.mjs`: link the saved wireframes and comps without regenerating them.
+
+After an execution or continuation:
+
+```powershell
+node planning/refinement-efficiency/experiments/wireframe-ui-pilot/analyze.mjs --attempt=wireframe-ui-pilot-20260930
+node planning/refinement-efficiency/experiments/wireframe-ui-pilot/gallery.mjs .codex-tmp/wireframe-ui-pilot-20260930
+```
+
+The analysis writes `metrics.json` and `report.md` inside the private attempt;
+the gallery writes its `index.html`. The committed execution report distinguishes
+first previews from later corrections and review outcomes.
 
 [The rendering contract](render-contract.md) includes small examples. Mechanical
 readiness never becomes a canonical UX review pass. All previews disclose that
@@ -58,7 +80,7 @@ the prototype is not implemented application behavior.
 ## Local verification
 
 ```powershell
-node --test --test-isolation=none planning/refinement-efficiency/experiments/wireframe-ui-pilot/native-client.test.mjs planning/refinement-efficiency/experiments/wireframe-ui-pilot/render.test.mjs planning/refinement-efficiency/experiments/wireframe-ui-pilot/pilot.test.mjs
+node --test --test-isolation=none planning/refinement-efficiency/experiments/wireframe-ui-pilot/native-client.test.mjs planning/refinement-efficiency/experiments/wireframe-ui-pilot/render.test.mjs planning/refinement-efficiency/experiments/wireframe-ui-pilot/pilot.test.mjs planning/refinement-efficiency/experiments/wireframe-ui-pilot/analyze.test.mjs
 ```
 
 These tests exercise rendering, incremental storage, exact-handle handoff and
