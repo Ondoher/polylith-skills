@@ -1,5 +1,14 @@
 # Refinement efficiency: autonomous execution plan
 
+Current experiment, 2026-09-30:
+[wireframe-to-UI pipeline](wireframe-ui-pilot-plan.md). One wireframe author
+identifies coherent interfaces affected by changed use cases and feeds completed
+wireframes to one waiting UI author. Measure multiple elements individually,
+starting with the first complete wireframe/comp pair, then a small pipeline pilot.
+Add reviewers afterward and measure them separately. Reuse the saved Alexa update
+for the fuller affected-interface test. The first authors are now running; see
+the [execution report](wireframe-ui-pilot-execution.md).
+
 Latest workflow implementation, 2026-09-29:
 [apply measured improvements throughout UX](full-ux-efficiency-rollout.md).
 Parallel independent reads, the 28,000-byte default window, and progressive
