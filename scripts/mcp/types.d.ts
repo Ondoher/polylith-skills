@@ -3,6 +3,8 @@ type WorkflowJson = null | boolean | number | string | WorkflowJson[] | {[key: s
 
 /** Maintained subset of JSON Schema used at the MCP ingress. */
 interface WorkflowSchema {
+	/** Local schema definition reference, resolved before ingress validation. */
+	$ref?: string;
 	/** JSON primitive/container type; integer requires an integral finite number. */
 	type?: string;
 	/** Allowed literal values. */
@@ -33,7 +35,7 @@ interface WorkflowServiceOptions {
 	stateDirectory?: string;
 	/** Closed maintained operation definitions. */
 	operations?: Record<string, WorkflowOperation>;
-	/** Configured read-content ceiling in UTF-8 bytes; defaults to 7000. */
+	/** Configured read-content ceiling in UTF-8 bytes; defaults to 28000. */
 	pageBytes?: number;
 }
 
@@ -209,8 +211,8 @@ interface WorkflowExecuteRequest extends WorkflowAccessRequest {
 	operation: string;
 	/** Small direct arguments. */
 	input?: Record<string, WorkflowJson>;
-	/** Argument name to exact result handle, resolved server-side. */
-	inputHandles?: Record<string, string>;
+	/** Argument name to one result handle or ordered handle list, resolved and authorized server-side. */
+	inputHandles?: Record<string, string | string[]>;
 	/** Return a job receipt instead of awaiting completion. */
 	background?: boolean;
 }
@@ -278,3 +280,101 @@ type UxSelectionResult = {
 	/** Inclusion reasons and counts; does not establish semantic sufficiency. */
 	receipt: Record<string, WorkflowJson>;
 };
+
+/** Exact identity of a human-authored product description. */
+interface WorkflowUxReviewSource {
+	/** Canonical source identifier. */
+	id: string;
+	/** Digest of authoritative source bytes. */
+	sha256: string;
+}
+
+/** Exact persisted UX identity covered by the review. */
+interface WorkflowUxReviewArtifact extends WorkflowUxReviewSource {
+	/** Opaque persisted revision. */
+	revision: string;
+}
+
+/** Exact canonical binding supplied by the parent for one independent UX review. */
+interface WorkflowUxReviewSubject {
+	/** Human source identity and exact byte digest. */
+	productDescription: WorkflowUxReviewSource;
+	/** Persisted UX identity, revision and exact byte digest. */
+	uxArtifact: WorkflowUxReviewArtifact;
+	/** Complete scope to be assessed by this reviewer. */
+	scopeRefs: string[];
+}
+
+/** Completed rows use the closed canonical ux-review-schema-0.2.json shapes. */
+interface WorkflowUxReviewFragment {
+	/** Completed criterion judgments; omitted until ready. */
+	coverage?: Record<string, WorkflowJson>[];
+	/** Findings with stable IDs; omitted when this batch has none. */
+	findings?: Record<string, WorkflowJson>[];
+	/** Source checks with stable research references; omitted until ready. */
+	researchChecks?: Record<string, WorkflowJson>[];
+	/** Scope and evidence limits; omitted when this batch has none. */
+	limits?: string[];
+}
+
+/** Durable unapproved fragment, reused by handle during final assembly. */
+interface WorkflowUxReviewPart extends WorkflowUxReviewFragment {
+	/** Identifies the current fragment format. */
+	kind: 'ux-review-part';
+	/** Frozen binding, injected by code from the assigned subject. */
+	subject: WorkflowUxReviewSubject;
+}
+
+/** Independent reviewer's conclusion.
+ * - **"pass"** - No blocking findings; still requires exact authoritative validation.
+ * - **"revise"** - Corrections are required before UI may proceed.
+ */
+type WorkflowUxReviewVerdict = 'pass' | 'revise';
+
+/** Ordered fragment assembly without model-generated replacement content. */
+interface WorkflowUxReviewAssembly {
+	/** Exact assigned source and scope binding. */
+	subject: WorkflowUxReviewSubject;
+	/** Authorized immutable fragments resolved from handles by the server. */
+	parts: WorkflowUxReviewPart[];
+	/** Semantic verdict authored by the independent reviewer. */
+	verdict: WorkflowUxReviewVerdict;
+	/** Concise reviewer-authored conclusion. */
+	summary: string;
+}
+
+/** Exact authoritative file inputs for a review gate. */
+interface WorkflowUxReviewFiles {
+	/** Persisted UX file; must be assigned when used by a specialist. */
+	uxPath: string;
+	/** Human-owned source path; defaults to the run source. */
+	productDescriptionPath?: string;
+	/** Explicit source identity when multiple descriptions are present. */
+	productDescriptionId?: string;
+	/** Canonical source root; defaults to the UX file directory. */
+	sourceRoot?: string;
+	/** Complete review scope. */
+	scopeRefs: string[];
+}
+
+/** Materialized authoritative inputs consumed by the maintained review validator. */
+interface WorkflowUxReviewValidation {
+	/** Canonical UX object loaded from the exact persisted file. */
+	uxSpec: Record<string, WorkflowJson>;
+	/** Exact persisted UX bytes. */
+	uxSource: Buffer;
+	/** Absolute persisted UX path. */
+	uxArtifactPath: string;
+	/** Exact human-authored source bytes. */
+	productDescriptionSource: Buffer;
+	/** Absolute human-authored source path. */
+	productDescriptionPath: string;
+	/** Explicit source identity when supplied by the parent. */
+	productDescriptionId?: string;
+	/** Workspace-confined root for canonical source verification. */
+	sourceRoot: string;
+	/** Requested review scope. */
+	scopeRefs: string[];
+	/** Required scope, matching the request exactly. */
+	requiredScopeRefs: string[];
+}

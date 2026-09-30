@@ -1,11 +1,14 @@
 # UX Design Mode
 
-For initial or substantial authoring, use [the single-pass route](single-pass-design.md)
-and request `single-pass-ux`. Its bounded record-array response and inline pruning
+For structured MCP authoring and repairs, use [incremental contributions](ux-contributions.md)
+within [the single-pass route](single-pass-design.md) and request `single-pass-ux`.
+Its saved contributions and inline pruning
 replace this document's whole-schema response and separate normalization/pruning
 passes. The schema below remains authoritative for expanded fields, product meaning,
 research, locks and review. The parent assembles the expanded candidate mechanically.
 Do not ask the planner to author both the records and a second expanded JSON copy.
+Independent input reads use the shared parallel-wave contract and advertised
+larger window. Review findings return as small corrections through the same route.
 
 Use `<repository-root>/product/<name>/` as the output/product-document root under
 [the product location contract](product-location.md). The human description may
@@ -133,7 +136,7 @@ Consolidate accepted product decisions into the description, format it, and upda
 
 A slice is useful when its selected feature has a traceable source, at least one use case, every referenced surface, component, action, and interaction frame resolves, observable responses and transitions are stated, required research is source-checked, its primary tasks have pruning coverage, and known dependent gaps appear as questions. It need not define unrelated features or claim whole-product completeness. A whole-product pass has a different coverage obligation: every accepted activity area must resolve to at least one accepted surface and goal-oriented use case when the product description permits a responsible working recommendation. An area may remain without a surface only when the UX artifact records a visible product/UX gap that actually blocks one; a missing technical decision alone does not justify silently omitting the area.
 
-Before finishing, repersist the saved JSON and require byte-identical structured output. Review the graph for invented behavior, unverified pattern claims, missing recovery, status promotion, dangling cross-artifact links, and disagreement with the product description. UI work proceeds only after the current UX scope passes independent review.
+Before finishing, the parent validates and persists the assembled JSON, checking byte-identical structured output on repersistence. The author checks local flows for invented behavior, unverified pattern claims, missing recovery, status promotion, dangling cross-artifact links, and disagreement with the product description. Preserve saved contributions while correcting affected meaning; do not generate another full JSON document for this check. UI work proceeds only after the current UX scope passes independent review.
 
 ## Native authoring and saved-data import
 

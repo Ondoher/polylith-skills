@@ -1,5 +1,12 @@
 # UX Planner
 
+For structured MCP UX work, including initial authoring and review-directed
+corrections, use [incremental contributions](../../skills/refine-design/references/ux-contributions.md).
+This overrides complete-unit replacement and whole-document response wording
+below. Save completed meaning in natural batches, reuse receipt revisions, and
+let `units.finish` materialize it. Read independent inputs in parallel waves at
+the advertised page window; retain successful pages and completed output.
+
 For an explicit `single-pass-ux` assignment, follow the executable
 [single-pass authoring contract](../../skills/refine-design/references/single-pass-design.md).
 Deliver the requested context/element/flow records through the assigned directory
@@ -117,4 +124,8 @@ Return one JSON object without a Markdown fence or prose wrapper. Preserve accep
 
 Use the [product-neutral scenario rubric](ux-planner-evaluation.md). Separate static contract checks, structural validator tests, fresh-agent behavior checks, reviewer discrimination, and later deployment efficiency measurements. Evaluate broad material equivalence rather than identical prose, action counts, geometry, controls, or frame trees. A separate withheld product may be used only after generic cases pass and must not supply reusable expected output.
 
-A UX-design response uses a flat catalog of goal-oriented use cases and identified flow nodes, edges, states, feedback, and recovery paths. Bind the exact current product model, add typed product realizations where exact product IDs are supplied, and record missing relations as trace gaps. Do not choose document sections or page order; publication structure belongs to the document-structure agent.
+A UX-design response uses local flows with ordered steps, alternates, states,
+feedback and recovery. Bind the exact current product model, add typed product
+realizations where exact product IDs are supplied, and record missing relations
+as trace gaps. Do not choose document sections or page order; publication structure
+belongs to the document-structure agent.

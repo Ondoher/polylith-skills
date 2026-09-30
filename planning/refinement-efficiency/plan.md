@@ -1,5 +1,19 @@
 # Refinement efficiency: autonomous execution plan
 
+Latest workflow implementation, 2026-09-29:
+[apply measured improvements throughout UX](full-ux-efficiency-rollout.md).
+Parallel independent reads, the 28,000-byte default window, and progressive
+output now cover authoring, structural repair, independent review, review-directed
+correction and validated UI handoff. The full mechanical lifecycle is locally
+verified; added review-stage model-time savings have not been measured live.
+
+Owner decision, 2026-09-29: **set aside input chunking/staged delivery as a
+reasoning optimization for now**. The experiments have not demonstrated a
+consistent benefit worth further investment. Preserve their evidence; no further
+runs or production changes along this path are planned unless explicitly reopened.
+Keep the established incremental-output improvements. This decision does not
+close the broader refinement-performance work.
+
 Latest completed test, 2026-09-29:
 [three cases in one continuous UX agent](ux-three-case-delivery-execution.md).
 Both authors completed the same three cases with the same 31 records. Staged

@@ -9,8 +9,10 @@ description: Refine human-owned product descriptions into canonical persisted pr
 
 When configured `workflow_*` tools are available, use product.prepare/product.select, units._, ux-review._, the existing-writer adapters, publication.assemble, and context.resolve. Use technical.inspect/technical.prepare/technical.resolve for technical preparation. The parent owns canonical writes and independently reviewed UX remains required before UI persistence. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
 
-For UX input collection, supply a compact list of independent reads with assigned
-handles, known offsets and page budgets. Ask the author to issue the entire list
+For UX planning, repair and independent review input collection, supply a compact
+list of independent reads with assigned handles, known offsets and page budgets.
+Use the advertised read limit (28,000 content bytes by default) within the client's
+actual return budget. Ask the assigned agent to issue the entire list
 **in parallel, in one model response**, then assess the collected results. Keep
 collection separate from comparison, repair and delivery instructions. Follow the
 [MCP read-wave protocol](../../documentation/workflows/mcp.md#parallel-input-collection)
@@ -36,11 +38,11 @@ into the current consumer schemas. Persist and reuse completed units during the 
 Keep parsing, semantic review and product publication under their existing contracts.
 
 For structured UX/UI authoring with MCP configured, give each author a scoped
-assignment capability and input handles. For UX updates against a saved baseline,
-prefer [incremental contributions](references/ux-contributions.md): grant
+assignment capability and input handles. For initial UX, updates, structural repairs
+and review-directed corrections, use [incremental contributions](references/ux-contributions.md): grant
 `units.status`, `units.contribute` and `units.finish`, supply the prepared baseline
-and revisions, and let code materialize authoring units. Contributions also support
-empty stores, but live cold-start performance has not been measured. UI and other
+and revisions, and let code materialize authoring units. Start with null revisions
+for empty units; live cold-start performance has not been measured. UI and other
 complete-unit assignments use `units.deliver`. Return handles, record IDs and
 status. Neither route authorizes canonical promotion or bypasses the existing UX
 review. When MCP is unavailable, assign an
@@ -51,6 +53,13 @@ checks so inherited restrictions cannot silently restore a large text-only
 handoff. The parent retains validation, review, rendering and permanent
 persistence. These task-scoped assignments need no additional owner approval
 within an already authorized refinement.
+
+Independent UX reviewers use [progressive review delivery](references/ux-review.md#progressive-mcp-delivery):
+grant `ux-review.contribute` and `ux-review.assemble`, the exact subject and required
+inputs. Save completed review meaning in natural batches and assemble the existing
+receipt mechanically. Reuse handles through validation and UI handoff. Preserve
+the serial author/reviewer gate and exact passing scope; parallel reads do not
+authorize parallel acceptance or a reviewer editing the UX.
 
 Run one bounded design-refinement cycle. For a whole-product refinement, complete both the UX and UI passes in this skill: persist UX, obtain its independent review, then compose UI from the reviewed UX. A request confined to one decision or artifact may update only the affected scope; preserve and revalidate dependent artifacts before treating them as current. Treat the user's current input as a fresh, potentially unstructured design input and reconstruct context from durable documents rather than conversation shape. Reuse product meaning and prior evidence recorded there; consult only specialists whose input can materially change the result. The workflow is planning-only, with a bounded design-language artifact path. It does not require a complete specification or a repository implementation opt-in.
 

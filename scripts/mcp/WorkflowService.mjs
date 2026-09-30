@@ -2,7 +2,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {randomBytes, randomUUID} from 'node:crypto';
 import {WorkspaceFiles} from './WorkspaceFiles.mjs';
-import {MAX_PAGE_BYTES, MAX_CONFIGURED_PAGE_BYTES, MAX_RESULT_BYTES, WORKFLOW_VERSION} from './consts.mjs';
+import {
+	MAX_PAGE_BYTES,
+	DEFAULT_PAGE_BYTES,
+	MAX_CONFIGURED_PAGE_BYTES,
+	MAX_RESULT_BYTES,
+	WORKFLOW_VERSION,
+} from './consts.mjs';
 import {InputContract} from './InputContract.mjs';
 
 /** Resident workflow state, scoped capabilities, exact results and operation ownership. */
@@ -10,7 +16,12 @@ export class WorkflowService {
 	/** Creates one workspace service; the owner capability must stay with the parent.
 	 * @param {WorkflowServiceOptions} options - Workspace, state directory and operation registry.
 	 */
-	constructor({workspace, stateDirectory = '.codex-tmp/mcp-workflows', operations = {}, pageBytes = MAX_PAGE_BYTES}) {
+	constructor({
+		workspace,
+		stateDirectory = '.codex-tmp/mcp-workflows',
+		operations = {},
+		pageBytes = DEFAULT_PAGE_BYTES,
+	}) {
 		if (!Number.isInteger(pageBytes) || pageBytes < MAX_PAGE_BYTES || pageBytes > MAX_CONFIGURED_PAGE_BYTES)
 			throw new Error(
 				`Page limit must be an integer from ${MAX_PAGE_BYTES} through ${MAX_CONFIGURED_PAGE_BYTES}`,
@@ -258,10 +269,16 @@ export class WorkflowService {
 		if (!definition || (!capability.owner && !capability.operations.includes(operation)))
 			throw new Error('Operation is not assigned');
 		const values = structuredClone(input);
-		for (const [key, handle] of Object.entries(inputHandles)) {
+		for (const [key, handles] of Object.entries(inputHandles)) {
 			if (Object.hasOwn(values, key)) throw new Error('Input was supplied twice');
+			const resolve = (handle) => {
+				if (typeof handle !== 'string') throw new Error('Input handle must be a string');
+				const result = this._result(capability, handle);
+				if (result.run !== runId) throw new Error('Wrong run input handle');
+				return structuredClone(result.value);
+			};
 			Object.defineProperty(values, key, {
-				value: structuredClone(this._result(capability, handle).value),
+				value: Array.isArray(handles) ? handles.map(resolve) : resolve(handles),
 				enumerable: true,
 			});
 		}

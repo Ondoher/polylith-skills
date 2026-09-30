@@ -1,3 +1,5 @@
+import {DEFAULT_PAGE_BYTES} from './consts.mjs';
+
 const string = {type: 'string', maxLength: 4096};
 const strings = {type: 'array', items: string, maxItems: 2000};
 const object = {type: 'object'};
@@ -32,7 +34,7 @@ const definitions = {
 			handle: string,
 			pointer: string,
 			offset: {type: 'integer', minimum: 0},
-			maxBytes: {type: 'integer', minimum: 256, maximum: 7000},
+			maxBytes: {type: 'integer', minimum: 256, maximum: DEFAULT_PAGE_BYTES},
 		},
 		['access', 'handle'],
 	],
@@ -42,7 +44,7 @@ const definitions = {
 		['access'],
 	],
 	execute: [
-		'Execute a curated operation. Bind saved results through inputHandles without copying data. Use background for long jobs.',
+		'Execute a curated operation. Each inputHandles value is one saved handle or an ordered array of handles, resolved without copying data through the model. Use background for long jobs.',
 		{
 			access: string,
 			run: string,

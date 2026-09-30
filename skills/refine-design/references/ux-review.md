@@ -29,9 +29,12 @@ Do not provide a desired verdict or ask the reviewer to approve a predetermined 
 
 ## Reviewer Response Schema 0.2
 
-Before reviewing, read [`ux-review-schema-0.2.json`](./ux-review-schema-0.2.json) as a mandatory input contract. Before returning, self-check the complete object against its closed shapes and every `x-semanticRules` entry. The imperative validator remains authoritative for reference and cross-record checks that JSON Schema describes only as semantic rules.
+The response schema is the final materialized receipt. With MCP, use progressive
+delivery below so the reviewer does not repeat previously saved rows at the end.
 
-The reviewer returns one JSON object with no Markdown fence or explanatory wrapper:
+Before reviewing, read [`ux-review-schema-0.2.json`](./ux-review-schema-0.2.json) as a mandatory input contract. Check authored rows as they are saved, then assess the complete coverage and every `x-semanticRules` entry before concluding. Progressive assembly validates the final object without a model-generated copy. For complete-file or inline delivery, self-check the complete object. The imperative validator remains authoritative for reference and cross-record checks that JSON Schema describes only as semantic rules.
+
+The final materialized receipt is one JSON object with no Markdown fence or explanatory wrapper:
 
 - `schemaVersion`: `"0.2"`.
 - `subject`: `{ productDescription: { id, sha256 }, uxArtifact: { id, revision, sha256 }, scopeRefs }`, bound to both authoritative inputs and the reviewed scope. SHA-256 values are lowercase digests of the exact supplied file bytes.
@@ -58,6 +61,57 @@ Use exactly these coverage criteria:
 Return `revise` when any finding is blocking or any required coverage is unavailable. Advisory findings may accompany `pass`; they do not authorize UI to change accepted behavior. A `pass` means the semantic UX contract is coherent enough for UI exploration in the reviewed scope. It is not usability validation, accessibility conformance, implementation approval, or permission to change locked content.
 
 Every coverage row with result `finding` must be covered by at least one blocking finding whose `criteria` includes that criterion. Conversely, every criterion named by a blocking finding must have a coverage row with result `finding`. Advisory findings do not force a coverage row to `finding`.
+
+## Progressive MCP delivery
+
+The parent calls `ux-review.subject`, retains that handle, and assigns a fresh
+reviewer `ux-review.contribute` and `ux-review.assemble`. Assign the subject and
+all required data handles, exact `readPaths` for the persisted UX and product
+description, and `scope: {reviewSubject: <computed subject>}`. Supply the file
+locations, source root and scope for final assembly. Do not grant canonical writes.
+
+Use the shared parallel input-collection contract for all independent known reads.
+Use the advertised window (28,000 content bytes by default), preserving wrapper
+and client return budgets. Follow actual continuations, retain successful pages,
+and review all in-scope evidence; input staging and mandatory multi-read skills
+are not part of this route.
+
+Save completed semantic work at natural boundaries using `ux-review.contribute`:
+
+```json
+{
+  "operation": "ux-review.contribute",
+  "input": {"fragment": {"coverage": [], "findings": [], "researchChecks": [], "limits": []}},
+  "inputHandles": {"subject": "<assigned subject handle>"}
+}
+```
+
+Each supplied row uses its existing schema 0.2 shape; omit sections without ready
+content. Code binds the immutable part to the subject. Keep the returned handle
+without rereading or repeating its rows. A small review can use one part; do not
+force one call per criterion or interrupt useful reasoning for every field.
+Related findings can span criteria. Delay the final verdict until all coverage
+and required research have been assessed.
+
+Finish with `ux-review.assemble`, providing only `uxPath`,
+`productDescriptionPath`, `sourceRoot`, `scopeRefs`, `verdict` and `summary` in
+`input` (and `productDescriptionId` when required). Supply
+`inputHandles: {subject: <subject handle>, parts: [<part handles in order>]}`.
+The server authorizes every handle, joins rows, reuses exact duplicates, rejects
+conflicting identities/subjects and runs the existing validator against current
+authoritative files. It does not infer a verdict or treat incomplete coverage
+as passing. Return the assembled receipt handle and concise status.
+
+All completed parts survive an unsuccessful assembly or process restart. Resume
+with newly issued access and the retained handles. Replace only an affected part
+handle when correcting a fragment; retain unrelated parts, and do not silently
+overwrite a conflicting finding. A changed source or UX needs a fresh subject
+and independent review; prior-subject parts cannot be mixed into that receipt.
+The parent still calls `ux-review.validate` for a passing UI gate and passes the
+same assembled handle to subsequent consumers, without reconstructing JSON.
+
+For an explicit file/host route, the parent may consume completed receipt files
+directly. The final schema, exact validation and independence rules stay the same.
 
 ## Parent Handling
 

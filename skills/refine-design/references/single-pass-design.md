@@ -7,7 +7,7 @@ reconstructs the old flow graph or saves expanded scene copies.
 When configured, use the shared MCP protocol in `documentation/workflows/mcp.md`
 under the governance checkout. The parent opens each store with `units.open` and
 assigns input handles, stage and record references through `workflow_assign`.
-Prefer incremental contributions for UX updates against a saved baseline.
+Use incremental contributions for initial UX, updates and all subsequent repairs.
 UX authors assigned `units.contribute` use the
 [incremental contribution contract](ux-contributions.md), which replaces the
 complete-unit delivery and replacement steps below. Other authors use
@@ -28,17 +28,22 @@ bootstrap and recovery when MCP is unavailable.
    and record material decisions while authoring. Research unfamiliar patterns only
    when needed. Do not add separate full-product inventory, graph, pruning or rewrite
    passes.
-3. Deliver each complete unit through the author's scoped `units.deliver` operation,
+3. UX saves ready semantic changes through `units.contribute` and materializes
+   them with `units.finish`. For UI or an explicit complete-unit host route,
+   deliver each complete unit through the author's scoped `units.deliver` operation,
    or save it in the assigned `proposalDirectory` for direct parent consumption
    with `deliver`. Return handles or paths and record IDs without retyping JSON.
    Continue the same author with remaining IDs and existing handles/paths, without
    resending accumulated data. A replacement author resumes from the saved manifest
    and records.
-4. Optionally scan outstanding issues once. Replace only affected records and actual
+4. Optionally scan outstanding issues once. UX contributes only affected fields
+   using receipt revisions; complete-unit routes replace affected records and actual
    dependents, naming each previous digest. Unresolved issues remain repair notices;
    continue independent work without an automatic full-run retry.
 5. Mechanically assemble native records, validate the candidate, source-check new
-   research and obtain the existing independent UX review. Validation and import do
+   research and obtain the existing independent UX review using its progressive
+   delivery contract. Review-directed corrections use the same contribution store,
+   then exact persistence and a fresh review. Validation and import do
    not grant semantic approval. Preserve partial results if review cannot pass.
 6. UI may prepare or reuse visual foundations while UX runs. After exact UX review,
    the same UI author receives shared context once and bounded element/flow handles

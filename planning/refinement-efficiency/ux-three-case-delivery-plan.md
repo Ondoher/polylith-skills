@@ -1,5 +1,9 @@
 # Three cases in one UX agent: upfront versus as-needed input
 
+Follow-up decision, 2026-09-29: **this optimization path is set aside at the
+owner's request**. Preserve the completed experiment; no additional repetitions
+or production adoption are planned unless the owner reopens the question.
+
 Status: **executed**, 2026-09-29. See the [results](ux-three-case-delivery-execution.md)
 and [measurements](ux-three-case-delivery-metrics.json). Both authors followed the
 protocol; staged delivery was 29.4% slower and used 52.0% more reasoning tokens

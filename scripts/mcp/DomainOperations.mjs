@@ -1,6 +1,7 @@
 import path from 'node:path';
 import os from 'node:os';
 import {fileURLToPath} from 'node:url';
+import {isDeepStrictEqual} from 'node:util';
 import {InputContract} from './InputContract.mjs';
 
 const text = {type: 'string'};
@@ -98,6 +99,37 @@ export class DomainOperations {
 				throw new Error('Select assigned references explicitly');
 		}
 		return context.files.resolve(path.join(context.run.directory, 'units', input.stage));
+	}
+
+	/** Called by review delivery to enforce the parent's exact assigned subject.
+	 * @param {WorkflowUxReviewSubject} subject - Supplied review binding.
+	 * @param {WorkflowOperationContext} context - Parent or bounded reviewer capability.
+	 * @returns {void} - Rejects an unassigned or changed subject.
+	 */
+	_reviewScope(subject, context) {
+		if (!context.owner && !isDeepStrictEqual(subject, context.scope.reviewSubject))
+			throw new Error('Review subject is outside the assignment');
+	}
+
+	/** Called by review operations to read the exact authorized source files.
+	 * @param {WorkflowUxReviewFiles} input - Authoritative file locations and scope.
+	 * @param {WorkflowOperationContext} context - Caller authority.
+	 * @returns {WorkflowUxReviewValidation} - Inputs for the existing review validator.
+	 */
+	_reviewInputs(input, context) {
+		const uxArtifactPath = context.inputPath(input.uxPath);
+		const productDescriptionPath = context.inputPath(input.productDescriptionPath ?? context.run.sourcePath);
+		return {
+			uxSpec: context.files.json(uxArtifactPath),
+			uxSource: Buffer.from(context.files.read(uxArtifactPath)),
+			uxArtifactPath,
+			productDescriptionSource: Buffer.from(context.files.read(productDescriptionPath)),
+			productDescriptionPath,
+			productDescriptionId: input.productDescriptionId,
+			sourceRoot: context.files.resolve(input.sourceRoot ?? path.dirname(uxArtifactPath)),
+			scopeRefs: input.scopeRefs,
+			requiredScopeRefs: input.scopeRefs,
+		};
 	}
 
 	/** Registers exact input delivery and human-owned text editing.
@@ -460,6 +492,41 @@ export class DomainOperations {
 			scopeRefs: list,
 			review: object,
 		};
+		this._add(
+			'ux-review.contribute',
+			'Save completed review coverage, findings, researchChecks and limits against the assigned subject. Pass subject by inputHandles; omitted sections stay empty. Return the part handle without echoing rows.',
+			{subject: object, fragment: object},
+			['subject', 'fragment'],
+			true,
+			false,
+			async (input, context) => {
+				this._reviewScope(input.subject, context);
+				const {UxReviewParts} = await this._module('scripts/mcp/UxReviewParts.mjs');
+				return new UxReviewParts().contribute(input.subject, input.fragment);
+			},
+		);
+		const {review: _review, ...reviewLocations} = reviewFields;
+		this._add(
+			'ux-review.assemble',
+			'Assemble saved review parts into schema 0.2 and validate the reviewer-supplied verdict against exact current files. inputHandles.parts accepts an ordered list of part handles. Return the receipt handle; a revise remains revise.',
+			{
+				...reviewLocations,
+				subject: object,
+				parts: {type: 'array', items: object},
+				verdict: {type: 'string', enum: ['pass', 'revise']},
+				summary: text,
+			},
+			['uxPath', 'scopeRefs', 'subject', 'parts', 'verdict', 'summary'],
+			true,
+			false,
+			async (input, context) => {
+				this._reviewScope(input.subject, context);
+				const {UxReviewParts} = await this._module('scripts/mcp/UxReviewParts.mjs');
+				const review = new UxReviewParts().assemble(input);
+				const module = await this._module('skills/refine-design/scripts/ux-review.mjs');
+				return module.validateUxReview(review, this._reviewInputs(input, context));
+			},
+		);
 		for (const mode of ['subject', 'validate'])
 			this._add(
 				`ux-review.${mode}`,
@@ -470,22 +537,7 @@ export class DomainOperations {
 				false,
 				async (input, context) => {
 					const module = await this._module('skills/refine-design/scripts/ux-review.mjs');
-					const uxArtifactPath = context.files.resolve(input.uxPath);
-					const options = {
-						uxSpec: context.files.json(uxArtifactPath),
-						uxSource: Buffer.from(context.files.read(uxArtifactPath)),
-						uxArtifactPath,
-						productDescriptionSource: Buffer.from(
-							context.files.read(input.productDescriptionPath ?? context.run.sourcePath),
-						),
-						productDescriptionPath: context.files.resolve(
-							input.productDescriptionPath ?? context.run.sourcePath,
-						),
-						productDescriptionId: input.productDescriptionId,
-						sourceRoot: context.files.resolve(input.sourceRoot ?? path.dirname(uxArtifactPath)),
-						scopeRefs: input.scopeRefs,
-						requiredScopeRefs: input.scopeRefs,
-					};
+					const options = this._reviewInputs(input, context);
 					if (mode === 'subject') return module.createUxReviewSubject(options);
 					module.validatePassingUxReview(input.review, options);
 					return {valid: true};

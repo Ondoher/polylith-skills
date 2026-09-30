@@ -1,5 +1,14 @@
 # Efficient refinement cycle
 
+Across the full UX stage, use the shared MCP parallel-read waves and advertised
+page window for the planner, corrections and reviewer. UX semantic output uses
+[incremental contributions](ux-contributions.md), including initial authoring
+and review-directed repairs. Review output uses
+[saved fragments and mechanical assembly](ux-review.md#progressive-mcp-delivery).
+Keep completed data by handle through validation, persistence and UI handoff;
+never request another whole-document response to cross a stage boundary. Source
+freeze, independent review and dependent mutations retain their serial order.
+
 For the UX/UI stages, use [single-pass authoring](single-pass-design.md): one
 forward authoring pass, optionally one issue-directed repair scan, and indexed
 assembly. Persist each completed unit and reuse it during this run. Inline task

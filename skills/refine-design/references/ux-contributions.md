@@ -1,6 +1,7 @@
 # Incremental UX authoring
 
-Use when the assignment grants `units.status`, `units.contribute`, and
+Use for initial UX, saved-baseline updates, structural repair and review-directed
+corrections. The parent grants `units.status`, `units.contribute`, and
 `units.finish`. These are operations on the existing workflow MCP service.
 Inspect their assigned catalog once and call through `workflow_execute` with
 your assignment capability. The parent opens and seeds the bound UX store.
@@ -85,10 +86,27 @@ Required fields and cross-references may be supplied later. Keep contributing
 independent work; do not regenerate accepted batches. If a turn is interrupted,
 use the saved receipts/status and continue where it stopped.
 
-Call `units.finish` with the assigned references once their first proposal is
-delivered. Code expands metadata, packs catalogs, saves existing authoring units,
+Call `units.finish` with the assigned references once the requested proposal or
+correction is delivered. Code expands metadata, packs catalogs, saves existing authoring units,
 and reports structural/reference problems. Return that result handle and status;
 do not write a final combined JSON document. `needs-repair` retains the units and
 identifies the problem. In a first-round experiment, stop at this receipt and
 report defects; do not begin a review or repair round. Canonical promotion and
 semantic approval remain parent-owned.
+
+## Continue through the full UX stage
+
+Outside an explicitly bounded first-round experiment, repair reported structural
+issues using new contribution batches and current receipt revisions. Reuse all
+accepted changes. Finish the corrected units and their actual dependents; do not
+re-author an element merely to change one action or regenerate a final document.
+After independent review requests changes, the parent routes each finding to the
+owning units and supplies the saved findings, current facts and status. Continue
+the same author where possible; replacement authors resume the durable journal.
+
+The parent mechanically assembles and persists the corrected UX, verifies new
+research, and freezes all source bytes before dispatching a fresh reviewer.
+Changed facts require a correctly rebound store, not edited hashes on stale data.
+Only a current passing review permits UI handoff. Keep these dependent operations
+sequential; independent input reads use the shared parallel-wave contract and the
+advertised page window. Do not stage case inputs solely to reduce reasoning.

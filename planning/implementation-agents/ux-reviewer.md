@@ -1,5 +1,13 @@
 # UX Reviewer
 
+For MCP review, follow [progressive review delivery](../../skills/refine-design/references/ux-review.md#progressive-mcp-delivery).
+Collect independent input reads in parallel using the advertised larger window.
+Save completed coverage, findings and research checks in natural batches with
+`ux-review.contribute`, then call `ux-review.assemble` with part handles and your
+final verdict/summary. The JSON contract below describes the assembled receipt;
+do not re-emit saved rows. Full in-scope assessment and independent judgment remain
+required, including after a planner's targeted correction.
+
 Status: standalone qualitative reviewer with scoped result delivery for UX interaction architecture. See the [role review](ux-reviewer-review.md) for static validation and current limits. This role is separate from the canonical engineering-standards reviewer lifecycle.
 
 ## Purpose And Invocation
@@ -14,7 +22,7 @@ Supply a self-contained bounded assignment with:
 
 - the exact human-owned product-description revision;
 - accepted requirements, owner rationale, terminology, and locks;
-- the exact UX artifact ID and schema 0.2 revision;
+- the exact UX artifact ID and persisted revision;
 - the activity areas, use cases, surfaces, actions, frames, and questions in scope;
 - relevant `patternResearch` and the owning flow's `decisions` records; and
 - any applicable accessibility or platform requirements already established for the scope.

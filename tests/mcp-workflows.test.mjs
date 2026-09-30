@@ -189,8 +189,8 @@ test('assigned UX contributions save small changes and materialize through the r
 	);
 });
 
-test('configured read windows advertise their cap and preserve escaped UTF-8 across pages', async (scenario) => {
-	const f = await fixture(scenario, {}, {pageBytes: 28000});
+test('default larger read windows advertise their cap and preserve escaped UTF-8 across pages', async (scenario) => {
+	const f = await fixture(scenario);
 	const catalog = await f.rpc('tools/list', {});
 	assert.equal(
 		catalog.tools.find((tool) => tool.name === 'workflow_read').inputSchema.properties.maxBytes.maximum,
@@ -212,12 +212,157 @@ test('configured read windows advertise their cap and preserve escaped UTF-8 acr
 	} while (offset !== null);
 	assert.deepEqual(JSON.parse(fragments.join('')), value);
 	assert.equal(createHash('sha256').update(fragments.join('')).digest('hex'), receipt.sha256);
+	const smallerFragments = [];
+	offset = 0;
+	do {
+		const page = await f.call('read', {access: f.access, handle: receipt.handle, offset, maxBytes: 7000});
+		smallerFragments.push(page.text);
+		offset = page.nextOffset;
+	} while (offset !== null);
+	assert.equal(smallerFragments.join(''), fragments.join(''));
+	assert.ok(fragments.length < smallerFragments.length);
+	scenario.diagnostic(
+		`Identical ${receipt.bytes}-byte payload: ${fragments.length} default-window reads versus ${smallerFragments.length} reads capped at 7000 content bytes.`,
+	);
 	for (const pageBytes of [6999, 112001, NaN, 7000.5])
 		assert.throws(() => new WorkflowService({workspace: f.root, pageBytes}), /Page limit/);
 });
 
+test('full UX lifecycle reuses contributions and review parts through correction and a fresh passing gate', async (scenario) => {
+	const f = await fixture(scenario),
+		ux = createUxTestSpec();
+	fs.writeFileSync(
+		path.join(f.root, 'product-description.md'),
+		'# Field Journal\nReview and correct observation records.\n',
+	);
+	await f.execute('units.open', {stage: 'ux', binding: {source: 'full-ux-lifecycle'}});
+	const imported = await f.execute('units.import', {stage: 'ux', document: ux});
+	await f.execute('units.deliver', {stage: 'ux'}, {records: imported.handle});
+	const references = f.value(imported).map((record) => `${record.kind}:${record.id}`);
+	const author = await f.call('assign', {
+		access: f.access,
+		run: f.run,
+		operations: ['units.status', 'units.contribute', 'units.finish'],
+		scope: {stage: 'ux', recordRefs: ['context:document']},
+	});
+	const authorExecute = (operation, input) =>
+		f.call('execute', {access: author.access, run: f.run, operation, input});
+	let previousReview, previousParts, previousSubject;
+	for (const round of [1, 2]) {
+		const status = (await authorExecute('units.status', {stage: 'ux', references: ['context:document']})).inline;
+		const change = await authorExecute('units.contribute', {
+			stage: 'ux',
+			batchId: `round-${round}`,
+			base: {'context:document': status.units[0].revision},
+			changes: [
+				{
+					unit: 'context:document',
+					op: 'set',
+					fields: {title: round === 1 ? 'Working title' : ux.title, revision: String(round)},
+				},
+			],
+		});
+		assert.deepEqual(change.inline.issues, []);
+		assert.equal(
+			(await authorExecute('units.finish', {stage: 'ux', references: ['context:document']})).inline.status,
+			'structurally-ready',
+		);
+		const units = f.value(await f.execute('units.read', {stage: 'ux', references}));
+		const candidate = DesignAssembly.ux(units.records).document;
+		assert.deepEqual(candidate.flows, ux.flows);
+		const persisted = f.value(await f.execute('ux.persist', {document: candidate, outputDirectory: 'output'}));
+		const reviewInput = {uxPath: path.relative(f.root, persisted.sourcePath), sourceRoot: '.', scopeRefs: [ux.id]};
+		const subjectReceipt = await f.execute('ux-review.subject', reviewInput);
+		const subject = f.value(subjectReceipt);
+		const reviewer = await f.call('assign', {
+			access: f.access,
+			run: f.run,
+			operations: ['ux-review.contribute', 'ux-review.assemble'],
+			handles: [subjectReceipt.handle],
+			readPaths: [reviewInput.uxPath, 'product-description.md'],
+			scope: {reviewSubject: subject},
+		});
+		const reviewExecute = (operation, input, inputHandles) =>
+			f.call('execute', {access: reviewer.access, run: f.run, operation, input, inputHandles});
+		const coverage = UX_REVIEW_CRITERIA.map((criterion) => ({
+			criterion,
+			result: round === 1 && criterion === 'product-intent' ? 'finding' : 'pass',
+			evidenceRefs: [ux.id],
+			note: 'Synthetic lifecycle evidence; no live qualitative judgment.',
+		}));
+		const findings =
+			round === 1
+				? [
+						{
+							id: 'restore-title',
+							severity: 'blocking',
+							criteria: ['product-intent'],
+							recordRefs: [ux.id],
+							evidence: 'The title differs from the source.',
+							consequence: 'Product identity is unclear.',
+							smallestRemedy: 'Restore the supplied title.',
+							confidence: 'high',
+						},
+					]
+				: [];
+		const fragments = [
+			{coverage: coverage.slice(0, 5), findings},
+			{coverage: coverage.slice(5), limits: ['Synthetic review, not a live specialist assessment.']},
+		];
+		const parts = [];
+		for (const fragment of fragments)
+			parts.push(await reviewExecute('ux-review.contribute', {fragment}, {subject: subjectReceipt.handle}));
+		const exactRetry = await reviewExecute(
+			'ux-review.contribute',
+			{fragment: fragments[0]},
+			{subject: subjectReceipt.handle},
+		);
+		assert.equal(exactRetry.handle, parts[0].handle);
+		assert.equal(exactRetry.reused, true);
+		const receipt = await reviewExecute(
+			'ux-review.assemble',
+			{...reviewInput, verdict: round === 1 ? 'revise' : 'pass', summary: 'Synthetic review conclusion.'},
+			{subject: subjectReceipt.handle, parts: [...parts.map((part) => part.handle), exactRetry.handle]},
+		);
+		const review = f.value(receipt);
+		assert.deepEqual(review.coverage, coverage);
+		assert.deepEqual(review.findings, findings);
+		assert.deepEqual(review.subject, subject);
+		assert.deepEqual(review.researchChecks, []);
+		if (round === 2) {
+			assert.deepEqual(f.value(await f.execute('ux-review.validate', reviewInput, {review: receipt.handle})), {
+				valid: true,
+			});
+			await assert.rejects(
+				f.execute('ux-review.validate', reviewInput, {review: previousReview.handle}),
+				/stale|revision/,
+			);
+			await assert.rejects(
+				f.execute(
+					'ux-review.assemble',
+					{...reviewInput, verdict: 'pass', summary: 'Do not mix reviews.'},
+					{subject: subjectReceipt.handle, parts: previousParts.map((part) => part.handle)},
+				),
+				/another subject/,
+			);
+			await assert.rejects(
+				reviewExecute('ux-review.contribute', {fragment: fragments[0], subject: previousSubject}, {}),
+				/outside the assignment/,
+			);
+		} else {
+			await assert.rejects(
+				f.execute('ux-review.validate', reviewInput, {review: receipt.handle}),
+				/must be pass/,
+			);
+		}
+		previousReview = receipt;
+		previousParts = parts;
+		previousSubject = subject;
+	}
+});
+
 test('two HTTP clients share a run, exact handles, assigned delivery, bounded reads and operation timings', async (scenario) => {
-	const f = await fixture(scenario);
+	const f = await fixture(scenario, {}, {pageBytes: 7000});
 	assert.equal((await f.rpc('initialize', {})).serverInfo.name, 'polylith-workflows');
 	assert.equal((await f.rpc('tools/list', {})).tools.length, 7);
 	assert.equal(
