@@ -9,10 +9,12 @@ import {createInterface} from 'node:readline';
 import {createHash, randomBytes} from 'node:crypto';
 import {prepareNativeWorkflowCatalog} from '../../../../scripts/native-workflow-catalog.mjs';
 import {startLiveRequestObserver} from '../ux-read-window/live-request-observer.mjs';
+import {verifyObserverTrust} from '../incremental-ux-replay/observer-trust.mjs';
 
 const governance = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
 const attemptName = process.argv.find((arg) => arg.startsWith('--attempt='))?.slice(10);
 assert(attemptName && /^[a-z0-9-]+$/.test(attemptName), 'Supply a unique attempt');
+const executeModel = process.argv.includes('--execute');
 const requestedAt =
 	process.argv.find((arg) => arg.startsWith('--requested-at='))?.slice(15) ?? new Date().toISOString();
 assert(Number.isFinite(Date.parse(requestedAt)) && Date.parse(requestedAt) <= Date.now(), 'Invalid request start time');
@@ -21,7 +23,9 @@ assert(!resumeName || /^[a-z0-9-]+$/.test(resumeName), 'Invalid resume attempt')
 const previousDirectory = resumeName && path.join(governance, '.codex-tmp/ux-full-native-20260929', resumeName);
 const previous = previousDirectory && JSON.parse(fs.readFileSync(path.join(previousDirectory, 'control.json')));
 assert(
-	!previous || (previous.agentCompletedAt && previous.liveUnchanged && previous.threadId),
+	!previous ||
+		(previous.liveUnchanged &&
+			(previous.status === 'prepared' || (previous.agentCompletedAt && previous.threadId))),
 	'Previous client must be stopped with live protection verified',
 );
 const attempt = path.join(governance, '.codex-tmp/ux-full-native-20260929', attemptName);
@@ -43,6 +47,8 @@ const control = {
 	run: 'ux-full-native-replay',
 	status: 'preparing',
 	model: 'gpt-6-astra',
+	boundary:
+		'Full UX authoring, structural repair, independent review and review-directed rework through an exact passing receipt; no UI generation.',
 	...(previous
 		? {resumedFrom: resumeName, originalRequestedAt: previous.originalRequestedAt ?? previous.requestedAt}
 		: {}),
@@ -94,11 +100,15 @@ const environment = {
 	POLYLITH_MCP_PAGE_BYTES: '28000',
 	RUST_LOG: 'warn,codex_core::stream_events_utils=debug,codex_core::tools::parallel=debug',
 };
-const server = fork(path.join(governance, '.codex-tmp/ux-mcp-replay-20260928/server-observer.mjs'), [workspace, '0'], {
-	env: environment,
-	stdio: ['ignore', 'pipe', 'pipe', 'ipc'],
-	windowsHide: true,
-});
+const server = fork(
+	fileURLToPath(new URL('../incremental-ux-replay/server-observer.mjs', import.meta.url)),
+	[workspace, '0'],
+	{
+		env: environment,
+		stdio: ['ignore', 'pipe', 'pipe', 'ipc'],
+		windowsHide: true,
+	},
+);
 server.stdout.pipe(fs.createWriteStream(path.join(attempt, 'server-stdout.private.log')));
 server.stderr.pipe(fs.createWriteStream(path.join(attempt, 'server-stderr.log')));
 const observations = fs.createWriteStream(path.join(attempt, 'service-observations.jsonl'));
@@ -205,92 +215,105 @@ try {
 	control.inputReadCount = plan.length;
 	control.inputBytes = facts.bytes + ux.bytes;
 	control.preparationMs = performance.now() - preparationStart;
+	control.status = 'prepared';
+	control.preparedAt = new Date().toISOString();
 	save();
-	observer = await startLiveRequestObserver(path.join(attempt, 'live-request-metadata.json'));
-	const prompt = previous
-		? fs.readFileSync(new URL('./resume-assignment.md', import.meta.url), 'utf8') +
-			`\nWorkspace: ${workspace}\nNew parent MCP access: ${ready.access}\nExisting run: ${control.run}\nSupervisor attempt: ${attempt}\n`
-		: fs.readFileSync(new URL('./assignment.md', import.meta.url), 'utf8') +
-			`\nWorkspace: ${workspace}\nParent MCP access: ${ready.access}\nOpened run: ${control.run}\nFacts handle: ${facts.handle}\nPrior UX handle: ${ux.handle}\nComplete immutable input read plan (replace parent access with specialist access in its assignment):\n${JSON.stringify(compactPlan)}\n`;
-	fs.writeFileSync(path.join(attempt, 'prompt.private.txt'), prompt);
-	const binary =
-		'C:/Users/gande/.vscode/extensions/openai.chatgpt-26.917.62051-win32-x64/bin/windows-x86_64/codex.exe';
-	const args = [
-		path.join(governance, 'scripts/codex-native-workflows.mjs'),
-		`--model=${control.model}`,
-		`--binary=${binary}`,
-		`--cache=${catalog.path}`,
-		'--',
-		'exec',
-		'--json',
-		'-C',
-		workspace,
-		'--add-dir',
-		governance,
-		'--approve-for-me',
-		'-c',
-		`mcp_servers.polylith_workflows.url=${JSON.stringify(ready.url)}`,
-		'-c',
-		'mcp_servers.polylith_workflows.bearer_token_env_var="POLYLITH_MCP_TOKEN"',
-		'-c',
-		'mcp_servers.polylith_workflows.required=true',
-		'-c',
-		`openai_base_url=${JSON.stringify(observer.url)}`,
-		...(previous ? ['resume'] : []),
-		'-o',
-		path.join(attempt, 'result.md'),
-		...(previous ? [previous.threadId] : []),
-		'-',
-	];
-	const agentStart = performance.now();
-	child = spawn(process.execPath, args, {env: environment, stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true});
-	control.childPid = child.pid;
-	control.status = 'running';
-	control.agentStartedAt = new Date().toISOString();
-	save();
-	events = fs.createWriteStream(path.join(attempt, 'events.private.jsonl'));
-	child.stderr.pipe(fs.createWriteStream(path.join(attempt, 'codex-stderr.log')));
-	createInterface({input: child.stdout}).on('line', (line) => {
-		let data;
-		try {
-			data = JSON.parse(line);
-		} catch {
-			data = {type: 'unparsed'};
-		}
-		events.write(
-			JSON.stringify({at: new Date().toISOString(), observedMs: performance.now() - agentStart, data}) + '\n',
+	if (executeModel) {
+		control.observerTrust = await verifyObserverTrust();
+		save();
+		observer = await startLiveRequestObserver(path.join(attempt, 'live-request-metadata.json'));
+		const prompt = previous?.threadId
+			? fs.readFileSync(new URL('./resume-assignment.md', import.meta.url), 'utf8') +
+				`\nWorkspace: ${workspace}\nNew parent MCP access: ${ready.access}\nExisting run: ${control.run}\nSupervisor attempt: ${attempt}\n`
+			: fs.readFileSync(new URL('./assignment.md', import.meta.url), 'utf8') +
+				`\nWorkspace: ${workspace}\nParent MCP access: ${ready.access}\nOpened run: ${control.run}\nFacts handle: ${facts.handle}\nPrior UX handle: ${ux.handle}\nComplete immutable input read plan (replace parent access with specialist access in its assignment):\n${JSON.stringify(compactPlan)}\n`;
+		fs.writeFileSync(path.join(attempt, 'prompt.private.txt'), prompt);
+		control.promptSha256 = sha(prompt);
+		control.roleHashes = Object.fromEntries(
+			['ux-planner', 'ux-reviewer'].map((name) => [
+				name,
+				sha(fs.readFileSync(path.join(governance, 'agents', name + '.toml'))),
+			]),
 		);
-		if (data.type === 'thread.started') {
-			control.threadId = data.thread_id;
-			save();
-		}
-		if (data.type === 'item.completed' && data.item?.type === 'agent_message')
-			fs.appendFileSync(
-				path.join(attempt, 'progress.log'),
-				new Date().toISOString() + ' ' + data.item.text + '\n',
-			);
-		if (data.type === 'turn.completed') {
-			control.reportedUsage = data.usage;
-			save();
-		}
-	});
-	child.stdin.end(prompt);
-	console.log(
-		JSON.stringify({
-			status: 'running',
-			attempt,
+		const binary =
+			'C:/Users/gande/.vscode/extensions/openai.chatgpt-26.917.62051-win32-x64/bin/windows-x86_64/codex.exe';
+		const args = [
+			path.join(governance, 'scripts/codex-native-workflows.mjs'),
+			`--model=${control.model}`,
+			`--binary=${binary}`,
+			`--cache=${catalog.path}`,
+			'--',
+			'exec',
+			'--json',
+			'-C',
 			workspace,
-			threadId: control.threadId,
-			pages: plan.length,
-			inputBytes: control.inputBytes,
-		}),
-	);
-	const [exitCode] = await once(child, 'close');
-	control.exitCode = exitCode;
-	control.agentWindowMs = performance.now() - agentStart;
-	control.agentCompletedAt = new Date().toISOString();
-	control.status = exitCode === 0 ? 'finished' : 'client-error';
-	save();
+			'--add-dir',
+			governance,
+			'--approve-for-me',
+			'-c',
+			`mcp_servers.polylith_workflows.url=${JSON.stringify(ready.url)}`,
+			'-c',
+			'mcp_servers.polylith_workflows.bearer_token_env_var="POLYLITH_MCP_TOKEN"',
+			'-c',
+			'mcp_servers.polylith_workflows.required=true',
+			'-c',
+			`openai_base_url=${JSON.stringify(observer.url)}`,
+			...(previous?.threadId ? ['resume'] : []),
+			'-o',
+			path.join(attempt, 'result.md'),
+			...(previous?.threadId ? [previous.threadId] : []),
+			'-',
+		];
+		const agentStart = performance.now();
+		child = spawn(process.execPath, args, {env: environment, stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true});
+		control.childPid = child.pid;
+		control.status = 'running';
+		control.agentStartedAt = new Date().toISOString();
+		save();
+		events = fs.createWriteStream(path.join(attempt, 'events.private.jsonl'));
+		child.stderr.pipe(fs.createWriteStream(path.join(attempt, 'codex-stderr.log')));
+		createInterface({input: child.stdout}).on('line', (line) => {
+			let data;
+			try {
+				data = JSON.parse(line);
+			} catch {
+				data = {type: 'unparsed'};
+			}
+			events.write(
+				JSON.stringify({at: new Date().toISOString(), observedMs: performance.now() - agentStart, data}) + '\n',
+			);
+			if (data.type === 'thread.started') {
+				control.threadId = data.thread_id;
+				save();
+			}
+			if (data.type === 'item.completed' && data.item?.type === 'agent_message')
+				fs.appendFileSync(
+					path.join(attempt, 'progress.log'),
+					new Date().toISOString() + ' ' + data.item.text + '\n',
+				);
+			if (data.type === 'turn.completed') {
+				control.reportedUsage = data.usage;
+				save();
+			}
+		});
+		child.stdin.end(prompt);
+		console.log(
+			JSON.stringify({
+				status: 'running',
+				attempt,
+				workspace,
+				threadId: control.threadId,
+				pages: plan.length,
+				inputBytes: control.inputBytes,
+			}),
+		);
+		const [exitCode] = await once(child, 'close');
+		control.exitCode = exitCode;
+		control.agentWindowMs = performance.now() - agentStart;
+		control.agentCompletedAt = new Date().toISOString();
+		control.status = exitCode === 0 ? 'finished' : 'client-error';
+		save();
+	}
 } catch (error) {
 	control.status = 'error';
 	control.error = error.message;
