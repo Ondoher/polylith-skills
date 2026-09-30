@@ -1,6 +1,8 @@
 import {UiParts} from './ui-parts.mjs';
 import {renderInlineScene} from './ui-composition-html.mjs';
 import {checkWireframeNode} from './wireframe-contract.mjs';
+import {NumericScale} from './NumericScale.mjs';
+import {OutcomeEvidence} from './OutcomeEvidence.mjs';
 
 export const PREVIEW_SCHEMA = 'wireframe-ui-pilot-1';
 const notice = 'Provisional experiment · structurally ready, unreviewed source UX';
@@ -97,6 +99,13 @@ function escape(value) {
 
 function validateLayout(layout, id) {
 	requireValue(record(layout) && ['grid', 'flex'].includes(layout.mode), `${id}: grid or flex layout required`);
+	if (layout.scale) {
+		NumericScale.position(layout.scale, layout.scale.min);
+		requireValue(
+			layout.mode === 'grid' && layout.columns?.length === 1,
+			`${id}: numeric scale requires one grid column`,
+		);
+	}
 	requireValue(finite(layout.gap), `${id}: gap must be nonnegative pixels`);
 	const padding = layout.padding;
 	requireValue(
@@ -136,9 +145,16 @@ function validateLayout(layout, id) {
 function validateTree(root, templates, actionRefs, childScenes) {
 	requireValue(root?.kind === 'region', 'Part root must be a region');
 	const ids = new Set();
-	function visit(node) {
+	function visit(node, parentLayout) {
 		requireValue(record(node) && identifier(node.id) && !ids.has(node.id), 'Nodes need unique valid IDs');
 		ids.add(node.id);
+		if (node.scalePosition !== undefined) {
+			NumericScale.place(parentLayout?.scale, node.scalePosition);
+			requireValue(
+				node.constraints?.minWidthPx === undefined && node.constraints?.maxWidthPx === undefined,
+				`${node.id}: numeric placement owns horizontal extent; remove width constraints`,
+			);
+		}
 		if (node.placement !== undefined)
 			requireValue(
 				record(node.placement) &&
@@ -167,7 +183,7 @@ function validateTree(root, templates, actionRefs, childScenes) {
 		if (node.kind === 'region') {
 			validateLayout(node.layout, node.id);
 			requireValue(Array.isArray(node.children), `${node.id}: children required`);
-			node.children.forEach(visit);
+			node.children.forEach((child) => visit(child, node.layout));
 		} else {
 			requireValue(
 				node.kind === 'component' && node.templateRef?.version === '1' && templates.has(node.templateRef?.id),
@@ -406,6 +422,20 @@ export function validatePreview(document, options = {}) {
 				prepared.spec.scenes.some((scene) => scene.id === options.sceneId),
 				'Requested scene is missing',
 			);
+		if (document.outcomeEvidence !== undefined) {
+			requireValue(Array.isArray(document.outcomeEvidence), 'outcomeEvidence must be an array');
+			if (options.packet)
+				errors.push(
+					...OutcomeEvidence.check(
+						document.outcomeEvidence,
+						options.packet,
+						prepared.spec.scenes.map((scene) => ({
+							...scene,
+							root: prepared.spec.parts.find((p) => p.id === scene.partRef).root,
+						})),
+					),
+				);
+		}
 		return {valid: errors.length === 0, errors};
 	} catch (error) {
 		return {valid: false, errors: [error.message]};
@@ -468,6 +498,8 @@ export function renderPreview(document, options = {}) {
 			'</style>',
 			dialogStyles +
 				choiceStyles +
+				'.ui-button.ui-button-secondary.ui-is-selected{box-shadow:inset 0 0 0 2px var(--pilot-primary)}.ui-visual.ui-is-selected{filter:brightness(.8)}' +
+				'.ui-button.ui-is-selected,.ui-icon-button.ui-is-selected{box-shadow:inset 0 0 0 3px var(--pilot-onPrimary);font-weight:800}.ui-choice-group.ui-is-selected{box-shadow:inset 0 0 0 2px var(--pilot-primary)}.ui-visual.ui-is-selected{box-shadow:inset 0 0 0 2px var(--pilot-primary)}.ui-visual.ui-is-disabled{opacity:.45}' +
 				'.ui-choice-group.ui-is-focus,.ui-visual.ui-is-focus{outline:2px solid var(--pilot-primary);outline-offset:2px}.ui-choice-group.ui-is-disabled{opacity:.5}.ui-button:disabled,.ui-icon-button:disabled{opacity:1;background:var(--pilot-disabledBackground);color:var(--pilot-disabledForeground);border-color:var(--pilot-disabledBackground)}.ui-button-secondary:disabled{background:var(--pilot-surface);border-color:var(--pilot-border)}' +
 				'</style>',
 		),

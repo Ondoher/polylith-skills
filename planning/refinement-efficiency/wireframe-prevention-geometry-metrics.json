@@ -1,0 +1,1105 @@
+{
+	"schemaVersion": 1,
+	"generatedAt": "2026-09-30T21:49:42.440Z",
+	"status": "review-complete",
+	"completedProcessWindows": {
+		"allRolesUnionMs": 430526,
+		"authorsUnionMs": 298237
+	},
+	"limits": [
+		"Role intervals overlap; do not sum them as elapsed time.",
+		"Input and authoring windows are subsets of each invocation.",
+		"Native execution supplies no output-stream/command-generation or pure reasoning durations.",
+		"Usage snapshots may be cumulative; no additive token or credit claim.",
+		"Byte counts cover recorded input payloads and returned text fields, not complete MCP transport bytes.",
+		"Latest acceptance can include renderer refresh or later reuse; first acceptance is reported separately.",
+		"Source UX remains unreviewed."
+	],
+	"runs": [
+		{
+			"start": "2026-09-30T21:41:09.047Z",
+			"end": "2026-09-30T21:48:19.696Z",
+			"elapsedMs": 430649,
+			"status": "review-complete",
+			"protectedUnchanged": true
+		}
+	],
+	"invocations": [
+		{
+			"role": "wireframe",
+			"category": "author-start",
+			"elementId": "geometry",
+			"status": "completed",
+			"window": {
+				"start": "2026-09-30T21:41:09.110Z",
+				"end": "2026-09-30T21:44:20.607Z",
+				"elapsedMs": 191497
+			},
+			"coordinatorRun": 1,
+			"model": "gpt-6-sol",
+			"effort": "medium",
+			"subsets": {
+				"throughInputsReady": {
+					"start": "2026-09-30T21:41:09.110Z",
+					"end": "2026-09-30T21:41:54.343Z",
+					"elapsedMs": 45233
+				},
+				"afterInputsThroughSubmission": {
+					"start": "2026-09-30T21:41:54.343Z",
+					"end": "2026-09-30T21:44:11.868Z",
+					"elapsedMs": 137525
+				}
+			},
+			"phases": [
+				{
+					"at": "2026-09-30T21:41:54.343Z",
+					"phase": "inputs-ready"
+				},
+				{
+					"at": "2026-09-30T21:42:00.237Z",
+					"phase": "wireframe-start"
+				},
+				{
+					"at": "2026-09-30T21:43:07.595Z",
+					"phase": "inspection-start"
+				},
+				{
+					"at": "2026-09-30T21:44:04.168Z",
+					"phase": "inspection-end"
+				},
+				{
+					"at": "2026-09-30T21:44:17.331Z",
+					"phase": "finished"
+				}
+			],
+			"inspectionWindows": [
+				{
+					"start": "2026-09-30T21:43:07.595Z",
+					"end": "2026-09-30T21:44:04.168Z",
+					"elapsedMs": 56573
+				}
+			],
+			"serviceCalls": 12,
+			"failedServiceCalls": 0,
+			"serviceMs": 10252.826099999953,
+			"maxServiceMs": 7443.035900000017,
+			"inputBytes": 6488,
+			"returnedTextBytes": 3347,
+			"serviceOperations": {
+				"read": {
+					"calls": 1,
+					"elapsedMs": 0.1434000000008382
+				},
+				"pilot.contribute": {
+					"calls": 5,
+					"elapsedMs": 10234.350600000003
+				},
+				"pilot.mark": {
+					"calls": 5,
+					"elapsedMs": 12.822699999967881
+				},
+				"pilot.submit": {
+					"calls": 1,
+					"elapsedMs": 5.509399999980815
+				}
+			},
+			"usageSnapshot": {
+				"input_tokens": 509654,
+				"cached_input_tokens": 468608,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 5186,
+				"reasoning_output_tokens": 2234
+			},
+			"result": "clients/wireframe-9oHpLJ/result.md"
+		},
+		{
+			"role": "wireframe-review",
+			"category": "review",
+			"elementId": "geometry",
+			"status": "completed",
+			"window": {
+				"start": "2026-09-30T21:44:20.627Z",
+				"end": "2026-09-30T21:45:12.763Z",
+				"elapsedMs": 52136
+			},
+			"coordinatorRun": 1,
+			"model": "gpt-6-astra",
+			"effort": "ultra",
+			"subsets": {
+				"throughInputsReady": {
+					"start": "2026-09-30T21:44:20.627Z",
+					"end": null,
+					"elapsedMs": null
+				},
+				"afterInputsThroughSubmission": {
+					"start": null,
+					"end": null,
+					"elapsedMs": null
+				}
+			},
+			"phases": [
+				{
+					"at": "2026-09-30T21:44:34.653Z",
+					"phase": "review-start"
+				}
+			],
+			"inspectionWindows": [],
+			"serviceCalls": 4,
+			"failedServiceCalls": 0,
+			"serviceMs": 8.381500000017695,
+			"maxServiceMs": 6.170500000007451,
+			"inputBytes": 1635,
+			"returnedTextBytes": 8611,
+			"serviceOperations": {
+				"pilot.mark": {
+					"calls": 1,
+					"elapsedMs": 2.0007000000041444
+				},
+				"read": {
+					"calls": 2,
+					"elapsedMs": 0.21030000000610016
+				},
+				"pilot.review": {
+					"calls": 1,
+					"elapsedMs": 6.170500000007451
+				}
+			},
+			"usageSnapshot": {
+				"input_tokens": 127531,
+				"cached_input_tokens": 98944,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 1085,
+				"reasoning_output_tokens": 239
+			},
+			"result": "clients/wireframe-review-HQLiNY/result.md"
+		},
+		{
+			"role": "ui",
+			"category": "author-start",
+			"elementId": "geometry",
+			"status": "completed",
+			"window": {
+				"start": "2026-09-30T21:45:12.779Z",
+				"end": "2026-09-30T21:46:59.519Z",
+				"elapsedMs": 106740
+			},
+			"coordinatorRun": 1,
+			"model": "gpt-6-astra",
+			"effort": "ultra",
+			"subsets": {
+				"throughInputsReady": {
+					"start": "2026-09-30T21:45:12.779Z",
+					"end": "2026-09-30T21:45:49.094Z",
+					"elapsedMs": 36315
+				},
+				"afterInputsThroughSubmission": {
+					"start": "2026-09-30T21:45:49.094Z",
+					"end": "2026-09-30T21:46:42.398Z",
+					"elapsedMs": 53304
+				}
+			},
+			"phases": [
+				{
+					"at": "2026-09-30T21:45:49.094Z",
+					"phase": "inputs-ready"
+				},
+				{
+					"at": "2026-09-30T21:45:57.919Z",
+					"phase": "ui-start"
+				},
+				{
+					"at": "2026-09-30T21:46:19.942Z",
+					"phase": "inspection-start"
+				},
+				{
+					"at": "2026-09-30T21:46:34.681Z",
+					"phase": "inspection-end"
+				},
+				{
+					"at": "2026-09-30T21:46:54.024Z",
+					"phase": "finished"
+				}
+			],
+			"inspectionWindows": [
+				{
+					"start": "2026-09-30T21:46:19.942Z",
+					"end": "2026-09-30T21:46:34.681Z",
+					"elapsedMs": 14739
+				}
+			],
+			"serviceCalls": 10,
+			"failedServiceCalls": 0,
+			"serviceMs": 1253.7180999999691,
+			"maxServiceMs": 1239.6222999999882,
+			"inputBytes": 452,
+			"returnedTextBytes": 8928,
+			"serviceOperations": {
+				"read": {
+					"calls": 3,
+					"elapsedMs": 0.2566999999980908
+				},
+				"pilot.mark": {
+					"calls": 5,
+					"elapsedMs": 9.231800000008661
+				},
+				"pilot.contribute": {
+					"calls": 1,
+					"elapsedMs": 1239.6222999999882
+				},
+				"pilot.submit": {
+					"calls": 1,
+					"elapsedMs": 4.607299999974202
+				}
+			},
+			"usageSnapshot": {
+				"input_tokens": 360685,
+				"cached_input_tokens": 328576,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 1550,
+				"reasoning_output_tokens": 339
+			},
+			"result": "clients/ui-E2yjj0/result.md"
+		},
+		{
+			"role": "visual-review",
+			"category": "review",
+			"elementId": "geometry",
+			"status": "completed",
+			"window": {
+				"start": "2026-09-30T21:46:59.534Z",
+				"end": "2026-09-30T21:48:19.687Z",
+				"elapsedMs": 80153
+			},
+			"coordinatorRun": 1,
+			"model": "gpt-6-astra",
+			"effort": "ultra",
+			"subsets": {
+				"throughInputsReady": {
+					"start": "2026-09-30T21:46:59.534Z",
+					"end": null,
+					"elapsedMs": null
+				},
+				"afterInputsThroughSubmission": {
+					"start": null,
+					"end": null,
+					"elapsedMs": null
+				}
+			},
+			"phases": [
+				{
+					"at": "2026-09-30T21:47:17.676Z",
+					"phase": "review-start"
+				}
+			],
+			"inspectionWindows": [],
+			"serviceCalls": 5,
+			"failedServiceCalls": 0,
+			"serviceMs": 8.790599999891128,
+			"maxServiceMs": 6.946399999957066,
+			"inputBytes": 1606,
+			"returnedTextBytes": 9069,
+			"serviceOperations": {
+				"pilot.mark": {
+					"calls": 1,
+					"elapsedMs": 1.701299999956973
+				},
+				"read": {
+					"calls": 3,
+					"elapsedMs": 0.14289999997708946
+				},
+				"pilot.review": {
+					"calls": 1,
+					"elapsedMs": 6.946399999957066
+				}
+			},
+			"usageSnapshot": {
+				"input_tokens": 125587,
+				"cached_input_tokens": 96768,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 1866,
+				"reasoning_output_tokens": 895
+			},
+			"result": "clients/visual-review-Hb4MFD/result.md"
+		}
+	],
+	"elements": [
+		{
+			"id": "geometry",
+			"wireframe": {
+				"contributions": [
+					{
+						"at": "2026-09-30T21:42:54.195Z",
+						"revision": 1,
+						"errors": []
+					}
+				],
+				"previews": [
+					{
+						"at": "2026-09-30T21:43:01.502Z",
+						"revision": 2,
+						"renderMs": 10.251999999993131,
+						"sceneCount": 3,
+						"partCount": 1,
+						"errors": [],
+						"unrepresentedActions": []
+					},
+					{
+						"at": "2026-09-30T21:43:28.611Z",
+						"revision": 3,
+						"renderMs": 7.768099999986589,
+						"sceneCount": 3,
+						"partCount": 1,
+						"errors": [],
+						"unrepresentedActions": []
+					},
+					{
+						"at": "2026-09-30T21:43:53.753Z",
+						"revision": 4,
+						"renderMs": 7.547800000000279,
+						"sceneCount": 3,
+						"partCount": 1,
+						"errors": [],
+						"unrepresentedActions": []
+					}
+				],
+				"submissions": [
+					{
+						"at": "2026-09-30T21:44:11.868Z",
+						"revision": 4,
+						"binding": {
+							"artifact": "6e39f98c923279ebac5ec35972e1634c9a698a0b96c98570247ed660e6db902e",
+							"source": "fb656bad8acff137a1339a3a86924b785600ddc62dff6cf4c5438c21ce8c1e38",
+							"contract": "fcccbcf3aa68708a86e9451350851347bba3e73a1525df01e885ba4d2daeac87",
+							"renderer": "46c16ba5c5bb0ba45f80e67c862b373b5ecf71cca276f1561a08857fdec00d83"
+						}
+					}
+				],
+				"reviews": [
+					{
+						"at": "2026-09-30T21:45:08.029Z",
+						"revision": 4,
+						"verdict": "pass",
+						"findings": []
+					}
+				],
+				"firstPreviewThroughFirstSubmission": {
+					"start": "2026-09-30T21:43:01.502Z",
+					"end": "2026-09-30T21:44:11.868Z",
+					"elapsedMs": 70366
+				},
+				"firstCandidate": {
+					"renderedRevision": 2,
+					"submittedRevision": 4,
+					"changedBeforeSubmission": true,
+					"limitation": "A changed candidate requires inspection of its saved revisions to classify defects versus optional refinement. Unfinished contributions are separate."
+				},
+				"localPreviewsBeforeFirstSubmission": 3,
+				"acceptedRevision": 4
+			},
+			"ui": {
+				"contributions": [],
+				"previews": [
+					{
+						"at": "2026-09-30T21:46:12.615Z",
+						"revision": 1,
+						"renderMs": 6.7118000000482425,
+						"sceneCount": 3,
+						"partCount": 1,
+						"errors": [],
+						"unrepresentedActions": []
+					}
+				],
+				"submissions": [
+					{
+						"at": "2026-09-30T21:46:42.398Z",
+						"revision": 1,
+						"binding": {
+							"artifact": "8ad0959cd8e34e668ffc695f65d56709aae4976eb4bee78cfadf81bbc202bbdd",
+							"source": "fb656bad8acff137a1339a3a86924b785600ddc62dff6cf4c5438c21ce8c1e38",
+							"contract": "fcccbcf3aa68708a86e9451350851347bba3e73a1525df01e885ba4d2daeac87",
+							"renderer": "46c16ba5c5bb0ba45f80e67c862b373b5ecf71cca276f1561a08857fdec00d83"
+						}
+					}
+				],
+				"reviews": [
+					{
+						"at": "2026-09-30T21:48:16.211Z",
+						"revision": 1,
+						"verdict": "pass",
+						"findings": []
+					}
+				],
+				"firstPreviewThroughFirstSubmission": {
+					"start": "2026-09-30T21:46:12.615Z",
+					"end": "2026-09-30T21:46:42.398Z",
+					"elapsedMs": 29783
+				},
+				"firstCandidate": {
+					"renderedRevision": 1,
+					"submittedRevision": 1,
+					"changedBeforeSubmission": false,
+					"limitation": "A changed candidate requires inspection of its saved revisions to classify defects versus optional refinement. Unfinished contributions are separate."
+				},
+				"localPreviewsBeforeFirstSubmission": 1,
+				"acceptedRevision": 1
+			},
+			"firstAuthorThroughAcceptance": {
+				"start": "2026-09-30T21:41:09.110Z",
+				"end": "2026-09-30T21:48:19.693Z",
+				"elapsedMs": 430583
+			},
+			"firstAuthorThroughLatestAcceptance": {
+				"start": "2026-09-30T21:41:09.110Z",
+				"end": "2026-09-30T21:48:19.693Z",
+				"elapsedMs": 430583
+			},
+			"reused": [],
+			"bindingRefreshes": [],
+			"uiDispatches": [
+				{
+					"at": "2026-09-30T21:45:12.776Z",
+					"monotonicMs": 243864.4763,
+					"type": "ui-dispatch",
+					"elementId": "geometry",
+					"wireframeRevision": 4,
+					"accepted": true
+				}
+			],
+			"gateEvidence": [
+				{
+					"at": "2026-09-30T21:45:12.776Z",
+					"wireframeRevision": 4,
+					"submittedAt": "2026-09-30T21:44:11.868Z",
+					"passAt": "2026-09-30T21:45:08.029Z",
+					"valid": true
+				}
+			],
+			"unresolved": []
+		}
+	],
+	"packets": [
+		{
+			"at": "2026-09-30T21:41:09.105Z",
+			"monotonicMs": 193.305,
+			"type": "packet-prepared",
+			"elementId": "geometry",
+			"sha256": "fb656bad8acff137a1339a3a86924b785600ddc62dff6cf4c5438c21ce8c1e38",
+			"bytes": 3347,
+			"elapsedMs": 3.688600000000008,
+			"missingActionRefs": []
+		}
+	],
+	"serviceRuns": [
+		{
+			"file": "service-metrics-1790804899695.json",
+			"operations": [
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.1573999999964144,
+					"operationMs": 3.315099999999802
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.016799999997601844,
+					"operationMs": 2.74210000000312
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.014200000005075708,
+					"operationMs": 6.399199999999837
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.008600000001024455,
+					"operationMs": 1211.3225999999995
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.01980000000912696,
+					"operationMs": 2.3132000000041444
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.00989999997545965,
+					"operationMs": 7442.896399999998
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.012399999977787957,
+					"operationMs": 1572.336900000024
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.011499999993247911,
+					"operationMs": 1.8383000000030734
+				},
+				{
+					"operation": "pilot.submit",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.020699999993667006,
+					"operationMs": 5.408100000000559
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.017300000006798655,
+					"operationMs": 1.8255000000062864
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.012799999996786937,
+					"operationMs": 1.942799999989802
+				},
+				{
+					"operation": "pilot.review",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.005399999994551763,
+					"operationMs": 6.079300000012154
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.006700000027194619,
+					"operationMs": 1.7364999999990687
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.005899999989196658,
+					"operationMs": 1.73230000003241
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.005599999974947423,
+					"operationMs": 1239.5426999999909
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.007000000041443855,
+					"operationMs": 1.8533999999635853
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.00810000003548339,
+					"operationMs": 1.738599999982398
+				},
+				{
+					"operation": "pilot.submit",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.005799999984446913,
+					"operationMs": 4.5614000000059605
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.006500000017695129,
+					"operationMs": 1.9486999999498948
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.00969999999506399,
+					"operationMs": 1.6570000000065193
+				},
+				{
+					"operation": "pilot.review",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.006099999998696148,
+					"operationMs": 6.868200000026263
+				}
+			],
+			"http": [
+				{
+					"at": "2026-09-30T21:41:10.238Z",
+					"method": "initialize",
+					"tool": null,
+					"requestBytes": 228,
+					"responseBytes": 155,
+					"handlingMs": 1.6079999999999472,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:41:10.247Z",
+					"method": "tools/list",
+					"tool": null,
+					"requestBytes": 85,
+					"responseBytes": 3949,
+					"handlingMs": 0.2843000000000302,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:41:20.109Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1271,
+					"responseBytes": 4018,
+					"handlingMs": 1.0137999999988097,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:41:23.061Z",
+					"method": "tools/call",
+					"tool": "workflow_catalog",
+					"requestBytes": 1209,
+					"responseBytes": 401,
+					"handlingMs": 1.2474999999994907,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:41:54.347Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1259,
+					"responseBytes": 560,
+					"handlingMs": 4.40060000000085,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:42:00.240Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1262,
+					"responseBytes": 559,
+					"handlingMs": 3.7088000000003376,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:42:54.198Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 6342,
+					"responseBytes": 784,
+					"handlingMs": 7.657500000001164,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:43:02.700Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1256,
+					"responseBytes": 1954,
+					"handlingMs": 1212.1402999999991,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:43:07.597Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1263,
+					"responseBytes": 559,
+					"handlingMs": 3.165099999998347,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:43:36.043Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1743,
+					"responseBytes": 2453,
+					"handlingMs": 7443.593399999983,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:43:55.315Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1722,
+					"responseBytes": 1954,
+					"handlingMs": 1573.21669999999,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:44:04.170Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1263,
+					"responseBytes": 560,
+					"handlingMs": 2.2956999999878462,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:44:11.871Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1270,
+					"responseBytes": 2338,
+					"handlingMs": 6.000399999989895,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:44:17.333Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1257,
+					"responseBytes": 560,
+					"handlingMs": 2.337900000013178,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:44:21.522Z",
+					"method": "initialize",
+					"tool": null,
+					"requestBytes": 228,
+					"responseBytes": 155,
+					"handlingMs": 0.29290000000037253,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:44:21.527Z",
+					"method": "tools/list",
+					"tool": null,
+					"requestBytes": 85,
+					"responseBytes": 3949,
+					"handlingMs": 0.1922000000195112,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:44:34.656Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1260,
+					"responseBytes": 559,
+					"handlingMs": 2.5271000000066124,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:44:44.899Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 4018,
+					"handlingMs": 0.5388000000093598,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:44:44.900Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 8053,
+					"handlingMs": 0.6988999999884982,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:45:08.033Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 2799,
+					"responseBytes": 746,
+					"handlingMs": 6.636999999987893,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:45:13.464Z",
+					"method": "initialize",
+					"tool": null,
+					"requestBytes": 228,
+					"responseBytes": 155,
+					"handlingMs": 0.2298000000009779,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:45:13.469Z",
+					"method": "tools/list",
+					"tool": null,
+					"requestBytes": 85,
+					"responseBytes": 3949,
+					"handlingMs": 0.1865000000107102,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:45:26.631Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 4018,
+					"handlingMs": 0.5648999999975786,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:45:32.398Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 8053,
+					"handlingMs": 0.8356999999959953,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:45:37.634Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 663,
+					"handlingMs": 0.4118000000016764,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:45:49.096Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1260,
+					"responseBytes": 559,
+					"handlingMs": 2.157500000030268,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:45:57.921Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1256,
+					"responseBytes": 559,
+					"handlingMs": 2.193700000003446,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:46:13.844Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1378,
+					"responseBytes": 1926,
+					"handlingMs": 1240.186400000006,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:46:19.944Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1264,
+					"responseBytes": 559,
+					"handlingMs": 2.355000000039581,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:46:34.683Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1262,
+					"responseBytes": 559,
+					"handlingMs": 2.1832000000285916,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:46:42.400Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1270,
+					"responseBytes": 2311,
+					"handlingMs": 5.0732999999891035,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:46:54.026Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1258,
+					"responseBytes": 560,
+					"handlingMs": 2.448999999964144,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:47:00.546Z",
+					"method": "initialize",
+					"tool": null,
+					"requestBytes": 228,
+					"responseBytes": 155,
+					"handlingMs": 0.21470000001136214,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:47:00.551Z",
+					"method": "tools/list",
+					"tool": null,
+					"requestBytes": 85,
+					"responseBytes": 3949,
+					"handlingMs": 0.13889999996172264,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:47:17.678Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1260,
+					"responseBytes": 559,
+					"handlingMs": 2.074399999983143,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:47:30.731Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 8266,
+					"handlingMs": 0.6125000000465661,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:47:30.733Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 4018,
+					"handlingMs": 0.3944999999948777,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:47:30.734Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 663,
+					"handlingMs": 0.3513000000384636,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T21:48:16.215Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 2768,
+					"responseBytes": 743,
+					"handlingMs": 7.379600000043865,
+					"failed": false
+				}
+			]
+		}
+	],
+	"layoutChecks": [
+		{
+			"at": "2026-09-30T21:43:02.693Z",
+			"monotonicMs": 113781.1541,
+			"type": "layout-check",
+			"stage": "wireframe",
+			"elementId": "geometry",
+			"revision": 2,
+			"warnings": [],
+			"controlsChecked": 39,
+			"limitation": "Static geometry warnings; inspect intentional overlaps and actual usage. No runtime behavior is verified."
+		},
+		{
+			"at": "2026-09-30T21:43:36.037Z",
+			"monotonicMs": 147125.0894,
+			"type": "layout-check",
+			"stage": "wireframe",
+			"elementId": "geometry",
+			"revision": 3,
+			"warnings": [
+				{
+					"nodeRef": "inspection-caption",
+					"kind": "content-overflow",
+					"message": "Control exceeds a non-scrolling container; inspect clipping or intentional overlay."
+				},
+				{
+					"nodeRef": "inspection-caption",
+					"kind": "content-overflow",
+					"message": "Control exceeds a non-scrolling container; inspect clipping or intentional overlay."
+				},
+				{
+					"nodeRef": "inspection-caption",
+					"kind": "content-overflow",
+					"message": "Control exceeds a non-scrolling container; inspect clipping or intentional overlay."
+				}
+			],
+			"controlsChecked": 39,
+			"limitation": "Static geometry warnings; inspect intentional overlaps and actual usage. No runtime behavior is verified."
+		},
+		{
+			"at": "2026-09-30T21:43:55.306Z",
+			"monotonicMs": 166393.9362,
+			"type": "layout-check",
+			"stage": "wireframe",
+			"elementId": "geometry",
+			"revision": 4,
+			"warnings": [],
+			"controlsChecked": 39,
+			"limitation": "Static geometry warnings; inspect intentional overlaps and actual usage. No runtime behavior is verified."
+		},
+		{
+			"at": "2026-09-30T21:46:13.837Z",
+			"monotonicMs": 304925.6332,
+			"type": "layout-check",
+			"stage": "ui",
+			"elementId": "geometry",
+			"revision": 1,
+			"warnings": [],
+			"controlsChecked": 39,
+			"limitation": "Static geometry warnings; inspect intentional overlaps and actual usage. No runtime behavior is verified."
+		}
+	],
+	"screenshots": [
+		{
+			"at": "2026-09-30T21:43:02.693Z",
+			"monotonicMs": 113781.8268,
+			"type": "screenshot",
+			"stage": "wireframe",
+			"elementId": "geometry",
+			"elapsedMs": 1189.5818999999901,
+			"saved": true,
+			"error": null
+		},
+		{
+			"at": "2026-09-30T21:43:36.037Z",
+			"monotonicMs": 147125.7338,
+			"type": "screenshot",
+			"stage": "wireframe",
+			"elementId": "geometry",
+			"elapsedMs": 7424.391000000003,
+			"saved": true,
+			"error": null
+		},
+		{
+			"at": "2026-09-30T21:43:55.307Z",
+			"monotonicMs": 166395.4916,
+			"type": "screenshot",
+			"stage": "wireframe",
+			"elementId": "geometry",
+			"elapsedMs": 1552.8031999999948,
+			"saved": true,
+			"error": null
+		},
+		{
+			"at": "2026-09-30T21:46:13.838Z",
+			"monotonicMs": 304926.2519,
+			"type": "screenshot",
+			"stage": "ui",
+			"elementId": "geometry",
+			"elapsedMs": 1221.7621999999974,
+			"saved": true,
+			"error": null
+		}
+	],
+	"invalidUiDispatches": 0,
+	"protectedUnchanged": true
+}

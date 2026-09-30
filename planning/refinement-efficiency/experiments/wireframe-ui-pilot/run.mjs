@@ -62,7 +62,25 @@ const input = fs.existsSync(manifestPath)
 			context: readJson(path.join(workspace, 'inputs/context.json')),
 			design: readJson(path.join(workspace, 'inputs/design.json')),
 		}
-	: PilotInputs.prepare(governance, workspace);
+	: argument('fixture', null)
+		? prepareFixture(path.resolve(argument('fixture')))
+		: PilotInputs.prepare(governance, workspace);
+
+function prepareFixture(source) {
+	const fixture = readJson(source);
+	assert(
+		fixture.context && fixture.design && fixture.scope,
+		'Fixture needs source context, design and boundary scope',
+	);
+	fs.mkdirSync(path.join(workspace, 'inputs'), {recursive: true});
+	fs.mkdirSync(path.join(workspace, 'outputs'), {recursive: true});
+	for (const name of ['context', 'design'])
+		fs.writeFileSync(path.join(workspace, 'inputs', name + '.json'), JSON.stringify(fixture[name], null, 2));
+	fs.writeFileSync(path.join(workspace, 'outputs/scope.json'), JSON.stringify(fixture.scope, null, 2));
+	const manifest = {protectedPaths: [source], hashes: PilotInputs.hashFiles([source]), fixture: true};
+	fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+	return {manifest, context: fixture.context, design: fixture.design};
+}
 assert.deepEqual(PilotInputs.hashFiles(input.manifest.protectedPaths), input.manifest.hashes, 'Frozen inputs changed');
 fs.writeFileSync(
 	path.join(workspace, 'AGENTS.md'),

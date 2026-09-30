@@ -6,7 +6,13 @@ import {renderPreview, validatePreview} from './wireframe-preview.mjs';
 import {dialogPart, editPart, wireframeCapabilities, wireframeDigest, wireframePacket} from './wireframe-contract.mjs';
 
 const rendererFingerprint = createHash('sha256');
-for (const file of ['wireframe-preview.mjs', 'ui-composition-html.mjs', 'ui-parts.mjs'])
+for (const file of [
+	'wireframe-preview.mjs',
+	'ui-composition-html.mjs',
+	'ui-parts.mjs',
+	'NumericScale.mjs',
+	'OutcomeEvidence.mjs',
+])
 	rendererFingerprint.update(fs.readFileSync(new URL('./' + file, import.meta.url)));
 const rendererVersion = rendererFingerprint.digest('hex');
 
@@ -276,7 +282,7 @@ export class WireframeStore {
 		};
 		if (input.finish) {
 			const started = performance.now();
-			const options = {mode: role, references: this._references()};
+			const options = {mode: role, references: this._references(), packet: this.packet(elementId)};
 			const validation = validatePreview(document, options);
 			const sceneIds = new Set(document.scenes.map((item) => item.id));
 			for (const state of element.requiredStates)

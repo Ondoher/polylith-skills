@@ -23,6 +23,40 @@ may run in parallel; mutations and acceptance remain ordered.
 
 ## Progressive work and review
 
+Construct consequential results while designing their scenes. Use the packet's
+original flow, step or alternate outcome as the expectation, and save
+`set.outcomeEvidence` links alongside the scene. Each link is
+`{sourcePath,sceneRef,nodeRefs,resultKind,interpretation?,values?}`; `sourcePath`
+is a JSON pointer into the assigned packet. `resultKind` is `visible-change`,
+`navigation` or `unchanged`. Link the actual resulting object/value or destination;
+a generic success message cannot stand in for a visible change. Reuse scenes;
+there is no screenshot-per-step requirement. Interpret unclear prose once next
+to its source, without creating a second requirements document.
+
+Optional `values:[{nodeRef,parameter,sourcePath}]` compares an existing scalar
+fact with the rendered `text`, `label` or `value` parameter. Mechanical resolution
+does not prove meaning, visibility or complete coverage. The independent reviewer
+checks those against the same source during the normal walkthrough. Do not add
+an internal reviewer or repeated self-review cycle. Count defects corrected
+during the existing preview inspection as first-construction failures.
+
+For related numeric axes, intervals, labels and markers, use one region with
+`layout.scale:{min,max}`, one grid column, and normal rows. Direct children use
+`scalePosition:{start,end?}` and `placement.row`; omission of `end` means a
+centered point. The renderer maps every value through the same transform,
+including after resize. Keep surrounding labels outside the scale region.
+Units, endpoint policy, grouping and operation semantics come from source data.
+Do not duplicate arithmetic in independent grid column approximations.
+Numeric positioning does not allocate vertical space: keep labels on a separate
+row when sharing a row would collide with handles/markers, and budget the first
+viewport for all rows, gaps, padding, headings and surrounding controls.
+
+Use declared, browser-verified component states. Run the component-state browser
+fixture when changing supported state behavior, rather than on each artifact.
+Focus must remain visible beside selection and under actual clipping/overlap.
+The independent wireframe reviewer checks structure before UI; the independent
+UI reviewer remains the external check on the styled result.
+
 | Operation               | Purpose                                                                                                      |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------ |
 | `wireframes.packet`     | Read source facts and the same acceptance criteria used by the reviewer.                                     |

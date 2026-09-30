@@ -3,7 +3,11 @@ import {createHash} from 'node:crypto';
 
 /** Shared author/reviewer contract. Keys and enum values are renderer capabilities. */
 export const wireframeCapabilities = Object.freeze({
-	version: 'wireframe-authoring/1',
+	version: 'wireframe-authoring/2',
+	numericGeometry:
+		'For aligned axes/ranges/markers, use a one-column grid region layout.scale:{min,max}; direct children use scalePosition:{start,end?} and placement.row. One transform supplies positions; omit end for a centered point. Keep labels and values consistent. Surrounding labels belong outside the scale region.',
+	outcomeEvidence:
+		'Contribute set.outcomeEvidence:[{sourcePath,sceneRef,nodeRefs,resultKind,interpretation?,values?}]. sourcePath is an exact JSON pointer into the assigned packet. resultKind is visible-change|navigation|unchanged. Link consequential results while constructing existing scenes; no scene per step is required. A status alone is not a visible changed value/object. Optional values:[{nodeRef,parameter:text|label|value,sourcePath}] compare already structured source scalars. References and type checks do not prove prose meaning; reviewers must judge it.',
 	states: {
 		heading: ['default'],
 		text: ['default'],
@@ -17,8 +21,13 @@ export const wireframeCapabilities = Object.freeze({
 	},
 	surfaceTreatments: ['flat', 'outlined', 'elevation-1', 'elevation-2'],
 	criteria: [
+		'Use requiredStates identifiers directly for their scene IDs; avoid duplicate aliases. Finish after the assigned scenes exist; unfinished contributions can be saved without finish.',
 		'Every assigned action has an actual control, intermediate interaction, or explicit source gap.',
 		'Walk through the source steps and alternate flows using the rendered controls and feedback.',
+		'Construct concrete results from supplied outcomes, including visible changed identities/values and unchanged alternatives; record compact evidence links as scenes are authored.',
+		'Use the shared numeric domain for related markers, intervals and labels; do not independently approximate their coordinates.',
+		'Allocate a separate row for numeric labels when they would overlap markers or handles. Size the viewport for all rows, gaps, padding and surrounding content before the first preview.',
+		'Use supported component states; inspect actual focus visibility, clipping and overlap, including focus within selection.',
 		'Preserve staged identity, explicit commit, recovery, disabled states and focus intent.',
 		'Inspect the rendered preview for readable content and reachable controls before submitting.',
 		'Wireframe acceptance is required before UI authoring; it does not approve upstream UX.',

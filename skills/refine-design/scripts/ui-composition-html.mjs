@@ -1,4 +1,5 @@
 import {UiParts} from './ui-parts.mjs';
+import {NumericScale} from './NumericScale.mjs';
 import {createHash} from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -114,7 +115,7 @@ function layoutStyle(layout, tokens) {
 	return declarations(result);
 }
 
-function nodeStyle(node, template, tokens, parentLayoutMode) {
+function nodeStyle(node, template, tokens, parentLayout) {
 	const result = {};
 	if (node.placement) {
 		if (node.placement.row) result['grid-row'] = `${node.placement.row} / span ${node.placement.rowSpan ?? 1}`;
@@ -132,13 +133,27 @@ function nodeStyle(node, template, tokens, parentLayoutMode) {
 	}
 	if (template?.sizing?.width === 'fixed') result.width = `${template.sizing.widthPx}px`;
 	if (template?.sizing?.width === 'fill') {
-		if (parentLayoutMode === 'flex') {
+		if (parentLayout?.mode === 'flex') {
 			result.flex = '1 1 0';
 			result['min-width'] = result['min-width'] ?? '0';
 		} else result.width = '100%';
 	}
 	if (template?.sizing?.height === 'fixed') result.height = `${template.sizing.heightPx}px`;
 	if (template?.sizing?.height === 'fill') result.height = '100%';
+	if (node.scalePosition) {
+		const placed = NumericScale.place(parentLayout?.scale, node.scalePosition);
+		result['grid-column'] = '1 / -1';
+		result['min-width'] = '0';
+		if (node.scalePosition.end === undefined) {
+			result.position = 'relative';
+			result.left = `${placed.start}%`;
+			result.width = 'max-content';
+			result.transform = 'translateX(-50%)';
+		} else {
+			result['margin-left'] = `${placed.start}%`;
+			result.width = `${placed.width}%`;
+		}
+	}
 	return declarations(result);
 }
 
@@ -159,6 +174,10 @@ function annotationAttributes(node, templateId, label) {
 		`data-ui-annotation="${escapeHtml(label)}"`,
 	];
 	if (templateId) parts.push(`data-ui-template="${escapeHtml(templateId)}"`);
+	if (node.scalePosition) {
+		parts.push(`data-ui-scale-start="${node.scalePosition.start}"`);
+		if (node.scalePosition.end !== undefined) parts.push(`data-ui-scale-end="${node.scalePosition.end}"`);
+	}
 	return parts.join(' ');
 }
 
@@ -293,14 +312,16 @@ function renderSceneTree(scene, spec, uxSpec, context) {
 	const surface = uxSpec.surfaces.find((candidate) => candidate.id === scene.surfaceRef);
 	const regions = new Map(surface.regions.map((region) => [region.id, region]));
 	context.assets = new Map(spec.assets.map((asset) => [asset.id, asset]));
-	const renderNode = (node, root = false, parentLayoutMode) => {
+	const renderNode = (node, root = false, parentLayout) => {
 		if (node.kind === 'region') {
 			const uxRegion = node.uxRegionRef ? regions.get(node.uxRegionRef) : null;
 			const label = node.label ?? uxRegion?.name ?? (root ? scene.name : node.id);
 			const surfaceClass = node.surfaceTreatment ? `ui-surface-${cssIdentifier(node.surfaceTreatment)}` : '';
 			const classes = `${root ? 'ui-scene-root' : 'ui-region'} ${surfaceClass} ${sourceClasses(node)}`.trim();
-			const style = [layoutStyle(node.layout, tokens), nodeStyle(node, null, tokens)].filter(Boolean).join(';');
-			const children = node.children.map((child) => renderNode(child, false, node.layout.mode)).join('');
+			const style = [layoutStyle(node.layout, tokens), nodeStyle(node, null, tokens, parentLayout)]
+				.filter(Boolean)
+				.join(';');
+			const children = node.children.map((child) => renderNode(child, false, node.layout)).join('');
 			const element =
 				root && scene.transientBehavior?.presentation === 'dialog' ? 'dialog' : root ? 'div' : 'section';
 			const transientAttributes =
@@ -317,7 +338,7 @@ function renderSceneTree(scene, spec, uxSpec, context) {
 			template.html.renderer === 'visual'
 				? `${node.parameters.accessibleLabel ?? node.parameters.text ?? node.parameters.role} · ${node.parameters.role}`
 				: `${template.name} · ${node.state}`;
-		const style = nodeStyle(node, template, tokens, parentLayoutMode);
+		const style = nodeStyle(node, template, tokens, parentLayout);
 		return `<div class="ui-node-frame" ${annotationAttributes(node, template.id, label)}${style ? ` style="${escapeHtml(style)}"` : ''}>${renderTemplate(node, template, context)}</div>`;
 	};
 	return renderNode(scene.root, true);

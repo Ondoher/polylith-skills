@@ -5,6 +5,74 @@ import os from 'node:os';
 import path from 'node:path';
 import {WorkflowService} from '../scripts/mcp/WorkflowService.mjs';
 import {DomainOperations} from '../scripts/mcp/DomainOperations.mjs';
+import {outcomeFixture} from '../skills/refine-design/scripts/fixtures/wireframe-prevention.mjs';
+
+test('normal MCP preserves an invalid outcome draft and accepts a targeted result repair', async () => {
+	const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'wf-evidence-'));
+	const service = new WorkflowService({workspace, operations: new DomainOperations().operations});
+	const run = 'evidence';
+	service.open({access: service.ownerAccess, run});
+	const call = async (access, operation, input) => (await service.execute({access, run, operation, input})).inline;
+	try {
+		const {document, packet} = outcomeFixture();
+		// Source facts remain inside the existing flow record in the assigned packet.
+		packet.flows[0].sample = packet.facts;
+		for (const link of document.outcomeEvidence)
+			for (const value of link.values ?? [])
+				value.sourcePath = value.sourcePath.replace('/facts/', '/flows/0/sample/');
+		await call(service.ownerAccess, 'wireframes.prepare', {
+			context: packet,
+			scope: {
+				elements: [
+					{
+						id: document.elementId,
+						disposition: 'update',
+						changeReason: 'Creation result changed',
+						sourceFlowRefs: packet.flows.map((x) => x.id),
+						sourceActionRefs: [],
+						requiredStates: ['main'],
+					},
+				],
+			},
+		});
+		const author = service.assign({
+			access: service.ownerAccess,
+			run,
+			operations: ['wireframes.contribute', 'wireframes.submit'],
+			scope: {role: 'wireframe', elementId: document.elementId},
+		}).access;
+		const bad = structuredClone(document.outcomeEvidence);
+		bad[0].nodeRefs = ['message'];
+		bad[0].values = [];
+		const draft = await call(author, 'wireframes.contribute', {
+			elementId: document.elementId,
+			parts: document.parts,
+			scenes: document.scenes,
+			set: {outcomeEvidence: bad},
+			finish: true,
+		});
+		assert.equal(draft.ready, false);
+		assert.match(draft.errors[0], /status\/heading/);
+		assert(fs.existsSync(draft.path));
+		const repaired = await call(author, 'wireframes.contribute', {
+			elementId: document.elementId,
+			set: {outcomeEvidence: document.outcomeEvidence},
+			finish: true,
+		});
+		assert.equal(repaired.previewReady, true);
+		const saved = JSON.parse(fs.readFileSync(repaired.path));
+		assert.deepEqual(saved.parts, document.parts);
+		assert.deepEqual(saved.scenes, document.scenes);
+		await call(author, 'wireframes.submit', {
+			elementId: document.elementId,
+			revision: repaired.revision,
+			inspected: true,
+		});
+	} finally {
+		await service.drain();
+		fs.rmSync(workspace, {recursive: true, force: true});
+	}
+});
 
 test('normal MCP wireframe operations retain source facts and require review before UI authoring', async () => {
 	const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'wf-mcp-'));

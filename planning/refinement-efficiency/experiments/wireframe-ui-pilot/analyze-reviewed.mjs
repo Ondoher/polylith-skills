@@ -91,7 +91,7 @@ export function analyzeReviewed(attempt) {
 			return {
 				contributions: own
 					.filter((e) => e.type === 'contribution' && (e.stage ?? e.role) === stage)
-					.map(({at, revision}) => ({at, revision})),
+					.map(({at, revision, errors}) => ({at, revision, errors: errors ?? []})),
 				previews: previews.map(
 					({at, revision, renderMs, sceneCount, partCount, errors, unrepresentedActions}) => ({
 						at,
@@ -106,6 +106,14 @@ export function analyzeReviewed(attempt) {
 				submissions: submissions.map(({at, revision, binding}) => ({at, revision, binding})),
 				reviews: reviews.map(({at, revision, verdict, findings}) => ({at, revision, verdict, findings})),
 				firstPreviewThroughFirstSubmission: span(previews[0]?.at, submissions[0]?.at),
+				firstCandidate: {
+					renderedRevision: previews[0]?.revision ?? null,
+					submittedRevision: submissions[0]?.revision ?? null,
+					changedBeforeSubmission:
+						!!previews[0] && !!submissions[0] && previews[0].revision !== submissions[0].revision,
+					limitation:
+						'A changed candidate requires inspection of its saved revisions to classify defects versus optional refinement. Unfinished contributions are separate.',
+				},
 				localPreviewsBeforeFirstSubmission: previews.filter((e) => e.at < submissions[0]?.at).length,
 				acceptedRevision: reviews.filter((e) => e.verdict === 'pass').at(-1)?.revision ?? null,
 			};

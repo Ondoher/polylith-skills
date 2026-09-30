@@ -8,6 +8,10 @@ Current confirmation: [wireframe and UI reliability execution](wireframe-ui-reli
 Wireframe acceptance before UI dispatch is implemented. Worker-pool parallelism
 remains a later experiment.
 
+Next proposed work: [isolated defect-prevention plan](wireframe-ui-defect-prevention-plan.md).
+Verify component states, generic geometry and concrete outcome evidence separately
+before another full Alexa rerun. Product-specific rules remain input data.
+
 - [x] **Validate renderer capabilities.** Check template-specific states and
       supported visual treatments during authoring; return precise local repairs
       while retaining valid contributions. Test supported rendering states.
@@ -19,8 +23,9 @@ remains a later experiment.
       its wireframe before UI consumes it; continue independent elements meanwhile.
 - [x] **Check clipping mechanically.** Detect text/control overflow while preserving
       intentional overlap, floating labels and scrolling.
-- [ ] **Derive timeline geometry from times.** The reliability trial still found
-      temporal alignment errors. A shared scale could prevent manual divergence.
+- [ ] **Derive geometry from a generic numeric scale.** The reliability trial
+      found temporal alignment errors. A shared value-to-position mapping could
+      prevent divergence; units and product behavior stay in supplied data.
 - [ ] **Measure pre-review scope growth.** The timeline author expanded five
       required states to thirteen before submission; compare coverage gained with
       added authoring and inspection cost.

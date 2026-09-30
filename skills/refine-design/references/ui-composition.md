@@ -98,3 +98,14 @@ Pass `--ui <ui-spec.json>` and optionally `--ui-label <label>` to `scripts/prd-h
 When a placeholder receives a dedicated design, follow [the complex component contract](component-design.md). Component documents use schema 0.4 and retain the applicable interaction-frame/node/action bindings and UX change-request discipline. The registered component replaces only the exact template ID/version and state while retaining the surface scene's layout and node identity.
 
 Run `scripts/ui-composition.test.mjs`, `scripts/ui-composition-html.test.mjs`, and `scripts/prd-html.test.mjs`. Inspect both comp variants in a local browser and verify semantic structure, source-revision disclosure, frame/action traceability, change-request disclosure, placeholder legibility, fixed-viewport overflow, and annotation overlays.
+
+# Shared numeric placement
+
+A grid region may declare `layout.scale:{min,max}` with one column. Its direct
+children may declare `scalePosition:{start,end?}` alongside ordinary row placement.
+The renderer derives interval origin/width or a centered point from the same
+numeric transform. Surrounding labels and controls use ordinary layout outside
+the scale region. Units, supplied labels and endpoint meaning belong to product
+data; the renderer does not infer domain behavior. Values must be finite and
+inside the domain. This works in both canonical UI scenes and reviewed-wireframe
+previews.

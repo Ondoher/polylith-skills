@@ -17,9 +17,16 @@ test('reuse does not inflate first acceptance and input/inspection intervals sta
 		event(1, 'author-start', role),
 		event(1, 'native.started', {...role, resultPath: 'a', startedAt: at(1)}),
 		event(3, 'phase', {...role, phase: 'inputs-ready'}),
+		event(4, 'contribution', {
+			elementId: 'dialog',
+			stage: 'wireframe',
+			revision: 1,
+			errors: ['Missing required scene: ready'],
+		}),
+		event(5, 'draft-preview', {elementId: 'dialog', stage: 'wireframe', revision: 2}),
 		event(6, 'phase', {...role, phase: 'inspection-start'}),
 		event(8, 'phase', {...role, phase: 'inspection-end'}),
-		event(9, 'submitted', {elementId: 'dialog', stage: 'wireframe', revision: 1, binding}),
+		event(9, 'submitted', {elementId: 'dialog', stage: 'wireframe', revision: 2, binding}),
 		event(10, 'native.completed', {
 			...role,
 			resultPath: 'a',
@@ -31,11 +38,11 @@ test('reuse does not inflate first acceptance and input/inspection intervals sta
 		event(11, 'review-ready', {
 			elementId: 'dialog',
 			role: 'wireframe-review',
-			revision: 1,
+			revision: 2,
 			verdict: 'pass',
 			path: reviewPath,
 		}),
-		event(12, 'ui-dispatch', {elementId: 'dialog', wireframeRevision: 1}),
+		event(12, 'ui-dispatch', {elementId: 'dialog', wireframeRevision: 2}),
 		event(20, 'element-accepted', {elementId: 'dialog'}),
 		event(21, 'run-end'),
 		event(40, 'run-start'),
@@ -58,6 +65,9 @@ test('reuse does not inflate first acceptance and input/inspection intervals sta
 		assert.equal(result.invocations[0].subsets.afterInputsThroughSubmission.elapsedMs, 6000);
 		assert.equal(result.invocations[0].inspectionWindows[0].elapsedMs, 2000);
 		assert.equal(result.elements[0].gateEvidence[0].valid, true);
+		assert.equal(result.elements[0].wireframe.firstCandidate.renderedRevision, 2);
+		assert.equal(result.elements[0].wireframe.firstCandidate.changedBeforeSubmission, false);
+		assert.deepEqual(result.elements[0].wireframe.contributions[0].errors, ['Missing required scene: ready']);
 		assert.equal(result.invalidUiDispatches, 0);
 	} finally {
 		fs.rmSync(directory, {recursive: true, force: true});

@@ -1,4 +1,5 @@
 import {UiParts} from './ui-parts.mjs';
+import {NumericScale} from './NumericScale.mjs';
 import {UxFlows} from './ux-flows.mjs';
 import {createHash} from 'node:crypto';
 import fs from 'node:fs';
@@ -433,7 +434,16 @@ function padding(value, tokens, label) {
 
 function layout(value, tokens, label) {
 	object(value, label);
-	allowedKeys(value, ['mode', 'columns', 'rows', 'direction', 'wrap', 'gap', 'padding', 'align', 'justify'], label);
+	allowedKeys(
+		value,
+		['mode', 'columns', 'rows', 'direction', 'wrap', 'gap', 'padding', 'align', 'justify', 'scale'],
+		label,
+	);
+	if (value.scale) {
+		allowedKeys(value.scale, ['min', 'max'], `${label}.scale`);
+		NumericScale.position(value.scale, value.scale.min);
+		if (value.mode !== 'grid' || value.columns?.length !== 1) fail(`${label}.scale requires one grid column`);
+	}
 	if (value.mode === 'grid') {
 		if (value.direction !== undefined || value.wrap !== undefined) fail(`${label} grid cannot declare flex fields`);
 		const columns = list(value.columns, `${label}.columns`);
@@ -899,7 +909,7 @@ export function validateUiSpec(
 		if (nodeIds.has(id)) fail(`scene ${context.scene.id} contains duplicate node id ${id}`);
 		nodeIds.add(id);
 		if (!nodeKinds.has(node.kind)) fail(`${label}.kind is unsupported`);
-		const commonKeys = ['id', 'kind', 'placement', 'constraints', 'styleRefs', 'assetRefs'];
+		const commonKeys = ['id', 'kind', 'placement', 'constraints', 'styleRefs', 'assetRefs', 'scalePosition'];
 		const regionKeys = ['label', 'surfaceTreatment', 'uxRegionRef', 'layout', 'children'];
 		const componentKeys = [
 			'uxRef',
@@ -935,6 +945,13 @@ export function validateUiSpec(
 			}
 			layout(node.layout, tokens, `${label}.layout`);
 			const children = list(node.children, `${label}.children`);
+			for (const child of children)
+				if (child.scalePosition !== undefined) {
+					allowedKeys(child.scalePosition, ['start', 'end'], `${label}.scalePosition`);
+					NumericScale.place(node.layout.scale, child.scalePosition);
+					if (child.constraints?.minWidthPx !== undefined || child.constraints?.maxWidthPx !== undefined)
+						fail(`${label}: numeric placement owns horizontal extent`);
+				}
 			if (!children.length) fail(`${label}.children must not be empty`);
 			if (node.layout.mode === 'grid') {
 				children.forEach((child, index) => {

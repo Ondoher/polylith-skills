@@ -1,5 +1,13 @@
 # Provisional preview contract
 
+The shared `wireframeCapabilities` supplied with each assignment is authoritative
+for numeric geometry and outcome evidence. Use its `layout.scale` and
+`scalePosition` contract for related values, and contribute `set.outcomeEvidence`
+while constructing consequential result scenes. Preserve those links in UI
+changes. Refer to existing source paths; do not duplicate the source specification.
+The independent reviews still judge semantic correctness and actual visible
+results. A local inspection correction is a defect, not successful prevention.
+
 This experiment uses the existing `UiParts.materialize` and
 `renderInlineScene` functions. Parts, scene variations, region grids/flex layouts,
 component nodes, placement, controls and visual roles retain the existing UI

@@ -98,6 +98,22 @@ test('validates and canonically persists the executable composition fixture', ()
 	assert.equal(result.sceneCount, 1);
 });
 
+test('accepts shared numeric geometry in the canonical composition contract', () => {
+	const ui = proposal();
+	const root = ui.scenes[0].root ?? ui.parts.find((x) => x.id === ui.scenes[0].partRef).root;
+	root.layout = {
+		...root.layout,
+		columns: [{unit: 'fr', value: 1}],
+		rows: root.children.map(() => ({unit: 'content'})),
+		scale: {min: 0, max: 100},
+	};
+	root.children.forEach((child, index) => {
+		child.placement = {row: index + 1, column: 1};
+		child.scalePosition = {start: 20, end: 80};
+	});
+	assert.doesNotThrow(() => validateUiSpec(ui, {uxSpec: ux(), designLanguage: designLanguage()}));
+});
+
 test('persists UI below a product document root while resolving sources from the repository root', () => {
 	const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'ui-product-root-'));
 	const paths = writeInputs(directory);

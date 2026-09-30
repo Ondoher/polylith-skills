@@ -448,3 +448,60 @@ type UiPersistenceResult = {
 	/** Number of scene records in the persisted composition. */
 	sceneCount: number;
 };
+/** Numeric source domain; units and endpoint meaning belong to source data. */
+interface NumericDomain {
+	/** Smallest displayed value. */
+	min: number;
+	/** Largest displayed value. */
+	max: number;
+}
+/** Point or interval positioned relative to its parent region's numeric domain. */
+interface NumericPosition {
+	/** Point value or interval start. */
+	start: number;
+	/** Interval end; omission denotes a point. */
+	end?: number;
+}
+/** Derived coordinates in the caller's chosen viewport units. */
+interface NumericPlacement {
+	/** Origin relative to the viewport start. */
+	start: number;
+	/** Interval extent; zero for a point. */
+	width: number;
+}
+/** Outcome classification; this is author interpretation, not automatic semantic proof.
+ * - **"visible-change"** - A result value or object must be visible.
+ * - **"navigation"** - The destination interface is the result.
+ * - **"unchanged"** - Cancellation, failure or another explicitly unchanged result.
+ */
+type OutcomeKind = 'visible-change' | 'navigation' | 'unchanged';
+/** Rendered scalar parameter names.
+ * - **"text"** - Displayed text.
+ * - **"label"** - Control label.
+ * - **"value"** - Field value.
+ */
+type OutcomeParameter = 'text' | 'label' | 'value';
+/** An existing scalar source fact bound to its rendered representation. */
+interface OutcomeValue {
+	/** Evidence node containing the displayed parameter. */
+	nodeRef: string;
+	/** Displayed parameter to compare. */
+	parameter: OutcomeParameter;
+	/** Exact pointer to the original expected scalar. */
+	sourcePath: string;
+}
+/** Small mapping from an existing outcome to concrete scene content. */
+interface OutcomeLink {
+	/** Exact pointer to existing flow, step or alternate outcome. */
+	sourcePath: string;
+	/** Scene demonstrating the outcome. */
+	sceneRef: string;
+	/** Result nodes in that scene. */
+	nodeRefs: string[];
+	/** Expected result category, requiring semantic judgment. */
+	resultKind: OutcomeKind;
+	/** Optional brief interpretation when source prose needs it. */
+	interpretation?: string;
+	/** Optional comparisons to already structured source scalars. */
+	values?: OutcomeValue[];
+}
