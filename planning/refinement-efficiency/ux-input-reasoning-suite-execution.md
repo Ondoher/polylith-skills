@@ -127,6 +127,10 @@ The committed aggregate carries packet, role, contract, answer and evidence
 hashes, usage, timing, delivery checks and all rubric assessments. Private raw
 product data and capabilities remain in ignored scratch.
 
+The [Save Clip reversal investigation](save-range-reversal-analysis.md) adds
+the detailed timing decomposition, repeat variability and observed startup-context
+differences for the four Save Clip authors, using these same saved traces.
+
 The new `collect-suite.py` combines saved evidence without launching an author.
 Its [reproduction instructions](experiments/incremental-ux-replay/README.md)
 explain how to regenerate the aggregate. The historical favorable pair remains

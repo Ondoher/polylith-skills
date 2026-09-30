@@ -1,0 +1,787 @@
+{
+	"sourceMetrics": "planning/refinement-efficiency/ux-input-reasoning-suite-metrics.json",
+	"sourceMetricsSha256": "371ff10d3c70c3f34319f199cfc21bde34dfb9f87eeee5badf2e117244aa9d97",
+	"method": "Reuse saved counters, stream boundaries, metadata, tool histories and final answers; no new model run. Dynamic workspace/access/input-handle identities are removed only for assignment comparison. Reasoning contents are not part of this evidence.",
+	"runs": [
+		{
+			"identity": "save-range-r1-broad",
+			"condition": "broad",
+			"replicate": 1,
+			"productInputSha256": "78bda102889cdbd673b33aeea09fe48b4c737acd41290059c8fb5df3794c01d9",
+			"productInputBytes": 27726,
+			"normalizedAssignmentSha256": "0e3f93e1dd74180629b92ff5fa6071222f49f6e5903e45a7f7ed2fbbf8badeab",
+			"decisionUsage": {
+				"input_tokens": 44954,
+				"cached_input_tokens": 38272,
+				"output_tokens": 2096,
+				"reasoning_output_tokens": 1436
+			},
+			"decisionSeconds": 64.46000003814697,
+			"streams": {
+				"output": 19.161460161209106,
+				"reasoning-item": 43.678268909454346,
+				"tool": 0.13400006294250488
+			},
+			"unattributedSeconds": 1.4862709045410156,
+			"reasoningTokensPerObservedStreamSecond": 32.87676082073783,
+			"items": [
+				{
+					"kind": "reasoning",
+					"startAfterInputSeconds": 1.478543996810913,
+					"seconds": 15.587455987930298
+				},
+				{
+					"kind": "reasoning",
+					"startAfterInputSeconds": 17.067646026611328,
+					"seconds": 12.07435393333435
+				},
+				{
+					"kind": "message",
+					"startAfterInputSeconds": 29.143954038619995,
+					"seconds": 1.5060460567474365
+				},
+				{
+					"kind": "reasoning",
+					"startAfterInputSeconds": 30.652540922164917,
+					"seconds": 16.016458988189697
+				},
+				{
+					"kind": "function_call",
+					"startAfterInputSeconds": 46.6705858707428,
+					"seconds": 17.65541410446167
+				}
+			],
+			"answerWords": 321,
+			"answerSha256": "67f7864f3a829b974be8151f634c58832112b8d2f90aef228ba6d641c07adc59",
+			"quality": {
+				"criteria": ["pass", "pass", "pass", "pass", "pass", "pass", "pass", "pass"],
+				"method": "Parent inspection against frozen source-based rubric",
+				"notes": "Correct 100-frame all-track eligibility despite active-track gap; full composition preservation; captured range/name dialog; playback/selection preservation; commit freeze; cancellation/failure/success; stable library versus copied occurrence distinction. Additional update-clip pruning is explicitly excluded from the save operation."
+			},
+			"startupSeconds": 99.33899998664856,
+			"acknowledgementSeconds": 4.5980000495910645,
+			"wholeAuthorSeconds": 168.3970000743866,
+			"preInputReasoningTokens": 81,
+			"wholeAuthorReasoningTokens": 1517,
+			"preInputCalls": [
+				{
+					"name": "exec_command",
+					"outputBytes": 4202,
+					"category": "helper-head",
+					"exitCodes": ["0"],
+					"headLines": ["100"],
+					"tailLines": [],
+					"instructionBatches": [],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "workflow_catalog",
+					"outputBytes": 341
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 3338,
+					"category": "helper-tail",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": ["85"],
+					"instructionBatches": [],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 4692,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"outputTruncated": false
+				},
+				{
+					"name": "workflow_store",
+					"outputBytes": 585
+				},
+				{
+					"name": "workflow_read",
+					"outputBytes": 31913
+				}
+			],
+			"decisionRequestMetadata": {
+				"wireBytes": 92722,
+				"reasoningEffort": "xhigh",
+				"parallelToolCalls": true,
+				"toolsMetadataSha256": "d8667cc74228cca818c20e159712e319a969bc5bfbceb5e2cb5acbc247665d5d",
+				"wireErrors": 0
+			}
+		},
+		{
+			"identity": "save-range-r1-focused",
+			"condition": "focused",
+			"replicate": 1,
+			"productInputSha256": "bbb64365e43e83e7dcecb9382943f722159619c1a4112c1776de6bb8415e1fb1",
+			"productInputBytes": 18539,
+			"normalizedAssignmentSha256": "0e3f93e1dd74180629b92ff5fa6071222f49f6e5903e45a7f7ed2fbbf8badeab",
+			"decisionUsage": {
+				"input_tokens": 43084,
+				"cached_input_tokens": 38400,
+				"output_tokens": 1618,
+				"reasoning_output_tokens": 977
+			},
+			"decisionSeconds": 51.169999837875366,
+			"streams": {
+				"output": 19.104639053344727,
+				"reasoning-item": 29.394437074661255,
+				"tool": 0.09500002861022949
+			},
+			"unattributedSeconds": 2.5759236812591553,
+			"reasoningTokensPerObservedStreamSecond": 33.23758157090882,
+			"items": [
+				{
+					"kind": "reasoning",
+					"startAfterInputSeconds": 2.5705718994140625,
+					"seconds": 15.551428079605103
+				},
+				{
+					"kind": "reasoning",
+					"startAfterInputSeconds": 18.123991012573242,
+					"seconds": 13.843008995056152
+				},
+				{
+					"kind": "message",
+					"startAfterInputSeconds": 31.96808385848999,
+					"seconds": 2.134916067123413
+				},
+				{
+					"kind": "function_call",
+					"startAfterInputSeconds": 34.10527682304382,
+					"seconds": 16.969722986221313
+				}
+			],
+			"answerWords": 316,
+			"answerSha256": "9e9d30a200fed4623d4c7d86cec22861d2a2efc154cb7ce6fbbeaa01d2884dc7",
+			"quality": {
+				"criteria": ["pass", "pass", "pass", "pass", "pass", "pass", "pass", "pass"],
+				"method": "Parent inspection against frozen source-based rubric",
+				"notes": "Matches required all-track 100-frame save, dialog/name/range and playback preservation, complete commit freeze, cancellation/failure/success, stable library identity and independent later occurrences. No missing dependency or added active-track-content blocker."
+			},
+			"startupSeconds": 98.97699999809265,
+			"acknowledgementSeconds": 5.019999980926514,
+			"wholeAuthorSeconds": 155.16699981689453,
+			"preInputReasoningTokens": 88,
+			"wholeAuthorReasoningTokens": 1065,
+			"preInputCalls": [
+				{
+					"name": "exec_command",
+					"outputBytes": 6105,
+					"category": "helper-head",
+					"exitCodes": ["0"],
+					"headLines": ["140"],
+					"tailLines": [],
+					"instructionBatches": [],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 2238,
+					"category": "helper-tail",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": ["64"],
+					"instructionBatches": [],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "workflow_catalog",
+					"outputBytes": 341
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 4692,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"outputTruncated": false
+				},
+				{
+					"name": "workflow_store",
+					"outputBytes": 587
+				},
+				{
+					"name": "workflow_read",
+					"outputBytes": 21402
+				}
+			],
+			"decisionRequestMetadata": {
+				"wireBytes": 81554,
+				"reasoningEffort": "xhigh",
+				"parallelToolCalls": true,
+				"toolsMetadataSha256": "d8667cc74228cca818c20e159712e319a969bc5bfbceb5e2cb5acbc247665d5d",
+				"wireErrors": 0
+			}
+		},
+		{
+			"identity": "save-range-r2-focused",
+			"condition": "focused",
+			"replicate": 2,
+			"productInputSha256": "bbb64365e43e83e7dcecb9382943f722159619c1a4112c1776de6bb8415e1fb1",
+			"productInputBytes": 18539,
+			"normalizedAssignmentSha256": "0e3f93e1dd74180629b92ff5fa6071222f49f6e5903e45a7f7ed2fbbf8badeab",
+			"decisionUsage": {
+				"input_tokens": 43818,
+				"cached_input_tokens": 39168,
+				"output_tokens": 2123,
+				"reasoning_output_tokens": 1507
+			},
+			"decisionSeconds": 65.61800003051758,
+			"streams": {
+				"output": 18.352970123291016,
+				"reasoning-item": 45.290775775909424,
+				"tool": 0.33899998664855957
+			},
+			"unattributedSeconds": 1.635254144668579,
+			"reasoningTokensPerObservedStreamSecond": 33.27388357082607,
+			"items": [
+				{
+					"kind": "reasoning",
+					"startAfterInputSeconds": 1.6268820762634277,
+					"seconds": 15.559118032455444
+				},
+				{
+					"kind": "reasoning",
+					"startAfterInputSeconds": 17.18841814994812,
+					"seconds": 15.619581937789917
+				},
+				{
+					"kind": "reasoning",
+					"startAfterInputSeconds": 32.80992412567139,
+					"seconds": 14.112075805664062
+				},
+				{
+					"kind": "message",
+					"startAfterInputSeconds": 46.92397093772888,
+					"seconds": 1.5070290565490723
+				},
+				{
+					"kind": "function_call",
+					"startAfterInputSeconds": 48.433058977127075,
+					"seconds": 16.845941066741943
+				}
+			],
+			"answerWords": 311,
+			"answerSha256": "3a4d8686cd791c9ca63cf669d016d7782a21a178d30f1acc9c019bf0641da893",
+			"quality": {
+				"criteria": ["partial", "pass", "pass", "pass", "pass", "pass", "pass", "pass"],
+				"method": "Parent inspection against frozen source-based rubric",
+				"notes": "Correct provided nonempty all-track scenario, complete composition/dialog/commit/recovery/identity behavior. Criterion1 partial: eligibility refers to the given contributing media but does not explicitly preserve the general wholly-empty-range rejection. This is an answer-completeness gap, not missing input evidence or an incorrect frame calculation; retain first answer without repair."
+			},
+			"startupSeconds": 98.10399985313416,
+			"acknowledgementSeconds": 5.5320000648498535,
+			"wholeAuthorSeconds": 169.2539999485016,
+			"preInputReasoningTokens": 102,
+			"wholeAuthorReasoningTokens": 1609,
+			"preInputCalls": [
+				{
+					"name": "exec_command",
+					"outputBytes": 298,
+					"category": "path-discovery",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": [],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8210,
+					"category": "helper-head",
+					"exitCodes": ["0"],
+					"headLines": ["180"],
+					"tailLines": [],
+					"instructionBatches": [],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "workflow_catalog",
+					"outputBytes": 341
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 2257,
+					"category": "helper-tail",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": ["65"],
+					"instructionBatches": [],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 4692,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"outputTruncated": false
+				},
+				{
+					"name": "workflow_store",
+					"outputBytes": 587
+				},
+				{
+					"name": "workflow_read",
+					"outputBytes": 21402
+				}
+			],
+			"decisionRequestMetadata": {
+				"wireBytes": 81554,
+				"reasoningEffort": "xhigh",
+				"parallelToolCalls": true,
+				"toolsMetadataSha256": "d8667cc74228cca818c20e159712e319a969bc5bfbceb5e2cb5acbc247665d5d",
+				"wireErrors": 0
+			}
+		},
+		{
+			"identity": "save-range-r2-broad",
+			"condition": "broad",
+			"replicate": 2,
+			"productInputSha256": "78bda102889cdbd673b33aeea09fe48b4c737acd41290059c8fb5df3794c01d9",
+			"productInputBytes": 27726,
+			"normalizedAssignmentSha256": "0e3f93e1dd74180629b92ff5fa6071222f49f6e5903e45a7f7ed2fbbf8badeab",
+			"decisionUsage": {
+				"input_tokens": 44994,
+				"cached_input_tokens": 38272,
+				"output_tokens": 1638,
+				"reasoning_output_tokens": 1034
+			},
+			"decisionSeconds": 51.74399995803833,
+			"streams": {
+				"output": 17.600987911224365,
+				"reasoning-item": 31.54329490661621,
+				"tool": 0.10700011253356934
+			},
+			"unattributedSeconds": 2.4927170276641846,
+			"reasoningTokensPerObservedStreamSecond": 32.78034216340279,
+			"items": [
+				{
+					"kind": "reasoning",
+					"startAfterInputSeconds": 2.4890949726104736,
+					"seconds": 15.578904867172241
+				},
+				{
+					"kind": "reasoning",
+					"startAfterInputSeconds": 18.069609880447388,
+					"seconds": 15.96439003944397
+				},
+				{
+					"kind": "function_call",
+					"startAfterInputSeconds": 34.036011934280396,
+					"seconds": 17.600987911224365
+				}
+			],
+			"answerWords": 313,
+			"answerSha256": "132ca22a47097239adfaac9d772e3a1eafaae20200dfd194d010adbb259bdf90",
+			"quality": {
+				"criteria": ["pass", "pass", "pass", "pass", "pass", "pass", "pass", "pass"],
+				"method": "Parent inspection against frozen source-based rubric",
+				"notes": "Explicitly rejects wholly empty ranges, includes all-track inclusive selection and composition preservation, stopped playback and draft/selection preservation, full commit freeze, recovery, and stable library versus copied occurrence identity."
+			},
+			"startupSeconds": 117.4060001373291,
+			"acknowledgementSeconds": 3.5839998722076416,
+			"wholeAuthorSeconds": 172.73399996757507,
+			"preInputReasoningTokens": 103,
+			"wholeAuthorReasoningTokens": 1137,
+			"preInputCalls": [
+				{
+					"name": "workflow_catalog",
+					"outputBytes": 341
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 298,
+					"category": "path-discovery",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": [],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 4201,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 262,
+					"category": "unsupported-help",
+					"exitCodes": ["1"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": [],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 4569,
+					"category": "helper-head",
+					"exitCodes": ["0"],
+					"headLines": ["110"],
+					"tailLines": [],
+					"instructionBatches": [],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 727,
+					"category": "parse-options",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": [],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 8297,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": [],
+					"outputTruncated": false
+				},
+				{
+					"name": "exec_command",
+					"outputBytes": 974,
+					"category": "instruction-page",
+					"exitCodes": ["0"],
+					"headLines": [],
+					"tailLines": [],
+					"instructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"completedInstructionBatches": ["c768e093feea2a866072886a23133d9cf8352c273ea569e590e4bde13e2bc067"],
+					"outputTruncated": false
+				},
+				{
+					"name": "workflow_store",
+					"outputBytes": 585
+				},
+				{
+					"name": "workflow_read",
+					"outputBytes": 31913
+				}
+			],
+			"decisionRequestMetadata": {
+				"wireBytes": 92721,
+				"reasoningEffort": "xhigh",
+				"parallelToolCalls": true,
+				"toolsMetadataSha256": "d8667cc74228cca818c20e159712e319a969bc5bfbceb5e2cb5acbc247665d5d",
+				"wireErrors": 0
+			}
+		}
+	],
+	"repeat2FocusedMinusBroad": {
+		"reasoningTokens": 473,
+		"reasoningStreamsSeconds": 13.747480869293213,
+		"commandGenerationSeconds": -0.7550468444824219,
+		"messageGenerationSeconds": 1.5070290565490723,
+		"toolSeconds": 0.23199987411499023,
+		"unattributedSeconds": -0.8574628829956055,
+		"decisionSeconds": 13.874000072479248
+	},
+	"conditionTotals": {
+		"broad": {
+			"decisionReasoningTokens": 2470,
+			"decisionSeconds": 116.2039999961853
+		},
+		"focused": {
+			"decisionReasoningTokens": 2484,
+			"decisionSeconds": 116.78799986839294
+		}
+	},
+	"broadOnlyRecordIds": [
+		"update-named-clip",
+		"claim-clip-update",
+		"open-update-clip",
+		"confirm-update",
+		"clip-update"
+	],
+	"emptyRangeGuardInBothPackets": ["facts:/productModel/requirements/26", "ux:/actions/40"]
+}
