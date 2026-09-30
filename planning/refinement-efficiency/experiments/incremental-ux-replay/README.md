@@ -57,6 +57,22 @@ this preparation-only resume path. Preserve their output for focused continuatio
 
 ## Evidence and interpretation
 
+### Three cases in one continuous author
+
+The [three-case delivery plan](../../ux-three-case-delivery-plan.md) compares
+all data upfront with case-by-case delivery in two fresh author instances. Both
+use the same deduplicated records, fixed preloaded generic instructions and
+three first answers. `--series=<frozen-directory> --condition=upfront|as-needed`
+selects this mode; omit `--execute` for an isolated local MCP protocol check.
+`prepare-series.mjs` constructs immutable inputs from the saved suite, while
+`analyze-series.py` verifies the observed delivery sequence and measures the
+complete workflow and its three case windows. The plan includes exact commands.
+
+```powershell
+node --test --test-isolation=none planning/refinement-efficiency/experiments/incremental-ux-replay/series.test.mjs
+python -B -X utf8 planning/refinement-efficiency/experiments/incremental-ux-replay/test-series-analysis.py
+```
+
 ### Larger bounded-decision suite
 
 The [larger suite plan](../../ux-input-reasoning-suite-plan.md) adds Save Clip and

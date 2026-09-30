@@ -12,6 +12,7 @@ import {startLiveRequestObserver} from '../ux-read-window/live-request-observer.
 import {verifyObserverTrust} from './observer-trust.mjs';
 import {loadPilot, storePilotInputs, availableSources, pilotPrompt, checkPilotProtocol} from './pilot.mjs';
 import {loadDecision, decisionPrompt, checkDecisionProtocol} from './decision.mjs';
+import {loadSeries, storeSeriesInputs, seriesPrompt, seriesInstructionOverlay, checkSeriesProtocol} from './series.mjs';
 
 const governance = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
 const option = (name) => process.argv.find((arg) => arg.startsWith(`--${name}=`))?.slice(name.length + 3);
@@ -23,13 +24,17 @@ assert(
 		.every(
 			(arg) =>
 				arg === '--execute' ||
-				/^(--attempt=|--requested-at=|--binary=|--resume=|--pilot=|--decision=|--condition=)/.test(arg),
+				/^(--attempt=|--requested-at=|--binary=|--resume=|--pilot=|--decision=|--series=|--condition=)/.test(
+					arg,
+				),
 		),
 	'Unknown argument',
 );
 const resumeName = option('resume');
 const pilot = option('pilot') ? loadPilot(option('pilot'), option('condition')) : null;
 const decision = option('decision') ? loadDecision(option('decision'), option('condition')) : null;
+const series = option('series') ? loadSeries(option('series'), option('condition')) : null;
+assert(!series || (!pilot && !decision && !resumeName), 'Series test requires one fresh author per condition');
 assert(!decision || (!pilot && !resumeName), 'Decision test requires its own fresh condition');
 assert(!pilot || !resumeName, 'Pilot conditions require separate pristine stores; thread continuation is automatic');
 assert(!resumeName || /^[a-z0-9-]+$/.test(resumeName), 'Invalid resume name');
@@ -75,6 +80,14 @@ const control = {
 				turns: [],
 				phases: [],
 				boundary: 'One supplied input read through one saved bounded UX answer; no review or rework.',
+			}
+		: {}),
+	...(series
+		? {
+				series: {condition: series.condition, manifest: series.manifest},
+				turns: [],
+				phases: [],
+				boundary: 'One continuous author through three saved UX answers; no review or rework.',
 			}
 		: {}),
 	...(previous
@@ -149,7 +162,7 @@ try {
 		if (message.phase) {
 			control.lastPhase = message.phase;
 			control.lastPhaseAt = message.endedAt;
-			if (pilot || decision) {
+			if (pilot || decision || series) {
 				const value = JSON.parse(
 					fs.readFileSync(
 						path.join(
@@ -166,7 +179,15 @@ try {
 			save();
 		}
 		if (
-			(message.operation === 'units.finish' || (decision && message.phase === 'ux:decision-result')) &&
+			(message.operation === 'units.finish' ||
+				(decision && message.phase === 'ux:decision-result') ||
+				(series &&
+					message.phase === 'ux:series-result' &&
+					JSON.stringify(
+						control.phases
+							.filter((value) => value.phase === 'ux:series-result')
+							.map((value) => value.caseId),
+					) === JSON.stringify(series.manifest.caseOrder))) &&
 			message.actor === 'assigned' &&
 			!message.failed &&
 			!control.firstFinishAt
@@ -250,15 +271,18 @@ try {
 			path.join(previousDirectory, 'imported-units-receipt.json'),
 			path.join(attempt, 'imported-units-receipt.json'),
 		);
-	const inputs = decision
-		? {input: await call('store', {...owner, value: decision.value})}
-		: pilot
-			? await storePilotInputs(call, owner, pilot, identities)
-			: {facts, ux, identities};
+	const inputs = series
+		? await storeSeriesInputs(call, owner, series)
+		: decision
+			? {input: await call('store', {...owner, value: decision.value})}
+			: pilot
+				? await storePilotInputs(call, owner, pilot, identities)
+				: {facts, ux, identities};
 	fs.writeFileSync(path.join(attempt, 'input-receipts.json'), JSON.stringify(inputs, null, 2));
-	const operations = decision
-		? ['result.store']
-		: ['result.store', ...(pilot ? [] : ['units.read']), 'units.status', 'units.contribute', 'units.finish'];
+	const operations =
+		decision || series
+			? ['result.store']
+			: ['result.store', ...(pilot ? [] : ['units.read']), 'units.status', 'units.contribute', 'units.finish'];
 	const assignment = await call('assign', {
 		...owner,
 		operations,
@@ -289,13 +313,24 @@ try {
 		control.protocolCheck = await checkDecisionProtocol({call, assignment, run: control.run, plan, inputs});
 		save();
 	}
+	if (series && !process.argv.includes('--execute')) {
+		control.protocolCheck = await checkSeriesProtocol({call, assignment, run: control.run, series, plan, inputs});
+		save();
+	}
 	if (pilot && !process.argv.includes('--execute')) {
 		control.protocolCheck = await checkPilotProtocol({call, owner, pilot, inputs, plan, references});
 		save();
 	}
 	const rolePath = path.join(governance, 'agents/ux-planner.toml');
 	const role = fs.readFileSync(rolePath, 'utf8');
-	const instructions = role.match(/developer_instructions = """\r?\n([\s\S]*?)"""/)[1];
+	const instructions =
+		role.match(/developer_instructions = """\r?\n([\s\S]*?)"""/)[1] + (series ? seriesInstructionOverlay : '');
+	if (series) {
+		assert.equal(sha(role), series.manifest.roleSha256, 'Frozen UX role changed');
+		control.series.instructionOverlaySha256 = sha(seriesInstructionOverlay);
+		control.series.moduleSha256 = sha(fs.readFileSync(new URL('./series.mjs', import.meta.url)));
+		fs.writeFileSync(path.join(attempt, 'instructions.preloaded.md'), series.instructions);
+	}
 	fs.writeFileSync(path.join(attempt, 'role-contract.toml'), role);
 	control.guidanceSha256 = {};
 	for (const name of ['ux-contributions.md', 'single-pass-design.md']) {
@@ -303,10 +338,12 @@ try {
 		fs.writeFileSync(path.join(attempt, name), raw);
 		control.guidanceSha256[name] = sha(raw);
 	}
-	const prompt = decision
-		? decisionPrompt({decision, access: assignment.access, run: control.run, plan, governance, workspace})
-		: fs.readFileSync(new URL('./assignment.md', import.meta.url), 'utf8') +
-			`\nGovernance: ${governance}\nWorkspace: ${workspace}\nAssigned MCP access: ${assignment.access}\nRun: ${control.run}\nOutput directory: ${assignment.outputDirectory}\nAssigned references: ${JSON.stringify(references)}\nInput read plan: ${JSON.stringify(plan.map(({nextOffset, ...entry}) => entry))}\n`;
+	const prompt = series
+		? seriesPrompt({series, access: assignment.access, run: control.run, plan, contracts})
+		: decision
+			? decisionPrompt({decision, access: assignment.access, run: control.run, plan, governance, workspace})
+			: fs.readFileSync(new URL('./assignment.md', import.meta.url), 'utf8') +
+				`\nGovernance: ${governance}\nWorkspace: ${workspace}\nAssigned MCP access: ${assignment.access}\nRun: ${control.run}\nOutput directory: ${assignment.outputDirectory}\nAssigned references: ${JSON.stringify(references)}\nInput read plan: ${JSON.stringify(plan.map(({nextOffset, ...entry}) => entry))}\n`;
 	fs.writeFileSync(path.join(attempt, 'prompt.private.txt'), prompt);
 	control.roleSha256 = sha(role);
 	control.promptSha256 = sha(prompt);
@@ -406,7 +443,7 @@ try {
 				resumed: Boolean(control.threadId),
 				promptSha256: sha(currentPrompt),
 			};
-			if (pilot || decision) control.turns.push(turn);
+			if (pilot || decision || series) control.turns.push(turn);
 			const stem = pilot ? `task-${ordinal}-${retry}` : 'result';
 			fs.writeFileSync(path.join(attempt, stem + '.prompt.private.txt'), currentPrompt);
 			const args = [
@@ -457,7 +494,12 @@ try {
 			child.stdin.end(currentPrompt);
 			save();
 			console.log(
-				JSON.stringify({status: 'running', attempt, condition: (pilot || decision)?.condition, ordinal}),
+				JSON.stringify({
+					status: 'running',
+					attempt,
+					condition: (pilot || decision || series)?.condition,
+					ordinal,
+				}),
 			);
 			const [exitCode] = await once(child, 'close');
 			turn.exitCode = exitCode;
@@ -500,6 +542,15 @@ try {
 			retry = 0;
 		}
 		control.status = control.firstFinishAt ? 'finished' : 'incomplete-first-pass';
+		if (series) {
+			const answers = control.phases.filter((value) => value.phase === 'ux:series-result');
+			fs.writeFileSync(path.join(attempt, 'series-answers.json'), JSON.stringify(answers, null, 2));
+			assert.deepEqual(
+				answers.map((value) => value.caseId),
+				series.manifest.caseOrder,
+				'Expected one answer per case',
+			);
+		}
 
 		if (control.firstFinishHandle) {
 			const digest = control.firstFinishHandle.split(':')[1];

@@ -1,12 +1,19 @@
 # Refinement efficiency: autonomous execution plan
 
+Next prepared test: [three cases in one continuous UX agent](ux-three-case-delivery-plan.md).
+Two fresh instances will complete Save Clip, Trim Group and Update Clip: one
+receives the full shared record collection upfront, the other receives additional
+records as each case begins. Inputs, local MCP delivery and synthetic measurement
+checks are prepared; paid author runs have not started.
+
 Latest completed test, 2026-09-29:
 [larger UX input-reasoning suite](ux-input-reasoning-suite-execution.md).
 All 12 authors finished across three cases and reversed-order repeats. Focused
 input reduced reasoning in four of six pairs; only Update Clip improved twice.
 Aggregate decision reasoning was 15.0% lower and time 11.8% lower, including one
 partial answer. Both regressions and quality results remain visible in the report.
-This is a mixed result, not an established general speedup. No further run is scheduled.
+This is a mixed result, not an established general speedup. The prepared follow-up
+above tests delivery timing across the combined workflow.
 
 Earlier single-pair test, 2026-09-29: [input size and UX reasoning effort](ux-input-reasoning-execution.md).
 One matched decision with 50.7% less product input used 33.8% fewer reported reasoning
