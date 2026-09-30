@@ -67,6 +67,9 @@ selects this mode; omit `--execute` for an isolated local MCP protocol check.
 `prepare-series.mjs` constructs immutable inputs from the saved suite, while
 `analyze-series.py` verifies the observed delivery sequence and measures the
 complete workflow and its three case windows. The plan includes exact commands.
+The [completed pair](../../ux-three-case-delivery-execution.md) preserves both
+protocol-valid results, per-command measurements and quality scoring. Staging
+was slower in this pair; no production retrieval change follows from it.
 
 ```powershell
 node --test --test-isolation=none planning/refinement-efficiency/experiments/incremental-ux-replay/series.test.mjs

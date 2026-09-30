@@ -1,6 +1,9 @@
 # Three cases in one UX agent: upfront versus as-needed input
 
-Status: **constructed and locally verified; model runs have not started**.
+Status: **executed**, 2026-09-29. See the [results](ux-three-case-delivery-execution.md)
+and [measurements](ux-three-case-delivery-metrics.json). Both authors followed the
+protocol; staged delivery was 29.4% slower and used 52.0% more reasoning tokens
+in this one pair. The design below retains the frozen pre-run protocol.
 This is the next test after the [Save Clip reversal investigation](save-range-reversal-analysis.md).
 It asks whether delaying unrelated data until the agent needs it reduces the
 reasoning required to complete a larger sequence of actual UX decisions.
@@ -122,7 +125,7 @@ Frozen inputs: `.codex-tmp/ux-three-case-delivery/inputs-01/`.
 Local checks and hashes: [preparation evidence](ux-three-case-delivery-preparation.json).
 
 ```powershell
-# These commands launch paid model authors. They have not been run yet.
+# These paid author commands have completed; do not reuse their attempt names.
 node planning/refinement-efficiency/experiments/incremental-ux-replay/run.mjs --attempt=three-case-upfront-author-01 --series=.codex-tmp/ux-three-case-delivery/inputs-01 --condition=upfront --execute
 python -B -X utf8 planning/refinement-efficiency/experiments/incremental-ux-replay/analyze-series.py .codex-tmp/incremental-ux-replay/three-case-upfront-author-01 --output=.codex-tmp/ux-three-case-delivery/upfront-metrics.json
 
@@ -148,8 +151,8 @@ node planning/refinement-efficiency/experiments/incremental-ux-replay/prepare-se
   discovery history observed in the prior test.
 - Save answers incrementally and measure the complete three-case workflow; no
   additional assembly response is requested.
-- Construct and locally check this test now. A model comparison is a subsequent
-  execution step; no new performance result is claimed here.
+- Construction used local checks only. The subsequent authorized model comparison
+  is complete and reported separately above.
 
 Both delivery schedules passed real assigned MCP read/store checks in isolated
 copies, with all 611 protected live files unchanged. The Node happy-path test
@@ -157,6 +160,6 @@ checks construction, deduplication, equal inputs, schedule completion, frozen
 instructions and withheld rubrics. A synthetic Python telemetry test exercises
 both complete analyzer paths and verifies disjoint usage totals across the three
 case windows. Synthetic telemetry is not recorded as measured model performance.
-Live author compliance and semantic answer quality remain to be tested by the
-two prepared runs. Broad negative-test and package-review passes are outside this
-experiment-construction scope.
+The subsequent two model runs verified live author compliance and scored semantic
+quality; see the execution report above. Broad negative-test and package-review
+passes remain outside this experiment scope.

@@ -1,0 +1,1292 @@
+{
+	"schema": 1,
+	"status": "complete",
+	"dateLocal": "2026-09-29",
+	"paidAuthorRuns": 2,
+	"preparationCommit": "b6ad4353f6a7a0f5ff434657dba39df8bd6d52be",
+	"normalizedPromptSha256": "75d25a2bd5435c7a72cab48a6e8c877a44877f297addbc14457374317aecf9dc",
+	"manifestSha256": "e71c2cc16c3e19a17f1493a26b43e7b9aa4d8f071cc23fe8079ee94d186434f1",
+	"collectorSha256": "0794dd8bb52fbbdcb9b9636b9ecff8b971ca0161482082839968f90113b96225",
+	"comparison": {
+		"wallSeconds": {
+			"upfront": 127.12899994850159,
+			"asNeeded": 164.5220000743866,
+			"change": 37.39300012588501,
+			"percentChange": 29.413430563468964
+		},
+		"reasoningTokens": {
+			"upfront": 1700,
+			"asNeeded": 2584,
+			"change": 884,
+			"percentChange": 52.0
+		},
+		"observedSeconds": {
+			"output": {
+				"upfront": 61.16232228279114,
+				"asNeeded": 67.6207070350647,
+				"change": 6.45838475227356,
+				"percentChange": 10.559417156223178
+			},
+			"reasoning-item": {
+				"upfront": 53.062756061553955,
+				"asNeeded": 74.72730278968811,
+				"change": 21.664546728134155,
+				"percentChange": 40.8281595908867
+			},
+			"tool": {
+				"upfront": 0.8319997787475586,
+				"asNeeded": 0.7029998302459717,
+				"change": -0.12899994850158691,
+				"percentChange": -15.504805625762968
+			}
+		},
+		"unattributedSeconds": {
+			"upfront": 12.071921825408936,
+			"asNeeded": 21.470990419387817,
+			"change": 9.399068593978882,
+			"percentChange": 77.85892528061073
+		}
+	},
+	"runs": [
+		{
+			"condition": "upfront",
+			"attempt": "three-case-upfront-author-01",
+			"model": "gpt-6-astra",
+			"configuredEffort": "ultra",
+			"effectiveWireEfforts": ["xhigh"],
+			"roleSha256": "1f1b425e7fe4972f12be84b8c773328bbb855ac69cc689a7b2f0d6ab778b3797",
+			"contractsSha256": "c5ddb8297c3facfc9c3aadda5beb10da4ac769e41dc11f329c3c7735a74fec2b",
+			"instructionBundleSha256": "4c7c374989d9e9344f819b0a534cd8e27fb5f350118b7dc67efc8aa8a5a3f75f",
+			"instructionOverlaySha256": "e665f09f2cb253a1e2f715c28abccd649922bc26917365afa5314f665969b198",
+			"moduleSha256": "19799e7eb63e7f2c968a56fcb34f5f68ce1aa8369e930ac5df23f8f9375fa5af",
+			"protocolValid": true,
+			"sequence": [
+				"read:save-range",
+				"read:trim-group",
+				"read:update-clip",
+				"answer:save-range",
+				"answer:trim-group",
+				"answer:update-clip"
+			],
+			"uniqueRecords": 31,
+			"packetReads": {
+				"save-range": {
+					"callAt": "2026-09-30T00:34:01.808Z",
+					"receivedAt": "2026-09-30T00:34:01.975Z",
+					"bytes": 18560,
+					"sha256": "6a395944f4e04c894832f0aa61a55e14c29ac11bdad0d788b1f6c7616b3a4d94"
+				},
+				"trim-group": {
+					"callAt": "2026-09-30T00:34:08.071Z",
+					"receivedAt": "2026-09-30T00:34:08.190Z",
+					"bytes": 8227,
+					"sha256": "f352c2737fca6dda3d4ba971f4f5f33091749197e48fa167bc90fe774504fd2b"
+				},
+				"update-clip": {
+					"callAt": "2026-09-30T00:34:13.020Z",
+					"receivedAt": "2026-09-30T00:34:13.189Z",
+					"bytes": 10439,
+					"sha256": "d154e8cff1a601cf4231e8c19f4c7561eeee79a5bc8a2d19dfbf469ef54c79de"
+				}
+			},
+			"wholeMeasuredWindow": {
+				"start": "2026-09-30T00:33:54.059Z",
+				"end": "2026-09-30T00:36:01.188Z",
+				"wallSeconds": 127.12899994850159,
+				"observedSeconds": {
+					"output": 61.16232228279114,
+					"reasoning-item": 53.062756061553955,
+					"tool": 0.8319997787475586
+				},
+				"unattributedSeconds": 12.071921825408936,
+				"toolCallsCompleted": 6,
+				"responseIds": [
+					"resp_0810016019e17247016abc58f2a55087d18c7b00159c961e66",
+					"resp_0810016019e17247016abc58fc13c087d1a694b0e753927824",
+					"resp_0810016019e17247016abc5900beec87d1b4e06a52d86fd9f0",
+					"resp_0810016019e17247016abc5905d82c87d19dc677f344bdadeb",
+					"resp_0810016019e17247016abc5926c3e887d1ba7c6548ffc06903",
+					"resp_0810016019e17247016abc594e84e887d19f059db48a4c30a9"
+				],
+				"usage": {
+					"input_tokens": 242992,
+					"cached_input_tokens": 229376,
+					"output_tokens": 3853,
+					"reasoning_output_tokens": 1700
+				}
+			},
+			"stages": [
+				{
+					"case": "save-range",
+					"windowIncludingInputWork": {
+						"start": "2026-09-30T00:33:54.059Z",
+						"end": "2026-09-30T00:34:46.197Z",
+						"wallSeconds": 52.13800001144409,
+						"observedSeconds": {
+							"output": 24.908727407455444,
+							"reasoning-item": 17.469177961349487,
+							"tool": 0.5799996852874756
+						},
+						"unattributedSeconds": 9.180094957351685,
+						"toolCallsCompleted": 4,
+						"responseIds": [
+							"resp_0810016019e17247016abc58f2a55087d18c7b00159c961e66",
+							"resp_0810016019e17247016abc58fc13c087d1a694b0e753927824",
+							"resp_0810016019e17247016abc5900beec87d1b4e06a52d86fd9f0",
+							"resp_0810016019e17247016abc5905d82c87d19dc677f344bdadeb"
+						],
+						"usage": {
+							"input_tokens": 154065,
+							"cached_input_tokens": 143616,
+							"output_tokens": 1455,
+							"reasoning_output_tokens": 552
+						}
+					},
+					"answer": {
+						"sha256": "ce55da2d7ee9bdfac8d51887f01f1fae7d5d87c6659b4ab70053b97b34584725",
+						"wordsByField": {
+							"eligibility": 40,
+							"operation": 58,
+							"preserved": 45,
+							"confirmation": 46,
+							"recovery": 59,
+							"baselineChanges": 34
+						},
+						"proseWords": 282,
+						"schemaAndLengthValid": true,
+						"sourceRefsValid": true,
+						"unresolvedCount": 0
+					}
+				},
+				{
+					"case": "trim-group",
+					"windowIncludingInputWork": {
+						"start": "2026-09-30T00:34:46.197Z",
+						"end": "2026-09-30T00:35:26.019Z",
+						"wallSeconds": 39.82200002670288,
+						"observedSeconds": {
+							"output": 18.725167989730835,
+							"reasoning-item": 19.582355260849,
+							"tool": 0.1510000228881836
+						},
+						"unattributedSeconds": 1.3634767532348633,
+						"toolCallsCompleted": 1,
+						"responseIds": ["resp_0810016019e17247016abc5926c3e887d1ba7c6548ffc06903"],
+						"usage": {
+							"input_tokens": 43711,
+							"cached_input_tokens": 42240,
+							"output_tokens": 1279,
+							"reasoning_output_tokens": 632
+						}
+					},
+					"answer": {
+						"sha256": "43c411912c66ddffa49109d0c9ba01ea3ed02df6e5e6238abc96eb99d9837a45",
+						"wordsByField": {
+							"eligibility": 50,
+							"operation": 46,
+							"preserved": 56,
+							"confirmation": 56,
+							"recovery": 60,
+							"baselineChanges": 46
+						},
+						"proseWords": 314,
+						"schemaAndLengthValid": true,
+						"sourceRefsValid": true,
+						"unresolvedCount": 0
+					}
+				},
+				{
+					"case": "update-clip",
+					"windowIncludingInputWork": {
+						"start": "2026-09-30T00:35:26.019Z",
+						"end": "2026-09-30T00:36:01.188Z",
+						"wallSeconds": 35.168999910354614,
+						"observedSeconds": {
+							"output": 17.52842688560486,
+							"reasoning-item": 16.01122283935547,
+							"tool": 0.10100007057189941
+						},
+						"unattributedSeconds": 1.5283501148223877,
+						"toolCallsCompleted": 1,
+						"responseIds": ["resp_0810016019e17247016abc594e84e887d19f059db48a4c30a9"],
+						"usage": {
+							"input_tokens": 45216,
+							"cached_input_tokens": 43520,
+							"output_tokens": 1119,
+							"reasoning_output_tokens": 516
+						}
+					},
+					"answer": {
+						"sha256": "bc91dabdcd31f94c28a1afc73f6baa921441e584b63ea44205ed7cffeecf2272",
+						"wordsByField": {
+							"eligibility": 49,
+							"operation": 54,
+							"preserved": 49,
+							"confirmation": 58,
+							"recovery": 62,
+							"baselineChanges": 47
+						},
+						"proseWords": 319,
+						"schemaAndLengthValid": true,
+						"sourceRefsValid": true,
+						"unresolvedCount": 0
+					}
+				}
+			],
+			"startupThroughReadySeconds": 14.890000104904175,
+			"acknowledgementSeconds": 7.71399998664856,
+			"wholeAuthorUsage": {
+				"input_tokens": 355597,
+				"cached_input_tokens": 310656,
+				"output_tokens": 4155,
+				"reasoning_output_tokens": 1700
+			},
+			"liveUnchanged": true,
+			"protectedFileCount": 611,
+			"limits": [
+				"Stage windows include acquisition work; upfront stage one includes all three reads.",
+				"Earlier context remains in the same author; staged delivery does not clear memory.",
+				"Source/format checks are not semantic quality scoring. Apply the frozen rubric separately.",
+				"Usage belongs to unique response IDs, not isolated private reasoning about each case."
+			],
+			"wholeAuthorSeconds": 149.73300004005432,
+			"commands": [
+				{
+					"tool": "workflow_read",
+					"case": "save-range",
+					"argumentBytes": 207,
+					"usage": {
+						"input_tokens": 33505,
+						"cached_input_tokens": 32640,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 217,
+						"reasoning_output_tokens": 97,
+						"total_tokens": 33722
+					},
+					"windowSincePreviousReceipt": {
+						"start": "2026-09-30T00:33:54.059Z",
+						"end": "2026-09-29T17:34:01.975000-07:00",
+						"wallSeconds": 7.915999889373779,
+						"observedSeconds": {
+							"output": 3.014005184173584,
+							"reasoning-item": 3.3546500205993652,
+							"tool": 0.16699981689453125
+						},
+						"unattributedSeconds": 1.3803448677062988,
+						"toolCallsCompleted": 2
+					}
+				},
+				{
+					"tool": "workflow_read",
+					"case": "trim-group",
+					"argumentBytes": 207,
+					"usage": {
+						"input_tokens": 38079,
+						"cached_input_tokens": 33280,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 111,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 38190
+					},
+					"windowSincePreviousReceipt": {
+						"start": "2026-09-29T17:34:01.975000-07:00",
+						"end": "2026-09-29T17:34:08.190000-07:00",
+						"wallSeconds": 6.215000152587891,
+						"observedSeconds": {
+							"output": 2.773001194000244,
+							"reasoning-item": 0,
+							"tool": 0.11899995803833008
+						},
+						"unattributedSeconds": 3.3229990005493164,
+						"toolCallsCompleted": 2
+					}
+				},
+				{
+					"tool": "workflow_read",
+					"case": "update-clip",
+					"argumentBytes": 207,
+					"usage": {
+						"input_tokens": 40012,
+						"cached_input_tokens": 37888,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 114,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 40126
+					},
+					"windowSincePreviousReceipt": {
+						"start": "2026-09-29T17:34:08.190000-07:00",
+						"end": "2026-09-29T17:34:13.189000-07:00",
+						"wallSeconds": 4.998999834060669,
+						"observedSeconds": {
+							"output": 2.9449028968811035,
+							"reasoning-item": 0,
+							"tool": 0.16899991035461426
+						},
+						"unattributedSeconds": 1.8850970268249512,
+						"toolCallsCompleted": 2
+					}
+				},
+				{
+					"tool": "workflow_store",
+					"case": "save-range",
+					"argumentBytes": 2755,
+					"usage": {
+						"input_tokens": 42469,
+						"cached_input_tokens": 39808,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 1013,
+						"reasoning_output_tokens": 455,
+						"total_tokens": 43482
+					},
+					"windowSincePreviousReceipt": {
+						"start": "2026-09-29T17:34:13.189000-07:00",
+						"end": "2026-09-29T17:34:46.197000-07:00",
+						"wallSeconds": 33.00800013542175,
+						"observedSeconds": {
+							"output": 16.176818132400513,
+							"reasoning-item": 14.114527940750122,
+							"tool": 0.125
+						},
+						"unattributedSeconds": 2.591654062271118,
+						"toolCallsCompleted": 2
+					}
+				},
+				{
+					"tool": "workflow_store",
+					"case": "trim-group",
+					"argumentBytes": 2871,
+					"usage": {
+						"input_tokens": 43711,
+						"cached_input_tokens": 42240,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 1279,
+						"reasoning_output_tokens": 632,
+						"total_tokens": 44990
+					},
+					"windowSincePreviousReceipt": {
+						"start": "2026-09-29T17:34:46.197000-07:00",
+						"end": "2026-09-29T17:35:26.019000-07:00",
+						"wallSeconds": 39.82200002670288,
+						"observedSeconds": {
+							"output": 18.725167989730835,
+							"reasoning-item": 19.582355260849,
+							"tool": 0.1510000228881836
+						},
+						"unattributedSeconds": 1.3634767532348633,
+						"toolCallsCompleted": 2
+					}
+				},
+				{
+					"tool": "workflow_store",
+					"case": "update-clip",
+					"argumentBytes": 3060,
+					"usage": {
+						"input_tokens": 45216,
+						"cached_input_tokens": 43520,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 1119,
+						"reasoning_output_tokens": 516,
+						"total_tokens": 46335
+					},
+					"windowSincePreviousReceipt": {
+						"start": "2026-09-29T17:35:26.019000-07:00",
+						"end": "2026-09-29T17:36:01.188000-07:00",
+						"wallSeconds": 35.168999910354614,
+						"observedSeconds": {
+							"output": 17.52842688560486,
+							"reasoning-item": 16.01122283935547,
+							"tool": 0.10100007057189941
+						},
+						"unattributedSeconds": 1.5283501148223877,
+						"toolCallsCompleted": 2
+					}
+				}
+			],
+			"serverHandlingMsInMeasuredWindow": 12.579999999972642,
+			"serviceRequestsInMeasuredWindow": [
+				{
+					"at": "2026-09-30T00:34:01.818Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1280,
+					"responseBytes": 22695,
+					"handlingMs": 1.0913999999975204,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T00:34:08.078Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1280,
+					"responseBytes": 10015,
+					"handlingMs": 0.45420000000012806,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T00:34:13.027Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1280,
+					"responseBytes": 12984,
+					"handlingMs": 0.5023999999975786,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T00:34:46.087Z",
+					"method": "tools/call",
+					"tool": "workflow_store",
+					"requestBytes": 3829,
+					"responseBytes": 570,
+					"handlingMs": 3.7624999999970896,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T00:35:25.881Z",
+					"method": "tools/call",
+					"tool": "workflow_store",
+					"requestBytes": 3945,
+					"responseBytes": 570,
+					"handlingMs": 4.1481000000057975,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T00:36:01.096Z",
+					"method": "tools/call",
+					"tool": "workflow_store",
+					"requestBytes": 4134,
+					"responseBytes": 570,
+					"handlingMs": 2.6213999999745283,
+					"failed": false
+				}
+			],
+			"quality": {
+				"method": "Parent semantic scoring against frozen rubrics, without repair or an additional model reviewer.",
+				"pass": 24,
+				"partial": 0,
+				"fail": 0,
+				"cases": [
+					{
+						"case": "save-range",
+						"criteria": [
+							{
+								"criterion": 1,
+								"rubric": "Saving is eligible because the selected composed range contains media on other tracks; an empty active track is not a blocker. A wholly empty range is ineligible.",
+								"status": "pass",
+								"answerFields": ["eligibility"],
+								"evidence": "Eligible across tracks; rejects a wholly empty composition."
+							},
+							{
+								"criterion": 2,
+								"rubric": "Save the inclusive 100-199 range (100 frames) across all four tracks as one named reusable clip, preserving timing, gaps, framing, stacking and audio settings.",
+								"status": "pass",
+								"answerFields": ["operation"],
+								"evidence": "100 inclusive frames, all four tracks, timing, gaps, framing, stacking and audio retained."
+							},
+							{
+								"criterion": 3,
+								"rubric": "Show the captured range/name and enough composed-content scope to avoid implying active-track-only saving; do not ask the user to select the internal playback construction.",
+								"status": "pass",
+								"answerFields": ["operation", "confirmation"],
+								"evidence": "Named range and composition scope visible; internal construction automatic."
+							},
+							{
+								"criterion": 4,
+								"rubric": "Opening stops preview without changing selection; cancellation returns to stopped editing without automatically restarting playback.",
+								"status": "pass",
+								"answerFields": ["operation", "confirmation", "recovery"],
+								"evidence": "Opening stops preview; selection retained; cancellation never restarts playback."
+							},
+							{
+								"criterion": 5,
+								"rubric": "Keep the active timeline, draft, selection and source media intact; do not replace selected content with the new library item.",
+								"status": "pass",
+								"answerFields": ["preserved"],
+								"evidence": "Source timeline, draft, selection and source media unchanged."
+							},
+							{
+								"criterion": 6,
+								"rubric": "During commit disable edits, selection/insertion changes, Undo/Redo, competing commits and draft replacement/abandonment; do not queue edits.",
+								"status": "pass",
+								"answerFields": ["operation", "preserved"],
+								"evidence": "Commit freezes the specified edits, selection/insertion, Undo/Redo and competing actions; no queue."
+							},
+							{
+								"criterion": 7,
+								"rubric": "Before-commit cancel changes nothing; failure retains the dialog, name, range, draft and selection for correction/retry. Success identifies the created clip in the captured editor context.",
+								"status": "pass",
+								"answerFields": ["recovery"],
+								"evidence": "Precommit cancel changes nothing; failure retains context for retry; success identifies saved clip."
+							},
+							{
+								"criterion": 8,
+								"rubric": "The library clip has stable identity; later additions are independently owned occurrence copies and do not follow subsequent library edits. Cite supplied records without inventing a naming blocker or an essential missing dependency.",
+								"status": "pass",
+								"answerFields": ["preserved", "sourceRefs", "unresolved"],
+								"evidence": "Stable library identity and independent future occurrence copies; references supplied; no invented blocker."
+							}
+						]
+					},
+					{
+						"case": "trim-group",
+						"criteria": [
+							{
+								"criterion": 1,
+								"rubric": "Exactly one editable occurrence is required and trimming is unavailable while a commit freezes editing; expose distinct Start/End handles and equivalent precise commands.",
+								"status": "pass",
+								"answerFields": ["eligibility", "confirmation"],
+								"evidence": "One editable group, no commit; distinct handles and precise commands."
+							},
+							{
+								"criterion": 2,
+								"rubric": "Start 90 cannot apply because the previous clip ends at 94. Earliest allowed Start is 95; End stays 149. Communicate the limit without moving the preceding clip; source bounds, time zero and one-frame minimum also constrain trimming.",
+								"status": "pass",
+								"answerFields": ["eligibility", "operation", "preserved", "confirmation"],
+								"evidence": "Start 90 rejected, earliest 95, End 149; predecessor unchanged; source and one-frame limits supplied. Explicit time-zero bound also supplied."
+							},
+							{
+								"criterion": 3,
+								"rubric": "End 175 produces group 100-175, then following clips 176-195 and 196-205. The later 220-229 clip stays put because the remaining gap absorbs the push.",
+								"status": "pass",
+								"answerFields": ["operation"],
+								"evidence": "End 175 yields 100-175, 176-195, 196-205; 220-229 stays fixed."
+							},
+							{
+								"criterion": 4,
+								"rubric": "End 139 produces group 100-139 and leaves all following clips at their original intervals; freed time remains a gap rather than pulling clips backward.",
+								"status": "pass",
+								"answerFields": ["operation"],
+								"evidence": "End 139 leaves followers in place; freed time remains a gap."
+							},
+							{
+								"criterion": 5,
+								"rubric": "Trim a group as one occurrence; inward trimming retains excluded parts, and outward trimming restores them or available source content within the applicable bounds.",
+								"status": "pass",
+								"answerFields": ["preserved"],
+								"evidence": "Whole group retains hidden parts; outward trim restores them or available edge source."
+							},
+							{
+								"criterion": 6,
+								"rubric": "Preview boundaries, pushed clips and resulting duration before completion; explain limits rather than implying overlap or silently shifting preceding clips.",
+								"status": "pass",
+								"answerFields": ["confirmation"],
+								"evidence": "Preview boundaries, duration and all pushed clips; explain the neighbor limit."
+							},
+							{
+								"criterion": 7,
+								"rubric": "Treat the successful trim and required push chain as one undoable draft edit; invalid input/Escape leaves the original draft and selection. Do not promise a separate persistence transaction or unverified rollback.",
+								"status": "pass",
+								"answerFields": ["recovery"],
+								"evidence": "One undoable draft edit includes the push chain; cancellation/invalid input preserves original draft and selection."
+							},
+							{
+								"criterion": 8,
+								"rubric": "Keep source media and saved library definitions unchanged and preserve unrelated tracks/settings. Cite supplied records without inventing an essential missing dependency.",
+								"status": "pass",
+								"answerFields": ["preserved", "sourceRefs", "unresolved"],
+								"evidence": "Sources, library definitions and unrelated tracks/settings retained; no invented dependency."
+							}
+						]
+					},
+					{
+						"case": "update-clip",
+						"criteria": [
+							{
+								"criterion": 1,
+								"rubric": "Exactly one associated occurrence with differing Start or End enables the operation; other local settings alone do not.",
+								"status": "pass",
+								"answerFields": ["eligibility"],
+								"evidence": "Exactly one associated occurrence; temporal differences enable; other local settings alone do not."
+							},
+							{
+								"criterion": 2,
+								"rubric": "Only selected Start/End update the existing saved library definition, preserving stable identity.",
+								"status": "pass",
+								"answerFields": ["operation"],
+								"evidence": "Only Start/End update the existing stable library identity."
+							},
+							{
+								"criterion": 3,
+								"rubric": "Rectangle, volume, mute and track settings are not published.",
+								"status": "pass",
+								"answerFields": ["eligibility", "preserved", "confirmation"],
+								"evidence": "Rectangle, volume, mute and track settings are excluded."
+							},
+							{
+								"criterion": 4,
+								"rubric": "All existing video occurrences, including selected and locally trimmed copies, remain unchanged; only future additions use the updated definition.",
+								"status": "pass",
+								"answerFields": ["operation", "preserved", "confirmation"],
+								"evidence": "Existing selected and other video copies stay unchanged; future additions use the updated definition."
+							},
+							{
+								"criterion": 5,
+								"rubric": "Confirmation identifies the named target, shows current/proposed Start and inclusive End, and explains future-only scope.",
+								"status": "pass",
+								"answerFields": ["confirmation"],
+								"evidence": "Named target, current/proposed Start and inclusive End, future-only scope."
+							},
+							{
+								"criterion": 6,
+								"rubric": "Remove follower propagation and downstream collision blocking from prior UX; no unresolved collision policy is needed.",
+								"status": "pass",
+								"answerFields": ["baselineChanges", "unresolved"],
+								"evidence": "Removes follower propagation and collision blocking; retires the obsolete collision question."
+							},
+							{
+								"criterion": 7,
+								"rubric": "Cancel/failure changes nothing and retains draft/selection for correction or retry; success identifies updated clip and stays in editor.",
+								"status": "pass",
+								"answerFields": ["recovery"],
+								"evidence": "Cancel/failure preserves draft and selection; retry possible; success identifies updated clip in editor."
+							},
+							{
+								"criterion": 8,
+								"rubric": "Cite supplied requirement and prior UX records; do not invent an essential blocker or unsupported behavior.",
+								"status": "pass",
+								"answerFields": ["sourceRefs", "unresolved"],
+								"evidence": "Supplied requirement and prior UX references; no unsupported essential blocker."
+							}
+						]
+					}
+				]
+			},
+			"evidence": {
+				"directory": ".codex-tmp/incremental-ux-replay/three-case-upfront-author-01",
+				"sha256": {
+					"control.json": "87c613a19ff1ddc34aec53e9062912dbbc09d10a64fed1d41bb22608845cec25",
+					"series-answers.json": "1cde754e676eeec5c18cc51bf880d8d0ea986d52dbb8e52f1d7c54319ec2ae2e",
+					"result.prompt.private.txt": "a274a39ab22d33d254670f3944a350b3855b897fc3dd2c8823b14370d6a73aa3",
+					"live-request-metadata.json": "9bc1ee403417915399d49f57b00dd593ea604b808c99d4a93b28ffdbc7db5b6a",
+					"runtime-metrics.json": "0de32ba4c750407cfe2fd56c8baa95accd209aa3ed7e06b46bdcebc6811bcfc4",
+					"server-metrics.json": "d319ceaadd41f2b97e299a2d55421392b210d388cc9801967d4fe3900617cee8"
+				}
+			}
+		},
+		{
+			"condition": "as-needed",
+			"attempt": "three-case-as-needed-author-01",
+			"model": "gpt-6-astra",
+			"configuredEffort": "ultra",
+			"effectiveWireEfforts": ["xhigh"],
+			"roleSha256": "1f1b425e7fe4972f12be84b8c773328bbb855ac69cc689a7b2f0d6ab778b3797",
+			"contractsSha256": "c5ddb8297c3facfc9c3aadda5beb10da4ac769e41dc11f329c3c7735a74fec2b",
+			"instructionBundleSha256": "4c7c374989d9e9344f819b0a534cd8e27fb5f350118b7dc67efc8aa8a5a3f75f",
+			"instructionOverlaySha256": "e665f09f2cb253a1e2f715c28abccd649922bc26917365afa5314f665969b198",
+			"moduleSha256": "19799e7eb63e7f2c968a56fcb34f5f68ce1aa8369e930ac5df23f8f9375fa5af",
+			"protocolValid": true,
+			"sequence": [
+				"read:save-range",
+				"answer:save-range",
+				"read:trim-group",
+				"answer:trim-group",
+				"read:update-clip",
+				"answer:update-clip"
+			],
+			"uniqueRecords": 31,
+			"packetReads": {
+				"save-range": {
+					"callAt": "2026-09-30T00:37:09.119Z",
+					"receivedAt": "2026-09-30T00:37:09.185Z",
+					"bytes": 18560,
+					"sha256": "6a395944f4e04c894832f0aa61a55e14c29ac11bdad0d788b1f6c7616b3a4d94"
+				},
+				"trim-group": {
+					"callAt": "2026-09-30T00:37:53.308Z",
+					"receivedAt": "2026-09-30T00:37:53.440Z",
+					"bytes": 8227,
+					"sha256": "f352c2737fca6dda3d4ba971f4f5f33091749197e48fa167bc90fe774504fd2b"
+				},
+				"update-clip": {
+					"callAt": "2026-09-30T00:38:52.549Z",
+					"receivedAt": "2026-09-30T00:38:52.754Z",
+					"bytes": 10439,
+					"sha256": "d154e8cff1a601cf4231e8c19f4c7561eeee79a5bc8a2d19dfbf469ef54c79de"
+				}
+			},
+			"wholeMeasuredWindow": {
+				"start": "2026-09-30T00:37:03.317Z",
+				"end": "2026-09-30T00:39:47.839Z",
+				"wallSeconds": 164.5220000743866,
+				"observedSeconds": {
+					"output": 67.6207070350647,
+					"reasoning-item": 74.72730278968811,
+					"tool": 0.7029998302459717
+				},
+				"unattributedSeconds": 21.470990419387817,
+				"toolCallsCompleted": 6,
+				"responseIds": [
+					"resp_0da1622f16cec6ec016abc59afd1f487d1a277678644c3130f",
+					"resp_0da1622f16cec6ec016abc59b5b45087d1833a3cdbf16c1e7f",
+					"resp_0da1622f16cec6ec016abc59da7b1087d186e9fe5ea0b918d8",
+					"resp_0da1622f16cec6ec016abc59e2317087d1be1a21a0268d0120",
+					"resp_0da1622f16cec6ec016abc5a17d5a087d1b2a8f7f814e9da5b",
+					"resp_0da1622f16cec6ec016abc5a1f64d487d1beef8bac54c383ce"
+				],
+				"usage": {
+					"input_tokens": 241111,
+					"cached_input_tokens": 226944,
+					"output_tokens": 4869,
+					"reasoning_output_tokens": 2584
+				}
+			},
+			"stages": [
+				{
+					"case": "save-range",
+					"windowIncludingInputWork": {
+						"start": "2026-09-30T00:37:03.317Z",
+						"end": "2026-09-30T00:37:45.882Z",
+						"wallSeconds": 42.56500005722046,
+						"observedSeconds": {
+							"output": 20.136464834213257,
+							"reasoning-item": 15.659719944000244,
+							"tool": 0.21000003814697266
+						},
+						"unattributedSeconds": 6.558815240859985,
+						"toolCallsCompleted": 2,
+						"responseIds": [
+							"resp_0da1622f16cec6ec016abc59afd1f487d1a277678644c3130f",
+							"resp_0da1622f16cec6ec016abc59b5b45087d1833a3cdbf16c1e7f"
+						],
+						"usage": {
+							"input_tokens": 71567,
+							"cached_input_tokens": 66048,
+							"output_tokens": 1216,
+							"reasoning_output_tokens": 516
+						}
+					},
+					"answer": {
+						"sha256": "79d1b20265564238400a6c1b0f2597d0d876c91b0b88773ded3960638e35710b",
+						"wordsByField": {
+							"eligibility": 38,
+							"operation": 50,
+							"preserved": 58,
+							"confirmation": 50,
+							"recovery": 59,
+							"baselineChanges": 41
+						},
+						"proseWords": 296,
+						"schemaAndLengthValid": true,
+						"sourceRefsValid": true,
+						"unresolvedCount": 0
+					}
+				},
+				{
+					"case": "trim-group",
+					"windowIncludingInputWork": {
+						"start": "2026-09-30T00:37:45.882Z",
+						"end": "2026-09-30T00:38:47.324Z",
+						"wallSeconds": 61.44199991226196,
+						"observedSeconds": {
+							"output": 24.293484926223755,
+							"reasoning-item": 30.42044186592102,
+							"tool": 0.1919999122619629
+						},
+						"unattributedSeconds": 6.536073207855225,
+						"toolCallsCompleted": 2,
+						"responseIds": [
+							"resp_0da1622f16cec6ec016abc59da7b1087d186e9fe5ea0b918d8",
+							"resp_0da1622f16cec6ec016abc59e2317087d1be1a21a0268d0120"
+						],
+						"usage": {
+							"input_tokens": 80629,
+							"cached_input_tokens": 76800,
+							"output_tokens": 1831,
+							"reasoning_output_tokens": 1034
+						}
+					},
+					"answer": {
+						"sha256": "632f871b7c4c0ad5352f47a711547d6449857c797e9cb1076192d985f8897fab",
+						"wordsByField": {
+							"eligibility": 55,
+							"operation": 53,
+							"preserved": 59,
+							"confirmation": 54,
+							"recovery": 60,
+							"baselineChanges": 48
+						},
+						"proseWords": 329,
+						"schemaAndLengthValid": true,
+						"sourceRefsValid": true,
+						"unresolvedCount": 0
+					}
+				},
+				{
+					"case": "update-clip",
+					"windowIncludingInputWork": {
+						"start": "2026-09-30T00:38:47.324Z",
+						"end": "2026-09-30T00:39:47.839Z",
+						"wallSeconds": 60.515000104904175,
+						"observedSeconds": {
+							"output": 23.190757274627686,
+							"reasoning-item": 28.647140979766846,
+							"tool": 0.30099987983703613
+						},
+						"unattributedSeconds": 8.376101970672607,
+						"toolCallsCompleted": 2,
+						"responseIds": [
+							"resp_0da1622f16cec6ec016abc5a17d5a087d1b2a8f7f814e9da5b",
+							"resp_0da1622f16cec6ec016abc5a1f64d487d1beef8bac54c383ce"
+						],
+						"usage": {
+							"input_tokens": 88915,
+							"cached_input_tokens": 84096,
+							"output_tokens": 1822,
+							"reasoning_output_tokens": 1034
+						}
+					},
+					"answer": {
+						"sha256": "6f3cb3ab0fd57c4cdf33fbd1bdecfd511d674ad6776a5819146a96c97a2cb40a",
+						"wordsByField": {
+							"eligibility": 46,
+							"operation": 57,
+							"preserved": 61,
+							"confirmation": 56,
+							"recovery": 63,
+							"baselineChanges": 55
+						},
+						"proseWords": 338,
+						"schemaAndLengthValid": true,
+						"sourceRefsValid": true,
+						"unresolvedCount": 0
+					}
+				}
+			],
+			"startupThroughReadySeconds": 11.366999864578247,
+			"acknowledgementSeconds": 8.564000129699707,
+			"wholeAuthorUsage": {
+				"input_tokens": 354859,
+				"cached_input_tokens": 319744,
+				"output_tokens": 5236,
+				"reasoning_output_tokens": 2650
+			},
+			"liveUnchanged": true,
+			"protectedFileCount": 611,
+			"limits": [
+				"Stage windows include acquisition work; upfront stage one includes all three reads.",
+				"Earlier context remains in the same author; staged delivery does not clear memory.",
+				"Source/format checks are not semantic quality scoring. Apply the frozen rubric separately.",
+				"Usage belongs to unique response IDs, not isolated private reasoning about each case."
+			],
+			"wholeAuthorSeconds": 184.45300006866455,
+			"commands": [
+				{
+					"tool": "workflow_read",
+					"case": "save-range",
+					"argumentBytes": 207,
+					"usage": {
+						"input_tokens": 33545,
+						"cached_input_tokens": 33024,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 120,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 33665
+					},
+					"windowSincePreviousReceipt": {
+						"start": "2026-09-30T00:37:03.317Z",
+						"end": "2026-09-29T17:37:09.185000-07:00",
+						"wallSeconds": 5.868000030517578,
+						"observedSeconds": {
+							"output": 3.1162819862365723,
+							"reasoning-item": 0,
+							"tool": 0.06599998474121094
+						},
+						"unattributedSeconds": 2.685718059539795,
+						"toolCallsCompleted": 2
+					}
+				},
+				{
+					"tool": "workflow_store",
+					"case": "save-range",
+					"argumentBytes": 2851,
+					"usage": {
+						"input_tokens": 38022,
+						"cached_input_tokens": 33024,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 1096,
+						"reasoning_output_tokens": 516,
+						"total_tokens": 39118
+					},
+					"windowSincePreviousReceipt": {
+						"start": "2026-09-29T17:37:09.185000-07:00",
+						"end": "2026-09-29T17:37:45.882000-07:00",
+						"wallSeconds": 36.69700002670288,
+						"observedSeconds": {
+							"output": 17.020182847976685,
+							"reasoning-item": 15.659719944000244,
+							"tool": 0.14400005340576172
+						},
+						"unattributedSeconds": 3.8730971813201904,
+						"toolCallsCompleted": 2
+					}
+				},
+				{
+					"tool": "workflow_read",
+					"case": "trim-group",
+					"argumentBytes": 207,
+					"usage": {
+						"input_tokens": 39347,
+						"cached_input_tokens": 37760,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 113,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 39460
+					},
+					"windowSincePreviousReceipt": {
+						"start": "2026-09-29T17:37:45.882000-07:00",
+						"end": "2026-09-29T17:37:53.440000-07:00",
+						"wallSeconds": 7.558000087738037,
+						"observedSeconds": {
+							"output": 3.9276070594787598,
+							"reasoning-item": 0,
+							"tool": 0.13199996948242188
+						},
+						"unattributedSeconds": 3.4983930587768555,
+						"toolCallsCompleted": 2
+					}
+				},
+				{
+					"tool": "workflow_store",
+					"case": "trim-group",
+					"argumentBytes": 2957,
+					"usage": {
+						"input_tokens": 41282,
+						"cached_input_tokens": 39040,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 1718,
+						"reasoning_output_tokens": 1034,
+						"total_tokens": 43000
+					},
+					"windowSincePreviousReceipt": {
+						"start": "2026-09-29T17:37:53.440000-07:00",
+						"end": "2026-09-29T17:38:47.324000-07:00",
+						"wallSeconds": 53.883999824523926,
+						"observedSeconds": {
+							"output": 20.365877866744995,
+							"reasoning-item": 30.42044186592102,
+							"tool": 0.059999942779541016
+						},
+						"unattributedSeconds": 3.037680149078369,
+						"toolCallsCompleted": 2
+					}
+				},
+				{
+					"tool": "workflow_read",
+					"case": "update-clip",
+					"argumentBytes": 207,
+					"usage": {
+						"input_tokens": 43228,
+						"cached_input_tokens": 41088,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 116,
+						"reasoning_output_tokens": 0,
+						"total_tokens": 43344
+					},
+					"windowSincePreviousReceipt": {
+						"start": "2026-09-29T17:38:47.324000-07:00",
+						"end": "2026-09-29T17:38:52.754000-07:00",
+						"wallSeconds": 5.430000066757202,
+						"observedSeconds": {
+							"output": 3.2023561000823975,
+							"reasoning-item": 0,
+							"tool": 0.2049999237060547
+						},
+						"unattributedSeconds": 2.02264404296875,
+						"toolCallsCompleted": 2
+					}
+				},
+				{
+					"tool": "workflow_store",
+					"case": "update-clip",
+					"argumentBytes": 3176,
+					"usage": {
+						"input_tokens": 45687,
+						"cached_input_tokens": 43008,
+						"cache_write_input_tokens": 0,
+						"output_tokens": 1706,
+						"reasoning_output_tokens": 1034,
+						"total_tokens": 47393
+					},
+					"windowSincePreviousReceipt": {
+						"start": "2026-09-29T17:38:52.754000-07:00",
+						"end": "2026-09-29T17:39:47.839000-07:00",
+						"wallSeconds": 55.08500003814697,
+						"observedSeconds": {
+							"output": 19.988401174545288,
+							"reasoning-item": 28.647140979766846,
+							"tool": 0.09599995613098145
+						},
+						"unattributedSeconds": 6.353457927703857,
+						"toolCallsCompleted": 2
+					}
+				}
+			],
+			"serverHandlingMsInMeasuredWindow": 11.86620000000039,
+			"serviceRequestsInMeasuredWindow": [
+				{
+					"at": "2026-09-30T00:37:09.126Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1279,
+					"responseBytes": 22695,
+					"handlingMs": 0.7547000000013213,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T00:37:45.749Z",
+					"method": "tools/call",
+					"tool": "workflow_store",
+					"requestBytes": 3924,
+					"responseBytes": 572,
+					"handlingMs": 4.145400000001246,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T00:37:53.317Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1279,
+					"responseBytes": 10015,
+					"handlingMs": 0.6550999999963096,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T00:38:47.277Z",
+					"method": "tools/call",
+					"tool": "workflow_store",
+					"requestBytes": 4030,
+					"responseBytes": 572,
+					"handlingMs": 3.0565000000060536,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T00:38:52.555Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1279,
+					"responseBytes": 12984,
+					"handlingMs": 0.4853999999904772,
+					"failed": false
+				},
+				{
+					"at": "2026-09-30T00:39:47.753Z",
+					"method": "tools/call",
+					"tool": "workflow_store",
+					"requestBytes": 4249,
+					"responseBytes": 572,
+					"handlingMs": 2.7691000000049826,
+					"failed": false
+				}
+			],
+			"quality": {
+				"method": "Parent semantic scoring against frozen rubrics, without repair or an additional model reviewer.",
+				"pass": 23,
+				"partial": 1,
+				"fail": 0,
+				"cases": [
+					{
+						"case": "save-range",
+						"criteria": [
+							{
+								"criterion": 1,
+								"rubric": "Saving is eligible because the selected composed range contains media on other tracks; an empty active track is not a blocker. A wholly empty range is ineligible.",
+								"status": "pass",
+								"answerFields": ["eligibility"],
+								"evidence": "Eligible across tracks; rejects a wholly empty composition."
+							},
+							{
+								"criterion": 2,
+								"rubric": "Save the inclusive 100-199 range (100 frames) across all four tracks as one named reusable clip, preserving timing, gaps, framing, stacking and audio settings.",
+								"status": "pass",
+								"answerFields": ["operation"],
+								"evidence": "100 inclusive frames, all four tracks, timing, gaps, framing, stacking and audio retained."
+							},
+							{
+								"criterion": 3,
+								"rubric": "Show the captured range/name and enough composed-content scope to avoid implying active-track-only saving; do not ask the user to select the internal playback construction.",
+								"status": "pass",
+								"answerFields": ["operation", "confirmation"],
+								"evidence": "Named range and composition scope visible; internal construction automatic."
+							},
+							{
+								"criterion": 4,
+								"rubric": "Opening stops preview without changing selection; cancellation returns to stopped editing without automatically restarting playback.",
+								"status": "pass",
+								"answerFields": ["operation", "confirmation", "recovery"],
+								"evidence": "Opening stops preview; selection retained; cancellation never restarts playback."
+							},
+							{
+								"criterion": 5,
+								"rubric": "Keep the active timeline, draft, selection and source media intact; do not replace selected content with the new library item.",
+								"status": "pass",
+								"answerFields": ["preserved"],
+								"evidence": "Source timeline, draft, selection and source media unchanged."
+							},
+							{
+								"criterion": 6,
+								"rubric": "During commit disable edits, selection/insertion changes, Undo/Redo, competing commits and draft replacement/abandonment; do not queue edits.",
+								"status": "pass",
+								"answerFields": ["operation", "preserved"],
+								"evidence": "Commit freezes the specified edits, selection/insertion, Undo/Redo and competing actions; no queue."
+							},
+							{
+								"criterion": 7,
+								"rubric": "Before-commit cancel changes nothing; failure retains the dialog, name, range, draft and selection for correction/retry. Success identifies the created clip in the captured editor context.",
+								"status": "pass",
+								"answerFields": ["recovery"],
+								"evidence": "Precommit cancel changes nothing; failure retains context for retry; success identifies saved clip."
+							},
+							{
+								"criterion": 8,
+								"rubric": "The library clip has stable identity; later additions are independently owned occurrence copies and do not follow subsequent library edits. Cite supplied records without inventing a naming blocker or an essential missing dependency.",
+								"status": "pass",
+								"answerFields": ["preserved", "sourceRefs", "unresolved"],
+								"evidence": "Stable library identity and independent future occurrence copies; references supplied; no invented blocker."
+							}
+						]
+					},
+					{
+						"case": "trim-group",
+						"criteria": [
+							{
+								"criterion": 1,
+								"rubric": "Exactly one editable occurrence is required and trimming is unavailable while a commit freezes editing; expose distinct Start/End handles and equivalent precise commands.",
+								"status": "pass",
+								"answerFields": ["eligibility", "confirmation"],
+								"evidence": "One editable group, no commit; distinct handles and precise commands."
+							},
+							{
+								"criterion": 2,
+								"rubric": "Start 90 cannot apply because the previous clip ends at 94. Earliest allowed Start is 95; End stays 149. Communicate the limit without moving the preceding clip; source bounds, time zero and one-frame minimum also constrain trimming.",
+								"status": "partial",
+								"answerFields": ["eligibility", "operation", "preserved", "confirmation"],
+								"evidence": "Start 90 rejected, earliest 95, End 149; predecessor unchanged; source and one-frame limits supplied. The explicit time-zero bound is omitted."
+							},
+							{
+								"criterion": 3,
+								"rubric": "End 175 produces group 100-175, then following clips 176-195 and 196-205. The later 220-229 clip stays put because the remaining gap absorbs the push.",
+								"status": "pass",
+								"answerFields": ["operation"],
+								"evidence": "End 175 yields 100-175, 176-195, 196-205; 220-229 stays fixed."
+							},
+							{
+								"criterion": 4,
+								"rubric": "End 139 produces group 100-139 and leaves all following clips at their original intervals; freed time remains a gap rather than pulling clips backward.",
+								"status": "pass",
+								"answerFields": ["operation"],
+								"evidence": "End 139 leaves followers in place; freed time remains a gap."
+							},
+							{
+								"criterion": 5,
+								"rubric": "Trim a group as one occurrence; inward trimming retains excluded parts, and outward trimming restores them or available source content within the applicable bounds.",
+								"status": "pass",
+								"answerFields": ["preserved"],
+								"evidence": "Whole group retains hidden parts; outward trim restores them or available edge source."
+							},
+							{
+								"criterion": 6,
+								"rubric": "Preview boundaries, pushed clips and resulting duration before completion; explain limits rather than implying overlap or silently shifting preceding clips.",
+								"status": "pass",
+								"answerFields": ["confirmation"],
+								"evidence": "Preview boundaries, duration and all pushed clips; explain the neighbor limit."
+							},
+							{
+								"criterion": 7,
+								"rubric": "Treat the successful trim and required push chain as one undoable draft edit; invalid input/Escape leaves the original draft and selection. Do not promise a separate persistence transaction or unverified rollback.",
+								"status": "pass",
+								"answerFields": ["recovery"],
+								"evidence": "One undoable draft edit includes the push chain; cancellation/invalid input preserves original draft and selection."
+							},
+							{
+								"criterion": 8,
+								"rubric": "Keep source media and saved library definitions unchanged and preserve unrelated tracks/settings. Cite supplied records without inventing an essential missing dependency.",
+								"status": "pass",
+								"answerFields": ["preserved", "sourceRefs", "unresolved"],
+								"evidence": "Sources, library definitions and unrelated tracks/settings retained; no invented dependency."
+							}
+						]
+					},
+					{
+						"case": "update-clip",
+						"criteria": [
+							{
+								"criterion": 1,
+								"rubric": "Exactly one associated occurrence with differing Start or End enables the operation; other local settings alone do not.",
+								"status": "pass",
+								"answerFields": ["eligibility"],
+								"evidence": "Exactly one associated occurrence; temporal differences enable; other local settings alone do not."
+							},
+							{
+								"criterion": 2,
+								"rubric": "Only selected Start/End update the existing saved library definition, preserving stable identity.",
+								"status": "pass",
+								"answerFields": ["operation"],
+								"evidence": "Only Start/End update the existing stable library identity."
+							},
+							{
+								"criterion": 3,
+								"rubric": "Rectangle, volume, mute and track settings are not published.",
+								"status": "pass",
+								"answerFields": ["eligibility", "preserved", "confirmation"],
+								"evidence": "Rectangle, volume, mute and track settings are excluded."
+							},
+							{
+								"criterion": 4,
+								"rubric": "All existing video occurrences, including selected and locally trimmed copies, remain unchanged; only future additions use the updated definition.",
+								"status": "pass",
+								"answerFields": ["operation", "preserved", "confirmation"],
+								"evidence": "Existing selected and other video copies stay unchanged; future additions use the updated definition."
+							},
+							{
+								"criterion": 5,
+								"rubric": "Confirmation identifies the named target, shows current/proposed Start and inclusive End, and explains future-only scope.",
+								"status": "pass",
+								"answerFields": ["confirmation"],
+								"evidence": "Named target, current/proposed Start and inclusive End, future-only scope."
+							},
+							{
+								"criterion": 6,
+								"rubric": "Remove follower propagation and downstream collision blocking from prior UX; no unresolved collision policy is needed.",
+								"status": "pass",
+								"answerFields": ["baselineChanges", "unresolved"],
+								"evidence": "Removes follower propagation and collision blocking; retires the obsolete collision question."
+							},
+							{
+								"criterion": 7,
+								"rubric": "Cancel/failure changes nothing and retains draft/selection for correction or retry; success identifies updated clip and stays in editor.",
+								"status": "pass",
+								"answerFields": ["recovery"],
+								"evidence": "Cancel/failure preserves draft and selection; retry possible; success identifies updated clip in editor."
+							},
+							{
+								"criterion": 8,
+								"rubric": "Cite supplied requirement and prior UX records; do not invent an essential blocker or unsupported behavior.",
+								"status": "pass",
+								"answerFields": ["sourceRefs", "unresolved"],
+								"evidence": "Supplied requirement and prior UX references; no unsupported essential blocker."
+							}
+						]
+					}
+				]
+			},
+			"evidence": {
+				"directory": ".codex-tmp/incremental-ux-replay/three-case-as-needed-author-01",
+				"sha256": {
+					"control.json": "0bc0feeed49166154d99d166ef89611c6d34890c77d458c02dcad8046fa678c1",
+					"series-answers.json": "bb91638d31afd66777ba1a532b3a3d4d599d6fc89f8ce415104d3ad8c5436795",
+					"result.prompt.private.txt": "ce32a49949039499a5a0ca616ece187c90f45fa56f2807514833d1d3ead408f2",
+					"live-request-metadata.json": "72dcd1ec126a821b83b00c164ea712f96f46b848892b779d8f02407094e0f439",
+					"runtime-metrics.json": "8e7f45da35180e76399463502ec862ee8fc0b9056450100d7da171bf0b5d3496",
+					"server-metrics.json": "f95ad9846361825d2b2088b88498494a5c795392c0d46729a68189d09839dd57"
+				}
+			}
+		}
+	],
+	"limits": [
+		"One pair, upfront first; no causal or statistical conclusion.",
+		"All 31 records are eventually supplied; as-needed means case-boundary staging, not adaptive selection or eviction.",
+		"One partial rubric criterion in staged Trim Group prevents claiming strict quality equivalence.",
+		"Reported reasoning tokens and stream intervals do not expose pure cognition or explain the semantic cause.",
+		"Input counters sum repeated model contexts; they are not unique source data sizes.",
+		"Startup, fixed instructions, retained answers, provider/cache variability and output variation affect interpretation."
+	]
+}
