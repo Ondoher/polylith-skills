@@ -10,10 +10,32 @@ independently accepts it before the `ui-designer` creates comps. The
 
 Call `wireframes.prepare` through workflow_execute with a frozen context and
 scope. Context uses the existing flows/actions/interactionFrames/feedback and
-source binding. Scope is `{elements:[{id,title,disposition,sourceFlowRefs,
-sourceActionRefs,frameRefs,changeReason,requiredStates,dependencies?}]}`. Reuse
-accepted boundaries and unchanged elements. A changed source requires a new run;
-do not silently bind old reviews to new facts.
+source binding, plus `scopeBasis:{previousSources,currentSources,impacts}`.
+Each source snapshot is `{id,revision,records:{stableRecordId:value}}`, projected
+from the actual baseline/current requirements, not generated UX differences.
+Resolve explicit amendments using [source change requests](source-change-requests.md).
+An initial design has an explicitly empty previousSources array.
+
+Each impact is `{id,elementId,kind,status,reason,affectedRefs,dependencies,defect?,remediation?}`.
+Use `kind:requirement-change|defect-repair`, `status:ready|needs-repair`, typed
+`affectedRefs` (`action:`, `frame:`, `flow:`, `component:`, `state:`), and
+`dependencies:[{sourceId,recordRefs:[exactIds]}]`. Describe the concrete interface
+effect once; a repair also names the observed defect. Keep source uncertainty
+explicit. Code checks references and material source changes, not prose truth.
+
+Scope is `{elements:[{id,title,disposition,impactRefs,sourceFlowRefs,
+sourceActionRefs,frameRefs,componentRefs?,stateRefs?,changeReason,requiredStates,dependencies?}]}`.
+Use `update`, `reuse` or `unresolved`. Readable related context does not authorize
+updates. `wireframes.prepare` returns dispatch IDs and local repair issues;
+assign authors/reviewers only for those dispatch IDs. Missing justification holds
+that element, while valid independent items remain available. Reuse existing
+controls/states unless the identified effect requires changes.
+
+Code binds the saved work list to exact inputs. A changed source requires a new
+normal MCP run and recomputed scope; never import old scope merely by filename.
+Preserve saved artifacts. Reuse review evidence only when the relevant packet,
+requirement values, artifact and renderer/contract bindings still match. Global
+source revision changes alone do not invalidate identical element facts.
 
 Assign one exact `elementId` and role (`wireframe`, `wireframe-review`, `ui`, or
 `visual-review`) with only its needed operations. Reviewer scope also supplies

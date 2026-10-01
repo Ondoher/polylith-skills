@@ -60,6 +60,23 @@ for (const [id, item] of Object.entries(cases)) {
 		];
 	const fixture = {
 		context: {
+			scopeBasis: {
+				previousSources: [],
+				currentSources: [
+					{id: 'exercise', revision: 1, records: {[id]: {purpose: item.purpose, outcome: item.outcome}}},
+				],
+				impacts: [
+					{
+						id: 'exercise-' + id,
+						elementId: id,
+						kind: 'requirement-change',
+						status: 'ready',
+						reason: item.purpose,
+						affectedRefs: ['action:' + item.action],
+						dependencies: [{sourceId: 'exercise', recordRefs: [id]}],
+					},
+				],
+			},
 			sourceBinding: {fixture: id, revision: 1},
 			approval: 'unreviewed',
 			flows: [flow],
@@ -84,6 +101,7 @@ for (const [id, item] of Object.entries(cases)) {
 					id,
 					title: item.name,
 					disposition: 'update',
+					impactRefs: ['exercise-' + id],
 					sourceFlowRefs: [flow.id],
 					sourceActionRefs: [item.action],
 					frameRefs: [],

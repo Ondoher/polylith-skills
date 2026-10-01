@@ -5,7 +5,82 @@ import os from 'node:os';
 import path from 'node:path';
 import {WorkflowService} from '../scripts/mcp/WorkflowService.mjs';
 import {DomainOperations} from '../scripts/mcp/DomainOperations.mjs';
+import {scopeBasisFixture} from '../skills/refine-design/scripts/fixtures/wireframe-scope.mjs';
 import {outcomeFixture} from '../skills/refine-design/scripts/fixtures/wireframe-prevention.mjs';
+
+test('normal MCP exposes context without authorizing an unchanged interface for authoring or review', async () => {
+	const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'wf-scope-mcp-'));
+	const service = new WorkflowService({workspace, operations: new DomainOperations().operations});
+	const run = 'scope';
+	service.open({access: service.ownerAccess, run});
+	const call = async (access, operation, input) => (await service.execute({access, run, operation, input})).inline;
+	try {
+		const prepared = await call(service.ownerAccess, 'wireframes.prepare', {
+			context: {
+				scopeBasis: scopeBasisFixture('save-dialog', 'action:save'),
+				flows: [{id: 'edit'}],
+				actions: [{id: 'save'}, {id: 'choose'}],
+			},
+			scope: {
+				elements: [
+					{
+						id: 'save-dialog',
+						disposition: 'update',
+						sourceFlowRefs: ['edit'],
+						sourceActionRefs: ['save'],
+						impactRefs: ['confirm-save'],
+						changeReason: 'Confirm before save',
+						requiredStates: ['confirm'],
+					},
+					{
+						id: 'chooser',
+						disposition: 'reuse',
+						sourceFlowRefs: ['edit'],
+						sourceActionRefs: ['choose'],
+						changeReason: 'Selection is unchanged',
+						requiredStates: [],
+					},
+				],
+			},
+		});
+		assert.deepEqual(prepared.dispatch, ['save-dialog']);
+		assert.deepEqual(prepared.issues, []);
+		const packetReceipt = await service.execute({
+			access: service.ownerAccess,
+			run,
+			operation: 'wireframes.packet',
+			input: {elementId: 'chooser'},
+		});
+		const packet = JSON.parse(service.files.read(packetReceipt.path));
+		assert.equal(packet.actions[0].id, 'choose');
+		const author = service.assign({
+			access: service.ownerAccess,
+			run,
+			operations: ['wireframes.contribute'],
+			scope: {role: 'wireframe', elementId: 'chooser'},
+		}).access;
+		await assert.rejects(
+			call(author, 'wireframes.contribute', {elementId: 'chooser', set: {purpose: 'Extra work'}}),
+			/not authorized for update/,
+		);
+		const reviewer = service.assign({
+			access: service.ownerAccess,
+			run,
+			operations: ['wireframes.review'],
+			scope: {role: 'wireframe-review', elementId: 'chooser', revision: 1},
+		}).access;
+		await assert.rejects(
+			call(reviewer, 'wireframes.review', {elementId: 'chooser', revision: 1, verdict: 'pass', findings: []}),
+			/not authorized for update/,
+		);
+		const status = await call(service.ownerAccess, 'wireframes.status', {elementId: 'chooser'});
+		assert.equal(status.disposition, 'reuse');
+		assert.equal(status.wireframe.draftRevision, null);
+	} finally {
+		await service.drain();
+		fs.rmSync(workspace, {recursive: true, force: true});
+	}
+});
 
 test('normal MCP preserves an invalid outcome draft and accepts a targeted result repair', async () => {
 	const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'wf-evidence-'));
@@ -15,6 +90,7 @@ test('normal MCP preserves an invalid outcome draft and accepts a targeted resul
 	const call = async (access, operation, input) => (await service.execute({access, run, operation, input})).inline;
 	try {
 		const {document, packet} = outcomeFixture();
+		packet.scopeBasis = scopeBasisFixture(document.elementId, 'flow:' + packet.flows[0].id);
 		// Source facts remain inside the existing flow record in the assigned packet.
 		packet.flows[0].sample = packet.facts;
 		for (const link of document.outcomeEvidence)
@@ -27,6 +103,7 @@ test('normal MCP preserves an invalid outcome draft and accepts a targeted resul
 					{
 						id: document.elementId,
 						disposition: 'update',
+						impactRefs: ['confirm-save'],
 						changeReason: 'Creation result changed',
 						sourceFlowRefs: packet.flows.map((x) => x.id),
 						sourceActionRefs: [],
@@ -85,12 +162,18 @@ test('normal MCP wireframe operations retain source facts and require review bef
 			.access;
 	try {
 		const prepared = await call(service.ownerAccess, 'wireframes.prepare', {
-			context: {approval: 'unreviewed', flows: [{id: 'save'}], actions: [{id: 'save', outcome: 'Save item'}]},
+			context: {
+				scopeBasis: scopeBasisFixture('dialog', 'action:save'),
+				approval: 'unreviewed',
+				flows: [{id: 'save'}],
+				actions: [{id: 'save', outcome: 'Save item'}],
+			},
 			scope: {
 				elements: [
 					{
 						id: 'dialog',
 						disposition: 'update',
+						impactRefs: ['confirm-save'],
 						changeReason: 'New save interaction',
 						sourceFlowRefs: ['save'],
 						sourceActionRefs: ['save'],

@@ -1,0 +1,94 @@
+{
+	"createdAt": "2026-10-01T01:53:58.166Z",
+	"mode": "offline-source-and-scope-reconciliation",
+	"source": {
+		"before": {
+			"sha256": "ae67c738ab85986be07993ad4950beebf4da60ba3382957eed9d7a405a9c1f86",
+			"bytes": 31279
+		},
+		"after": {
+			"sha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+			"bytes": 31919
+		},
+		"appendedBytes": 640,
+		"governingLines": "204-213"
+	},
+	"correction": "The appended owner amendment supports independent copies. The earlier claim of unsupported semantics missed this text. Interface redesign still needs a concrete presentation impact.",
+	"counts": {
+		"candidates": 6,
+		"previousUpdates": 4,
+		"updates": 3,
+		"reused": 3,
+		"unresolved": 0,
+		"actualModelCalls": 0,
+		"actualAuthorDispatches": 0,
+		"prospectiveInterfacePipelinesRemoved": 1
+	},
+	"decisions": [
+		{
+			"id": "clip-update-dialog",
+			"disposition": "update",
+			"impactRefs": ["library-only-comparison"],
+			"reason": "Remove propagation/follower collision presentation and explain that the library change affects future additions only.",
+			"priorExperiment": "Retain saved reviewed candidates and receipts; new scope/source evidence requires current acceptance verification before further delivery. Do not regenerate by default."
+		},
+		{
+			"id": "selection-actions-menu",
+			"disposition": "update",
+			"impactRefs": ["menu-ungroup"],
+			"reason": "Add Ungroup for a selected assembly; preserve existing range actions and Update Named Clip entry.",
+			"priorExperiment": "Retain saved reviewed candidates and receipts; new scope/source evidence requires current acceptance verification before further delivery. Do not regenerate by default."
+		},
+		{
+			"id": "timeline-add-dialog",
+			"disposition": "reuse",
+			"impactRefs": [],
+			"reason": "Existing accepted controls stage content and commit explicitly without promising live linking. Copy/group results are demonstrated on the timeline. No new chooser, crop or compatibility behavior is required.",
+			"priorExperiment": "Retain old experiment as evidence only. Reuse accepted original dialog; its partial completeness remains unchanged."
+		},
+		{
+			"id": "timeline",
+			"disposition": "update",
+			"impactRefs": ["timeline-copy-and-group"],
+			"reason": "Show independent insertion results, grouped selection/trim and visible-only ungroup results on the timeline.",
+			"priorExperiment": "Retain saved reviewed candidates and receipts; new scope/source evidence requires current acceptance verification before further delivery. Do not regenerate by default."
+		},
+		{
+			"id": "save-clip-dialog",
+			"disposition": "reuse",
+			"impactRefs": [],
+			"reason": "The existing dialog already captures the inclusive All tracks range, name, framing, gaps, audio, and failure retention; internal assembly remains undisclosed.",
+			"priorExperiment": "Reuse original source artifact; preserve its status and remaining limitations."
+		},
+		{
+			"id": "framing-background",
+			"disposition": "reuse",
+			"impactRefs": [],
+			"reason": "Only a resolved question reference was removed; existing modal captured-target behavior and retained editor structure still apply.",
+			"priorExperiment": "Reuse original source artifact; preserve its status and remaining limitations."
+		}
+	],
+	"reconciledRecords": ["interactionFrames:timeline-add", "actions:choose-timeline-content"],
+	"unchangedDialog": {
+		"partId": "timeline-add-base",
+		"sha256": "26a6ebf5e664a3c9627db220f6df38c6f26dd957410951effbaa9c0c029f2f50",
+		"candidateSha256": "26a6ebf5e664a3c9627db220f6df38c6f26dd957410951effbaa9c0c029f2f50"
+	},
+	"limitations": [
+		"Candidate upstream UX is still unreviewed. This is a scope decision, not canonical acceptance.",
+		"Saved experimental acceptance is not automatically promoted across changed packet bindings.",
+		"No new author/reviewer run, live product write, measured model-time saving or first-construction success claim."
+	],
+	"protectedUnchanged": true,
+	"elapsedMs": 63.47,
+	"measurementHistory": [
+		{
+			"at": "2026-10-01T01:47:42.212Z",
+			"elapsedMs": 46.6944
+		},
+		{
+			"at": "2026-10-01T01:53:58.166Z",
+			"elapsedMs": 63.47
+		}
+	]
+}

@@ -2,9 +2,23 @@ import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 
+/** Prepare the explicitly supplied work list; never import scope from another trial. */
+export function prepareReviewedScope(store, workspace) {
+	if (store.scope) return store.scope;
+	const source = path.join(workspace, 'inputs/scope.json');
+	assert(fs.existsSync(source), 'Supply a source-justified scope in inputs/scope.json; existing drafts are retained');
+	store.setScope(JSON.parse(fs.readFileSync(source)), {scope: {role: 'wireframe'}});
+	return store.scope;
+}
+
 /** Persistent role queues run independent elements while preserving review-before-UI. */
 export async function runReviewedPipeline(c) {
 	const {store, service, runId, state, event, saveState, workspace} = c;
+	const reviewAttempts = c.reviewAttempts ?? 3;
+	assert(
+		Number.isInteger(reviewAttempts) && reviewAttempts > 0 && reviewAttempts <= 10,
+		'Invalid review attempt budget',
+	);
 	const read = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
 	const directory = (id) => path.join(workspace, 'outputs', id);
 	const receipt = (id, stage) => {
@@ -20,19 +34,25 @@ export async function runReviewedPipeline(c) {
 		);
 		return pending;
 	};
-	if (!store.scope) {
-		// Reuse boundary decisions only. No corrected wireframe or UI data is imported.
-		const scope = read(
-			path.join(c.governance, '.codex-tmp/wireframe-ui-pilot-20260930/workspace/outputs/scope.json'),
-		);
-		store.setScope(scope, {scope: {role: 'wireframe'}});
-		event({type: 'scope-reused', source: 'original-pilot-boundaries', elapsedMs: 0});
+	prepareReviewedScope(store, workspace);
+	const selected = store
+		.dispatchElements()
+		.filter((x) => c.selected === 'all' || c.selected.split(',').includes(x.id));
+	state.unresolvedReviews = store.scope.issues.map((issue) => ({
+		elementId: issue.elementId,
+		reason: issue.problems.join('; '),
+	}));
+	if (!selected.length) {
+		event({
+			type: 'scope-no-authoring',
+			issues: state.unresolvedReviews,
+			reused: store.scope.elements
+				.filter((element) => element.disposition === 'reuse')
+				.map((element) => element.id),
+		});
+		saveState();
+		return;
 	}
-	const selected = store.scope.elements.filter(
-		(x) => x.disposition === 'update' && (c.selected === 'all' || c.selected.split(',').includes(x.id)),
-	);
-	assert(selected.length, 'No selected updated elements');
-	state.unresolvedReviews = [];
 	const saveValue = (value) => service.store({access: service.ownerAccess, run: runId, value});
 	const artifact = (file) => service.store({access: service.ownerAccess, run: runId, file});
 	const packets = new Map();
@@ -51,7 +71,7 @@ export async function runReviewedPipeline(c) {
 			missingActionRefs: packet.missingActionRefs,
 		});
 	}
-	const protocol = `Use pilot.contribute {elementId,set?,parts?,scenes?,nodeChanges?:[{sceneRef,nodeRef,set}],partChanges?:[{partRef,nodeRef,set}],dialog?:{id,header:[nodes],body:[nodes],footer:[nodes],gap?,padding?},finish?:true}. Save progressive changes. set contains purpose,focusIntent,recoveryIntent,openQuestions or ui metadata. Code owns all envelopes and revisions. dialog creates a shared part with content-sized header/footer and scrollable body; reference it by partRef in scenes. partChanges edits a node including children without resending its part. Scene changes use complete layout/parameters fields. finish:true returns a DRAFT screenshot, validation and coverage. Inspect that screenshot using view_image, check the source use cases with its actual controls, make targeted corrections if needed, then call pilot.submit {elementId,revision,inspected:true}. Rendering does not submit or approve anything. End after submission. If a renderer/tool defect makes submission impossible, retain the draft and end with the exact blocker for the coordinator to repair; do not wait on a user question. Do not write renderer/browser scripts or access live products. On capture failure retain the draft and report the capture issue. Mark inputs-ready, wireframe-start or ui-start, inspection-start/end and finished via pilot.mark {phase,elementId}. Do not add markers per thought.`;
+	const protocol = `Use pilot.contribute {elementId,set?,parts?,scenes?,nodeChanges?:[{sceneRef,nodeRef,set}],partChanges?:[{partRef,nodeRef,set}],dialog?:{id,header:[nodes],body:[nodes],footer:[nodes],gap?,padding?},finish?:true}. Save progressive changes. set contains purpose,focusIntent,recoveryIntent,openQuestions or ui metadata. Code owns all envelopes and revisions. dialog creates a shared part with content-sized header/footer and scrollable body; reference it by partRef in scenes. partChanges edits a node including children without resending its part. Scene changes use complete layout/parameters fields. finish:true returns a DRAFT screenshot, validation and coverage. Inspect every entry in the returned screenshotPages using view_image (detail original when needed); screenshot is only the first page. Independent page reads may run in parallel. Use pilot.contribute {elementId,finish:true} to refresh captures; pilot.preview is not an assigned operation. If resuming after a capture blocker, preserve the saved design and only refresh/inspect/submit it unless the rendered evidence reveals a defect. Inspect the complete set, check the source use cases with its actual controls, make targeted corrections if needed, then call pilot.submit {elementId,revision,inspected:true}. Rendering does not submit or approve anything. End after submission. If a renderer/tool defect makes submission impossible, retain the draft and end with the exact blocker for the coordinator to repair; do not wait on a user question. Do not write renderer/browser scripts or access live products. On capture failure retain the draft and report the capture issue. Mark inputs-ready, wireframe-start or ui-start, inspection-start/end and finished via pilot.mark {phase,elementId}. Do not add markers per thought.`;
 	const sharedContract = `Renderer capabilities: ${JSON.stringify(c.capabilities)}\n${c.contractText}\nThe current progressive protocol below supersedes the old finish/ready wording in examples. choice-group template uses parameters {label,presentation:"listbox"|"tabs"|"select",options:[{id,label,secondary?}],selectedId?,disabled?}; use actual item options for selection. It is optional when another usable control better fits the source.`;
 	const author = async (element, stage, feedback = null) =>
 		serial(stage, async () => {
@@ -119,7 +139,7 @@ export async function runReviewedPipeline(c) {
 				role,
 				'gpt-6-astra',
 				'ultra',
-				`You are the independent ${stage === 'wireframe' ? 'UX wireframe' : 'visual design'} reviewer. ${c.connection(assignment)} Review ${element.id} revision ${candidate.revision} only. Read artifact ${JSON.stringify(await c.readPlan(saved.handle))} and the same acceptance packet supplied to its author ${JSON.stringify(await c.readPlan(packet.handle))}. Inspect the actual screenshot with view_image: ${await c.screenshot(candidate)}. ${!state.threads[role] ? sharedContract : 'Retain the shared renderer and design context.'}\n${stage === 'wireframe' ? 'Check usable source-action coverage, actual item selection where required, hierarchy, states, recovery, focus intent and legible rendered layout. Neutral styling is intentional. Do not perform upstream UX redesign.' : 'Check consistency with accepted wireframe, visual representation, geometry, state distinctions and the frozen design-language JSON. Record a finding with route:"wireframe" if its correction needs behavior or structural wireframe changes.'} Visual design source pages: ${stage === 'ui' && !state.threads[role] ? JSON.stringify(await c.readPlan(c.designReceipt.handle)) : 'Reuse retained design context or the granted shared source.'}. Only consequential defects require revise; optional preferences use blocking:false. Recheck earlier findings plus affected changes: ${JSON.stringify(earlier)}. Use pilot.mark {phase:"review-start",elementId:"${element.id}"}. Save pilot.review {elementId:"${element.id}",revision:${candidate.revision},verdict:"pass"|"revise",findings:[{id,severity,sceneRef,nodeRef,issue,remedy,blocking?,route?}],strengths:[],limits:[]}. A pass cannot contain unresolved blocking findings. Source UX remains unreviewed. End after the saved receipt.`,
+				`You are the independent ${stage === 'wireframe' ? 'UX wireframe' : 'visual design'} reviewer. ${c.connection(assignment)} Review ${element.id} revision ${candidate.revision} only. Read artifact ${JSON.stringify(await c.readPlan(saved.handle))} and the same acceptance packet supplied to its author ${JSON.stringify(await c.readPlan(packet.handle))}. Inspect the actual screenshot with view_image: ${await c.screenshot(candidate)}. All capture pages (inspect each): ${JSON.stringify(candidate.screenshotPages ?? [])}. ${!state.threads[role] ? sharedContract : 'Retain the shared renderer and design context.'}\n${stage === 'wireframe' ? 'Check usable source-action coverage, actual item selection where required, hierarchy, states, recovery, focus intent and legible rendered layout. Neutral styling is intentional. Do not perform upstream UX redesign.' : 'Check consistency with accepted wireframe, visual representation, geometry, state distinctions and the frozen design-language JSON. Record a finding with route:"wireframe" if its correction needs behavior or structural wireframe changes.'} Visual design source pages: ${stage === 'ui' && !state.threads[role] ? JSON.stringify(await c.readPlan(c.designReceipt.handle)) : 'Reuse retained design context or the granted shared source.'}. Only consequential defects require revise; optional preferences use blocking:false. Recheck earlier findings plus affected changes: ${JSON.stringify(earlier)}. Use pilot.mark {phase:"review-start",elementId:"${element.id}"}. Save pilot.review {elementId:"${element.id}",revision:${candidate.revision},verdict:"pass"|"revise",findings:[{id,severity,sceneRef,nodeRef,issue,remedy,blocking?,route?}],strengths:[],limits:[]}. A pass cannot contain unresolved blocking findings. Source UX remains unreviewed. End after the saved receipt.`,
 			);
 			const result = read(file);
 			state.reviews.push({role, elementId: element.id, revision: candidate.revision, verdict: result.verdict});
@@ -163,10 +183,10 @@ export async function runReviewedPipeline(c) {
 		for (;;) {
 			const role = stage === 'wireframe' ? 'wireframe-review' : 'visual-review';
 			const savedReview = path.join(directory(element.id), role + '-r' + candidate.revision + '.json');
-			if (reviewCount() >= 3 && !fs.existsSync(savedReview)) break;
+			if (reviewCount() >= reviewAttempts && !fs.existsSync(savedReview)) break;
 			const result = await review(element, stage, candidate);
 			if (result.verdict === 'pass') return candidate;
-			if (reviewCount() >= 3) break;
+			if (reviewCount() >= reviewAttempts) break;
 			if (stage === 'ui' && result.findings.some((x) => x.route === 'wireframe')) {
 				await author(
 					element,
@@ -177,7 +197,7 @@ export async function runReviewedPipeline(c) {
 			}
 			candidate = await author(element, stage, result.findings);
 		}
-		throw new Error('Three review attempts exhausted; saved findings require repair');
+		throw new Error(`${reviewAttempts} review attempts exhausted; saved findings require repair`);
 	};
 	// Schedule selected dependencies first; references outside this bounded trial
 	// continue to use the frozen source contract. Never regenerate accepted work.

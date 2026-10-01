@@ -290,6 +290,7 @@ export class UxInputSelection {
 				kind: 'ux-selected-input',
 				policy: 'complete-interactions/1',
 				canonical: false,
+				selectionPurpose: 'read-context-only',
 				currentProductBinding: current,
 				priorUxBinding: binding,
 				changedRefs: seeds ?? [],
@@ -305,7 +306,11 @@ export class UxInputSelection {
 				seedImpacts: this.seedImpacts,
 				inclusions: [...this.selected].map(([ref, reason]) => ({ref, reason})),
 				omittedDetailRefs: overview.ux.map((record) => record.ref),
-				checks: {canonicalRecordsRewritten: false, semanticSufficiencyReviewed: false},
+				checks: {
+					canonicalRecordsRewritten: false,
+					semanticSufficiencyReviewed: false,
+					authorizesInterfaceUpdates: false,
+				},
 			},
 		};
 	}

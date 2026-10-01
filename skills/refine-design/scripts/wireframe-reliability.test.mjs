@@ -6,6 +6,7 @@ import path from 'node:path';
 import {dialogPart, wireframePacket, editPart} from './wireframe-contract.mjs';
 import {renderPreview, validatePreview} from './wireframe-preview.mjs';
 import {WireframeStore} from './wireframe-store.mjs';
+import {scopeBasisFixture} from './fixtures/wireframe-scope.mjs';
 
 const node = (id, template, parameters, actionRef) => ({
 	id,
@@ -17,15 +18,21 @@ const node = (id, template, parameters, actionRef) => ({
 });
 const element = {
 	id: 'add-dialog',
+	impactRefs: ['confirm-save'],
 	disposition: 'update',
 	changeReason: 'Content selection changed',
 	sourceFlowRefs: ['edit'],
 	sourceActionRefs: ['choose', 'add'],
+	componentRefs: ['confirmation'],
+	stateRefs: ['draft'],
 	requiredStates: ['ready'],
 	frameRefs: ['add'],
 };
 const context = {
+	scopeBasis: scopeBasisFixture('add-dialog', 'action:add'),
 	approval: 'unreviewed',
+	components: [{id: 'confirmation', description: 'Show insertion destination'}],
+	states: [{id: 'draft', description: 'Retain staged values'}],
 	flows: [{id: 'edit', steps: [{id: 'choose-step', actionRef: 'choose', response: 'Stage a specific item.'}]}],
 	actions: [
 		{id: 'choose', outcome: 'An item is staged'},
@@ -137,6 +144,25 @@ test('inspected submission and independent acceptance release exact UI work once
 		);
 		resumed.submit({elementId: element.id, revision: comp.revision, inspected: true}, ui);
 		assert.equal(resumed.uiDispatchDecision(submitted).reason, 'complete');
+		// A new global revision requires fresh scope but leaves identical local acceptance reusable.
+		const unrelated = structuredClone(context);
+		unrelated.sourceBinding = {revision: 99};
+		unrelated.scopeBasis.currentSources[0].revision = 'next';
+		unrelated.scopeBasis.currentSources[0].records.unrelated = 'An unrelated screen changed';
+		const refreshed = new WireframeStore({workspace, context: unrelated});
+		assert.equal(refreshed.scope, null);
+		refreshed.setScope({elements: [element]}, author);
+		assert.equal(refreshed.accepted(element.id, 'wireframe', draft.revision), true);
+		assert.equal(refreshed.uiDispatchDecision(submitted).reason, 'complete');
+		assert.equal(refreshed.packet(element.id).components[0].id, 'confirmation');
+		assert.equal(refreshed.packet(element.id).states[0].id, 'draft');
+		for (const collection of ['components', 'states']) {
+			const relevant = structuredClone(unrelated);
+			relevant[collection][0].description = 'A changed relevant interface fact';
+			const changed = new WireframeStore({workspace, context: relevant});
+			changed.setScope({elements: [element]}, author);
+			assert.equal(changed.accepted(element.id, 'wireframe', draft.revision), false);
+		}
 	} finally {
 		fs.rmSync(workspace, {recursive: true, force: true});
 	}

@@ -1,6 +1,10 @@
 # Preventing wireframe and UI review failures
 
-Status: stages 0–5 complete, 2026-09-30. Stage 6 is prepared but its launch is blocked by automatic approval review pending explicit payload/destination authorization. See [execution record](wireframe-ui-defect-prevention-execution.md) for results, evidence and decisions. The plan is not complete.
+Status: stages 0–5 complete. The
+[scope-correction prerequisite](wireframe-ui-scope-correction-execution.md) is
+complete. Stage 6 remains paused, with corrected inputs ready; no confirmation
+run is currently active. Preserve all completed work and measurements. See the
+[execution record](wireframe-ui-defect-prevention-execution.md).
 
 Build and test each prevention mechanism independently before rerunning the full
 saved Alexa change set. The primary goal is correct first construction, making
@@ -55,7 +59,7 @@ concrete successful result. The two rendering defects are already fixed.
 | 3     | Connect declared outcomes to concrete rendered evidence | Missing result evidence is detected; semantic uncertainty stays explicit         |
 | 4     | Run small independent author/reviewer exercises         | Each mechanism works through agent authoring with measured local correction cost |
 | 5     | Integrate the proven checks into normal handoffs        | Local failures stay repairable; review and UI gates retain exact bindings        |
-| 6     | Rerun all four saved Alexa changes once                 | First-review outcomes and total acceptance cost compared with saved evidence     |
+| 6     | Resume only the verified Alexa affected interfaces      | Source-justified scope, eligible reuse, and measured author/review outcomes      |
 
 Publish a short result at each exit. If a stage fails, repair and rerun that
 isolated case; continue independent development where useful. Do not advance a
@@ -221,11 +225,20 @@ No temporary experiment workaround is required for normal operation.
 
 ## Stage 6: Full saved Alexa confirmation
 
-Proceed only when stages 1–5 pass. Freeze the renderer/contracts first, then run
-the four original changed elements through wireframe authoring/review and UI
-authoring/review in a new isolated attempt. Use original product facts and the
-saved boundary inventory; keep all unchanged data. Do not seed authors with the
-already corrected designs. Scope selection is reused and labeled accordingly.
+Proceed only when stages 1–5 and the
+[scope-correction prerequisite](wireframe-ui-scope-correction-plan.md) are complete.
+Use its verified affected-interface list and reconciled source inputs; the
+original four-element selection is no longer the required scope. Freeze the
+corrected fixture in `.codex-tmp/wireframe-ui-scope-correction-20261001/fixture.json`.
+Update only `clip-update-dialog`, `selection-actions-menu` and `timeline`; reuse
+the original Add dialog, Save Clip dialog and framing/background artifacts.
+Follow the scope-correction execution record's saved-candidate reuse instructions
+and retain the candidate upstream UX's unreviewed status. Freeze the
+renderer/contracts and preserve the isolated, reversible run. Reuse compatible
+accepted work and retain valid drafts; dispatch only remaining justified work
+through wireframe authoring/review and UI authoring/review. Label resumed work
+separately from fresh authoring. Do not copy corrected answers into a trial that
+is reported as a fresh first-construction measurement.
 
 Reuse newly completed work within this attempt after interruption. If a failure
 appears, preserve the first-pass result, classify its cause, create the smallest

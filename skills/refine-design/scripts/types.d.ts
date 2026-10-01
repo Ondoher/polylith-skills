@@ -1,3 +1,153 @@
+/** A requirement snapshot projected from authoritative input, with stable record IDs. */
+type WireframeScopeSource = {
+	/** Stable source identity. */
+	id: string;
+	/** Source version or content hash, supplied by the owner. */
+	revision: string | number;
+	/** Exact decision-bearing values selected from that version. */
+	records: Record<string, unknown>;
+};
+/** Exact source records used to justify an interface decision. */
+type WireframeScopeDependency = {
+	/** Identity in previousSources/currentSources. */
+	sourceId: string;
+	/** Specific stable record IDs; wildcards are not permitted. */
+	recordRefs: string[];
+};
+/** Reason for authoring work.
+ * - **"requirement-change"** - A material source change affects the interface.
+ * - **"defect-repair"** - Existing output violates a current requirement.
+ */
+type WireframeScopeImpactKind = 'requirement-change' | 'defect-repair';
+/** Semantic decision readiness.
+ * - **"ready"** - Owner has resolved the source meaning and interface effect.
+ * - **"needs-repair"** - Uncertainty remains; preserve data and hold this item.
+ */
+type WireframeScopeImpactStatus = 'ready' | 'needs-repair';
+/** Interface action.
+ * - **"update"** - Authoring justified by source-linked impacts.
+ * - **"reuse"** - Existing interface remains sufficient; readable as context.
+ * - **"unresolved"** - A local source or scope issue prevents dispatch.
+ */
+type WireframeScopeDisposition = 'update' | 'reuse' | 'unresolved';
+/** Parent-owned semantic impact; reference validation does not prove its prose. */
+type WireframeScopeImpact = {
+	/** Stable impact identity. */
+	id: string;
+	/** Exact interface affected, not every consumer of a related flow. */
+	elementId: string;
+	/** Requirement change or separately identified repair. */
+	kind: WireframeScopeImpactKind;
+	/** Whether the semantic interpretation is settled. */
+	status: WireframeScopeImpactStatus;
+	/** Concrete effect on the interface, including indirect effects when relevant. */
+	reason: string;
+	/** Existing typed flow/action/frame/component/state references. */
+	affectedRefs: string[];
+	/** Source evidence supporting the effect. */
+	dependencies: WireframeScopeDependency[];
+	/** Required for defect-repair: the observed existing defect. */
+	defect?: string;
+	/** How an unresolved decision can be repaired. */
+	remediation?: string;
+};
+/** Small projection of authoritative facts and their interpreted impact. */
+type WireframeScopeBasis = {
+	/** Baseline snapshots; empty only for an identified initial design. */
+	previousSources: WireframeScopeSource[];
+	/** Current authoritative snapshots. */
+	currentSources: WireframeScopeSource[];
+	/** Explicit impact inventory supplied by the parent. */
+	impacts: WireframeScopeImpact[];
+};
+/** Coherent interface inventory entry; existing authoring fields remain intact. */
+type WireframeScopeElement = {
+	/** Stable interface identity. */
+	id: string;
+	/** Update, reuse or unresolved selection. */
+	disposition: WireframeScopeDisposition;
+	/** Why the decision is appropriate. */
+	changeReason: string;
+	/** Existing flow references used as context. */
+	sourceFlowRefs: string[];
+	/** Locally owned action references. */
+	sourceActionRefs?: string[];
+	/** Locally owned frame references. */
+	frameRefs?: string[];
+	/** Shared component dependencies, when relevant. */
+	componentRefs?: string[];
+	/** Relevant state references, when used. */
+	stateRefs?: string[];
+	/** Explicit impact IDs; empty for unchanged context. */
+	impactRefs?: string[];
+	/** Intended state coverage for changed work. */
+	requiredStates?: string[];
+	/** Other interface dependencies in this inventory. */
+	dependencies?: string[];
+	/** Existing title/authoring metadata. */
+	[key: string]: unknown;
+};
+/** Source context supplied at wireframes.prepare; arrays contain existing UX records. */
+type WireframeScopeContext = {
+	/** Required authoritative selection input. */
+	scopeBasis: WireframeScopeBasis;
+	/** Supplied flows, including unchanged readable context. */
+	flows: WireframeScopeRecord[];
+	/** Supplied actions. */
+	actions?: WireframeScopeRecord[];
+	/** Supplied interaction frames. */
+	interactionFrames?: WireframeScopeRecord[];
+	/** Supplied reusable component records. */
+	components?: WireframeScopeRecord[];
+	/** Supplied state records. */
+	states?: WireframeScopeRecord[];
+	/** Existing UX/source fields, carried unchanged. */
+	[key: string]: unknown;
+};
+/** Existing UX record read by identity; semantic fields remain with the UX contract. */
+type WireframeScopeRecord = {
+	/** Stable identity within its UX collection. */
+	id: string;
+	/** Existing source-owned values. */
+	[key: string]: unknown;
+};
+/** A local scope problem retained while unrelated work may continue. */
+type WireframeScopeIssue = {
+	/** Interface requiring repair. */
+	elementId: string;
+	/** Mechanical or supplied semantic findings. */
+	problems: string[];
+	/** Recovery instruction. */
+	remediation: string;
+};
+/** Persisted work list bound to exact source/context inputs. */
+type WireframeScopeDocument = {
+	/** Candidate/validated interface inventory. */
+	elements: WireframeScopeElement[];
+	/** Code-owned input fingerprint, absent before first selection. */
+	binding?: string;
+	/** Local failures produced by selection. */
+	issues?: WireframeScopeIssue[];
+	/** Existing coverage metadata. */
+	[key: string]: unknown;
+};
+/** Relevant requirement evidence included in an element's acceptance fingerprint. */
+type WireframeScopeEvidence = {
+	/** Semantic impact, null only for an unresolved reference. */
+	impact: WireframeScopeImpact | null;
+	/** Version-independent source values for these exact record dependencies. */
+	sources: {
+		/** Source identity. */
+		sourceId: string;
+		/** Stable requirement identity. */
+		recordRef: string;
+		/** Earlier value or null for addition. */
+		before: unknown;
+		/** Current value or null for removal. */
+		after: unknown;
+	}[];
+};
+
 /** Observation boundary, distinct from the purpose of its work.
  * - **"agent-window"** - Elapsed dispatch/work window; not isolated inference.
  * - **"tool"** - Caller-observed tool request through response.

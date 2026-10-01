@@ -4,6 +4,8 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {DesignAssembly} from '../../../../skills/refine-design/scripts/design-assembly.mjs';
 import {DesignRecords} from '../../../../skills/refine-design/scripts/design-records.mjs';
+import {WireframeScope} from '../../../../skills/refine-design/scripts/WireframeScope.mjs';
+import {wireframeDigest} from '../../../../skills/refine-design/scripts/wireframe-contract.mjs';
 
 /** Frozen saved inputs and mechanically derived change scope for the pilot. */
 export const PilotInputs = {
@@ -21,7 +23,11 @@ export const PilotInputs = {
 		return result;
 	},
 	/** Prepare once; prior authoring units are assembled without a new model pass. */
-	prepare(governance, workspace) {
+	prepare(governance, workspace, selectionFile) {
+		assert(
+			selectionFile,
+			'Supply --scope-input with verified source impacts, or a complete --fixture; generated UX differences do not authorize updates',
+		);
 		const started = performance.now();
 		const sourceWorkspace = path.join(
 			governance,
@@ -112,6 +118,13 @@ export const PilotInputs = {
 			patternResearch: after.patternResearch,
 			openQuestions: after.openQuestions,
 		};
+		const selection = read(selectionFile);
+		assert(
+			selection.contextBinding === wireframeDigest(context),
+			'Selection was prepared for different UX inputs; recompute scope',
+		);
+		context.scopeBasis = selection.scopeBasis;
+		const selectedScope = new WireframeScope(context).select(selection.scope);
 		const design = {
 			foundations: read(path.join(product, 'design-language/design-language.json')),
 			tokens: priorUi.tokens,
@@ -127,6 +140,7 @@ export const PilotInputs = {
 			patternResearch: after.patternResearch,
 		};
 		const protectedPaths = [
+			selectionFile,
 			units,
 			path.join(product, 'ux/ux-spec.json'),
 			path.join(product, 'ui/ui-spec.json'),
@@ -140,6 +154,7 @@ export const PilotInputs = {
 		fs.mkdirSync(inputDirectory, {recursive: true});
 		for (const [name, value] of Object.entries({
 			context,
+			scope: selectedScope,
 			design,
 			'before-ux': before,
 			'after-ux': after,

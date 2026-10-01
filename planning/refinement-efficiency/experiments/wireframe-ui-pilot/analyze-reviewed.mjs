@@ -6,6 +6,19 @@ import {PilotAnalysis} from './analyze.mjs';
 const elapsed = (a, b) => (a && b ? Date.parse(b) - Date.parse(a) : null);
 const sum = (items, key) => items.reduce((total, item) => total + (item[key] ?? 0), 0);
 const span = (start, end) => ({start: start ?? null, end: end ?? null, elapsedMs: elapsed(start, end)});
+const observedUnionMs = (items) => {
+	const windows = items
+		.filter((item) => item.window.start && item.window.end)
+		.map((item) => [Date.parse(item.window.start), Date.parse(item.window.end)])
+		.sort((a, b) => a[0] - b[0]);
+	let total = 0;
+	let through = -Infinity;
+	for (const [start, end] of windows) {
+		total += Math.max(0, end - Math.max(start, through));
+		through = Math.max(through, end);
+	}
+	return total;
+};
 
 /** Analyze persisted reviewed-pipeline events without another model run. */
 export function analyzeReviewed(attempt) {
@@ -118,9 +131,7 @@ export function analyzeReviewed(attempt) {
 				acceptedRevision: reviews.filter((e) => e.verdict === 'pass').at(-1)?.revision ?? null,
 			};
 		};
-		const firstAuthor = invocations.find(
-			(e) => e.elementId === id && e.role === 'wireframe' && e.status === 'completed',
-		);
+		const firstAuthor = invocations.find((e) => e.elementId === id && e.role === 'wireframe');
 		const accepted = own.find((e) => e.type === 'element-accepted');
 		const latestAccepted = own.filter((e) => e.type === 'element-accepted').at(-1);
 		const gateEvidence = own
@@ -182,8 +193,15 @@ export function analyzeReviewed(attempt) {
 		generatedAt: new Date().toISOString(),
 		status: state.status,
 		completedProcessWindows: {allRolesUnionMs: aggregate.wallUnionMs, authorsUnionMs: aggregate.authorWallUnionMs},
+		observedProcessWindows: {
+			allRolesUnionMs: observedUnionMs(invocations),
+			authorsUnionMs: observedUnionMs(invocations.filter((item) => !item.role.endsWith('review'))),
+			limitation:
+				'Includes unsuccessful invocations with observed end times; excludes open intervals and gaps between invocations.',
+		},
 		limits: [
 			'Role intervals overlap; do not sum them as elapsed time.',
+			'Completed process unions exclude interrupted invocations; first-author acceptance spans retain interruption and resume gaps.',
 			'Input and authoring windows are subsets of each invocation.',
 			'Native execution supplies no output-stream/command-generation or pure reasoning durations.',
 			'Usage snapshots may be cumulative; no additive token or credit claim.',

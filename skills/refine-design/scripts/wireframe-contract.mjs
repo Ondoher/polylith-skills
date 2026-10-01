@@ -48,6 +48,8 @@ export function wireframePacket(context, element) {
 			for (const affordance of region.affordances ?? []) actionIds.add(affordance.actionRef);
 	const actions = (context.actions ?? []).filter((x) => actionIds.has(x.id));
 	const flows = (context.flows ?? []).filter((x) => element.sourceFlowRefs.includes(x.id));
+	const stateIds = new Set([...(element.stateRefs ?? []), ...frames.map((frame) => frame.stateRef)]);
+	const surfaceIds = new Set(frames.map((frame) => frame.surfaceRef));
 	const questionIds = new Set([...actions, ...frames, ...flows].flatMap((x) => x.questionRefs ?? []));
 	const packet = {
 		element: structuredClone(element),
@@ -56,6 +58,9 @@ export function wireframePacket(context, element) {
 		flows,
 		actions,
 		interactionFrames: frames,
+		components: (context.components ?? []).filter((component) => element.componentRefs?.includes(component.id)),
+		states: (context.states ?? []).filter((state) => stateIds.has(state.id)),
+		surfaces: (context.surfaces ?? []).filter((surface) => surfaceIds.has(surface.id)),
 		feedback: (context.feedback ?? []).filter((x) => actionIds.has(x.actionRef)),
 		openQuestions: (context.openQuestions ?? []).filter((x) => questionIds.has(x.id)),
 		missingActionRefs: [...actionIds].filter((id) => !actions.some((x) => x.id === id)),

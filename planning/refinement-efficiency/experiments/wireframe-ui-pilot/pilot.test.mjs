@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {WorkflowService} from '../../../../scripts/mcp/WorkflowService.mjs';
 import {PilotStore} from './PilotStore.mjs';
+import {scopeBasisFixture} from '../../../../skills/refine-design/scripts/fixtures/wireframe-scope.mjs';
 
 function publish(store, draft, stage = 'wireframe') {
 	const result = store.submit(
@@ -19,7 +20,7 @@ function publish(store, draft, stage = 'wireframe') {
 	return result;
 }
 function revisionFixture(workspace) {
-	const context = {flows: [{id: 'save-clip'}]};
+	const context = {scopeBasis: scopeBasisFixture('save-clip', 'flow:save-clip'), flows: [{id: 'save-clip'}]};
 	const store = new PilotStore({workspace, context});
 	const wireframeOwner = {scope: {role: 'wireframe'}};
 	store.setScope(
@@ -28,6 +29,7 @@ function revisionFixture(workspace) {
 				{
 					id: 'save-clip',
 					disposition: 'update',
+					impactRefs: ['confirm-save'],
 					changeReason: 'Revised save form',
 					sourceFlowRefs: ['save-clip'],
 					requiredStates: ['ready'],
@@ -179,7 +181,7 @@ test('progressive saved wireframe is delivered by exact handle and UI adds only 
 		const captured = [];
 		const store = new PilotStore({
 			workspace,
-			context: {flows: [{id: 'save-clip'}]},
+			context: {scopeBasis: scopeBasisFixture('save-clip', 'flow:save-clip'), flows: [{id: 'save-clip'}]},
 			event: (event) => events.push(event),
 			preview: async (receipt) => {
 				assert.equal(receipt.previewReady, true);
@@ -207,6 +209,7 @@ test('progressive saved wireframe is delivered by exact handle and UI adds only 
 					{
 						id: 'save-clip',
 						disposition: 'update',
+						impactRefs: ['confirm-save'],
 						changeReason: 'Changed save result',
 						sourceFlowRefs: ['save-clip'],
 						requiredStates: ['ready'],

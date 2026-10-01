@@ -1,5 +1,11 @@
 # Efficient refinement cycle
 
+Interpret [freeform amendments](source-change-requests.md) during the source pass.
+Text after a standalone `---` may override earlier requirements or answer earlier
+questions; apply that later prose where relevant and retain unrelated facts.
+Keep source references internally. Require no structured change-request template
+and do not reread conflicting paragraphs independently in each downstream agent.
+
 Across the full UX stage, use the shared MCP parallel-read waves and advertised
 page window for the planner, corrections and reviewer. UX semantic output uses
 [incremental contributions](ux-contributions.md), including initial authoring

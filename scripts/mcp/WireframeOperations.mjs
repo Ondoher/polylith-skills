@@ -3,6 +3,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import {WireframeStore} from '../../skills/refine-design/scripts/wireframe-store.mjs';
 import {wireframeCapabilities} from '../../skills/refine-design/scripts/wireframe-contract.mjs';
+import {WireframeScope} from '../../skills/refine-design/scripts/WireframeScope.mjs';
 
 /** Normal MCP adapters use the same inspected-submission and acceptance store as trials. */
 export class WireframeOperations {
@@ -17,6 +18,7 @@ export class WireframeOperations {
 	}
 	static prepare(input, context) {
 		assert(context.owner, 'Only the parent prepares source facts and boundaries');
+		const selected = new WireframeScope(input.context).select(input.scope);
 		const workspace = this.location(context);
 		const file = path.join(workspace, 'source.json');
 		fs.mkdirSync(workspace, {recursive: true});
@@ -25,16 +27,14 @@ export class WireframeOperations {
 			assert(fs.readFileSync(file, 'utf8') === bytes, 'Source changed; open a new source-bound run');
 		else fs.writeFileSync(file, bytes);
 		const store = this.store(context);
-		if (store.scope)
-			assert(
-				JSON.stringify(store.scope) === JSON.stringify(input.scope),
-				'Boundaries changed; use a new source-bound run',
-			);
-		else store.setScope(input.scope, {scope: {role: 'wireframe'}});
+		store.setScope(selected, {scope: {role: 'wireframe'}});
 		return {
 			prepared: true,
 			capabilities: wireframeCapabilities,
 			elements: store.scope.elements.map((x) => ({id: x.id, disposition: x.disposition})),
+			dispatch: store.dispatchElements().map((element) => element.id),
+			issues: store.scope.issues,
+			binding: store.scope.binding,
 			sourceUxApproval: input.context.approval ?? 'unreviewed',
 		};
 	}
@@ -57,7 +57,14 @@ export class WireframeOperations {
 		if (name === 'submit') return store.submit(input, context);
 		if (name === 'review') return store.review(input, context);
 		if (name === 'status') {
-			const result = {elementId: input.elementId};
+			const result = {
+				elementId: input.elementId,
+				disposition:
+					store.scope?.elements.find((element) => element.id === input.elementId)?.disposition ??
+					'unresolved',
+				scopeIssue: store.scopeIssue,
+				issues: store.scope?.issues.filter((issue) => issue.elementId === input.elementId) ?? [],
+			};
 			for (const stage of ['wireframe', 'ui']) {
 				const file = path.join(store.directory, input.elementId, stage + '-ready.json');
 				const ready = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file)) : null;
@@ -75,11 +82,10 @@ export class WireframeOperations {
 	static requireUiAcceptance(context) {
 		if (!fs.existsSync(path.join(this.location(context), 'source.json'))) return;
 		const store = this.store(context);
-		const ids = context.owner
-			? store.scope.elements.filter((x) => x.disposition === 'update').map((x) => x.id)
-			: context.scope.wireframeElementIds;
+		const ids = context.owner ? store.dispatchElements().map((x) => x.id) : context.scope.wireframeElementIds;
 		assert(Array.isArray(ids) && ids.length, 'Assign wireframeElementIds for UI unit delivery');
 		for (const id of ids) {
+			store._requireUpdate(id);
 			const file = path.join(store.directory, store._name(id), 'wireframe-ready.json');
 			assert(fs.existsSync(file), 'Wireframe has not been submitted: ' + id);
 			assert(

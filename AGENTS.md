@@ -14,6 +14,16 @@ follow its continuation instead of combining large command outputs. Keep existin
 tool limits and check for truncation. The helper bounds its own output, not extra
 text added by callers.
 
-Use Codex's normal model connection for workflow runs and performance tests.
-Do not enable a local model redirect or model-request observer proxy unless the
-user explicitly requests it. This does not prohibit the local MCP data service.
+Standing user rule: use Codex's normal model connection for all agent work,
+workflow runs and performance tests. Do not start, enable or route model requests
+through a localhost proxy, local model redirect or model-request observer proxy
+unless the user specifically requests that proxy for the run. General permission
+to execute a plan, work independently or measure performance is not permission to
+use a proxy. Do not introduce one as a fallback. The local MCP data service is
+separate from the model connection and remains allowed.
+
+Requests to execute these workflows authorize their ordinary use of Codex models
+through the normal authenticated connection, including processing the task's
+product facts and artifacts. Do not ask for separate permission merely because
+that normal model connection is being used. This does not authorize a local
+model proxy or override an actual platform approval restriction.

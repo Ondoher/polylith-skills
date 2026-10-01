@@ -10,7 +10,8 @@ import {McpHttpServer} from '../../../../scripts/mcp/McpHttpServer.mjs';
 import {PilotInputs} from './prepare.mjs';
 import {PilotStore} from './PilotStore.mjs';
 import {NativeClient} from './native-client.mjs';
-import {runReviewedPipeline} from './reviewed-pipeline.mjs';
+import {prepareReviewedScope, runReviewedPipeline} from './reviewed-pipeline.mjs';
+import {capturePages, capturePageHtml} from './capture-pages.mjs';
 import {wireframeCapabilities} from '../../../../skills/refine-design/scripts/wireframe-contract.mjs';
 import {
 	geometryInspectionHtml,
@@ -30,6 +31,8 @@ const attempt = path.join(governance, '.codex-tmp', attemptName);
 const workspace = path.join(attempt, 'workspace');
 const execute = process.argv.includes('--execute');
 const resume = process.argv.includes('--resume');
+const reviewAttempts = Number(argument('review-attempts', '3'));
+assert(Number.isInteger(reviewAttempts) && reviewAttempts > 0 && reviewAttempts <= 10, 'Invalid review attempt budget');
 const runId = 'wireframe-ui-pilot';
 const started = performance.now();
 fs.mkdirSync(workspace, {recursive: true});
@@ -53,7 +56,7 @@ const event = (value) => {
 			}),
 		);
 };
-event({type: 'run-start', execute, resume});
+event({type: 'run-start', execute, resume, reviewAttempts});
 const manifestPath = path.join(workspace, 'source-manifest.json');
 const readJson = (location) => JSON.parse(fs.readFileSync(location));
 const input = fs.existsSync(manifestPath)
@@ -64,7 +67,7 @@ const input = fs.existsSync(manifestPath)
 		}
 	: argument('fixture', null)
 		? prepareFixture(path.resolve(argument('fixture')))
-		: PilotInputs.prepare(governance, workspace);
+		: PilotInputs.prepare(governance, workspace, argument('scope-input', null));
 
 function prepareFixture(source) {
 	const fixture = readJson(source);
@@ -76,7 +79,7 @@ function prepareFixture(source) {
 	fs.mkdirSync(path.join(workspace, 'outputs'), {recursive: true});
 	for (const name of ['context', 'design'])
 		fs.writeFileSync(path.join(workspace, 'inputs', name + '.json'), JSON.stringify(fixture[name], null, 2));
-	fs.writeFileSync(path.join(workspace, 'outputs/scope.json'), JSON.stringify(fixture.scope, null, 2));
+	fs.writeFileSync(path.join(workspace, 'inputs/scope.json'), JSON.stringify(fixture.scope, null, 2));
 	const manifest = {protectedPaths: [source], hashes: PilotInputs.hashFiles([source]), fixture: true};
 	fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
 	return {manifest, context: fixture.context, design: fixture.design};
@@ -104,6 +107,7 @@ const store = new PilotStore({
 		event(value);
 	},
 });
+prepareReviewedScope(store, workspace);
 const service = new WorkflowService({workspace, pageBytes: 28000, operations: store.operations()});
 service.open({access: service.ownerAccess, run: runId});
 const token = randomBytes(32).toString('hex');
@@ -221,19 +225,19 @@ const runClient = async (role, model, effort, prompt) => {
 	return result;
 };
 const screenshotCaptures = new Map();
-const captureScreenshot = async (receipt) => {
+const captureScreenshot = async (receipt, page) => {
 	const begin = performance.now();
-	const target = receipt.previewPath.replace(/\.html$/, '.png');
+	const target = receipt.previewPath.replace(/\.html$/, page.suffix + '.png');
 	if (fs.existsSync(target) && fs.statSync(target).size > 0) return {path: target};
 	const document = readJson(receipt.path);
-	const capturePath = receipt.previewPath.replace(/\.html$/, '-inspection.html');
-	fs.writeFileSync(capturePath, geometryInspectionHtml(fs.readFileSync(receipt.previewPath, 'utf8')));
+	const capturePath = receipt.previewPath.replace(/\.html$/, page.suffix + '-inspection.html');
+	fs.writeFileSync(
+		capturePath,
+		geometryInspectionHtml(capturePageHtml(fs.readFileSync(receipt.previewPath, 'utf8'), page)),
+	);
 	let capturedDom = '';
 	const width = Math.max(900, ...document.scenes.map((scene) => scene.viewport.width + 100));
-	const height = Math.min(
-		12000,
-		200 + document.scenes.reduce((total, scene) => total + scene.viewport.height + 150, 0),
-	);
+	const height = page.height;
 	const executable = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
 	if (!fs.existsSync(executable)) return {path: null, error: 'Preview capture browser is unavailable: ' + executable};
 	const child = spawn(
@@ -246,7 +250,11 @@ const captureScreenshot = async (receipt) => {
 			'--dump-dom',
 			'--virtual-time-budget=500',
 			'--user-data-dir=' +
-				path.join(attempt, 'browser', receipt.stage + '-' + receipt.elementId + '-r' + receipt.revision),
+				path.join(
+					attempt,
+					'browser',
+					receipt.stage + '-' + receipt.elementId + '-r' + receipt.revision + page.suffix,
+				),
 			'--screenshot=' + target,
 			'--window-size=' + width + ',' + height,
 			new URL('file:///' + capturePath.replaceAll('\\', '/')).href,
@@ -269,7 +277,7 @@ const captureScreenshot = async (receipt) => {
 	}
 	receipt.layoutDiagnostics = readGeometryInspection(capturedDom);
 	fs.writeFileSync(
-		receipt.previewPath.replace(/\.html$/, '-geometry.json'),
+		receipt.previewPath.replace(/\.html$/, page.suffix + '-geometry.json'),
 		JSON.stringify(receipt.layoutDiagnostics),
 	);
 	event({
@@ -277,6 +285,7 @@ const captureScreenshot = async (receipt) => {
 		stage: receipt.stage,
 		elementId: receipt.elementId,
 		revision: receipt.revision,
+		sceneIds: page.sceneIds,
 		...receipt.layoutDiagnostics,
 	});
 	const exists = fs.existsSync(target) && fs.statSync(target).size > 0;
@@ -289,18 +298,32 @@ const captureScreenshot = async (receipt) => {
 		type: 'screenshot',
 		stage: receipt.stage,
 		elementId: receipt.elementId,
+		sceneIds: page.sceneIds,
 		elapsedMs: performance.now() - begin,
 		saved: exists,
 		error,
 	});
 	return {path: exists ? target : null, error};
 };
+const captureCollection = async (receipt) => {
+	const pages = capturePages(readJson(receipt.path).scenes);
+	const captures = [];
+	const diagnostics = [];
+	for (const page of pages) {
+		const result = await captureScreenshot(receipt, page);
+		if (!result.path) return result;
+		captures.push({path: result.path, sceneIds: page.sceneIds});
+		const file = receipt.previewPath.replace(/\.html$/, page.suffix + '-geometry.json');
+		if (fs.existsSync(file)) diagnostics.push(readJson(file));
+	}
+	return {path: captures[0].path, pages: captures, diagnostics};
+};
 const screenshot = async (receipt) => {
 	const key = receipt.previewPath;
 	if (!screenshotCaptures.has(key))
 		screenshotCaptures.set(
 			key,
-			captureScreenshot(receipt).catch((error) => ({path: null, error: error.message})),
+			captureCollection(receipt).catch((error) => ({path: null, error: error.message})),
 		);
 	const result = await screenshotCaptures.get(key);
 	if (!result.path) {
@@ -313,12 +336,21 @@ const screenshot = async (receipt) => {
 			revision: receipt.revision,
 			error: result.error,
 		});
-	} else delete receipt.screenshotError;
+	} else {
+		delete receipt.screenshotError;
+		receipt.screenshotPages = result.pages;
+		receipt.layoutDiagnostics = {
+			warnings: result.diagnostics.flatMap((value) => value.warnings ?? []),
+			controlsChecked: result.diagnostics.reduce((sum, value) => sum + (value.controlsChecked ?? 0), 0),
+			unavailable: result.diagnostics.some((value) => value.unavailable),
+		};
+	}
 	return result.path;
 };
 try {
 	if (execute) {
 		await runReviewedPipeline({
+			reviewAttempts,
 			governance,
 			workspace,
 			store,

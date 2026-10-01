@@ -73,3 +73,50 @@ test('reuse does not inflate first acceptance and input/inspection intervals sta
 		fs.rmSync(directory, {recursive: true, force: true});
 	}
 });
+
+test('first author elapsed includes an interrupted invocation and the gap before resume', () => {
+	const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'reviewed-interrupted-'));
+	const at = (s) => new Date(Date.UTC(2026, 8, 30, 0, 0, s)).toISOString();
+	const role = {role: 'wireframe', elementId: 'dialog'};
+	const event = (s, type, fields = {}) => ({at: at(s), type, ...fields});
+	const events = [
+		event(0, 'run-start'),
+		event(1, 'author-start', role),
+		event(1, 'native.started', {...role, resultPath: 'first', startedAt: at(1)}),
+		event(10, 'native.completed', {
+			...role,
+			resultPath: 'first',
+			startedAt: at(1),
+			endedAt: at(10),
+			completed: false,
+			exitCode: 1,
+		}),
+		event(11, 'run-end'),
+		event(20, 'run-start'),
+		event(21, 'author-start', role),
+		event(21, 'native.started', {...role, resultPath: 'second', startedAt: at(21)}),
+		event(30, 'native.completed', {
+			...role,
+			resultPath: 'second',
+			startedAt: at(21),
+			endedAt: at(30),
+			completed: true,
+			exitCode: 0,
+		}),
+		event(35, 'element-accepted', {elementId: 'dialog'}),
+		event(36, 'run-end'),
+	];
+	try {
+		fs.writeFileSync(path.join(directory, 'events.jsonl'), events.map(JSON.stringify).join('\n'));
+		fs.writeFileSync(path.join(directory, 'state.private.json'), JSON.stringify({clients: []}));
+		const result = analyzeReviewed(directory);
+		assert.equal(result.invocations[0].status, 'unsuccessful');
+		assert.equal(result.elements[0].firstAuthorThroughAcceptance.elapsedMs, 34000);
+		assert.equal(result.completedProcessWindows.allRolesUnionMs, 9000);
+		assert.equal(result.observedProcessWindows.allRolesUnionMs, 18000);
+		assert.equal(result.observedProcessWindows.authorsUnionMs, 18000);
+		assert.equal(result.runs.length, 2);
+	} finally {
+		fs.rmSync(directory, {recursive: true, force: true});
+	}
+});

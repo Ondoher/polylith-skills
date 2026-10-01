@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {renderPreview, validatePreview} from './wireframe-preview.mjs';
 import {dialogPart, editPart, wireframeCapabilities, wireframeDigest, wireframePacket} from './wireframe-contract.mjs';
+import {WireframeScope} from './WireframeScope.mjs';
 
 const rendererFingerprint = createHash('sha256');
 for (const file of [
@@ -21,6 +22,7 @@ export class WireframeStore {
 	constructor({workspace, context, event = () => {}, preview = null}) {
 		this.workspace = workspace;
 		this.context = context;
+		this.selection = new WireframeScope(context);
 		this.event = event;
 		assert(preview === null || typeof preview === 'function', 'Preview callback must be a function');
 		this.preview = preview;
@@ -30,7 +32,14 @@ export class WireframeStore {
 		this.ready = new Map();
 		this.previews = new Map();
 		const scopePath = path.join(this.directory, 'scope.json');
-		if (fs.existsSync(scopePath)) this.scope = JSON.parse(fs.readFileSync(scopePath));
+		this.scopeIssue = null;
+		if (fs.existsSync(scopePath)) {
+			const saved = JSON.parse(fs.readFileSync(scopePath));
+			if (saved.binding === this.selection.binding) this.scope = this.selection.select(saved);
+			else
+				this.scopeIssue =
+					'Saved scope inputs changed; recompute selection before dispatch. Drafts are preserved.';
+		}
 	}
 	_name(value) {
 		assert(typeof value === 'string' && /^[a-z][a-z0-9-]{0,90}$/.test(value), 'Use a stable lowercase element ID');
@@ -54,18 +63,37 @@ export class WireframeStore {
 	packet(elementId) {
 		const element = this.scope?.elements.find((item) => item.id === elementId);
 		assert(element, 'Unknown element');
-		return wireframePacket(this.context, element);
+		const packet = {...wireframePacket(this.context, element), selectionEvidence: this.selection.evidence(element)};
+		delete packet.sha256;
+		return {...packet, sha256: wireframeDigest(packet)};
+	}
+	/** Call this method to obtain only source-justified authoring assignments.
+	 * @returns {WireframeScopeElement[]} - Eligible interfaces; unresolved items remain in scope. */
+	dispatchElements() {
+		return this.scope?.elements.filter((element) => element.disposition === 'update') ?? [];
+	}
+	/** Called by mutations to keep readable context outside the authoring queue.
+	 * @param {string} elementId - Requested interface identity.
+	 * @returns {void} - Throws when the current selection does not authorize this update. */
+	_requireUpdate(elementId) {
+		assert(
+			this.dispatchElements().some((element) => element.id === elementId),
+			'Interface is not authorized for update; repair scope or reuse existing work',
+		);
 	}
 	_binding(elementId, stage, revision) {
+		const packet = this.packet(elementId);
 		return {
 			artifact: wireframeDigest(this._revision(elementId, stage, revision)),
-			source: this.packet(elementId).sha256,
+			source: wireframeDigest({...packet, sourceBinding: undefined, sha256: undefined}),
 			contract: wireframeDigest(wireframeCapabilities),
 			renderer: rendererVersion,
 		};
 	}
 	/** Acceptance is bound to the latest submitted revision and current inputs. */
 	accepted(elementId, stage, revision, current = true) {
+		if (!this.scope?.elements.some((element) => element.id === elementId && element.disposition !== 'unresolved'))
+			return false;
 		const directory = path.join(this.directory, this._name(elementId));
 		const readyPath = path.join(directory, stage + '-ready.json');
 		const role = stage === 'wireframe' ? 'wireframe-review' : 'visual-review';
@@ -86,6 +114,7 @@ export class WireframeStore {
 	}
 	/** Only inspected, mechanically valid exact previews may enter independent review. */
 	submit(input, owner) {
+		this._requireUpdate(input.elementId);
 		const stage = owner.scope.role;
 		assert(['wireframe', 'ui'].includes(stage), 'Author role required');
 		if (owner.scope.elementId) assert(owner.scope.elementId === input.elementId, 'Element outside assignment');
@@ -119,6 +148,8 @@ export class WireframeStore {
 	}
 	/** Decide queued or resumed work from saved ready revisions, independently of element completion flags. */
 	uiDispatchDecision(receipt) {
+		if (!this.dispatchElements().some((element) => element.id === receipt.elementId))
+			return {needed: false, reason: this.scopeIssue ?? 'not-selected-for-update'};
 		const directory = path.join(this.directory, this._name(receipt.elementId));
 		const latestReady = JSON.parse(fs.readFileSync(path.join(directory, 'wireframe-ready.json')));
 		if (receipt.revision !== latestReady.revision)
@@ -157,32 +188,31 @@ export class WireframeStore {
 		}
 		return [...items.values()];
 	}
-	/** Validate source references, then retain the author's complete affected-set inventory. */
+	/** Validate source-linked impacts and retain unsupported entries as local repair issues. */
 	setScope(input, owner) {
 		assert(owner.scope.role === 'wireframe', 'Only the wireframe author selects boundaries');
-		assert(Array.isArray(input.elements) && input.elements.length > 0, 'Scope needs coherent elements');
-		const ids = new Set();
-		const flowIds = new Set(this.context.flows.map((item) => item.id));
-		for (const element of input.elements) {
-			this._name(element.id);
-			assert(!ids.has(element.id), 'Duplicate element');
-			ids.add(element.id);
-			assert(['update', 'reuse'].includes(element.disposition), 'Element disposition must be update or reuse');
-			assert(element.changeReason && element.sourceFlowRefs?.length, 'Explain changed use-case reach');
-			for (const reference of element.sourceFlowRefs)
-				assert(flowIds.has(reference), 'Use a supplied changed flow ID');
-			assert(element.requiredStates?.length, 'Record intended state coverage before design');
+		const selected = this.selection.select(input);
+		const location = path.join(this.directory, 'scope.json');
+		if (fs.existsSync(location)) {
+			const previous = JSON.parse(fs.readFileSync(location));
+			if (wireframeDigest(previous) !== wireframeDigest(selected))
+				this._write(path.join(this.directory, 'scope-history', wireframeDigest(previous) + '.json'), previous);
 		}
-		for (const element of input.elements)
-			for (const dependency of element.dependencies ?? [])
-				assert(ids.has(dependency), 'Unknown element dependency');
-		this.scope = structuredClone(input);
-		this._write(path.join(this.directory, 'scope.json'), input);
-		this.event({type: 'scope-ready', elements: input.elements.map(({id, disposition}) => ({id, disposition}))});
-		return {saved: true, elements: input.elements.map(({id, disposition}) => ({id, disposition}))};
+		this.scope = selected;
+		this.scopeIssue = null;
+		this._write(location, selected);
+		const result = {
+			saved: true,
+			binding: selected.binding,
+			issues: selected.issues,
+			elements: selected.elements.map(({id, disposition}) => ({id, disposition})),
+		};
+		this.event({type: 'scope-ready', ...result});
+		return result;
 	}
 	/** Save only new decisions. A finish renders the mechanically assembled artifact. */
 	contribute(input, owner) {
+		this._requireUpdate(input.elementId);
 		const role = owner.scope.role;
 		assert(['wireframe', 'ui'].includes(role), 'Only authors contribute previews');
 		const elementId = this._name(input.elementId);
@@ -316,6 +346,7 @@ export class WireframeStore {
 	}
 	/** Save exact-version independent findings without inventing canonical approval. */
 	review(input, owner) {
+		this._requireUpdate(input.elementId);
 		assert(['wireframe-review', 'visual-review'].includes(owner.scope.role), 'Review role required');
 		assert(
 			['pass', 'revise'].includes(input.verdict) && Array.isArray(input.findings),
@@ -378,7 +409,7 @@ export class WireframeStore {
 				throw new Error('Use workflow_store');
 			}),
 			'pilot.scope': operation(
-				'Save changed-interface boundaries once; elements need id, disposition, sourceFlowRefs, changeReason, requiredStates and optional dependencies.',
+				'Save source-justified boundaries; updates need impactRefs into parent-supplied scopeBasis, plus id, disposition, sourceFlowRefs, changeReason and requiredStates. Related context alone does not authorize updates; unresolved entries are retained without dispatch.',
 				(input, owner) => this.setScope(input, owner),
 			),
 			'pilot.submit': operation(
