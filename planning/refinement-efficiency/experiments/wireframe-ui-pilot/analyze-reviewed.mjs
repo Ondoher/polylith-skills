@@ -61,7 +61,11 @@ export function analyzeReviewed(attempt) {
 		if (inspectionStart) inspectionWindows.push(span(inspectionStart, null));
 		return {
 			role: item.role,
-			category: item.role.endsWith('review') ? 'review' : (assignment?.type ?? 'unknown'),
+			category: item.role.endsWith('diagnostic')
+				? 'diagnostic-review'
+				: item.role.endsWith('review')
+					? 'review'
+					: (assignment?.type ?? 'unknown'),
 			elementId: item.elementId,
 			status: item.status,
 			window: span(item.startedAt, item.endedAt),
@@ -134,6 +138,9 @@ export function analyzeReviewed(attempt) {
 		const firstAuthor = invocations.find((e) => e.elementId === id && e.role === 'wireframe');
 		const accepted = own.find((e) => e.type === 'element-accepted');
 		const latestAccepted = own.filter((e) => e.type === 'element-accepted').at(-1);
+		const frozen = own.filter((e) => e.type === 'first-draft-frozen');
+		const audits = own.filter((e) => e.type === 'audit-saved');
+		const diagnostics = own.filter((e) => e.type === 'diagnostic-review-ready');
 		const gateEvidence = own
 			.filter((e) => e.type === 'ui-dispatch')
 			.map((dispatch) => {
@@ -168,6 +175,28 @@ export function analyzeReviewed(attempt) {
 			id,
 			wireframe: summarizeStage('wireframe'),
 			ui: summarizeStage('ui'),
+			selfAudit: {
+				firstDrafts: frozen.map(({at, stage, revision}) => ({at, stage, revision})),
+				requirements: own
+					.filter((e) => e.type === 'requirements-saved')
+					.map(({at, stage, count, added}) => ({at, stage, count, added})),
+				audits: audits.map(({at, stage, revision, status, checked, unresolved}) => ({
+					at,
+					stage,
+					revision,
+					status,
+					checked,
+					unresolved,
+				})),
+				diagnostics: diagnostics.map(({at, stage, revision, verdict, findings}) => ({
+					at,
+					stage,
+					revision,
+					verdict,
+					findings,
+				})),
+				firstDraftToFirstAudit: span(frozen[0]?.at, audits[0]?.at),
+			},
 			firstAuthorThroughAcceptance: span(firstAuthor?.window.start, accepted?.at),
 			firstAuthorThroughLatestAcceptance: span(firstAuthor?.window.start, latestAccepted?.at),
 			reused: own.filter((e) => e.type === 'accepted-output-reused'),
@@ -195,7 +224,7 @@ export function analyzeReviewed(attempt) {
 		completedProcessWindows: {allRolesUnionMs: aggregate.wallUnionMs, authorsUnionMs: aggregate.authorWallUnionMs},
 		observedProcessWindows: {
 			allRolesUnionMs: observedUnionMs(invocations),
-			authorsUnionMs: observedUnionMs(invocations.filter((item) => !item.role.endsWith('review'))),
+			authorsUnionMs: observedUnionMs(invocations.filter((item) => ['wireframe', 'ui'].includes(item.role))),
 			limitation:
 				'Includes unsuccessful invocations with observed end times; excludes open intervals and gaps between invocations.',
 		},
@@ -208,6 +237,7 @@ export function analyzeReviewed(attempt) {
 			'Byte counts cover recorded input payloads and returned text fields, not complete MCP transport bytes.',
 			'Latest acceptance can include renderer refresh or later reuse; first acceptance is reported separately.',
 			'Source UX remains unreviewed.',
+			'Diagnostic review is experimental overhead and cannot satisfy the ordinary acceptance gate.',
 		],
 		runs,
 		invocations,

@@ -31,6 +31,11 @@ const attempt = path.join(governance, '.codex-tmp', attemptName);
 const workspace = path.join(attempt, 'workspace');
 const execute = process.argv.includes('--execute');
 const resume = process.argv.includes('--resume');
+const selfAudit = argument('self-audit', 'none');
+const through = argument('through', 'ui');
+assert(['none', 'wireframe', 'both'].includes(selfAudit), 'Invalid self-audit mode');
+assert(['wireframe', 'ui'].includes(through), 'Invalid final stage');
+assert(selfAudit !== 'wireframe' || through === 'wireframe', 'Wireframe-only self-audit needs --through=wireframe');
 const reviewAttempts = Number(argument('review-attempts', '3'));
 assert(Number.isInteger(reviewAttempts) && reviewAttempts > 0 && reviewAttempts <= 10, 'Invalid review attempt budget');
 const runId = 'wireframe-ui-pilot';
@@ -56,7 +61,7 @@ const event = (value) => {
 			}),
 		);
 };
-event({type: 'run-start', execute, resume, reviewAttempts});
+event({type: 'run-start', execute, resume, reviewAttempts, selfAudit, through});
 const manifestPath = path.join(workspace, 'source-manifest.json');
 const readJson = (location) => JSON.parse(fs.readFileSync(location));
 const input = fs.existsSync(manifestPath)
@@ -102,6 +107,7 @@ if (execute) {
 const store = new PilotStore({
 	workspace,
 	context: input.context,
+	selfAudit: selfAudit !== 'none',
 	preview: (receipt) => screenshot(receipt),
 	event: (value) => {
 		event(value);
@@ -177,10 +183,14 @@ const assign = (role, handles = [], scope = {}) =>
 		operations: [
 			'result.store',
 			'pilot.mark',
-			...(role === 'wireframe'
-				? ['pilot.contribute', 'pilot.submit']
-				: role === 'ui'
-					? ['pilot.contribute', 'pilot.submit']
+			...(role === 'wireframe' || role === 'ui'
+				? [
+						'pilot.contribute',
+						'pilot.submit',
+						...(selfAudit !== 'none' ? ['pilot.requirements', 'pilot.audit'] : []),
+					]
+				: role.endsWith('-diagnostic')
+					? ['pilot.diagnostic']
 					: ['pilot.review']),
 		],
 		handles: [...sharedHandles, ...handles],
@@ -369,6 +379,8 @@ try {
 			designReceipt,
 			capabilities: wireframeCapabilities,
 			selected: argument('elements', 'all'),
+			selfAudit,
+			through,
 		});
 		state.status = state.unresolvedReviews?.length ? 'review-incomplete' : 'review-complete';
 	} else state.status = 'prepared';

@@ -73,6 +73,29 @@ export async function runReviewedPipeline(c) {
 	}
 	const protocol = `Use pilot.contribute {elementId,set?,parts?,scenes?,nodeChanges?:[{sceneRef,nodeRef,set}],partChanges?:[{partRef,nodeRef,set}],dialog?:{id,header:[nodes],body:[nodes],footer:[nodes],gap?,padding?},finish?:true}. Save progressive changes. set contains purpose,focusIntent,recoveryIntent,openQuestions or ui metadata. Code owns all envelopes and revisions. dialog creates a shared part with content-sized header/footer and scrollable body; reference it by partRef in scenes. partChanges edits a node including children without resending its part. Scene changes use complete layout/parameters fields. finish:true returns a DRAFT screenshot, validation and coverage. Inspect every entry in the returned screenshotPages using view_image (detail original when needed); screenshot is only the first page. Independent page reads may run in parallel. Use pilot.contribute {elementId,finish:true} to refresh captures; pilot.preview is not an assigned operation. If resuming after a capture blocker, preserve the saved design and only refresh/inspect/submit it unless the rendered evidence reveals a defect. Inspect the complete set, check the source use cases with its actual controls, make targeted corrections if needed, then call pilot.submit {elementId,revision,inspected:true}. Rendering does not submit or approve anything. End after submission. If a renderer/tool defect makes submission impossible, retain the draft and end with the exact blocker for the coordinator to repair; do not wait on a user question. Do not write renderer/browser scripts or access live products. On capture failure retain the draft and report the capture issue. Mark inputs-ready, wireframe-start or ui-start, inspection-start/end and finished via pilot.mark {phase,elementId}. Do not add markers per thought.`;
 	const sharedContract = `Renderer capabilities: ${JSON.stringify(c.capabilities)}\n${c.contractText}\nThe current progressive protocol below supersedes the old finish/ready wording in examples. choice-group template uses parameters {label,presentation:"listbox"|"tabs"|"select",options:[{id,label,secondary?}],selectedId?,disabled?}; use actual item options for selection. It is optional when another usable control better fits the source.`;
+	const auditStage = (stage) => c.selfAudit === 'both' || (c.selfAudit === 'wireframe' && stage === 'wireframe');
+	const diagnostic = async (element, stage, frozen) => {
+		const role = stage === 'wireframe' ? 'wireframe-diagnostic' : 'visual-diagnostic';
+		const reviewerRole = stage === 'wireframe' ? 'wireframe-review' : 'visual-review';
+		const packet = packets.get(element.id);
+		const saved = await artifact(frozen.artifactPath);
+		const assignment = c.assign(role, [saved.handle, packet.handle], {
+			role: reviewerRole,
+			elementId: element.id,
+			revision: frozen.revision,
+		});
+		event({type: 'diagnostic-start', role, elementId: element.id, revision: frozen.revision});
+		await c.runClient(
+			role,
+			'gpt-6-astra',
+			'ultra',
+			`You are the independent ${stage === 'wireframe' ? 'UX wireframe' : 'visual design'} reviewer. Review the frozen FIRST DRAFT of ${element.id} revision ${frozen.revision}. ${c.connection(assignment)} Read artifact ${JSON.stringify(await c.readPlan(saved.handle))} and the same acceptance packet supplied to the author ${JSON.stringify(await c.readPlan(packet.handle))}. Inspect EVERY actual screenshot page using view_image: ${JSON.stringify(frozen.screenshotPages)}. ${sharedContract}\n${stage === 'wireframe' ? 'Check usable source-action coverage, actual item selection where required, hierarchy, states, recovery, focus intent and legible rendered layout. Neutral styling is intentional. Do not perform upstream UX redesign.' : 'Check consistency with accepted wireframe, visual representation, geometry, state distinctions and frozen design language. Record behavior or structural findings with route:"wireframe".'} Only consequential defects require revise; optional preferences use blocking:false. Save pilot.diagnostic {elementId:"${element.id}",revision:${frozen.revision},verdict:"pass"|"revise",findings:[{id,severity,sceneRef,nodeRef,issue,remedy,blocking?,route?}],strengths:[],limits:[]}. This is a DIAGNOSTIC receipt, not acceptance. Do not read or request the author's checklist or audit. End after saving the receipt.`,
+		);
+		const file = path.join(directory(element.id), `${stage}-diagnostic-r${frozen.revision}.json`);
+		assert(fs.existsSync(file), 'Diagnostic reviewer must save its separate receipt');
+		event({type: 'diagnostic-end', role, elementId: element.id, revision: frozen.revision});
+		return read(file);
+	};
 	const author = async (element, stage, feedback = null) =>
 		serial(stage, async () => {
 			const begin = performance.now();
@@ -92,14 +115,58 @@ export async function runReviewedPipeline(c) {
 				{elementId: element.id, ...(wf ? {wireframeRevision: wf.revision} : {})},
 			);
 			const first = !state.threads[stage];
+			const experimental = auditStage(stage);
+			const frozenPath = path.join(directory(element.id), `${stage}-frozen.json`);
+			const firstDraft = experimental && !feedback && !receipt(element.id, stage) && !fs.existsSync(frozenPath);
+			const resumeFrozen = experimental && !feedback && !receipt(element.id, stage) && fs.existsSync(frozenPath);
+			const auditInstructions = !experimental
+				? ''
+				: firstDraft
+					? `EXPERIMENTAL FIRST-DRAFT BARRIER OVERRIDES THE SUBMIT INSTRUCTION ABOVE. Before construction call pilot.requirements {elementId:"${element.id}"} to read the required source inventory; save short observable assertions covering every required ref. Use claims in pilot.contribute as you build when practical. After ordinary construction, render and inspect all screenshot pages and fix obvious rendering errors. Then END THIS ASSIGNMENT WITHOUT calling pilot.audit or pilot.submit. The coordinator will freeze this exact draft and resume this same thread for the full-list self-audit.`
+					: `EXPERIMENTAL AUDIT OVERRIDES THE SUBMIT INSTRUCTION ABOVE. Reuse saved requirements. After any change render and inspect all screenshot pages, read the full list with pilot.audit {elementId:"${element.id}"}, cover missing source refs and check EVERY item against the latest revision in one pilot.audit {elementId,revision,checks:[{id,status:"verified"|"needs-repair",sceneRefs?,nodeRefs?,reason?}]} call. Earlier claims are not verification. Repair and repeat the complete audit after each edit, at most three self-audit repair rounds. Submit only a clean exact revision. Do not use diagnostic reviewer findings.`;
+			const stageProtocol = experimental
+				? protocol
+						.replace(
+							'then call pilot.submit {elementId,revision,inspected:true}.',
+							'then follow the experimental audit/barrier instructions below.',
+						)
+						.replace(
+							'End after submission.',
+							'End at the experimental barrier or after clean audited submission.',
+						)
+				: protocol;
 			if (wf) event({type: 'ui-dispatch', elementId: element.id, wireframeRevision: wf.revision, accepted: true});
 			event({type: feedback ? 'repair-start' : 'author-start', role: stage, elementId: element.id});
-			await c.runClient(
-				stage,
-				stage === 'wireframe' ? 'gpt-6-sol' : 'gpt-6-astra',
-				stage === 'wireframe' ? 'medium' : 'ultra',
-				`You are the ${stage === 'wireframe' ? 'UX wireframe' : 'UI design'} author. Work only on ${element.id}; retain context and accepted decisions from earlier assignments. ${c.connection(assignment)}\n${first ? sharedContract : 'Reuse the renderer contract already supplied.'}\n${protocol}\nSource/acceptance packet (read it on first assignment for this element or a changed source binding; otherwise reuse the unchanged facts already read, retrieving again only to resolve missing context): ${JSON.stringify(await c.readPlan(packet.handle))}. It includes existing flow steps and action contracts; do not invent behavior or replay the upstream UX stage. Bind required source actions to real controls; external interactions need a visible trigger and explicit return behavior. Missing source facts should be recorded as gaps. ${saved ? 'Continue the saved draft: ' + JSON.stringify(await c.readPlan(saved.handle)) : 'Create a fresh element from the original source facts.'}\n${wfSaved ? 'Accepted exact wireframe: ' + JSON.stringify(await c.readPlan(wfSaved.handle)) + '. Preserve its behavior. Shared design language handle is available in your assigned handles; read it once if not retained. Apply its JSON foundations and reuse its research; UI still owns visual decisions and bounded primary-source research when needed. Wireframe acceptance does not authorize behavior changes.' : 'Use neutral styling and meaningful spatial hierarchy. The dialog layout pattern is available to avoid fixed-height content collisions. Include all required states; additional states may be needed for full usage coverage.'}\n${first && stage === 'ui' ? 'Read frozen design language: ' + JSON.stringify(await c.readPlan(c.designReceipt.handle)) : ''}\n${feedback ? 'Repair these exact findings and their affected consequences, preserving unrelated data: ' + JSON.stringify(feedback) : ''}\nEnd with only the submitted element ID/revision, not a combined artifact.`,
-			);
+			if (!resumeFrozen)
+				await c.runClient(
+					stage,
+					stage === 'wireframe' ? 'gpt-6-sol' : 'gpt-6-astra',
+					stage === 'wireframe' ? 'medium' : 'ultra',
+					`You are the ${stage === 'wireframe' ? 'UX wireframe' : 'UI design'} author. Work only on ${element.id}; retain context and accepted decisions from earlier assignments. ${c.connection(assignment)}\n${first ? sharedContract : 'Reuse the renderer contract already supplied.'}\n${stageProtocol}\nSource/acceptance packet (read it on first assignment for this element or a changed source binding; otherwise reuse the unchanged facts already read, retrieving again only to resolve missing context): ${JSON.stringify(await c.readPlan(packet.handle))}. It includes existing flow steps and action contracts; do not invent behavior or replay the upstream UX stage. Bind required source actions to real controls; external interactions need a visible trigger and explicit return behavior. Missing source facts should be recorded as gaps. ${saved ? 'Continue the saved draft: ' + JSON.stringify(await c.readPlan(saved.handle)) : 'Create a fresh element from the original source facts.'}\n${wfSaved ? 'Accepted exact wireframe: ' + JSON.stringify(await c.readPlan(wfSaved.handle)) + '. Preserve its behavior. Shared design language handle is available in your assigned handles; read it once if not retained. Apply its JSON foundations and reuse its research; UI still owns visual decisions and bounded primary-source research when needed. Wireframe acceptance does not authorize behavior changes.' : 'Use neutral styling and meaningful spatial hierarchy. The dialog layout pattern is available to avoid fixed-height content collisions. Include all required states; additional states may be needed for full usage coverage.'}\n${first && stage === 'ui' ? 'Read frozen design language: ' + JSON.stringify(await c.readPlan(c.designReceipt.handle)) : ''}\n${feedback ? 'Repair these exact findings and their affected consequences, preserving unrelated data: ' + JSON.stringify(feedback) : ''}\n${auditInstructions}\nEnd with only the ${firstDraft ? 'inspected first-draft' : 'submitted'} element ID/revision, not a combined artifact.`,
+				);
+			if (firstDraft || resumeFrozen) {
+				assert(!receipt(element.id, stage), 'First draft must remain unsubmitted');
+				const frozen = resumeFrozen ? read(frozenPath) : store.freeze(element.id, stage);
+				const savedDraft = await artifact(frozen.artifactPath);
+				const continuation = c.assign(stage, [packet.handle, savedDraft.handle], {
+					elementId: element.id,
+					...(wf ? {wireframeRevision: wf.revision} : {}),
+				});
+				const selfAudit = c.runClient(
+					stage,
+					stage === 'wireframe' ? 'gpt-6-sol' : 'gpt-6-astra',
+					stage === 'wireframe' ? 'medium' : 'ultra',
+					`Continue as the SAME ${stage} author on ${element.id}. ${c.connection(continuation)} Frozen first draft revision ${frozen.revision}, artifact ${JSON.stringify(await c.readPlan(savedDraft.handle))}, screenshot pages ${JSON.stringify(frozen.screenshotPages)}. Independently inspect every page and use pilot.audit {elementId:"${element.id}"} to read the COMPLETE saved requirement list and source inventory. If the list is absent or incomplete, use pilot.requirements to save missing source-linked assertions before checking. Verify all items against this exact draft, including claims made during construction; add any missing source-linked requirements. Submit one full pilot.audit {elementId,revision,checks:[{id,status:"verified"|"needs-repair",sceneRefs?,nodeRefs?,reason?}]}. Repair unmet items with targeted pilot.contribute changes, render/inspect and recheck the ENTIRE list after each change, up to three repair rounds. Only pilot.submit the clean exact revision. The external diagnostic review is sealed; do not access it. If an item cannot be resolved, preserve the draft and report the blocker. End with submitted element ID/revision.`,
+				);
+				const diagnosticFile = path.join(directory(element.id), `${stage}-diagnostic-r${frozen.revision}.json`);
+				const paired = await Promise.allSettled([
+					fs.existsSync(diagnosticFile)
+						? Promise.resolve(read(diagnosticFile))
+						: diagnostic(element, stage, frozen),
+					selfAudit,
+				]);
+				for (const result of paired) if (result.status === 'rejected') throw result.reason;
+			}
 			const next = receipt(element.id, stage);
 			assert(next && next.revision > (prior?.revision ?? 0), 'Author must submit a new inspected revision');
 			event({
@@ -219,7 +286,7 @@ export async function runReviewedPipeline(c) {
 		selected.map(async (element) => {
 			try {
 				await visit(element);
-				await acceptedStage(element, 'ui');
+				if (c.through !== 'wireframe') await acceptedStage(element, 'ui');
 				state.completed = [...new Set([...state.completed, element.id])];
 				event({type: 'element-accepted', elementId: element.id});
 			} catch (error) {
