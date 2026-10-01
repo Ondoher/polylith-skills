@@ -1,0 +1,79 @@
+{
+	"experiment": "fresh-timeline-wireframe-astra-ultra-author-self-review",
+	"status": "accepted-after-corrected-review-and-repair",
+	"attempt": ".codex-tmp/wireframe-ui-astra-self-review-20261001",
+	"settings": {
+		"author": {"model": "gpt-6-astra", "reasoningEffort": "ultra"},
+		"initialDiagnosticReviewer": {"model": "gpt-6-astra", "reasoningEffort": "ultra"},
+		"ordinaryReviewer": {"model": "gpt-6-astra", "reasoningEffort": "ultra"}
+	},
+	"source": {
+		"fixtureSha256": "4ef83f66a0fa081ec787a675b701b08e7a231c7cbc9f87bd85c279c610e508a2",
+		"packetFileSha256": "1b718b78959edcb04d4c34c986cb3b996745cbbad40402b2ab2f33b845edd677",
+		"liveProductMutated": false,
+		"separateModelClientOrProxyUsed": false
+	},
+	"firstDraft": {
+		"revision": 3,
+		"checklistItems": 25,
+		"scenes": 9,
+		"capturePages": 3,
+		"diagnosticFindings": {"blocking": 2, "nonblocking": 1},
+		"authorAuditUnresolved": 7,
+		"overlap": "Diagnostic reviewer and author self-review ran concurrently on the same frozen artifact. Findings remained sealed from the author."
+	},
+	"authorAudits": [
+		{"revision": 3, "items": 25, "unresolved": 7},
+		{"revision": 4, "items": 25, "unresolved": 2},
+		{"revision": 5, "items": 25, "unresolved": 0},
+		{"revision": 6, "items": 26, "unresolved": 1},
+		{"revision": 7, "items": 26, "unresolved": 0}
+	],
+	"ordinaryReviews": [
+		{
+			"revision": 5,
+			"originalBlindedVerdict": "pass",
+			"originalFindings": 0,
+			"posthocCorrectedVerdict": "revise",
+			"posthocBlockingFindings": 1,
+			"issue": "Pending trim does not resolve enabled Save/Open/Add/Undo/selection commands."
+		},
+		{"revision": 7, "verdict": "pass", "findings": 0}
+	],
+	"acceptedRevision": 7,
+	"acceptedArtifactBinding": "53a933582f3da63e3e1ec74afb1e12da480b95ae71dc3ad36380ea9c68d197be",
+	"counts": {
+		"contributions": 7,
+		"contributionInputBytes": 578369,
+		"explicitCaptures": 6,
+		"explicitCaptureToolSeconds": 43.925,
+		"initialChecklistItems": 25,
+		"lateAddedChecklistItems": 1,
+		"fullAuthorAudits": 5,
+		"reviewerDirectedRepairRevisions": 2
+	},
+	"elapsedSeconds": {
+		"checklistExtraction": 204.47,
+		"initialAuthoring": 288.177,
+		"initialCapture": 34.862,
+		"initialVisualInspectionAndRenderCorrection": 101.992,
+		"checklistStartToFirstDraftFreeze": 630.838,
+		"initialDiagnosticReviewerActive": 495.531,
+		"authorSelfReviewStartToFirstSubmission": 650.403,
+		"firstSubmissionToOriginalBlindedVerdict": 310.913,
+		"ordinaryReviewerActiveOnRevision5": 222.194,
+		"firstSubmissionToCorrectedReviseReceipt": 487.121,
+		"reviewerDirectedRepairStartToRevision7Submission": 506.194,
+		"revision7SubmissionToFinalPassReceipt": 149.94,
+		"ordinaryReviewerActiveOnRevision7": 107.723,
+		"checklistStartToFinalPass": 2564.505
+	},
+	"qualityObservation": "The initial diagnostic caught an ambiguous pending-trim command boundary. The author self-review did not repair it, and the fresh ordinary reviewer initially passed revision 5. A post-verdict targeted adjudication confirmed the blocker persisted. The corrected review gate returned it to the author; revision 7 passed focused independent re-review.",
+	"limits": [
+		"This is one fresh, nondeterministic run with a different first draft and checklist from the Sol/medium trial; model effect is not isolated causally.",
+		"Windows include generation, waiting, coordination and inspection; pure model reasoning and in-session token use were unavailable.",
+		"The first-draft diagnostic overlapped author work and must not be added to critical-path elapsed.",
+		"The revision 7 author audit included context compaction and repeated image inspection after truncation.",
+		"Static wireframe acceptance is not runtime verification or upstream UX approval."
+	]
+}
