@@ -1,8 +1,9 @@
 # Wireframe/UI author self-audit pilot
 
-Status: implementation in progress; see the
-[execution record](wireframe-ui-self-audit-execution.md). No model trial has run
-under this plan yet.
+Status: pilot protocol locally verified; live model trial blocked by automatic
+approval review before its first model call. See the
+[execution record](wireframe-ui-self-audit-execution.md). The plan remains the
+resumption path once the approval condition is resolved.
 
 Test whether the **same wireframe or UI author** can find and repair more defects
 before independent review by keeping a compact, source-bound requirement list and
