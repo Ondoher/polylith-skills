@@ -1,0 +1,137 @@
+{
+	"attempt": ".codex-tmp/wireframe-ui-progressive-review-20261001",
+	"sourcePacketFileSha256": "1b718b78959edcb04d4c34c986cb3b996745cbbad40402b2ab2f33b845edd677",
+	"fixtureSha256": "4ef83f66a0fa081ec787a675b701b08e7a231c7cbc9f87bd85c279c610e508a2",
+	"acceptedRevision7": true,
+	"reviewVerdict": "pass",
+	"reviewFindings": 0,
+	"events": {
+		"checklistStart": "2026-10-01T18:40:44.076Z",
+		"firstDraftFrozen": "2026-10-01T18:49:02.044Z",
+		"initialReviewStart": "2026-10-01T18:49:57.817Z",
+		"initialDiagnosticSaved": "2026-10-01T19:00:00.825Z",
+		"firstSubmitted": "2026-10-01T19:04:32.848Z",
+		"ordinaryReview6Start": "2026-10-01T19:05:07.361Z",
+		"ordinaryReview6Saved": "2026-10-01T19:08:26.132Z",
+		"secondSubmitted": "2026-10-01T19:10:50.035Z",
+		"ordinaryReview7Start": "2026-10-01T19:11:19.541Z",
+		"ordinaryReview7Saved": "2026-10-01T19:12:18.885Z"
+	},
+	"elapsedSeconds": {
+		"checklistToFirstDraft": 497.968,
+		"firstDraftToFirstSubmission": 930.804,
+		"firstDraftToInitialDiagnostic": 658.781,
+		"initialReviewActive": 603.008,
+		"firstFindingToInitialDiagnostic": 485.408,
+		"firstSubmissionToReview6": 233.284,
+		"reviewerDirectedRepair": 143.903,
+		"secondSubmissionToFinalPass": 88.85,
+		"checklistToFinalPass": 1894.809
+	},
+	"findings": [
+		{
+			"id": "r4-staged-trim-commands",
+			"revision": 4,
+			"recordedAt": "2026-10-01T18:51:55.417Z",
+			"sentAt": "2026-10-01T18:52:13.946Z",
+			"acknowledgedAt": "2026-10-01T18:55:01.907Z",
+			"actionAt": "2026-10-01T18:55:02.218Z",
+			"addressedAt": "2026-10-01T19:04:30.562Z",
+			"recordToSendSeconds": 18.529,
+			"sendToAckSeconds": 167.961,
+			"sendToActionSeconds": 168.272
+		},
+		{
+			"id": "r4-start-source-bound",
+			"revision": 4,
+			"recordedAt": "2026-10-01T18:53:56.706Z",
+			"sentAt": "2026-10-01T18:54:14.010Z",
+			"acknowledgedAt": "2026-10-01T18:55:02.592Z",
+			"actionAt": "2026-10-01T18:55:02.990Z",
+			"addressedAt": "2026-10-01T19:04:30.887Z",
+			"recordToSendSeconds": 17.304,
+			"sendToAckSeconds": 48.582,
+			"sendToActionSeconds": 48.98
+		},
+		{
+			"id": "r4-full-source-length",
+			"revision": 4,
+			"recordedAt": "2026-10-01T18:55:13.143Z",
+			"sentAt": "2026-10-01T18:55:29.845Z",
+			"acknowledgedAt": "2026-10-01T18:56:04.728Z",
+			"actionAt": "2026-10-01T18:56:05.060Z",
+			"addressedAt": "2026-10-01T19:04:31.209Z",
+			"recordToSendSeconds": 16.702,
+			"sendToAckSeconds": 34.883,
+			"sendToActionSeconds": 35.215
+		},
+		{
+			"id": "r4-invalid-add-retry",
+			"revision": 4,
+			"recordedAt": "2026-10-01T18:56:17.412Z",
+			"sentAt": "2026-10-01T18:56:35.204Z",
+			"acknowledgedAt": "2026-10-01T18:56:42.020Z",
+			"actionAt": "2026-10-01T18:56:42.375Z",
+			"addressedAt": "2026-10-01T19:04:31.532Z",
+			"recordToSendSeconds": 17.792,
+			"sendToAckSeconds": 6.816,
+			"sendToActionSeconds": 7.171
+		},
+		{
+			"id": "r4-ambiguous-keyboard-focus",
+			"revision": 4,
+			"recordedAt": "2026-10-01T18:57:22.565Z",
+			"sentAt": "2026-10-01T18:57:48.954Z",
+			"acknowledgedAt": "2026-10-01T18:57:51.011Z",
+			"actionAt": "2026-10-01T18:57:51.331Z",
+			"addressedAt": "2026-10-01T19:04:31.857Z",
+			"recordToSendSeconds": 26.389,
+			"sendToAckSeconds": 2.057,
+			"sendToActionSeconds": 2.377
+		},
+		{
+			"id": "r4-add-alternate-results",
+			"revision": 4,
+			"recordedAt": "2026-10-01T18:57:49.885Z",
+			"sentAt": "2026-10-01T18:58:11.639Z",
+			"acknowledgedAt": "2026-10-01T18:58:17.089Z",
+			"actionAt": "2026-10-01T18:58:17.407Z",
+			"addressedAt": "2026-10-01T19:04:32.174Z",
+			"recordToSendSeconds": 21.754,
+			"sendToAckSeconds": 5.45,
+			"sendToActionSeconds": 5.768
+		},
+		{
+			"id": "r4-restoration-baseline",
+			"revision": 4,
+			"recordedAt": "2026-10-01T18:58:37.350Z",
+			"sentAt": "2026-10-01T18:58:57.504Z",
+			"acknowledgedAt": "2026-10-01T18:59:13.398Z",
+			"actionAt": "2026-10-01T18:59:13.722Z",
+			"addressedAt": "2026-10-01T19:04:32.504Z",
+			"recordToSendSeconds": 20.154,
+			"sendToAckSeconds": 15.894,
+			"sendToActionSeconds": 16.218
+		},
+		{
+			"id": "r6-composed-strip-duration",
+			"revision": 6,
+			"recordedAt": "2026-10-01T19:07:16.734Z",
+			"sentAt": "2026-10-01T19:07:32.645Z",
+			"acknowledgedAt": "2026-10-01T19:09:31.721Z",
+			"actionAt": "2026-10-01T19:09:32.034Z",
+			"addressedAt": "2026-10-01T19:10:49.695Z",
+			"recordToSendSeconds": 15.911,
+			"sendToAckSeconds": 119.076,
+			"sendToActionSeconds": 119.389
+		}
+	],
+	"counts": {
+		"firstDraftFindings": 7,
+		"firstDraftStreamedBeforeDiagnostic": 7,
+		"firstDraftAuthorActionsBeforeDiagnostic": 7,
+		"contributionRevisions": [3, 4, 5, 6, 7],
+		"audits": [4, 5, 6, 7],
+		"captures": [3, 4, 5, 6, 7]
+	}
+}
