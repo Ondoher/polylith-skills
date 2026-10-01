@@ -1,0 +1,2608 @@
+{
+	"schemaVersion": 1,
+	"generatedAt": "2026-10-01T02:50:01.674Z",
+	"status": "review-incomplete",
+	"completedProcessWindows": {
+		"allRolesUnionMs": 1122539,
+		"authorsUnionMs": 909081
+	},
+	"observedProcessWindows": {
+		"allRolesUnionMs": 1122539,
+		"authorsUnionMs": 909081,
+		"limitation": "Includes unsuccessful invocations with observed end times; excludes open intervals and gaps between invocations."
+	},
+	"limits": [
+		"Role intervals overlap; do not sum them as elapsed time.",
+		"Completed process unions exclude interrupted invocations; first-author acceptance spans retain interruption and resume gaps.",
+		"Input and authoring windows are subsets of each invocation.",
+		"Native execution supplies no output-stream/command-generation or pure reasoning durations.",
+		"Usage snapshots may be cumulative; no additive token or credit claim.",
+		"Byte counts cover recorded input payloads and returned text fields, not complete MCP transport bytes.",
+		"Latest acceptance can include renderer refresh or later reuse; first acceptance is reported separately.",
+		"Source UX remains unreviewed."
+	],
+	"runs": [
+		{
+			"start": "2026-10-01T02:31:04.013Z",
+			"end": "2026-10-01T02:49:46.993Z",
+			"elapsedMs": 1122980,
+			"status": "review-incomplete",
+			"protectedUnchanged": true
+		}
+	],
+	"invocations": [
+		{
+			"role": "wireframe",
+			"category": "author-start",
+			"elementId": "clip-update-dialog",
+			"status": "completed",
+			"window": {
+				"start": "2026-10-01T02:31:04.128Z",
+				"end": "2026-10-01T02:35:11.615Z",
+				"elapsedMs": 247487
+			},
+			"coordinatorRun": 1,
+			"model": "gpt-6-sol",
+			"effort": "medium",
+			"subsets": {
+				"throughInputsReady": {
+					"start": "2026-10-01T02:31:04.128Z",
+					"end": "2026-10-01T02:31:56.926Z",
+					"elapsedMs": 52798
+				},
+				"afterInputsThroughSubmission": {
+					"start": "2026-10-01T02:31:56.926Z",
+					"end": "2026-10-01T02:35:00.094Z",
+					"elapsedMs": 183168
+				}
+			},
+			"phases": [
+				{
+					"at": "2026-10-01T02:31:56.926Z",
+					"phase": "inputs-ready"
+				},
+				{
+					"at": "2026-10-01T02:32:08.881Z",
+					"phase": "wireframe-start"
+				},
+				{
+					"at": "2026-10-01T02:34:03.407Z",
+					"phase": "inspection-start"
+				},
+				{
+					"at": "2026-10-01T02:34:53.367Z",
+					"phase": "inspection-end"
+				},
+				{
+					"at": "2026-10-01T02:35:07.980Z",
+					"phase": "finished"
+				}
+			],
+			"inspectionWindows": [
+				{
+					"start": "2026-10-01T02:34:03.407Z",
+					"end": "2026-10-01T02:34:53.367Z",
+					"elapsedMs": 49960
+				}
+			],
+			"serviceCalls": 14,
+			"failedServiceCalls": 0,
+			"serviceMs": 3709.322100000012,
+			"maxServiceMs": 2478.6763999999966,
+			"inputBytes": 13605,
+			"returnedTextBytes": 20350,
+			"serviceOperations": {
+				"read": {
+					"calls": 1,
+					"elapsedMs": 0.1529000000009546
+				},
+				"pilot.contribute": {
+					"calls": 6,
+					"elapsedMs": 3692.1400999999823
+				},
+				"pilot.mark": {
+					"calls": 5,
+					"elapsedMs": 11.362900000007357
+				},
+				"catalog": {
+					"calls": 1,
+					"elapsedMs": 0.029300000009243377
+				},
+				"pilot.submit": {
+					"calls": 1,
+					"elapsedMs": 5.636900000012247
+				}
+			},
+			"usageSnapshot": {
+				"input_tokens": 684160,
+				"cached_input_tokens": 635648,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 7225,
+				"reasoning_output_tokens": 2643
+			},
+			"result": "clients/wireframe-ywHBnU/result.md"
+		},
+		{
+			"role": "wireframe",
+			"category": "author-start",
+			"elementId": "timeline",
+			"status": "completed",
+			"window": {
+				"start": "2026-10-01T02:35:11.640Z",
+				"end": "2026-10-01T02:46:13.234Z",
+				"elapsedMs": 661594
+			},
+			"coordinatorRun": 1,
+			"model": "gpt-6-sol",
+			"effort": "medium",
+			"subsets": {
+				"throughInputsReady": {
+					"start": "2026-10-01T02:35:11.640Z",
+					"end": "2026-10-01T02:36:21.588Z",
+					"elapsedMs": 69948
+				},
+				"afterInputsThroughSubmission": {
+					"start": "2026-10-01T02:36:21.588Z",
+					"end": "2026-10-01T02:46:04.046Z",
+					"elapsedMs": 582458
+				}
+			},
+			"phases": [
+				{
+					"at": "2026-10-01T02:36:21.588Z",
+					"phase": "inputs-ready"
+				},
+				{
+					"at": "2026-10-01T02:36:23.936Z",
+					"phase": "wireframe-start"
+				},
+				{
+					"at": "2026-10-01T02:41:12.704Z",
+					"phase": "inspection-start"
+				},
+				{
+					"at": "2026-10-01T02:45:57.496Z",
+					"phase": "inspection-end"
+				},
+				{
+					"at": "2026-10-01T02:46:09.802Z",
+					"phase": "finished"
+				}
+			],
+			"inspectionWindows": [
+				{
+					"start": "2026-10-01T02:41:12.704Z",
+					"end": "2026-10-01T02:45:57.496Z",
+					"elapsedMs": 284792
+				}
+			],
+			"serviceCalls": 31,
+			"failedServiceCalls": 0,
+			"serviceMs": 12764.401299999794,
+			"maxServiceMs": 2939.1319999999832,
+			"inputBytes": 43582,
+			"returnedTextBytes": 104469,
+			"serviceOperations": {
+				"read": {
+					"calls": 10,
+					"elapsedMs": 1.1513999997987412
+				},
+				"pilot.mark": {
+					"calls": 5,
+					"elapsedMs": 9.478799999924377
+				},
+				"pilot.contribute": {
+					"calls": 15,
+					"elapsedMs": 12745.803600000043
+				},
+				"pilot.submit": {
+					"calls": 1,
+					"elapsedMs": 7.96750000002794
+				}
+			},
+			"usageSnapshot": {
+				"input_tokens": 3856370,
+				"cached_input_tokens": 3718272,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 30108,
+				"reasoning_output_tokens": 11474
+			},
+			"result": "clients/wireframe-kHL4WA/result.md"
+		},
+		{
+			"role": "wireframe-review",
+			"category": "review",
+			"elementId": "clip-update-dialog",
+			"status": "completed",
+			"window": {
+				"start": "2026-10-01T02:35:11.650Z",
+				"end": "2026-10-01T02:36:56.725Z",
+				"elapsedMs": 105075
+			},
+			"coordinatorRun": 1,
+			"model": "gpt-6-astra",
+			"effort": "ultra",
+			"subsets": {
+				"throughInputsReady": {
+					"start": "2026-10-01T02:35:11.650Z",
+					"end": null,
+					"elapsedMs": null
+				},
+				"afterInputsThroughSubmission": {
+					"start": null,
+					"end": null,
+					"elapsedMs": null
+				}
+			},
+			"phases": [
+				{
+					"at": "2026-10-01T02:35:28.982Z",
+					"phase": "review-start"
+				}
+			],
+			"inspectionWindows": [],
+			"serviceCalls": 4,
+			"failedServiceCalls": 0,
+			"serviceMs": 8.56449999997858,
+			"maxServiceMs": 6.525299999979325,
+			"inputBytes": 3403,
+			"returnedTextBytes": 32598,
+			"serviceOperations": {
+				"pilot.mark": {
+					"calls": 1,
+					"elapsedMs": 1.7507999999797903
+				},
+				"read": {
+					"calls": 2,
+					"elapsedMs": 0.28840000001946464
+				},
+				"pilot.review": {
+					"calls": 1,
+					"elapsedMs": 6.525299999979325
+				}
+			},
+			"usageSnapshot": {
+				"input_tokens": 182653,
+				"cached_input_tokens": 143744,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 2330,
+				"reasoning_output_tokens": 1032
+			},
+			"result": "clients/wireframe-review-a9ZE3s/result.md"
+		},
+		{
+			"role": "ui",
+			"category": "author-start",
+			"elementId": "clip-update-dialog",
+			"status": "completed",
+			"window": {
+				"start": "2026-10-01T02:36:56.743Z",
+				"end": "2026-10-01T02:41:50.668Z",
+				"elapsedMs": 293925
+			},
+			"coordinatorRun": 1,
+			"model": "gpt-6-astra",
+			"effort": "ultra",
+			"subsets": {
+				"throughInputsReady": {
+					"start": "2026-10-01T02:36:56.743Z",
+					"end": "2026-10-01T02:38:00.835Z",
+					"elapsedMs": 64092
+				},
+				"afterInputsThroughSubmission": {
+					"start": "2026-10-01T02:38:00.835Z",
+					"end": "2026-10-01T02:41:38.527Z",
+					"elapsedMs": 217692
+				}
+			},
+			"phases": [
+				{
+					"at": "2026-10-01T02:38:00.835Z",
+					"phase": "inputs-ready"
+				},
+				{
+					"at": "2026-10-01T02:38:09.351Z",
+					"phase": "ui-start"
+				},
+				{
+					"at": "2026-10-01T02:39:26.841Z",
+					"phase": "inspection-start"
+				},
+				{
+					"at": "2026-10-01T02:41:29.634Z",
+					"phase": "inspection-end"
+				},
+				{
+					"at": "2026-10-01T02:41:45.793Z",
+					"phase": "finished"
+				}
+			],
+			"inspectionWindows": [
+				{
+					"start": "2026-10-01T02:39:26.841Z",
+					"end": "2026-10-01T02:41:29.634Z",
+					"elapsedMs": 122793
+				}
+			],
+			"serviceCalls": 13,
+			"failedServiceCalls": 0,
+			"serviceMs": 3793.975899999845,
+			"maxServiceMs": 2256.440799999982,
+			"inputBytes": 11907,
+			"returnedTextBytes": 95238,
+			"serviceOperations": {
+				"read": {
+					"calls": 5,
+					"elapsedMs": 1.1291999999666587
+				},
+				"pilot.mark": {
+					"calls": 5,
+					"elapsedMs": 9.181799999903888
+				},
+				"pilot.contribute": {
+					"calls": 2,
+					"elapsedMs": 3777.9414000000106
+				},
+				"pilot.submit": {
+					"calls": 1,
+					"elapsedMs": 5.723499999963678
+				}
+			},
+			"usageSnapshot": {
+				"input_tokens": 697575,
+				"cached_input_tokens": 635136,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 6961,
+				"reasoning_output_tokens": 2095
+			},
+			"result": "clients/ui-IzDuZW/result.md"
+		},
+		{
+			"role": "visual-review",
+			"category": "review",
+			"elementId": "clip-update-dialog",
+			"status": "completed",
+			"window": {
+				"start": "2026-10-01T02:41:50.693Z",
+				"end": "2026-10-01T02:44:05.665Z",
+				"elapsedMs": 134972
+			},
+			"coordinatorRun": 1,
+			"model": "gpt-6-astra",
+			"effort": "ultra",
+			"subsets": {
+				"throughInputsReady": {
+					"start": "2026-10-01T02:41:50.693Z",
+					"end": null,
+					"elapsedMs": null
+				},
+				"afterInputsThroughSubmission": {
+					"start": null,
+					"end": null,
+					"elapsedMs": null
+				}
+			},
+			"phases": [
+				{
+					"at": "2026-10-01T02:42:05.438Z",
+					"phase": "review-start"
+				}
+			],
+			"inspectionWindows": [],
+			"serviceCalls": 7,
+			"failedServiceCalls": 0,
+			"serviceMs": 10.790800000191666,
+			"maxServiceMs": 8.051800000015646,
+			"inputBytes": 3312,
+			"returnedTextBytes": 101038,
+			"serviceOperations": {
+				"pilot.mark": {
+					"calls": 1,
+					"elapsedMs": 1.810300000011921
+				},
+				"read": {
+					"calls": 5,
+					"elapsedMs": 0.928700000164099
+				},
+				"pilot.review": {
+					"calls": 1,
+					"elapsedMs": 8.051800000015646
+				}
+			},
+			"usageSnapshot": {
+				"input_tokens": 435760,
+				"cached_input_tokens": 377984,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 3474,
+				"reasoning_output_tokens": 1803
+			},
+			"result": "clients/visual-review-S8lpBL/result.md"
+		},
+		{
+			"role": "wireframe-review",
+			"category": "review",
+			"elementId": "timeline",
+			"status": "completed",
+			"window": {
+				"start": "2026-10-01T02:46:13.505Z",
+				"end": "2026-10-01T02:49:46.963Z",
+				"elapsedMs": 213458
+			},
+			"coordinatorRun": 1,
+			"model": "gpt-6-astra",
+			"effort": "ultra",
+			"subsets": {
+				"throughInputsReady": {
+					"start": "2026-10-01T02:46:13.505Z",
+					"end": null,
+					"elapsedMs": null
+				},
+				"afterInputsThroughSubmission": {
+					"start": null,
+					"end": null,
+					"elapsedMs": null
+				}
+			},
+			"phases": [
+				{
+					"at": "2026-10-01T02:46:25.880Z",
+					"phase": "review-start"
+				}
+			],
+			"inspectionWindows": [],
+			"serviceCalls": 8,
+			"failedServiceCalls": 0,
+			"serviceMs": 251.0292000003392,
+			"maxServiceMs": 238.41210000007413,
+			"inputBytes": 5551,
+			"returnedTextBytes": 135212,
+			"serviceOperations": {
+				"pilot.mark": {
+					"calls": 1,
+					"elapsedMs": 1.7443000000203028
+				},
+				"read": {
+					"calls": 6,
+					"elapsedMs": 239.2687000001315
+				},
+				"pilot.review": {
+					"calls": 1,
+					"elapsedMs": 10.016200000187382
+				}
+			},
+			"usageSnapshot": {
+				"input_tokens": 636443,
+				"cached_input_tokens": 550016,
+				"cache_write_input_tokens": 0,
+				"output_tokens": 8589,
+				"reasoning_output_tokens": 5159
+			},
+			"result": "clients/wireframe-review-39RtLC/result.md"
+		}
+	],
+	"elements": [
+		{
+			"id": "clip-update-dialog",
+			"wireframe": {
+				"contributions": [
+					{
+						"at": "2026-10-01T02:33:03.821Z",
+						"revision": 1,
+						"errors": []
+					},
+					{
+						"at": "2026-10-01T02:33:45.490Z",
+						"revision": 2,
+						"errors": []
+					},
+					{
+						"at": "2026-10-01T02:34:32.923Z",
+						"revision": 4,
+						"errors": []
+					}
+				],
+				"previews": [
+					{
+						"at": "2026-10-01T02:33:53.004Z",
+						"revision": 3,
+						"renderMs": 13.737099999998463,
+						"sceneCount": 6,
+						"partCount": 3,
+						"errors": [],
+						"unrepresentedActions": []
+					},
+					{
+						"at": "2026-10-01T02:34:38.175Z",
+						"revision": 5,
+						"renderMs": 11.002700000011828,
+						"sceneCount": 6,
+						"partCount": 3,
+						"errors": [],
+						"unrepresentedActions": []
+					}
+				],
+				"submissions": [
+					{
+						"at": "2026-10-01T02:35:00.094Z",
+						"revision": 5,
+						"binding": {
+							"artifact": "8bf0020b68774b79951d185fd69c5fbdbc66b6dc58b8bc06be91412c77154bb2",
+							"source": "f90acf76faca42b7668a1086f8338c00f55a2550cd7fca104c3a00078e355cbb",
+							"contract": "522a6626ee9848040be1a7ed8530932514c1c05a4fca5bd0312115277ea1ba93",
+							"renderer": "8b9c901ea2462eaecd7e4563e18fb4a692c62ccb2a29603ab1876bde5d748f60"
+						}
+					}
+				],
+				"reviews": [
+					{
+						"at": "2026-10-01T02:36:52.898Z",
+						"revision": 5,
+						"verdict": "pass",
+						"findings": [
+							{
+								"id": "r5-return-focus-visibility",
+								"severity": "low",
+								"sceneRef": "dismissed",
+								"nodeRef": "return-menu",
+								"issue": "The artifact's focusIntent says dismissal restores focus to the selected occurrence menu trigger, but return-menu is in the default state and the dismissed capture shows no focused control. The representative focus return is therefore not visually demonstrated.",
+								"remedy": "Show return-menu in the supported focus state to illustrate the artifact's stated representative return behavior. Retain the packet's explicit gap about the exact dynamic return target.",
+								"blocking": false
+							}
+						]
+					}
+				],
+				"firstPreviewThroughFirstSubmission": {
+					"start": "2026-10-01T02:33:53.004Z",
+					"end": "2026-10-01T02:35:00.094Z",
+					"elapsedMs": 67090
+				},
+				"firstCandidate": {
+					"renderedRevision": 3,
+					"submittedRevision": 5,
+					"changedBeforeSubmission": true,
+					"limitation": "A changed candidate requires inspection of its saved revisions to classify defects versus optional refinement. Unfinished contributions are separate."
+				},
+				"localPreviewsBeforeFirstSubmission": 2,
+				"acceptedRevision": 5
+			},
+			"ui": {
+				"contributions": [],
+				"previews": [
+					{
+						"at": "2026-10-01T02:39:17.566Z",
+						"revision": 1,
+						"renderMs": 13.673999999999069,
+						"sceneCount": 6,
+						"partCount": 3,
+						"errors": [],
+						"unrepresentedActions": []
+					},
+					{
+						"at": "2026-10-01T02:41:07.289Z",
+						"revision": 2,
+						"renderMs": 14.770800000056624,
+						"sceneCount": 6,
+						"partCount": 3,
+						"errors": [],
+						"unrepresentedActions": []
+					}
+				],
+				"submissions": [
+					{
+						"at": "2026-10-01T02:41:38.527Z",
+						"revision": 2,
+						"binding": {
+							"artifact": "27d2ea063cda859461b572d8904f68120a54355c8e3a1d626188dfe1e3bef79d",
+							"source": "f90acf76faca42b7668a1086f8338c00f55a2550cd7fca104c3a00078e355cbb",
+							"contract": "522a6626ee9848040be1a7ed8530932514c1c05a4fca5bd0312115277ea1ba93",
+							"renderer": "8b9c901ea2462eaecd7e4563e18fb4a692c62ccb2a29603ab1876bde5d748f60"
+						}
+					}
+				],
+				"reviews": [
+					{
+						"at": "2026-10-01T02:44:01.354Z",
+						"revision": 2,
+						"verdict": "revise",
+						"findings": [
+							{
+								"id": "dismissed-focus-cue",
+								"severity": "medium",
+								"sceneRef": "dismissed",
+								"nodeRef": "return-menu",
+								"issue": "The dismissed scene does not visibly represent the artifact's explicit focus-restoration intent. The Selection menu control remains in default state and the screenshot shows no focused target after returning from the dialog, leaving the keyboard continuation point unmarked.",
+								"remedy": "Represent the already specified restored focus by setting return-menu to the supported focus state in the dismissed UI scene. Verify that the complete focus outline remains visible without clipping. This requires no new return behavior or structural change.",
+								"blocking": true
+							},
+							{
+								"id": "secondary-command-outline",
+								"severity": "low",
+								"sceneRef": "review",
+								"nodeRef": "dismiss-update",
+								"issue": "Enabled secondary commands use a faint divider-colored outline in the screenshot rather than the frozen command-family outlined default border role body-text (#212121). The dark labels remain readable, so this is a nonblocking visual-fidelity discrepancy; the same treatment appears on Close and Selection menu.",
+								"remedy": "Use the frozen outlined-command border treatment for enabled secondary commands while retaining the lighter panel-divider treatment for comparison regions.",
+								"blocking": false
+							}
+						]
+					}
+				],
+				"firstPreviewThroughFirstSubmission": {
+					"start": "2026-10-01T02:39:17.566Z",
+					"end": "2026-10-01T02:41:38.527Z",
+					"elapsedMs": 140961
+				},
+				"firstCandidate": {
+					"renderedRevision": 1,
+					"submittedRevision": 2,
+					"changedBeforeSubmission": true,
+					"limitation": "A changed candidate requires inspection of its saved revisions to classify defects versus optional refinement. Unfinished contributions are separate."
+				},
+				"localPreviewsBeforeFirstSubmission": 2,
+				"acceptedRevision": null
+			},
+			"firstAuthorThroughAcceptance": {
+				"start": "2026-10-01T02:31:04.128Z",
+				"end": null,
+				"elapsedMs": null
+			},
+			"firstAuthorThroughLatestAcceptance": {
+				"start": "2026-10-01T02:31:04.128Z",
+				"end": null,
+				"elapsedMs": null
+			},
+			"reused": [],
+			"bindingRefreshes": [],
+			"uiDispatches": [
+				{
+					"at": "2026-10-01T02:36:56.739Z",
+					"monotonicMs": 352834.2542,
+					"type": "ui-dispatch",
+					"elementId": "clip-update-dialog",
+					"wireframeRevision": 5,
+					"accepted": true
+				}
+			],
+			"gateEvidence": [
+				{
+					"at": "2026-10-01T02:36:56.739Z",
+					"wireframeRevision": 5,
+					"submittedAt": "2026-10-01T02:35:00.094Z",
+					"passAt": "2026-10-01T02:36:52.898Z",
+					"valid": true
+				}
+			],
+			"unresolved": [
+				{
+					"elementId": "clip-update-dialog",
+					"reason": "1 review attempts exhausted; saved findings require repair"
+				}
+			]
+		},
+		{
+			"id": "selection-actions-menu",
+			"wireframe": {
+				"contributions": [],
+				"previews": [],
+				"submissions": [],
+				"reviews": [],
+				"firstPreviewThroughFirstSubmission": {
+					"start": null,
+					"end": null,
+					"elapsedMs": null
+				},
+				"firstCandidate": {
+					"renderedRevision": null,
+					"submittedRevision": null,
+					"changedBeforeSubmission": false,
+					"limitation": "A changed candidate requires inspection of its saved revisions to classify defects versus optional refinement. Unfinished contributions are separate."
+				},
+				"localPreviewsBeforeFirstSubmission": 0,
+				"acceptedRevision": null
+			},
+			"ui": {
+				"contributions": [],
+				"previews": [],
+				"submissions": [],
+				"reviews": [],
+				"firstPreviewThroughFirstSubmission": {
+					"start": null,
+					"end": null,
+					"elapsedMs": null
+				},
+				"firstCandidate": {
+					"renderedRevision": null,
+					"submittedRevision": null,
+					"changedBeforeSubmission": false,
+					"limitation": "A changed candidate requires inspection of its saved revisions to classify defects versus optional refinement. Unfinished contributions are separate."
+				},
+				"localPreviewsBeforeFirstSubmission": 0,
+				"acceptedRevision": null
+			},
+			"firstAuthorThroughAcceptance": {
+				"start": null,
+				"end": null,
+				"elapsedMs": null
+			},
+			"firstAuthorThroughLatestAcceptance": {
+				"start": null,
+				"end": null,
+				"elapsedMs": null
+			},
+			"reused": [],
+			"bindingRefreshes": [],
+			"uiDispatches": [],
+			"gateEvidence": [],
+			"unresolved": [
+				{
+					"elementId": "selection-actions-menu",
+					"reason": "1 review attempts exhausted; saved findings require repair"
+				}
+			]
+		},
+		{
+			"id": "timeline",
+			"wireframe": {
+				"contributions": [
+					{
+						"at": "2026-10-01T02:38:44.087Z",
+						"revision": 1,
+						"errors": []
+					},
+					{
+						"at": "2026-10-01T02:39:39.127Z",
+						"revision": 2,
+						"errors": []
+					},
+					{
+						"at": "2026-10-01T02:40:22.628Z",
+						"revision": 3,
+						"errors": []
+					},
+					{
+						"at": "2026-10-01T02:40:50.605Z",
+						"revision": 4,
+						"errors": []
+					},
+					{
+						"at": "2026-10-01T02:42:20.604Z",
+						"revision": 6,
+						"errors": []
+					},
+					{
+						"at": "2026-10-01T02:43:09.595Z",
+						"revision": 8,
+						"errors": []
+					},
+					{
+						"at": "2026-10-01T02:43:48.536Z",
+						"revision": 10,
+						"errors": []
+					},
+					{
+						"at": "2026-10-01T02:45:10.086Z",
+						"revision": 12,
+						"errors": []
+					},
+					{
+						"at": "2026-10-01T02:45:34.274Z",
+						"revision": 14,
+						"errors": []
+					}
+				],
+				"previews": [
+					{
+						"at": "2026-10-01T02:41:02.263Z",
+						"revision": 5,
+						"renderMs": 33.12650000001304,
+						"sceneCount": 9,
+						"partCount": 3,
+						"errors": [],
+						"unrepresentedActions": []
+					},
+					{
+						"at": "2026-10-01T02:42:27.626Z",
+						"revision": 7,
+						"renderMs": 29.3747999999905,
+						"sceneCount": 9,
+						"partCount": 3,
+						"errors": [],
+						"unrepresentedActions": []
+					},
+					{
+						"at": "2026-10-01T02:43:14.759Z",
+						"revision": 9,
+						"renderMs": 26.440100000007078,
+						"sceneCount": 9,
+						"partCount": 3,
+						"errors": [],
+						"unrepresentedActions": []
+					},
+					{
+						"at": "2026-10-01T02:43:53.773Z",
+						"revision": 11,
+						"renderMs": 24.787999999942258,
+						"sceneCount": 9,
+						"partCount": 3,
+						"errors": [],
+						"unrepresentedActions": []
+					},
+					{
+						"at": "2026-10-01T02:45:15.887Z",
+						"revision": 13,
+						"renderMs": 31.950599999981932,
+						"sceneCount": 10,
+						"partCount": 4,
+						"errors": [],
+						"unrepresentedActions": []
+					},
+					{
+						"at": "2026-10-01T02:45:40.892Z",
+						"revision": 15,
+						"renderMs": 30.536500000045635,
+						"sceneCount": 10,
+						"partCount": 4,
+						"errors": [],
+						"unrepresentedActions": []
+					}
+				],
+				"submissions": [
+					{
+						"at": "2026-10-01T02:46:04.046Z",
+						"revision": 15,
+						"binding": {
+							"artifact": "470c9e38599c467b1d936cfd1335021862b55d387f2456cb49a201199c9631ce",
+							"source": "ea024ae55f70e3388dd0393cf0f4aa19c4495dfebf18bff855b1b0d5f9563fa0",
+							"contract": "522a6626ee9848040be1a7ed8530932514c1c05a4fca5bd0312115277ea1ba93",
+							"renderer": "8b9c901ea2462eaecd7e4563e18fb4a692c62ccb2a29603ab1876bde5d748f60"
+						}
+					}
+				],
+				"reviews": [
+					{
+						"at": "2026-10-01T02:49:40.569Z",
+						"revision": 15,
+						"verdict": "revise",
+						"findings": [
+							{
+								"id": "r15-trim-boundary-semantics",
+								"severity": "medium",
+								"sceneRef": "trim-preview",
+								"nodeRef": "group-clip",
+								"issue": "The single staged trim changes Coast montage from Start 04 / inclusive End 12 to Start 02 / inclusive End 15, then trim-applied commits both boundary changes and the City lights shift as one Undo operation. The assigned /actions/10 canonical interaction specifies trimming Start or End and explicitly keeps timeline End fixed during a Start trim. No intermediate interaction explains two separate boundary edits. The rendered example therefore demonstrates a different trim operation from the supplied source.",
+								"remedy": "Make the illustrated preview and applied result show one source-defined boundary edit. For example, retain Start 04 while extending End 12 to 15, reveal the hidden material at that edge, and show the required same-track collision shift as part of that one Undo operation. Keep group geometry, handles, summaries and outcome evidence consistent. If illustrating both boundary edits, make their separate interactions and Undo semantics explicit.",
+								"blocking": true
+							},
+							{
+								"id": "r15-ungroup-inclusive-boundaries",
+								"severity": "medium",
+								"sceneRef": "ungrouped",
+								"nodeRef": "part-a",
+								"issue": "The source defines inclusive End boundaries, but the resulting clips are labeled Coast shore 04–08 and Coast walk 08–12, sharing frame 08 under that convention. In addition, excluded-note calls source intro 00–04 and outro 12–16 wholly excluded even though they meet the retained group's inclusive 04–12 interval at frames 04 and 12. No distinction between geometric cut positions and inclusive frame timestamps is supplied. Consequently the central visible-only Ungroup example does not establish nonoverlapping parts or correct preservation of the boundary frames required by /actions/27.",
+								"remedy": "Use consistent frame-aware representative boundaries. Distinguish geometric cut edges from inclusive frame endpoints if necessary, make adjacent included clips nonoverlapping, and place wholly excluded intro/outro parts strictly outside the retained interval. Update part-a, part-b, excluded-note, their geometry or labels as appropriate, and the associated outcome interpretation together. Preserve the included content and composed positions.",
+								"blocking": true
+							}
+						]
+					}
+				],
+				"firstPreviewThroughFirstSubmission": {
+					"start": "2026-10-01T02:41:02.263Z",
+					"end": "2026-10-01T02:46:04.046Z",
+					"elapsedMs": 301783
+				},
+				"firstCandidate": {
+					"renderedRevision": 5,
+					"submittedRevision": 15,
+					"changedBeforeSubmission": true,
+					"limitation": "A changed candidate requires inspection of its saved revisions to classify defects versus optional refinement. Unfinished contributions are separate."
+				},
+				"localPreviewsBeforeFirstSubmission": 6,
+				"acceptedRevision": null
+			},
+			"ui": {
+				"contributions": [],
+				"previews": [],
+				"submissions": [],
+				"reviews": [],
+				"firstPreviewThroughFirstSubmission": {
+					"start": null,
+					"end": null,
+					"elapsedMs": null
+				},
+				"firstCandidate": {
+					"renderedRevision": null,
+					"submittedRevision": null,
+					"changedBeforeSubmission": false,
+					"limitation": "A changed candidate requires inspection of its saved revisions to classify defects versus optional refinement. Unfinished contributions are separate."
+				},
+				"localPreviewsBeforeFirstSubmission": 0,
+				"acceptedRevision": null
+			},
+			"firstAuthorThroughAcceptance": {
+				"start": "2026-10-01T02:35:11.640Z",
+				"end": null,
+				"elapsedMs": null
+			},
+			"firstAuthorThroughLatestAcceptance": {
+				"start": "2026-10-01T02:35:11.640Z",
+				"end": null,
+				"elapsedMs": null
+			},
+			"reused": [],
+			"bindingRefreshes": [],
+			"uiDispatches": [],
+			"gateEvidence": [],
+			"unresolved": [
+				{
+					"elementId": "timeline",
+					"reason": "1 review attempts exhausted; saved findings require repair"
+				}
+			]
+		}
+	],
+	"packets": [
+		{
+			"at": "2026-10-01T02:31:04.106Z",
+			"monotonicMs": 201.3896,
+			"type": "packet-prepared",
+			"elementId": "clip-update-dialog",
+			"sha256": "7b25ce7f5adf3304bc53b12068b7ef89f0b88315ce1e009b3e0f1411c28c775d",
+			"bytes": 20350,
+			"elapsedMs": 5.668200000000013,
+			"missingActionRefs": []
+		},
+		{
+			"at": "2026-10-01T02:31:04.113Z",
+			"monotonicMs": 208.8019,
+			"type": "packet-prepared",
+			"elementId": "selection-actions-menu",
+			"sha256": "debd5d1994439cac478b2f0a6e64342bc06974898418a71682913d1ab1aec8fa",
+			"bytes": 66821,
+			"elapsedMs": 7.202300000000008,
+			"missingActionRefs": []
+		},
+		{
+			"at": "2026-10-01T02:31:04.121Z",
+			"monotonicMs": 216.9613,
+			"type": "packet-prepared",
+			"elementId": "timeline",
+			"sha256": "aa5348d88302058ba99195293e06837d8c52971be490774f0c76f681839e17ef",
+			"bytes": 101553,
+			"elapsedMs": 7.918099999999981,
+			"missingActionRefs": [
+				"new-project",
+				"open-project",
+				"save-project",
+				"save-project-as",
+				"navigate",
+				"mute-track"
+			]
+		}
+	],
+	"serviceRuns": [
+		{
+			"file": "service-metrics-1790822986990.json",
+			"operations": [
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.10319999999774154,
+					"operationMs": 2.5222999999969034
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.009899999997287523,
+					"operationMs": 2.05109999999695
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.010900000008405186,
+					"operationMs": 6.809499999988475
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.013700000010430813,
+					"operationMs": 7.046999999991385
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.022599999996600673,
+					"operationMs": 2478.582300000009
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.010799999989103526,
+					"operationMs": 2.073000000003958
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.030900000012479722,
+					"operationMs": 5.807399999990594
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.021700000012060627,
+					"operationMs": 1191.8471999999892
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.01660000000265427,
+					"operationMs": 2.1736000000091735
+				},
+				{
+					"operation": "pilot.submit",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.013600000005681068,
+					"operationMs": 5.573399999993853
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.005199999985052273,
+					"operationMs": 1.937000000005355
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.011500000022351742,
+					"operationMs": 1.6983999999938533
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.02890000003390014,
+					"operationMs": 1.710399999981746
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.006999999983236194,
+					"operationMs": 1.8094000000273809
+				},
+				{
+					"operation": "pilot.review",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.0062000000034458935,
+					"operationMs": 6.394499999994878
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.007099999987985939,
+					"operationMs": 1.6820000000298023
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.009799999999813735,
+					"operationMs": 1.655399999988731
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.00810000003548339,
+					"operationMs": 7.262699999962933
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.007500000006984919,
+					"operationMs": 2255.8789000000106
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.006099999998696148,
+					"operationMs": 2.1589000000385568
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.005900000047404319,
+					"operationMs": 7.022299999953248
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.010200000018812716,
+					"operationMs": 7.853399999905378
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.0071000000461936,
+					"operationMs": 7.885599999921396
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.006399999954737723,
+					"operationMs": 2578.9209000000264
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.008800000068731606,
+					"operationMs": 1521.1921999999322
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.008000000030733645,
+					"operationMs": 1.9739999999292195
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.006000000052154064,
+					"operationMs": 1.617799999890849
+				},
+				{
+					"operation": "pilot.submit",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.005899999989196658,
+					"operationMs": 5.675999999977648
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.006300000008195639,
+					"operationMs": 1.8157999999821186
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.015599999926052988,
+					"operationMs": 1.7462000000523403
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.009199999971315265,
+					"operationMs": 10.679200000013225
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.0062000000616535544,
+					"operationMs": 1651.1287000000011
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.010200000018812716,
+					"operationMs": 8.179899999988265
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.006099999998696148,
+					"operationMs": 1857.1648000000278
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.01069999998435378,
+					"operationMs": 8.32680000003893
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.00750000006519258,
+					"operationMs": 1842.9846999999136
+				},
+				{
+					"operation": "pilot.review",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.007199999992735684,
+					"operationMs": 7.929499999969266
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.006999999983236194,
+					"operationMs": 7.10730000003241
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.007799999904818833,
+					"operationMs": 2939.0664000000106
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.01560000004246831,
+					"operationMs": 7.994399999966845
+				},
+				{
+					"operation": "pilot.contribute",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.008200000040233135,
+					"operationMs": 1801.35970000003
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.008100000093691051,
+					"operationMs": 1.8624999999301508
+				},
+				{
+					"operation": "pilot.submit",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.005799999926239252,
+					"operationMs": 7.913300000014715
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.006300000008195639,
+					"operationMs": 1.8734999999869615
+				},
+				{
+					"operation": "pilot.mark",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.007199999992735684,
+					"operationMs": 1.6957999999867752
+				},
+				{
+					"operation": "pilot.review",
+					"run": "wireframe-ui-pilot",
+					"status": "complete",
+					"queuedMs": 0.007299999939277768,
+					"operationMs": 9.899900000076741
+				}
+			],
+			"http": [
+				{
+					"at": "2026-10-01T02:31:05.485Z",
+					"method": "initialize",
+					"tool": null,
+					"requestBytes": 228,
+					"responseBytes": 155,
+					"handlingMs": 1.381399999999985,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:31:05.493Z",
+					"method": "tools/list",
+					"tool": null,
+					"requestBytes": 85,
+					"responseBytes": 3949,
+					"handlingMs": 0.26720000000000255,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:31:19.618Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1271,
+					"responseBytes": 24886,
+					"handlingMs": 0.8438999999998487,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:31:25.370Z",
+					"method": "tools/call",
+					"tool": "workflow_catalog",
+					"requestBytes": 1209,
+					"responseBytes": 401,
+					"handlingMs": 0.8397000000004482,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:31:56.929Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1269,
+					"responseBytes": 562,
+					"handlingMs": 3.3562000000019907,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:32:02.280Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1274,
+					"responseBytes": 132,
+					"handlingMs": 0.6691999999966356,
+					"failed": true
+				},
+				{
+					"at": "2026-10-01T02:32:08.884Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1272,
+					"responseBytes": 561,
+					"handlingMs": 2.5279999999984284,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:33:03.824Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 9148,
+					"responseBytes": 808,
+					"handlingMs": 8.318399999989197,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:33:13.466Z",
+					"method": "tools/call",
+					"tool": "workflow_catalog",
+					"requestBytes": 1178,
+					"responseBytes": 188,
+					"handlingMs": 0.5290999999997439,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:33:45.494Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 5494,
+					"responseBytes": 808,
+					"handlingMs": 8.592799999983981,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:33:55.465Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1267,
+					"responseBytes": 2117,
+					"handlingMs": 2479.237599999993,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:34:03.410Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1275,
+					"responseBytes": 562,
+					"handlingMs": 2.549700000003213,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:34:32.925Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 2163,
+					"responseBytes": 809,
+					"handlingMs": 6.5917999999946915,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:34:39.352Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1268,
+					"responseBytes": 2483,
+					"handlingMs": 1192.4751999999862,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:34:53.370Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1273,
+					"responseBytes": 562,
+					"handlingMs": 2.792300000000978,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:35:00.096Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1280,
+					"responseBytes": 2867,
+					"handlingMs": 6.014999999984866,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:35:07.983Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1267,
+					"responseBytes": 562,
+					"handlingMs": 2.6041000000259373,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:35:12.478Z",
+					"method": "initialize",
+					"tool": null,
+					"requestBytes": 228,
+					"responseBytes": 155,
+					"handlingMs": 0.25810000000637956,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:35:12.483Z",
+					"method": "tools/list",
+					"tool": null,
+					"requestBytes": 85,
+					"responseBytes": 3949,
+					"handlingMs": 0.17940000002272427,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:35:12.539Z",
+					"method": "initialize",
+					"tool": null,
+					"requestBytes": 228,
+					"responseBytes": 155,
+					"handlingMs": 0.3274000000092201,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:35:12.544Z",
+					"method": "tools/list",
+					"tool": null,
+					"requestBytes": 85,
+					"responseBytes": 3949,
+					"handlingMs": 0.14979999998467974,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:35:27.194Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1271,
+					"responseBytes": 35283,
+					"handlingMs": 0.7247000000206754,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:35:27.195Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1275,
+					"responseBytes": 34276,
+					"handlingMs": 0.6667000000015832,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:35:27.210Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1275,
+					"responseBytes": 36388,
+					"handlingMs": 0.6951000000117347,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:35:27.214Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1275,
+					"responseBytes": 21875,
+					"handlingMs": 0.6074000000371598,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:35:28.984Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1270,
+					"responseBytes": 561,
+					"handlingMs": 2.1322999999974854,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:35:45.999Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 17606,
+					"handlingMs": 0.938800000003539,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:35:46.000Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 24886,
+					"handlingMs": 0.5487000000430271,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:36:21.590Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1259,
+					"responseBytes": 561,
+					"handlingMs": 2.1815000000060536,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:36:23.939Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1262,
+					"responseBytes": 561,
+					"handlingMs": 2.398300000000745,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:36:52.902Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 4557,
+					"responseBytes": 760,
+					"handlingMs": 7.003900000010617,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:36:57.482Z",
+					"method": "initialize",
+					"tool": null,
+					"requestBytes": 228,
+					"responseBytes": 155,
+					"handlingMs": 0.1861000000499189,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:36:57.488Z",
+					"method": "tools/list",
+					"tool": null,
+					"requestBytes": 85,
+					"responseBytes": 3949,
+					"handlingMs": 0.18679999996675178,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:37:24.708Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 24886,
+					"handlingMs": 0.8264000000199303,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:37:24.710Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 17606,
+					"handlingMs": 0.7915999999968335,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:37:24.713Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 36530,
+					"handlingMs": 0.9697000000160187,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:37:24.716Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1266,
+					"responseBytes": 132,
+					"handlingMs": 0.6572999999625608,
+					"failed": true
+				},
+				{
+					"at": "2026-10-01T02:37:24.717Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1276,
+					"responseBytes": 8123,
+					"handlingMs": 0.7173000000184402,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:37:31.971Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1276,
+					"responseBytes": 37215,
+					"handlingMs": 0.9596000000019558,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:38:00.837Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1270,
+					"responseBytes": 561,
+					"handlingMs": 2.17259999999078,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:38:09.353Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1266,
+					"responseBytes": 561,
+					"handlingMs": 2.0997000000206754,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:38:44.090Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 17387,
+					"responseBytes": 788,
+					"handlingMs": 8.983399999968242,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:38:58.410Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1296,
+					"responseBytes": 708,
+					"handlingMs": 0.46179999999003485,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:38:58.410Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1297,
+					"responseBytes": 658,
+					"handlingMs": 0.32889999996405095,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:38:58.464Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1298,
+					"responseBytes": 741,
+					"handlingMs": 0.4365000000107102,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:39:19.804Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 6942,
+					"responseBytes": 2607,
+					"handlingMs": 2257.1257000000332,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:39:26.843Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1276,
+					"responseBytes": 562,
+					"handlingMs": 2.760400000028312,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:39:39.130Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 4650,
+					"responseBytes": 789,
+					"handlingMs": 7.6445999999996275,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:40:22.631Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 9092,
+					"responseBytes": 789,
+					"handlingMs": 9.093699999968521,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:40:50.608Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 4695,
+					"responseBytes": 789,
+					"handlingMs": 8.651700000045821,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:41:04.803Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1258,
+					"responseBytes": 5085,
+					"handlingMs": 2579.4766000000527,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:41:08.790Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 7049,
+					"responseBytes": 2448,
+					"handlingMs": 1522.2193999999436,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:41:12.707Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1265,
+					"responseBytes": 562,
+					"handlingMs": 2.5087999999523163,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:41:29.636Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1274,
+					"responseBytes": 562,
+					"handlingMs": 2.0053999999072403,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:41:38.530Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1281,
+					"responseBytes": 2832,
+					"handlingMs": 6.090300000039861,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:41:45.795Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1268,
+					"responseBytes": 562,
+					"handlingMs": 2.334099999978207,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:41:48.380Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1308,
+					"responseBytes": 1111,
+					"handlingMs": 0.5940999999875203,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:41:51.437Z",
+					"method": "initialize",
+					"tool": null,
+					"requestBytes": 228,
+					"responseBytes": 155,
+					"handlingMs": 0.20370000007096678,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:41:51.442Z",
+					"method": "tools/list",
+					"tool": null,
+					"requestBytes": 85,
+					"responseBytes": 3949,
+					"handlingMs": 0.16049999999813735,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:41:57.327Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1308,
+					"responseBytes": 1043,
+					"handlingMs": 0.4518000000389293,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:42:05.440Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1270,
+					"responseBytes": 561,
+					"handlingMs": 2.251399999950081,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:42:09.991Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 26844,
+					"handlingMs": 0.7260000000242144,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:42:15.592Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 24886,
+					"handlingMs": 0.5084999999962747,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:42:20.607Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 4743,
+					"responseBytes": 789,
+					"handlingMs": 11.321299999952316,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:42:20.990Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 36530,
+					"handlingMs": 0.6403999999165535,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:42:25.736Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1276,
+					"responseBytes": 37215,
+					"handlingMs": 0.8185000000521541,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:42:29.243Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1258,
+					"responseBytes": 5866,
+					"handlingMs": 1651.715599999996,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:42:30.805Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1276,
+					"responseBytes": 8123,
+					"handlingMs": 0.8100000000558794,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:43:09.597Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 2191,
+					"responseBytes": 789,
+					"handlingMs": 8.726900000008754,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:43:16.585Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1258,
+					"responseBytes": 4622,
+					"handlingMs": 1857.9597000000067,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:43:48.538Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1670,
+					"responseBytes": 791,
+					"handlingMs": 8.974500000011176,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:43:55.585Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1258,
+					"responseBytes": 4627,
+					"handlingMs": 1843.6159000000916,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:44:01.358Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 4460,
+					"responseBytes": 759,
+					"handlingMs": 8.531300000031479,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:44:27.854Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1308,
+					"responseBytes": 1024,
+					"handlingMs": 0.6099000000394881,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:45:10.088Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 8104,
+					"responseBytes": 791,
+					"handlingMs": 8.077900000032969,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:45:18.789Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1258,
+					"responseBytes": 4644,
+					"handlingMs": 2939.6002999999328,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:45:34.276Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1485,
+					"responseBytes": 791,
+					"handlingMs": 8.552000000025146,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:45:42.658Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1258,
+					"responseBytes": 4644,
+					"handlingMs": 1801.907899999991,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:45:57.498Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1263,
+					"responseBytes": 562,
+					"handlingMs": 2.2907999999588355,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:46:04.049Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1271,
+					"responseBytes": 5028,
+					"handlingMs": 8.40549999999348,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:46:09.804Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1257,
+					"responseBytes": 562,
+					"handlingMs": 2.3968999999342486,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:46:14.175Z",
+					"method": "initialize",
+					"tool": null,
+					"requestBytes": 228,
+					"responseBytes": 155,
+					"handlingMs": 0.2049000000115484,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:46:14.181Z",
+					"method": "tools/list",
+					"tool": null,
+					"requestBytes": 85,
+					"responseBytes": 3949,
+					"handlingMs": 0.19839999999385327,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:46:25.882Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 1260,
+					"responseBytes": 561,
+					"handlingMs": 2.134499999927357,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:46:35.972Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 40347,
+					"handlingMs": 239.31449999997858,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:46:35.974Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1272,
+					"responseBytes": 35283,
+					"handlingMs": 0.8136000001104549,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:46:45.708Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1276,
+					"responseBytes": 9505,
+					"handlingMs": 0.5725000000093132,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:46:45.745Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1276,
+					"responseBytes": 34276,
+					"handlingMs": 0.9093000000575557,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:46:50.931Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1276,
+					"responseBytes": 36388,
+					"handlingMs": 0.6570000000065193,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:46:56.009Z",
+					"method": "tools/call",
+					"tool": "workflow_read",
+					"requestBytes": 1276,
+					"responseBytes": 21875,
+					"handlingMs": 0.6425000000745058,
+					"failed": false
+				},
+				{
+					"at": "2026-10-01T02:49:40.572Z",
+					"method": "tools/call",
+					"tool": "workflow_execute",
+					"requestBytes": 6707,
+					"responseBytes": 753,
+					"handlingMs": 10.575600000098348,
+					"failed": false
+				}
+			]
+		}
+	],
+	"layoutChecks": [
+		{
+			"at": "2026-10-01T02:33:55.460Z",
+			"monotonicMs": 171555.7711,
+			"type": "layout-check",
+			"stage": "wireframe",
+			"elementId": "clip-update-dialog",
+			"revision": 3,
+			"sceneIds": ["review", "committing", "failure", "success", "entry", "dismissed"],
+			"warnings": [],
+			"controlsChecked": 70,
+			"limitation": "Static geometry warnings; inspect intentional overlaps and actual usage. No runtime behavior is verified."
+		},
+		{
+			"at": "2026-10-01T02:34:39.345Z",
+			"monotonicMs": 215440.9271,
+			"type": "layout-check",
+			"stage": "wireframe",
+			"elementId": "clip-update-dialog",
+			"revision": 5,
+			"sceneIds": ["review", "committing", "failure", "success", "entry", "dismissed"],
+			"warnings": [],
+			"controlsChecked": 70,
+			"limitation": "Static geometry warnings; inspect intentional overlaps and actual usage. No runtime behavior is verified."
+		},
+		{
+			"at": "2026-10-01T02:39:19.796Z",
+			"monotonicMs": 495891.2117,
+			"type": "layout-check",
+			"stage": "ui",
+			"elementId": "clip-update-dialog",
+			"revision": 1,
+			"sceneIds": ["review", "committing", "failure", "success", "entry", "dismissed"],
+			"warnings": [
+				{
+					"nodeRef": "selected-occurrence",
+					"kind": "text-overflow",
+					"message": "Visible text exceeds its allocated control frame; inspect overlap or clipping."
+				}
+			],
+			"controlsChecked": 70,
+			"limitation": "Static geometry warnings; inspect intentional overlaps and actual usage. No runtime behavior is verified."
+		},
+		{
+			"at": "2026-10-01T02:41:04.797Z",
+			"monotonicMs": 600892.1386,
+			"type": "layout-check",
+			"stage": "wireframe",
+			"elementId": "timeline",
+			"revision": 5,
+			"sceneIds": [
+				"group-selected",
+				"trim-preview",
+				"trim-applied",
+				"ungroup-failure",
+				"add-staged",
+				"commit-freeze",
+				"ungrouped",
+				"trim-invalid",
+				"add-failure"
+			],
+			"warnings": [
+				{
+					"nodeRef": "content-choice",
+					"kind": "text-overflow",
+					"message": "Visible text exceeds its allocated control frame; inspect overlap or clipping."
+				},
+				{
+					"nodeRef": "content-choice",
+					"kind": "text-overflow",
+					"message": "Visible text exceeds its allocated control frame; inspect overlap or clipping."
+				},
+				{
+					"nodeRef": "content-choice",
+					"kind": "text-overflow",
+					"message": "Visible text exceeds its allocated control frame; inspect overlap or clipping."
+				}
+			],
+			"controlsChecked": 247,
+			"limitation": "Static geometry warnings; inspect intentional overlaps and actual usage. No runtime behavior is verified."
+		},
+		{
+			"at": "2026-10-01T02:41:08.782Z",
+			"monotonicMs": 604877.8131,
+			"type": "layout-check",
+			"stage": "ui",
+			"elementId": "clip-update-dialog",
+			"revision": 2,
+			"sceneIds": ["review", "committing", "failure", "success", "entry", "dismissed"],
+			"warnings": [],
+			"controlsChecked": 70,
+			"limitation": "Static geometry warnings; inspect intentional overlaps and actual usage. No runtime behavior is verified."
+		},
+		{
+			"at": "2026-10-01T02:42:29.236Z",
+			"monotonicMs": 685331.6044,
+			"type": "layout-check",
+			"stage": "wireframe",
+			"elementId": "timeline",
+			"revision": 7,
+			"sceneIds": [
+				"group-selected",
+				"trim-preview",
+				"trim-applied",
+				"ungroup-failure",
+				"add-staged",
+				"commit-freeze",
+				"ungrouped",
+				"trim-invalid",
+				"add-failure"
+			],
+			"warnings": [
+				{
+					"nodeRef": "content-choice",
+					"kind": "text-overflow",
+					"message": "Visible text exceeds its allocated control frame; inspect overlap or clipping."
+				},
+				{
+					"nodeRef": "destination-summary",
+					"kind": "text-overflow",
+					"message": "Visible text exceeds its allocated control frame; inspect overlap or clipping."
+				},
+				{
+					"nodeRef": "content-choice",
+					"kind": "text-overflow",
+					"message": "Visible text exceeds its allocated control frame; inspect overlap or clipping."
+				},
+				{
+					"nodeRef": "destination-summary",
+					"kind": "text-overflow",
+					"message": "Visible text exceeds its allocated control frame; inspect overlap or clipping."
+				},
+				{
+					"nodeRef": "add-status",
+					"kind": "text-overflow",
+					"message": "Visible text exceeds its allocated control frame; inspect overlap or clipping."
+				},
+				{
+					"nodeRef": "content-choice",
+					"kind": "text-overflow",
+					"message": "Visible text exceeds its allocated control frame; inspect overlap or clipping."
+				},
+				{
+					"nodeRef": "destination-summary",
+					"kind": "text-overflow",
+					"message": "Visible text exceeds its allocated control frame; inspect overlap or clipping."
+				},
+				{
+					"nodeRef": "add-status",
+					"kind": "text-overflow",
+					"message": "Visible text exceeds its allocated control frame; inspect overlap or clipping."
+				}
+			],
+			"controlsChecked": 247,
+			"limitation": "Static geometry warnings; inspect intentional overlaps and actual usage. No runtime behavior is verified."
+		},
+		{
+			"at": "2026-10-01T02:43:16.577Z",
+			"monotonicMs": 732672.3168,
+			"type": "layout-check",
+			"stage": "wireframe",
+			"elementId": "timeline",
+			"revision": 9,
+			"sceneIds": [
+				"group-selected",
+				"trim-preview",
+				"trim-applied",
+				"ungroup-failure",
+				"add-staged",
+				"commit-freeze",
+				"ungrouped",
+				"trim-invalid",
+				"add-failure"
+			],
+			"warnings": [],
+			"controlsChecked": 247,
+			"limitation": "Static geometry warnings; inspect intentional overlaps and actual usage. No runtime behavior is verified."
+		},
+		{
+			"at": "2026-10-01T02:43:55.577Z",
+			"monotonicMs": 771672.5188,
+			"type": "layout-check",
+			"stage": "wireframe",
+			"elementId": "timeline",
+			"revision": 11,
+			"sceneIds": [
+				"group-selected",
+				"trim-preview",
+				"trim-applied",
+				"ungroup-failure",
+				"add-staged",
+				"commit-freeze",
+				"ungrouped",
+				"trim-invalid",
+				"add-failure"
+			],
+			"warnings": [],
+			"controlsChecked": 247,
+			"limitation": "Static geometry warnings; inspect intentional overlaps and actual usage. No runtime behavior is verified."
+		},
+		{
+			"at": "2026-10-01T02:45:18.782Z",
+			"monotonicMs": 854877.5277,
+			"type": "layout-check",
+			"stage": "wireframe",
+			"elementId": "timeline",
+			"revision": 13,
+			"sceneIds": [
+				"group-selected",
+				"trim-preview",
+				"trim-applied",
+				"ungroup-failure",
+				"add-staged",
+				"commit-freeze",
+				"ungrouped",
+				"trim-invalid",
+				"add-failure",
+				"add-canceled"
+			],
+			"warnings": [],
+			"controlsChecked": 259,
+			"limitation": "Static geometry warnings; inspect intentional overlaps and actual usage. No runtime behavior is verified."
+		},
+		{
+			"at": "2026-10-01T02:45:42.653Z",
+			"monotonicMs": 878747.7564,
+			"type": "layout-check",
+			"stage": "wireframe",
+			"elementId": "timeline",
+			"revision": 15,
+			"sceneIds": [
+				"group-selected",
+				"trim-preview",
+				"trim-applied",
+				"ungroup-failure",
+				"add-staged",
+				"commit-freeze",
+				"ungrouped",
+				"trim-invalid",
+				"add-failure",
+				"add-canceled"
+			],
+			"warnings": [],
+			"controlsChecked": 259,
+			"limitation": "Static geometry warnings; inspect intentional overlaps and actual usage. No runtime behavior is verified."
+		}
+	],
+	"screenshots": [
+		{
+			"at": "2026-10-01T02:33:55.460Z",
+			"monotonicMs": 171556.2264,
+			"type": "screenshot",
+			"stage": "wireframe",
+			"elementId": "clip-update-dialog",
+			"sceneIds": ["review", "committing", "failure", "success", "entry", "dismissed"],
+			"elapsedMs": 2454.3175000000047,
+			"saved": true,
+			"error": null
+		},
+		{
+			"at": "2026-10-01T02:34:39.346Z",
+			"monotonicMs": 215441.5296,
+			"type": "screenshot",
+			"stage": "wireframe",
+			"elementId": "clip-update-dialog",
+			"sceneIds": ["review", "committing", "failure", "success", "entry", "dismissed"],
+			"elapsedMs": 1169.663900000014,
+			"saved": true,
+			"error": null
+		},
+		{
+			"at": "2026-10-01T02:39:19.797Z",
+			"monotonicMs": 495891.8036,
+			"type": "screenshot",
+			"stage": "ui",
+			"elementId": "clip-update-dialog",
+			"sceneIds": ["review", "committing", "failure", "success", "entry", "dismissed"],
+			"elapsedMs": 2228.5237000000197,
+			"saved": true,
+			"error": null
+		},
+		{
+			"at": "2026-10-01T02:41:04.797Z",
+			"monotonicMs": 600892.6981,
+			"type": "screenshot",
+			"stage": "wireframe",
+			"elementId": "timeline",
+			"sceneIds": [
+				"group-selected",
+				"trim-preview",
+				"trim-applied",
+				"ungroup-failure",
+				"add-staged",
+				"commit-freeze",
+				"ungrouped",
+				"trim-invalid",
+				"add-failure"
+			],
+			"elapsedMs": 2532.8780999999726,
+			"saved": true,
+			"error": null
+		},
+		{
+			"at": "2026-10-01T02:41:08.783Z",
+			"monotonicMs": 604878.4873,
+			"type": "screenshot",
+			"stage": "ui",
+			"elementId": "clip-update-dialog",
+			"sceneIds": ["review", "committing", "failure", "success", "entry", "dismissed"],
+			"elapsedMs": 1492.3915999999736,
+			"saved": true,
+			"error": null
+		},
+		{
+			"at": "2026-10-01T02:42:29.237Z",
+			"monotonicMs": 685332.3114,
+			"type": "screenshot",
+			"stage": "wireframe",
+			"elementId": "timeline",
+			"sceneIds": [
+				"group-selected",
+				"trim-preview",
+				"trim-applied",
+				"ungroup-failure",
+				"add-staged",
+				"commit-freeze",
+				"ungrouped",
+				"trim-invalid",
+				"add-failure"
+			],
+			"elapsedMs": 1607.8514000000432,
+			"saved": true,
+			"error": null
+		},
+		{
+			"at": "2026-10-01T02:43:16.577Z",
+			"monotonicMs": 732673.058,
+			"type": "screenshot",
+			"stage": "wireframe",
+			"elementId": "timeline",
+			"sceneIds": [
+				"group-selected",
+				"trim-preview",
+				"trim-applied",
+				"ungroup-failure",
+				"add-staged",
+				"commit-freeze",
+				"ungrouped",
+				"trim-invalid",
+				"add-failure"
+			],
+			"elapsedMs": 1815.3116000000155,
+			"saved": true,
+			"error": null
+		},
+		{
+			"at": "2026-10-01T02:43:55.577Z",
+			"monotonicMs": 771673.1917,
+			"type": "screenshot",
+			"stage": "wireframe",
+			"elementId": "timeline",
+			"sceneIds": [
+				"group-selected",
+				"trim-preview",
+				"trim-applied",
+				"ungroup-failure",
+				"add-staged",
+				"commit-freeze",
+				"ungrouped",
+				"trim-invalid",
+				"add-failure"
+			],
+			"elapsedMs": 1802.0516999999527,
+			"saved": true,
+			"error": null
+		},
+		{
+			"at": "2026-10-01T02:45:18.783Z",
+			"monotonicMs": 854878.2888,
+			"type": "screenshot",
+			"stage": "wireframe",
+			"elementId": "timeline",
+			"sceneIds": [
+				"group-selected",
+				"trim-preview",
+				"trim-applied",
+				"ungroup-failure",
+				"add-staged",
+				"commit-freeze",
+				"ungrouped",
+				"trim-invalid",
+				"add-failure",
+				"add-canceled"
+			],
+			"elapsedMs": 2893.703899999964,
+			"saved": true,
+			"error": null
+		},
+		{
+			"at": "2026-10-01T02:45:42.653Z",
+			"monotonicMs": 878748.262,
+			"type": "screenshot",
+			"stage": "wireframe",
+			"elementId": "timeline",
+			"sceneIds": [
+				"group-selected",
+				"trim-preview",
+				"trim-applied",
+				"ungroup-failure",
+				"add-staged",
+				"commit-freeze",
+				"ungrouped",
+				"trim-invalid",
+				"add-failure",
+				"add-canceled"
+			],
+			"elapsedMs": 1758.9864000000525,
+			"saved": true,
+			"error": null
+		}
+	],
+	"invalidUiDispatches": 0,
+	"protectedUnchanged": true,
+	"baselineAssessment": {
+		"purpose": "Fresh first-review reliability baseline; no reviewer-directed repair",
+		"implementationCommit": "8cd6f65",
+		"reviewAttemptBudget": 1,
+		"baselineExecutionFinished": true,
+		"findingFreeGoalMet": false,
+		"scopedInterfaces": 3,
+		"completedReviewCount": 3,
+		"passes": 1,
+		"rejections": 2,
+		"findingFreeReviews": 0,
+		"blockingFindings": 3,
+		"nonblockingFindings": 2,
+		"findingsNote": "Five review observations across four issue families; missing return focus was raised twice at different review stages with different blocking decisions.",
+		"authoredCandidates": 3,
+		"unchangedFirstRenderedCandidates": 0,
+		"postPreviewChangeBatches": {
+			"clipUpdateWireframe": 1,
+			"clipUpdateUi": 1,
+			"timelineWireframe": 5
+		},
+		"reviewerDirectedRepairInvocations": 0,
+		"withheldStages": [
+			{
+				"elementId": "timeline",
+				"stage": "ui",
+				"reason": "Its first wireframe review rejected the candidate."
+			},
+			{
+				"elementId": "selection-actions-menu",
+				"stage": "wireframe-and-ui",
+				"reason": "Existing dependency requires accepted timeline wireframe; no menu candidate was authored or reviewed."
+			}
+		],
+		"protocolFailures": [
+			{
+				"at": "2026-10-01T02:32:02.280Z",
+				"method": "execute",
+				"operation": "pilot.mark",
+				"error": "Capability does not authorize this operation",
+				"attribution": "coordinator"
+			},
+			{
+				"at": "2026-10-01T02:37:24.715Z",
+				"method": "read",
+				"operation": null,
+				"error": "Capability does not authorize this operation",
+				"attribution": "coordinator"
+			}
+		],
+		"protocolFailureNote": "Two capability rejections (a timing marker and a read) recovered. The server attributed these to coordinator, so per-author failedServiceCalls does not include them.",
+		"protectedSourcesVerified": true,
+		"comparisonLimit": "Gate-shortened first-review measurement, not a completed three-interface design run or speed comparison with prior repaired runs."
+	}
+}

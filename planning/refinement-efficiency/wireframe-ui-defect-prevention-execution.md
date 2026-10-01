@@ -7,6 +7,12 @@ Preserve the saved attempts and measurements as experimental evidence. The
 original four-element scope is superseded by three updates and three reused
 interfaces. Historical execution details follow.
 
+Subsequent fresh measurement: [first-review baseline, 2026-10-01](wireframe-ui-baseline-20261001.md).
+It finished in 18m43s on the corrected scope, with one pass containing a finding
+and two rejections. Timeline UI and the dependent menu were withheld by the
+existing gates. No reviewer-directed repair or shared implementation change was
+made in that baseline; the finding-free target remains unmet.
+
 Plan: [defect prevention](wireframe-ui-defect-prevention-plan.md).
 
 ## Progress

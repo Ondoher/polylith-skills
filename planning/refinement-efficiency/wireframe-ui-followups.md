@@ -4,7 +4,10 @@ Living list from the [pilot](wireframe-ui-pilot-execution.md). Unchecked items
 are proposed work; add findings here as they arise. Judge improvements by time
 to accepted output and first-review pass rate, with rework measured separately.
 
-Current confirmation: [wireframe and UI reliability execution](wireframe-ui-reliability-execution.md).
+Latest evidence: [fresh first-review baseline](wireframe-ui-baseline-20261001.md).
+It recorded zero finding-free results across three completed reviews. Focus
+presentation, source-faithful trim examples, inclusive frame boundaries and a
+button-outline discrepancy remain observed problems; further repair is not running.
 Wireframe acceptance before UI dispatch is implemented. Worker-pool parallelism
 remains a later experiment.
 
