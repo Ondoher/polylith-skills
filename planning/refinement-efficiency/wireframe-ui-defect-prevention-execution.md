@@ -1,17 +1,19 @@
 # Wireframe/UI defect prevention execution
 
-Status: implementation and isolated exercises complete. Full confirmation is
-paused; the [scope correction](wireframe-ui-scope-correction-execution.md) is now
-complete and its corrected inputs are ready. No run is currently active.
+Status: implementation, isolated exercises and the corrected-scope
+[baseline including rework](wireframe-ui-baseline-completion-20261001.md) are
+complete. The finding-free target remains unmet. No run is currently active.
 Preserve the saved attempts and measurements as experimental evidence. The
 original four-element scope is superseded by three updates and three reused
 interfaces. Historical execution details follow.
 
-Subsequent fresh measurement: [first-review baseline, 2026-10-01](wireframe-ui-baseline-20261001.md).
-It finished in 18m43s on the corrected scope, with one pass containing a finding
-and two rejections. Timeline UI and the dependent menu were withheld by the
-existing gates. No reviewer-directed repair or shared implementation change was
-made in that baseline; the finding-free target remains unmet.
+Subsequent fresh measurement: the [initial segment](wireframe-ui-baseline-20261001.md)
+was incorrectly stopped after first reviews. The user clarified that the baseline
+must include rework, and the saved run resumed to acceptance of all three selected
+interfaces. Total active elapsed time was 57m51s. First reviews passed 2/6 times,
+none finding-free; the complete sequence included five rejections. Matched agent
+work was 90m36s versus 74m11s in the earlier attempt. Shared implementation stayed
+frozen. See the complete baseline report for comparison limits and measurements.
 
 Plan: [defect prevention](wireframe-ui-defect-prevention-plan.md).
 
@@ -21,7 +23,7 @@ Plan: [defect prevention](wireframe-ui-defect-prevention-plan.md).
 - Stages 0–3: numeric placement, source-to-result links, supported-state fixtures and browser checks implemented. Ten captures cover both themes, clipping/occlusion regressions and alignment at two widths. Source-review hashes are retained in `.codex-tmp/wireframe-prevention-inputs/provenance.json`.
 - Stage 4: all three independent exercises passed their first wireframe and UI reviews: six passes, no rejected reviews, no invalid UI dispatches, and protected inputs unchanged. Four of six first rendered candidates were submitted unchanged. The geometry wireframe required two local corrections; the outcome wireframe received an optional spacing refinement. All three UI candidates were submitted unchanged.
 - Stage 5: normal MCP and canonical UI paths share the helpers; role instructions and contracts updated. Package gate passed 566 tests and experiment harness passed 18. Subsequent small validation changes are checked with focused tests.
-- Stage 6: original inputs and boundary inventory were used for the four-element saved Alexa confirmation. Contracts/renderer frozen in `9fd6a0a`; normal Codex connection, no model proxy. Execution remains paused. The subsequent scope correction is complete; use its corrected fixture and reuse instructions before resuming.
+- Stage 6: the original four-element confirmation is preserved as historical evidence. Following scope correction, the fresh three-interface baseline resumed through all necessary repairs and acceptance with implementation frozen at `8cd6f65`. Normal Codex connection, no model proxy. Full measurements are linked above; first-pass quality did not improve in this sample.
 
 ## Decisions
 

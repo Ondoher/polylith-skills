@@ -2,11 +2,11 @@
 
 Status: stages 0–5 complete. The
 [scope-correction prerequisite](wireframe-ui-scope-correction-execution.md) is
-complete. Stage 6's fresh
-[first-review baseline](wireframe-ui-baseline-20261001.md) finished on the corrected
-scope: 18m43s, three completed reviews, zero finding-free reviews. Rejected
-wireframes and their dependent work remain held; no reviewer-directed repair was
-performed. The quality target is unmet. Both attempts are preserved. See the
+complete. Stage 6's corrected-scope
+[baseline including rework](wireframe-ui-baseline-completion-20261001.md) finished:
+all three interfaces accepted in 57m51s active elapsed time. First reviews passed
+2/6 times with zero finding-free results; five rejections occurred across the full
+sequence. The quality target is unmet. All attempts are preserved. See the
 [execution record](wireframe-ui-defect-prevention-execution.md).
 
 Build and test each prevention mechanism independently before rerunning the full

@@ -4,16 +4,17 @@ Living list from the [pilot](wireframe-ui-pilot-execution.md). Unchecked items
 are proposed work; add findings here as they arise. Judge improvements by time
 to accepted output and first-review pass rate, with rework measured separately.
 
-Latest evidence: [fresh first-review baseline](wireframe-ui-baseline-20261001.md).
-It recorded zero finding-free results across three completed reviews. Focus
-presentation, source-faithful trim examples, inclusive frame boundaries and a
-button-outline discrepancy remain observed problems; further repair is not running.
+Latest evidence: [complete baseline including rework](wireframe-ui-baseline-completion-20261001.md).
+All three selected interfaces reached acceptance in 57m51s active elapsed time.
+First reviews passed 2/6 times, none finding-free; five rejected reviews occurred
+across the complete sequence. Matched agent work increased 22.1% versus the prior
+three-interface results. The finding-free target remains unmet; no run is active.
 Wireframe acceptance before UI dispatch is implemented. Worker-pool parallelism
 remains a later experiment.
 
 Completed prerequisite: [correct the wireframe/UI work list](wireframe-ui-scope-correction-execution.md).
-The [defect-prevention confirmation](wireframe-ui-defect-prevention-execution.md)
-remains paused, with corrected source-linked scope and saved inputs ready.
+The earlier [defect-prevention confirmation](wireframe-ui-defect-prevention-execution.md)
+is preserved as historical evidence; the corrected-scope baseline is complete.
 Component-state, generic-geometry and outcome exercises passed their first external
 reviews. Product-specific rules remain input data; local corrections remain
 separately measured.
@@ -45,6 +46,19 @@ separately measured.
       [reproduction](experiments/wireframe-ui-pilot/focus-ownership-reproduction.mjs)
       shows that both ambiguous and corrected declarations are structurally valid;
       this preserves the failure, not a completed production prevention mechanism.
+- [ ] **Align consequential findings across the two review gates.** In the
+      completed baseline, wireframe review flagged missing return focus and dual
+      keyboard-focus cues as nonblocking; UI review rejected both. Establish
+      consistent criteria without weakening review so known issues do not pass
+      downstream merely to require the same repair later.
+- [ ] **Construct controls in their required context.** UI review caught a
+      persistent command whose supplied action required an open menu. Use source
+      preconditions when placing controls and illustrating states; keep product
+      specifics in the input packet.
+- [ ] **Show resulting objects and interactions, not just claims about them.**
+      Menu review rejected text saying objects were independently selectable
+      without showing selection, and a middle-cut result omitting its two retained
+      fragments. Preserve this evidence when improving initial construction.
 - [ ] **Preserve state overrides when reusing a part.** A local timeline repair
       temporarily lost pending/failure messages and disabled controls while
       reusing the Add dialog. Prefer retaining existing overrides when changing
@@ -59,6 +73,15 @@ separately measured.
       full dialog examples still required row/viewport corrections even when
       numeric positions and semantic outcomes were correct. Investigate intrinsic
       sizing and flex/grid guidance using the saved examples before another paid run.
+- [ ] **Allow translated application text to expand.** Every interface element
+      containing app-defined text must accommodate longer translations, including
+      labels, buttons, menus, tabs, headings, helper text and status/error messages.
+      Use flexible sizing, wrapping or reflow appropriate to the control and its
+      surrounding layout; do not size only for the current language or fix overflow
+      merely by shortening the sample copy. Preserve readability and access to
+      actions without clipping or overlap. Apply this to wireframes and UI designs;
+      verify representative longer translations in a later pass. Recorded as a
+      general requirement for future work, not implemented in the current baseline.
 - [ ] **Carry required result values into construction.** The full Add-dialog
       wireframe showed new saved-bundle identities but omitted staged duration
       and expanded item ranges. Source-to-node links alone did not establish the
@@ -95,6 +118,11 @@ separately measured.
       but investigate capturing immutable preview revisions outside that queue.
       Normal-host capture is already parent-owned; do not label this experiment's
       browser/queue delay as model reasoning.
+- [ ] **Measure handoff after a saved review receipt.** The completed baseline's
+      menu re-review saved a pass, then took 2m04.724s to finish its native turn
+      without further tool calls. UI waited for turn completion. Investigate
+      whether an exact validated receipt can release the next stage safely while
+      the reviewer finishes; the cause of this one observed gap is unclassified.
 
 Already corrected in the pilot: screenshot delivery, the observed renderer
 styling defects, immutable revision handling, saved-review reuse, and acceptance

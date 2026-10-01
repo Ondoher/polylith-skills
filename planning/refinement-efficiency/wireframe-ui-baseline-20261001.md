@@ -1,6 +1,11 @@
 # Wireframe/UI first-review baseline
 
-Status: baseline finished, **the finding-free goal was not met**. The isolated
+Correction: this report records only the initial, prematurely stopped segment.
+The requested baseline includes review and rework. See the
+[complete baseline continuation](wireframe-ui-baseline-completion-20261001.md),
+which reuses this run and preserves all findings and elapsed work below.
+
+Status: initial segment finished, **the finding-free goal was not met**. The isolated
 run lasted **18m42.980s**, 2026-10-01 02:31:04.013–02:49:46.993 UTC. It follows the
 completed [scope correction](wireframe-ui-scope-correction-execution.md).
 Three first reviews completed: one pass with a nonblocking finding, two
@@ -20,7 +25,8 @@ gates withheld the remaining work. No reviewer-directed repair was performed.
 - One persistent wireframe author (Sol/medium), one UI author (Astra/ultra), and
   separate independent wireframe/visual reviewers (Astra/ultra). Normal Codex
   connection, local MCP data service, no model proxy.
-- One independent review attempt per element and stage. A rejection is retained
+- Original stopping rule (subsequently corrected): one independent review attempt
+  per element and stage. A rejection is retained
   as a baseline result, with no reviewer-directed repair in this run. Rejected
   wireframes do not proceed to UI. Other independent elements continue.
 
