@@ -7,9 +7,16 @@ wireframe acceptance is mandatory before UI dispatch. Independent element
 pipelines overlap through one queue per role; selected dependencies go first.
 
 The localhost service is the repository MCP **data service**, not a model proxy.
-No model endpoint override or request-observer proxy is used. Launches go through
-the installed Codex executable and its normal authentication. Role instructions
-are bounded experiment assignments; global agent configurations are unchanged.
+The historical runner used the installed Codex executable and its normal
+authentication, without an endpoint override or request-observer proxy. Its role
+instructions were bounded experiment assignments; global agent configurations
+were unchanged.
+
+**Do not run this pilot's `--execute` option by default. It starts separate Codex
+model sessions from a repository script. Use the current conversation's agents
+and tools unless the user explicitly requests that separate execution path for
+the current task.** The commands below document the historical runner; they are
+not standing authorization to launch it.
 
 ## Run and resume
 

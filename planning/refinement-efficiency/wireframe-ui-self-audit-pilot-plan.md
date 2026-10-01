@@ -1,9 +1,14 @@
 # Wireframe/UI author self-audit pilot
 
-Status: pilot protocol locally verified; live model trial blocked by automatic
-approval review before its first model call. See the
-[execution record](wireframe-ui-self-audit-execution.md). The plan remains the
-resumption path once the approval condition is resolved.
+Status: pilot protocol locally verified; the isolated in-session timeline trial
+is complete through first-draft diagnostic, self-audit, repair, and ordinary
+independent acceptance. Two clean author audits were followed by review
+rejections; revision 6 passed after a third audit and review. The early quality
+gate did not warrant a matched control or UI trial. See the
+[execution record](wireframe-ui-self-audit-execution.md). The scripted
+model-execution path is retired for this plan; any continuation must use the
+current conversation's agents and tools unless the user explicitly requests a
+separate model session.
 
 Test whether the **same wireframe or UI author** can find and repair more defects
 before independent review by keeping a compact, source-bound requirement list and
@@ -29,10 +34,12 @@ and rediscovery of earlier source requirements.
   menu placement, selected versus focused state, and wireframe-to-UI handoff.
   Keep other affected interfaces for a later decision, not this first test.
 - Use the saved source facts, corrected impact selection, frozen design language,
-  model/effort settings, renderer, review criteria, and normal Codex connection.
-  The existing localhost MCP **data service** is allowed; do not use a model
-  proxy or redirect. Preserve the baseline and live product unchanged in a new
-  reversible pilot attempt. Reuse existing saved data; do not rerun upstream UX.
+  model/effort settings, renderer, and review criteria through in-session agents.
+  The existing localhost MCP **data service** is allowed. Do not launch the
+  scripted Codex client, a direct backend call, or a model proxy without the
+  user's explicit request for that execution path. Preserve the baseline and
+  live product unchanged in a new reversible pilot attempt. Reuse existing saved
+  data; do not rerun upstream UX.
 - Keep one persistent author per stage and the current external reviewers. UI
   starts only after the exact wireframe revision passes its independent review.
   No new reviewer agent is part of the author's self-audit.

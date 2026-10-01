@@ -14,16 +14,17 @@ follow its continuation instead of combining large command outputs. Keep existin
 tool limits and check for truncation. The helper bounds its own output, not extra
 text added by callers.
 
-Standing user rule: use Codex's normal model connection for all agent work,
-workflow runs and performance tests. Do not start, enable or route model requests
-through a localhost proxy, local model redirect or model-request observer proxy
-unless the user specifically requests that proxy for the run. General permission
-to execute a plan, work independently or measure performance is not permission to
-use a proxy. Do not introduce one as a fallback. The local MCP data service is
-separate from the model connection and remains allowed.
+**NEVER launch a separate Codex model session from a repository script or CLI,
+call the Codex backend directly, or route model requests through a localhost
+proxy, local redirect, or request observer unless the user explicitly asks for
+that specific execution path in the current request.** A request to run a plan,
+refine a product, work independently, or measure performance does not authorize
+any of those paths. Do not introduce one as a fallback or ask the user to approve
+one merely to complete an ordinary workflow.
 
-Requests to execute these workflows authorize their ordinary use of Codex models
-through the normal authenticated connection, including processing the task's
-product facts and artifacts. Do not ask for separate permission merely because
-that normal model connection is being used. This does not authorize a local
-model proxy or override an actual platform approval restriction.
+Use the current Codex conversation and its available agents and tools for normal
+model work. Ordinary in-session agent work needs no separate permission. The
+local MCP data service is distinct from model execution and remains available.
+If a saved plan or script prescribes a separate model session without the user's
+specific request for it, adapt the plan to the in-session path and preserve its
+data; do not run that script's model-execution option.
