@@ -1,0 +1,73 @@
+{
+	"experiment": "timeline-revision-2-review-led-control",
+	"status": "accepted",
+	"controlAttempt": ".codex-tmp/wireframe-ui-r2-review-control-20261001",
+	"treatmentAttempt": ".codex-tmp/wireframe-ui-self-audit-20261001",
+	"commonStart": {
+		"revision": 2,
+		"wireframeJsonFileSha256": "4bb2df24e639a3a7268a1b377c5a820a0dcf699d8602ebf0f8b3b29855965a25",
+		"screenshotFileSha256": "6345e3c79dc43c870845b58a3e92a882cc3703f37208e4fc88ee94e3b8d36c8f",
+		"sourcePacketFileSha256": "1b718b78959edcb04d4c34c986cb3b996745cbbad40402b2ab2f33b845edd677",
+		"byteIdenticalAcrossBranches": true
+	},
+	"control": {
+		"selfAuditEnabled": false,
+		"checklistOrAuditReceiptCreated": false,
+		"acceptedRevision": 5,
+		"acceptedArtifactBinding": "3019dabc978b8c85bfdea28c1db2303deb7b0c035ddff80eef13eb4e0bb9b45a",
+		"reviews": [
+			{"revision": 2, "verdict": "revise", "blocking": 8, "nonblocking": 0},
+			{"revision": 4, "verdict": "revise", "blocking": 4, "nonblocking": 0},
+			{"revision": 5, "verdict": "pass", "blocking": 0, "nonblocking": 0}
+		],
+		"utcBoundaries": {
+			"firstSubmission": "2026-10-01T17:01:31.650Z",
+			"firstReviewVerdict": "2026-10-01T17:07:35.176Z",
+			"secondSubmission": "2026-10-01T17:12:10.237Z",
+			"secondReviewVerdict": "2026-10-01T17:15:49.204Z",
+			"thirdSubmission": "2026-10-01T17:17:21.890Z",
+			"finalPass": "2026-10-01T17:19:38.678Z"
+		},
+		"elapsedSeconds": {
+			"firstReview": 363.526,
+			"firstRepairAndSubmission": 275.061,
+			"secondReview": 218.967,
+			"secondRepairAndSubmission": 92.686,
+			"thirdReview": 136.788,
+			"startToPass": 1087.028,
+			"reviewWindowsTotal": 719.281,
+			"authorAndCoordinationWindowsTotal": 367.747
+		},
+		"localCaptureCallsAllRevisions": 4,
+		"localCaptureToolSecondsAllRevisions": 10.278,
+		"fullListAudits": 0
+	},
+	"treatment": {
+		"comparisonFile": "planning/refinement-efficiency/wireframe-ui-self-audit-pilot-20261001-metrics.json",
+		"acceptedRevision": 6,
+		"reviews": [
+			{"revision": 4, "verdict": "revise", "blocking": 2, "nonblocking": 1},
+			{"revision": 5, "verdict": "revise", "blocking": 1, "nonblocking": 1},
+			{"revision": 6, "verdict": "pass", "blocking": 0, "nonblocking": 0}
+		],
+		"elapsedSecondsFromFrozenRevision2ToPass": 1592.244,
+		"reviewWindowsTotal": 720.039,
+		"authorAndCoordinationWindowsTotal": 872.205,
+		"fullListAudits": 5
+	},
+	"observedDifference": {
+		"controlFasterSeconds": 505.216,
+		"controlFasterPercentOfTreatmentElapsed": 31.73,
+		"reviewWindowDifferenceSeconds": 0.758,
+		"authorAndCoordinationWindowDifferenceSeconds": 504.458,
+		"ordinaryReviewRoundsBoth": 3
+	},
+	"limits": [
+		"The two branches began from byte-identical revision 2 JSON and screenshot but diverged thereafter.",
+		"Different author and reviewer instances make this one directional sample, not a causal estimate or reliable failure rate.",
+		"The treatment ran an overlapping diagnostic review as experiment overhead; its resource effect cannot be separated.",
+		"The control author's source preparation overlapped the first independent review; the treatment author was already active at the frozen-draft boundary.",
+		"Pre-revision-2 checklist extraction and draft construction, plus control replay/setup, are excluded from the compared windows.",
+		"Elapsed windows include coordination and capture, not isolated model reasoning; token usage is unavailable."
+	]
+}

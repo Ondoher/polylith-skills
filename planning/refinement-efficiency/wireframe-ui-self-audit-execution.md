@@ -101,8 +101,10 @@ thinking times, and independent review startup is included in review windows.
 From the first saved requirement list to accepted revision 6 was **28m09.618s**;
 preparation before that saved list is excluded. The diagnostic review overlapped
 author work and is experiment overhead, so these windows must not be added to
-it. No matched control ran; historical agent-work numbers are not comparable to
-this elapsed window.
+it. No fresh matched-author control ran as part of this pilot; historical
+agent-work numbers are not comparable to this elapsed window. A subsequent
+[reviewer-led continuation from the same frozen revision 2](wireframe-ui-r2-review-control-20261001.md)
+provides a narrower branch comparison.
 
 ## Paired diagnostic and author audit
 
@@ -146,6 +148,13 @@ reliable reduction in review failures. Agent token usage, pure reasoning time,
 and cumulative in-session agent work were unavailable. No live product data was
 mutated; source fixture hash remained unchanged. No model proxy or separate
 model client was used.
+
+After this initial decision, the owner requested a complete reviewer-led
+continuation from the exact frozen revision 2. That [separate control
+run](wireframe-ui-r2-review-control-20261001.md) passed after three review
+rounds in **18m07.028s**, versus this branch's **26m32.244s** from revision 2 to
+pass. It strengthens the decision to keep the checklist experimental, while
+remaining one nondeterministic, non-randomized comparison.
 
 Checkpoint adviser recommended the preapproved message **Add wireframe self-audit
 pilot protocol**; the locally verified implementation was committed as `2abf273`.

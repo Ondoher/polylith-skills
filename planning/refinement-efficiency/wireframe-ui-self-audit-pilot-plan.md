@@ -4,7 +4,9 @@ Status: pilot protocol locally verified; the isolated in-session timeline trial
 is complete through first-draft diagnostic, self-audit, repair, and ordinary
 independent acceptance. Two clean author audits were followed by review
 rejections; revision 6 passed after a third audit and review. The early quality
-gate did not warrant a matched control or UI trial. See the
+gate did not warrant a fresh matched-author run or UI trial. The owner later
+requested a narrower [reviewer-led continuation from the same frozen revision
+2](wireframe-ui-r2-review-control-20261001.md). See the
 [execution record](wireframe-ui-self-audit-execution.md). The scripted
 model-execution path is retired for this plan; any continuation must use the
 current conversation's agents and tools unless the user explicitly requests a
