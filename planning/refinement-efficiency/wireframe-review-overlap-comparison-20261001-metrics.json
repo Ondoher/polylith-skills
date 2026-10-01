@@ -1,0 +1,108 @@
+{
+	"source": {
+		"initialArtifactRevision": 4,
+		"binding": "aebb31945ab696f0309be7db8aa96a2aebd6b29ddd8d1721e620284087d72c31",
+		"samePacketAndFixture": true,
+		"noSeparateModelClientOrProxy": true
+	},
+	"settings": {
+		"authors": "gpt-6-astra/ultra",
+		"reviewers": "gpt-6-astra/ultra"
+	},
+	"progressive": {
+		"accepted": true,
+		"firstDraftToAcceptedSeconds": 1396.841,
+		"initialReviewSeconds": 603.008,
+		"firstDraftFindings": 7,
+		"ordinaryReviews": [
+			{
+				"revision": 6,
+				"verdict": "revise",
+				"blockers": 1
+			},
+			{
+				"revision": 7,
+				"verdict": "pass",
+				"blockers": 0
+			}
+		]
+	},
+	"selfReviewThenExternal": {
+		"accepted": true,
+		"startAt": "2026-10-01T19:20:36.135Z",
+		"finalPassAt": "2026-10-01T19:44:30.882Z",
+		"totalSeconds": 1434.747,
+		"initialAuthorSelfReviewSeconds": 845.761,
+		"initialOrdinaryReviewSeconds": 203.435,
+		"reviewerDirectedRepairAfterReceiptSeconds": 192.558,
+		"markedFocusedRepairSeconds": 100.334,
+		"focusedRereviewSeconds": 84.011,
+		"audits": [
+			{
+				"revision": 4,
+				"checked": 37,
+				"unresolved": 16
+			},
+			{
+				"revision": 5,
+				"checked": 37,
+				"unresolved": 1
+			},
+			{
+				"revision": 6,
+				"checked": 37,
+				"unresolved": 0
+			},
+			{
+				"revision": 7,
+				"checked": 38,
+				"unresolved": 0
+			}
+		],
+		"ordinaryReviews": [
+			{
+				"revision": 6,
+				"verdict": "revise",
+				"blockers": 1
+			},
+			{
+				"revision": 7,
+				"verdict": "pass",
+				"blockers": 0
+			}
+		]
+	},
+	"externalReviewOnly": {
+		"accepted": true,
+		"reusedInitialReviewSeconds": 603.008,
+		"frozenToInitialReviewStartSeconds": 55.773,
+		"branchAuthorStartAt": "2026-10-01T19:20:46Z",
+		"finalPassAt": "2026-10-01T19:37:06.343Z",
+		"branchStartToPassSeconds": 980.343,
+		"syntheticFirstDraftToPassSeconds": 1639.124,
+		"firstAuthorRepairSeconds": 440.061,
+		"firstOrdinaryReviewSeconds": 319.581,
+		"focusedRepairSeconds": 39.857,
+		"focusedRereviewSeconds": 47.233,
+		"authorAudits": 0,
+		"requirementsCalls": 0,
+		"reviews": [
+			{
+				"revision": 4,
+				"verdict": "revise",
+				"blockers": 7,
+				"reused": true
+			},
+			{
+				"revision": 5,
+				"verdict": "revise",
+				"blockers": 1
+			},
+			{
+				"revision": 6,
+				"verdict": "pass",
+				"blockers": 0
+			}
+		]
+	}
+}
