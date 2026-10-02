@@ -1,0 +1,13 @@
+# R1 clarification supplement
+
+Continuation source: current parent/owner clarification, fully read: cancellation releases occupied time while preserving the canceled session and history notes; recovery is explicit, with no automatic restoration. DEFAULT in-session contract-trial provenance is retained. This supplement reuses [scope.md](scope.md), [findings.md](findings.md) and [operations.json](operations.json); it does not regenerate scope or accept additional requirements.
+
+**Revised:** the prior open calendar-occupancy dependency is now settled by supplied owner intent. A successfully canceled session no longer occupies time or contributes an occupied interval to a clash, while its searchable history remains. The earlier recommendation to retain history notes is now supplied owner intent. Calendar visibility treatment is still a UX choice; releasing occupied time does not imply hiding history everywhere.
+
+**Revised:** recovery must involve an explicit tutor action. The saved walkthrough's retry can remain a deliberate action with preserved context; do not automatically restore a canceled session or silently apply an unfinished change. This clarification does not by itself add an undo/restore feature. UX should distinguish retrying a failed save from restoring a successfully canceled session if either recovery action is offered.
+
+**Reused:** confirmation remains required, searchable canceled history remains required, and drafts remain preserved on save failure. The prior target-identification, safe-dismissal and accurate-outcome recommendations remain applicable. E1–E3 in `findings.md` are reused unchanged, with their recorded dates and applicability limits. Their status remains researcher-inspected and parent verification pending; no sources were reopened or queried.
+
+UX implication: the confirmation and success copy may now explain that the time becomes available and the session/notes remain in history. Failure feedback must distinguish an unsaved cancellation from the saved outcome; retained draft context supports a deliberate retry. Copy/layout and recovery affordances remain advisory choices for UX.
+
+Pending technical decisions: establish how cancellation, released occupancy and retained session/notes stay consistent through a failed local-file save; establish the guarantees shown to the tutor after failure, and how explicit retry avoids duplicate or stale effects. Crash/restart draft survival remains unspecified. Any restoration capability and its clash checking need separate scope/owner decisions before feasibility work; none is added by this supplement.

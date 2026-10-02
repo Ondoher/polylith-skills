@@ -35,6 +35,15 @@ whole-product coverage. Document hierarchy and page breaks belong to the later
 | Compose UI             | Current passing review, UX, settled design language → UI/component candidates                                                                        | Preserve unaffected designs and locks. Behavior changes return to UX; product-intent changes require another writeback and review. Do not schedule routine source formatting after review.                                                        |
 | Assemble               | Accepted structured sources and explicit publication requests → immutable artifacts, manifest and detached context                                   | Use `refinement-assembly.mjs`; bookkeeping requires no specialist. Existing validators, resource checks, lock authority and snapshot compare-and-swap still apply.                                                                                |
 
+Before Plan UX, apply the [durable product research handoff](product-research.md):
+locate the product-owned scope/brief, check source identity and affected questions,
+reuse applicable findings, and assign `product-researcher` only for an initial
+brief that is needed or material gaps. Preserve requested owner inspection before
+adoption. Supply the saved brief and relevant section/evidence references to UX
+and carry the same references into wireframe and UI assignments. This is a
+bounded evidence preparation step, not a fresh full research run per edit or a
+replacement for product authority and the existing source-check/review gates.
+
 Independent visual-foundation work can accompany UX when its inputs are settled.
 Ask for decisions and design once, then use saved candidates for reconciliation
 and assembly. Do not ask each specialist to restate the entire brief or rebuild

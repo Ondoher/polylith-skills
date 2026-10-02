@@ -138,6 +138,20 @@ Cross-scope consultation is allowed for a bounded question and must return the i
 
 Handoff from product to architecture contains accepted requirements, representative workflows, relevant UI constraints, acceptance criteria and unresolved choices. Architecture returns feasibility limits and concrete alternatives when product intent needs reconsideration. Neither scope requires the entire other scope to be complete. The architecture scope remains advisory planning, not the combined coding-architecture integration test, and does not waive its opt-in/readiness gates.
 
+## Product Research Handoff
+
+Before interaction planning, locate the product-owned research scope and brief,
+check their source identity and applicability to the requested work, and reuse
+current findings. Follow [product research](references/product-research.md) when
+an initial brief is needed or material questions lack evidence: assign the named
+`product-researcher` a bounded question set and existing evidence, then preserve
+its scoped delivery in the product's durable research records. Changed inputs
+reopen affected questions; ordinary edits do not require a full research rerun.
+Pass the same brief with relevant section/evidence references to UX, wireframe
+and UI consumers. Preserve any requested owner-inspection boundary before design
+adoption. Research remains advisory and does not accept product or design choices;
+the existing UX `patternResearch` and parent source-check gate still apply.
+
 ## UX Design Mode
 
 For a product/UX request, read [the UX design workflow](references/ux-design.md) and its exact [schema 0.4 machine contract](references/ux-schema-0.4.json). Supply both to the named planner; the JSON contract is authoritative for field names, required members, arrays versus objects, enums, and conditional members. Produce local `flows` owned by identified interaction elements, with ordered steps, local alternates and reusable dialog references. Keep meaningful actions, semantic frames, states, feedback and component behavior. Bind product realizations to the exact current product-model snapshot and record missing traces as gaps. The artifact contains no document outline or page map. This mode supports incomplete products and may refine one feature while preserving explicit gaps elsewhere.
@@ -206,6 +220,7 @@ This skill explicitly authorizes spawning relevant available agents for read-onl
 | Question                                                                  | Named role                          |
 | ------------------------------------------------------------------------- | ----------------------------------- |
 | Tasks, surfaces/controls, behavior, recovery                              | `ux-planner`                        |
+| Source-bound product/task research, precedents and durable advisory brief | `product-researcher`                |
 | Independent UX coherence, pruning, research and handoff gate              | `ux-reviewer`                       |
 | App-wide visual foundations, concrete UI specifications and accessibility | `ui-designer`                       |
 | Runtime/host, storage, trust, technical capabilities                      | `system-architect`                  |
@@ -221,6 +236,13 @@ Route each question to the available specialist most likely to answer it from th
 For each selected specialist supply: planning-consultation assessment mode; bounded question/scope and paths; accepted inputs and known constraints; changed assumptions; relevant prior findings with acceptance status; missing dependencies; and expected response. Request a concise recommendation, rationale/alternatives, contract implications, owner decisions and evidence limits. For UX-design and design-language work, request the bounded JSON response defined in the applicable workflow and machine contract instead of the default prose report. Specialists return text only; no writes, builds/tests/apps, external messages, elevation, recursive delegation or implementation. Use a fresh specialist for each bounded consultation and release it after its response. Do not retain idle agents or depend on live threads for follow-up context; assemble later inputs from durable records.
 
 Planning consultation by model/controller is now an explicit path in their contracts. It permits advisory analysis, not full architecture integration, code task assignment, infrastructure changes or workflow activation. Coding orchestration, even report-only integration, retains its separate opt-in/readiness gates.
+
+For product research, use the scoped file/MCP delivery permission in the named
+role and [research handoff](references/product-research.md), rather than the
+generic text-only consultation response above. The researcher may save its own
+assigned contributions and evidence; canonical persistence, publication and
+workflow orchestration remain parent-owned. It is also independently callable
+for a research-only request without starting UX or UI design.
 
 ## Synthesize And Preserve Decisions
 

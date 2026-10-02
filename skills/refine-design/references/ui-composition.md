@@ -14,6 +14,15 @@ Begin composition only after the exact UX schema 0.4 revision and requested scop
 
 ## Composition Response Mode
 
+Supply the same product-owned research brief and relevant section/evidence
+references consumed by UX and wireframe authors, following the
+[research handoff](product-research.md). Reuse applicable findings and verification;
+research only material visual questions the brief does not adequately cover.
+Report conflicts and evidence gaps to the parent. Advice does not override
+accepted UX or wireframe arrangements, and a new behavioral recommendation uses
+the existing UX change-request route. Keep brief references as assignment inputs
+rather than duplicating its payload or adding fields to the composition schema.
+
 For an explicit UI composition assignment, the named `ui-designer` returns only one schema 0.4 JSON proposal. It reads the supplied UX, passing UX-review evidence, and design-language sources in full, selects concrete hierarchy and layout within accepted UX, and may write only assigned temporary proposal JSON under the [file-delivery boundary](single-pass-design.md#proposal-file-permission-and-delivery). The parent consumes saved files directly and owns canonical persistence and HTML rendering. Every selected UI decision is accepted working design by inclusion. It preserves supplied `locked` documents and records exactly unless the current user explicitly requests a change to that scope, and it never creates a lock from its own confidence. Product behavior remains owned by UX; behavior-changing suggestions use explicit UX change requests and return to the parent.
 
 The response contains:

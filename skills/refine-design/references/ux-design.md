@@ -34,6 +34,16 @@ Use the current design language as a linked input without reopening it unless th
 
 ## Research Before Invention
 
+First consume the product-owned scope/brief through the
+[durable product research handoff](product-research.md). Reuse applicable evidence
+with its source identity and verification state; ask the parent for bounded
+`product-researcher` work or investigate only questions it does not cover. A brief
+recommendation is advisory until UX selects an adaptation within current owner
+requirements. Build required `patternResearch` records from the relevant evidence
+and actual search history, preserving original sources and the parent source-check
+gate; a brief link neither replaces that contract nor requires copying the entire
+brief into each record. Keep these references available to wireframe and UI stages.
+
 Classify the pattern basis of every retained action and interaction frame as `ordinary`, `researched`, or `novel`.
 
 - Use `ordinary` only for a familiar interaction whose application does not need external evidence. It has no `researchRef`.

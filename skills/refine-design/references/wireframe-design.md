@@ -8,6 +8,14 @@ independently accepts it before the `ui-designer` creates comps. The
 
 ## Parent setup
 
+Supply the product-owned research brief and relevant section/evidence references
+used by UX, with source identity and any evidence gaps, following the
+[research handoff](product-research.md). Authors reuse that evidence for spatial
+decisions and report conflicts; they research only uncovered material questions.
+Research recommendations do not change accepted behavior or authorize redesign.
+Carry the same relevant references into UI and review assignments without
+duplicating the brief inside the source/acceptance packet or changing its schema.
+
 Call `wireframes.prepare` through workflow_execute with a frozen context and
 scope. Context uses the existing flows/actions/interactionFrames/feedback and
 source binding, plus `scopeBasis:{previousSources,currentSources,impacts}`.

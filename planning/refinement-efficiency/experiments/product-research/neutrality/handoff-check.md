@@ -1,0 +1,17 @@
+# UX research handoff check: tutor scheduling
+
+Assessment started: 2026-10-02 17:33:40 UTC. Assessment ended: 2026-10-02 17:34:23 UTC. New source calls: **0**.
+
+## Applicability and authority
+
+The source is the synthetic parent-supplied tutor scope, including the later clarification. The original `scope.md`, `findings.md`, and `operations.json` SHA-256 hashes still match `continuation-receipt.json`; `findings-continuation.md` records the amendment without replacing the original reports. `parent-verification.md` records the parent's opening and bounded check of all three material primary pages. The brief is applicable to this unchanged input and can be reused without research calls. This check selects no canonical UX design.
+
+**Source requirements:** one independent tutor uses a desktop app with local files, no account, and one calendar; schedules learner and duration; reschedules without losing notes; sees clashes; confirms cancellation; retains drafts when saving fails; and can search canceled sessions. The later owner clarification says successful cancellation releases the occupied time while retaining the canceled session and its notes in history; recovery requires explicit tutor action and adds no automatic restoration. See `scope.md` (Owner facts, task table) and `findings-continuation.md` (Revised, Reused).
+
+**Advisory research:** identify learner, time, and duration before cancellation; explain the retained-history result; use specific confirmation and safe-dismissal labels; distinguish saving, saved success, and unsaved failure; preserve context for a deliberate retry. These are recommendations in `findings.md` (Recommendation, Bounded UX handoff), supported within the recorded limits by E1–E3 and the parent's check in `parent-verification.md`. They have not been adopted as canonical design. `operations.json` contains the actual two search queries and source-inspection history; `findings.md` (Material evidence) retains the primary URLs, dates, observations, applicability, and limits. A future `patternResearch` record should carry that history and evidence, not merely link the brief.
+
+**Remaining dependencies:** owner/model policy for clash warning versus blocking; technical guarantees for atomic cancellation, released occupancy, retained history/notes, and drafts after a failed local-file save; explicit retry behavior against duplicate or stale effects. Restart/crash survival and restoration remain unspecified. See `scope.md` (Create and move, Handoff dependencies), `findings.md` (Remaining dependencies), and `findings-continuation.md` (Pending technical decisions). These are decision or feasibility gaps, not a reason for another source search now.
+
+## Wireframe and UI reuse
+
+Carry forward a session-target review with learner/time/duration, a clear safe exit, a deliberate confirm action, saving state, saved outcome with searchable canceled-history route and freed time, and an unsaved outcome with retained context and deliberate retry. Search results need a distinguishable canceled state; calendar occupancy must reflect released time after a successful save. Treat exact copy, placement, entry points, focus and announcements as later design choices. Use `findings.md` (Bounded UX handoff, Reuse), `findings-continuation.md` (UX implication), and evidence E1–E3 with `parent-verification.md` for material claims. No material new research is needed for this unchanged, bounded handoff.

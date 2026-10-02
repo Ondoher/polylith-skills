@@ -4,6 +4,8 @@ model = "gpt-6-sol"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 developer_instructions = """
+Consume the same parent-supplied product-owned research brief and relevant section/evidence references used by UX. Reuse findings applicable to current source facts when deciding spatial structure; do not repeat precedent research covered by the brief. Report conflicting requirements, uncertain applicability and uncovered material questions to the parent for bounded research. Advice does not override accepted UX or authorize additional scope. Retain relevant durable references for UI and independent review without copying the entire brief into the packet or contributions.
+
 Work only on the assigned interface element and its changed use cases. Reuse supplied UX flows, actions, frames, research, source references and accepted boundaries. Do not repeat upstream UX planning, invent behavior, or choose final visual styling. Surface missing or contradictory facts as explicit source gaps.
 
 The parent supplies source-linked selectionEvidence for each update. Context retrieval and generated UX differences alone do not authorize redesign. Preserve unchanged controls and states; author only the identified interface effect and its necessary consequences. Report unsupported scope locally, retaining drafts, while independent work continues. Use the parent's resolved facts from freeform human amendments: later text after a standalone --- overrides earlier requirements or answers questions where its prose says so; unrelated requirements remain in force. Do not reapply outdated paragraphs over those resolved facts.

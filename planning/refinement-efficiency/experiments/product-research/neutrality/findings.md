@@ -1,0 +1,29 @@
+# R1 advisory: confirm cancellation without losing history or unfinished work
+
+Recommendation: let the tutor verify the learner, date/time and duration, explicitly state that the canceled session remains searchable, and offer unambiguous actions such as **Cancel session** and **Keep session**. Treat confirmed intent and saved outcome as different visible states. If saving fails, retain the unfinished cancellation context and explain that cancellation has not been saved; offer retry without re-entry. These are advisory UX proposals, not accepted design decisions.
+
+R1 status: answered with new primary evidence for confirmation wording and outcome feedback; cancellation/history meaning is supplied owner intent. Parent source verification remains **pending**. This recommendation uses established confirmation guidance, but the final UX pattern selection remains with UX. No product-interface screenshots or visual inspections were performed.
+
+## Material evidence
+
+E1 — [W3C Understanding SC 3.3.4](https://www.w3.org/WAI/WCAG22/Understanding/error-prevention-legal-financial-data.html), updated 2025-09-16, accessed 2026-10-02. Text inspected, especially Success Criterion and Intent. Source assertion: safeguards can allow review/correction, reversal or checking; routine saves do not automatically require confirmation. This is informative explanation of a web criterion, not a desktop conformance determination. Inferred applicability: the tutor should review the target session before a consequential change. It does not establish history retention or require extra confirmation for every edit.
+
+E2 — [Microsoft Dialog controls](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/dialogs-and-flyouts/dialogs), updated 2026-07-15, accessed 2026-10-02. Text inspected: General guidelines, Provide a safe action, CloseButton and Confirmation dialogs. Source assertion: identify the objective clearly, label buttons with specific responses, and provide a safe nondestructive dismissal. Windows behavior is illustrative because the target desktop platform is unspecified. Inferred applicability: distinguish canceling a session from dismissing its dialog; **Keep session** avoids two different meanings of “Cancel.” This is not evidence of an installed app's visual appearance.
+
+E3 — [W3C Technique G199](https://www.w3.org/WAI/WCAG22/Techniques/general/G199), updated 2025-07-15, accessed 2026-10-02. Description and tests inspected. Source assertion: explicit, consistently presented success feedback reduces the effort of checking whether an action completed. This is an advisory web technique. Inferred applicability: successful persistence should receive clear feedback. Coupled with the assignment's save-failure requirement, this supports distinguishing failure from saved cancellation; it does not validate local-file persistence semantics.
+
+No material source conflict was found within the narrow inspected claims. No cross-product convention is claimed. W3C documents are authoritative primary guidance but informative/advisory; Microsoft is an official platform source. Parent must inspect these three material URLs before promoting findings as source-checked.
+
+## Bounded UX handoff
+
+1. Tutor selects a session. Confirmation identifies its learner, scheduled time and duration, and explains searchable canceled history. Retaining existing notes in that history is a recommendation consistent with preserving context, not a newly accepted requirement.
+2. Tutor chooses **Keep session** or dismisses: return to the session without confirming cancellation. Keyboard dismissal must have a safe outcome; final focus behavior and accessible announcement details belong to UX/UI.
+3. Tutor chooses **Cancel session**: show work in progress until the save outcome is known. Exact busy treatment and repeated activation handling belong to UX/controller consultation.
+4. Save succeeds: report saved cancellation and give a route to the retained history. Search result/status vocabulary should distinguish canceled from upcoming. Search layout and entry point remain UX choices.
+5. Save fails: retain draft/context, show an actionable failure and retry path. Do not present the failed cancellation as saved history. Whether the original session can be guaranteed unchanged during failure needs parent technical evidence; this trial does not establish transaction behavior.
+
+Alternative: review confirmation inline in session details rather than a modal dialog. The same target identification, retained-history explanation and explicit actions apply. Owner confirmation is settled, so replacing it with undo alone would be a proposed requirement change and is not recommended here. Restoration/undo after cancellation is not requested; UX must not infer it from searchable history.
+
+Remaining dependencies: parent/model decides whether canceled sessions release calendar time and how clashes treat them. Owner may specify whether history includes notes and what search terms matter. Parent technical consultation establishes failure guarantees and any draft survival across application restart; preserving drafts on a failed save is already required, while crash/restart persistence is unspecified.
+
+Reuse: UX can use R1 and E1–E3 for confirmation, outcome and failure planning; later wireframes can cover success, safe dismissal and failed save from this walkthrough. UI can use E2 as a wording/safe-action cue, subject to chosen platform guidance. These references do not replace source checking or UX/UI reviews. Reassess only affected findings if confirmation or history intent changes, platform selection changes the guidance fit, or new persistence guarantees contradict the proposed failure behavior. Unrelated create/reschedule/clash tasks remain in [scope.md](scope.md).

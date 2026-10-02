@@ -1,0 +1,21 @@
+{
+  "executionProvenance": "DEFAULT in-session agent applying the contract; not named-role/configuration execution proof",
+  "milestonesUtc": {
+    "continuationStarted": "2026-10-02 17:31:19 UTC",
+    "allSavedInputsReadCompletely": "2026-10-02 17:31:47 UTC",
+    "supplementSavedConfirmed": "2026-10-02 17:32:20 UTC",
+    "originalHashesUnchangedAndReceiptParsed": "2026-10-02 17:32:32 UTC"
+  },
+  "sourcequerycount": 0,
+  "webCalls": 0,
+  "newSourceUrlsInspected": 0,
+  "savedMaterialSourcesReused": 3,
+  "scopeRegenerated": false,
+  "parentSourceCheckedSources": 0,
+  "originalInputSha256": {
+    "scope.md": "9c5151aebcae7a21ae18bf69e8d1e46d267b2aef4dd3292e5651b5bb259ff0cb",
+    "findings.md": "2d3d17a301eb3d5610106612943ec0e669f29a2e728faad0598629f9c8f5fc7c",
+    "operations.json": "50bd19fa274aebeac0b6401bde8a355753b99520d6965fdcad2f67ab5bade73b"
+  },
+  "status": "Supplied clarification applied as supplement; prior source assertions reused, affected applicability revised; source verification pending"
+}
