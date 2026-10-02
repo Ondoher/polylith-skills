@@ -1,0 +1,1739 @@
+{
+  "passed": true,
+  "snapshotStillPlanningVersion": true,
+  "snapshot": {
+    "id": "alexa-snapshot",
+    "revision": 8,
+    "path": "snapshots/12c09ddff7478114a793a51cfefb8293754276ed03d663d8837694312a5cf007/product-snapshot.json",
+    "sha256": "12c09ddff7478114a793a51cfefb8293754276ed03d663d8837694312a5cf007"
+  },
+  "sourceDescriptionSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+  "declaredSourcePath": "C:/dev/alexa/agents/topics/alexa/product-description.md",
+  "ux": {
+    "id": "alexa-ux",
+    "revision": "2",
+    "envelopeSha256": "913f707afe884b5958daf2bfbcab9f34fd5df038a4160912d62c0370445d8a88",
+    "decodedSha256": "7fa242cdba7fe071f6c1200fb9be1dccc2b7fc944377f5066b241529f80ec937",
+    "reviewBytesSha256": "3e28363708e3f36095e37d391151eeb4715102d1fea504dcdfb7eba8d8826b13",
+    "decodedDeepEqualsReviewedLive": true,
+    "verdict": "pass",
+    "reviewedScope": [
+      "alexa-ux"
+    ],
+    "requiredScopeRefs": [
+      "video-workspace",
+      "video-view",
+      "video-saving-view",
+      "video-guard",
+      "timeline-add",
+      "selection-menu",
+      "clip-create",
+      "clip-update",
+      "video-project-guard",
+      "track-properties",
+      "clip-properties",
+      "track-rectangle",
+      "source-rectangle",
+      "video-framing-view",
+      "edit-video",
+      "save-clip",
+      "update-clip",
+      "frame-composition",
+      "mix-audio"
+    ]
+  },
+  "designLanguage": {
+    "id": "alexa-design-language",
+    "revision": 1,
+    "envelopeSha256": "21ae4e65e8e7cc7ad4519ec5200e8a0c066deb8f07a2ff97e7e523b5525da9ca",
+    "decodedSha256": "26ce45735304a9df96713b4125ed70d3e778bfcd888a40626ec47b93da3d39b3",
+    "acceptedCurrentSnapshotEntry": true,
+    "independentReviewReceipt": "No distinct design-language qualitative review receipt identified in this snapshot; accepted entry is the binding authority. Specimen review-layout is withheld."
+  },
+  "conflicts": [
+    {
+      "id": "insertion-order",
+      "kind": "accepted flow sequencing ambiguity",
+      "evidence": "Review receipt retains advisory insertion-branch-order; accepted set-insertion affordance is in video-view, while Add retains destination.",
+      "sharedResolution": "Source/action-consistent editor insertion before Add. Do not rewrite live UX."
+    },
+    {
+      "id": "ungroup-authority",
+      "kind": "advisory research versus provisional accepted UX",
+      "evidence": "Saved research says neutral-group-only restriction is earlier adaptation, not owner requirement. Accepted UX gates it while transfer policy remains open.",
+      "sharedResolution": "Keep accepted gate and explicit policy question; label provisional in packet documentation, never interface implementation commentary."
+    }
+  ],
+  "unresolvedReferences": [],
+  "contextBoundaries": [
+    {
+      "from": "video-saving-view",
+      "field": "taskRefs",
+      "id": "export-video",
+      "reason": "External task is contextual; its relevant global availability/status is in shared components."
+    },
+    {
+      "from": "video-view",
+      "field": "taskRefs",
+      "id": "export-video",
+      "reason": "External task is contextual; its relevant global availability/status is in shared components."
+    },
+    {
+      "id": "export-workspace",
+      "reason": "External surface identity/purpose retained; geometry and internal controls excluded."
+    },
+    {
+      "id": "library-workspace",
+      "reason": "External surface identity/purpose retained; geometry and internal controls excluded."
+    },
+    {
+      "id": "playback-workspace",
+      "reason": "External surface identity/purpose retained; geometry and internal controls excluded."
+    }
+  ],
+  "externalDependencies": [
+    {
+      "from": "add-timeline-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "adjust-rectangle-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "apply-rectangle-failure",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "apply-rectangle-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "audio-controls",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "audio-scope",
+      "field": "patternRef",
+      "ref": "track-and-occurrence-audio",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "audio-scope",
+      "field": "sourceRefs",
+      "ref": "adobe-audio-scope",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "audio-scope",
+      "field": "sourceRefs",
+      "ref": "kdenlive-audio",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "cancel-transition-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "choose-timeline-content-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "choose-video-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "clear-selection-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "clip-create",
+      "field": "orderRefs",
+      "ref": "clip-create-create-clip",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "clip-create",
+      "field": "orderRefs",
+      "ref": "clip-create-dismiss-editor",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "clip-create",
+      "field": "orderRefs",
+      "ref": "clip-create-name-clip",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "clip-properties",
+      "field": "orderRefs",
+      "ref": "clip-properties-mute",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "clip-properties",
+      "field": "orderRefs",
+      "ref": "clip-properties-source",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "clip-properties",
+      "field": "orderRefs",
+      "ref": "clip-properties-volume",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "clip-update",
+      "field": "orderRefs",
+      "ref": "clip-update-confirm-update",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "clip-update",
+      "field": "orderRefs",
+      "ref": "clip-update-dismiss-editor",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "confirm-update-failure",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "confirm-update-progress",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "confirm-update-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "create-clip-failure",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "create-clip-progress",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "create-clip-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "delete-selection-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "discard-draft-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "discard-project-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "dismiss-editor-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "edit-source-rectangle-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "edit-track-rectangle-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "edit-video",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "editing",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "export-canceling",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "export-exporting",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "export-saving",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "export-viewing",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "fit-player-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "follow-playhead-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "grouped-clip-editing",
+      "field": "patternRef",
+      "ref": "group-level-controls",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "grouped-clip-editing",
+      "field": "sourceRefs",
+      "ref": "adobe-nested-sequences",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "grouped-clip-editing",
+      "field": "sourceRefs",
+      "ref": "apple-compound-clips",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "insert-content-failure",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "insert-content-progress",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "insert-content-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "keep-draft-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "library-saving",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "library-viewing",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "multitrack-editing",
+      "field": "patternRef",
+      "ref": "targeted-insert",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "multitrack-editing",
+      "field": "sourceRefs",
+      "ref": "adobe-rearrange",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "multitrack-editing",
+      "field": "sourceRefs",
+      "ref": "kdenlive-editing",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "mute-clip-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "mute-track-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "name-clip-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "name-video-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "navigate-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "navigate-work",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "new-project-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "open-project-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "open-save-clip-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "open-update-clip-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "pan-player-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "pan-timeline-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "play-preview-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "playback-saving",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "playback-viewing",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "project",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "project-guard",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "protect-project",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "rectangle-editor",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "redo-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "reorder-objects-canceled",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "reorder-objects-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "reset-rectangle-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "save-clip",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "save-project-as-failure",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "save-project-as-progress",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "save-project-as-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "save-project-failure",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "save-project-progress",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "save-project-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "save-video-failure",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "save-video-progress",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "save-video-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "scrub-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "select-objects-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "select-range-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "select-track-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "selection-actions-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "selection-menu",
+      "field": "orderRefs",
+      "ref": "selection-menu-delete-selection",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "selection-menu",
+      "field": "orderRefs",
+      "ref": "selection-menu-dismiss-editor",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "selection-menu",
+      "field": "orderRefs",
+      "ref": "selection-menu-open-save-clip",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "selection-menu",
+      "field": "orderRefs",
+      "ref": "selection-menu-open-update-clip",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "selection-menu",
+      "field": "orderRefs",
+      "ref": "selection-menu-reorder-objects",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "selection-menu",
+      "field": "orderRefs",
+      "ref": "selection-menu-split-selection",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "selection-menu",
+      "field": "orderRefs",
+      "ref": "selection-menu-ungroup-clip",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "set-clip-volume-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "set-insertion-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "set-range-boundary-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "set-track-volume-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "source-rectangle",
+      "field": "orderRefs",
+      "ref": "source-rectangle-adjust",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "source-rectangle",
+      "field": "orderRefs",
+      "ref": "source-rectangle-apply",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "source-rectangle",
+      "field": "orderRefs",
+      "ref": "source-rectangle-cancel",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "source-rectangle",
+      "field": "orderRefs",
+      "ref": "source-rectangle-reset",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "spatial-framing",
+      "field": "patternRef",
+      "ref": "scoped-rectangle-editor",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "spatial-framing",
+      "field": "sourceRefs",
+      "ref": "adobe-properties",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "spatial-framing",
+      "field": "sourceRefs",
+      "ref": "kdenlive-transform",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "split-selection-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "step-frame-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "stop-preview-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "timeline",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "timeline-add",
+      "field": "orderRefs",
+      "ref": "timeline-add-choose-content",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "timeline-add",
+      "field": "orderRefs",
+      "ref": "timeline-add-dismiss-editor",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "timeline-add",
+      "field": "orderRefs",
+      "ref": "timeline-add-insert-content",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "timeline-add",
+      "field": "orderRefs",
+      "ref": "timeline-add-source-rectangle",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "timeline-pattern",
+      "field": "patternRef",
+      "ref": "distinct-range-and-trim",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "timeline-pattern",
+      "field": "sourceRefs",
+      "ref": "adobe-trim",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "timeline-pattern",
+      "field": "sourceRefs",
+      "ref": "apple-ranges",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "track-properties",
+      "field": "orderRefs",
+      "ref": "track-properties-output",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "track-properties",
+      "field": "orderRefs",
+      "ref": "track-properties-volume",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "track-rectangle",
+      "field": "orderRefs",
+      "ref": "track-rectangle-adjust",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "track-rectangle",
+      "field": "orderRefs",
+      "ref": "track-rectangle-apply",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "track-rectangle",
+      "field": "orderRefs",
+      "ref": "track-rectangle-cancel",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "track-rectangle",
+      "field": "orderRefs",
+      "ref": "track-rectangle-reset",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "trim-occurrence-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "undo-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "ungroup-clip-failure",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "ungroup-clip-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "update-clip",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-editing",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-framing",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-framing-view",
+      "field": "sourceRegionRef",
+      "ref": "video-identity",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-framing-view",
+      "field": "sourceRegionRef",
+      "ref": "video-operations",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-framing-view",
+      "field": "sourceRegionRef",
+      "ref": "video-player",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-framing-view",
+      "field": "sourceRegionRef",
+      "ref": "video-range",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-framing-view",
+      "field": "sourceRegionRef",
+      "ref": "video-status",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-framing-view",
+      "field": "sourceRegionRef",
+      "ref": "video-track",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-guard",
+      "field": "orderRefs",
+      "ref": "video-guard-discard-draft",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-guard",
+      "field": "orderRefs",
+      "ref": "video-guard-keep-draft",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-project-guard",
+      "field": "orderRefs",
+      "ref": "video-project-guard-cancel-transition",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-project-guard",
+      "field": "orderRefs",
+      "ref": "video-project-guard-discard-project",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-project-guard",
+      "field": "orderRefs",
+      "ref": "video-project-guard-save-project",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-saving",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-saving-view",
+      "field": "orderRefs",
+      "ref": "video-saving-view-fit-player",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-saving-view",
+      "field": "orderRefs",
+      "ref": "video-saving-view-pan-player",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-saving-view",
+      "field": "orderRefs",
+      "ref": "video-saving-view-pan-timeline",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-saving-view",
+      "field": "orderRefs",
+      "ref": "video-saving-view-zoom-player-in",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-saving-view",
+      "field": "orderRefs",
+      "ref": "video-saving-view-zoom-player-out",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-saving-view",
+      "field": "orderRefs",
+      "ref": "video-saving-view-zoom-timeline",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-saving-view",
+      "field": "sourceRegionRef",
+      "ref": "video-identity",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-saving-view",
+      "field": "sourceRegionRef",
+      "ref": "video-operations",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-saving-view",
+      "field": "sourceRegionRef",
+      "ref": "video-player",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-saving-view",
+      "field": "sourceRegionRef",
+      "ref": "video-range",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-saving-view",
+      "field": "sourceRegionRef",
+      "ref": "video-status",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-saving-view",
+      "field": "sourceRegionRef",
+      "ref": "video-track",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-add-timeline",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-choose-video",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-clear-selection",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-fit-player",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-follow-playhead",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-mute-track",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-name-video",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-navigate",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-new-project",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-open-project",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-pan-player",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-pan-timeline",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-play-preview",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-redo",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-reorder-objects",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-save-project",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-save-project-as",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-save-video",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-scrub",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-select-objects",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-select-range",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-select-track",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-selection-actions",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-set-insertion",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-set-range-boundary",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-step-frame",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-stop-preview",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-trim-occurrence",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-undo",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-zoom-player-in",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-zoom-player-out",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "orderRefs",
+      "ref": "video-view-zoom-timeline",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "sourceRegionRef",
+      "ref": "video-identity",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "sourceRegionRef",
+      "ref": "video-operations",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "sourceRegionRef",
+      "ref": "video-player",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "sourceRegionRef",
+      "ref": "video-range",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "sourceRegionRef",
+      "ref": "video-status",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-view",
+      "field": "sourceRegionRef",
+      "ref": "video-track",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "video-workspace",
+      "field": "areaRef",
+      "ref": "video-work",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "zoom-player-in-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "zoom-player-out-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    },
+    {
+      "from": "zoom-timeline-result",
+      "field": "sourceRefs",
+      "ref": "product-description",
+      "reason": "Source, local region/order, shell area or local pattern metadata."
+    }
+  ],
+  "selectionMethod": "Existing buildUseCaseHandoff for each actual local flow, union with video-workspace/actual video frames, explicit directed semantic refs with authored-v-context boundaries, reverse research/realization/trace attachment, then product dependency closure.",
+  "handoffs": [
+    {
+      "productModelRef": "product:alexa",
+      "uxArtifactRef": "ux:artifact:alexa-ux",
+      "flowRef": "ux:flow:edit-video",
+      "productRefs": [
+        "product:add-timeline-content",
+        "product:clip-persistence-invariants",
+        "product:commit-edit-availability",
+        "product:compose-video",
+        "product:delete-split-reorder",
+        "product:draft-project-guard",
+        "product:edit-surface-regions",
+        "product:editor-transient-context",
+        "product:four-track-editing",
+        "product:grouped-assembly-editing",
+        "product:inspection-zoom",
+        "product:object-reorder",
+        "product:occurrence-trim",
+        "product:precise-selection",
+        "product:range-selection",
+        "product:save-video-draft",
+        "product:scrub-and-follow",
+        "product:timeline-drop-rearrangement",
+        "product:timeline-occurrences",
+        "product:timeline-trim-push"
+      ],
+      "realizationRefs": [
+        "copied-clip-persistence",
+        "drop-rearrangement",
+        "grouped-assembly-editing",
+        "realization-1",
+        "realization-10",
+        "realization-11",
+        "realization-12",
+        "realization-15",
+        "realization-17",
+        "realization-18",
+        "realization-22",
+        "realization-24",
+        "realization-26",
+        "realization-27",
+        "realization-28",
+        "realization-29",
+        "realization-5",
+        "realization-6",
+        "realization-8",
+        "trim-push"
+      ],
+      "stepRefs": [
+        "choose-video-step",
+        "edit-video-select-track-step",
+        "edit-video-add-timeline-step",
+        "edit-video-choose-content-step",
+        "edit-video-insert-content-step",
+        "edit-video-select-objects-step",
+        "edit-video-trim-occurrence-step",
+        "edit-video-save-video-step"
+      ],
+      "alternateRefs": [
+        "edge-56",
+        "edge-57",
+        "edit-video-insert-content-step-completed",
+        "edge-58",
+        "edge-59",
+        "edge-60",
+        "edge-61",
+        "edge-62",
+        "edge-63",
+        "edge-64",
+        "edge-65",
+        "edge-66",
+        "edge-67",
+        "edge-68",
+        "edge-69",
+        "edge-70",
+        "edge-71",
+        "edge-72",
+        "edge-73",
+        "edge-74",
+        "edge-75",
+        "edge-76",
+        "edge-77",
+        "edge-78",
+        "edit-video-trim-occurrence-step-completed",
+        "edit-video-save-video-step-completed",
+        "edit-video-reorder-objects-step-completed",
+        "insert-content-recovery",
+        "trim-occurrence-recovery",
+        "reorder-objects-recovery",
+        "save-video-recovery",
+        "add-canceled",
+        "add-crop",
+        "add-crop-full-frame",
+        "add-crop-canceled",
+        "ungroup-selected-clip",
+        "ungroup-unavailable",
+        "ungroup-failed",
+        "ungroup-adjusted-group"
+      ],
+      "actionRefs": [
+        "add-timeline",
+        "adjust-rectangle",
+        "apply-rectangle",
+        "choose-timeline-content",
+        "choose-video",
+        "clear-selection",
+        "delete-selection",
+        "dismiss-editor",
+        "edit-source-rectangle",
+        "fit-player",
+        "follow-playhead",
+        "insert-content",
+        "name-video",
+        "pan-player",
+        "pan-timeline",
+        "play-preview",
+        "redo",
+        "reorder-objects",
+        "reset-rectangle",
+        "save-video",
+        "scrub",
+        "select-objects",
+        "select-range",
+        "select-track",
+        "selection-actions",
+        "set-insertion",
+        "set-range-boundary",
+        "split-selection",
+        "step-frame",
+        "stop-preview",
+        "trim-occurrence",
+        "undo",
+        "ungroup-clip",
+        "zoom-player-in",
+        "zoom-player-out",
+        "zoom-timeline"
+      ],
+      "stateRefs": [
+        "video-editing",
+        "video-framing",
+        "video-saving"
+      ],
+      "feedbackRefs": [
+        "add-timeline-result",
+        "adjust-rectangle-result",
+        "apply-rectangle-failure",
+        "apply-rectangle-result",
+        "choose-timeline-content-result",
+        "choose-video-result",
+        "clear-selection-result",
+        "delete-selection-result",
+        "dismiss-editor-result",
+        "edit-source-rectangle-result",
+        "fit-player-result",
+        "follow-playhead-result",
+        "insert-content-failure",
+        "insert-content-progress",
+        "insert-content-result",
+        "name-video-result",
+        "pan-player-result",
+        "pan-timeline-result",
+        "play-preview-result",
+        "redo-result",
+        "reorder-objects-canceled",
+        "reorder-objects-result",
+        "reset-rectangle-result",
+        "save-video-failure",
+        "save-video-progress",
+        "save-video-result",
+        "scrub-result",
+        "select-objects-result",
+        "select-range-result",
+        "select-track-result",
+        "selection-actions-result",
+        "set-insertion-result",
+        "set-range-boundary-result",
+        "split-selection-result",
+        "step-frame-result",
+        "stop-preview-result",
+        "trim-occurrence-result",
+        "undo-result",
+        "ungroup-clip-failure",
+        "ungroup-clip-result",
+        "zoom-player-in-result",
+        "zoom-player-out-result",
+        "zoom-timeline-result"
+      ],
+      "frameRefs": [
+        "clip-create",
+        "clip-update",
+        "selection-menu",
+        "source-rectangle",
+        "timeline-add",
+        "video-framing-view",
+        "video-saving-view",
+        "video-view"
+      ],
+      "sharedElementRefs": [
+        "ux:component:project-guard",
+        "ux:component:rectangle-editor",
+        "ux:component:timeline"
+      ],
+      "uiSceneRefs": [],
+      "traceGapRefs": [
+        "editor-return-gap",
+        "source-rectangle-invocation",
+        "ungroup-adjustment-transfer",
+        "ungroup-overlapping-parts",
+        "video-expansion-settings-conflict"
+      ]
+    },
+    {
+      "productModelRef": "product:alexa",
+      "uxArtifactRef": "ux:artifact:alexa-ux",
+      "flowRef": "ux:flow:save-clip",
+      "productRefs": [
+        "product:commit-edit-availability",
+        "product:edit-surface-regions",
+        "product:editor-transient-context",
+        "product:four-track-editing",
+        "product:save-library-clip"
+      ],
+      "realizationRefs": [
+        "realization-11",
+        "realization-12",
+        "realization-25",
+        "realization-28",
+        "realization-6"
+      ],
+      "stepRefs": [
+        "open-save-clip-step",
+        "save-clip-name-clip-step",
+        "save-clip-create-clip-step"
+      ],
+      "alternateRefs": [
+        "edge-85",
+        "save-clip-create-clip-step-completed",
+        "create-clip-recovery"
+      ],
+      "actionRefs": [
+        "create-clip",
+        "dismiss-editor",
+        "name-clip",
+        "open-save-clip"
+      ],
+      "stateRefs": [
+        "video-editing",
+        "video-framing",
+        "video-saving"
+      ],
+      "feedbackRefs": [
+        "create-clip-failure",
+        "create-clip-progress",
+        "create-clip-result",
+        "dismiss-editor-result",
+        "name-clip-result",
+        "open-save-clip-result"
+      ],
+      "frameRefs": [
+        "clip-create",
+        "clip-update",
+        "selection-menu",
+        "timeline-add"
+      ],
+      "sharedElementRefs": [],
+      "uiSceneRefs": [],
+      "traceGapRefs": [
+        "editor-return-gap"
+      ]
+    },
+    {
+      "productModelRef": "product:alexa",
+      "uxArtifactRef": "ux:artifact:alexa-ux",
+      "flowRef": "ux:flow:update-clip",
+      "productRefs": [
+        "product:commit-edit-availability",
+        "product:edit-surface-regions",
+        "product:editor-transient-context",
+        "product:four-track-editing",
+        "product:update-named-clip"
+      ],
+      "realizationRefs": [
+        "realization-11",
+        "realization-12",
+        "realization-28",
+        "realization-30",
+        "realization-6"
+      ],
+      "stepRefs": [
+        "open-update-clip-step",
+        "update-clip-confirm-update-step"
+      ],
+      "alternateRefs": [
+        "edge-90",
+        "update-clip-confirm-update-step-completed",
+        "confirm-update-recovery"
+      ],
+      "actionRefs": [
+        "confirm-update",
+        "dismiss-editor",
+        "open-update-clip"
+      ],
+      "stateRefs": [
+        "video-editing",
+        "video-framing",
+        "video-saving"
+      ],
+      "feedbackRefs": [
+        "confirm-update-failure",
+        "confirm-update-progress",
+        "confirm-update-result",
+        "dismiss-editor-result",
+        "open-update-clip-result"
+      ],
+      "frameRefs": [
+        "clip-create",
+        "clip-update",
+        "selection-menu",
+        "timeline-add"
+      ],
+      "sharedElementRefs": [],
+      "uiSceneRefs": [],
+      "traceGapRefs": [
+        "editor-return-gap"
+      ]
+    },
+    {
+      "productModelRef": "product:alexa",
+      "uxArtifactRef": "ux:artifact:alexa-ux",
+      "flowRef": "ux:flow:frame-composition",
+      "productRefs": [
+        "product:clip-persistence-invariants",
+        "product:edit-surface-regions",
+        "product:editor-transient-context",
+        "product:four-track-editing",
+        "product:scrub-and-follow",
+        "product:spatial-region-capability"
+      ],
+      "realizationRefs": [
+        "copied-clip-persistence",
+        "realization-11",
+        "realization-12",
+        "realization-27",
+        "realization-28",
+        "spatial-rectangles"
+      ],
+      "stepRefs": [
+        "framing-select-track",
+        "framing-open",
+        "framing-adjust",
+        "framing-apply"
+      ],
+      "alternateRefs": [
+        "frame-source",
+        "framing-full-frame",
+        "framing-invalid",
+        "framing-canceled",
+        "framing-failed"
+      ],
+      "actionRefs": [
+        "adjust-rectangle",
+        "apply-rectangle",
+        "dismiss-editor",
+        "edit-source-rectangle",
+        "edit-track-rectangle",
+        "reset-rectangle",
+        "select-track"
+      ],
+      "stateRefs": [
+        "video-editing",
+        "video-framing"
+      ],
+      "feedbackRefs": [
+        "adjust-rectangle-result",
+        "apply-rectangle-failure",
+        "apply-rectangle-result",
+        "dismiss-editor-result",
+        "edit-source-rectangle-result",
+        "edit-track-rectangle-result",
+        "reset-rectangle-result",
+        "select-track-result"
+      ],
+      "frameRefs": [
+        "clip-properties",
+        "source-rectangle",
+        "track-properties",
+        "track-rectangle",
+        "video-framing-view"
+      ],
+      "sharedElementRefs": [
+        "ux:component:rectangle-editor",
+        "ux:component:timeline"
+      ],
+      "uiSceneRefs": [],
+      "traceGapRefs": [
+        "editor-return-gap",
+        "source-rectangle-invocation"
+      ]
+    },
+    {
+      "productModelRef": "product:alexa",
+      "uxArtifactRef": "ux:artifact:alexa-ux",
+      "flowRef": "ux:flow:mix-audio",
+      "productRefs": [
+        "product:edit-surface-regions",
+        "product:four-track-editing",
+        "product:track-and-clip-audio"
+      ],
+      "realizationRefs": [
+        "realization-11",
+        "realization-28",
+        "track-clip-audio"
+      ],
+      "stepRefs": [
+        "audio-select-track",
+        "audio-track-volume",
+        "audio-review"
+      ],
+      "alternateRefs": [
+        "audio-track-mute",
+        "audio-occurrence",
+        "audio-occurrence-mute",
+        "audio-invalid"
+      ],
+      "actionRefs": [
+        "mute-clip",
+        "mute-track",
+        "select-track",
+        "set-clip-volume",
+        "set-track-volume"
+      ],
+      "stateRefs": [
+        "video-editing"
+      ],
+      "feedbackRefs": [
+        "mute-clip-result",
+        "mute-track-result",
+        "select-track-result",
+        "set-clip-volume-result",
+        "set-track-volume-result"
+      ],
+      "frameRefs": [
+        "clip-properties",
+        "track-properties",
+        "video-view"
+      ],
+      "sharedElementRefs": [
+        "ux:component:audio-controls"
+      ],
+      "uiSceneRefs": [],
+      "traceGapRefs": []
+    }
+  ]
+}

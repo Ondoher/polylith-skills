@@ -1,0 +1,18 @@
+{
+  "primary": "#B87152",
+  "onPrimary": "#000000",
+  "surface": "#F7F7FC",
+  "background": "#F7F7FC",
+  "text": "#212121",
+  "muted": "#636365",
+  "border": "#D9D9DE",
+  "accent": "#B87152",
+  "danger": "#D32F2F",
+  "disabledBackground": "#D9D9DE",
+  "fieldBorder": "#BEBEC2",
+  "fieldLabel": "#636365",
+  "disabledForeground": "#A1A1A4",
+  "radius": 12,
+  "fieldRadius": 4,
+  "fontSize": 16
+}

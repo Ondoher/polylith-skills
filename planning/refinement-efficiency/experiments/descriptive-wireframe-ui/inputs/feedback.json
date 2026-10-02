@@ -1,0 +1,772 @@
+[
+  {
+    "actionRef": "navigate",
+    "description": "Select a workspace; apply the relevant draft guard, retain project context and continuing export. A denied guard returns to captured origin.",
+    "id": "navigate-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "new-project",
+    "description": "Create a new project only after all applicable guard decisions and successful replacement; preserve original work until success. While any export is running or cancellation is pending, New/Open remain visible but unavailable in every workspace; no guard, chooser, project replacement or queued attempt occurs. Restore availability only after the export actually completes, fails or finishes cancellation and is no longer active; other commit/modal conditions still apply.",
+    "id": "new-project-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "open-project",
+    "description": "Choose a project in the native chooser; apply draft-first/project-second guard and Open once. Canceled chooser, failed Open or failed restoration retains original draft/project. While any export is running or cancellation is pending, New/Open remain visible but unavailable in every workspace; no guard, chooser, project replacement or queued attempt occurs. Restore availability only after the export actually completes, fails or finishes cancellation and is no longer active; other commit/modal conditions still apply.",
+    "id": "open-project-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "save-project",
+    "description": "Save only project content explicitly saved to it; never implicitly save the active video/playlist draft. Failed save preserves the decision for retry or Cancel.",
+    "id": "save-project-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "save-project-as",
+    "description": "Choose project filename/location and save explicitly saved project content only; canceling the native chooser changes nothing.",
+    "id": "save-project-as-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "keep-draft",
+    "description": "Stop the pending context change and return to the intact draft and original project.",
+    "id": "keep-draft-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "discard-draft",
+    "description": "Record discard intent but retain the original draft until all decisions and restoration/replacement succeed. Restore a saved draft or remove a never-saved draft only on successful continuation.",
+    "id": "discard-draft-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "discard-project",
+    "description": "Discard unsaved project changes only after replacement succeeds; draft discard stays deferred. Failure retains original work.",
+    "id": "discard-project-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "cancel-transition",
+    "description": "Abort the transition and retain original project/draft, including a draft marked for deferred discard.",
+    "id": "cancel-transition-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "choose-video",
+    "description": "Choose New Video or a saved video; apply draft guard then activate its draft, including a never-saved empty video, and reset player inspection to Fit.",
+    "id": "choose-video-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "name-video",
+    "description": "Edit visible draft identity without saving; retain name on failure.",
+    "id": "name-video-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "add-timeline",
+    "description": "Open the project-content chooser showing eligible files, saved videos and clips, and the insertion point or Append.",
+    "id": "add-timeline-result",
+    "persistence": "state-bound",
+    "phase": "invoked",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "insert-content",
+    "description": "After explicit Add succeeds, show the complete reviewed addition at its confirmed track/time with its source rectangle and occurrence settings. Synchronize selection, composed preview and duration. Content selection alone never produces this success. A named clip is an independent copy; a composed clip appears as one grouped object.",
+    "id": "insert-content-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "select-range",
+    "description": "Drag the composed-time row away from the playhead to create an inclusive range and move the playhead to its left Start. Retain selection until replaced or cleared.",
+    "id": "select-range-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "set-range-boundary",
+    "description": "Adjust Start/End with markers, explicit commands, focused Left/Right Arrow or equivalent handle drag. End is included in duration/frame count; one-frame precision is available. This does not trim occurrences.",
+    "id": "set-range-boundary-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "clear-selection",
+    "description": "Clear range or whole-object selection without editing media or timeline content.",
+    "id": "clear-selection-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "select-objects",
+    "description": "Identify the active track and its selected whole occurrences, their named-source context and applicable properties. Other-track objects are not part of this selection. Identify a selected grouped clip as one object.",
+    "id": "select-objects-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "scrub",
+    "description": "Move the playhead along composed time; player and playhead resolve the same position without changing selection.",
+    "id": "scrub-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "step-frame",
+    "description": "Step one previous/next frame, including equivalent keyboard input, for inspection and precise boundary commands; stepping alone does not change selection.",
+    "id": "step-frame-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "trim-occurrence",
+    "description": "Show committed source boundaries, affected track, any forward-pushed occurrences and updated composition duration. Shortening may leave a visible gap. One Undo reverses the complete trim. For a group, show its current included extent while retaining hidden parts for later outward trimming.",
+    "id": "trim-occurrence-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "selection-actions",
+    "description": "Open by right click, hover/focus trigger or equivalent keyboard menu invocation. Stop playback at the resolved frame without changing selection; preserve failure context and never automatically resume.",
+    "id": "selection-actions-result",
+    "persistence": "state-bound",
+    "phase": "invoked",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "delete-selection",
+    "description": "Remove wholly covered objects and trim partial overlaps; a middle cut leaves two unnamed owned outside objects. Close the interval, keep its location visible, and update preview/duration/history.",
+    "id": "delete-selection-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "split-selection",
+    "description": "Split at both selection edges, retain the selected region, update draft history/preview, and create no named library item.",
+    "id": "split-selection-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "reorder-objects",
+    "description": "Show the moved group at its confirmed track/time, any pushed destination clips and updated composition duration. Preserve group selection. One Undo restores the complete move.",
+    "id": "reorder-objects-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "undo",
+    "description": "Reverse an available add/delete/split/reorder/trim edit; synchronize preview and selection context. Desktop shortcut is equivalent.",
+    "id": "undo-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "redo",
+    "description": "Reapply an undone draft edit and synchronize preview/context. Desktop shortcut is equivalent.",
+    "id": "redo-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "play-preview",
+    "description": "Show the four-track composed result and the resolved playhead within the identified range, selected-object time span or full-video interval. The same transport location shows Stop; intentional timeline pan suspends following.",
+    "id": "play-preview-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "stop-preview",
+    "description": "Stop at the current resolved frame, preserve selection, and show matching player/playhead positions.",
+    "id": "stop-preview-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "zoom-player-in",
+    "description": "Magnify temporary inspection independently of timeline scale and saved/output framing.",
+    "id": "zoom-player-in-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "zoom-player-out",
+    "description": "Reduce temporary magnification only as far as Fit; do not change media, selection, composition or export.",
+    "id": "zoom-player-out-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "fit-player",
+    "description": "Fit the complete media frame without crop or distortion; opening another video resets to Fit.",
+    "id": "fit-player-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "pan-player",
+    "description": "Drag to inspect magnified media without changing source, selection, saved framing or export.",
+    "id": "pan-player-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "zoom-timeline",
+    "description": "Change composed-time scale with synchronized upper row/object lane; preserve selection/context and progressively increase detail to one-frame precision without assuming all thumbnails preload.",
+    "id": "zoom-timeline-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "pan-timeline",
+    "description": "Pan synchronized rows without changing selection; deliberate pan away suspends playhead following.",
+    "id": "pan-timeline-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "follow-playhead",
+    "description": "Bring the resolved playhead into view and resume following.",
+    "id": "follow-playhead-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "save-video",
+    "description": "Explicit successful Save retains the video's timeline and owned unnamed objects. Failure retains draft, selection and retryable context; saving prevents competing edits or abandonment.",
+    "id": "save-video-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "dismiss-editor",
+    "description": "Cancel or Escape closes without committing, returns to captured stopped editing or failed-operation context, and never restarts playback. Dynamic return target is a schema coverage gap.",
+    "id": "dismiss-editor-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "open-save-clip",
+    "description": "Stop preview if necessary without changing selection; capture the range and editor context for the named clip dialog.",
+    "id": "open-save-clip-result",
+    "persistence": "state-bound",
+    "phase": "invoked",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "name-clip",
+    "description": "Retain entered name and captured selection for creation or correction; no library item is created yet.",
+    "id": "name-clip-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "create-clip",
+    "description": "Create one stable named reusable clip from the range regardless of internal construction, leaving active timeline and selection intact. Identify created name; failure retains name, draft, selection and dialog.",
+    "id": "create-clip-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "open-update-clip",
+    "description": "Review the named library clip's current and proposed trim and explain that future additions use the update while existing video copies remain unchanged.",
+    "id": "open-update-clip-result",
+    "persistence": "state-bound",
+    "phase": "invoked",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "confirm-update",
+    "description": "The library clip retains its identity with the reviewed Start and End; existing video copies, including the selected occurrence and its local trim, stay unchanged.",
+    "id": "confirm-update-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "set-insertion",
+    "description": "Show the target track and explicit empty-lane time, Before/After edge or Append. The insertion choice does not change content or selection.",
+    "id": "set-insertion-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "save-project",
+    "description": "Operation is active; preserve context and show actual progress. Save only project content explicitly saved to it; never implicitly save the active video/playlist draft. Failed save preserves the decision for retry or Cancel.",
+    "id": "save-project-progress",
+    "persistence": "state-bound",
+    "phase": "progress",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "save-project",
+    "description": "Report the actual failure and preserve the described context for correction or retry. Save only project content explicitly saved to it; never implicitly save the active video/playlist draft. Failed save preserves the decision for retry or Cancel.",
+    "id": "save-project-failure",
+    "persistence": "state-bound",
+    "phase": "failure",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "save-project-as",
+    "description": "Operation is active; preserve context and show actual progress. Choose project filename/location and save explicitly saved project content only; canceling the native chooser changes nothing.",
+    "id": "save-project-as-progress",
+    "persistence": "state-bound",
+    "phase": "progress",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "save-project-as",
+    "description": "Report the actual failure and preserve the described context for correction or retry. Choose project filename/location and save explicitly saved project content only; canceling the native chooser changes nothing.",
+    "id": "save-project-as-failure",
+    "persistence": "state-bound",
+    "phase": "failure",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "insert-content",
+    "description": "Explicit Add is committing. Preserve the original draft, selection and staged content/destination/crop while showing actual operation progress. Disable competing edits and commits until the result is known.",
+    "id": "insert-content-progress",
+    "persistence": "state-bound",
+    "phase": "progress",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "insert-content",
+    "description": "Identify the failed content or incompatible saved-video track settings. No partial addition occurred; retain the original draft, selection, insertion choice and staged Add inputs for correction, retry or cancellation.",
+    "id": "insert-content-failure",
+    "persistence": "state-bound",
+    "phase": "failure",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "reorder-objects",
+    "description": "Actual cancellation or invalid move completed; do not claim a completed output or accepted move. Drag selected objects to an indicated gap; equivalent menu/keyboard gap choice performs the same move. Keep relative order and synchronize preview/playhead/duration/summary/history. Cancel or invalid drop preserves draft and selection.",
+    "id": "reorder-objects-canceled",
+    "persistence": "state-bound",
+    "phase": "canceled",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "save-video",
+    "description": "Operation is active; preserve context and show actual progress. Explicit successful Save retains the video's timeline and owned unnamed objects. Failure retains draft, selection and retryable context; saving prevents competing edits or abandonment.",
+    "id": "save-video-progress",
+    "persistence": "state-bound",
+    "phase": "progress",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "save-video",
+    "description": "Report the actual failure and preserve the described context for correction or retry. Explicit successful Save retains the video's timeline and owned unnamed objects. Failure retains draft, selection and retryable context; saving prevents competing edits or abandonment.",
+    "id": "save-video-failure",
+    "persistence": "state-bound",
+    "phase": "failure",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "create-clip",
+    "description": "Operation is active; preserve context and show actual progress. Create one stable named reusable clip from the range regardless of internal construction, leaving active timeline and selection intact. Identify created name; failure retains name, draft, selection and dialog.",
+    "id": "create-clip-progress",
+    "persistence": "state-bound",
+    "phase": "progress",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "create-clip",
+    "description": "Report the actual failure and preserve the described context for correction or retry. Create one stable named reusable clip from the range regardless of internal construction, leaving active timeline and selection intact. Identify created name; failure retains name, draft, selection and dialog.",
+    "id": "create-clip-failure",
+    "persistence": "state-bound",
+    "phase": "failure",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "confirm-update",
+    "description": "Updating the named library clip. Keep the reviewed identity and boundaries visible; preserve draft and selection and disable competing edits until the actual result.",
+    "id": "confirm-update-progress",
+    "persistence": "state-bound",
+    "phase": "progress",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "confirm-update",
+    "description": "The saved library definition and all video copies remain unchanged. Keep the dialog, target, reviewed values, draft and selection available for retry or Cancel.",
+    "id": "confirm-update-failure",
+    "persistence": "state-bound",
+    "phase": "failure",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "select-track",
+    "description": "Show the active track, its properties and its insertion destination.",
+    "id": "select-track-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "choose-timeline-content",
+    "description": "Show the staged content identity, duration, crop applicability and destination compatibility; no content has been inserted.",
+    "id": "choose-timeline-content-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "edit-track-rectangle",
+    "description": "Identify the track and Output rectangle coordinate space with current values.",
+    "id": "edit-track-rectangle-result",
+    "persistence": "state-bound",
+    "phase": "invoked",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "edit-source-rectangle",
+    "description": "Identify the occurrence or staged content and Source rectangle coordinate space.",
+    "id": "edit-source-rectangle-result",
+    "persistence": "state-bound",
+    "phase": "invoked",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "adjust-rectangle",
+    "description": "Show candidate bounds and composed result; identify invalid fields and disable Apply until corrected.",
+    "id": "adjust-rectangle-result",
+    "persistence": "state-bound",
+    "phase": "invoked",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "reset-rectangle",
+    "description": "Preview the full-frame candidate; Apply remains necessary.",
+    "id": "reset-rectangle-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "apply-rectangle",
+    "description": "Identify the changed draft target, or show the revised source rectangle in the pending Add dialog.",
+    "id": "apply-rectangle-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "apply-rectangle",
+    "description": "Retain the original target and entered rectangle; identify the failed application for correction or cancellation.",
+    "id": "apply-rectangle-failure",
+    "persistence": "state-bound",
+    "phase": "failure",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "set-track-volume",
+    "description": "Show the identified track's volume and independent mute state.",
+    "id": "set-track-volume-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "mute-track",
+    "description": "Show the track's mute state; selected occurrences identify inherited track mute.",
+    "id": "mute-track-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "set-clip-volume",
+    "description": "Show the occurrence's volume and any track or occurrence mute that prevents sound.",
+    "id": "set-clip-volume-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "mute-clip",
+    "description": "Show occurrence mute independently from track mute and stored volume.",
+    "id": "mute-clip-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "ungroup-clip",
+    "description": "Show the included parts in place of the eligible neutral group, retaining each part's own source rectangle, volume and mute, its included source interval, timing, gaps and track selection. Picture and sound over the used extent remain the same, with existing destination-track settings still applied. Wholly excluded parts are absent; no part settings were reset. Report completion; one Undo restores the grouped draft operation.",
+    "id": "ungroup-clip-result",
+    "persistence": "state-bound",
+    "phase": "success",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  },
+  {
+    "actionRef": "ungroup-clip",
+    "description": "Identify why Ungroup could not complete and keep the complete copied group, hidden parts, all framing/audio values, draft and selection unchanged. No parts are inserted or properties reset; adjusted-group transfer and nonrepresentable placement/composition remain unresolved.",
+    "id": "ungroup-clip-failure",
+    "persistence": "state-bound",
+    "phase": "failure",
+    "sourceRefs": [
+      "product-description"
+    ],
+    "status": "accepted"
+  }
+]

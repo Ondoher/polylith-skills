@@ -1,0 +1,18 @@
+{
+	"schemaVersion": 1,
+	"execution": "current-conversation-agents",
+	"layout": {"agentType": "default", "model": "gpt-6-sol", "reasoningEffort": "medium"},
+	"ui": {"agentType": "default", "model": "gpt-6-astra", "reasoningEffort": "ultra"},
+	"structuralReview": {"agentType": "default", "model": "gpt-6-astra", "reasoningEffort": "ultra"},
+	"uiReview": {"agentType": "default", "model": "gpt-6-astra", "reasoningEffort": "ultra"},
+	"modelSelectionReason": "Match current configured wireframe, UI and independent review models. Isolated experimental default contracts avoid conflicting geometric/production acceptance instructions. Same settings in both arms.",
+	"pairOrders": [
+		["A", "B"],
+		["B", "A"],
+		["A", "B"]
+	],
+	"pairedExecution": "sequential",
+	"measurement": "stage markers, render/capture receipts, exact artifact hashes; no model request observer",
+	"priorResultsInAuthors": false,
+	"stage2OutputUsedAsMeasuredRun": false
+}

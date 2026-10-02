@@ -1,0 +1,4228 @@
+{
+  "schemaVersion": "2.0",
+  "kind": "product-model",
+  "id": "alexa",
+  "name": "Alexa",
+  "revision": 1,
+  "status": "partial",
+  "owner": "product",
+  "consumerDomains": [
+    "prd",
+    "ux",
+    "ui",
+    "system-architecture",
+    "data-model",
+    "controller",
+    "technical-documentation",
+    "implementation-planning"
+  ],
+  "source": {
+    "id": "product-description",
+    "label": "agents/topics/alexa/product-description.md",
+    "path": "sources/5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe/product-description.md",
+    "sha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+    "byteLength": 31919,
+    "lineCount": 212,
+    "revision": 1,
+    "previousSha256": null
+  },
+  "parent": null,
+  "provenance": {
+    "producer": "refine-design",
+    "method": "semantic-parse"
+  },
+  "purpose": {
+    "id": "personal-video-work",
+    "summary": "Play and create personal videos locally in a desktop Electron application, using reusable project content and non-destructive editing.",
+    "status": "accepted",
+    "owner": "product",
+    "consumerDomains": [
+      "prd",
+      "ux",
+      "ui"
+    ],
+    "provenance": {
+      "sourceClaimRefs": [
+        "claim-purpose"
+      ]
+    }
+  },
+  "users": [
+    {
+      "id": "desktop-owner",
+      "name": "Individual desktop user",
+      "description": "One person managing, editing, playing and exporting local video projects.",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-purpose"
+        ]
+      }
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "clip-management",
+      "name": "Reusable clips",
+      "summary": "Create named reusable clips, copy them into independent video timeline occurrences, and explicitly update a library clip without changing videos that already used it.",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "userRefs": [
+        "desktop-owner"
+      ],
+      "relatedCapabilityRefs": [],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-clip-create",
+          "claim-clip-update",
+          "claim-copied-assembly-update"
+        ]
+      }
+    },
+    {
+      "id": "content-library",
+      "name": "Sources and library",
+      "summary": "Manage source video files, reusable clips, saved videos and playlists.",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "userRefs": [
+        "desktop-owner"
+      ],
+      "relatedCapabilityRefs": [],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-content",
+          "claim-library"
+        ]
+      }
+    },
+    {
+      "id": "playlist-editing",
+      "name": "Playlist editing",
+      "summary": "Create, edit, save and play ordered or shuffled video/source collections.",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "userRefs": [
+        "desktop-owner"
+      ],
+      "relatedCapabilityRefs": [],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-playlist"
+        ]
+      }
+    },
+    {
+      "id": "project-management",
+      "name": "Project management",
+      "summary": "Create, open, save and replace projects without losing unsaved work.",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "userRefs": [
+        "desktop-owner"
+      ],
+      "relatedCapabilityRefs": [],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-guard",
+          "claim-project"
+        ]
+      }
+    },
+    {
+      "id": "spatial-composition",
+      "name": "Spatial composition",
+      "summary": "Compose four editable tracks with per-track output rectangles, per-occurrence source rectangles, audio controls and nonoverlapping clips within each track.",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "userRefs": [
+        "desktop-owner"
+      ],
+      "relatedCapabilityRefs": [],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-four-track-update",
+          "claim-multitrack-intent",
+          "claim-spatial"
+        ]
+      }
+    },
+    {
+      "id": "video-editing",
+      "name": "Video editing",
+      "summary": "Select, trim, add, delete, split and reorder video-owned timeline objects with immediate preview and Undo/Redo.",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "userRefs": [
+        "desktop-owner"
+      ],
+      "relatedCapabilityRefs": [],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-edit-operations",
+          "claim-editor",
+          "claim-selection"
+        ]
+      }
+    },
+    {
+      "id": "video-export",
+      "name": "Video export",
+      "summary": "Export a saved video to MP4 with explicit destination consent, progress and cancellation.",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "userRefs": [
+        "desktop-owner"
+      ],
+      "relatedCapabilityRefs": [],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-export",
+          "claim-export-lifecycle"
+        ]
+      }
+    },
+    {
+      "id": "video-playback",
+      "name": "Video playback",
+      "summary": "Inspect and play videos and sources with synchronized transport.",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "userRefs": [
+        "desktop-owner"
+      ],
+      "relatedCapabilityRefs": [],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-playback",
+          "claim-transport"
+        ]
+      }
+    }
+  ],
+  "goals": [
+    {
+      "id": "compose-video",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-precision",
+          "claim-video-save"
+        ]
+      },
+      "statement": "Build and refine saved videos and reusable clips with precise frame boundaries.",
+      "desiredOutcome": "Build and refine saved videos and reusable clips with precise frame boundaries.",
+      "capabilityRefs": [
+        "clip-management",
+        "video-editing"
+      ],
+      "userRefs": [
+        "desktop-owner"
+      ]
+    },
+    {
+      "id": "export-result",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-export",
+          "claim-export-lifecycle"
+        ]
+      },
+      "statement": "Produce a clean MP4 with clear destination, progress and result.",
+      "desiredOutcome": "Produce a clean MP4 with clear destination, progress and result.",
+      "capabilityRefs": [
+        "video-export"
+      ],
+      "userRefs": [
+        "desktop-owner"
+      ]
+    },
+    {
+      "id": "play-collections",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-playback",
+          "claim-transport"
+        ]
+      },
+      "statement": "Play local content and playlists with a clear current item and run order.",
+      "desiredOutcome": "Play local content and playlists with a clear current item and run order.",
+      "capabilityRefs": [
+        "playlist-editing",
+        "video-playback"
+      ],
+      "userRefs": [
+        "desktop-owner"
+      ]
+    },
+    {
+      "id": "preserve-work",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-guard",
+          "claim-occurrences"
+        ]
+      },
+      "statement": "Work without losing the original project, active draft, or source media.",
+      "desiredOutcome": "Work without losing the original project, active draft, or source media.",
+      "capabilityRefs": [
+        "clip-management",
+        "playlist-editing",
+        "project-management",
+        "video-editing"
+      ],
+      "userRefs": [
+        "desktop-owner"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "id": "add-timeline-content",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-addition",
+          "claim-copied-assembly-update"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "The user chooses Add to Timeline and then selects a project video file, video, or named clip. Single-track content is inserted into the active track at an explicit insertion point, or appended to that track when no insertion point has been set. The user stages the content and may review or change its source rectangle before pressing Add; selecting content alone does not insert. A point inside a clip resolves to its nearest edge with a visible Before/After preview. Inserting pushes only colliding later clips on the destination track. Scrubbing and selection do not silently change the insertion point.\n\n- Adding a video file creates an unnamed object covering the whole source file and adds it to the active video.\n- Adding a video expands its complete four-track description into fresh video-specific timeline objects, preserving its relative track timing and spatial/audio settings. Empty destination tracks can adopt the expanded settings; populated tracks must have exactly compatible settings. If settings conflict, the addition is refused as one operation, identifies the conflict and preserves both source and destination. The destination does not retain a live reference to the added video.\n- Adding a named clip copies its content definition into a fresh video-owned timeline occurrence. It does not remain a live reference to the library clip. A composed clip is copied as one grouped assembly object. Later changes to the library clip do not change this copy.\n\nAn addition either completes as one draft operation or makes no partial insertion. The updated timeline, duration, selection, and preview remain synchronized.",
+      "capabilityRefs": [
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "adopted-player-direction",
+      "status": "accepted",
+      "owner": "system-architecture",
+      "consumerDomains": [
+        "system-architecture",
+        "data-model",
+        "controller",
+        "technical-documentation",
+        "implementation-planning"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-player-direction"
+        ]
+      },
+      "kind": "scope",
+      "statement": "- The planned player architecture is Electron local-file access, Mediabunny/WebCodecs decoding with bounded predictive preparation in a page-associated worker, Canvas 2D composition on one transferred canvas, and renderer Web Audio mixing and audio-led timing. The owner adopted this direction after the POC and successful manual single/two-video lip-sync observations; see the player architecture white paper. Production capacity and supported-media limits still need definition and validation.\n- The interface supports four video tracks. Decoder capacity must include headroom for occasional overlaps; four tracks is not a four-decoder ceiling. The additional overlap budget remains to be validated. Occasional preview video stutter is acceptable; export must still produce clean output with the intended timing and composition. Export architecture remains open and may use a different pipeline; WebCodecs is not mandated for export by the player decision.",
+      "capabilityRefs": [
+        "spatial-composition",
+        "video-playback"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "clip-persistence-invariants",
+      "status": "accepted",
+      "owner": "data-model",
+      "consumerDomains": [
+        "system-architecture",
+        "data-model",
+        "controller",
+        "technical-documentation",
+        "implementation-planning"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-copied-assembly-update",
+          "claim-persistence"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Inserting a clip copies its content definition into a video-owned occurrence; this does not imply duplicating source media files. Persisted videos retain their copied definitions, resolved boundaries and underlying source-media references independently of later library-clip edits. A copied occurrence retains a stable origin-clip association for the explicit Update Named Clip command, but that association is not a live content dependency. Updating a library clip never propagates to videos that used it. The earlier following-occurrence reconstruction and propagation rules are superseded by the later owner notes. Assemblies retain their full copied composition, including parts outside an inward trim, so later outward trimming can restore hidden content and extend into available source-file content at the corresponding edge. Ungrouping materializes the included parts as separate timeline clips; wholly excluded parts are not inserted. Failed operations preserve the prior draft and saved definitions.",
+      "capabilityRefs": [
+        "clip-management"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "commit-edit-availability",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-commit-freeze"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "While a video or clip save, named-clip update, timeline addition, or project save is committing, Alexa preserves the active draft and selection and disables draft changes, selection or insertion changes, Undo and Redo, competing commits, and actions that would replace or abandon that draft. Inspection-only zoom and pan may remain available. Unavailable edits are not queued; editing resumes after the actual result is known.",
+      "capabilityRefs": [
+        "clip-management",
+        "project-management",
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "content-types",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-content",
+          "claim-copied-assembly-update"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Alexa has four user-visible forms of content:\n\n- A **video file** is source media on disk. Information about it and access to it come through Electron.\n- A **clip** is any named, reusable slice saved to the project library. A clip may internally be one continuous source range or a composition of several ranges, but that distinction is not exposed in its user-facing type.\n- A **video** is a saved, editable timeline composed from video files, named clips, and expanded video descriptions.\n- A **playlist** groups videos and video files for playback in order or shuffled order.\n\nAn assembly is an internal playback construction used when a clip or part of a video requires multiple source ranges. It is not a separate user-facing content type, library category, or editor mode. All independently saved slices are called clips. On a track timeline, a copied assembly behaves as a grouped object and can be explicitly ungrouped into its component clips; this does not introduce another library content type or editor mode.",
+      "capabilityRefs": [
+        "content-library"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "delete-split-reorder",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-edit-operations"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "A composed-time range acts across all four tracks. The following operations act on the working video draft using a right click menu, or a hover icon to open the menu.\n\n- **Delete** removes every object wholly covered by the selection and trims partial overlaps to the selection boundaries. When the deleted range cuts through the middle of one object, the two outside portions remain as separate unnamed video-specific objects. For a range selection, the interval closes by the same duration on every track so their timing remains aligned. For whole-object selection, delete only the selected objects and close their removed intervals on their track, leaving other tracks unchanged. The resulting location stays visible.\n- **Split** creates boundaries at both edges of the selected range so that the selected region and surrounding regions can be selected and operated on independently. The selected region remains selected. Split does not name or save a library item.\n- **Reorder** moves selected whole objects from one selected track to a displayed destination track and insertion point. It provides the keyboard-operable equivalent of dragging selected objects to an indicated gap.\n\nAdd, delete, split, and reorder update duration and preview immediately and participate in draft-level Undo and Redo. Range boundaries, whole-object selection, named status, and failures remain clear. Keyboard object navigation, action commands, boundary commands, and frame stepping are desktop editing features.",
+      "capabilityRefs": [
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "desktop-scope",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-desktop-runtime",
+          "claim-purpose"
+        ]
+      },
+      "kind": "scope",
+      "statement": "Personal, local, desktop-only application. No authentication, cloud collaboration, phone support, accessibility-specific implementation or validation is in scope. Desktop keyboard editing remains required.",
+      "capabilityRefs": [],
+      "goalRefs": []
+    },
+    {
+      "id": "draft-project-guard",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-guard"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "When one action would abandon both an unsaved active video or playlist draft and the current project, Alexa asks about the active draft first, then asks about unsaved project changes. Choosing Discard for the draft records that choice but keeps the draft intact until all applicable decisions and any restoration succeed. Save Project saves the project and content already explicitly saved to it; it does not implicitly save an active video or playlist draft. Project Discard affects unsaved project changes only. Keep Editing, Cancel, a canceled Open chooser, failed Open, or failed restoration stops the pending action and retains the original draft and prior project. A failed project save keeps the decision open for retry or Cancel. After all applicable guard decisions are resolved, Alexa attempts the pending action once. It keeps the original draft and prior project intact until any required restoration and requested replacement or Open succeeds, then finalizes the pending discard. Leaving a workspace or changing an item within the same project uses only the relevant draft decision. The unresolved policy for closing during an active export remains unchanged.",
+      "capabilityRefs": [
+        "playlist-editing",
+        "project-management",
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "edit-surface-regions",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-editor"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Alexa uses one edit surface. The active object is always a video, including a new video that has not yet been saved. The player is the topmost region. A visible, noninteractive separator divides it from the remaining editor controls below. The surface keeps the following regions together:\n\n- A player for the video or current selection, presented at the top in a default 16:9 frame. Media with another aspect ratio is fitted without cropping or distortion.\n- Player-specific Zoom In, Zoom Out, and Fit controls for temporary visual inspection.\n- A separator followed by the active video's identity, save state, and the remaining editing controls.\n- An upper composed-time thumbnail row with the current range selection, a movable vertical playhead, and a Play command fixed at the left. Play becomes Stop while playback is active.\n- Four structurally separate, horizontally synchronized, DAW-like tracks showing timeline objects as rectangular items aligned to their composed-time spans. Each track has a persistent identity and track controls.\n- Commands for adding and arranging content.\n- Selection actions, validation, operation feedback, and video save actions.",
+      "capabilityRefs": [
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "editor-transient-context",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-transient-editing"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Opening Selection actions, Save Clip to Library, or Update Named Clip during editor playback first stops playback at the current resolved frame without changing the selection. Closing the menu or dialog returns to stopped editing and does not restart playback automatically. Opening the same operation after a failure retains the failed-operation context and returns to it on cancellation. Commit failure retains the dialog, selected target and entered inputs for correction or retry; success reports its result in the captured editor context.",
+      "capabilityRefs": [
+        "clip-management",
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "electron-runtime",
+      "status": "accepted",
+      "owner": "system-architecture",
+      "consumerDomains": [
+        "system-architecture",
+        "data-model",
+        "controller",
+        "technical-documentation",
+        "implementation-planning"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-desktop-runtime"
+        ]
+      },
+      "kind": "scope",
+      "statement": "Electron supplies the shell and local-file access; visible permission/file-failure behavior still needs design.",
+      "capabilityRefs": [],
+      "goalRefs": []
+    },
+    {
+      "id": "export-choice-and-consent",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-export"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "A saved video can be exported as an MP4 file. Export is a separate user operation from playback and editing inside Alexa. Unsaved video drafts are not export choices.\n\nThe Video Export workspace asks the user to choose a saved video and an output filename and location, then presents a readable summary before Export becomes available. The initial design uses one application-default MP4 configuration rather than exposing advanced settings. If the destination already exists, Alexa offers Replace, Choose Another Location, or Cancel; no file is overwritten without explicit confirmation.\n\nThe single Export control starts export directly when the chosen destination does not exist. If it exists, the same control opens the replacement decision. Replace authorizes only the displayed destination for this attempt and immediately starts the reviewed export. Choose Another Location returns to the refreshed export summary and requires Export again; canceling that chooser returns to the replacement decision. Cancel returns to the state that opened the decision without writing. Every later attempt, including a retry after failure, cancellation, or completion, repeats destination validation and asks for replacement consent when needed.",
+      "capabilityRefs": [
+        "video-export"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "export-operation-lifecycle",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-export-lifecycle"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "An export presents determinate progress when available and active indeterminate progress otherwise. Cancel Export requires confirmation and remains visibly active until cancellation completes. Completion identifies the output and destination. Failure preserves the selected video and destination for correction or retry and never presents a failed or canceled output as complete. Export continues if the user changes workspaces, with progress retained in Application Status and full details restored upon return. While an export or its cancellation is active, its selected video and destination cannot be changed. While an export is running or its cancellation is pending, New and Open remain visible but unavailable in every workspace, with Application Status explaining the active export. These commands are not queued and become available again only after the export actually completes, fails, or finishes cancellation. Workspace switching remains available and does not interrupt the export. What Alexa should do when the application itself is closed during an export remains open.",
+      "capabilityRefs": [
+        "video-export"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "four-track-editing",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-four-track-update"
+        ]
+      },
+      "kind": "scope",
+      "statement": "Alexa supports four editable video tracks. Clips on the same track never overlap, but gaps are allowed. Tracks may contain content at the same composed time. The editor keeps one active track for adding and arranging objects; whole-object selection is confined to that track. The upper time-range selection applies to the complete four-track composition. Track 1 starts active; lanes appear from Track 4 at the front to Track 1 at the base. Track volume is available in contextual track properties and mute is reachable in the lane header. Clip volume and mute appear in single-occurrence properties. The initial volume range is 0–100% attenuation. Stored volume survives muting; audible tracks continue contributing even when their video is covered. The UI identifies track mute when it explains a silent selected clip. Video duration ends at the latest occurrence end across tracks.",
+      "capabilityRefs": [
+        "spatial-composition",
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "grouped-assembly-editing",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-copied-assembly-update"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "A copied assembly is one grouped object on its track timeline. Operations act on the group as a whole until the user explicitly ungroups it. Inward trimming retains the references to component clips outside the trimmed interval; outward trimming can restore them and extend into the source-file content on the corresponding side. Ungrouping adds the included assembly parts as separate clips to the track timeline. Parts wholly outside the trimmed assembly are not added. The assembly remains a clip in the existing user-facing content model.",
+      "capabilityRefs": [
+        "clip-management",
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "inspection-zoom",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-inspection"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Player zoom is independent of timeline zoom. Fit is the initial view and shows the complete media frame without cropping or distortion. Zoom In magnifies the viewport for inspection, Zoom Out reduces magnification only as far as Fit, and Fit restores the complete frame. A magnified view can be panned, but magnification and pan never change the source media, timeline, selection, saved composition, output framing, or export. Opening another video starts in Fit. Fill scaling is not part of the current design.",
+      "capabilityRefs": [
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "library-browsing",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-library"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Video files can be added to a project as source media. The Projects, Sources, and Library workspace groups project content under Video Files, Clips, Videos, and Playlists. It shows enough identity, type, duration or item count, and availability information to distinguish items, and can open eligible content in Video Editing or Playback and Playlists.",
+      "capabilityRefs": [
+        "content-library"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "object-reorder",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-reorder"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Objects selected on one track can be moved within that track or to an explicitly chosen destination track. Dragging over an unselected target clip shows Before or After according to the nearest edge; an exact tie chooses Before. An empty-lane destination uses the indicated time. The preview identifies the destination track, edge or time, and resulting positions. Selected clips pack contiguously in their existing relative order at the destination, and only colliding later clips are pushed forward until no overlap remains. Vacated source positions remain gaps; original gaps within the selected group need not survive. A cross-track move retains each occurrence's source rectangle, volume and mute while using the destination track's output rectangle and audio. The Reorder command provides the same keyboard-operable destination choice, with Enter to commit and Escape to cancel. Invalid targets, cancellation or failure preserve the original draft and selection. A successful move and its collision chain form one Undo/Redo operation, updating preview, playhead, duration and summary together.",
+      "capabilityRefs": [
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "occurrence-trim",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-copied-assembly-update",
+          "claim-trimming"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Each video track is structurally separate from the composed-time playback and selection control. It has its own track identity and object lane while sharing the same horizontal composed-time scale. Rectangular objects align to their composed-time spans. Each selected object exposes distinct Start and End trim handles and matching precise commands. A trim restores excluded material or shortens the occurrence only within the underlying content bounds. Start changes its source boundary and timeline start together while keeping timeline End fixed; minimum duration is one frame. Moving Start earlier is limited by time zero and the preceding clip, so it can use only the available preceding gap. Lengthening End into a following clip pushes that clip forward and continues through the collision chain until clips no longer overlap; unaffected later gaps remain. Shortening leaves the freed time as a gap. Ordinary occurrence trimming never changes source media or the saved named clip definition. The result is one undoable draft edit.\n\nFor a grouped assembly, trim applies to the whole group. Inward trimming preserves references to parts outside the visible interval. Outward trimming restores retained content and can extend into the available source-file content on the corresponding side, subject to the existing timeline collision and source bounds.",
+      "capabilityRefs": [
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "playback-workspace",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-playback"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "The Playback and Playlists workspace keeps a content browser, video viewer and transport controls, visible playlist queue, and playlist editor together. Videos, video files, and playlists are playback choices; selecting one does not begin playback. A playlist can contain videos and video files and can play its items in order or shuffled order.",
+      "capabilityRefs": [
+        "playlist-editing",
+        "video-playback"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "playlist-draft",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-playlist"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "The playlist editor can create or open a playlist, name it, add videos or video files, reorder or remove items, and save the result. An empty playlist may be saved but cannot be played. A failed save preserves its name, contents, and order. Leaving unsaved playlist changes asks the user to Keep Editing or Discard. For a playlist that has been saved, Discard requests restoration of its last saved state. For a never-saved playlist, Discard removes only that unsaved draft when the pending action can proceed. If restoration fails, Alexa retains the current draft, reports the failure, and does not continue the pending navigation.",
+      "capabilityRefs": [
+        "playlist-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "playlist-transport",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-transport"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Playlist playback provides play, pause, stop, previous, next, and repeat-off, repeat-list, and repeat-item controls. Stop returns the current item to its beginning and leaves it selected. Shuffle produces a visible run order for the current playback run without rewriting the playlist's saved order. Previous and Next follow the visible run order. An unavailable item is identified when playback cannot use it; the design does not promise seamless transitions.",
+      "capabilityRefs": [
+        "playlist-editing",
+        "video-playback"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "precise-selection",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-precision"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "The user can select a composed-time range in the upper row or one or more whole timeline objects on one active track. A range can be selected by pointer dragging. Its Start and End handles can then be dragged or adjusted with Left and Right Arrow while focused. Explicit Start and End commands, directly adjustable markers, and frame-step controls provide precise range selection without requiring dragging. Object trim handles and their command equivalents edit one selected occurrence within its available bounds.\n\nWhole-object and range selections replace one another. Preview of whole-object selection uses the composed-time span from its earliest Start to latest End, including gaps and other contributing tracks; range preview uses the complete composition within the range. With no selection, preview plays the active video. The selected end frame is included. Preview, displayed duration, and frame count follow that inclusive rule. Timeline zoom preserves selection and context, progressively increases thumbnail detail, makes boundary adjustment increasingly granular, and supports one-frame refinement at its closest level without requiring every frame thumbnail to be preloaded.",
+      "capabilityRefs": [
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "project-commands",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-project"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "The persistent project actions are New, Open, Save, and Save As. Replacing or closing a project with unsaved changes asks the user to Save, Discard, or Cancel. A failed open leaves the prior project unchanged, and a failed save preserves the current project for retry. Source-file ownership and permitted missing-file repair actions remain open.",
+      "capabilityRefs": [
+        "project-management"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "project-reference-storage",
+      "status": "accepted",
+      "owner": "data-model",
+      "consumerDomains": [
+        "system-architecture",
+        "data-model",
+        "controller",
+        "technical-documentation",
+        "implementation-planning"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-content"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Store a central project JSON document referencing local source media; ordinary playback and editing do not require newly exported video.",
+      "capabilityRefs": [],
+      "goalRefs": []
+    },
+    {
+      "id": "range-selection",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-selection"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "The upper timeline row represents composed time. Dragging the playhead scrubs the video without changing the current selection. Clicking and dragging elsewhere over the row creates an inclusive range selection and places the playhead at its left, inclusive Start. That selection persists until the user makes another selection or explicitly clears it. Distinct Start and End handles fine-tune the selected range. Each handle can be dragged or adjusted with Left and Right Arrow while focused. Zooming in makes boundary adjustment progressively finer through one-frame precision at the closest level.",
+      "capabilityRefs": [
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "save-library-clip",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-clip-create",
+          "claim-copied-assembly-update"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Save Clip to Library asks for a name and saves the selected composed-time range across all four tracks as a reusable clip, preserving relative timing, gaps, framing, stacking and audio settings. A range with no contributing media cannot be saved as a clip. The active video's timeline remains intact. Alexa chooses the clip's internal playback construction from the selected content, while the user-facing result is always a clip.\n\nA saved clip has stable library identity. Each use has its own timeline-occurrence identity so it can be moved or removed without deleting the shared clip definition.\n\nAdding a saved clip later copies its definition; updating the library clip does not change videos that already used it.",
+      "capabilityRefs": [
+        "clip-management"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "save-video-draft",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-video-save"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Save Video retains the active video's timeline and its owned unnamed objects. Clip and video changes remain a working draft until an explicit save or update operation succeeds.\n\nLeaving with unsaved video changes asks the user to Keep Editing or Discard. Keep Editing returns to the draft. For a video that has been saved, Discard requests restoration of its last saved state. For a never-saved video, Discard removes only that unsaved draft when the pending action can proceed. If restoration fails, Alexa retains the current draft, reports the failure, and does not continue the pending navigation. Failed saves preserve the draft and report a retryable failure.",
+      "capabilityRefs": [
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "scrub-and-follow",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-playhead"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "The player and timeline show the same resolved position. Moving the playhead scrubs the video. Playback changes the playhead's visual presentation and keeps it visible until the user pans the composed-time timeline away; a return-to-playhead or resume-follow action restores that behavior. Stopping leaves the playhead and player at the current resolved frame. Selecting a timeline object exposes its named source and underlying media context when available.",
+      "capabilityRefs": [
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "single-track-baseline",
+      "status": "superseded",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-single-track-prior"
+        ]
+      },
+      "kind": "scope",
+      "statement": "The detailed editor interactions below use one video track as their baseline. The planned multi-track interface starts with a limit of four video tracks. Its controls and initial delivery scope still need UX and complexity investigation; the player architecture must support the composition behavior described below even if some editing controls are deferred.",
+      "capabilityRefs": [
+        "spatial-composition",
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "spatial-region-capability",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-multitrack-intent",
+          "claim-spatial"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Each track specifies its target rectangle on the output video, initially the whole output rectangle. Each occurrence specifies a source rectangle within its source frame, initially the whole source. A source rectangle can be selected when adding content; it is independent of the occurrence Start and End times. Track 1 is the base layer and Track 4 is the front layer. The fixed lane order makes that stacking order apparent. Empty track time contributes no image.\n\nA selected source rectangle fits proportionally inside the track target rectangle without distortion. Unused space in that target remains transparent so lower tracks can show through; uncovered output is black. Track rectangles and source rectangles stay within their respective frames and must have positive dimensions. Saved framing is separate from temporary player inspection zoom and pan.\n\nTrack settings provide a target-rectangle editor in output-frame coordinates. Clip settings provide a source-rectangle editor in source-frame coordinates. Each editor identifies its scope, presents a rectangle preview with direct handles and precise percentage position/size fields, and offers Reset to Full Frame, Apply, and Cancel. Opening an editing dialog stops preview at the resolved frame. Changes are previewed locally; Apply makes one undoable draft operation and Cancel keeps the prior rectangle. Invalid bounds keep entered values available for correction and do not alter the draft. A source-rectangle editor opened from Add returns to the staged Add dialog; Apply updates that staged choice without inserting, while Cancel keeps the prior staged rectangle. Closing Add preserves the original draft. Dialog dismissal never resumes preview automatically.",
+      "capabilityRefs": [
+        "spatial-composition"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "timeline-drop-rearrangement",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-reorder"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Objects selected on one track can be moved within that track or to an explicitly chosen destination track. Dragging over an unselected target clip shows Before or After according to the nearest edge; an exact tie chooses Before. An empty-lane destination uses the indicated time. The preview identifies the destination track, edge or time, and resulting positions. Selected clips pack contiguously in their existing relative order at the destination, and only colliding later clips are pushed forward until no overlap remains. Vacated source positions remain gaps; original gaps within the selected group need not survive. A cross-track move retains each occurrence's source rectangle, volume and mute while using the destination track's output rectangle and audio. The Reorder command provides the same keyboard-operable destination choice, with Enter to commit and Escape to cancel. Invalid targets, cancellation or failure preserve the original draft and selection. A successful move and its collision chain form one Undo/Redo operation, updating preview, playhead, duration and summary together.",
+      "capabilityRefs": [
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "timeline-occurrences",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-copied-assembly-update",
+          "claim-occurrences"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Content added to a video creates a timeline-occurrence object owned by that video. The occurrence owns a copy of the inserted clip definition, retains its underlying source-media references, and records the Start and End of the portion currently used. It does not follow later library-clip changes. Assemblies are grouped timeline objects acted on as a whole until explicitly ungrouped. Timeline operations manipulate these occurrences; source media remains unchanged. Saving the video persists the occurrences as part of its description. Ordinary edits do not create library items and do not change a named clip definition unless the user explicitly chooses Update Named Clip.",
+      "capabilityRefs": [
+        "clip-management",
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "timeline-trim-push",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-copied-assembly-update",
+          "claim-trimming"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Each video track is structurally separate from the composed-time playback and selection control. It has its own track identity and object lane while sharing the same horizontal composed-time scale. Rectangular objects align to their composed-time spans. Each selected object exposes distinct Start and End trim handles and matching precise commands. A trim restores excluded material or shortens the occurrence only within the underlying content bounds. Start changes its source boundary and timeline start together while keeping timeline End fixed; minimum duration is one frame. Moving Start earlier is limited by time zero and the preceding clip, so it can use only the available preceding gap. Lengthening End into a following clip pushes that clip forward and continues through the collision chain until clips no longer overlap; unaffected later gaps remain. Shortening leaves the freed time as a gap. Ordinary occurrence trimming never changes source media or the saved named clip definition. The result is one undoable draft edit.\n\nFor a grouped assembly, trim applies to the whole group. Inward trimming preserves references to parts outside the visible interval. Outward trimming restores retained content and can extend into the available source-file content on the corresponding side, subject to the existing timeline collision and source bounds.",
+      "capabilityRefs": [
+        "video-editing"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "track-and-clip-audio",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-four-track-update"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Each track and each clip occurrence has volume and mute controls. Their initial volume is 100% and they are unmuted. Clip gain and track gain combine; muting either silences that clip contribution without hiding its video. Track controls identify their track; clip controls appear for the selected occurrence. Volume and mute changes remain draft edits until the video is saved and participate in Undo and Redo.\n\nTrack 1 starts active; lanes appear from Track 4 at the front to Track 1 at the base. Track volume is available in contextual track properties and mute is reachable in the lane header. Clip volume and mute appear in single-occurrence properties. The initial volume range is 0–100% attenuation. Stored volume survives muting; audible tracks continue contributing even when their video is covered. The UI identifies track mute when it explains a silent selected clip. Video duration ends at the latest occurrence end across tracks.",
+      "capabilityRefs": [
+        "spatial-composition",
+        "video-editing",
+        "video-playback"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "update-named-clip",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-clip-update",
+          "claim-copied-assembly-update"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Update Named Clip remains an explicit operation for a selected occurrence associated with a saved clip whose trimming differs from that definition. It copies the selected Start and End into the saved library definition while preserving the clip's stable identity; source rectangle, volume, mute and track settings do not enable or get published by it. Existing video occurrences are independent copies and remain unchanged, including the selected occurrence and copies with local trimming. Only future additions use the updated library definition. Confirmation explains this scope. There is no propagation to other videos and no downstream collision refusal caused by updating the library definition. Cancel or failure changes nothing and preserves the draft and selection for correction or retry. Success identifies the updated clip and keeps the user in the editor. Ordinary video editing never updates the library definition implicitly.",
+      "capabilityRefs": [
+        "clip-management"
+      ],
+      "goalRefs": []
+    },
+    {
+      "id": "workspace-shell",
+      "status": "accepted",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-shell"
+        ]
+      },
+      "kind": "behavior",
+      "statement": "Alexa uses a project-aware desktop shell. From top to bottom it contains a persistent application and project header, a horizontal workspace switcher, one central active workspace, and an application-status region. The horizontal switcher keeps the main media workspace wide and provides these stable destinations in order:\n\n- Projects, Sources, and Library\n- Video Editing\n- Playback and Playlists\n- Video Export\n\nThe active destination is apparent. Selecting a destination changes the central workspace while retaining the current project context. The workspace slot remains in place while its contents change. The status region presents project-wide and long-running operation status; validation and feedback specific to a task remain with that task's surface.",
+      "capabilityRefs": [
+        "project-management",
+        "video-editing",
+        "video-export",
+        "video-playback"
+      ],
+      "goalRefs": []
+    }
+  ],
+  "rules": [
+    {
+      "id": "brand-treatment",
+      "status": "accepted",
+      "owner": "ui",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-brand"
+        ]
+      },
+      "kind": "constraint",
+      "statement": "- Use `#B87152` for primary actions, focus emphasis, and Alexa's brand identity. Lighter interaction or supporting tints may be derived from this color when needed. Use black labels on filled brand-colored buttons for contrast; text and outlined button labels use the dark body-text color. Other semantic colors continue to use the MUI light defaults.",
+      "appliesToRefs": []
+    },
+    {
+      "id": "component-shape",
+      "status": "accepted",
+      "owner": "ui",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-shape"
+        ]
+      },
+      "kind": "constraint",
+      "statement": "- Use 12px corner radii for buttons. Retain 4px radii for fields and other ordinary components, with restrained borders.",
+      "appliesToRefs": []
+    },
+    {
+      "id": "material-surface-theme",
+      "status": "accepted",
+      "owner": "ui",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-surface-colors"
+        ]
+      },
+      "kind": "constraint",
+      "statement": "- Use a clearly recognizable Material UI aesthetic with Material components, surface hierarchy, restrained elevation, and interaction states. Start from a light treatment with a soft, cool off-white surface (`#F7F7FC`) and dark body text (`#212121`). The off-white should feel less harsh than pure white while remaining restrained beside the branding.",
+      "appliesToRefs": []
+    },
+    {
+      "id": "outline-label-color",
+      "status": "superseded",
+      "owner": "ui",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-outline-withdrawn"
+        ]
+      },
+      "kind": "constraint",
+      "statement": "On outlined inputs, labels follow the border color for the same state, preserving MUI outlined field treatment.",
+      "appliesToRefs": []
+    },
+    {
+      "id": "outlined-field-baseline",
+      "status": "accepted",
+      "owner": "ui",
+      "consumerDomains": [
+        "prd",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-field-baseline"
+        ]
+      },
+      "kind": "constraint",
+      "statement": "Outlined fields use the ordinary installed MUI light baseline: resting labels use black at 60% opacity and outlines at 23%; disabled labels use 38% and outlines 26%. Focus uses the Alexa primary color and a 2px outline. These field states do not change the separate command-button choices.",
+      "appliesToRefs": []
+    },
+    {
+      "id": "spacing-and-control-metrics",
+      "status": "accepted",
+      "owner": "ui",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-layout"
+        ]
+      },
+      "kind": "constraint",
+      "statement": "- Use a 4px, 8px, 12px, 16px, and 24px spacing scale.\n- Use 8px between closely related controls or local columns, 16px between complete form fields and for ordinary region padding, and 24px between separate sections.\n- Place helper or error text 4px below its input. Wrapped messages extend the input's logical block before the next field gap begins.\n- Start ordinary fields at 40px high and buttons at 44px high. Use 12px horizontal field padding and 16px horizontal button padding. The additional button height provides a little more vertical padding around its text.\n- Use CSS Grid for major regions and form alignment. Small groups of controls may use Flexbox.",
+      "appliesToRefs": []
+    },
+    {
+      "id": "type-scale",
+      "status": "accepted",
+      "owner": "ui",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-typography"
+        ]
+      },
+      "kind": "constraint",
+      "statement": "- Use Roboto initially, with section headings at 20px with a 28px line height, body and button text at 16px with a 24px line height, and labels and supporting text at 12px with a 16px line height.",
+      "appliesToRefs": []
+    },
+    {
+      "id": "visual-defaults-editable",
+      "status": "accepted",
+      "owner": "ui",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-visual-foundations"
+        ]
+      },
+      "kind": "constraint",
+      "statement": "Current visual defaults are accepted working choices and remain editable; no scope is locked.",
+      "appliesToRefs": []
+    }
+  ],
+  "gaps": [
+    {
+      "id": "cross-source-playback",
+      "kind": "open-question",
+      "question": "What continuity, audio and recovery should playback provide across source boundaries?",
+      "impact": "Do not promise seamless transitions or unspecified media recovery.",
+      "status": "unresolved",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "affectedRecordRefs": [
+        "video-playback"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-continuity-question",
+          "claim-playback-gaps"
+        ]
+      }
+    },
+    {
+      "id": "export-app-close",
+      "kind": "open-question",
+      "question": "What should happen when the application is closed during export?",
+      "impact": "Application-close/export interactions remain unresolved; workspace switching during export is already defined.",
+      "status": "unresolved",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "affectedRecordRefs": [
+        "video-export"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-close-question"
+        ]
+      }
+    },
+    {
+      "id": "media-repair",
+      "kind": "open-question",
+      "question": "Which repair actions are allowed for missing, unreadable, unsupported or partially decodable media?",
+      "impact": "Do not invent a relink, repair or deletion action until the allowed behavior is selected.",
+      "status": "unresolved",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "affectedRecordRefs": [
+        "content-library",
+        "video-playback"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-repair-question"
+        ]
+      }
+    },
+    {
+      "id": "multitrack-interface",
+      "kind": "open-question",
+      "question": "What are the selected track/clip controls, spatial overlap and aspect-ratio behavior, and selection scope for four-track editing?",
+      "impact": "The four-track interface, selection scope, spatial controls, stacking, aspect treatment and audio defaults are now selected and source-written. Remaining expansion/update conflicts have separate explicit gaps.",
+      "status": "superseded",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "affectedRecordRefs": [
+        "spatial-composition"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-multitrack-question"
+        ]
+      }
+    },
+    {
+      "id": "shared-clip-update-collision",
+      "kind": "open-question",
+      "question": "Should a named clip update that would cause downstream timeline collisions offer a controlled ripple or another resolution? Until defined, refuse that update atomically, identify the affected uses, and preserve local overrides.",
+      "impact": "Retired by the owner requirement that clip updates do not change videos that used them. Existing copied occurrences cannot incur a propagation collision.",
+      "status": "superseded",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "affectedRecordRefs": [
+        "update-named-clip",
+        "video-editing"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-shared-clip-collision-question"
+        ]
+      }
+    },
+    {
+      "id": "source-ownership",
+      "kind": "open-question",
+      "question": "What does adding source media imply about original-file ownership and moved, renamed or removed files?",
+      "impact": "Source management and recovery remain partially specified.",
+      "status": "unresolved",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "affectedRecordRefs": [
+        "content-library"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-ownership-question"
+        ]
+      }
+    },
+    {
+      "id": "video-expansion-settings-conflict",
+      "kind": "open-question",
+      "question": "Should Alexa offer any automatic resolution when expanding a saved video into tracks whose target rectangles or audio settings conflict? Until defined, refuse the conflicting addition atomically and explain the affected tracks.",
+      "impact": "The current UX preserves all work and refuses the conflicting operation atomically. Do not invent automatic conflict resolution.",
+      "status": "unresolved",
+      "owner": "product",
+      "consumerDomains": [
+        "prd",
+        "ux",
+        "ui"
+      ],
+      "affectedRecordRefs": [
+        "add-timeline-content",
+        "spatial-composition"
+      ],
+      "provenance": {
+        "sourceClaimRefs": [
+          "claim-video-expansion-question"
+        ]
+      }
+    }
+  ],
+  "sourceClaims": [
+    {
+      "id": "claim-purpose",
+      "startLine": 1,
+      "endLine": 6,
+      "summary": "Personal local desktop video creation and playback; explicit scope exclusions.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "desktop-owner",
+        "desktop-scope",
+        "personal-video-work"
+      ],
+      "sourceRange": {
+        "startByte": 0,
+        "endByteExclusive": 673
+      },
+      "sourceSegmentSha256": "789e2d6d0fdbe4e9ba1ee90d9a760067b3dbfd0c64cbd7d90f0eb536200807bb"
+    },
+    {
+      "id": "claim-shell",
+      "startLine": 7,
+      "endLine": 17,
+      "summary": "Persistent project shell and ordered workspaces.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "workspace-shell"
+      ],
+      "sourceRange": {
+        "startByte": 673,
+        "endByteExclusive": 1467
+      },
+      "sourceSegmentSha256": "f19b26b04cd2674f3ec7d21112fda044205836f9c24c7b36ce6008bdf45f26ac"
+    },
+    {
+      "id": "claim-content",
+      "startLine": 18,
+      "endLine": 30,
+      "summary": "Four user-visible content kinds and non-destructive project storage.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "content-library",
+        "content-types",
+        "project-reference-storage"
+      ],
+      "sourceRange": {
+        "startByte": 1467,
+        "endByteExclusive": 2483
+      },
+      "sourceSegmentSha256": "b4f5c5c712c96d7f9f82d218e9c3b0e01e4a42210c930c8ffa69d8690d5c8646"
+    },
+    {
+      "id": "claim-library",
+      "startLine": 31,
+      "endLine": 32,
+      "summary": "Grouped project library and eligible content opening.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "content-library",
+        "library-browsing"
+      ],
+      "sourceRange": {
+        "startByte": 2483,
+        "endByteExclusive": 2837
+      },
+      "sourceSegmentSha256": "85ab22c23b7ef6bcdf897223d43cf909a240e4214eaeb7890a845383673dea5c"
+    },
+    {
+      "id": "claim-project",
+      "startLine": 33,
+      "endLine": 34,
+      "summary": "Project actions, unsaved changes and failure preservation.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "project-commands",
+        "project-management"
+      ],
+      "sourceRange": {
+        "startByte": 2837,
+        "endByteExclusive": 3184
+      },
+      "sourceSegmentSha256": "f38ed93198432597daa548ef1767933b25b5c0aa805174c1dd5d3062b2c8e6aa"
+    },
+    {
+      "id": "claim-guard",
+      "startLine": 35,
+      "endLine": 36,
+      "summary": "Transactional draft-first project replacement guard.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "draft-project-guard",
+        "preserve-work",
+        "project-management"
+      ],
+      "sourceRange": {
+        "startByte": 3184,
+        "endByteExclusive": 4358
+      },
+      "sourceSegmentSha256": "0fdcd2e32424d91692d4d944238e824ad95595e835ed4b02b40c1912f6e80c0d"
+    },
+    {
+      "id": "claim-editor",
+      "startLine": 37,
+      "endLine": 48,
+      "summary": "Single video edit surface and its functional regions.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "edit-surface-regions",
+        "video-editing"
+      ],
+      "sourceRange": {
+        "startByte": 4358,
+        "endByteExclusive": 5550
+      },
+      "sourceSegmentSha256": "d2b3b79487315da5ab83705bf67c0e8543f4ffffb4ea971bddb9066ba4f8730f"
+    },
+    {
+      "id": "claim-four-track-update",
+      "startLine": 49,
+      "endLine": 54,
+      "summary": "Alexa supports four editable video tracks. Clips on the same track never overlap, but gaps are allowed. Tracks may contain content at the same composed time. The editor keeps one active track for adding and arranging objects; whole-object selection is confined to that track. The upper time-range selection applies to the complete four-track composition.\n\nEach track and each clip occurrence has volume and mute controls. Their initial volume is 100%",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "four-track-editing",
+        "spatial-composition",
+        "track-and-clip-audio"
+      ],
+      "sourceRange": {
+        "startByte": 5550,
+        "endByteExclusive": 6852
+      },
+      "sourceSegmentSha256": "74712e1b7ada0f0f7e6a16b6a71e2eda1500fe97ff4ac38352ef5fabedddf3bf"
+    },
+    {
+      "id": "claim-playhead",
+      "startLine": 55,
+      "endLine": 56,
+      "summary": "Synchronized player, playhead, follow and object context.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "scrub-and-follow"
+      ],
+      "sourceRange": {
+        "startByte": 6852,
+        "endByteExclusive": 7312
+      },
+      "sourceSegmentSha256": "d43163ecedbc2a2b29c632b8a6aacdd821ddd928423e3d8d4248ad673170b9bb"
+    },
+    {
+      "id": "claim-inspection",
+      "startLine": 57,
+      "endLine": 58,
+      "summary": "Independent non-destructive player inspection zoom.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "inspection-zoom"
+      ],
+      "sourceRange": {
+        "startByte": 7312,
+        "endByteExclusive": 7825
+      },
+      "sourceSegmentSha256": "f962048d562cde512350d86dc76b7dca8e27adeab20d2f36980c97a865f8adb8"
+    },
+    {
+      "id": "claim-occurrences",
+      "startLine": 59,
+      "endLine": 60,
+      "summary": "Video-owned timeline occurrences and explicit shared-clip updates.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "preserve-work",
+        "timeline-occurrences"
+      ],
+      "sourceRange": {
+        "startByte": 7825,
+        "endByteExclusive": 8305
+      },
+      "sourceSegmentSha256": "e6a8a5c3eba7339aea262e0b05f114045a59612c842f76da57a944abc7c7bc4c"
+    },
+    {
+      "id": "claim-selection",
+      "startLine": 61,
+      "endLine": 64,
+      "summary": "Inclusive composed-time range selection and precise boundaries.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "range-selection",
+        "video-editing"
+      ],
+      "sourceRange": {
+        "startByte": 8305,
+        "endByteExclusive": 8948
+      },
+      "sourceSegmentSha256": "cb4963a7d918208587428b91f21e2854d8d4a058b77baa409856b6f2b655684c"
+    },
+    {
+      "id": "claim-trimming",
+      "startLine": 65,
+      "endLine": 66,
+      "summary": "Each video track is structurally separate from the composed-time playback and selection control. It has its own track identity and object lane while sharing the same horizontal composed-time scale. Rectangular objects align to their composed-time spans. Each selected object exposes distinct Start and End trim handles and matching precise commands. A trim restores excluded material or shortens the occurrence only within the underlying content boun",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "occurrence-trim",
+        "timeline-trim-push"
+      ],
+      "sourceRange": {
+        "startByte": 8948,
+        "endByteExclusive": 9987
+      },
+      "sourceSegmentSha256": "13876fbd98a8aa99fafa28b7cb30760fca314a016f0175f98caa43428d043dd6"
+    },
+    {
+      "id": "claim-single-track-prior",
+      "startLine": 67,
+      "endLine": 68,
+      "summary": "Earlier single-track and deferred multi-track scope is superseded by the owner's appended four-track requirements.",
+      "disposition": "superseded",
+      "recordRefs": [
+        "single-track-baseline"
+      ],
+      "sourceRange": {
+        "startByte": 9987,
+        "endByteExclusive": 10130
+      },
+      "sourceSegmentSha256": "c59ad95a9504c065eaa5e590f4e09cb2db1919ca8159674ec449ab706d44aae0"
+    },
+    {
+      "id": "claim-reorder",
+      "startLine": 69,
+      "endLine": 70,
+      "summary": "Reorder cancellation, synchronized feedback and Undo/Redo retained under the new four-track rules.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "object-reorder",
+        "timeline-drop-rearrangement"
+      ],
+      "sourceRange": {
+        "startByte": 10130,
+        "endByteExclusive": 11231
+      },
+      "sourceSegmentSha256": "94f258166bef319620ab621bddd68ec277b48737dd0e5c1cdeaf5b67a5980b98"
+    },
+    {
+      "id": "claim-spatial",
+      "startLine": 71,
+      "endLine": 76,
+      "summary": "Each track specifies its target rectangle on the output video, initially the whole output rectangle. Each occurrence specifies a source rectangle within its source frame, initially the whole source. A source rectangle can be selected when adding content; it is independent of the occurrence Start and End times. Track 1 is the base layer and Track 4 is the front layer. The fixed lane order makes that stacking order apparent. Empty track time contri",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "spatial-composition",
+        "spatial-region-capability"
+      ],
+      "sourceRange": {
+        "startByte": 11231,
+        "endByteExclusive": 12120
+      },
+      "sourceSegmentSha256": "b56f0deaf2eacb988c82c89983c0dc3d809d2d687a6ab1f52d3b66eb053cc9e8"
+    },
+    {
+      "id": "claim-multitrack-intent",
+      "startLine": 77,
+      "endLine": 78,
+      "summary": "Track settings provide a target-rectangle editor in output-frame coordinates. Clip settings provide a source-rectangle editor in source-frame coordinates. Each editor identifies its scope, presents a rectangle preview with direct handles and precise position/size fields, and offers Reset to Full Frame, Apply, and Cancel. Opening an editing dialog stops preview at the resolved frame. Changes are previewed locally; Apply makes one undoable draft op",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "spatial-composition",
+        "spatial-region-capability"
+      ],
+      "sourceRange": {
+        "startByte": 12120,
+        "endByteExclusive": 12987
+      },
+      "sourceSegmentSha256": "64b4e0670d071de7cb03e38d8da41036dae6bde3ced2f3b9b58ff6bfe1ce7c29"
+    },
+    {
+      "id": "claim-addition",
+      "startLine": 79,
+      "endLine": 88,
+      "summary": "Atomic content insertion and expansion semantics.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "add-timeline-content"
+      ],
+      "sourceRange": {
+        "startByte": 12987,
+        "endByteExclusive": 14483
+      },
+      "sourceSegmentSha256": "458fc75e36c1a2bdf8a78ac1f04c3f2cec8ff7bdd2443f126a06b5683b6dbdf5"
+    },
+    {
+      "id": "claim-precision",
+      "startLine": 89,
+      "endLine": 94,
+      "summary": "Range/object selection, inclusive end frame and zoom precision.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "compose-video",
+        "precise-selection"
+      ],
+      "sourceRange": {
+        "startByte": 14483,
+        "endByteExclusive": 15714
+      },
+      "sourceSegmentSha256": "1c53e4eda78a48f361adbe4e13cba69a6dca94c4966bafc3a5c8ef551b3d1f26"
+    },
+    {
+      "id": "claim-edit-operations",
+      "startLine": 95,
+      "endLine": 102,
+      "summary": "Delete, split, reorder and Undo/Redo behavior.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "delete-split-reorder",
+        "video-editing"
+      ],
+      "sourceRange": {
+        "startByte": 15714,
+        "endByteExclusive": 17215
+      },
+      "sourceSegmentSha256": "6baeea410c314f300ec8d19e70f8a4a1fd46bba31f875715694267a90d006e08"
+    },
+    {
+      "id": "claim-transient-editing",
+      "startLine": 103,
+      "endLine": 104,
+      "summary": "Dialogs stop playback and retain context on failure or cancellation.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "editor-transient-context"
+      ],
+      "sourceRange": {
+        "startByte": 17215,
+        "endByteExclusive": 17760
+      },
+      "sourceSegmentSha256": "67caf3926e84c00df681469d8b60d2e57f1b0e15c04df099e7caa76a8d905e1a"
+    },
+    {
+      "id": "claim-commit-freeze",
+      "startLine": 105,
+      "endLine": 106,
+      "summary": "Commits preserve and temporarily freeze draft-changing actions.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "commit-edit-availability"
+      ],
+      "sourceRange": {
+        "startByte": 17760,
+        "endByteExclusive": 18188
+      },
+      "sourceSegmentSha256": "5edc87af014a1a7b9ec1ead6719505f4bdb7fc8046c531be1bd92d1936679533"
+    },
+    {
+      "id": "claim-clip-create",
+      "startLine": 107,
+      "endLine": 112,
+      "summary": "Save named clips without changing active timeline; separate library and occurrence identity.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "clip-management",
+        "save-library-clip"
+      ],
+      "sourceRange": {
+        "startByte": 18188,
+        "endByteExclusive": 18818
+      },
+      "sourceSegmentSha256": "d124ed0d7f3c1baba361cefa4bd60ea26667ac1a0bd475befad42ff1c267cb7b"
+    },
+    {
+      "id": "claim-clip-update",
+      "startLine": 113,
+      "endLine": 116,
+      "summary": "Explicit atomic shared clip trimming updates preserve local overrides.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "clip-management",
+        "update-named-clip"
+      ],
+      "sourceRange": {
+        "startByte": 18818,
+        "endByteExclusive": 20461
+      },
+      "sourceSegmentSha256": "fdcf1b49f8d3dacae795d5c47e7af9d65b8ec93b45f4efea4abfea07f3f850e0"
+    },
+    {
+      "id": "claim-video-save",
+      "startLine": 117,
+      "endLine": 122,
+      "summary": "Explicit video save, draft departure and restoration failure behavior.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "compose-video",
+        "save-video-draft"
+      ],
+      "sourceRange": {
+        "startByte": 20461,
+        "endByteExclusive": 21149
+      },
+      "sourceSegmentSha256": "bc7bc39fecfbb9733686a66fe977997ca0c9f34ebe06275068a1a96c75307927"
+    },
+    {
+      "id": "claim-persistence",
+      "startLine": 123,
+      "endLine": 132,
+      "summary": "Content parent/origin clip relationships and atomic local-override normalization.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "clip-persistence-invariants"
+      ],
+      "sourceRange": {
+        "startByte": 21149,
+        "endByteExclusive": 22529
+      },
+      "sourceSegmentSha256": "cc8f3526793c6833b6ef18006c732042284c96dae52127433b2ff3a5ab51235c"
+    },
+    {
+      "id": "claim-playback",
+      "startLine": 133,
+      "endLine": 136,
+      "summary": "Playback workspace, eligible choices and queue.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "play-collections",
+        "playback-workspace",
+        "video-playback"
+      ],
+      "sourceRange": {
+        "startByte": 22529,
+        "endByteExclusive": 22909
+      },
+      "sourceSegmentSha256": "6ea1a823a96368d326f487937b38221807afaf9368ba65fc1c5610a2163043b8"
+    },
+    {
+      "id": "claim-transport",
+      "startLine": 137,
+      "endLine": 138,
+      "summary": "Transport, visible shuffle order and unavailable items.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "play-collections",
+        "playlist-transport",
+        "video-playback"
+      ],
+      "sourceRange": {
+        "startByte": 22909,
+        "endByteExclusive": 23371
+      },
+      "sourceSegmentSha256": "adf4b21e789b8d1880510f3a79b8d5936a8b26a30e2862cd337d7d5f80de2f60"
+    },
+    {
+      "id": "claim-playlist",
+      "startLine": 139,
+      "endLine": 140,
+      "summary": "Playlist editing, empty save, draft guard and save failure.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "playlist-draft",
+        "playlist-editing"
+      ],
+      "sourceRange": {
+        "startByte": 23371,
+        "endByteExclusive": 24005
+      },
+      "sourceSegmentSha256": "abddb9268b85436d4d562bc4cb1b2b6c7b56ffc56107ab6ad2b5127eb9e2d8bc"
+    },
+    {
+      "id": "claim-playback-gaps",
+      "startLine": 141,
+      "endLine": 142,
+      "summary": "Unresolved continuity, audio and source-media recovery.",
+      "disposition": "unresolved",
+      "recordRefs": [
+        "cross-source-playback"
+      ],
+      "sourceRange": {
+        "startByte": 24005,
+        "endByteExclusive": 24186
+      },
+      "sourceSegmentSha256": "e1e3dcbce7da037eb3475dac5805619935024c3951facb309947b2806d850a3f"
+    },
+    {
+      "id": "claim-export",
+      "startLine": 143,
+      "endLine": 150,
+      "summary": "Saved-video MP4 export and per-attempt destination replacement consent.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "export-choice-and-consent",
+        "export-result",
+        "video-export"
+      ],
+      "sourceRange": {
+        "startByte": 24186,
+        "endByteExclusive": 25445
+      },
+      "sourceSegmentSha256": "ac21834882b52e9663713800f26573d71efa91be87ec59acf2f55745bbffe1ff"
+    },
+    {
+      "id": "claim-export-lifecycle",
+      "startLine": 151,
+      "endLine": 152,
+      "summary": "Export progress, cancellation, preserved retry inputs and globally unavailable New/Open until actual terminal result; app-close policy remains open.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "export-operation-lifecycle",
+        "export-result",
+        "video-export"
+      ],
+      "sourceRange": {
+        "startByte": 25445,
+        "endByteExclusive": 26532
+      },
+      "sourceSegmentSha256": "f20560726f68bcc9287af66077b2c91570afd6d43c2b3e69a701744d43c4cd4e"
+    },
+    {
+      "id": "claim-player-direction",
+      "startLine": 153,
+      "endLine": 157,
+      "summary": "Adopted player architecture and unvalidated capacity/export limits.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "adopted-player-direction"
+      ],
+      "sourceRange": {
+        "startByte": 26532,
+        "endByteExclusive": 27517
+      },
+      "sourceSegmentSha256": "81af590a117a2c2f677a0660dfa3705922eb303fc9790253ed943c137a0ad3a9"
+    },
+    {
+      "id": "claim-desktop-runtime",
+      "startLine": 158,
+      "endLine": 161,
+      "summary": "Electron local files, personal desktop scope and distant cloud idea.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "desktop-scope",
+        "electron-runtime"
+      ],
+      "sourceRange": {
+        "startByte": 27517,
+        "endByteExclusive": 27881
+      },
+      "sourceSegmentSha256": "75f16a5180a6c94de6ce27e77ceb913582f3d20ffef3459368a9692fc52e2ff1"
+    },
+    {
+      "id": "claim-visual-foundations",
+      "startLine": 162,
+      "endLine": 165,
+      "summary": "Editable current visual defaults.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "visual-defaults-editable"
+      ],
+      "sourceRange": {
+        "startByte": 27881,
+        "endByteExclusive": 27995
+      },
+      "sourceSegmentSha256": "a937c6696b2d2f6889213c5fe983018499d2f5838a93f45a8538a5db2f5845bd"
+    },
+    {
+      "id": "claim-typography",
+      "startLine": 166,
+      "endLine": 167,
+      "summary": "Explicit Roboto typography scale.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "type-scale"
+      ],
+      "sourceRange": {
+        "startByte": 27995,
+        "endByteExclusive": 28193
+      },
+      "sourceSegmentSha256": "0cc7e8f1e6c0c1419cf430e364e5110e097872fa13d2c1c0485f019c7a470f95"
+    },
+    {
+      "id": "claim-layout",
+      "startLine": 168,
+      "endLine": 173,
+      "summary": "Explicit spacing, guidance, field/button dimensions and Grid/Flex layout.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "spacing-and-control-metrics"
+      ],
+      "sourceRange": {
+        "startByte": 28193,
+        "endByteExclusive": 28860
+      },
+      "sourceSegmentSha256": "2e2147bbf50e3f1d8bbc859b826c679eb52a35c7ec839d719bdb2a1798fb65ff"
+    },
+    {
+      "id": "claim-surface-colors",
+      "startLine": 174,
+      "endLine": 175,
+      "summary": "Material UI light appearance and surface/body colors.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "material-surface-theme"
+      ],
+      "sourceRange": {
+        "startByte": 28860,
+        "endByteExclusive": 29213
+      },
+      "sourceSegmentSha256": "fc7b680f44ff1b19343b9a8659e56f546ba1b9f059403ac24ba81ba1a8fcc4dc"
+    },
+    {
+      "id": "claim-brand",
+      "startLine": 176,
+      "endLine": 177,
+      "summary": "Alexa identity, action/focus color and foreground choices.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "brand-treatment"
+      ],
+      "sourceRange": {
+        "startByte": 29213,
+        "endByteExclusive": 29566
+      },
+      "sourceSegmentSha256": "1c3a8e0af01672b754ee31969d4597563a97b7b247f7e03f6bc84c7980e84120"
+    },
+    {
+      "id": "claim-outline-withdrawn",
+      "startLine": 178,
+      "endLine": 179,
+      "summary": "The previous special rule equating outlined field labels and borders has been withdrawn.",
+      "disposition": "superseded",
+      "recordRefs": [
+        "outline-label-color"
+      ],
+      "sourceRange": {
+        "startByte": 29566,
+        "endByteExclusive": 29656
+      },
+      "sourceSegmentSha256": "1f021c8baa9f9d5c9a7b70da2e13b73321c372d7fdc3d603cb7cf64d919aa2d9"
+    },
+    {
+      "id": "claim-field-baseline",
+      "startLine": 180,
+      "endLine": 181,
+      "summary": "Outlined fields use the ordinary installed MUI light baseline: resting labels use black at 60% opacity and outlines at 23%; disabled labels use 38% and outlines 26%. Focus uses the Alexa primary color and a 2px outline. These field states do not change the separate command-button choices.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "outlined-field-baseline"
+      ],
+      "sourceRange": {
+        "startByte": 29656,
+        "endByteExclusive": 29947
+      },
+      "sourceSegmentSha256": "11ede2615b75cafea0be95813c7ac038bf03bb8901b566c3a009297cd5feac50"
+    },
+    {
+      "id": "claim-shape",
+      "startLine": 182,
+      "endLine": 185,
+      "summary": "Button and field radii; product questions follow.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "component-shape"
+      ],
+      "sourceRange": {
+        "startByte": 29947,
+        "endByteExclusive": 30107
+      },
+      "sourceSegmentSha256": "b1565805b67e77caf0669e64f292cb1f9277d5e0b32458815ee7123adb7e49a1"
+    },
+    {
+      "id": "claim-multitrack-question",
+      "startLine": 186,
+      "endLine": 187,
+      "summary": "The earlier question about whether to include the multi-track interface has been resolved in favor of the four-track controls and composition behavior described above.",
+      "disposition": "superseded",
+      "recordRefs": [
+        "multitrack-interface"
+      ],
+      "sourceRange": {
+        "startByte": 30107,
+        "endByteExclusive": 30276
+      },
+      "sourceSegmentSha256": "35b26b2c124570c21a031213ed9a0f493fe640c608b3f13769244fde6901a6b2"
+    },
+    {
+      "id": "claim-video-expansion-question",
+      "startLine": 188,
+      "endLine": 189,
+      "summary": "- Should Alexa offer any automatic resolution when expanding a saved video into tracks whose target rectangles or audio settings conflict? Until defined, refuse the conflicting addition atomically and explain the affected tracks.",
+      "disposition": "unresolved",
+      "recordRefs": [
+        "video-expansion-settings-conflict"
+      ],
+      "sourceRange": {
+        "startByte": 30276,
+        "endByteExclusive": 30507
+      },
+      "sourceSegmentSha256": "f91c3af18725916485a3451968100696603080a4542000c38a85b472587a501b"
+    },
+    {
+      "id": "claim-shared-clip-collision-question",
+      "startLine": 190,
+      "endLine": 191,
+      "summary": "Earlier propagation-collision question, superseded by the later copy/no-propagation requirement.",
+      "disposition": "superseded",
+      "recordRefs": [
+        "shared-clip-update-collision"
+      ],
+      "sourceRange": {
+        "startByte": 30507,
+        "endByteExclusive": 30738
+      },
+      "sourceSegmentSha256": "3d1675fddcd5d8a9101931269b4ae2d328b6923d7a24a215aac46eac8b4194ae"
+    },
+    {
+      "id": "claim-repair-question",
+      "startLine": 192,
+      "endLine": 193,
+      "summary": "Allowed media repair actions.",
+      "disposition": "unresolved",
+      "recordRefs": [
+        "media-repair"
+      ],
+      "sourceRange": {
+        "startByte": 30738,
+        "endByteExclusive": 30842
+      },
+      "sourceSegmentSha256": "5bc1e4b5e66d12b42145a6828c0ff94a163ab09b604af97148b2b7a7f5f93a11"
+    },
+    {
+      "id": "claim-ownership-question",
+      "startLine": 194,
+      "endLine": 195,
+      "summary": "Original source-file ownership and moved-file behavior.",
+      "disposition": "unresolved",
+      "recordRefs": [
+        "source-ownership"
+      ],
+      "sourceRange": {
+        "startByte": 30842,
+        "endByteExclusive": 30989
+      },
+      "sourceSegmentSha256": "d0698cc6e07f2931ffbf03d77bbfb205d5a96d9bf60641303079bef62905ba06"
+    },
+    {
+      "id": "claim-continuity-question",
+      "startLine": 196,
+      "endLine": 197,
+      "summary": "Cross-source playback and audio behavior.",
+      "disposition": "unresolved",
+      "recordRefs": [
+        "cross-source-playback"
+      ],
+      "sourceRange": {
+        "startByte": 30989,
+        "endByteExclusive": 31087
+      },
+      "sourceSegmentSha256": "9ca8220ccaadb0334abbda0b816f6e34c02d25f3d18932ea20aa334462d93b03"
+    },
+    {
+      "id": "claim-close-question",
+      "startLine": 198,
+      "endLine": 199,
+      "summary": "Application-close policy during active export.",
+      "disposition": "unresolved",
+      "recordRefs": [
+        "export-app-close"
+      ],
+      "sourceRange": {
+        "startByte": 31087,
+        "endByteExclusive": 31185
+      },
+      "sourceSegmentSha256": "35ffb000d95d9b99a66b7c95e5c7dbd761f0a7b95dfed7843b4abd8c9745fe99"
+    },
+    {
+      "id": "claim-paper",
+      "startLine": 200,
+      "endLine": 202,
+      "summary": "Linked authored player architecture paper.",
+      "disposition": "reference",
+      "recordRefs": [],
+      "sourceRange": {
+        "startByte": 31185,
+        "endByteExclusive": 31279
+      },
+      "sourceSegmentSha256": "9c4498fa890cb021882f12f34c91301251552640be6f24b3fdf26908c50f1085"
+    },
+    {
+      "id": "claim-copied-assembly-update",
+      "startLine": 203,
+      "endLine": 212,
+      "summary": "Later owner notes override prior live clip references and propagation: copy inserted clips, group assemblies, preserve hidden trim content, extend into source content and ungroup included parts.",
+      "disposition": "incorporated",
+      "recordRefs": [
+        "add-timeline-content",
+        "clip-management",
+        "clip-persistence-invariants",
+        "content-types",
+        "grouped-assembly-editing",
+        "occurrence-trim",
+        "save-library-clip",
+        "timeline-occurrences",
+        "timeline-trim-push",
+        "update-named-clip"
+      ],
+      "sourceRange": {
+        "startByte": 31279,
+        "endByteExclusive": 31919
+      },
+      "sourceSegmentSha256": "4ebcba2261a7f0b05585e323eb2ca5b6d784b6cf283c17ecd02003962992a397"
+    }
+  ],
+  "materialSha256": "51885860f86536b42b54a77ea688f0bcb16c7a6ef8073f98985292b48bc4752f",
+  "recordIndex": [
+    {
+      "id": "add-timeline-content",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "2f1e69dad27941a733b619b692205175c28052b39350644d313b7999960ee830",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-addition",
+          "claim-copied-assembly-update"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "adopted-player-direction",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "system-architecture",
+      "introducedRevision": 1,
+      "materialSha256": "8f749f6ae1601084792da80fb67a434384e7ad21720266a323e592cc23ee1951",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-player-direction"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "alexa",
+      "kind": "product",
+      "status": "partial",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "38401499c132edbc09a2fbc1c8278b68c5a4cc6596a53a1ce42f8a9f15681734",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": []
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "brand-treatment",
+      "kind": "rule",
+      "status": "accepted",
+      "owner": "ui",
+      "introducedRevision": 1,
+      "materialSha256": "7988dcdedf176a8536a8eefadf66f79a5ae21c8d5eeac9bdce4865d6a2093331",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-brand"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "clip-management",
+      "kind": "capability",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "a41c78e179a43fd0169807e476b78148d4a8b4c7b1a5f889213ee522a13e6d89",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-clip-create",
+          "claim-clip-update",
+          "claim-copied-assembly-update"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "clip-persistence-invariants",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "data-model",
+      "introducedRevision": 1,
+      "materialSha256": "0f19126fe2c196783ec7a8dab52bed488d13cc16d80bf2788a14f2078233383b",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-copied-assembly-update",
+          "claim-persistence"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "commit-edit-availability",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "0acb7ae81f5e26b2274e21225b5dedfd2666fb0761fcc854e912fe7f0032996f",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-commit-freeze"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "component-shape",
+      "kind": "rule",
+      "status": "accepted",
+      "owner": "ui",
+      "introducedRevision": 1,
+      "materialSha256": "dc95cfb582b117c21a07e0d6518e3c415ae1b2c6eba9998f3e0f3ef06c1dc753",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-shape"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "compose-video",
+      "kind": "goal",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "6652b4e5546a6b8c4e4167d350c8a2ebe7ea5444c778bf9f555346be15d5577d",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-precision",
+          "claim-video-save"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "content-library",
+      "kind": "capability",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "9ad99cb6ee72102b93d91452eda2ab30f086c200e4edc660c4daa9993011e0cd",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-content",
+          "claim-library"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "content-types",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "03ae3d380b2ddd49aacb6e4c3dff54630e1349b945a68986f84c6110158e92de",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-content",
+          "claim-copied-assembly-update"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "cross-source-playback",
+      "kind": "gap",
+      "status": "unresolved",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "b97840225a37ea3d6daac2f1fb3bae2098aa69ca17f06ac477f5d138cd50442c",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-continuity-question",
+          "claim-playback-gaps"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "delete-split-reorder",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "e4c5b2260d18f5f88a971f7faf1d23e21866b3fb4970e2cb68fe5baadc46a65a",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-edit-operations"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "desktop-owner",
+      "kind": "user",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "434f1b58e156823f6f3ee9c933f04d6b162143287f6e33abc71d28521b3ebc9f",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-purpose"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "desktop-scope",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "04a976cebad68c90d0c78a173b9f215062062b278d43373f00591152fec69946",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-desktop-runtime",
+          "claim-purpose"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "draft-project-guard",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "3d07008388fc68a17e600fca12cd27a989fdc1ee31e910b21df1740a8cdfd8d1",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-guard"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "edit-surface-regions",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "e13ad1ef92cbd74aaf27eda8873a1dd3eeab650c3fddd7285f899cc6802d97bd",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-editor"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "editor-transient-context",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "e13b08c50829c3b162c03664cdbda2967705442e680a3c0d8b1f156374171da3",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-transient-editing"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "electron-runtime",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "system-architecture",
+      "introducedRevision": 1,
+      "materialSha256": "995aa54bb8917f42ce9ac539a1b377b209b2a8edf777d42bd5dba70a297fbdd3",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-desktop-runtime"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "export-app-close",
+      "kind": "gap",
+      "status": "unresolved",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "00d67dd15159b54bdaace876f4e459ce901b53ede8b4053e57717af9c0e9f753",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-close-question"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "export-choice-and-consent",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "e4dc38511b6f223afde1e3a65a122bfff80a3e63016c665673ae590235b30d18",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-export"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "export-operation-lifecycle",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "3e25567ed7e6cec77e4d6e6d47657735b6cc37e90cd7619e86b8989a3163ddea",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-export-lifecycle"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "export-result",
+      "kind": "goal",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "af2ea35772f2f86e5836e23a2cea3239dba0b948e04a38f15ce5455539219fe4",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-export",
+          "claim-export-lifecycle"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "four-track-editing",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "b87efadf5be23e2c5e3e9545d1b8d2eaa02a0b0b75a4261d2f5b2e4ea2e81031",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-four-track-update"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "grouped-assembly-editing",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "ab569d1ae72d88c711f43bbc15eb22fe6af2db0f50a232a9669836071782eef3",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-copied-assembly-update"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "inspection-zoom",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "356fb991e132e205578fc028962bf85cccb979a072c3bcc94e050c136b64a77a",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-inspection"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "library-browsing",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "cf1da36027acbdad6d8816de1314e323d96754fa37a9e8687d464eaf946d6498",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-library"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "material-surface-theme",
+      "kind": "rule",
+      "status": "accepted",
+      "owner": "ui",
+      "introducedRevision": 1,
+      "materialSha256": "0246acf65a21bd31c1a04ccdd62c2cc782dd8f85d75d2e8f57a37bfc055f3022",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-surface-colors"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "media-repair",
+      "kind": "gap",
+      "status": "unresolved",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "ee55a7a469b96ea670187379f05b15d72877684a0bba323221f0a5659a4dbe9c",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-repair-question"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "multitrack-interface",
+      "kind": "gap",
+      "status": "superseded",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "53f78b5c3c83dab7fb2e29704eb28f597510944c2e219f6ee43385cc1ffc5651",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-multitrack-question"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "object-reorder",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "c5a42b8d4fc628244c298eb6599249f3a5ab82374ba29817a827774f8845e21e",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-reorder"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "occurrence-trim",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "a8e616565565012a21d0fa49e3b71d4411f6e9a61fa9bd8da50d076a44a1ea78",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-copied-assembly-update",
+          "claim-trimming"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "outline-label-color",
+      "kind": "rule",
+      "status": "superseded",
+      "owner": "ui",
+      "introducedRevision": 1,
+      "materialSha256": "86bbb602864860a48882f76161c588d32bdc4c7cfe205e3f5d8835060939730f",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-outline-withdrawn"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "outlined-field-baseline",
+      "kind": "rule",
+      "status": "accepted",
+      "owner": "ui",
+      "introducedRevision": 1,
+      "materialSha256": "9013dc20c617183e4184f0fb4657b688843adc41fa593dd977ead76309d90114",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-field-baseline"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "personal-video-work",
+      "kind": "purpose",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "b460389787f834a0d64a3527561a5820d6ba4abc7652c7771073d0b5faa22dd0",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-purpose"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "play-collections",
+      "kind": "goal",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "cb64a8875d472b425f6517e948a5a01bae6a2a5bc02abaca0e6de48c27823068",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-playback",
+          "claim-transport"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "playback-workspace",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "c65f6224f778836e07fcbfedad00a980c13f5000eda18ae7ad89e06b6c10f17f",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-playback"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "playlist-draft",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "873fbf7cdfade140626444ffd9e34925a6a9d4de80b56705f25887c97548fdd5",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-playlist"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "playlist-editing",
+      "kind": "capability",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "1040e101da9916ace8140542bdd981d040d0d9ffcbce2c301814d0754c90403c",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-playlist"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "playlist-transport",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "a2677a18f8d8431a3158fc12381726399df1847578085857394c67e403ef6fa7",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-transport"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "precise-selection",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "c6597df8561065aa7af82efcc056a0471f49ad317aefde9c1af4d1c6c388c944",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-precision"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "preserve-work",
+      "kind": "goal",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "f1c035e92474802328e6d1fa6e8f1dfad3a737e7b124e42f9a41a31bd86c6ef9",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-guard",
+          "claim-occurrences"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "project-commands",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "0fe7b0a0338d62564a63c5c2fad2c4a8a45c6e907e27a7b1f325682a638a1ff6",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-project"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "project-management",
+      "kind": "capability",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "2b4ac9972a86df757619c8e6b6ad5a0713bea391003aa031bad2a4cda4e6320d",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-guard",
+          "claim-project"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "project-reference-storage",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "data-model",
+      "introducedRevision": 1,
+      "materialSha256": "808ae642321ec83f1e0b8758c9dda928f9942c9c65363684e693241c7019555f",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-content"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "range-selection",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "fbdebeed47b4e0fbbc0b56a1c0fd30ef3da4d620f3e3a1c1a242a13b0ec5bb4d",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-selection"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "save-library-clip",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "f29e70b0f1a2b7347ef3c2d6e5999c84fead778335bae4c40e4bcc5f3324cb67",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-clip-create",
+          "claim-copied-assembly-update"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "save-video-draft",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "648bceae24716d11bc22fcc892034ca173f297d5d580769a0bda77ce45491073",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-video-save"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "scrub-and-follow",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "91a6981da88ad71f1afc03d9a8132f73e6b00ea75ce7a1e620506c83aa8adf2b",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-playhead"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "shared-clip-update-collision",
+      "kind": "gap",
+      "status": "superseded",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "0d0c1af6acf7632234be596c31ff89407c883a57c0b7e9c38e9e227d73654b90",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-shared-clip-collision-question"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "single-track-baseline",
+      "kind": "requirement",
+      "status": "superseded",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "22e86c04e9e126d314513742fc714c7e8107d046eb0aaa537cb60b3cdac2dc1d",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-single-track-prior"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "source-ownership",
+      "kind": "gap",
+      "status": "unresolved",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "d3c52ac198f452b2957bbd04d944d7775376a4240f99b96d4134d39290c77d0b",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-ownership-question"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "spacing-and-control-metrics",
+      "kind": "rule",
+      "status": "accepted",
+      "owner": "ui",
+      "introducedRevision": 1,
+      "materialSha256": "c79038c488990255fcacc5cbdbedf5e06ac23838fd5a379ab54ee56525f12c57",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-layout"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "spatial-composition",
+      "kind": "capability",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "b0a46bc19e98fce675c7ca317da3c3c9a47da6c7743caac1a3ebc8964f28e5b7",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-four-track-update",
+          "claim-multitrack-intent",
+          "claim-spatial"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "spatial-region-capability",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "e847db6674bc63fa5ee95097bad543c2e6810274ab3f140a63a9af6e36fdad66",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-multitrack-intent",
+          "claim-spatial"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "timeline-drop-rearrangement",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "49c295055e32529978752dbd44461c8bef0091e322daf2477667490fe9cf6b6d",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-reorder"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "timeline-occurrences",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "4e78d7d3bb13b3f0334a425fbbbdf579efd9330db4f3090e2accd28e9bc84110",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-copied-assembly-update",
+          "claim-occurrences"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "timeline-trim-push",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "5b7030718f873781071ef5d8fbf716c5dcf39a1a53d8c7184b20af0bb65f5359",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-copied-assembly-update",
+          "claim-trimming"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "track-and-clip-audio",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "75e39a41a41e6b6d4b03675a43402d24117910cad373f5897c66d006da3d9d29",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-four-track-update"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "type-scale",
+      "kind": "rule",
+      "status": "accepted",
+      "owner": "ui",
+      "introducedRevision": 1,
+      "materialSha256": "913bf8147facf3af50f44c692bea8b6086628ce64f579442c4bacd30046f1f77",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-typography"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "update-named-clip",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "d09df8e436f529f5e49a3478f45f5aa6b1f598baf956a2ee4cd81afdc855855f",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-clip-update",
+          "claim-copied-assembly-update"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "video-editing",
+      "kind": "capability",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "ef8ec2ff534a7f4da39ed0a95720f83f2a6d0087c4943942725bfdefb909890e",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-edit-operations",
+          "claim-editor",
+          "claim-selection"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "video-expansion-settings-conflict",
+      "kind": "gap",
+      "status": "unresolved",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "20082be8087ae992bf8a7b52907638ee32488b6ca241bc294490100b92a3282e",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-video-expansion-question"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "video-export",
+      "kind": "capability",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "4bbcc8205b3f725d234c98863cd1d7ad9715393f37f13f5bf8c5b42c57b56d22",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-export",
+          "claim-export-lifecycle"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "video-playback",
+      "kind": "capability",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "fa521eba695b228021fdb38bd62904415ebbc48bdee3cd627bbadec8bdd136cd",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-playback",
+          "claim-transport"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "visual-defaults-editable",
+      "kind": "rule",
+      "status": "accepted",
+      "owner": "ui",
+      "introducedRevision": 1,
+      "materialSha256": "09726e80b9578c554b421c4ce8360dc7ac5c2a5c9a4551a2d43694f47dd68b6c",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-visual-foundations"
+        ]
+      },
+      "supersedesRefs": []
+    },
+    {
+      "id": "workspace-shell",
+      "kind": "requirement",
+      "status": "accepted",
+      "owner": "product",
+      "introducedRevision": 1,
+      "materialSha256": "a0aed58d346a67ab5410cd7f01a0050657b34ab9ede9dff5dfcc644ee585c8f2",
+      "materialSource": {
+        "revision": 1,
+        "sourceSha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+        "claimRefs": [
+          "claim-shell"
+        ]
+      },
+      "supersedesRefs": []
+    }
+  ],
+  "changeSet": {
+    "classification": "initial",
+    "records": [
+      {
+        "id": "add-timeline-content",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "2f1e69dad27941a733b619b692205175c28052b39350644d313b7999960ee830"
+      },
+      {
+        "id": "adopted-player-direction",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "8f749f6ae1601084792da80fb67a434384e7ad21720266a323e592cc23ee1951"
+      },
+      {
+        "id": "alexa",
+        "kind": "product",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "partial",
+        "previousMaterialSha256": null,
+        "materialSha256": "38401499c132edbc09a2fbc1c8278b68c5a4cc6596a53a1ce42f8a9f15681734"
+      },
+      {
+        "id": "brand-treatment",
+        "kind": "rule",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "7988dcdedf176a8536a8eefadf66f79a5ae21c8d5eeac9bdce4865d6a2093331"
+      },
+      {
+        "id": "clip-management",
+        "kind": "capability",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "a41c78e179a43fd0169807e476b78148d4a8b4c7b1a5f889213ee522a13e6d89"
+      },
+      {
+        "id": "clip-persistence-invariants",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "0f19126fe2c196783ec7a8dab52bed488d13cc16d80bf2788a14f2078233383b"
+      },
+      {
+        "id": "commit-edit-availability",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "0acb7ae81f5e26b2274e21225b5dedfd2666fb0761fcc854e912fe7f0032996f"
+      },
+      {
+        "id": "component-shape",
+        "kind": "rule",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "dc95cfb582b117c21a07e0d6518e3c415ae1b2c6eba9998f3e0f3ef06c1dc753"
+      },
+      {
+        "id": "compose-video",
+        "kind": "goal",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "6652b4e5546a6b8c4e4167d350c8a2ebe7ea5444c778bf9f555346be15d5577d"
+      },
+      {
+        "id": "content-library",
+        "kind": "capability",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "9ad99cb6ee72102b93d91452eda2ab30f086c200e4edc660c4daa9993011e0cd"
+      },
+      {
+        "id": "content-types",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "03ae3d380b2ddd49aacb6e4c3dff54630e1349b945a68986f84c6110158e92de"
+      },
+      {
+        "id": "cross-source-playback",
+        "kind": "gap",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "unresolved",
+        "previousMaterialSha256": null,
+        "materialSha256": "b97840225a37ea3d6daac2f1fb3bae2098aa69ca17f06ac477f5d138cd50442c"
+      },
+      {
+        "id": "delete-split-reorder",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "e4c5b2260d18f5f88a971f7faf1d23e21866b3fb4970e2cb68fe5baadc46a65a"
+      },
+      {
+        "id": "desktop-owner",
+        "kind": "user",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "434f1b58e156823f6f3ee9c933f04d6b162143287f6e33abc71d28521b3ebc9f"
+      },
+      {
+        "id": "desktop-scope",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "04a976cebad68c90d0c78a173b9f215062062b278d43373f00591152fec69946"
+      },
+      {
+        "id": "draft-project-guard",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "3d07008388fc68a17e600fca12cd27a989fdc1ee31e910b21df1740a8cdfd8d1"
+      },
+      {
+        "id": "edit-surface-regions",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "e13ad1ef92cbd74aaf27eda8873a1dd3eeab650c3fddd7285f899cc6802d97bd"
+      },
+      {
+        "id": "editor-transient-context",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "e13b08c50829c3b162c03664cdbda2967705442e680a3c0d8b1f156374171da3"
+      },
+      {
+        "id": "electron-runtime",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "995aa54bb8917f42ce9ac539a1b377b209b2a8edf777d42bd5dba70a297fbdd3"
+      },
+      {
+        "id": "export-app-close",
+        "kind": "gap",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "unresolved",
+        "previousMaterialSha256": null,
+        "materialSha256": "00d67dd15159b54bdaace876f4e459ce901b53ede8b4053e57717af9c0e9f753"
+      },
+      {
+        "id": "export-choice-and-consent",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "e4dc38511b6f223afde1e3a65a122bfff80a3e63016c665673ae590235b30d18"
+      },
+      {
+        "id": "export-operation-lifecycle",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "3e25567ed7e6cec77e4d6e6d47657735b6cc37e90cd7619e86b8989a3163ddea"
+      },
+      {
+        "id": "export-result",
+        "kind": "goal",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "af2ea35772f2f86e5836e23a2cea3239dba0b948e04a38f15ce5455539219fe4"
+      },
+      {
+        "id": "four-track-editing",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "b87efadf5be23e2c5e3e9545d1b8d2eaa02a0b0b75a4261d2f5b2e4ea2e81031"
+      },
+      {
+        "id": "grouped-assembly-editing",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "ab569d1ae72d88c711f43bbc15eb22fe6af2db0f50a232a9669836071782eef3"
+      },
+      {
+        "id": "inspection-zoom",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "356fb991e132e205578fc028962bf85cccb979a072c3bcc94e050c136b64a77a"
+      },
+      {
+        "id": "library-browsing",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "cf1da36027acbdad6d8816de1314e323d96754fa37a9e8687d464eaf946d6498"
+      },
+      {
+        "id": "material-surface-theme",
+        "kind": "rule",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "0246acf65a21bd31c1a04ccdd62c2cc782dd8f85d75d2e8f57a37bfc055f3022"
+      },
+      {
+        "id": "media-repair",
+        "kind": "gap",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "unresolved",
+        "previousMaterialSha256": null,
+        "materialSha256": "ee55a7a469b96ea670187379f05b15d72877684a0bba323221f0a5659a4dbe9c"
+      },
+      {
+        "id": "multitrack-interface",
+        "kind": "gap",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "superseded",
+        "previousMaterialSha256": null,
+        "materialSha256": "53f78b5c3c83dab7fb2e29704eb28f597510944c2e219f6ee43385cc1ffc5651"
+      },
+      {
+        "id": "object-reorder",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "c5a42b8d4fc628244c298eb6599249f3a5ab82374ba29817a827774f8845e21e"
+      },
+      {
+        "id": "occurrence-trim",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "a8e616565565012a21d0fa49e3b71d4411f6e9a61fa9bd8da50d076a44a1ea78"
+      },
+      {
+        "id": "outline-label-color",
+        "kind": "rule",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "superseded",
+        "previousMaterialSha256": null,
+        "materialSha256": "86bbb602864860a48882f76161c588d32bdc4c7cfe205e3f5d8835060939730f"
+      },
+      {
+        "id": "outlined-field-baseline",
+        "kind": "rule",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "9013dc20c617183e4184f0fb4657b688843adc41fa593dd977ead76309d90114"
+      },
+      {
+        "id": "personal-video-work",
+        "kind": "purpose",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "b460389787f834a0d64a3527561a5820d6ba4abc7652c7771073d0b5faa22dd0"
+      },
+      {
+        "id": "play-collections",
+        "kind": "goal",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "cb64a8875d472b425f6517e948a5a01bae6a2a5bc02abaca0e6de48c27823068"
+      },
+      {
+        "id": "playback-workspace",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "c65f6224f778836e07fcbfedad00a980c13f5000eda18ae7ad89e06b6c10f17f"
+      },
+      {
+        "id": "playlist-draft",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "873fbf7cdfade140626444ffd9e34925a6a9d4de80b56705f25887c97548fdd5"
+      },
+      {
+        "id": "playlist-editing",
+        "kind": "capability",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "1040e101da9916ace8140542bdd981d040d0d9ffcbce2c301814d0754c90403c"
+      },
+      {
+        "id": "playlist-transport",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "a2677a18f8d8431a3158fc12381726399df1847578085857394c67e403ef6fa7"
+      },
+      {
+        "id": "precise-selection",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "c6597df8561065aa7af82efcc056a0471f49ad317aefde9c1af4d1c6c388c944"
+      },
+      {
+        "id": "preserve-work",
+        "kind": "goal",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "f1c035e92474802328e6d1fa6e8f1dfad3a737e7b124e42f9a41a31bd86c6ef9"
+      },
+      {
+        "id": "project-commands",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "0fe7b0a0338d62564a63c5c2fad2c4a8a45c6e907e27a7b1f325682a638a1ff6"
+      },
+      {
+        "id": "project-management",
+        "kind": "capability",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "2b4ac9972a86df757619c8e6b6ad5a0713bea391003aa031bad2a4cda4e6320d"
+      },
+      {
+        "id": "project-reference-storage",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "808ae642321ec83f1e0b8758c9dda928f9942c9c65363684e693241c7019555f"
+      },
+      {
+        "id": "range-selection",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "fbdebeed47b4e0fbbc0b56a1c0fd30ef3da4d620f3e3a1c1a242a13b0ec5bb4d"
+      },
+      {
+        "id": "save-library-clip",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "f29e70b0f1a2b7347ef3c2d6e5999c84fead778335bae4c40e4bcc5f3324cb67"
+      },
+      {
+        "id": "save-video-draft",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "648bceae24716d11bc22fcc892034ca173f297d5d580769a0bda77ce45491073"
+      },
+      {
+        "id": "scrub-and-follow",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "91a6981da88ad71f1afc03d9a8132f73e6b00ea75ce7a1e620506c83aa8adf2b"
+      },
+      {
+        "id": "shared-clip-update-collision",
+        "kind": "gap",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "superseded",
+        "previousMaterialSha256": null,
+        "materialSha256": "0d0c1af6acf7632234be596c31ff89407c883a57c0b7e9c38e9e227d73654b90"
+      },
+      {
+        "id": "single-track-baseline",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "superseded",
+        "previousMaterialSha256": null,
+        "materialSha256": "22e86c04e9e126d314513742fc714c7e8107d046eb0aaa537cb60b3cdac2dc1d"
+      },
+      {
+        "id": "source-ownership",
+        "kind": "gap",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "unresolved",
+        "previousMaterialSha256": null,
+        "materialSha256": "d3c52ac198f452b2957bbd04d944d7775376a4240f99b96d4134d39290c77d0b"
+      },
+      {
+        "id": "spacing-and-control-metrics",
+        "kind": "rule",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "c79038c488990255fcacc5cbdbedf5e06ac23838fd5a379ab54ee56525f12c57"
+      },
+      {
+        "id": "spatial-composition",
+        "kind": "capability",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "b0a46bc19e98fce675c7ca317da3c3c9a47da6c7743caac1a3ebc8964f28e5b7"
+      },
+      {
+        "id": "spatial-region-capability",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "e847db6674bc63fa5ee95097bad543c2e6810274ab3f140a63a9af6e36fdad66"
+      },
+      {
+        "id": "timeline-drop-rearrangement",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "49c295055e32529978752dbd44461c8bef0091e322daf2477667490fe9cf6b6d"
+      },
+      {
+        "id": "timeline-occurrences",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "4e78d7d3bb13b3f0334a425fbbbdf579efd9330db4f3090e2accd28e9bc84110"
+      },
+      {
+        "id": "timeline-trim-push",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "5b7030718f873781071ef5d8fbf716c5dcf39a1a53d8c7184b20af0bb65f5359"
+      },
+      {
+        "id": "track-and-clip-audio",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "75e39a41a41e6b6d4b03675a43402d24117910cad373f5897c66d006da3d9d29"
+      },
+      {
+        "id": "type-scale",
+        "kind": "rule",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "913bf8147facf3af50f44c692bea8b6086628ce64f579442c4bacd30046f1f77"
+      },
+      {
+        "id": "update-named-clip",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "d09df8e436f529f5e49a3478f45f5aa6b1f598baf956a2ee4cd81afdc855855f"
+      },
+      {
+        "id": "video-editing",
+        "kind": "capability",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "ef8ec2ff534a7f4da39ed0a95720f83f2a6d0087c4943942725bfdefb909890e"
+      },
+      {
+        "id": "video-expansion-settings-conflict",
+        "kind": "gap",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "unresolved",
+        "previousMaterialSha256": null,
+        "materialSha256": "20082be8087ae992bf8a7b52907638ee32488b6ca241bc294490100b92a3282e"
+      },
+      {
+        "id": "video-export",
+        "kind": "capability",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "4bbcc8205b3f725d234c98863cd1d7ad9715393f37f13f5bf8c5b42c57b56d22"
+      },
+      {
+        "id": "video-playback",
+        "kind": "capability",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "fa521eba695b228021fdb38bd62904415ebbc48bdee3cd627bbadec8bdd136cd"
+      },
+      {
+        "id": "visual-defaults-editable",
+        "kind": "rule",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "09726e80b9578c554b421c4ce8360dc7ac5c2a5c9a4551a2d43694f47dd68b6c"
+      },
+      {
+        "id": "workspace-shell",
+        "kind": "requirement",
+        "classification": "introduced",
+        "previousStatus": null,
+        "status": "accepted",
+        "previousMaterialSha256": null,
+        "materialSha256": "a0aed58d346a67ab5410cd7f01a0050657b34ab9ede9dff5dfcc644ee585c8f2"
+      }
+    ],
+    "sourceClaims": [
+      {
+        "id": "claim-addition",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-brand",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-clip-create",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-clip-update",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-close-question",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-commit-freeze",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-content",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-continuity-question",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-copied-assembly-update",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-desktop-runtime",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-edit-operations",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-editor",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-export",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-export-lifecycle",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-field-baseline",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-four-track-update",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-guard",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-inspection",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-layout",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-library",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-multitrack-intent",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-multitrack-question",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-occurrences",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-outline-withdrawn",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-ownership-question",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-paper",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-persistence",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-playback",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-playback-gaps",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-player-direction",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-playhead",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-playlist",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-precision",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-project",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-purpose",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-reorder",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-repair-question",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-selection",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-shape",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-shared-clip-collision-question",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-shell",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-single-track-prior",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-spatial",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-surface-colors",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-transient-editing",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-transport",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-trimming",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-typography",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-video-expansion-question",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-video-save",
+        "classification": "introduced",
+        "previousRefs": []
+      },
+      {
+        "id": "claim-visual-foundations",
+        "classification": "introduced",
+        "previousRefs": []
+      }
+    ]
+  },
+  "authorityReceipts": []
+}

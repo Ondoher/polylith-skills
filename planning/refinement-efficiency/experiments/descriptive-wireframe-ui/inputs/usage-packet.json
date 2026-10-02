@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "experiment-1",
+  "identity": {
+    "product": "Alexa",
+    "snapshot": {
+      "id": "alexa-snapshot",
+      "revision": 8,
+      "path": "snapshots/12c09ddff7478114a793a51cfefb8293754276ed03d663d8837694312a5cf007/product-snapshot.json",
+      "sha256": "12c09ddff7478114a793a51cfefb8293754276ed03d663d8837694312a5cf007"
+    },
+    "ux": {
+      "id": "alexa-ux",
+      "revision": "2",
+      "sha256": "3e28363708e3f36095e37d391151eeb4715102d1fea504dcdfb7eba8d8826b13"
+    },
+    "designLanguage": {
+      "id": "alexa-design-language",
+      "revision": 1,
+      "sha256": "21ae4e65e8e7cc7ad4519ec5200e8a0c066deb8f07a2ff97e7e523b5525da9ca"
+    }
+  },
+  "authoringBoundary": {
+    "surface": "video-workspace",
+    "frameRefs": [
+      "video-view",
+      "video-saving-view",
+      "video-guard",
+      "timeline-add",
+      "selection-menu",
+      "clip-create",
+      "clip-update",
+      "video-project-guard",
+      "track-properties",
+      "clip-properties",
+      "track-rectangle",
+      "source-rectangle",
+      "video-framing-view"
+    ],
+    "flowRefs": [
+      "edit-video",
+      "save-clip",
+      "update-clip",
+      "frame-composition",
+      "mix-audio"
+    ],
+    "contextOnly": [
+      "project/library identity and chooser content",
+      "global export availability/status",
+      "external workspace identities",
+      "shared project guard behavior"
+    ]
+  },
+  "files": [
+    {
+      "path": "source-description.md",
+      "sha256": "cbc858693da7bd60dd0574e1ae0e023a998988e005e669914cf45363c7636f24",
+      "byteCount": 25449,
+      "recordCount": null
+    },
+    {
+      "path": "research.md",
+      "sha256": "fc85384b389a6af879d8f9ea332cf4024e26d2c592fefbc7c4740a14b669cdf9",
+      "byteCount": 39805,
+      "recordCount": null
+    },
+    {
+      "path": "design-language.json",
+      "sha256": "1d8a6b26a9a9ddd030b27bc3b72236aebbb5ddf12b42b3f10f0d8658239343a9",
+      "byteCount": 44286,
+      "recordCount": null
+    },
+    {
+      "path": "render-theme.json",
+      "sha256": "59b2b4b2e4dbe45aa01672957837bacf60f52f4f91c4d3386d4cfc512bc83d6e",
+      "byteCount": 395,
+      "recordCount": 16
+    },
+    {
+      "path": "render-theme-provenance.json",
+      "sha256": "5b62b10d70c96486d8767f34b49023e46b23bdd0e944010593e4bb1e45c6b484",
+      "byteCount": 1421,
+      "recordCount": null
+    },
+    {
+      "path": "samples.json",
+      "sha256": "a2abc57d57b9895ef998aa47470b37d9e3334160b75e30778c8454fc906d93fd",
+      "byteCount": 4102,
+      "recordCount": null
+    },
+    {
+      "path": "scenarios.json",
+      "sha256": "536624fb7d8b305f0ccdd174854507145a71cbe08c81e9ee52913c86a77124db",
+      "byteCount": 23422,
+      "recordCount": 12
+    },
+    {
+      "path": "product-requirements.json",
+      "sha256": "b35586e30060e3d9a2c1919615bd19d78bff5e9d041b7e826cc2cdc67908bf4b",
+      "byteCount": 85153,
+      "recordCount": 105
+    },
+    {
+      "path": "scope-surfaces.json",
+      "sha256": "1a6a60e1c3a89880569ad93010eb0730d5e5aa6c51386cdb5fa9dc3944d6419f",
+      "byteCount": 27611,
+      "recordCount": 24
+    },
+    {
+      "path": "interaction-frames.json",
+      "sha256": "bf90596fc48bb6d5e0b529967fef82a36a38a39fa898186c0f40fc6d2f9ada0e",
+      "byteCount": 67650,
+      "recordCount": 13
+    },
+    {
+      "path": "actions.json",
+      "sha256": "94beb9fa04ae1b99131126632b88827fb6b9d793b3656c65c1145252f7c2b2eb",
+      "byteCount": 99185,
+      "recordCount": 55
+    },
+    {
+      "path": "flows.json",
+      "sha256": "966888be011afd37dab4a5bf161355ea607e30e626cdd2359de138bcbb24e0a7",
+      "byteCount": 91248,
+      "recordCount": 7
+    },
+    {
+      "path": "feedback.json",
+      "sha256": "0326fcb87cbfc2a4a2fe835a32ff5392aaee741ff4da65b62362232d41e7c91c",
+      "byteCount": 28478,
+      "recordCount": 70
+    },
+    {
+      "path": "questions-and-trace.json",
+      "sha256": "39133118d705737ac86268748eb455e1d789e19d669c727dd83d92e6b60912e6",
+      "byteCount": 42722,
+      "recordCount": 52
+    }
+  ],
+  "readingOrder": [
+    "source-description.md",
+    "product-requirements.json",
+    "scope-surfaces.json",
+    "interaction-frames.json",
+    "actions.json",
+    "flows.json",
+    "feedback.json",
+    "questions-and-trace.json",
+    "research.md",
+    "design-language.json",
+    "render-theme.json",
+    "render-theme-provenance.json",
+    "samples.json",
+    "scenarios.json"
+  ],
+  "sharedInterpretations": [
+    "Choose insertion in the stopped editor before opening Add; Add retains destination. This follows accepted set-insertion/action semantics and does not change stored flow relations.",
+    "Preserve accepted neutral-group Ungroup availability limits provisionally; they express unresolved UX policy rather than an owner mandate. No transfer/reset/mapping algorithm may be invented.",
+    "Rectangle editor source units are source pixels and track units output pixels; fixture is 1920×1080, not a new resolution limit.",
+    "Every scenario uses the same sample fixture, viewport, source, accepted language and rendering capabilities in both paths. Longer translations are inspection fixtures."
+  ],
+  "requiredRelatedSceneIds": [
+    "s08-source-rectangle",
+    "s11-video-saving-busy"
+  ],
+  "selectedSceneCount": 14,
+  "rendererLimitation": {
+    "media": "schematic",
+    "policy": "No raster images or video assets are supplied. Both paths render composed preview and timeline thumbnails with deterministic schematic media using the shared fixture. This experiment limitation belongs in accompanying documentation, never as implementation commentary or placeholder instructions on the interface."
+  },
+  "withheld": [
+    "Prior Alexa wireframe geometry",
+    "Prior Alexa finished comps",
+    "Prior review findings",
+    "Design-language specimen page/review-layout geometry"
+  ],
+  "referenceOnlyPolicy": "Author assignments receive only listed author files. Do not load verification-only files or historical artifacts. Exact full source/research may be read only as relevant textual authority/advisory references; never load UX review findings."
+}

@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-02",
+  "provenance": "Contract-based default in-session agent, not activated named product-researcher configuration",
+  "clockBasis": "Observed UTC samples from clock tool; intervals combine work actually performed between samples and are not estimates of internal reasoning",
+  "intervals": [
+    {"start": "2026-10-02 17:27:07 UTC", "end": "2026-10-02 17:30:24 UTC", "elapsedSeconds": 197, "activity": "Complete bounded input/contract review and initial task-directed primary-source collection"},
+    {"start": "2026-10-02 17:30:24 UTC", "end": "2026-10-02 17:31:28 UTC", "elapsedSeconds": 64, "activity": "Primary material section inspection, initial official-image acquisition/view_image inspection, and inventory input read"},
+    {"start": "2026-10-02 17:31:28 UTC", "end": "2026-10-02 17:35:49 UTC", "elapsedSeconds": 261, "activity": "Remaining official-image acquisition/inspection, connected synthesis, saved main findings and image-attribution record"},
+    {"start": "2026-10-02 17:35:49 UTC", "end": "2026-10-02 17:37:52 UTC", "elapsedSeconds": 123, "activity": "Material source inventory, historical verification preservation and evidence limitation record"},
+    {"start": "2026-10-02 17:37:52 UTC", "end": "2026-10-02 17:38:50 UTC", "elapsedSeconds": 58, "activity": "Operational timing record, JSON parse checks and artifact presence/size verification"}
+  ],
+  "observedTotalSeconds": 703,
+  "searchQueries": [
+    "site.docs.kdenlive.org user_interface workspace project monitor timeline zoom",
+    "site.helpx.adobe.com premiere program monitor magnification timeline zoom properties panel",
+    "site.helpx.adobe.com premiere navigate sequences in the timeline auto scrolling page smooth",
+    "site.support.apple.com final cut pro break apart compound clips trim"
+  ],
+  "method": "Read source completely before selecting comparables. Reuse previously parent-checked primitives. Open small adequate official evidence set for cohesion and changed group applicability. Inspect downloaded exact official images. Distinguish observation, Alexa adaptation and owner-only policy. Stop after evidence supports advisory direction; exact combined novel consequences retain limits.",
+  "counts": {"queries": 4, "priorRecordsReadAndReused": 5, "priorMaterialSources": 10, "newMaterialSources": 6, "priorSourcesReopened": 3, "priorSourcesNotReopened": 7, "downloadedInspectedInterfaceImages": 5},
+  "advisoryDecisions": [
+    "Recommend continuous composition hierarchy with persistent scope cues and local temporal/spatial navigation",
+    "Treat shared zoom/menu grouping as hypothesis, not mandated solution",
+    "Use context continuity to connect Add/save/properties/group journeys",
+    "Preserve exact inclusive/collision/packing rules as owner authority, not comparator convention",
+    "Reject adoption of linked-update defaults and prior neutral-group-only restriction without owner decision",
+    "Allow translated app text to reflow while preserving scope and synchronized timeline space"
+  ],
+  "ownerQuestions": [
+    "Multitrack Ungroup placement and destination settings",
+    "Group source framing/audio adjustment transfer",
+    "Partially intersecting edge-part boundaries on Ungroup",
+    "Outward extension choice across simultaneous edge sources, gaps and exhausted files",
+    "Surviving provenance and explicit Update Named Clip eligibility/published changes",
+    "Automatic resolution of conflicting video expansion; current atomic refusal remains"
+  ],
+  "technicalDependencies": "No architecture validation performed. Parent may seek domain/UX consultation after owner resolves group behavior. Existing media capability and export architecture remain outside assigned areas.",
+  "acquisitionNotes": [
+    "First bounded-reader continuation used an unsupported option; corrected to the documented cursor option and followed all pages.",
+    "A shell full-page output and a multi-page browser result were truncated; material sections were subsequently opened explicitly, and no conclusion depended on omitted output.",
+    "Some shell page fetches failed and some web image fetches returned internal errors. Five normal direct image downloads subsequently succeeded without escalation or network reconfiguration.",
+    "No local full-page HTML captures, app runs, installs, tests, Git changes, model backends/proxies, canonical writes or delegation occurred."
+  ],
+  "questionCoverage": "See composition-findings.md question-status table for all accepted area 1–4 clusters",
+  "metricsNotAvailable": ["Internal reasoning duration", "Model token or credit usage", "Source-interaction latency attribution"]
+}

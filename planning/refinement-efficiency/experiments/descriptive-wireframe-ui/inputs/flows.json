@@ -1,0 +1,2266 @@
+[
+  {
+    "alternates": [],
+    "decisions": [
+      {
+        "actionRefs": [
+          "navigate"
+        ],
+        "candidate": "Selected task commands with one canonical action and contextual optional branches.",
+        "disposition": "retain",
+        "id": "navigate-work-retained",
+        "rationale": "Retain explicit owner tasks and precise desktop editing. Optional operations are branches; equivalent inputs do not add duplicate visible controls.",
+        "result": "Main path follows selected shortest meaningful chain; conditional commands stay in their relevant context."
+      }
+    ],
+    "elementRef": "ux:surface:library-workspace",
+    "featureRef": "project",
+    "goal": "Reach another workspace while retaining project context.",
+    "id": "navigate-work",
+    "name": "Change workspace",
+    "outcome": "The destination becomes active after any relevant draft decision; export continues.",
+    "preconditions": [
+      "Leaving unsaved video or playlist work resolves its draft decision first. Same-project workspace navigation does not require a project-discard decision. Active export permits workspace changes."
+    ],
+    "questionRefs": [],
+    "status": "accepted",
+    "steps": [
+      {
+        "action": "Workspace",
+        "actionRef": "navigate",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "navigate-result"
+        ],
+        "id": "navigate-step",
+        "questionRefs": [],
+        "response": "Select a workspace; apply the relevant draft guard, retain project context and continuing export. A denied guard returns to captured origin.",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "usesElementRefs": [
+          "ux:component:project-guard"
+        ]
+      }
+    ],
+    "taskPriority": "supporting",
+    "trigger": "The owner selects a workspace."
+  },
+  {
+    "alternates": [
+      {
+        "afterStepRef": "open-project-step",
+        "condition": "Choose this optional command for the current task.",
+        "id": "edge-11",
+        "outcome": "Create a new project only after all applicable guard decisions and successful replacement; preserve original work until success. While any export is running or cancellation is pending, New/Open remain visible but unavailable in every workspace; no guard, chooser, project replacement or queued attempt occurs. Restore availability only after the export actually completes, fails or finishes cancellation and is no longer active; other commit/modal conditions still apply.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "New",
+            "actionRef": "new-project",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "new-project-result"
+            ],
+            "id": "protect-project-new-project-step",
+            "questionRefs": [],
+            "response": "Create a new project only after all applicable guard decisions and successful replacement; preserve original work until success. While any export is running or cancellation is pending, New/Open remain visible but unavailable in every workspace; no guard, chooser, project replacement or queued attempt occurs. Restore availability only after the export actually completes, fails or finishes cancellation and is no longer active; other commit/modal conditions still apply.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted",
+            "usesElementRefs": [
+              "ux:component:project-guard"
+            ]
+          }
+        ]
+      },
+      {
+        "afterStepRef": "open-project-step",
+        "condition": "The owner explicitly chooses Save As for this project instead of opening another project.",
+        "id": "edge-12",
+        "notes": [
+          "Chooser canceled or Save As failed.",
+          "Retain project/draft; report failure and allow another explicit attempt."
+        ],
+        "outcome": "Choose project filename/location and save explicitly saved project content only; canceling the native chooser changes nothing.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Save As",
+            "actionRef": "save-project-as",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "save-project-as-result",
+              "save-project-as-progress",
+              "save-project-as-failure"
+            ],
+            "id": "protect-project-save-project-as-step",
+            "questionRefs": [],
+            "response": "Choose project filename/location and save explicitly saved project content only; canceling the native chooser changes nothing.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "stateRefs": [
+              "library-saving",
+              "video-saving",
+              "playback-saving",
+              "export-saving"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "open-project-step",
+        "condition": "The draft-decision stage is active and the owner chooses this action.",
+        "id": "edge-13",
+        "outcome": "Stop the pending context change and return to the intact draft and original project.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Keep Editing",
+            "actionRef": "keep-draft",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "keep-draft-result"
+            ],
+            "id": "protect-project-keep-draft-step",
+            "questionRefs": [],
+            "response": "Stop the pending context change and return to the intact draft and original project.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "open-project-step",
+        "condition": "The draft-decision stage is active and the owner chooses this action.",
+        "id": "edge-14",
+        "outcome": "Record discard intent but retain the original draft until all decisions and restoration/replacement succeed. Restore a saved draft or remove a never-saved draft only on successful continuation.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Discard draft",
+            "actionRef": "discard-draft",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "discard-draft-result"
+            ],
+            "id": "protect-project-discard-draft-step",
+            "questionRefs": [],
+            "response": "Record discard intent but retain the original draft until all decisions and restoration/replacement succeed. Restore a saved draft or remove a never-saved draft only on successful continuation.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "open-project-step",
+        "condition": "The project-decision stage is active with no unresolved draft decision, and the owner chooses this action.",
+        "id": "edge-15",
+        "outcome": "Discard unsaved project changes only after replacement succeeds; draft discard stays deferred. Failure retains original work.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Discard project changes",
+            "actionRef": "discard-project",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "discard-project-result"
+            ],
+            "id": "protect-project-discard-project-step",
+            "questionRefs": [],
+            "response": "Discard unsaved project changes only after replacement succeeds; draft discard stays deferred. Failure retains original work.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "open-project-step",
+        "condition": "The project-decision stage is active with no unresolved draft decision, and the owner chooses this action.",
+        "id": "edge-16",
+        "outcome": "Abort the transition and retain original project/draft, including a draft marked for deferred discard.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Cancel",
+            "actionRef": "cancel-transition",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "cancel-transition-result"
+            ],
+            "id": "protect-project-cancel-transition-step",
+            "questionRefs": [],
+            "response": "Abort the transition and retain original project/draft, including a draft marked for deferred discard.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "open-project-step",
+        "condition": "The operation actually succeeds.",
+        "id": "open-project-step-completed",
+        "outcome": "Choose a project in the native chooser; apply draft-first/project-second guard and Open once. Canceled chooser, failed Open or failed restoration retains original draft/project.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": []
+      },
+      {
+        "afterStepRef": "protect-project-save-project-step",
+        "condition": "The operation actually succeeds.",
+        "id": "protect-project-save-project-step-completed",
+        "outcome": "Save only project content explicitly saved to it; never implicitly save the active video/playlist draft. Failed save preserves the decision for retry or Cancel.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": []
+      },
+      {
+        "afterStepRef": "open-project-step",
+        "condition": "The owner chose Save As and that explicit save actually succeeds.",
+        "id": "protect-project-save-project-as-step-completed",
+        "outcome": "Choose project filename/location and save explicitly saved project content only; canceling the native chooser changes nothing.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": []
+      },
+      {
+        "afterStepRef": "open-project-step",
+        "condition": "Open canceled, failed or restoration failed.",
+        "id": "open-project-recovery",
+        "outcome": "Stop pending action and preserve original project/draft; report actual failure.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Report the actual operation result and retain the affected working context.",
+            "actor": "Alexa",
+            "id": "open-project-recovery-response",
+            "response": "Stop pending action and preserve original project/draft; report actual failure."
+          }
+        ]
+      },
+      {
+        "afterStepRef": "protect-project-save-project-step",
+        "condition": "Project save failed.",
+        "id": "save-project-recovery",
+        "outcome": "Keep project/draft and applicable decision open for retry or Cancel.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Report the actual operation result and retain the affected working context.",
+            "actor": "Alexa",
+            "id": "save-project-recovery-response",
+            "response": "Keep project/draft and applicable decision open for retry or Cancel."
+          }
+        ]
+      },
+      {
+        "afterStepRef": "open-project-step",
+        "condition": "After choosing save project as, Chooser canceled or Save As failed.",
+        "id": "save-project-as-recovery",
+        "outcome": "Retain project/draft; report failure and allow another explicit attempt.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Report the actual operation result and retain the affected working context.",
+            "actor": "Alexa",
+            "id": "save-project-as-recovery-response",
+            "response": "Retain project/draft; report failure and allow another explicit attempt."
+          }
+        ]
+      }
+    ],
+    "decisions": [
+      {
+        "actionRefs": [
+          "new-project",
+          "open-project",
+          "save-project",
+          "save-project-as"
+        ],
+        "candidate": "Selected task commands with one canonical action and contextual optional branches.",
+        "disposition": "retain",
+        "id": "protect-project-retained",
+        "rationale": "Retain explicit owner tasks and precise desktop editing. Optional operations are branches; equivalent inputs do not add duplicate visible controls.",
+        "result": "Main path follows selected shortest meaningful chain; conditional commands stay in their relevant context."
+      },
+      {
+        "actionRefs": [
+          "keep-draft",
+          "discard-draft",
+          "discard-project",
+          "cancel-transition"
+        ],
+        "candidate": "Context-dependent decisions, selection operations and cancellation.",
+        "disposition": "contextualize",
+        "id": "protect-project-contextual",
+        "rationale": "Only present these commands when their selected context applies; preserve owner-defined safety and expert editing.",
+        "result": "Use the shared decision or contextual operation rather than another persistent command family."
+      }
+    ],
+    "elementRef": "ux:surface:library-workspace",
+    "featureRef": "project",
+    "goal": "Work in the intended project without accidental draft or project loss.",
+    "id": "protect-project",
+    "name": "Open and preserve a project",
+    "outcome": "The requested operation succeeds once, or the original project and draft remain available.",
+    "preconditions": [],
+    "questionRefs": [
+      "export-app-close"
+    ],
+    "status": "accepted",
+    "steps": [
+      {
+        "action": "Open",
+        "actionRef": "open-project",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "open-project-result"
+        ],
+        "id": "open-project-step",
+        "questionRefs": [],
+        "response": "Choose a project in the native chooser; apply draft-first/project-second guard and Open once. Canceled chooser, failed Open or failed restoration retains original draft/project. While any export is running or cancellation is pending, New/Open remain visible but unavailable in every workspace; no guard, chooser, project replacement or queued attempt occurs. Restore availability only after the export actually completes, fails or finishes cancellation and is no longer active; other commit/modal conditions still apply.",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "usesElementRefs": [
+          "ux:component:project-guard"
+        ]
+      },
+      {
+        "action": "Save",
+        "actionRef": "save-project",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "save-project-result",
+          "save-project-progress",
+          "save-project-failure"
+        ],
+        "id": "protect-project-save-project-step",
+        "questionRefs": [],
+        "response": "Save only project content explicitly saved to it; never implicitly save the active video/playlist draft. Failed save preserves the decision for retry or Cancel.",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "stateRefs": [
+          "library-saving",
+          "video-saving",
+          "playback-saving",
+          "export-saving"
+        ],
+        "status": "accepted"
+      }
+    ],
+    "taskPriority": "primary",
+    "trigger": "New, Open, Save, Save As or a context change that would abandon work."
+  },
+  {
+    "alternates": [
+      {
+        "afterStepRef": "choose-video-step",
+        "condition": "An active video exists.",
+        "id": "edge-56",
+        "outcome": "Edit visible draft identity without saving; retain name on failure.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Video name",
+            "actionRef": "name-video",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "name-video-result"
+            ],
+            "id": "edit-video-name-video-step",
+            "questionRefs": [],
+            "response": "Edit visible draft identity without saving; retain name on failure.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-add-timeline-step",
+        "condition": "An active video exists; an empty timeline shows Append.",
+        "id": "edge-57",
+        "outcome": "The staged addition identifies its target track and insertion time or edge.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Insertion point",
+            "actionRef": "set-insertion",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "set-insertion-result"
+            ],
+            "id": "edit-video-set-insertion-step",
+            "questionRefs": [],
+            "response": "Choose the displayed target track and an empty-lane time, Before/After target edge, or Append. Retain this insertion choice without changing content or selection.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-insert-content-step",
+        "condition": "The operation actually succeeds.",
+        "id": "edit-video-insert-content-step-completed",
+        "outcome": "After explicit Add succeeds, the complete reviewed addition appears at its confirmed destination. Preserve source media and named-clip origin identity; synchronize selection, preview and composition duration. A named clip has a copied definition and a composed clip is one group.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": []
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "Video contains selectable time.",
+        "id": "edge-58",
+        "outcome": "Drag the composed-time row away from the playhead to create an inclusive range and move the playhead to its left Start. Retain selection until replaced or cleared.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Select range",
+            "actionRef": "select-range",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "select-range-result"
+            ],
+            "id": "edit-video-select-range-step",
+            "questionRefs": [],
+            "response": "Drag the composed-time row away from the playhead to create an inclusive range and move the playhead to its left Start. Retain selection until replaced or cleared.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted",
+            "usesElementRefs": [
+              "ux:component:timeline"
+            ]
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "A range or resolved frame permits boundary selection.",
+        "id": "edge-59",
+        "outcome": "Adjust Start/End with markers, explicit commands, focused Left/Right Arrow or equivalent handle drag. End is included in duration/frame count; one-frame precision is available. This does not trim occurrences.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Selection Start and End",
+            "actionRef": "set-range-boundary",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "set-range-boundary-result"
+            ],
+            "id": "edit-video-set-range-boundary-step",
+            "questionRefs": [],
+            "response": "Adjust Start/End with markers, explicit commands, focused Left/Right Arrow or equivalent handle drag. End is included in duration/frame count; one-frame precision is available. This does not trim occurrences.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted",
+            "usesElementRefs": [
+              "ux:component:timeline"
+            ]
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "A selection exists.",
+        "id": "edge-60",
+        "outcome": "Clear range or whole-object selection without editing media or timeline content.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Clear selection",
+            "actionRef": "clear-selection",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "clear-selection-result"
+            ],
+            "id": "edit-video-clear-selection-step",
+            "questionRefs": [],
+            "response": "Clear range or whole-object selection without editing media or timeline content.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "Video has playable time.",
+        "id": "edge-61",
+        "outcome": "Move the playhead along composed time; player and playhead resolve the same position without changing selection.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Playhead",
+            "actionRef": "scrub",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "scrub-result"
+            ],
+            "id": "edit-video-scrub-step",
+            "questionRefs": [],
+            "response": "Move the playhead along composed time; player and playhead resolve the same position without changing selection.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted",
+            "usesElementRefs": [
+              "ux:component:timeline"
+            ]
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "Video has resolvable frames.",
+        "id": "edge-62",
+        "outcome": "Step one previous/next frame, including equivalent keyboard input, for inspection and precise boundary commands; stepping alone does not change selection.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Previous or next frame",
+            "actionRef": "step-frame",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "step-frame-result"
+            ],
+            "id": "edit-video-step-frame-step",
+            "questionRefs": [],
+            "response": "Step one previous/next frame, including equivalent keyboard input, for inspection and precise boundary commands; stepping alone does not change selection.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted",
+            "usesElementRefs": [
+              "ux:component:timeline"
+            ]
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "A usable range or object selection exists.",
+        "id": "edge-63",
+        "outcome": "Open by right click, hover/focus trigger or equivalent keyboard menu invocation. Stop playback at the resolved frame without changing selection; preserve failure context and never automatically resume.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Selection actions",
+            "actionRef": "selection-actions",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "selection-actions-result"
+            ],
+            "id": "edit-video-selection-actions-step",
+            "questionRefs": [],
+            "response": "Open by right click, hover/focus trigger or equivalent keyboard menu invocation. Stop playback at the resolved frame without changing selection; preserve failure context and never automatically resume.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "Selection menu is open with a deletable selection.",
+        "id": "edge-64",
+        "outcome": "The selected scope is removed, its intervals close within that scope, and the edit location remains visible.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Delete",
+            "actionRef": "delete-selection",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "delete-selection-result"
+            ],
+            "id": "edit-video-delete-selection-step",
+            "questionRefs": [],
+            "response": "Delete the displayed scope: a range closes its interval across all four tracks; whole-object deletion closes only the selected objects' intervals on their track. Preserve the specified outside portions of partial occurrences and synchronize preview, duration and history.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "Selection menu is open with a valid range.",
+        "id": "edge-65",
+        "outcome": "The composition-wide range has independent boundaries without moving any track content.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Split",
+            "actionRef": "split-selection",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "split-selection-result"
+            ],
+            "id": "edit-video-split-selection-step",
+            "questionRefs": [],
+            "response": "Split intersected occurrences at both inclusive range boundaries across all four tracks. Preserve positions, gaps, framing and audio; retain the range and create no library item.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "Whole timeline objects are selected and the owner explicitly chooses to reorder them.",
+        "id": "edge-66",
+        "notes": [
+          "Reorder canceled or invalid target.",
+          "Retain draft and selection and show that no move occurred."
+        ],
+        "outcome": "The selected group occupies the confirmed destination without overlap; its vacated source positions remain gaps. Preview, playhead, duration and history are synchronized.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Reorder",
+            "actionRef": "reorder-objects",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "reorder-objects-result",
+              "reorder-objects-canceled"
+            ],
+            "id": "edit-video-reorder-objects-step",
+            "questionRefs": [],
+            "response": "Preview a destination track and Before/After the nearest target edge, or an empty-time destination. Preserve selected relative order, pack the group contiguously and push only colliding destination clips forward. Explicit cross-track moves inherit destination track framing/audio while retaining occurrence settings. A valid drop or keyboard confirmation commits one move; cancellation or invalid input preserves the original draft and selection.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted",
+            "usesElementRefs": [
+              "ux:component:timeline"
+            ]
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "An undoable draft operation exists.",
+        "id": "edge-67",
+        "outcome": "The available draft operation and its dependent changes are reversed together.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Undo",
+            "actionRef": "undo",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "undo-result"
+            ],
+            "id": "edit-video-undo-step",
+            "questionRefs": [],
+            "response": "Undo an available draft operation, including its complete collision chain, framing or audio changes, and restore corresponding preview and selection context. A completed shared-library update is not implicitly undoable.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "A redoable operation exists.",
+        "id": "edge-68",
+        "outcome": "Reapply an undone draft edit and synchronize preview/context. Desktop shortcut is equivalent.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Redo",
+            "actionRef": "redo",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "redo-result"
+            ],
+            "id": "edit-video-redo-step",
+            "questionRefs": [],
+            "response": "Reapply an undone draft edit and synchronize preview/context. Desktop shortcut is equivalent.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "Playable content exists and preview is stopped.",
+        "id": "edge-69",
+        "outcome": "The player and playhead show the four-track composition within the identified preview interval.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Play",
+            "actionRef": "play-preview",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "play-preview-result"
+            ],
+            "id": "edit-video-play-preview-step",
+            "questionRefs": [],
+            "response": "Preview the composed result from all four tracks. A range supplies its inclusive interval; whole-object selection supplies the continuous span from earliest selected Start to latest selected End, including gaps and other-track contributions. With no selection, preview the active video. The control becomes Stop and the timeline follows until intentional pan.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "Editor preview is playing.",
+        "id": "edge-70",
+        "outcome": "Stop at the current resolved frame, preserve selection, and show matching player/playhead positions.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Stop",
+            "actionRef": "stop-preview",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "stop-preview-result"
+            ],
+            "id": "edit-video-stop-preview-step",
+            "questionRefs": [],
+            "response": "Stop at the current resolved frame, preserve selection, and show matching player/playhead positions.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "Media is displayed.",
+        "id": "edge-71",
+        "outcome": "Magnify temporary inspection independently of timeline scale and saved/output framing.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Player Zoom In",
+            "actionRef": "zoom-player-in",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "zoom-player-in-result"
+            ],
+            "id": "edit-video-zoom-player-in-step",
+            "questionRefs": [],
+            "response": "Magnify temporary inspection independently of timeline scale and saved/output framing.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "Media is displayed; disabled at Fit.",
+        "id": "edge-72",
+        "outcome": "Reduce temporary magnification only as far as Fit; do not change media, selection, composition or export.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Player Zoom Out",
+            "actionRef": "zoom-player-out",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "zoom-player-out-result"
+            ],
+            "id": "edit-video-zoom-player-out-step",
+            "questionRefs": [],
+            "response": "Reduce temporary magnification only as far as Fit; do not change media, selection, composition or export.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "Media is displayed.",
+        "id": "edge-73",
+        "outcome": "Fit the complete media frame without crop or distortion; opening another video resets to Fit.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Player Fit",
+            "actionRef": "fit-player",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "fit-player-result"
+            ],
+            "id": "edit-video-fit-player-step",
+            "questionRefs": [],
+            "response": "Fit the complete media frame without crop or distortion; opening another video resets to Fit.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "Player is magnified beyond Fit.",
+        "id": "edge-74",
+        "outcome": "Drag to inspect magnified media without changing source, selection, saved framing or export.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Pan magnified player",
+            "actionRef": "pan-player",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "pan-player-result"
+            ],
+            "id": "edit-video-pan-player-step",
+            "questionRefs": [],
+            "response": "Drag to inspect magnified media without changing source, selection, saved framing or export.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "Timeline content exists.",
+        "id": "edge-75",
+        "outcome": "The upper row and four lanes retain one synchronized time scale and unchanged selection.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Timeline zoom",
+            "actionRef": "zoom-timeline",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "zoom-timeline-result"
+            ],
+            "id": "edit-video-zoom-timeline-step",
+            "questionRefs": [],
+            "response": "Change the common composed-time scale for the upper row and all four lanes. Preserve selection and context; progressively increase detail through one-frame precision.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted",
+            "usesElementRefs": [
+              "ux:component:timeline"
+            ]
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "Timeline exceeds the visible interval.",
+        "id": "edge-76",
+        "outcome": "Pan synchronized rows without changing selection; deliberate pan away suspends playhead following.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Pan timeline",
+            "actionRef": "pan-timeline",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "pan-timeline-result"
+            ],
+            "id": "edit-video-pan-timeline-step",
+            "questionRefs": [],
+            "response": "Pan synchronized rows without changing selection; deliberate pan away suspends playhead following.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted",
+            "usesElementRefs": [
+              "ux:component:timeline"
+            ]
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "The user has panned away or disabled following.",
+        "id": "edge-77",
+        "outcome": "Bring the resolved playhead into view and resume following.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Return to playhead",
+            "actionRef": "follow-playhead",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "follow-playhead-result"
+            ],
+            "id": "edit-video-follow-playhead-step",
+            "questionRefs": [],
+            "response": "Bring the resolved playhead into view and resume following.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted",
+            "usesElementRefs": [
+              "ux:component:timeline"
+            ]
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "An editor menu/dialog is open and no commit is active.",
+        "id": "edge-78",
+        "outcome": "The captured editor or staged Add context is restored without committing the canceled operation.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Cancel or close",
+            "actionRef": "dismiss-editor",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "dismiss-editor-result"
+            ],
+            "id": "edit-video-dismiss-editor-step",
+            "questionRefs": [],
+            "response": "Cancel or Escape closes the active editor menu/dialog without applying staged changes. Return to its captured stopped or failed-operation context. A source rectangle opened from Add returns to staged Add. Never restart playback automatically.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-trim-occurrence-step",
+        "condition": "The operation actually succeeds.",
+        "id": "edit-video-trim-occurrence-step-completed",
+        "outcome": "The bounded occurrence trim and any required same-track forward collision chain are committed as one Undo operation. Source media and named definitions remain unchanged.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": []
+      },
+      {
+        "afterStepRef": "edit-video-save-video-step",
+        "condition": "The operation actually succeeds.",
+        "id": "edit-video-save-video-step-completed",
+        "outcome": "Explicit successful Save retains the video's timeline and owned unnamed objects. Failure retains draft, selection and retryable context; saving prevents competing edits or abandonment.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": []
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "The owner performed a valid reorder and that draft operation actually succeeds.",
+        "id": "edit-video-reorder-objects-step-completed",
+        "outcome": "The group moves to its reviewed track/time or nearest-edge insertion destination without overlap. Preserve relative order and occurrence settings, apply destination track settings, retain vacated source gaps and record one Undo operation.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": []
+      },
+      {
+        "afterStepRef": "edit-video-insert-content-step",
+        "condition": "Addition failed.",
+        "id": "insert-content-recovery",
+        "outcome": "The unchanged draft and complete staged Add context remain available after the actual failure.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Report the actual operation result and retain the affected working context.",
+            "actor": "Alexa",
+            "id": "insert-content-recovery-response",
+            "response": "No partial insertion occurred. Retain the original draft, selection, target track/time, chosen content and staged source rectangle. Identify media or track-setting conflicts for correction, retry or cancellation."
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-trim-occurrence-step",
+        "condition": "Trim exceeds available bounds or cannot be applied.",
+        "id": "trim-occurrence-recovery",
+        "outcome": "Do not apply invalid trim; retain occurrence/selection for correction. Valid completed trims participate in Undo.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Report the actual operation result and retain the affected working context.",
+            "actor": "Alexa",
+            "id": "trim-occurrence-recovery-response",
+            "response": "Do not apply invalid trim; retain occurrence/selection for correction. Valid completed trims participate in Undo."
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "After choosing reorder objects, Reorder canceled or invalid target.",
+        "id": "reorder-objects-recovery",
+        "outcome": "Retain draft and selection and show that no move occurred.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Report the actual operation result and retain the affected working context.",
+            "actor": "Alexa",
+            "id": "reorder-objects-recovery-response",
+            "response": "Retain draft and selection and show that no move occurred."
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-save-video-step",
+        "condition": "Save Video failed.",
+        "id": "save-video-recovery",
+        "outcome": "Retain draft, selection and entered name for correction/retry.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Report the actual operation result and retain the affected working context.",
+            "actor": "Alexa",
+            "id": "save-video-recovery-response",
+            "response": "Retain draft, selection and entered name for correction/retry."
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-add-timeline-step",
+        "condition": "The Add dialog is open and the owner cancels before committing, including after a failed addition.",
+        "id": "add-canceled",
+        "outcome": "The original draft and selection remain unchanged; the pending addition is abandoned.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Cancel Add",
+            "actionRef": "dismiss-editor",
+            "actor": "Owner",
+            "id": "add-canceled-dismiss",
+            "response": "Close staged Add and return to its captured stopped or retained failure context. Do not insert any content or restart playback."
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-choose-content-step",
+        "condition": "A video file or named clip is staged and the owner wants to choose its source rectangle before adding it.",
+        "id": "add-crop",
+        "outcome": "The staged addition includes its reviewed source rectangle.",
+        "questionRefs": [],
+        "resumeStepRef": "edit-video-insert-content-step",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Open Source rectangle",
+            "actionRef": "edit-source-rectangle",
+            "actor": "Owner",
+            "frameRef": "source-rectangle",
+            "id": "add-crop-open",
+            "response": "Capture the staged content and current crop; open source coordinates without changing the video draft.",
+            "stateRefs": [
+              "video-framing"
+            ],
+            "usesElementRefs": [
+              "ux:component:rectangle-editor"
+            ]
+          },
+          {
+            "action": "Adjust the source rectangle",
+            "actionRef": "adjust-rectangle",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "adjust-rectangle-result"
+            ],
+            "id": "add-crop-adjust",
+            "response": "Preview valid source bounds and proportional fitting in the destination track. Invalid fields keep Apply unavailable."
+          },
+          {
+            "action": "Apply the staged crop",
+            "actionRef": "apply-rectangle",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "apply-rectangle-result"
+            ],
+            "frameRef": "timeline-add",
+            "id": "add-crop-apply",
+            "response": "Return to Add with the reviewed source rectangle. No occurrence exists and the original draft remains unchanged until Add succeeds.",
+            "stateRefs": [
+              "video-editing"
+            ]
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-choose-content-step",
+        "condition": "The Source rectangle editor for the staged addition is open and the owner chooses Full frame.",
+        "id": "add-crop-full-frame",
+        "outcome": "The pending addition uses its full source frame.",
+        "questionRefs": [],
+        "resumeStepRef": "edit-video-insert-content-step",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Restore the full source frame",
+            "actionRef": "reset-rectangle",
+            "actor": "Owner",
+            "id": "add-crop-reset",
+            "response": "Preview the complete source frame without changing the draft."
+          },
+          {
+            "action": "Apply the full-frame candidate",
+            "actionRef": "apply-rectangle",
+            "actor": "Owner",
+            "frameRef": "timeline-add",
+            "id": "add-crop-reset-apply",
+            "response": "Return to Add with the full-frame crop staged; explicit Add is still required.",
+            "stateRefs": [
+              "video-editing"
+            ]
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-choose-content-step",
+        "condition": "The source-rectangle editor was opened from Add and the owner cancels that rectangle edit.",
+        "id": "add-crop-canceled",
+        "outcome": "Only the pending rectangle edit is canceled; staged Add remains open and the video draft remains unchanged.",
+        "questionRefs": [],
+        "resumeStepRef": "edit-video-insert-content-step",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Cancel the source-rectangle edit",
+            "actionRef": "dismiss-editor",
+            "actor": "Owner",
+            "frameRef": "timeline-add",
+            "id": "add-crop-cancel",
+            "response": "Return to Add with the crop captured when the rectangle editor opened, retaining content and destination.",
+            "stateRefs": [
+              "video-editing"
+            ]
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "Exactly one group is selected with full-frame source rectangle, 100% group volume and group mute off; included parts and their composition settings fit the destination track without overlap or a change in picture and sound.",
+        "id": "ungroup-selected-clip",
+        "outcome": "For an eligible group with full-frame source rectangle, 100% group volume and group mute off, replace it with the included portions of its parts on the same track. Retain each part's own source rectangle, volume and mute, its included source interval, relative timing and gaps. Omit wholly excluded parts. Keep the current picture and sound over the group's used extent, with the existing destination-track framing and audio still applied; do not reset or lose part settings. Keep the library clip unchanged and the resulting parts selected.",
+        "questionRefs": [
+          "ungroup-overlapping-parts",
+          "ungroup-adjustment-transfer"
+        ],
+        "resumeStepRef": "edit-video-select-objects-step",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Ungroup",
+            "actionRef": "ungroup-clip",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "ungroup-clip-result"
+            ],
+            "frameRef": "selection-menu",
+            "id": "edit-video-ungroup-step",
+            "questionRefs": [
+              "ungroup-overlapping-parts",
+              "ungroup-adjustment-transfer"
+            ],
+            "response": "For an eligible group with full-frame source rectangle, 100% group volume and group mute off, replace it with the included portions of its parts on the same track. Retain each part's own source rectangle, volume and mute, its included source interval, relative timing and gaps. Omit wholly excluded parts. Keep the current picture and sound over the group's used extent, with the existing destination-track framing and audio still applied; do not reset or lose part settings. Keep the library clip unchanged and the resulting parts selected.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "Included overlapping or multitrack parts, or other embedded composition framing, stacking or audio settings, cannot be represented on the destination track with the current picture and sound preserved.",
+        "id": "ungroup-unavailable",
+        "outcome": "Show Ungroup as unavailable with the placement or composition-setting reason. Keep the entire copied group, hidden parts, framing/audio values, draft and selection unchanged; no property transfer, reset, track mapping or timing adjustment is inferred.",
+        "questionRefs": [
+          "ungroup-overlapping-parts",
+          "ungroup-adjustment-transfer"
+        ],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": []
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "An otherwise eligible Ungroup attempt cannot complete.",
+        "id": "ungroup-failed",
+        "outcome": "Report failure and retain the original complete group, all framing/audio values, draft and selection with no partial insertion or property reset. The owner may correct the context or retry only when Ungroup eligibility holds.",
+        "questionRefs": [
+          "ungroup-overlapping-parts",
+          "ungroup-adjustment-transfer"
+        ],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": []
+      },
+      {
+        "afterStepRef": "edit-video-select-objects-step",
+        "condition": "The selected group has a source rectangle other than full frame, volume other than 100%, or mute enabled, including when its parts are sequential and otherwise fit the track.",
+        "id": "ungroup-adjusted-group",
+        "outcome": "Keep Ungroup visible but unavailable. Identify the applicable group source-rectangle, volume or mute adjustment and explain that transferring it to parts is not yet defined. Preserve the complete copied group, all parts and hidden content, every group/part setting, draft and selection. Do not automatically reset or discard the adjustment, insert parts, or select a transfer algorithm.",
+        "questionRefs": [
+          "ungroup-adjustment-transfer"
+        ],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": []
+      }
+    ],
+    "decisions": [
+      {
+        "actionRefs": [
+          "choose-video",
+          "name-video",
+          "add-timeline",
+          "insert-content",
+          "select-range",
+          "set-range-boundary",
+          "select-objects",
+          "scrub",
+          "step-frame",
+          "trim-occurrence",
+          "undo",
+          "redo",
+          "play-preview",
+          "stop-preview",
+          "zoom-player-in",
+          "zoom-player-out",
+          "fit-player",
+          "pan-player",
+          "zoom-timeline",
+          "pan-timeline",
+          "save-video"
+        ],
+        "candidate": "Selected task commands with one canonical action and contextual optional branches.",
+        "disposition": "retain",
+        "id": "edit-video-retained",
+        "rationale": "Retain explicit owner tasks and precise desktop editing. Optional operations are branches; equivalent inputs do not add duplicate visible controls.",
+        "result": "Main path follows selected shortest meaningful chain; conditional commands stay in their relevant context."
+      },
+      {
+        "actionRefs": [
+          "clear-selection",
+          "selection-actions",
+          "delete-selection",
+          "split-selection",
+          "reorder-objects",
+          "follow-playhead",
+          "set-insertion",
+          "dismiss-editor"
+        ],
+        "candidate": "Context-dependent decisions, selection operations and cancellation.",
+        "disposition": "contextualize",
+        "id": "edit-video-contextual",
+        "rationale": "Only present these commands when their selected context applies; preserve owner-defined safety and expert editing.",
+        "result": "Use the shared decision or contextual operation rather than another persistent command family."
+      },
+      {
+        "actionRefs": [
+          "ungroup-clip",
+          "trim-occurrence",
+          "selection-actions"
+        ],
+        "candidate": "A separate assembly type, nested editor, permanent Ungroup control or group-specific trim toolbar.",
+        "disposition": "contextualize",
+        "id": "grouped-clip-context",
+        "rationale": "A composed copy remains a clip and existing object controls act on the whole group. Only explicit access to its parts adds a task.",
+        "result": "Use existing Start/End controls and one Ungroup item in the existing Selection actions menu; expose the overlapping-part placement gap without inventing another editor mode. Keep the same command unavailable with a specific reason for adjusted-group transfer or nonrepresentable composition settings; supported Ungroup retains part properties and the current picture/audio without a new control family."
+      }
+    ],
+    "elementRef": "ux:surface:video-workspace",
+    "featureRef": "editing",
+    "goal": "Compose and save a precise four-track video with nonoverlapping occurrences, intentional gaps, framing and audio.",
+    "id": "edit-video",
+    "name": "Compose a video",
+    "outcome": "Save Video retains the timeline and owned unnamed objects; ordinary editing preserves source media and named clip definitions.",
+    "preconditions": [
+      "A current project exists."
+    ],
+    "questionRefs": [
+      "media-repair",
+      "video-expansion-settings-conflict",
+      "ungroup-overlapping-parts",
+      "ungroup-adjustment-transfer"
+    ],
+    "status": "accepted",
+    "steps": [
+      {
+        "action": "New or open video",
+        "actionRef": "choose-video",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "choose-video-result"
+        ],
+        "id": "choose-video-step",
+        "questionRefs": [],
+        "response": "Choose New Video or a saved video; apply draft guard then activate its draft, including a never-saved empty video, and reset player inspection to Fit.",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "usesElementRefs": [
+          "ux:component:project-guard"
+        ]
+      },
+      {
+        "action": "Select the destination track",
+        "actionRef": "select-track",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "select-track-result"
+        ],
+        "frameRef": "video-view",
+        "id": "edit-video-select-track-step",
+        "questionRefs": [],
+        "response": "Identify the active track and its insertion destination. A new video starts with Track 1 active; all four lanes remain visible.",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted"
+      },
+      {
+        "action": "Add to Timeline",
+        "actionRef": "add-timeline",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "add-timeline-result"
+        ],
+        "id": "edit-video-add-timeline-step",
+        "questionRefs": [],
+        "response": "Open the project-content chooser showing eligible files, saved videos and clips, and the insertion point or Append.",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted"
+      },
+      {
+        "action": "Choose content to stage",
+        "actionRef": "choose-timeline-content",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "choose-timeline-content-result"
+        ],
+        "frameRef": "timeline-add",
+        "id": "edit-video-choose-content-step",
+        "questionRefs": [
+          "video-expansion-settings-conflict"
+        ],
+        "response": "Show the selected content, target track/time, source-rectangle applicability and any saved-video compatibility issue. Selection does not insert; the owner can review or crop before Add.",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted"
+      },
+      {
+        "action": "Add the reviewed content",
+        "actionRef": "insert-content",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "insert-content-result",
+          "insert-content-progress",
+          "insert-content-failure"
+        ],
+        "id": "edit-video-insert-content-step",
+        "questionRefs": [],
+        "response": "Review content, target track/time and optional source rectangle, then Add. Enter commit freeze; complete one atomic addition or retain the unchanged draft and staged choices. Saved-video expansion with conflicting track settings does not insert. Named clips are copied into independent occurrences; a composed clip becomes one grouped object. No future library update changes this copy.",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "stateRefs": [
+          "video-saving"
+        ],
+        "status": "accepted"
+      },
+      {
+        "action": "Select timeline objects",
+        "actionRef": "select-objects",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "select-objects-result"
+        ],
+        "id": "edit-video-select-objects-step",
+        "questionRefs": [],
+        "response": "Select whole occurrences on one track. Show the active track, occurrence identities and applicable properties. Composition-wide range selection is a separate alternate. A grouped clip is selected and acted on as one object until Ungroup.",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "usesElementRefs": [
+          "ux:component:timeline"
+        ]
+      },
+      {
+        "action": "Trim occurrence Start or End",
+        "actionRef": "trim-occurrence",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "trim-occurrence-result"
+        ],
+        "id": "edit-video-trim-occurrence-step",
+        "questionRefs": [],
+        "response": "Trim within source and neighbor bounds. End extension pushes only the forward collision chain on this track; shortening can leave a gap. Preview and commit one undoable edit; invalid input or cancellation preserves the draft. Start moves its source boundary and timeline start together with timeline End fixed, stopping at time zero, source bounds or the previous clip; minimum duration is one frame. A group keeps parts hidden by inward trim and can restore or extend edge-source content on outward trim.",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "usesElementRefs": [
+          "ux:component:timeline"
+        ]
+      },
+      {
+        "action": "Save Video",
+        "actionRef": "save-video",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "save-video-result",
+          "save-video-progress",
+          "save-video-failure"
+        ],
+        "id": "edit-video-save-video-step",
+        "questionRefs": [],
+        "response": "Save all four tracks, their output rectangles and audio, and video-owned occurrences with source rectangles and audio. Commit freeze applies; failure retains draft, selection, insertion context and entered name. Saved occurrences keep their copied content, underlying source references, current boundaries and hidden grouped parts independently of later library updates.",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "stateRefs": [
+          "video-saving"
+        ],
+        "status": "accepted"
+      }
+    ],
+    "taskPriority": "primary",
+    "trigger": "The owner opens or starts a video."
+  },
+  {
+    "alternates": [
+      {
+        "afterStepRef": "open-save-clip-step",
+        "condition": "An editor menu/dialog is open and no commit is active.",
+        "id": "edge-85",
+        "outcome": "Cancel or Escape closes without committing, returns to captured stopped editing or failed-operation context, and never restarts playback. Dynamic return target is a schema coverage gap.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Cancel or close",
+            "actionRef": "dismiss-editor",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "dismiss-editor-result"
+            ],
+            "id": "save-clip-dismiss-editor-step",
+            "questionRefs": [],
+            "response": "Cancel or Escape closes without committing, returns to captured stopped editing or failed-operation context, and never restarts playback. Dynamic return target is a schema coverage gap.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "save-clip-create-clip-step",
+        "condition": "The operation actually succeeds.",
+        "id": "save-clip-create-clip-step-completed",
+        "outcome": "Create one stable named reusable clip from the range regardless of internal construction, leaving active timeline and selection intact. Identify created name; failure retains name, draft, selection and dialog.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": []
+      },
+      {
+        "afterStepRef": "save-clip-create-clip-step",
+        "condition": "Clip creation failed.",
+        "id": "create-clip-recovery",
+        "outcome": "Retain dialog/name/range/original draft for correction, retry or cancel.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Report the actual operation result and retain the affected working context.",
+            "actor": "Alexa",
+            "id": "create-clip-recovery-response",
+            "response": "Retain dialog/name/range/original draft for correction, retry or cancel."
+          }
+        ]
+      }
+    ],
+    "decisions": [
+      {
+        "actionRefs": [
+          "open-save-clip",
+          "name-clip",
+          "create-clip",
+          "dismiss-editor"
+        ],
+        "candidate": "Selected task commands with one canonical action and contextual optional branches.",
+        "disposition": "retain",
+        "id": "save-clip-retained",
+        "rationale": "Retain explicit owner tasks and precise desktop editing. Optional operations are branches; equivalent inputs do not add duplicate visible controls.",
+        "result": "Main path follows selected shortest meaningful chain; conditional commands stay in their relevant context."
+      }
+    ],
+    "elementRef": "ux:surface:video-workspace",
+    "featureRef": "editing",
+    "goal": "Save a named reusable slice of the composed four-track result.",
+    "id": "save-clip",
+    "name": "Save a reusable clip",
+    "outcome": "A named library clip is created; editor timeline and selection remain. Later additions copy the saved definition; library updates do not change videos that already used it.",
+    "preconditions": [
+      "A valid range is selected.",
+      "A usable composed-time selection exists in the active video editor; saving a clip preserves the original video and selection."
+    ],
+    "questionRefs": [],
+    "status": "accepted",
+    "steps": [
+      {
+        "action": "Save Clip to Library",
+        "actionRef": "open-save-clip",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "open-save-clip-result"
+        ],
+        "id": "open-save-clip-step",
+        "questionRefs": [],
+        "response": "Stop preview and capture the inclusive range across all tracks, retaining output/source framing, gaps and audio. Show All tracks scope and the captured interval.",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted"
+      },
+      {
+        "action": "Clip name",
+        "actionRef": "name-clip",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "name-clip-result"
+        ],
+        "id": "save-clip-name-clip-step",
+        "questionRefs": [],
+        "response": "Retain entered name and captured selection for creation or correction; no library item is created yet.",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted"
+      },
+      {
+        "action": "Save Clip",
+        "actionRef": "create-clip",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "create-clip-result",
+          "create-clip-progress",
+          "create-clip-failure"
+        ],
+        "id": "save-clip-create-clip-step",
+        "questionRefs": [],
+        "response": "Commit one reusable clip of the captured composition; retain the active timeline and selection. Failure preserves dialog, name, range and draft for correction, retry or cancel.",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "stateRefs": [
+          "video-saving"
+        ],
+        "status": "accepted"
+      }
+    ],
+    "taskPriority": "primary",
+    "trigger": "The owner has selected a composed-time range."
+  },
+  {
+    "alternates": [
+      {
+        "afterStepRef": "open-update-clip-step",
+        "condition": "An editor menu/dialog is open and no commit is active.",
+        "id": "edge-90",
+        "outcome": "Cancel or Escape closes without committing, returns to captured stopped editing or failed-operation context, and never restarts playback. Dynamic return target is a schema coverage gap.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Cancel or close",
+            "actionRef": "dismiss-editor",
+            "actor": "Owner",
+            "feedbackRefs": [
+              "dismiss-editor-result"
+            ],
+            "id": "update-clip-dismiss-editor-step",
+            "questionRefs": [],
+            "response": "Cancel or Escape closes without committing, returns to captured stopped editing or failed-operation context, and never restarts playback. Dynamic return target is a schema coverage gap.",
+            "sourceRefs": [
+              "product-description"
+            ],
+            "status": "accepted"
+          }
+        ]
+      },
+      {
+        "afterStepRef": "update-clip-confirm-update-step",
+        "condition": "The operation actually succeeds.",
+        "id": "update-clip-confirm-update-step-completed",
+        "outcome": "The same library clip identity receives the reviewed Start and End. Existing video copies, including the selected occurrence, remain unchanged.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": []
+      },
+      {
+        "afterStepRef": "update-clip-confirm-update-step",
+        "condition": "Named-clip update failed.",
+        "id": "confirm-update-recovery",
+        "outcome": "Keep the saved library definition and every video copy unchanged; retain the dialog, target, proposed boundaries, draft and selection for retry or Cancel.",
+        "questionRefs": [],
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted",
+        "steps": [
+          {
+            "action": "Report the actual operation result and retain the affected working context.",
+            "actor": "Alexa",
+            "id": "confirm-update-recovery-response",
+            "response": "Keep the saved library definition and every video copy unchanged; retain the dialog, target, proposed boundaries, draft and selection for retry or Cancel."
+          }
+        ]
+      }
+    ],
+    "decisions": [
+      {
+        "actionRefs": [
+          "open-update-clip",
+          "confirm-update",
+          "dismiss-editor"
+        ],
+        "candidate": "Context-dependent decisions, selection operations and cancellation.",
+        "disposition": "contextualize",
+        "id": "update-clip-contextual",
+        "rationale": "Only present these commands when their selected context applies; preserve owner-defined safety and expert editing.",
+        "result": "Use the shared decision or contextual operation rather than another persistent command family."
+      },
+      {
+        "actionRefs": [],
+        "candidate": "Following-occurrence lists, preserved-override lists and downstream collision refusal in the update confirmation.",
+        "disposition": "remove",
+        "id": "update-clip-copy-scope",
+        "rationale": "The current trailing owner correction and product model replace live propagation with independent video copies. These comparisons no longer affect the decision.",
+        "result": "Keep one compact current/proposed boundary comparison and an explicit future-additions scope statement."
+      }
+    ],
+    "elementRef": "ux:surface:video-workspace",
+    "featureRef": "editing",
+    "goal": "Explicitly update the named library clip's trim for future additions.",
+    "id": "update-clip",
+    "name": "Update a named clip",
+    "outcome": "The same library clip identity receives the reviewed Start and End. Existing video copies, including the selected occurrence, remain unchanged.",
+    "preconditions": [
+      "Exactly one occurrence associated with an existing named library clip is selected and its temporal Start or End differs from that library definition.",
+      "No save, update or other draft commit is active."
+    ],
+    "questionRefs": [],
+    "status": "accepted",
+    "steps": [
+      {
+        "action": "Update Named Clip",
+        "actionRef": "open-update-clip",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "open-update-clip-result"
+        ],
+        "id": "open-update-clip-step",
+        "questionRefs": [],
+        "response": "Stop preview at the resolved frame, retain selection, and compare the library clip's current Start and inclusive End with the selected occurrence's proposed boundaries. Explain that only the library definition and future additions change; existing video copies and their local trims remain unchanged. Framing, volume, mute and track settings are excluded.",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "status": "accepted"
+      },
+      {
+        "action": "Update Named Clip",
+        "actionRef": "confirm-update",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "confirm-update-result",
+          "confirm-update-progress",
+          "confirm-update-failure"
+        ],
+        "id": "update-clip-confirm-update-step",
+        "questionRefs": [],
+        "response": "Update only the named library clip's reviewed Start and End while retaining its identity. Existing video occurrences, active draft and selection remain unchanged. Report the updated name in the editor. On failure keep the dialog, target and proposed values for retry or Cancel.",
+        "sourceRefs": [
+          "product-description"
+        ],
+        "stateRefs": [
+          "video-saving"
+        ],
+        "status": "accepted"
+      }
+    ],
+    "taskPriority": "primary",
+    "trigger": "One changed occurrence associated with a saved clip is selected."
+  },
+  {
+    "alternates": [
+      {
+        "afterStepRef": "framing-select-track",
+        "condition": "The owner wants to crop one occurrence instead of changing its track output area.",
+        "id": "frame-source",
+        "outcome": "The same adjustment and application steps now affect only the captured occurrence.",
+        "resumeStepRef": "framing-adjust",
+        "steps": [
+          {
+            "action": "Select exactly one occurrence.",
+            "actor": "Owner",
+            "frameRef": "clip-properties",
+            "id": "frame-source-select",
+            "response": "Show occurrence properties with source identity, Source rectangle and clip audio.",
+            "usesElementRefs": [
+              "ux:component:timeline"
+            ]
+          },
+          {
+            "action": "Open Source rectangle.",
+            "actionRef": "edit-source-rectangle",
+            "actor": "Owner",
+            "frameRef": "source-rectangle",
+            "id": "frame-source-open",
+            "response": "Capture the occurrence crop and show the full source coordinate frame.",
+            "stateRefs": [
+              "video-framing"
+            ],
+            "usesElementRefs": [
+              "ux:component:rectangle-editor"
+            ]
+          }
+        ]
+      },
+      {
+        "afterStepRef": "framing-adjust",
+        "condition": "The owner wants the complete source or output frame.",
+        "id": "framing-full-frame",
+        "outcome": "The full-frame candidate is ready for review.",
+        "resumeStepRef": "framing-apply",
+        "steps": [
+          {
+            "action": "Choose Full frame.",
+            "actionRef": "reset-rectangle",
+            "actor": "Owner",
+            "id": "framing-reset",
+            "response": "Preview the default rectangle without applying it."
+          }
+        ]
+      },
+      {
+        "afterStepRef": "framing-adjust",
+        "condition": "An entered rectangle is outside its full frame, has nonpositive dimensions or is incomplete.",
+        "id": "framing-invalid",
+        "outcome": "Keep the entered values and original target, identify invalid fields and keep Apply unavailable until corrected.",
+        "resumeStepRef": "framing-adjust",
+        "steps": []
+      },
+      {
+        "afterStepRef": "framing-open",
+        "condition": "The owner cancels or presses Escape before applying.",
+        "id": "framing-canceled",
+        "outcome": "The original rectangle, draft, selection and inspection settings remain unchanged.",
+        "steps": [
+          {
+            "action": "Cancel the rectangle edit.",
+            "actionRef": "dismiss-editor",
+            "actor": "Owner",
+            "id": "framing-dismiss",
+            "response": "Discard staged changes and restore the captured stopped or failed-operation context."
+          }
+        ]
+      },
+      {
+        "afterStepRef": "framing-apply",
+        "condition": "The rectangle cannot be applied to the captured target.",
+        "id": "framing-failed",
+        "outcome": "Keep the original target unchanged and retain the dialog and candidate values for correction or cancellation.",
+        "resumeStepRef": "framing-adjust",
+        "steps": []
+      }
+    ],
+    "decisions": [
+      {
+        "actionRefs": [
+          "edit-track-rectangle",
+          "edit-source-rectangle"
+        ],
+        "candidate": "Distinct saved rectangle controls and temporary player inspection controls.",
+        "disposition": "retain",
+        "id": "separate-framing-from-inspection",
+        "rationale": "They change different user-visible outcomes and must not share a hidden mode.",
+        "result": "Output and Source rectangle identify their owners; player zoom/pan never saves composition changes."
+      },
+      {
+        "actionRefs": [
+          "adjust-rectangle"
+        ],
+        "candidate": "Visual handles and numeric rectangle fields.",
+        "disposition": "merge",
+        "id": "one-rectangle-operation",
+        "rationale": "Both inputs define the same candidate rectangle.",
+        "result": "One action and validation contract supports visual adjustment and precise desktop entry."
+      },
+      {
+        "actionRefs": [
+          "edit-track-rectangle",
+          "edit-source-rectangle"
+        ],
+        "candidate": "Track and occurrence rectangle settings.",
+        "disposition": "contextualize",
+        "id": "contextual-framing",
+        "rationale": "Their meaning depends on an identified target.",
+        "result": "Keep track output in active-track properties and source crop in one-occurrence properties or staged Add."
+      },
+      {
+        "actionRefs": [
+          "reset-rectangle",
+          "apply-rectangle"
+        ],
+        "candidate": "Full-frame defaults, proportional fitting and fixed track layer order.",
+        "disposition": "retain",
+        "id": "fit-and-layer-defaults",
+        "rationale": "These editable working choices avoid unintended cropping or distortion and make overlap predictable.",
+        "result": "Track 4 is frontmost, Track 1 base; unused fitted areas reveal lower tracks, with black uncovered output. No blend, rotation or keyframe controls are added."
+      }
+    ],
+    "elementRef": "ux:surface:video-workspace",
+    "featureRef": "editing",
+    "goal": "Choose saved track output areas and occurrence source areas while preserving inspection independence.",
+    "id": "frame-composition",
+    "name": "Frame the composition",
+    "outcome": "A valid rectangle updates the intended draft target and composed preview; source media and inspection settings remain unchanged.",
+    "preconditions": [
+      "An active video exists and no commit is active."
+    ],
+    "questionRefs": [],
+    "status": "accepted",
+    "steps": [
+      {
+        "action": "Select the track.",
+        "actionRef": "select-track",
+        "actor": "Owner",
+        "frameRef": "track-properties",
+        "id": "framing-select-track",
+        "response": "Show its identity, layer order and output rectangle."
+      },
+      {
+        "action": "Open Output rectangle.",
+        "actionRef": "edit-track-rectangle",
+        "actor": "Owner",
+        "frameRef": "track-rectangle",
+        "id": "framing-open",
+        "response": "Stop preview and capture the original rectangle and editor context.",
+        "stateRefs": [
+          "video-framing"
+        ],
+        "usesElementRefs": [
+          "ux:component:rectangle-editor"
+        ]
+      },
+      {
+        "action": "Adjust the rectangle.",
+        "actionRef": "adjust-rectangle",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "adjust-rectangle-result"
+        ],
+        "id": "framing-adjust",
+        "response": "Preview valid bounds and proportionally fitted content; identify invalid inputs without applying them."
+      },
+      {
+        "action": "Apply the rectangle.",
+        "actionRef": "apply-rectangle",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "apply-rectangle-result"
+        ],
+        "id": "framing-apply",
+        "response": "Update the captured track as one undoable draft operation and return to stopped editing.",
+        "stateRefs": [
+          "video-editing"
+        ]
+      }
+    ],
+    "taskPriority": "supporting",
+    "trigger": "The owner wants to change where a track appears or which part of a source it uses."
+  },
+  {
+    "alternates": [
+      {
+        "afterStepRef": "audio-select-track",
+        "condition": "The owner wants to silence or restore the complete track.",
+        "id": "audio-track-mute",
+        "outcome": "The track's mute state is visible in its header.",
+        "resumeStepRef": "audio-review",
+        "steps": [
+          {
+            "action": "Toggle Mute track.",
+            "actionRef": "mute-track",
+            "actor": "Owner",
+            "id": "audio-toggle-track",
+            "response": "Change audio mute only; retain both track and occurrence volume settings."
+          }
+        ]
+      },
+      {
+        "afterStepRef": "audio-select-track",
+        "condition": "Only one occurrence needs a volume adjustment.",
+        "id": "audio-occurrence",
+        "outcome": "The occurrence's valid volume is visible and participates in the draft mix.",
+        "resumeStepRef": "audio-review",
+        "steps": [
+          {
+            "action": "Select exactly one occurrence.",
+            "actor": "Owner",
+            "frameRef": "clip-properties",
+            "id": "audio-select-occurrence",
+            "response": "Show its identity, clip volume/mute and any inherited track mute."
+          },
+          {
+            "action": "Adjust Clip volume.",
+            "actionRef": "set-clip-volume",
+            "actor": "Owner",
+            "id": "audio-occurrence-volume",
+            "response": "Change only that occurrence's volume; the containing track and shared named clip remain unchanged."
+          }
+        ]
+      },
+      {
+        "afterStepRef": "audio-select-track",
+        "condition": "Exactly one selected occurrence should be silenced or restored.",
+        "id": "audio-occurrence-mute",
+        "outcome": "The occurrence's mute is visible; track mute can still silence an unmuted occurrence.",
+        "resumeStepRef": "audio-review",
+        "steps": [
+          {
+            "action": "Toggle Mute clip.",
+            "actionRef": "mute-clip",
+            "actor": "Owner",
+            "id": "audio-toggle-occurrence",
+            "response": "Change this occurrence's audio mute while preserving its volume and the containing track's settings."
+          }
+        ]
+      },
+      {
+        "afterStepRef": "audio-track-volume",
+        "condition": "A track or occurrence volume entry is incomplete or outside the selected 0–100% range.",
+        "id": "audio-invalid",
+        "outcome": "Identify the invalid field and preserve the previous valid audio value; correction does not reset mute or other controls.",
+        "steps": []
+      }
+    ],
+    "decisions": [
+      {
+        "actionRefs": [
+          "set-track-volume",
+          "mute-track",
+          "set-clip-volume",
+          "mute-clip"
+        ],
+        "candidate": "Separate track and occurrence volume/mute controls.",
+        "disposition": "retain",
+        "id": "audio-owner-controls",
+        "rationale": "They have different owners and observable scope.",
+        "result": "Names and context identify whether one occurrence or the entire track changes."
+      },
+      {
+        "actionRefs": [
+          "set-track-volume",
+          "set-clip-volume",
+          "mute-clip"
+        ],
+        "candidate": "Detailed track and clip audio properties.",
+        "disposition": "contextualize",
+        "id": "audio-contextual-properties",
+        "rationale": "A second persistent mixer workspace is unnecessary for four tracks and these controls.",
+        "result": "Track mute remains in each lane header; detailed values follow active-track and single-occurrence properties."
+      },
+      {
+        "actionRefs": [
+          "mute-track",
+          "mute-clip"
+        ],
+        "candidate": "Mute independent from stored volume.",
+        "disposition": "retain",
+        "id": "audio-independent-mute",
+        "rationale": "The owner can silence and restore a contribution without reconstructing its previous level.",
+        "result": "Mute preserves volumes; inherited track mute is shown when it explains a silent clip."
+      }
+    ],
+    "elementRef": "ux:surface:video-workspace",
+    "featureRef": "editing",
+    "goal": "Balance or silence track and occurrence audio with clear scope.",
+    "id": "mix-audio",
+    "name": "Adjust track and clip audio",
+    "outcome": "The intended track or occurrence audio changes in the draft and preview; independent controls and source media remain intact.",
+    "preconditions": [
+      "An active video exists and no commit or modal decision is active."
+    ],
+    "questionRefs": [],
+    "status": "accepted",
+    "steps": [
+      {
+        "action": "Select the track.",
+        "actionRef": "select-track",
+        "actor": "Owner",
+        "frameRef": "track-properties",
+        "id": "audio-select-track",
+        "response": "Show the track identity, volume and mute state.",
+        "usesElementRefs": [
+          "ux:component:audio-controls"
+        ]
+      },
+      {
+        "action": "Adjust Track volume.",
+        "actionRef": "set-track-volume",
+        "actor": "Owner",
+        "feedbackRefs": [
+          "set-track-volume-result"
+        ],
+        "id": "audio-track-volume",
+        "response": "Apply the valid percentage to this track's contributions, preserving each occurrence's volume and mute."
+      },
+      {
+        "action": "Audition the composition using the existing Play and Stop controls.",
+        "actor": "Owner",
+        "id": "audio-review",
+        "response": "Hear the current draft mix across all contributing tracks. Selection does not autoplay; picture occlusion does not silence audio.",
+        "usesElementRefs": [
+          "ux:component:audio-controls"
+        ]
+      }
+    ],
+    "taskPriority": "supporting",
+    "trigger": "The owner wants to change the sound of the active composition."
+  }
+]

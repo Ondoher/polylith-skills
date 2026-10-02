@@ -1,0 +1,57 @@
+{
+  "stageWindows": [],
+  "toolCalls": [],
+  "markers": [
+    {
+      "type": "marker",
+      "phase": "inputs-tools-ready",
+      "details": {},
+      "run": "setup",
+      "stage": "coordinator",
+      "timestamp": "2026-10-02T18:35:13.239Z"
+    },
+    {
+      "type": "marker",
+      "phase": "dispatch",
+      "details": {},
+      "run": "feasibility-B",
+      "stage": "layout",
+      "timestamp": "2026-10-02T18:38:54.116Z"
+    },
+    {
+      "type": "marker",
+      "phase": "start",
+      "details": {},
+      "run": "feasibility-B",
+      "stage": "layout-authoring",
+      "timestamp": "2026-10-02T18:39:23.029Z"
+    },
+    {
+      "type": "marker",
+      "phase": "inputs-ready",
+      "details": {},
+      "run": "feasibility-B",
+      "stage": "layout-authoring",
+      "timestamp": "2026-10-02T18:39:43.950Z"
+    }
+  ],
+  "unclosedStarts": [
+    {
+      "type": "marker",
+      "phase": "dispatch",
+      "details": {},
+      "run": "feasibility-B",
+      "stage": "layout",
+      "timestamp": "2026-10-02T18:38:54.116Z"
+    },
+    {
+      "type": "marker",
+      "phase": "start",
+      "details": {},
+      "run": "feasibility-B",
+      "stage": "layout-authoring",
+      "timestamp": "2026-10-02T18:39:23.029Z"
+    }
+  ],
+  "limitation": "Observed UTC stage windows may overlap. Do not sum them or treat elapsed time as reasoning time."
+}

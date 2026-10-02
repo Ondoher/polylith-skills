@@ -1,0 +1,257 @@
+{
+  "schemaVersion": "0.2",
+  "subject": {
+    "productDescription": {
+      "id": "product-description",
+      "sha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe"
+    },
+    "uxArtifact": {
+      "id": "alexa-ux",
+      "revision": "2",
+      "sha256": "3e28363708e3f36095e37d391151eeb4715102d1fea504dcdfb7eba8d8826b13"
+    },
+    "scopeRefs": [
+      "alexa-ux"
+    ]
+  },
+  "verdict": "pass",
+  "summary": "Revision 2 is coherent enough for UI design. The two corrected realization relations accurately identify requirement realization and do not change interaction meaning. Exact comparison verified that the complete previously inspected source, task, action, frame, state, feedback, research and gap evidence is otherwise unchanged. Independent reassessment retains all ten passing criteria, the explicit unresolved-policy limits and the insertion-branch ordering advisory.",
+  "coverage": [
+    {
+      "criterion": "product-intent",
+      "result": "pass",
+      "evidenceRefs": [
+        "product-description",
+        "library-workspace",
+        "video-workspace",
+        "playback-workspace",
+        "export-workspace",
+        "copied-grouped-clips",
+        "insert-content",
+        "confirm-update",
+        "ungroup-clip"
+      ],
+      "note": "The four workspaces preserve local desktop ownership and the four visible content types. The final post-separator source correction governs the conflicting earlier live-clip language: occurrences own copies, grouped trimming retains hidden content, and explicit library updates leave existing video copies unchanged. Ungroup exposes only intersecting portions; unsupported transfer or placement preserves the group. Source files remain unchanged. Owner visual requirements are left to UI."
+    },
+    {
+      "criterion": "task-coherence",
+      "result": "pass",
+      "evidenceRefs": [
+        "navigate-work",
+        "protect-project",
+        "browse-content",
+        "edit-video",
+        "save-clip",
+        "update-clip",
+        "edit-playlist",
+        "play-content",
+        "export-video",
+        "frame-composition",
+        "mix-audio"
+      ],
+      "note": "All eleven flows have identifiable entry, a canonical path and observable result. Editing, library reuse, playlist composition/playback, project preservation and export remain distinct tasks. Ordinary and failure alternatives retain the relevant working context. The editor already supplies explicit insertion-point choice before Add; the advisory asks the local alternate to reflect that existing route accurately."
+    },
+    {
+      "criterion": "information-hierarchy",
+      "result": "pass",
+      "evidenceRefs": [
+        "library-view",
+        "video-view",
+        "selection-menu",
+        "track-properties",
+        "clip-properties",
+        "clip-update",
+        "playback-view",
+        "export-view",
+        "export-replacement"
+      ],
+      "note": "Persistent project/workspace and operation context is separated from task-local feedback. Editing presents the composed player, video identity, inclusive range, track/object scope and contextual operations. Track and occurrence properties identify their owners. Named-clip update and overwrite decisions show the exact subject and consequences before confirmation. Runtime summaries are distinguished from standing instructional copy."
+    },
+    {
+      "criterion": "action-economy-discoverability",
+      "result": "pass",
+      "evidenceRefs": [
+        "selection-actions",
+        "grouped-clip-context",
+        "update-clip-copy-scope",
+        "one-rectangle-operation",
+        "audio-contextual-properties",
+        "set-range-boundary",
+        "reorder-objects",
+        "export"
+      ],
+      "note": "Selection actions and properties become available in their task context. Ungroup reuses the existing menu and trim controls; obsolete propagation comparisons are removed. Pointer, keyboard and numeric alternatives invoke the same accepted operations. Repeated track mute controls have distinct track owners; shared project actions serve the persistent shell. Export has one start/consent route, without a redundant second start after Replace."
+    },
+    {
+      "criterion": "mode-state-clarity",
+      "result": "pass",
+      "evidenceRefs": [
+        "select-track",
+        "select-range",
+        "select-objects",
+        "set-insertion",
+        "play-preview",
+        "video-saving",
+        "video-framing",
+        "playback-transport",
+        "export-exporting",
+        "export-canceling",
+        "ungroup-clip"
+      ],
+      "note": "Active track, composition-wide range, one-track object selection, insertion point and playhead have different stated meanings. Inspection zoom is separate from saved framing. Group identity and included extent remain visible. Draft commits freeze captured editing context; staged rectangle changes are not committed edits. Playlist order differs from run order, and active cancellation is not reported as completed cancellation."
+    },
+    {
+      "criterion": "feedback-cancellation-recovery",
+      "result": "pass",
+      "evidenceRefs": [
+        "project-guard",
+        "dismiss-editor",
+        "insert-content-recovery",
+        "confirm-update-recovery",
+        "framing-invalid",
+        "framing-failed",
+        "ungroup-failed",
+        "save-playlist-recovery",
+        "export-recovery",
+        "confirm-cancel-export-failure"
+      ],
+      "note": "Draft-first/project-second decisions defer destructive consequences until continuation succeeds. Chooser cancellation, failed Open/restoration and failed saves preserve original work. Dialog failures retain target and inputs; ordinary editor dismissal never resumes playback automatically. Local edits provide bounded Undo/Redo without claiming reversal of a library update. Export retries revalidate the destination and reacquire replacement consent; cancellation failure keeps the job's actual active state visible."
+    },
+    {
+      "criterion": "baseline-accessibility",
+      "result": "pass",
+      "evidenceRefs": [
+        "set-range-boundary",
+        "select-objects",
+        "reorder-objects",
+        "adjust-rectangle",
+        "reorder-playlist",
+        "track-rectangle",
+        "source-rectangle",
+        "video-guard",
+        "video-project-guard"
+      ],
+      "note": "Ordinary inputs, toggles and confirmations retain recognizable semantics. The contract specifies desktop keyboard boundary adjustment, object navigation, frame stepping, reorder confirmation/cancellation and numeric alternatives to rectangle dragging. Frames record focus entry, order and return, including safe draft decisions and Escape. This is a semantic baseline assessment only; the source explicitly excludes a separate accessibility implementation/validation project and no conformance claim is made."
+    },
+    {
+      "criterion": "pattern-research",
+      "result": "pass",
+      "evidenceRefs": [
+        "timeline-pattern",
+        "multitrack-editing",
+        "spatial-framing",
+        "audio-scope",
+        "grouped-clip-editing"
+      ],
+      "note": "All five relevant research records were reviewed against their ten cited primary pages. The observations support the selected interaction primitives and distinguish owner-specific adaptations from shared patterns. Grouped-clip research explicitly rejects linked-instance propagation and does not claim evidence for an unspecified Ungroup mapping. Ordinary dialogs and familiar desktop controls do not conceal a new unsupported interaction mechanism."
+    },
+    {
+      "criterion": "ux-ui-boundary",
+      "result": "pass",
+      "evidenceRefs": [
+        "video-workspace",
+        "video-view",
+        "track-rectangle",
+        "source-rectangle",
+        "handoff-brand-treatment",
+        "handoff-type-scale",
+        "handoff-spacing-and-control-metrics"
+      ],
+      "note": "The artifact settles task order, scope, semantic regions, state, input alternatives and feedback while leaving geometry, styling and framework components to UI. Topmost player, separator and four-track ordering preserve explicit owner requirements rather than an invented reviewer layout. Technical storage/runtime work and owner visual defaults remain separately identified handoffs."
+    },
+    {
+      "criterion": "handoff-traceability",
+      "result": "pass",
+      "evidenceRefs": [
+        "realization-1",
+        "edit-video",
+        "video-view",
+        "timeline-add",
+        "source-rectangle",
+        "source-rectangle-invocation",
+        "editor-return-gap",
+        "export-conditional-gap",
+        "ungroup-overlapping-parts",
+        "ungroup-adjustment-transfer"
+      ],
+      "note": "Stable actions, frames, states and flow references support the accepted paths. Captured dialog returns and conditional export/guard behavior are explicitly described despite representative-frame limitations. Unsupported Ungroup transfer/placement and product policies remain visible gaps, not instructions for UI to invent behavior. The advisory is a local alignment of an already-defined insertion action with its flow anchor."
+    }
+  ],
+  "findings": [
+    {
+      "id": "insertion-branch-order",
+      "severity": "advisory",
+      "criteria": [
+        "task-coherence",
+        "handoff-traceability"
+      ],
+      "recordRefs": [
+        "edit-video",
+        "edge-57",
+        "set-insertion",
+        "video-view",
+        "timeline-add"
+      ],
+      "evidence": "The edit-video alternate edge-57 is anchored after edit-video-add-timeline-step, which opens staged Add. Its next step invokes set-insertion. The accepted set-insertion affordance is in video-view; timeline-add instead exposes Content, Source rectangle, Add and Cancel and retains the already selected destination. The required pre-Add insertion operation itself is fully described and available.",
+      "consequence": "A flow illustration could imply that the owner chooses a new insertion point inside the Add dialog, although the accepted editor route chooses it beforehand. This is a local sequencing ambiguity rather than a missing insertion capability or a reason to redesign Add.",
+      "smallestRemedy": "Anchor edge-57 after edit-video-select-track-step, before Add opens, and describe its outcome as the destination retained by the subsequent staged addition. Preserve the existing set-insertion action and its editor affordance.",
+      "confidence": "high"
+    }
+  ],
+  "researchChecks": [
+    {
+      "researchRef": "timeline-pattern",
+      "result": "supported",
+      "sourceRefs": [
+        "apple-ranges",
+        "adobe-trim"
+      ],
+      "note": "Independently opened both official pages on 2026-10-02. Apple distinguishes ranges from whole clips and documents boundary handles and keyboard range commands; Adobe documents selected-edge trimming. These support distinct selection and trim primitives, without establishing Alexa's inclusive End or exact arrangement."
+    },
+    {
+      "researchRef": "multitrack-editing",
+      "result": "supported",
+      "sourceRefs": [
+        "adobe-rearrange",
+        "kdenlive-editing"
+      ],
+      "note": "Independently opened both pages on 2026-10-02. Adobe and Kdenlive document destination-track insertion and shifting, while Kdenlive distinguishes normal, overwrite and insert behavior. Alexa's collision-only pushing, retained gaps, nearest-edge rule and composition-wide ranges are explicitly product adaptations; the research does not pass them off as universal conventions."
+    },
+    {
+      "researchRef": "spatial-framing",
+      "result": "supported",
+      "sourceRefs": [
+        "adobe-properties",
+        "kdenlive-transform"
+      ],
+      "note": "Independently opened both pages on 2026-10-02. Adobe separates transform and crop and explains proportional Fit versus potentially cropping Fill. Kdenlive documents monitor manipulation, X/Y/W/H controls and an explicit distortion option. These support identified rectangle scope with equivalent precise inputs; track ownership and transparent fitting remain Alexa choices."
+    },
+    {
+      "researchRef": "audio-scope",
+      "result": "supported",
+      "sourceRefs": [
+        "adobe-audio-scope",
+        "kdenlive-audio"
+      ],
+      "note": "Independently opened both pages on 2026-10-02. Adobe distinguishes whole-track controls from individual clip controls; Kdenlive identifies channels with volume and mute. The recorded default values, attenuation range and exact gain combination are product choices, not inferred guarantees from the sources."
+    },
+    {
+      "researchRef": "grouped-clip-editing",
+      "result": "supported",
+      "sourceRefs": [
+        "apple-compound-clips",
+        "adobe-nested-sequences"
+      ],
+      "note": "Independently opened both pages on 2026-10-02. Apple documents an explicit break-apart operation producing timeline parts while retaining the browser parent. Adobe documents nested content manipulated as one clip and trim that leaves its source unchanged. The sources' linked updates are explicitly rejected. Copied ownership, retained hidden parts and trimmed filtering come from owner authority; no source is claimed to resolve the disabled transfer or placement cases."
+    }
+  ],
+  "limits": [
+    "Revision-2 reassessment covers the entire requested alexa-ux scope: four workspaces, five features, eleven flows, eighty actions, twenty-nine frames, nine components, eleven states, all feedback, realizations, questions and trace gaps. Exact comparison independently proved that reversing only revision 1 to 2 and the copied-clip-persistence/project-source-references relation labels reproduces the complete previously reviewed UX byte hash. The full prior scope evidence was therefore reused and reassessed without repeating unchanged input collection. The authoritative source hash is unchanged.",
+    "The final post-separator source override governs conflicts with earlier descriptions of shared clip propagation. This receipt binds the exact supplied bytes rather than treating the earlier contradictory passages as a second supported mode.",
+    "Ungroup is approved only as presently specified: neutral group source rectangle/volume/mute and included parts representable on the destination track with their own settings and composition preserved. Adjusted-group transfer and overlapping or otherwise nonrepresentable placement remain undesigned and unavailable. Passing this receipt does not resolve those questions or authorize UI to enable them.",
+    "Source ownership, missing/unreadable/unsupported media repair, cross-source playback continuity/audio and closing the application during export remain explicit product questions. Saved-video expansion with incompatible destination settings is refused atomically. No missing repair, close policy or automatic mapping was invented during review.",
+    "Representative guard parents, captured editor returns, staged-Add source-rectangle invocation and conditional export transitions have explicit frame-illustration gaps; their semantic behavior is stated in actions, shared component behavior and local flow alternatives. UI must preserve that stated behavior rather than treating a representative parent as an unconditional runtime route.",
+    "This is an independent semantic inspection with source checks, not a rendered-UI review, user task evaluation, accessibility conformance assessment, engineering feasibility check, standards review or implementation approval. No application, build, test suite or installer was run.",
+    "The metadata corrections change copied-clip-persistence and project-source-references from constrains to realizes. The realization targets, rationale, product binding and every interaction contract are unchanged. This receipt supersedes the revision-1 receipt only for the exact revision-2 bytes and requested scope."
+  ]
+}

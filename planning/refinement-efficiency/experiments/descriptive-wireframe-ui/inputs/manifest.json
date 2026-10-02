@@ -1,0 +1,717 @@
+{
+  "schemaVersion": "experiment-1",
+  "status": "frozen",
+  "startedAt": "2026-10-02T18:54:01.884Z",
+  "completedAt": "2026-10-02T18:54:02.074Z",
+  "elapsedMs": 190,
+  "packetRoot": "C:/dev/polylith-skills/planning/refinement-efficiency/experiments/descriptive-wireframe-ui/inputs",
+  "workingPacketRoot": "C:/dev/polylith-skills/.codex-tmp/descriptive-wireframe-ui-20261002/inputs",
+  "inputSnapshot": {
+    "id": "alexa-snapshot",
+    "revision": 8,
+    "path": "snapshots/12c09ddff7478114a793a51cfefb8293754276ed03d663d8837694312a5cf007/product-snapshot.json",
+    "sha256": "12c09ddff7478114a793a51cfefb8293754276ed03d663d8837694312a5cf007"
+  },
+  "planningSnapshotChanged": false,
+  "sourceIdentity": {
+    "id": "product-description",
+    "label": "agents/topics/alexa/product-description.md",
+    "path": "sources/5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe/product-description.md",
+    "sha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+    "byteLength": 31919,
+    "lineCount": 212,
+    "revision": 1,
+    "previousSha256": null
+  },
+  "productModelIdentity": {
+    "id": "alexa",
+    "revision": 1,
+    "path": "models/1-866ae2cbd59394bfdca1ff4e760d19e63752e6c2765a54db7c16254a296c635d/product-model.json",
+    "sha256": "866ae2cbd59394bfdca1ff4e760d19e63752e6c2765a54db7c16254a296c635d",
+    "materialSha256": "51885860f86536b42b54a77ea688f0bcb16c7a6ef8073f98985292b48bc4752f",
+    "recordIndexSha256": "2ae2162ed92098453292affc53d57fb4fd965760b7e18211f4cfedcfc9456e8d"
+  },
+  "uxIdentity": {
+    "id": "alexa-ux",
+    "revision": "2",
+    "reviewedBytesSha256": "3e28363708e3f36095e37d391151eeb4715102d1fea504dcdfb7eba8d8826b13",
+    "envelope": {
+      "path": "artifacts/ux/alexa-ux-design/2-913f707afe884b5958daf2bfbcab9f34fd5df038a4160912d62c0370445d8a88.json",
+      "sha256": "913f707afe884b5958daf2bfbcab9f34fd5df038a4160912d62c0370445d8a88",
+      "materialSha256": "07c5538d7c8028c262edee2c4cb61e902f96260fe2df733a1d406660e9bd5d49"
+    }
+  },
+  "designLanguageIdentity": {
+    "path": "artifacts/ui/alexa-design-language/1-21ae4e65e8e7cc7ad4519ec5200e8a0c066deb8f07a2ff97e7e523b5525da9ca.json",
+    "sha256": "21ae4e65e8e7cc7ad4519ec5200e8a0c066deb8f07a2ff97e7e523b5525da9ca",
+    "materialSha256": "a77ed0a83e583576b5395e16ffe6a236afd6f50351fec5ec0b538e84e229730b"
+  },
+  "origins": [
+    {
+      "path": "C:/dev/alexa/product/Alexa/current.json",
+      "scope": "snapshot discovery",
+      "sha256": "c7a4a6f338263bdee0711ff81681b844a2a281c6bf88bef25ba70b85fd1793f8",
+      "byteCount": 319
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/snapshots/12c09ddff7478114a793a51cfefb8293754276ed03d663d8837694312a5cf007/product-snapshot.json",
+      "scope": "snapshot authority",
+      "sha256": "12c09ddff7478114a793a51cfefb8293754276ed03d663d8837694312a5cf007",
+      "byteCount": 34671
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/sources/5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe/product-description.md",
+      "scope": "human source authority",
+      "sha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+      "byteCount": 31919
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/models/1-866ae2cbd59394bfdca1ff4e760d19e63752e6c2765a54db7c16254a296c635d/product-model.json",
+      "scope": "product model authority",
+      "sha256": "866ae2cbd59394bfdca1ff4e760d19e63752e6c2765a54db7c16254a296c635d",
+      "byteCount": 153599
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/artifacts/ux/alexa-ux-design/2-913f707afe884b5958daf2bfbcab9f34fd5df038a4160912d62c0370445d8a88.json",
+      "scope": "snapshot-pinned ux-design",
+      "sha256": "913f707afe884b5958daf2bfbcab9f34fd5df038a4160912d62c0370445d8a88",
+      "byteCount": 92378
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/artifacts/ui/alexa-design-language/1-21ae4e65e8e7cc7ad4519ec5200e8a0c066deb8f07a2ff97e7e523b5525da9ca.json",
+      "scope": "snapshot-pinned design-language",
+      "sha256": "21ae4e65e8e7cc7ad4519ec5200e8a0c066deb8f07a2ff97e7e523b5525da9ca",
+      "byteCount": 9747
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/ux/ux-spec.json",
+      "scope": "exact review-byte witness only",
+      "sha256": "3e28363708e3f36095e37d391151eeb4715102d1fea504dcdfb7eba8d8826b13",
+      "byteCount": 560877
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/ux/review.json",
+      "scope": "UX review binding only",
+      "sha256": "59cfdcf6451b461b7089526e64edad2071c652d5ce00a22bace8b8624a8bf2dc",
+      "byteCount": 15943
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/research/product-research-brief.md",
+      "scope": "advisory saved research",
+      "sha256": "9bda044ab1d9e2371598caf8f15672953f62598a5583f6c73987631544437029",
+      "byteCount": 48762
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/research/references/composition/evidence-inventory.json",
+      "scope": "saved research evidence",
+      "sha256": "dffd7f86cf458e9cf8d329b6276deaafbd321324c55dce9465b24ba5f89d55dd",
+      "byteCount": 14557
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/research/references/composition/research-log.json",
+      "scope": "saved research evidence",
+      "sha256": "92991bf0441f65ae1ba7008cef3c770c25e8c8880a619fc6312ffe42207cc915",
+      "byteCount": 4665
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/research/references/composition/interface-evidence.md",
+      "scope": "saved research evidence",
+      "sha256": "7c913effe9348847cf6a5448edcf65ae98fece6d601014d3e345323837fc1870",
+      "byteCount": 4512
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/research/references/parent-evidence-verification.json",
+      "scope": "saved research evidence",
+      "sha256": "dabec40b90658b9a61b3f0de6bd18f811a1ba3ef8379c09838b8de4c27c177cd",
+      "byteCount": 7631
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/research/references/parent-evidence-verification.md",
+      "scope": "saved research evidence",
+      "sha256": "4309452bb55e5c400bcb4957ec4c6333683510973fedcb9ae54db147e1b5cb32",
+      "byteCount": 5737
+    }
+  ],
+  "outputs": [
+    {
+      "path": "reference-only/ux-design-envelope.json",
+      "audience": "verification-only",
+      "sha256": "913f707afe884b5958daf2bfbcab9f34fd5df038a4160912d62c0370445d8a88",
+      "byteCount": 92378,
+      "recordCount": null
+    },
+    {
+      "path": "reference-only/design-language-envelope.json",
+      "audience": "verification-only",
+      "sha256": "21ae4e65e8e7cc7ad4519ec5200e8a0c066deb8f07a2ff97e7e523b5525da9ca",
+      "byteCount": 9747,
+      "recordCount": null
+    },
+    {
+      "path": "reference-only/current.json",
+      "audience": "verification-only",
+      "sha256": "c7a4a6f338263bdee0711ff81681b844a2a281c6bf88bef25ba70b85fd1793f8",
+      "byteCount": 319,
+      "recordCount": null
+    },
+    {
+      "path": "reference-only/product-snapshot.json",
+      "audience": "verification-only",
+      "sha256": "12c09ddff7478114a793a51cfefb8293754276ed03d663d8837694312a5cf007",
+      "byteCount": 34671,
+      "recordCount": null
+    },
+    {
+      "path": "reference-only/product-model.json",
+      "audience": "verification-only",
+      "sha256": "866ae2cbd59394bfdca1ff4e760d19e63752e6c2765a54db7c16254a296c635d",
+      "byteCount": 153599,
+      "recordCount": 116
+    },
+    {
+      "path": "reference-only/source-description-full.md",
+      "audience": "source-reference",
+      "sha256": "5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe",
+      "byteCount": 31919,
+      "recordCount": null
+    },
+    {
+      "path": "reference-only/accepted-ux.json",
+      "audience": "verification-only",
+      "sha256": "3e28363708e3f36095e37d391151eeb4715102d1fea504dcdfb7eba8d8826b13",
+      "byteCount": 560877,
+      "recordCount": 328
+    },
+    {
+      "path": "reference-only/ux-review.json",
+      "audience": "verification-only",
+      "sha256": "59cfdcf6451b461b7089526e64edad2071c652d5ce00a22bace8b8624a8bf2dc",
+      "byteCount": 15943,
+      "recordCount": null
+    },
+    {
+      "path": "reference-only/research-full.md",
+      "audience": "research-reference",
+      "sha256": "9bda044ab1d9e2371598caf8f15672953f62598a5583f6c73987631544437029",
+      "byteCount": 48762,
+      "recordCount": null
+    },
+    {
+      "path": "reference-only/research/references/composition/evidence-inventory.json",
+      "audience": "research-reference",
+      "sha256": "dffd7f86cf458e9cf8d329b6276deaafbd321324c55dce9465b24ba5f89d55dd",
+      "byteCount": 14557,
+      "recordCount": null
+    },
+    {
+      "path": "reference-only/research/references/composition/research-log.json",
+      "audience": "research-reference",
+      "sha256": "92991bf0441f65ae1ba7008cef3c770c25e8c8880a619fc6312ffe42207cc915",
+      "byteCount": 4665,
+      "recordCount": null
+    },
+    {
+      "path": "reference-only/research/references/composition/interface-evidence.md",
+      "audience": "research-reference",
+      "sha256": "7c913effe9348847cf6a5448edcf65ae98fece6d601014d3e345323837fc1870",
+      "byteCount": 4512,
+      "recordCount": null
+    },
+    {
+      "path": "reference-only/research/references/parent-evidence-verification.json",
+      "audience": "research-reference",
+      "sha256": "dabec40b90658b9a61b3f0de6bd18f811a1ba3ef8379c09838b8de4c27c177cd",
+      "byteCount": 7631,
+      "recordCount": null
+    },
+    {
+      "path": "reference-only/research/references/parent-evidence-verification.md",
+      "audience": "research-reference",
+      "sha256": "4309452bb55e5c400bcb4957ec4c6333683510973fedcb9ae54db147e1b5cb32",
+      "byteCount": 5737,
+      "recordCount": null
+    },
+    {
+      "path": "source-description.md",
+      "audience": "author",
+      "sha256": "cbc858693da7bd60dd0574e1ae0e023a998988e005e669914cf45363c7636f24",
+      "byteCount": 25449,
+      "recordCount": null
+    },
+    {
+      "path": "research.md",
+      "audience": "author",
+      "sha256": "fc85384b389a6af879d8f9ea332cf4024e26d2c592fefbc7c4740a14b669cdf9",
+      "byteCount": 39805,
+      "recordCount": null
+    },
+    {
+      "path": "design-language.json",
+      "audience": "author",
+      "sha256": "1d8a6b26a9a9ddd030b27bc3b72236aebbb5ddf12b42b3f10f0d8658239343a9",
+      "byteCount": 44286,
+      "recordCount": null
+    },
+    {
+      "path": "render-theme.json",
+      "audience": "author",
+      "sha256": "59b2b4b2e4dbe45aa01672957837bacf60f52f4f91c4d3386d4cfc512bc83d6e",
+      "byteCount": 395,
+      "recordCount": 16
+    },
+    {
+      "path": "render-theme-provenance.json",
+      "audience": "author",
+      "sha256": "5b62b10d70c96486d8767f34b49023e46b23bdd0e944010593e4bb1e45c6b484",
+      "byteCount": 1421,
+      "recordCount": null
+    },
+    {
+      "path": "samples.json",
+      "audience": "author",
+      "sha256": "a2abc57d57b9895ef998aa47470b37d9e3334160b75e30778c8454fc906d93fd",
+      "byteCount": 4102,
+      "recordCount": null
+    },
+    {
+      "path": "scenarios.json",
+      "audience": "author",
+      "sha256": "536624fb7d8b305f0ccdd174854507145a71cbe08c81e9ee52913c86a77124db",
+      "byteCount": 23422,
+      "recordCount": 12
+    },
+    {
+      "path": "product-requirements.json",
+      "audience": "author",
+      "sha256": "b35586e30060e3d9a2c1919615bd19d78bff5e9d041b7e826cc2cdc67908bf4b",
+      "byteCount": 85153,
+      "recordCount": 105
+    },
+    {
+      "path": "scope-surfaces.json",
+      "audience": "author",
+      "sha256": "1a6a60e1c3a89880569ad93010eb0730d5e5aa6c51386cdb5fa9dc3944d6419f",
+      "byteCount": 27611,
+      "recordCount": 24
+    },
+    {
+      "path": "interaction-frames.json",
+      "audience": "author",
+      "sha256": "bf90596fc48bb6d5e0b529967fef82a36a38a39fa898186c0f40fc6d2f9ada0e",
+      "byteCount": 67650,
+      "recordCount": 13
+    },
+    {
+      "path": "actions.json",
+      "audience": "author",
+      "sha256": "94beb9fa04ae1b99131126632b88827fb6b9d793b3656c65c1145252f7c2b2eb",
+      "byteCount": 99185,
+      "recordCount": 55
+    },
+    {
+      "path": "flows.json",
+      "audience": "author",
+      "sha256": "966888be011afd37dab4a5bf161355ea607e30e626cdd2359de138bcbb24e0a7",
+      "byteCount": 91248,
+      "recordCount": 7
+    },
+    {
+      "path": "feedback.json",
+      "audience": "author",
+      "sha256": "0326fcb87cbfc2a4a2fe835a32ff5392aaee741ff4da65b62362232d41e7c91c",
+      "byteCount": 28478,
+      "recordCount": 70
+    },
+    {
+      "path": "questions-and-trace.json",
+      "audience": "author",
+      "sha256": "39133118d705737ac86268748eb455e1d789e19d669c727dd83d92e6b60912e6",
+      "byteCount": 42722,
+      "recordCount": 52
+    },
+    {
+      "path": "usage-packet.json",
+      "audience": "author",
+      "sha256": "3cc9db117ee270d80cb725efae063ea5022e40cb3ebc321f1f0968f9a852ff79",
+      "byteCount": 6065,
+      "recordCount": null
+    },
+    {
+      "path": "reference-only/binding-and-selection-report.json",
+      "audience": "verification-only",
+      "sha256": "25ea51aba4955de014a46764a2e44ea3731feceea29962b45d67b29ebadbb9c5",
+      "byteCount": 55255,
+      "recordCount": null
+    }
+  ],
+  "counts": {
+    "surfaces": 4,
+    "interactionFrames": 13,
+    "flows": 7,
+    "features": 2,
+    "components": 7,
+    "actions": 55,
+    "states": 11,
+    "feedback": 70,
+    "openQuestions": 5,
+    "patternResearch": 5,
+    "productRealizations": 36,
+    "traceGaps": 6
+  },
+  "scope": {
+    "authoredSurface": "video-workspace",
+    "authoredFrames": [
+      "video-view",
+      "video-saving-view",
+      "video-guard",
+      "timeline-add",
+      "selection-menu",
+      "clip-create",
+      "clip-update",
+      "video-project-guard",
+      "track-properties",
+      "clip-properties",
+      "track-rectangle",
+      "source-rectangle",
+      "video-framing-view"
+    ],
+    "authoredFlows": [
+      "edit-video",
+      "save-clip",
+      "update-clip",
+      "frame-composition",
+      "mix-audio"
+    ],
+    "contextFlows": [
+      "navigate-work",
+      "protect-project"
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "s01-composition-base",
+      "title": "Complete stopped composition workspace",
+      "frameRefs": [
+        "video-view",
+        "track-properties"
+      ],
+      "flowRefs": [
+        "edit-video",
+        "mix-audio"
+      ],
+      "actionRefs": [
+        "choose-video",
+        "select-track",
+        "add-timeline",
+        "save-video"
+      ],
+      "requiredRelatedScenes": []
+    },
+    {
+      "id": "s02-inclusive-range",
+      "title": "Inclusive composition range and contextual actions",
+      "frameRefs": [
+        "video-view",
+        "selection-menu"
+      ],
+      "flowRefs": [
+        "edit-video",
+        "save-clip"
+      ],
+      "actionRefs": [
+        "select-range",
+        "set-range-boundary",
+        "selection-actions",
+        "open-save-clip",
+        "delete-selection",
+        "split-selection"
+      ],
+      "requiredRelatedScenes": []
+    },
+    {
+      "id": "s03-object-trim",
+      "title": "Object selection and trim collision-chain preview",
+      "frameRefs": [
+        "video-view",
+        "clip-properties"
+      ],
+      "flowRefs": [
+        "edit-video"
+      ],
+      "actionRefs": [
+        "select-objects",
+        "trim-occurrence",
+        "reorder-objects",
+        "undo",
+        "redo"
+      ],
+      "requiredRelatedScenes": []
+    },
+    {
+      "id": "s04-independent-zoom",
+      "title": "Player inspection and timeline scale remain distinct",
+      "frameRefs": [
+        "video-view"
+      ],
+      "flowRefs": [
+        "edit-video"
+      ],
+      "actionRefs": [
+        "zoom-player-in",
+        "zoom-player-out",
+        "fit-player",
+        "pan-player",
+        "zoom-timeline",
+        "pan-timeline",
+        "follow-playhead",
+        "scrub",
+        "step-frame"
+      ],
+      "requiredRelatedScenes": []
+    },
+    {
+      "id": "s05-track-audio",
+      "title": "Track properties and inherited audio scope",
+      "frameRefs": [
+        "video-view",
+        "track-properties"
+      ],
+      "flowRefs": [
+        "mix-audio",
+        "frame-composition"
+      ],
+      "actionRefs": [
+        "select-track",
+        "set-track-volume",
+        "mute-track",
+        "edit-track-rectangle"
+      ],
+      "requiredRelatedScenes": []
+    },
+    {
+      "id": "s06-group-properties",
+      "title": "Selected group properties and unavailable Ungroup",
+      "frameRefs": [
+        "video-view",
+        "clip-properties",
+        "selection-menu"
+      ],
+      "flowRefs": [
+        "edit-video",
+        "mix-audio",
+        "frame-composition"
+      ],
+      "actionRefs": [
+        "select-objects",
+        "set-clip-volume",
+        "mute-clip",
+        "edit-source-rectangle",
+        "ungroup-clip"
+      ],
+      "requiredRelatedScenes": []
+    },
+    {
+      "id": "s07-framing-invalid",
+      "title": "Captured track output rectangle with invalid staged input",
+      "frameRefs": [
+        "video-framing-view",
+        "track-rectangle"
+      ],
+      "flowRefs": [
+        "frame-composition"
+      ],
+      "actionRefs": [
+        "edit-track-rectangle",
+        "adjust-rectangle",
+        "reset-rectangle",
+        "apply-rectangle",
+        "dismiss-editor"
+      ],
+      "requiredRelatedScenes": []
+    },
+    {
+      "id": "s08-staged-add-conflict",
+      "title": "Staged saved-video addition refuses incompatible settings",
+      "frameRefs": [
+        "video-view",
+        "timeline-add",
+        "source-rectangle"
+      ],
+      "flowRefs": [
+        "edit-video",
+        "frame-composition"
+      ],
+      "actionRefs": [
+        "set-insertion",
+        "add-timeline",
+        "choose-timeline-content",
+        "edit-source-rectangle",
+        "insert-content",
+        "dismiss-editor"
+      ],
+      "requiredRelatedScenes": [
+        {
+          "id": "s08-source-rectangle",
+          "title": "Applicable staged Add source rectangle with captured destination"
+        }
+      ]
+    },
+    {
+      "id": "s09-clip-save-failure",
+      "title": "Save Clip retains captured composition after failure",
+      "frameRefs": [
+        "clip-create"
+      ],
+      "flowRefs": [
+        "save-clip"
+      ],
+      "actionRefs": [
+        "open-save-clip",
+        "name-clip",
+        "create-clip",
+        "dismiss-editor"
+      ],
+      "requiredRelatedScenes": []
+    },
+    {
+      "id": "s10-clip-update",
+      "title": "Review a library-only named clip trim update",
+      "frameRefs": [
+        "clip-update"
+      ],
+      "flowRefs": [
+        "update-clip"
+      ],
+      "actionRefs": [
+        "open-update-clip",
+        "confirm-update",
+        "dismiss-editor"
+      ],
+      "requiredRelatedScenes": []
+    },
+    {
+      "id": "s11-video-save-failure",
+      "title": "Save Video failure retains editor state",
+      "frameRefs": [
+        "video-saving-view",
+        "video-view"
+      ],
+      "flowRefs": [
+        "edit-video"
+      ],
+      "actionRefs": [
+        "name-video",
+        "save-video"
+      ],
+      "requiredRelatedScenes": [
+        {
+          "id": "s11-video-saving-busy",
+          "title": "Save Video commit freeze preserves captured context"
+        }
+      ]
+    },
+    {
+      "id": "s12-project-guard-failure",
+      "title": "Draft-first/project-second guard preserves original work",
+      "frameRefs": [
+        "video-guard",
+        "video-project-guard"
+      ],
+      "flowRefs": [
+        "protect-project"
+      ],
+      "actionRefs": [
+        "open-project",
+        "keep-draft",
+        "discard-draft",
+        "save-project",
+        "discard-project",
+        "cancel-transition"
+      ],
+      "requiredRelatedScenes": []
+    }
+  ],
+  "primaryScenarioCount": 12,
+  "requiredRelatedSceneCount": 2,
+  "selectedSceneCount": 14,
+  "authorPacketByteCount": 586992,
+  "conflicts": [
+    {
+      "id": "insertion-order",
+      "kind": "accepted flow sequencing ambiguity",
+      "evidence": "Review receipt retains advisory insertion-branch-order; accepted set-insertion affordance is in video-view, while Add retains destination.",
+      "sharedResolution": "Source/action-consistent editor insertion before Add. Do not rewrite live UX."
+    },
+    {
+      "id": "ungroup-authority",
+      "kind": "advisory research versus provisional accepted UX",
+      "evidence": "Saved research says neutral-group-only restriction is earlier adaptation, not owner requirement. Accepted UX gates it while transfer policy remains open.",
+      "sharedResolution": "Keep accepted gate and explicit policy question; label provisional in packet documentation, never interface implementation commentary."
+    }
+  ],
+  "unresolvedReferences": [],
+  "liveInputVerification": [
+    {
+      "path": "C:/dev/alexa/product/Alexa/current.json",
+      "unchanged": true
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/snapshots/12c09ddff7478114a793a51cfefb8293754276ed03d663d8837694312a5cf007/product-snapshot.json",
+      "unchanged": true
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/sources/5502890f811ef8c74ffc3b03e5e3b6461fdcc05402fe6c5f1a02df100f7f9ffe/product-description.md",
+      "unchanged": true
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/models/1-866ae2cbd59394bfdca1ff4e760d19e63752e6c2765a54db7c16254a296c635d/product-model.json",
+      "unchanged": true
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/artifacts/ux/alexa-ux-design/2-913f707afe884b5958daf2bfbcab9f34fd5df038a4160912d62c0370445d8a88.json",
+      "unchanged": true
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/artifacts/ui/alexa-design-language/1-21ae4e65e8e7cc7ad4519ec5200e8a0c066deb8f07a2ff97e7e523b5525da9ca.json",
+      "unchanged": true
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/ux/ux-spec.json",
+      "unchanged": true
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/ux/review.json",
+      "unchanged": true
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/research/product-research-brief.md",
+      "unchanged": true
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/research/references/composition/evidence-inventory.json",
+      "unchanged": true
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/research/references/composition/research-log.json",
+      "unchanged": true
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/research/references/composition/interface-evidence.md",
+      "unchanged": true
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/research/references/parent-evidence-verification.json",
+      "unchanged": true
+    },
+    {
+      "path": "C:/dev/alexa/product/Alexa/research/references/parent-evidence-verification.md",
+      "unchanged": true
+    }
+  ],
+  "preparationRecovery": [
+    "Initial broad snapshot/model diagnostic output exceeded tool token limit; recovered by summarized inspection and bounded reader. No author input was derived from truncated text.",
+    "One Node -e invocation lost quotation marks under Windows PowerShell; replaced by module source on stdin.",
+    "No separate model process, backend, proxy or observer was used."
+  ],
+  "renderingContract": "Common existing refine-design scene/component rendering, HTML capture and progressive contribution tooling; exact capabilities pinned by parent experiment adapter before author dispatch. No live product/schema gate is relaxed."
+}

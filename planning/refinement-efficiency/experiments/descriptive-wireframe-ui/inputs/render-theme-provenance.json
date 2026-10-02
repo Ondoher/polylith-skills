@@ -1,0 +1,42 @@
+{
+  "source": {
+    "artifact": "alexa-design-language",
+    "revision": 1,
+    "envelopeSha256": "21ae4e65e8e7cc7ad4519ec5200e8a0c066deb8f07a2ff97e7e523b5525da9ca",
+    "frozenFile": "design-language.json"
+  },
+  "roleMapping": {
+    "primary": "primary-action",
+    "onPrimary": "on-primary",
+    "surface": "surface",
+    "background": "surface",
+    "text": "body-text",
+    "muted": "field-label",
+    "border": "panel-border",
+    "accent": "primary-action",
+    "danger": "failure",
+    "disabledBackground": "disabled-background",
+    "fieldBorder": "field-outline",
+    "fieldLabel": "field-label"
+  },
+  "directMetrics": {
+    "radius": "button.metrics.radius",
+    "fieldRadius": "textField.metrics.radius",
+    "fontSize": "typography.roles[id=body].sizePx"
+  },
+  "disabledForeground": {
+    "method": "rounded sRGB compositing of accepted disabled foreground state",
+    "amount": 0.26,
+    "baseRole": "disabled-background",
+    "kind": "mix",
+    "overlayRole": "state-overlay",
+    "result": "#A1A1A4"
+  },
+  "sharedAdapterAliases": {
+    "background": "surface; accepted ordinary light application surface",
+    "muted": "field-label; common secondary label role used for harness muted text",
+    "accent": "primary-action; terracotta identity accent"
+  },
+  "provisionalMissingRoleValues": [],
+  "policy": "Deterministic common adapter aliases; identical in both paths. No author-specific defaults."
+}
