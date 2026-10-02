@@ -2,3 +2,6 @@
 # Retain normal whitespace checks while accepting the original CRLF endings.
 inputs/reference-only/research/references/parent-evidence-verification.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 inputs/reference-only/research/references/parent-evidence-verification.md -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve this byte-hashed Windows-authored helper, including its original EOF.
+runs/pair-1-A/layout-submission-4/auxiliaries/build.mjs -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol

@@ -26,8 +26,12 @@ review findings. Save completed units as useful natural batches. No added self
 review loop; rendered-mode author inspection remains required.
 
 Record stage start, inputs-ready, first-unit-saved and authoring-end UTC markers.
-Include the exact artifact hash, sizes, scenario coverage, any correction and its
-cause in `author-receipt.json`. Do not label all elapsed time as reasoning.
+Use the harness `receipt` command to save timestamps, hashes and sizes mechanically;
+do not manually reproduce those fields or all input identities. Save brief author
+notes with scenario coverage, meaningful decisions, clarification requests and any
+correction/cause. Reference shared source questions instead of copying them. Do not
+label all elapsed time as reasoning. Requested model/effort are dispatch settings;
+actual backend identity remains null unless exposed and verified.
 
 You may write only your assigned run's `layout/` directory and use the shared
 deterministic rendering/marker commands. Read the input packet and contract once,

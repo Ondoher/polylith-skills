@@ -1,0 +1,46 @@
+{
+  "run": "pair-1-A",
+  "kind": "layout",
+  "submission": 4,
+  "preservedAt": "2026-10-02T20:28:16.168Z",
+  "artifacts": [
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4/wireframe.json",
+      "sha256": "21ed8acdc5ff38ae74f9cdb73084a9319e889318e9027ba407dd141e17a3812e",
+      "bytes": 408825
+    },
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4/layout-notes.md",
+      "sha256": "4e135f080e8822cbe4e60df65a0f3aa429ce339aed1b7c06474009d05a7edeb5",
+      "bytes": 2288
+    },
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4/author-receipt.json",
+      "sha256": "5c12357b076bfadb8ee2b96619e1f312af8c90a74a657a93cfe85db9d173aa1b",
+      "bytes": 1924
+    }
+  ],
+  "auxiliaries": [
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4/auxiliaries/build.mjs",
+      "sha256": "2b1a2fcbefaee139b623009ad763d456c3641506da74d59f17c0851ae15599ac",
+      "bytes": 27893
+    },
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4/auxiliaries/layout-repair-1-notes.md",
+      "sha256": "1051c2dd0066c7b4cd202419263a5afe61e0d6f3c4ebc1ca032f7d881ed43982",
+      "bytes": 3025
+    },
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4/auxiliaries/layout-repair-2-notes.md",
+      "sha256": "dcf9d38c0226822bf94cbc28c30228735b4deb902178037d5c6196d84deee6e2",
+      "bytes": 1608
+    },
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4/auxiliaries/layout-repair-3-notes.md",
+      "sha256": "1c93f8b2260b328a8fa910a27b8f397edf270fba29b56eda83eb28449ed8a1c7",
+      "bytes": 1157
+    }
+  ],
+  "sizeInterpretation": "Submitted materialized artifact bytes and auxiliary file bytes are separate. Neither measures model emission or tokens."
+}

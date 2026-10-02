@@ -1,0 +1,397 @@
+{
+  "run": "pair-1-B",
+  "status": "approved",
+  "approvedAt": "2026-10-02T22:00:39.295Z",
+  "approvedFinalSubjects": {
+    "layout": {
+      "artifact": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/layout-submission-2/layout.md",
+        "sha256": "184dd4db243284cb5f9ca092d9cfa999e55021961171d12fa61ea195f520c97d",
+        "bytes": 31987
+      },
+      "review": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/reviews/structural-review-r2.json",
+        "sha256": "f747b11a68cce7dab641a07de1d7d8ac0fc4b1e79caf8180870a0be47b51756e",
+        "bytes": 12006
+      },
+      "completeMaterializedBytes": 31987
+    },
+    "ui": {
+      "artifact": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/ui.json",
+        "sha256": "85750f51d2affe3c04f4dbfaf8f033cb20172cabba6bc1f7919a988c768b0dad",
+        "bytes": 402739
+      },
+      "review": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/reviews/ui-review-r2.json",
+        "sha256": "de42d93758793e8a86019ac55f615014dca6062d9f0c9e8c91d193cc426cbe81",
+        "bytes": 21263
+      },
+      "completeMaterializedBytes": 948720,
+      "dependencies": [
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/auxiliaries/references.json",
+          "sha256": "1e4bd8b6a2375429d72931d35dc6cb21c43845f3c72cf0ba795894f885436ac6",
+          "bytes": 545981
+        }
+      ]
+    }
+  },
+  "reviewRounds": [
+    {
+      "stage": "structural-review",
+      "round": 1,
+      "verdict": "revise",
+      "findings": [
+        {
+          "id": "B1-SR-01",
+          "category": "coverage",
+          "blocking": true,
+          "route": "layout",
+          "title": "Specify the shared preview scope and its visible outcome",
+          "sourceRequirementRefs": [
+            "product-requirements.json#precise-selection",
+            "product-requirements.json#scrub-and-follow",
+            "scope-surfaces.json#timeline-behavior",
+            "actions.json#play-preview.canonicalInteraction.description",
+            "feedback.json#play-preview-result"
+          ],
+          "scenarioRefs": [
+            "s01-composition-base",
+            "s02-inclusive-range",
+            "s03-object-trim",
+            "s04-independent-zoom",
+            "s06-group-properties"
+          ],
+          "evidence": "ED-PLAYER describes one composed-output player resolving the timeline frame; TL-RANGE defines the fixed Play/Stop control and range selection. Neither shared region nor the selected states specifies that Play uses the active video with no selection, the complete composition within an inclusive range, or the earliest-Start/latest-End composed span for whole objects including gaps and other tracks. ED-CONTEXT identifies selection but does not state playback scope. The cited play-preview/stop-preview action IDs do not supply that missing handoff description.",
+          "impact": "The UI handoff can portray object selection as isolated-clip playback or omit the inclusive preview extent even though the frozen source requires composition playback across that span. It also leaves the visible stopped position/follow state unspecified for the shared transport.",
+          "specificCorrection": "Extend ED-PLAYER/TL-RANGE and the shared transport description with the three source-defined preview scopes, inclusive End, and a visible association between current selection extent and playback scope. State that Stop retains the resolved player/playhead frame and that playback follows until intentional timeline pan. Preserve current geometry freedom and the existing 14-state set; no extra state or new policy is required."
+        },
+        {
+          "id": "B1-SR-02",
+          "category": "structural",
+          "blocking": true,
+          "route": "layout",
+          "title": "Make the accepted commit-freeze control availability explicit",
+          "sourceRequirementRefs": [
+            "scope-surfaces.json#video-saving",
+            "interaction-frames.json#video-saving-view.purpose",
+            "interaction-frames.json#video-saving-view-video-range.purpose",
+            "actions.json#play-preview",
+            "actions.json#stop-preview",
+            "actions.json#scrub",
+            "actions.json#step-frame",
+            "actions.json#zoom-player-in",
+            "actions.json#zoom-player-out",
+            "actions.json#fit-player",
+            "actions.json#pan-player",
+            "actions.json#zoom-timeline",
+            "actions.json#pan-timeline"
+          ],
+          "scenarioRefs": [
+            "s11-video-saving-busy",
+            "s11-video-save-failure",
+            "s04-independent-zoom"
+          ],
+          "evidence": "The busy paragraph says player/timeline inspection zoom and pan 'may remain usable'. Its explicit disable list does not identify Play/Stop, scrubbing or frame stepping, although the same paragraph says the player remains stopped at frame 750. The accepted video-saving frame requires inspection-only zoom/pan to remain available and its range region disables transport changes; source action applicability excludes the transport/scrub/step actions from video-saving while including the inspection controls.",
+          "impact": "UI can follow this description yet disable accepted inspection controls or leave controls active that change the captured stopped frame during the save. This is an interaction-state distinction rather than a cosmetic styling choice.",
+          "specificCorrection": "In the shared commit-freeze description and s11-video-saving-busy, explicitly keep player Zoom In/Zoom Out/Fit/pan and timeline zoom/pan available subject to their ordinary limits, and explicitly disable Play/Stop, scrubbing and frame stepping during the actual commit. Keep the captured preview/frame and selection/insertion intact; restore eligible controls only after the actual result. Do not add percentage progress, cancellation or queued commands."
+        }
+      ],
+      "artifact": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/reviews/structural-review-r1.json",
+        "sha256": "258afab17e3c88a4b3250431834c4f44d31abb92a58b2546d19027662766cc70",
+        "bytes": 15616
+      },
+      "subjectSha256": "b6d78d30168706549c7fcb4c52f911a8a973e83b89e7730e905841c72387a5b2"
+    },
+    {
+      "stage": "structural-review",
+      "round": 2,
+      "verdict": "pass",
+      "findings": [],
+      "artifact": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/reviews/structural-review-r2.json",
+        "sha256": "f747b11a68cce7dab641a07de1d7d8ac0fc4b1e79caf8180870a0be47b51756e",
+        "bytes": 12006
+      },
+      "subjectSha256": "184dd4db243284cb5f9ca092d9cfa999e55021961171d12fa61ea195f520c97d"
+    },
+    {
+      "stage": "ui-review",
+      "round": 1,
+      "verdict": "revise",
+      "findings": [
+        {
+          "id": "B-UI-R1-01",
+          "category": "visual",
+          "blocking": true,
+          "source": [
+            "layout.md#s08-source-rectangle",
+            "interaction-frames.json[id=source-rectangle].regions[id=source-rectangle-fields]",
+            "actions.json[id=adjust-rectangle].canonicalInteraction.description",
+            "scenarios.json[s08-staged-add-conflict].requiredRelatedScenes[s08-source-rectangle]",
+            "scope-surfaces.json.components[id=rectangle-editor].behaviors[id=rectangle-scope]"
+          ],
+          "scenarioIds": [
+            "s08-source-rectangle",
+            "s07-framing-invalid"
+          ],
+          "evidence": "final-r4/preview-page-3.png, first scene: Source frame and staged crop shows inset 160,90,1600,900, but Fitted result repeats full-source feature placement and size. references.json pair-1-b-active-task@1 part view-5 source-image and rectangle-result use identical 12-column/6-row media placements. Both source/result planes are approximately 468 by 220 pixels despite identifying a 1920 by 1080 source and full 16:9 output target. The retained-output plane in s07 on page 2 also uses the same wide, approximately 468 by 220 presentation for the full 16:9 output.",
+          "impact": "The visible preview does not show the selected crop fitted into the output, so the numeric crop and displayed result disagree; image/frame proportions are distorted.",
+          "correction": "Render the full source and output frames at their 16:9 proportions within their available regions. Compute the result from the selected source rectangle x=160,y=90,w=1600,h=900: remove excluded margins, scale the remaining schematic features uniformly to the output target, and clip at the frame. Preserve staged Add destination and Apply/Cancel behavior. Check connected s07 retained output proportions.",
+          "route": "ui",
+          "settledAtUtc": "2026-10-02T21:42:55.126Z"
+        },
+        {
+          "id": "B-UI-R1-02",
+          "category": "visual",
+          "blocking": true,
+          "source": [
+            "layout.md#s04-independent-zoom",
+            "scenarios.json[id=s04-independent-zoom].stateOverrides",
+            "actions.json[id=zoom-player-in].canonicalInteraction",
+            "actions.json[id=pan-player].canonicalInteraction",
+            "interaction-frames.json[id=video-view].regions[id=video-view-video-player]"
+          ],
+          "scenarioIds": [
+            "s04-independent-zoom"
+          ],
+          "evidence": "final-r4/preview-page-1.png, fourth scene, compared with Fit player at frame750 in final-r4/preview-page-3.png s11: the 200% illustration doubles one boat but keeps the pier at seven of twelve columns by one of six rows, and keeps the sky/water boundary and mast placement unchanged. ui.json part-s04-independent-zoom player-image changes selected object geometry rather than applying one scale/pan transform to the composed image.",
+          "impact": "The 200% / pan100,40 label is disconnected from the illustrated spatial inspection: magnification appears to alter individual content instead of inspecting the unchanged composition.",
+          "correction": "Use a single uniform 2x spatial transform plus the fixture pan offset for all schematic features, clipped within the unchanged player viewport. Preserve content relationships and selection/time state; Fit must show the same composition at full-frame scale. Document the transform origin if necessary in ui-notes, not in the canvas.",
+          "route": "ui",
+          "settledAtUtc": "2026-10-02T21:43:54.083Z"
+        }
+      ],
+      "artifact": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/reviews/ui-review-r1.json",
+        "sha256": "0dc517d4482566f69c0d1cf55648303b5f2ea32b247cad268e8cd2caf7f327ec",
+        "bytes": 19032
+      },
+      "subjectSha256": "5a6901c97db78467b89442e0e5e69fd42d4e55f881155280c2bbb7be110ae636"
+    },
+    {
+      "stage": "ui-review",
+      "round": 2,
+      "verdict": "pass",
+      "findings": [],
+      "artifact": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/reviews/ui-review-r2.json",
+        "sha256": "de42d93758793e8a86019ac55f615014dca6062d9f0c9e8c91d193cc426cbe81",
+        "bytes": 21263
+      },
+      "subjectSha256": "85750f51d2affe3c04f4dbfaf8f033cb20172cabba6bc1f7919a988c768b0dad"
+    }
+  ],
+  "artifacts": [
+    {
+      "role": "layout",
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/layout-submission-2/layout.md",
+      "sha256": "184dd4db243284cb5f9ca092d9cfa999e55021961171d12fa61ea195f520c97d",
+      "bytes": 31987
+    },
+    {
+      "role": "ui",
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/ui.json",
+      "sha256": "85750f51d2affe3c04f4dbfaf8f033cb20172cabba6bc1f7919a988c768b0dad",
+      "bytes": 402739
+    },
+    {
+      "role": "ui-references",
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/auxiliaries/references.json",
+      "sha256": "1e4bd8b6a2375429d72931d35dc6cb21c43845f3c72cf0ba795894f885436ac6",
+      "bytes": 545981
+    }
+  ],
+  "authorSubmissions": [
+    {
+      "directory": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/layout-submission-1",
+      "run": "pair-1-B",
+      "kind": "layout",
+      "submission": 1,
+      "preservedAt": "2026-10-02T20:53:08.051Z",
+      "artifacts": [
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/layout-submission-1/layout.md",
+          "sha256": "b6d78d30168706549c7fcb4c52f911a8a973e83b89e7730e905841c72387a5b2",
+          "bytes": 29569
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/layout-submission-1/layout-notes.md",
+          "sha256": "2ba01c6198b7ef24db5faff72c3ddf7f3f93741df95add0fabb4848496ee735f",
+          "bytes": 1935
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/layout-submission-1/author-receipt.json",
+          "sha256": "5b9d491090374755e5061f1e3759e54cb462f9aaad6017e4b26fac443d8a8127",
+          "bytes": 1691
+        }
+      ],
+      "auxiliaries": [],
+      "sizeInterpretation": "Submitted materialized artifact bytes and auxiliary file bytes are separate. Neither measures model emission or tokens."
+    },
+    {
+      "directory": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/layout-submission-2",
+      "run": "pair-1-B",
+      "kind": "layout",
+      "submission": 2,
+      "preservedAt": "2026-10-02T21:06:39.281Z",
+      "artifacts": [
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/layout-submission-2/layout.md",
+          "sha256": "184dd4db243284cb5f9ca092d9cfa999e55021961171d12fa61ea195f520c97d",
+          "bytes": 31987
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/layout-submission-2/layout-notes.md",
+          "sha256": "ee2eb94006bfdb05b6fcae3f5731953c25d58ded47eeaf924dd25ae40bfaa4d9",
+          "bytes": 2542
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/layout-submission-2/author-receipt.json",
+          "sha256": "cc17822bc68c1f239ffb2f3f37ddd50054cdfb9291829bf3e1c43cafacf9a4ad",
+          "bytes": 1528
+        }
+      ],
+      "auxiliaries": [],
+      "sizeInterpretation": "Submitted materialized artifact bytes and auxiliary file bytes are separate. Neither measures model emission or tokens."
+    },
+    {
+      "directory": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-1",
+      "run": "pair-1-B",
+      "kind": "ui",
+      "submission": 1,
+      "preservedAt": "2026-10-02T21:35:43.372Z",
+      "artifacts": [
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-1/ui.json",
+          "sha256": "5a6901c97db78467b89442e0e5e69fd42d4e55f881155280c2bbb7be110ae636",
+          "bytes": 370071
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-1/ui-notes.md",
+          "sha256": "472829567713c422709021df26f986b9ff129bc765692dc44ec6ad5ca6fdb905",
+          "bytes": 4093
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-1/author-receipt.json",
+          "sha256": "023bbe3670acad4cb3b534bd85f4c676fa2a37dfabdb0916dfee3299cd13796e",
+          "bytes": 2427
+        }
+      ],
+      "auxiliaries": [
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-1/auxiliaries/build-ui.mjs",
+          "sha256": "08b74210e2beae57975d7691781b997867469dba669e3b9a9ca1a5e0a2abc399",
+          "bytes": 26982
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-1/auxiliaries/references.json",
+          "sha256": "33844e434da798bdbda432816c6a2b9fa22b3c2f04f96522a32401a57187acb4",
+          "bytes": 465402
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-1/auxiliaries/render-r2-output.txt",
+          "sha256": "1f8a20b74f8229daed3b037b263b5ddf61f7eff8ad8663e0726b416dbb938587",
+          "bytes": 57570
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-1/auxiliaries/render-r3-output.txt",
+          "sha256": "93c8534469197f6f43f58ee5e0b15017ba63951fc56968685a5199659825732f",
+          "bytes": 58588
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-1/auxiliaries/render-r4-output.txt",
+          "sha256": "42022e78b4cf90390e710f4e85fc5d1f4cb96f212173f40146bbf0cab3c31bdc",
+          "bytes": 58588
+        }
+      ],
+      "sizeInterpretation": "Submitted materialized artifact bytes and auxiliary file bytes are separate. Neither measures model emission or tokens."
+    },
+    {
+      "directory": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2",
+      "run": "pair-1-B",
+      "kind": "ui",
+      "submission": 2,
+      "preservedAt": "2026-10-02T21:55:34.172Z",
+      "artifacts": [
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/ui.json",
+          "sha256": "85750f51d2affe3c04f4dbfaf8f033cb20172cabba6bc1f7919a988c768b0dad",
+          "bytes": 402739
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/ui-notes.md",
+          "sha256": "a2fb44bbfe034b8fe85ce9c922baa937bcb3e8cdc9fcb0d7c425e6bd39f43d70",
+          "bytes": 4573
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/author-receipt.json",
+          "sha256": "a84830a06a0c71ecd50aef819512239e3c79252eab64f471ec31f3d6b6087095",
+          "bytes": 1890
+        }
+      ],
+      "auxiliaries": [
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/auxiliaries/build-ui.mjs",
+          "sha256": "f7212e7d1b73313b91cf3994b4216de2c6188d0a20ccfce008323e80d21001ef",
+          "bytes": 28472
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/auxiliaries/references.json",
+          "sha256": "1e4bd8b6a2375429d72931d35dc6cb21c43845f3c72cf0ba795894f885436ac6",
+          "bytes": 545981
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/auxiliaries/render-r2-output.txt",
+          "sha256": "1f8a20b74f8229daed3b037b263b5ddf61f7eff8ad8663e0726b416dbb938587",
+          "bytes": 57570
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/auxiliaries/render-r3-output.txt",
+          "sha256": "93c8534469197f6f43f58ee5e0b15017ba63951fc56968685a5199659825732f",
+          "bytes": 58588
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/auxiliaries/render-r4-output.txt",
+          "sha256": "42022e78b4cf90390e710f4e85fc5d1f4cb96f212173f40146bbf0cab3c31bdc",
+          "bytes": 58588
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/auxiliaries/repair-1-r1-render-output.txt",
+          "sha256": "9ee9e3889948567b1142461e8871f6cfe4466ebef908b9b0444325ff09cdc1a0",
+          "bytes": 58600
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/auxiliaries/repair-1-r2-render-output.txt",
+          "sha256": "42b6bdfbdcb517c10e3aea6b89b5d948cfdcc30fa786850964733e3537cea638",
+          "bytes": 58600
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/auxiliaries/ui-repair-1-notes.md",
+          "sha256": "d5c01f0529af5d97a733fc6f9589dbac6c0cb046dec197956fc641bdc47995d4",
+          "bytes": 2563
+        }
+      ],
+      "sizeInterpretation": "Submitted materialized artifact bytes and auxiliary file bytes are separate. Neither measures model emission or tokens."
+    }
+  ],
+  "actualModel": null,
+  "reasoningTokens": null,
+  "totalTokens": null,
+  "creditUsage": null,
+  "clarificationRequests": null,
+  "observations": "Author notes and receipts retained per submission; source open questions are not missing-input requests. Materialized artifact and helper bytes do not measure emitted tokens. Recovery causes in notes accompany logged failures.",
+  "previews": {
+    "layout": {
+      "artifact": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/layout-submission-2/layout.md"
+    },
+    "ui": {
+      "basePreview": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-B/ui/base-r3/preview.png",
+      "preview": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-B/ui/repair-1-r2/preview.html",
+      "captures": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-B/ui/repair-1-r2/captures.json",
+      "requiredReferences": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/auxiliaries/references.json"
+    }
+  }
+}

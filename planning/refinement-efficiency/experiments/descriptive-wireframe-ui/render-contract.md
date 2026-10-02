@@ -22,6 +22,7 @@ node planning/refinement-efficiency/experiments/descriptive-wireframe-ui/harness
 node planning/refinement-efficiency/experiments/descriptive-wireframe-ui/harness.mjs --mode wireframe --input <wireframe.json> --output-dir <revision-dir> --events <events.jsonl> --run <run-id> --stage layout-render --capture
 node planning/refinement-efficiency/experiments/descriptive-wireframe-ui/harness.mjs --mode ui --input <ui.json> --output-dir <revision-dir> --events <events.jsonl> --run <run-id> --stage ui-render --capture
 node planning/refinement-efficiency/experiments/descriptive-wireframe-ui/harness.mjs capture --output-dir <revision-dir> --events <events.jsonl> --run <run-id> --stage ui-inspection
+node planning/refinement-efficiency/experiments/descriptive-wireframe-ui/harness.mjs receipt --input <layout.md-or-scenes.json> --output-dir <author-dir> --events <events.jsonl> --run <run-id> --stage <author-stage> --requested-model <model> --requested-effort <effort> --notes <brief-notes.md>
 ```
 
 `--capture` and the separate `capture` command use installed Edge, bounded contact
@@ -37,6 +38,17 @@ It never accepts an author-provided replacement timestamp. Render and capture sa
 start/end/error events, durations, hashes, byte counts, and diagnostic references.
 Failed commands exit nonzero and retain already written evidence. These are phase
 and tool timings, not reasoning-token metrics.
+
+After marking `authoring-end`, run `receipt` to save `author-receipt.json`.
+The helper hashes the exact artifact bytes, records matching run/stage UTC markers,
+and references the notes file. JSON receipts include scene IDs and `actionCount`
+(the number of declared `sourceActionRefs`); Markdown receipts leave these null.
+Requested model/effort come from flags, while actual model/effort stay null because
+the helper cannot observe the host model. This is provenance, not semantic approval.
+The shared `inputs/manifest.json` is referenced once by path and hash; input-file
+hashes are not copied into receipts. Optional `--input-manifest <file>` selects a
+different frozen packet manifest. Console output contains only receipt path,
+receipt hash, and artifact hash. Receipt preparation has its own measured tool events.
 
 ## Envelope
 

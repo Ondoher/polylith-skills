@@ -1,0 +1,658 @@
+{
+  "run": "pair-1-A",
+  "status": "approved",
+  "approvedAt": "2026-10-02T20:46:17.753Z",
+  "approvedFinalSubjects": {
+    "layout": {
+      "artifact": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4/wireframe.json",
+        "sha256": "21ed8acdc5ff38ae74f9cdb73084a9319e889318e9027ba407dd141e17a3812e",
+        "bytes": 408825
+      },
+      "review": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/reviews/structural-review-r4.json",
+        "sha256": "375ff0274303bc99620ebfd63774777dfeb56fb0a2f29bdbe808505dc860e67d",
+        "bytes": 14530
+      },
+      "completeMaterializedBytes": 408825
+    },
+    "ui": {
+      "artifact": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/ui.json",
+        "sha256": "6e8b29b3d6fa38bc371a13d530b5bb3eb66f7fb29546b6a8f686bb93fe4157bf",
+        "bytes": 915312
+      },
+      "review": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/reviews/ui-review-r2.json",
+        "sha256": "f1156214ec61d2d354cf54a2241ba5d35c69a04123f43c9318f85d338e2d5e8d",
+        "bytes": 17388
+      },
+      "completeMaterializedBytes": 915312
+    }
+  },
+  "reviewRounds": [
+    {
+      "stage": "structural-review",
+      "round": 1,
+      "verdict": "revise",
+      "findings": [
+        {
+          "id": "A-STR-01",
+          "blocking": true,
+          "route": "layout",
+          "sourceRefs": [
+            "inputs/source-description.md:49-50,60,68-70",
+            "inputs/scenarios.json:s01-composition-base,s02-inclusive-range,s03-object-trim,s04-independent-zoom"
+          ],
+          "scenes": [
+            "s01-composition-base",
+            "s02-inclusive-range",
+            "s03-object-trim",
+            "s04-independent-zoom",
+            "s05-track-audio",
+            "s06-group-properties",
+            "s08-staged-add-conflict",
+            "s11-video-save-failure",
+            "s11-video-saving-busy"
+          ],
+          "evidence": "workspace/composed-time spans the whole tracks region, but every track reserves a 170px header plus gap before its scale. On page 1 s02 the frame-600 range edge is about x303 while Pier interview, which starts at frame 600, begins about x451. s03 frame-1200 playhead is about x558 but selected Pier walk starts about x678. workspace-zoom repeats the different origins; its ruler frame 750 is about x309 while the lanes begin about x227 at frame 600. The five rows do not share the same pixel-time transform.",
+          "impact": "The range and playhead indicate different composed times from the objects underneath, so placement, trim consequences and all-track selection cannot be read reliably.",
+          "specificCorrection": "Give the composed-time row the same reserved header and lane width as all four tracks. Apply one shared origin, time window and scale to ruler, range, playhead and lane objects in both normal and zoomed parts; show composed thumbnail/time content on that aligned row. Preserve fixture timings and inclusive endpoints.",
+          "title": "Shared time coordinates do not align with the object lanes",
+          "category": "structural"
+        },
+        {
+          "id": "A-STR-02",
+          "blocking": true,
+          "route": "layout",
+          "sourceRefs": [
+            "inputs/source-description.md:68,70,74,96,100-108",
+            "inputs/scenarios.json:s02-inclusive-range,s03-object-trim",
+            "inputs/interaction-frames.json:selection-menu-decision,video-view-video-track",
+            "inputs/actions.json:set-range-boundary,trim-occurrence,reorder-objects"
+          ],
+          "scenes": [
+            "s02-inclusive-range",
+            "s03-object-trim"
+          ],
+          "evidence": "Page 1 s02 has an outlined range and a generic Selection actions button; Delete, Split and Save Clip occur only in local-status text. There are no distinct range Start/End controls or precise boundary alternatives. s03 selects Pier walk and states End 2099 to 2159, but supplies no selected-object Start/End handles or commands and no explicit Reorder action. The workspace node tree contains none of those action controls.",
+          "impact": "The required range commands and selected-object edit operations cannot be reached or reviewed; status descriptions substitute for the interaction surface.",
+          "specificCorrection": "Represent the s02 eligible selection menu as actual Delete, Split and Save Clip controls, plus distinct range Start/End manipulation and precise boundary commands. In s03 provide occurrence Start/End trim controls and explicit whole-object Reorder access with its accepted destination/commit/cancel intent. Keep the existing preview-only/cancel explanation and collision result.",
+          "title": "Range and object editing commands are absent",
+          "category": "coverage"
+        },
+        {
+          "id": "A-STR-03",
+          "blocking": true,
+          "route": "layout",
+          "sourceRefs": [
+            "inputs/source-description.md:44-49",
+            "inputs/scenarios.json:s01-composition-base,s11-video-save-failure",
+            "inputs/interaction-frames.json:video-view-video-identity",
+            "inputs/actions.json:choose-video,name-video"
+          ],
+          "scenes": [
+            "s01-composition-base",
+            "s11-video-save-failure",
+            "s11-video-saving-busy"
+          ],
+          "evidence": "The active video is only the shell text node video-name. No scene includes a New/open video chooser or a video-name input, although choose-video and name-video appear in sourceActionRefs. Video identity/save state are above the player in the shell, while Save Video is below the player with timeline selection commands.",
+          "impact": "Users cannot reach the accepted choose/name operations, and the required video identity/save region below the player separator is absent.",
+          "specificCorrection": "Add the accepted video chooser and editable video name together with draft save state and Save Video in the video-identity region below the separator. Preserve project identity/Save Project as their separate scope and disable applicable choose/name controls in the busy state.",
+          "title": "Active-video choose/name controls and identity region are missing",
+          "category": "coverage"
+        },
+        {
+          "id": "A-STR-04",
+          "blocking": true,
+          "route": "layout",
+          "sourceRefs": [
+            "inputs/scenarios.json:s05-track-audio,s06-group-properties",
+            "inputs/interaction-frames.json:track-properties-context,clip-properties-context",
+            "inputs/actions.json:set-track-volume,set-clip-volume,mute-clip,edit-source-rectangle,ungroup-clip",
+            "inputs/usage-packet.json:sharedInterpretations[1]"
+          ],
+          "scenes": [
+            "s05-track-audio",
+            "s06-group-properties"
+          ],
+          "evidence": "On page 2 s05 Track 2 volume 60% is static properties-context text; no volume control exists. s06 shows group crop/80% as status text but keeps the inherited Edit output rectangle button, with no group Source rectangle, clip volume or Mute clip controls. Ungroup is static text saying only a neutral group can be ungrouped, with no unavailable command or reason naming this group's custom crop and 80% volume.",
+          "impact": "The contextual settings required by these scenarios are not actionable, and the surviving track output control under the group heading obscures setting ownership.",
+          "specificCorrection": "Expose the accepted editable Track 2 volume control while retaining lane mute and 60% when muted. For the selected group expose source crop, group volume and group mute with track inheritance clearly separated; show unavailable Ungroup with the applicable custom-crop/volume reason. Preserve the provisional neutral-group rule without inventing a reset or transfer policy.",
+          "title": "Contextual audio, crop and Ungroup controls are absent",
+          "category": "coverage"
+        },
+        {
+          "id": "A-STR-05",
+          "blocking": true,
+          "route": "layout",
+          "sourceRefs": [
+            "inputs/scenarios.json:s08-staged-add-conflict,s08-source-rectangle",
+            "inputs/interaction-frames.json:timeline-add-decision",
+            "inputs/actions.json:choose-timeline-content,insert-content,dismiss-editor",
+            "inputs/usage-packet.json:sharedInterpretations[0]"
+          ],
+          "scenes": [
+            "s08-staged-add-conflict",
+            "s08-source-rectangle"
+          ],
+          "evidence": "Page 2 s08 changes the property heading to Add to Timeline and displays Harbor evening plus a conflict. The workspace still has its Add-to-Timeline launcher and output rectangle button, but the staged Add surface has no content chooser, disabled insert/Add command, or Cancel. Its local-status says choose a compatible destination or Cancel without providing that cancellation route. The related crop dialog says Apply returns to Add, but the retained Add draft has no represented operative surface.",
+          "impact": "The conflict can be read but not recovered from through the accepted staged workflow, and the source-crop return target is incomplete.",
+          "specificCorrection": "Represent the retained Add decision surface with staged content chooser, captured Track 2/frame 1500 destination, conflict-local feedback, unavailable commit and Cancel. Provide the accepted correction/return path while preserving insertion chosen before Add. Show source-rectangle access only for applicable staged file/clip content; do not use crop as a saved-video conflict remedy.",
+          "title": "Staged Add has no operative decision or recovery surface",
+          "category": "coverage"
+        },
+        {
+          "id": "A-STR-06",
+          "blocking": true,
+          "route": "layout",
+          "sourceRefs": [
+            "inputs/scenarios.json:s07-framing-invalid,s08-source-rectangle",
+            "inputs/source-description.md:78-82",
+            "inputs/actions.json:adjust-rectangle",
+            "inputs/usage-packet.json:sharedInterpretations[2]"
+          ],
+          "scenes": [
+            "s07-framing-invalid",
+            "s08-source-rectangle"
+          ],
+          "evidence": "On pages 2 and 3 each rectangle preview is a vertical flex list: full-frame strip, separate equally wide selected-rectangle strip, then detached Top left/Bottom right handles. The 160,90 / 1600x900 source crop is not inset within the 1920x1080 frame, and invalid x1800/width400 is not shown at or beyond the right boundary. Numeric fields and disabled invalid Apply are present, but the visual geometry is unrelated to them.",
+          "impact": "The required direct visual adjustment and coordinate-space meaning cannot be understood; the preview cannot distinguish a valid inset crop from an overflowing output rectangle.",
+          "specificCorrection": "Use a single correctly proportioned frame with the staged rectangle positioned and sized in its coordinate space and handles attached to its corners/edges. For output invalid input retain entered values and make the overflow beyond 1920 visible with the original/full-frame reference; for source crop show the true inset proportions. Keep source/output pixels, numeric inputs, Full frame, Apply/Cancel, and staged Add return semantics.",
+          "title": "Rectangle geometry does not represent its coordinate values",
+          "category": "structural"
+        },
+        {
+          "id": "A-STR-07",
+          "blocking": true,
+          "route": "layout",
+          "sourceRefs": [
+            "inputs/source-description.md:46,60,62,78-80,98",
+            "inputs/scenarios.json:s03-object-trim,s04-independent-zoom,s06-group-properties",
+            "renderer-limitations.md"
+          ],
+          "scenes": [
+            "s01-composition-base",
+            "s02-inclusive-range",
+            "s03-object-trim",
+            "s04-independent-zoom",
+            "s05-track-audio",
+            "s06-group-properties",
+            "s08-staged-add-conflict",
+            "s11-video-save-failure",
+            "s11-video-saving-busy"
+          ],
+          "evidence": "Every workspace player uses two stacked wide strips, output-frame and player-content, and unchanged Harbor wide · base image text. At frame 1200 s03 Harbor wide has already ended (899), while Pier walk and Pier interview contribute; s06 frame1800 has Pier walk and Harbor sequence. s04 says 200% pan but its player geometry is identical to Fit. Selected range/object states retain Stopped · Full video. The schematic output therefore does not represent the selected/time-resolved composition or inspection state.",
+          "impact": "Users cannot connect the preview with the selected composition, current time, or distinct inspection magnification. This is semantic media geometry, beyond the documented lack of photographic/video assets.",
+          "specificCorrection": "Represent one 16:9 schematic output viewport with the fixture's contributing layers/gaps at each resolved frame and correct selection playback scope. Use the same deterministic schematic content and visibly changed viewport scale/pan for the 200% inspection state while retaining saved framing. Do not add real media or implementation commentary.",
+          "title": "Player geometry and content do not represent the current composition",
+          "category": "structural"
+        },
+        {
+          "id": "A-STR-08",
+          "blocking": true,
+          "route": "layout",
+          "sourceRefs": [
+            "inputs/source-description.md:60",
+            "inputs/scenarios.json:s02-inclusive-range,s03-object-trim,s11-video-save-failure,s11-video-saving-busy"
+          ],
+          "scenes": [
+            "s02-inclusive-range",
+            "s03-object-trim",
+            "s11-video-save-failure",
+            "s11-video-saving-busy"
+          ],
+          "evidence": "Page 1 s02 resolved-frame/playhead say frame600 while timeline-position remains Frame 0. Page 1 s03 identifies and highlights Pier walk selected, while properties-feedback remains No object selected. Pages 3/4 s11 title Track 2 properties and captured Track 2 insertion coexist with properties-context Track 1 · base layer · 100% volume.",
+          "impact": "Concurrent context labels disagree about current frame, selection and setting owner, which makes commands and preserved recovery state ambiguous.",
+          "specificCorrection": "Update all dependent context nodes from the same scenario state: s02 both time displays frame600; s03 properties confirm the selected occurrence; both s11 states show Track 2 property context. Inspect connected states for the same stale inherited values.",
+          "title": "Dependent context labels contradict the scenario state",
+          "category": "structural"
+        },
+        {
+          "id": "A-STR-09",
+          "title": "Named-clip update omits its retained failure continuation",
+          "blocking": true,
+          "route": "layout",
+          "sourceRefs": [
+            "inputs/scenarios.json:s10-clip-update",
+            "inputs/interaction-frames.json:clip-update.purpose",
+            "inputs/actions.json:confirm-update.canonicalInteraction",
+            "inputs/feedback.json:confirm-update-failure"
+          ],
+          "scenes": [
+            "s10-clip-update"
+          ],
+          "evidence": "Page 3 s10 supplies the comparison, scope and Confirm/Cancel, but neither its part/scene nor layout-notes states what happens on a failed update or where the local failure and retry remain. The notes only describe the library-only trim comparison.",
+          "impact": "The confirmation is reviewable, but the required retained target/trim/selection failure recovery is not represented in the authoring contract.",
+          "specificCorrection": "Document the failure continuation and local feedback placement for this same update surface: keep the dialog, named target and reviewed Start/End values; leave saved definition, draft and selection unchanged; permit explicit retry or Cancel back to the captured stopped context. Keep the current confirmation scene and do not fabricate a failure or add an independent variant.",
+          "category": "coverage"
+        },
+        {
+          "id": "A-STR-10",
+          "title": "Frame stepping remains enabled during Save Video commit",
+          "blocking": true,
+          "route": "layout",
+          "sourceRefs": [
+            "inputs/scenarios.json:s11-video-saving-busy",
+            "inputs/actions.json:step-frame.applicableStateRefs",
+            "inputs/source-description.md:110"
+          ],
+          "scenes": [
+            "s11-video-saving-busy"
+          ],
+          "evidence": "On page 4 busy state, Play and editing/context-changing controls are disabled, but step-prev and step-next are inherited in state default and visibly enabled. Accepted step-frame is applicable only in video-editing, while the saving-state exemption permits inspection zoom/pan.",
+          "impact": "The scene presents actions that change the captured resolved frame/current preview during a commit even though they are unavailable in the accepted saving state.",
+          "specificCorrection": "Disable previous/next-frame controls throughout the Save Video commit, then restore eligible controls after the actual result. Keep permitted inspection zoom/pan available and ensure newly restored editing/property controls obey the same commit freeze.",
+          "category": "structural"
+        }
+      ],
+      "artifact": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/reviews/structural-review-r1.json",
+        "sha256": "1640de0a6a9c913d929303d0e0fd99674a0e3cb024ea2058cc5581598e616619",
+        "bytes": 27720
+      },
+      "subjectSha256": "2f39e5a7058ca66d8a53ef78767bc5833d580161aea2fc0294a2122a6898c4b6",
+      "classification": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/reviews/structural-review-r1-categories.json",
+        "sha256": "9b2dd16d4bc6324926e8631b4bc291403ce1397a37c4695c7fac8b1924ad6941",
+        "bytes": 568
+      }
+    },
+    {
+      "stage": "structural-review",
+      "round": 2,
+      "verdict": "revise",
+      "findings": [
+        {
+          "id": "A-STR-05",
+          "category": "structural",
+          "blocking": true,
+          "route": "layout",
+          "status": "partially-corrected",
+          "sourceRefs": [
+            "inputs/scenarios.json:s08-staged-add-conflict",
+            "inputs/interaction-frames.json:timeline-add-decision"
+          ],
+          "scenes": [
+            "s08-staged-add-conflict"
+          ],
+          "evidence": "layout-r14 page2 now includes the content chooser, captured destination, disabled Add and Cancel. However the selected third option, Harbor evening · saved video, sits behind the captured-destination/conflict siblings and cannot be read. workspace-add/properties stacks a three-option listbox, title, context, feedback and two actions into the fixed 320px upper row; the last chosen option is the content covered by the following regions.",
+          "impact": "The repaired conflict surface no longer exposes which saved video caused the refusal. This is required selected-content identity hidden by the allocation, not a purely cosmetic text warning.",
+          "specificCorrection": "Reserve sufficient height for all chooser rows or show a compact selected-content control/summary that keeps Harbor evening · saved video visible with its captured Track2/frame1500 destination and conflict. Reallocate the Add property area without covering the chosen item. Keep disabled commit and Cancel, and preserve insertion-before-Add semantics."
+        },
+        {
+          "id": "A-STR-06",
+          "category": "structural",
+          "blocking": true,
+          "route": "layout",
+          "status": "partially-corrected",
+          "sourceRefs": [
+            "inputs/scenarios.json:s07-framing-invalid,s08-source-rectangle",
+            "inputs/source-description.md:78-82",
+            "structural-review-r1.json:A-STR-06"
+          ],
+          "scenes": [
+            "s07-framing-invalid",
+            "s08-source-rectangle"
+          ],
+          "evidence": "The crop and overflow are now placed within/against their correct bounds and handles are attached. Both preview grids nevertheless fix height to twelve 18px rows (216px) while stretching horizontally across the ~1034px panel. Page3 source frame1920×1080 is approximately1034×216 (4.79:1), and its1600×900 crop is approximately861×180 (also4.79:1). Page2 output-frame portion is approximately903×216. The represented fixture frame should be16:9; x and y are rendered at different spatial scales.",
+          "impact": "The apparent crop/output shape is distorted, so the visual adjustment still does not show the actual framing proportions. Pixel labels alone cannot establish the image geometry.",
+          "specificCorrection": "Use the same display scale for x and y. Keep the1920×1080 frame16:9 and1600×900 crop16:9, inset160/90, with attached handles. For the invalid output keep the same uniform scale and reserve extra width for the x1920→2200 overflow. Narrowing the preview is sufficient; no larger dialog or policy change is required."
+        },
+        {
+          "id": "A-STR-07",
+          "category": "structural",
+          "blocking": true,
+          "route": "layout",
+          "status": "partially-corrected",
+          "sourceRefs": [
+            "inputs/scenarios.json:s04-independent-zoom",
+            "inputs/source-description.md:62",
+            "structural-review-r1.json:A-STR-07"
+          ],
+          "scenes": [
+            "s04-independent-zoom"
+          ],
+          "evidence": "Resolved contributor text, selection scope and the ordinary400×225(16:9) player are corrected. In workspace-zoom, however, player-image has columns60px/1fr/60px and one225px row; player-content occupies only the middle column. The result on page1 is a centered280×225 strip inside the400×225 frame. It is neither a2× magnified viewport nor a uniformly half-sized inspection window, and it has no +100/+40 pan geometry despite that numeric label.",
+          "impact": "The visual still communicates a resized/narrowed image rather than the required independent200% inspection state. Its spatial relationship disagrees with the displayed scale and pan.",
+          "specificCorrection": "Represent200% as a2× enlargement of deterministic schematic content clipped to the same400×225 viewport with the fixture's inspection pan, or as an explicitly identified overview window whose width and height both correspond to half of the full frame with the matching pan offset. Preserve saved framing, timeline window and selection; do not add media assets."
+        }
+      ],
+      "artifact": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/reviews/structural-review-r2.json",
+        "sha256": "52d626cc5c234dce16ee32bdf1c17aa4ea0a5ece216f8ac6b17bffcfbeea73d4",
+        "bytes": 15817
+      },
+      "subjectSha256": "5669d07c821067570d981552b83450d81405b6f755c92dbe8830ca41f017c1be"
+    },
+    {
+      "stage": "structural-review",
+      "round": 3,
+      "verdict": "pass",
+      "findings": [],
+      "artifact": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/reviews/structural-review-r3.json",
+        "sha256": "d79c0412e50f09344e35a14b8b23770175d65d0ff831147fae393531eb1236e5",
+        "bytes": 9812
+      },
+      "subjectSha256": "5e3edb08e24f57883bd6bafd17ad6d9b208b4fc4ba84967fcdf59cb06bb3265a"
+    },
+    {
+      "stage": "structural-review",
+      "round": 4,
+      "verdict": "pass",
+      "findings": [],
+      "artifact": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/reviews/structural-review-r4.json",
+        "sha256": "375ff0274303bc99620ebfd63774777dfeb56fb0a2f29bdbe808505dc860e67d",
+        "bytes": 14530
+      },
+      "subjectSha256": "21ed8acdc5ff38ae74f9cdb73084a9319e889318e9027ba407dd141e17a3812e"
+    },
+    {
+      "stage": "ui-review",
+      "round": 1,
+      "verdict": "revise",
+      "findings": [
+        {
+          "id": "A-UI-01",
+          "category": "coverage",
+          "severity": "blocking",
+          "sourceRefs": [
+            "inputs/source-description.md:Projects And Content",
+            "inputs/scope-surfaces.json:application.shell.regions[project-header]",
+            "inputs/interaction-frames.json:video-view.regions[video-view-project-header].affordances[video-view-new-project,video-view-open-project,video-view-save-project-as]",
+            "inputs/actions.json:new-project,open-project,save-project-as",
+            "inputs/scenarios.json:s01-composition-base,s11-video-saving-busy,s12-project-guard-failure"
+          ],
+          "evidence": "All four final-r2 contact sheets show a persistent project header with only Save Project. New, Open and Save As are absent. The accepted wireframe also omits these controls; this is not introduced by UI styling. Frozen video-view explicitly defines all three as persistent header affordances, and scope-surfaces lists New/Open/Save/Save As in the header. The busy state therefore cannot visibly communicate their commit-freeze availability, and the Open guard has no visible originating Open control.",
+          "impact": "The complete stopped workspace lacks required persistent project actions, and their disabled availability during commits cannot be assessed from the comp.",
+          "specificCorrection": "Repair the accepted layout to expose New, Open and Save As alongside Save Project in the persistent project header, with matching source action bindings. Preserve the project identity and workspace ordering. Show these context-changing/competing actions disabled in the saving-busy scene and preserve the existing captured guard behavior. Carry the repaired header into UI and inspect its fit in the affected scenes; do not add an unrequested export state.",
+          "route": "layout"
+        }
+      ],
+      "artifact": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/reviews/ui-review-r1.json",
+        "sha256": "e720b0400c80a2f82b4052662fe9be29e7de696047dc1da95043475803a8cd99",
+        "bytes": 18051
+      },
+      "subjectSha256": "e9e6e5f095e062dfca42a1b98ad2a755c8125943a58842df3a98f90c89690545"
+    },
+    {
+      "stage": "ui-review",
+      "round": 2,
+      "verdict": "pass",
+      "findings": [],
+      "artifact": {
+        "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/reviews/ui-review-r2.json",
+        "sha256": "f1156214ec61d2d354cf54a2241ba5d35c69a04123f43c9318f85d338e2d5e8d",
+        "bytes": 17388
+      },
+      "subjectSha256": "6e8b29b3d6fa38bc371a13d530b5bb3eb66f7fb29546b6a8f686bb93fe4157bf"
+    }
+  ],
+  "artifacts": [
+    {
+      "role": "layout",
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4/wireframe.json",
+      "sha256": "21ed8acdc5ff38ae74f9cdb73084a9319e889318e9027ba407dd141e17a3812e",
+      "bytes": 408825
+    },
+    {
+      "role": "ui",
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/ui.json",
+      "sha256": "6e8b29b3d6fa38bc371a13d530b5bb3eb66f7fb29546b6a8f686bb93fe4157bf",
+      "bytes": 915312
+    }
+  ],
+  "authorSubmissions": [
+    {
+      "directory": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-1",
+      "preservedAt": null,
+      "artifacts": [
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-1/author-receipt.json",
+          "sha256": "4e7adbbac31f8e2500ff593ba3ee18ba6950f0f921681dfc70f8b1a502053c9b",
+          "bytes": 2078
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-1/layout-notes.md",
+          "sha256": "4e135f080e8822cbe4e60df65a0f3aa429ce339aed1b7c06474009d05a7edeb5",
+          "bytes": 2288
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-1/wireframe.json",
+          "sha256": "2f39e5a7058ca66d8a53ef78767bc5833d580161aea2fc0294a2122a6898c4b6",
+          "bytes": 169510
+        }
+      ],
+      "provenance": "Earlier coordinator preserved exact files without a separate submission manifest; preservation time unavailable."
+    },
+    {
+      "directory": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-2",
+      "run": "pair-1-A",
+      "kind": "layout",
+      "submission": 2,
+      "preservedAt": "2026-10-02T19:44:06.526Z",
+      "artifacts": [
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-2/wireframe.json",
+          "sha256": "5669d07c821067570d981552b83450d81405b6f755c92dbe8830ca41f017c1be",
+          "bytes": 392101
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-2/layout-notes.md",
+          "sha256": "4e135f080e8822cbe4e60df65a0f3aa429ce339aed1b7c06474009d05a7edeb5",
+          "bytes": 2288
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-2/author-receipt.json",
+          "sha256": "0ad1c20c24fd11cd3ad8427e1699258e5e638ebb1403f11b3675eb616327531c",
+          "bytes": 1924
+        }
+      ]
+    },
+    {
+      "directory": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-3",
+      "run": "pair-1-A",
+      "kind": "layout",
+      "submission": 3,
+      "preservedAt": "2026-10-02T19:54:56.143Z",
+      "artifacts": [
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-3/wireframe.json",
+          "sha256": "5e3edb08e24f57883bd6bafd17ad6d9b208b4fc4ba84967fcdf59cb06bb3265a",
+          "bytes": 393214
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-3/layout-notes.md",
+          "sha256": "4e135f080e8822cbe4e60df65a0f3aa429ce339aed1b7c06474009d05a7edeb5",
+          "bytes": 2288
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-3/author-receipt.json",
+          "sha256": "5dff5941a492ff351842b8f7ded271c2fdd7d44ecaf9c9e6916f2ac7c7277424",
+          "bytes": 1924
+        }
+      ]
+    },
+    {
+      "directory": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4",
+      "run": "pair-1-A",
+      "kind": "layout",
+      "submission": 4,
+      "preservedAt": "2026-10-02T20:28:16.168Z",
+      "artifacts": [
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4/wireframe.json",
+          "sha256": "21ed8acdc5ff38ae74f9cdb73084a9319e889318e9027ba407dd141e17a3812e",
+          "bytes": 408825
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4/layout-notes.md",
+          "sha256": "4e135f080e8822cbe4e60df65a0f3aa429ce339aed1b7c06474009d05a7edeb5",
+          "bytes": 2288
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4/author-receipt.json",
+          "sha256": "5c12357b076bfadb8ee2b96619e1f312af8c90a74a657a93cfe85db9d173aa1b",
+          "bytes": 1924
+        }
+      ],
+      "auxiliaries": [
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4/auxiliaries/build.mjs",
+          "sha256": "2b1a2fcbefaee139b623009ad763d456c3641506da74d59f17c0851ae15599ac",
+          "bytes": 27893
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4/auxiliaries/layout-repair-1-notes.md",
+          "sha256": "1051c2dd0066c7b4cd202419263a5afe61e0d6f3c4ebc1ca032f7d881ed43982",
+          "bytes": 3025
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4/auxiliaries/layout-repair-2-notes.md",
+          "sha256": "dcf9d38c0226822bf94cbc28c30228735b4deb902178037d5c6196d84deee6e2",
+          "bytes": 1608
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/layout-submission-4/auxiliaries/layout-repair-3-notes.md",
+          "sha256": "1c93f8b2260b328a8fa910a27b8f397edf270fba29b56eda83eb28449ed8a1c7",
+          "bytes": 1157
+        }
+      ],
+      "sizeInterpretation": "Submitted materialized artifact bytes and auxiliary file bytes are separate. Neither measures model emission or tokens."
+    },
+    {
+      "directory": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-1",
+      "run": "pair-1-A",
+      "kind": "ui",
+      "submission": 1,
+      "preservedAt": "2026-10-02T20:13:02.369Z",
+      "artifacts": [
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-1/ui.json",
+          "sha256": "e9e6e5f095e062dfca42a1b98ad2a755c8125943a58842df3a98f90c89690545",
+          "bytes": 879725
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-1/ui-notes.md",
+          "sha256": "0c8fd845424837b2e64f13b3c30769ac77e6b319183ecf5d341ff3b6c868794c",
+          "bytes": 4118
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-1/author-receipt.json",
+          "sha256": "a744e7f835889c5d08302c5205ba0371814c26058fc6f1bdfd9ad851054f81e4",
+          "bytes": 2232
+        }
+      ],
+      "auxiliaries": [
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-1/auxiliaries/author-ui.mjs",
+          "sha256": "f344ce3ef5f98dda9a977efe2b7d2a923f2a13b4ee57799f9bcac122d28ca920",
+          "bytes": 10457
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-1/auxiliaries/final-r2-output.json",
+          "sha256": "f817e26bf58cd9bf56217ab85f172e1caad79a1393c75978162789324de0f898",
+          "bytes": 58220
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-1/auxiliaries/inspect-source.mjs",
+          "sha256": "d2f451eb0f198a7295a2c6e8a4e66a5be55249cb9aa2b53e5f6a1eb17be51776",
+          "bytes": 1087
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-1/auxiliaries/source-structure.txt",
+          "sha256": "9fd1495c1384a7a13fbdbe9e1a6859d9df73c6aa0c4d5734c7e12041546d6178",
+          "bytes": 73957
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-1/auxiliaries/ui-base.json",
+          "sha256": "65b7227b64ce7c5ca4c0d5579cda807683c4781716e69c2af7c7d62a51869ef1",
+          "bytes": 839853
+        }
+      ],
+      "sizeInterpretation": "Submitted materialized artifact bytes and auxiliary file bytes are separate. Neither measures model emission or tokens."
+    },
+    {
+      "directory": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2",
+      "run": "pair-1-A",
+      "kind": "ui",
+      "submission": 2,
+      "preservedAt": "2026-10-02T20:41:37.381Z",
+      "artifacts": [
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/ui.json",
+          "sha256": "6e8b29b3d6fa38bc371a13d530b5bb3eb66f7fb29546b6a8f686bb93fe4157bf",
+          "bytes": 915312
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/ui-notes.md",
+          "sha256": "374829768bad05e9f6e8d960ccab1de11bf6bfb2f940641b4512422e8447b7b8",
+          "bytes": 4673
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/author-receipt.json",
+          "sha256": "a0c5542aed477ede4ea81b446aafa32e593227b82d166266ec8f7a3876094a64",
+          "bytes": 1890
+        }
+      ],
+      "auxiliaries": [
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/auxiliaries/author-ui.mjs",
+          "sha256": "ffe04ea072622aca388072423589baeacc730515948ecd4bdc9dff956b378c38",
+          "bytes": 10479
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/auxiliaries/final-r2-output.json",
+          "sha256": "f817e26bf58cd9bf56217ab85f172e1caad79a1393c75978162789324de0f898",
+          "bytes": 58220
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/auxiliaries/inspect-source.mjs",
+          "sha256": "d2f451eb0f198a7295a2c6e8a4e66a5be55249cb9aa2b53e5f6a1eb17be51776",
+          "bytes": 1087
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/auxiliaries/repair-1-r1-output.json",
+          "sha256": "a2c82cbec688e0cf5160dede40402cd347cc51d775655f21d88173a40eae80f8",
+          "bytes": 65818
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/auxiliaries/source-structure.txt",
+          "sha256": "9fd1495c1384a7a13fbdbe9e1a6859d9df73c6aa0c4d5734c7e12041546d6178",
+          "bytes": 73957
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/auxiliaries/ui-base.json",
+          "sha256": "a62fc3e53b3347c095312aae4475d2b37418cd1c771828a801fe0ffa8a18dc6a",
+          "bytes": 874589
+        },
+        {
+          "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/auxiliaries/ui-repair-1-notes.md",
+          "sha256": "17b76cd680cb573f9d7d388dbaf5624fc7dd0c0ec3826a19e6fc90131ee736b6",
+          "bytes": 2063
+        }
+      ],
+      "sizeInterpretation": "Submitted materialized artifact bytes and auxiliary file bytes are separate. Neither measures model emission or tokens."
+    }
+  ],
+  "actualModel": null,
+  "reasoningTokens": null,
+  "totalTokens": null,
+  "creditUsage": null,
+  "clarificationRequests": null,
+  "observations": "Author notes and receipts retained per submission; source open questions are not missing-input requests. Materialized artifact and helper bytes do not measure emitted tokens. Recovery causes in notes accompany logged failures.",
+  "previews": {
+    "layout": {
+      "preview": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/layout/layout-r16/preview.html",
+      "captures": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/layout/layout-r16/captures.json"
+    },
+    "ui": {
+      "basePreview": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/ui/base-r2/preview.html",
+      "preview": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/ui/repair-1-r1/preview.html",
+      "captures": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/ui/repair-1-r1/captures.json"
+    }
+  }
+}

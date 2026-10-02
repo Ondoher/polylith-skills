@@ -1,0 +1,61 @@
+{
+  "run": "pair-1-A",
+  "kind": "ui",
+  "submission": 2,
+  "preservedAt": "2026-10-02T20:41:37.381Z",
+  "artifacts": [
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/ui.json",
+      "sha256": "6e8b29b3d6fa38bc371a13d530b5bb3eb66f7fb29546b6a8f686bb93fe4157bf",
+      "bytes": 915312
+    },
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/ui-notes.md",
+      "sha256": "374829768bad05e9f6e8d960ccab1de11bf6bfb2f940641b4512422e8447b7b8",
+      "bytes": 4673
+    },
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/author-receipt.json",
+      "sha256": "a0c5542aed477ede4ea81b446aafa32e593227b82d166266ec8f7a3876094a64",
+      "bytes": 1890
+    }
+  ],
+  "auxiliaries": [
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/auxiliaries/author-ui.mjs",
+      "sha256": "ffe04ea072622aca388072423589baeacc730515948ecd4bdc9dff956b378c38",
+      "bytes": 10479
+    },
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/auxiliaries/final-r2-output.json",
+      "sha256": "f817e26bf58cd9bf56217ab85f172e1caad79a1393c75978162789324de0f898",
+      "bytes": 58220
+    },
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/auxiliaries/inspect-source.mjs",
+      "sha256": "d2f451eb0f198a7295a2c6e8a4e66a5be55249cb9aa2b53e5f6a1eb17be51776",
+      "bytes": 1087
+    },
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/auxiliaries/repair-1-r1-output.json",
+      "sha256": "a2c82cbec688e0cf5160dede40402cd347cc51d775655f21d88173a40eae80f8",
+      "bytes": 65818
+    },
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/auxiliaries/source-structure.txt",
+      "sha256": "9fd1495c1384a7a13fbdbe9e1a6859d9df73c6aa0c4d5734c7e12041546d6178",
+      "bytes": 73957
+    },
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/auxiliaries/ui-base.json",
+      "sha256": "a62fc3e53b3347c095312aae4475d2b37418cd1c771828a801fe0ffa8a18dc6a",
+      "bytes": 874589
+    },
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-A/ui-submission-2/auxiliaries/ui-repair-1-notes.md",
+      "sha256": "17b76cd680cb573f9d7d388dbaf5624fc7dd0c0ec3826a19e6fc90131ee736b6",
+      "bytes": 2063
+    }
+  ],
+  "sizeInterpretation": "Submitted materialized artifact bytes and auxiliary file bytes are separate. Neither measures model emission or tokens."
+}

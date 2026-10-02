@@ -1,0 +1,25 @@
+{
+  "run": "pair-1-B",
+  "kind": "layout",
+  "submission": 2,
+  "preservedAt": "2026-10-02T21:06:39.281Z",
+  "artifacts": [
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/layout-submission-2/layout.md",
+      "sha256": "184dd4db243284cb5f9ca092d9cfa999e55021961171d12fa61ea195f520c97d",
+      "bytes": 31987
+    },
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/layout-submission-2/layout-notes.md",
+      "sha256": "ee2eb94006bfdb05b6fcae3f5731953c25d58ded47eeaf924dd25ae40bfaa4d9",
+      "bytes": 2542
+    },
+    {
+      "path": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/layout-submission-2/author-receipt.json",
+      "sha256": "cc17822bc68c1f239ffb2f3f37ddd50054cdfb9291829bf3e1c43cafacf9a4ad",
+      "bytes": 1528
+    }
+  ],
+  "auxiliaries": [],
+  "sizeInterpretation": "Submitted materialized artifact bytes and auxiliary file bytes are separate. Neither measures model emission or tokens."
+}

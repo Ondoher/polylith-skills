@@ -1,0 +1,61 @@
+{
+  "run": "pair-1-A",
+  "stage": "layout-repair-3-authoring",
+  "recordedAt": "2026-10-02T20:27:58.866Z",
+  "artifactPath": "C:\\dev\\polylith-skills\\.codex-tmp\\descriptive-wireframe-ui-20261002\\pair-1-A\\layout\\wireframe.json",
+  "artifactSha256": "21ed8acdc5ff38ae74f9cdb73084a9319e889318e9027ba407dd141e17a3812e",
+  "artifactBytes": 408825,
+  "artifactFormat": "json",
+  "sceneIds": [
+    "s01-composition-base",
+    "s02-inclusive-range",
+    "s03-object-trim",
+    "s04-independent-zoom",
+    "s05-track-audio",
+    "s06-group-properties",
+    "s07-framing-invalid",
+    "s08-staged-add-conflict",
+    "s08-source-rectangle",
+    "s09-clip-save-failure",
+    "s10-clip-update",
+    "s11-video-save-failure",
+    "s11-video-saving-busy",
+    "s12-project-guard-failure"
+  ],
+  "actionCount": 51,
+  "requestedModel": "gpt-6-sol",
+  "requestedEffort": "medium",
+  "actualModel": null,
+  "actualEffort": null,
+  "notesPath": "C:\\dev\\polylith-skills\\.codex-tmp\\descriptive-wireframe-ui-20261002\\pair-1-A\\layout\\layout-repair-3-notes.md",
+  "markers": [
+    {
+      "type": "marker",
+      "phase": "start",
+      "details": {},
+      "run": "pair-1-A",
+      "stage": "layout-repair-3-authoring",
+      "timestamp": "2026-10-02T20:25:39.161Z"
+    },
+    {
+      "type": "marker",
+      "phase": "inputs-ready",
+      "details": {},
+      "run": "pair-1-A",
+      "stage": "layout-repair-3-authoring",
+      "timestamp": "2026-10-02T20:25:56.431Z"
+    },
+    {
+      "type": "marker",
+      "phase": "authoring-end",
+      "details": {},
+      "run": "pair-1-A",
+      "stage": "layout-repair-3-authoring",
+      "timestamp": "2026-10-02T20:27:51.753Z"
+    }
+  ],
+  "frozenInputManifest": {
+    "path": "C:\\dev\\polylith-skills\\planning\\refinement-efficiency\\experiments\\descriptive-wireframe-ui\\inputs\\manifest.json",
+    "sha256": "5b4ab2aab26abdbf19beae10ce83b1e686aaff153f7b69bee9976f13a74ac28e"
+  }
+}

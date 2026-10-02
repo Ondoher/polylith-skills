@@ -150,6 +150,62 @@ export const ExperimentHarness = {
 		return event(context, {type: 'marker', phase: required(phase, 'phase'), details});
 	},
 
+	/** Save mechanical provenance for a Markdown layout or JSON scene envelope.
+	 * @param {object} options - context, input, outputDir, optional requestedModel/requestedEffort and notes.
+	 * @returns {Promise<object>} Receipt path and exact receipt/artifact hashes, without contribution arrays.
+	 */
+	async receipt(options) {
+		return measured(options, 'receipt', async () => {
+			const input = path.resolve(required(options.input, 'input'));
+			const source = await fs.readFile(input);
+			const format = path.extname(input).toLowerCase() === '.json' ? 'json' : 'markdown';
+			if (format === 'markdown' && !['.md', '.markdown'].includes(path.extname(input).toLowerCase()))
+				throw new Error('Receipt input must be Markdown or JSON');
+			const document = format === 'json' ? JSON.parse(source.toString('utf8')) : null;
+			const notesPath = options.notes ? path.resolve(options.notes) : null;
+			if (notesPath && !(await fs.stat(notesPath)).isFile()) throw new Error('Notes must reference a file');
+			const manifestPath = path.resolve(
+				options.inputManifest ?? fileURLToPath(new URL('./inputs/manifest.json', import.meta.url)),
+			);
+			const manifest = await fs.readFile(manifestPath);
+			const markers = (await fs.readFile(required(options.events, 'events'), 'utf8'))
+				.split('\n')
+				.filter(Boolean)
+				.map((line) => JSON.parse(line))
+				.filter(
+					(entry) => entry.type === 'marker' && entry.run === options.run && entry.stage === options.stage,
+				);
+			const receipt = {
+				run: options.run,
+				stage: options.stage,
+				recordedAt: new Date().toISOString(),
+				artifactPath: input,
+				artifactSha256: digest(source),
+				artifactBytes: source.length,
+				artifactFormat: format,
+				sceneIds: Array.isArray(document?.scenes) ? document.scenes.map((scene) => scene.id) : null,
+				actionCount: Array.isArray(document?.sourceActionRefs) ? document.sourceActionRefs.length : null,
+				requestedModel: options.requestedModel ?? null,
+				requestedEffort: options.requestedEffort ?? null,
+				actualModel: null,
+				actualEffort: null,
+				notesPath,
+				markers,
+				frozenInputManifest: {path: manifestPath, sha256: digest(manifest)},
+			};
+			const receiptPath = path.join(
+				path.resolve(required(options.outputDir, 'outputDir')),
+				'author-receipt.json',
+			);
+			await writeJson(receiptPath, receipt);
+			return {
+				receiptPath,
+				receiptSha256: digest(await fs.readFile(receiptPath)),
+				artifactSha256: receipt.artifactSha256,
+			};
+		});
+	},
+
 	/** Render all authored selected scenes through the same renderer for both paths.
 	 * @param {object} options - context plus mode, input, outputDir and optional packet/references files.
 	 * @returns {Promise<object>} Preview paths, hashes, sizes, scene/action references and validation.
@@ -273,7 +329,7 @@ export const ExperimentHarness = {
 				const stack = pending.get(key) ?? [];
 				stack.push(entry);
 				pending.set(key, stack);
-			} else if (['end', 'observed-completion'].includes(entry.phase)) {
+			} else if (['end', 'authoring-end', 'observed-completion'].includes(entry.phase)) {
 				const began = pending.get(key)?.pop();
 				if (!began) continue;
 				const durationMs = Date.parse(entry.timestamp) - Date.parse(began.timestamp);
@@ -331,6 +387,10 @@ export const ExperimentHarness = {
 				packet: {type: 'string'},
 				browser: {type: 'string'},
 				capture: {type: 'boolean'},
+				'requested-model': {type: 'string'},
+				'requested-effort': {type: 'string'},
+				'input-manifest': {type: 'string'},
+				notes: {type: 'string'},
 			},
 		});
 		const command = positionals[0] ?? 'render';
@@ -338,12 +398,16 @@ export const ExperimentHarness = {
 		const options = {
 			...values,
 			outputDir: values['output-dir'],
+			requestedModel: values['requested-model'],
+			requestedEffort: values['requested-effort'],
+			inputManifest: values['input-manifest'],
 			events:
 				values.events ?? (values['output-dir'] ? path.join(values['output-dir'], 'events.jsonl') : undefined),
 		};
 		if (command === 'mark')
 			return this.mark(options, values.phase, values.details ? JSON.parse(values.details) : {});
 		if (command === 'capture') return this.capture(options);
+		if (command === 'receipt') return this.receipt(options);
 		if (command === 'summarize') {
 			const entries = (await fs.readFile(required(options.events, 'events'), 'utf8'))
 				.split('\n')
@@ -353,7 +417,7 @@ export const ExperimentHarness = {
 			await writeJson(path.join(required(options.outputDir, 'outputDir'), 'metrics.json'), result);
 			return result;
 		}
-		if (command !== 'render') throw new Error('Command must be render, capture, mark, or summarize');
+		if (command !== 'render') throw new Error('Command must be render, capture, mark, receipt, or summarize');
 		const rendered = await this.render(options);
 		return values.capture ? {rendered, captures: await this.capture(options)} : rendered;
 	},

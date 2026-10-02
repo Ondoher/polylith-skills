@@ -21,10 +21,15 @@ underspecified placed components. Include longer app-defined text examples witho
 changing user data or semantics; use wrapping/growth where appropriate.
 
 Use the shared harness for rendering/capture and markers. Record start,
-inputs-ready, first-preview and authoring-end UTC, exact artifact hashes, byte
-counts, rendered scene IDs, corrections and clarification requests in
-`author-receipt.json`. No separate added self-review loop. Existing author preview
-inspection is retained equally in both paths.
+inputs-ready, first-preview and authoring-end UTC. Use the harness `receipt` command
+to save marker timestamps, exact artifact hashes, byte counts and scene IDs; do not
+manually regenerate bookkeeping or list every input hash. Keep `ui-notes.md` brief:
+meaningful decisions, corrections and clarification requests, with references to
+shared source questions. Record explicit requested model/effort; actual backend
+identity remains null unless exposed and verified. No separate added self-review loop. Existing author preview
+inspection is retained equally in both paths. Shared renderer limitations are
+documented in `renderer-limitations.md`; experimental review is not production
+visual compliance certification.
 
 Write only the assigned run's `ui/` directory; preserve others' work. Recover from
 tool errors and continue. Do not mutate live product artifacts, publish, invoke a

@@ -1,6 +1,9 @@
 # Descriptive wireframe to UI test plan
 
-Status: planned, not executed. Created 2026-10-02.
+Status: executing. Created 2026-10-02. Stages 1-3 are complete, including the
+first independently approved matched pair. Stage 4 repeated pairs continue.
+Progress and evidence are saved in
+[the execution report](experiments/descriptive-wireframe-ui/execution.md).
 
 Test whether a descriptive layout can replace an intermediate rendered wireframe
 for a complicated interface, while preserving the quality of the final UI and

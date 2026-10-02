@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import test from 'node:test';
 import {ExperimentHarness} from './harness.mjs';
@@ -248,6 +249,118 @@ test('summary preserves nested and overlapping observations without summed stage
 	assert.equal(result.unclosedStarts[0].stage, 'report');
 	assert.equal(result.markers.length, entries.length);
 	assert.equal(result.totalDurationMs, undefined);
+});
+
+test('authoring-end closes the matching start while retaining the exact original phase', () => {
+	const marker = (phase, timestamp) => ({
+		type: 'marker',
+		run: 'candidate',
+		stage: 'layout',
+		phase,
+		timestamp,
+		details: {actor: 'author', round: 1},
+	});
+	const result = ExperimentHarness.summarize([
+		marker('start', '2026-10-02T00:00:00.000Z'),
+		marker('authoring-end', '2026-10-02T00:00:04.250Z'),
+	]);
+	assert.equal(result.stageWindows.length, 1);
+	assert.equal(result.stageWindows[0].durationMs, 4250);
+	assert.deepEqual(result.unclosedStarts, []);
+	assert.equal(result.markers[1].phase, 'authoring-end');
+});
+
+test('receipt CLI records exact Markdown bytes, source-manifest reference and actual matching UTC markers', async (context) => {
+	const options = await workspace(context);
+	const input = path.join(options.directory, 'layout.md');
+	const notes = path.join(options.directory, 'notes.md');
+	const manifest = path.join(options.directory, 'manifest.json');
+	const content = Buffer.from('# Layout\n\nPreview → editing area.\n');
+	await fs.writeFile(input, content);
+	await fs.writeFile(notes, 'Source uncertainty remains in the frozen packet.\n');
+	await fs.writeFile(manifest, '{"status":"frozen"}\n');
+	const began = Date.now();
+	await ExperimentHarness.mark(options, 'start');
+	await ExperimentHarness.mark({...options, stage: 'other-stage'}, 'start');
+	await ExperimentHarness.mark({...options, run: 'other-run'}, 'start');
+	await ExperimentHarness.mark(options, 'authoring-end');
+	const outputDir = path.join(options.directory, 'receipt');
+	const result = spawnSync(
+		process.execPath,
+		[
+			harnessPath,
+			'receipt',
+			'--input',
+			input,
+			'--output-dir',
+			outputDir,
+			'--events',
+			options.events,
+			'--run',
+			options.run,
+			'--stage',
+			options.stage,
+			'--requested-model',
+			'requested-model',
+			'--requested-effort',
+			'high',
+			'--notes',
+			notes,
+			'--input-manifest',
+			manifest,
+		],
+		{encoding: 'utf8'},
+	);
+	assert.equal(result.status, 0, result.stderr);
+	const printed = JSON.parse(result.stdout);
+	assert.deepEqual(Object.keys(printed).sort(), ['artifactSha256', 'receiptPath', 'receiptSha256']);
+	const rawReceipt = await fs.readFile(printed.receiptPath);
+	const receipt = JSON.parse(rawReceipt.toString('utf8'));
+	assert.equal(receipt.artifactSha256, createHash('sha256').update(content).digest('hex'));
+	assert.equal(receipt.artifactBytes, content.length);
+	assert.equal(receipt.artifactFormat, 'markdown');
+	assert.equal(receipt.notesPath, notes);
+	assert.equal(receipt.requestedModel, 'requested-model');
+	assert.equal(receipt.requestedEffort, 'high');
+	assert.equal(receipt.actualModel, null);
+	assert.equal(receipt.actualEffort, null);
+	assert.equal(receipt.sceneIds, null);
+	assert.equal(receipt.actionCount, null);
+	assert.equal(receipt.frozenInputManifest.path, manifest);
+	assert.equal(
+		receipt.frozenInputManifest.sha256,
+		createHash('sha256')
+			.update(await fs.readFile(manifest))
+			.digest('hex'),
+	);
+	assert.equal(receipt.inputFileHashes, undefined);
+	assert.deepEqual(
+		receipt.markers.map((entry) => entry.phase),
+		['start', 'authoring-end'],
+	);
+	assert(
+		receipt.markers.every(
+			(entry) => Date.parse(entry.timestamp) >= began && Date.parse(entry.timestamp) <= Date.now(),
+		),
+	);
+	assert(Date.parse(receipt.recordedAt) >= began && Date.parse(receipt.recordedAt) <= Date.now());
+	assert.equal(printed.receiptSha256, createHash('sha256').update(rawReceipt).digest('hex'));
+	assert.equal((await events(options.events)).at(-1).tool, 'receipt');
+});
+
+test('JSON receipts count declared actions and scenarios without requiring rendering or semantic approval', async (context) => {
+	const options = await workspace(context);
+	const manifest = path.join(options.directory, 'manifest.json');
+	await fs.writeFile(manifest, '{}');
+	const result = await ExperimentHarness.receipt({...options, outputDir: options.directory, inputManifest: manifest});
+	const receipt = JSON.parse(await fs.readFile(result.receiptPath, 'utf8'));
+	assert.equal(receipt.artifactFormat, 'json');
+	assert.deepEqual(receipt.sceneIds, ['base', 'disabled']);
+	assert.equal(receipt.actionCount, 1);
+	assert.equal(receipt.notesPath, null);
+	assert.equal(receipt.actualModel, null);
+	assert.equal(receipt.approval, undefined);
+	assert.equal(receipt.validation, undefined);
 });
 
 test('installed browser captures every selected scene and returns actual geometry', async (context) => {

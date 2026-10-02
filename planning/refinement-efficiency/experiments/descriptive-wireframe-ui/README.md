@@ -23,8 +23,21 @@ Render and capture accept `--events <central-file> --run <run-id> --stage <stage
 Without `--events`, rendering saves events in its output directory. `mark` requires
 an events path. Mark encompassing dispatch windows separately from agent stages;
 use `details.actor` and `details.round` to distinguish nested authors/review rounds.
-Custom phases are preserved in the raw evidence. Pair `start`/`end` or
+Custom phases are preserved in the raw evidence. Pair `start`/`end` (or
+`start`/`authoring-end`) or
 `dispatch`/`observed-completion` consistently when producing interval summaries.
+
+After authoring, the `receipt` command saves mechanical provenance automatically:
+
+```powershell
+node planning/refinement-efficiency/experiments/descriptive-wireframe-ui/harness.mjs receipt --input <layout.md-or-scenes.json> --output-dir <author-directory> --events <central-events.jsonl> --run <run-id> --stage <author-stage> --requested-model <model> --requested-effort <effort> --notes <brief-notes.md>
+```
+
+`author-receipt.json` records exact artifact bytes/hash, matching UTC markers,
+requested settings, notes reference, and the shared frozen manifest reference.
+JSON artifacts also supply declared scene IDs/action count. Actual model/effort
+remain null; receipts make no semantic approval claim. Keep author notes brief;
+the helper supplies provenance so authors need not manually copy hashes or events.
 
 ```powershell
 node planning/refinement-efficiency/experiments/descriptive-wireframe-ui/harness.mjs summarize --events <central-events.jsonl> --output-dir <metrics-directory>

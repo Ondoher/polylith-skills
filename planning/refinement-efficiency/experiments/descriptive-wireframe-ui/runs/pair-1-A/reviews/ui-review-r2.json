@@ -1,0 +1,275 @@
+{
+  "schemaVersion": "experiment-ui-review-1",
+  "run": "pair-1-A",
+  "stage": "ui-re-review-1-authoring",
+  "round": 2,
+  "subject": {
+    "path": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/ui/ui.json",
+    "sha256": "6e8b29b3d6fa38bc371a13d530b5bb3eb66f7fb29546b6a8f686bb93fe4157bf",
+    "notes": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/ui/ui-repair-1-notes.md",
+    "captureManifest": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/ui/repair-1-r1/captures.json",
+    "captureManifestSha256": "f6c9fc67dc2c7793890056b3d8d7970d12bf924da9fba8396129db71a9edc035",
+    "preview": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/ui/repair-1-r1/preview.html"
+  },
+  "subjectSha256": "6e8b29b3d6fa38bc371a13d530b5bb3eb66f7fb29546b6a8f686bb93fe4157bf",
+  "acceptedLayout": {
+    "path": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/layout/wireframe.json",
+    "sha256": "21ed8acdc5ff38ae74f9cdb73084a9319e889318e9027ba407dd141e17a3812e",
+    "structuralReview": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/reviews/structural-review-r4.json",
+    "structuralReviewSha256": "375ff0274303bc99620ebfd63774777dfeb56fb0a2f29bdbe808505dc860e67d"
+  },
+  "previousReview": {
+    "path": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/reviews/ui-review-r1.json",
+    "sha256": "e720b0400c80a2f82b4052662fe9be29e7de696047dc1da95043475803a8cd99",
+    "subjectSha256": "e9e6e5f095e062dfca42a1b98ad2a755c8125943a58842df3a98f90c89690545",
+    "verdict": "revise",
+    "preserved": true
+  },
+  "reviewer": {
+    "task": "/root/matched_series_coordinator/pair_1_a_ui_review",
+    "actualBackendIdentity": null,
+    "method": "Same independent reviewer, original-detail inspection of all four changed PNGs, source-bound header/state verification and effective-scene comparison. Prior unrelated visual/numeric review retained."
+  },
+  "startUtc": "2026-10-02T20:42:08.417Z",
+  "inputsReadyUtc": "2026-10-02T20:42:26.858Z",
+  "endUtc": "2026-10-02T20:45:35.843Z",
+  "verdict": "pass",
+  "scope": "Targeted A-UI-01 repair review plus connected header fit, identity/workspace hierarchy, busy/guard availability, local recovery and longer-label regressions. No unrelated broad review.",
+  "summary": "A-UI-01 is closed. All fourteen scenes expose the four persistent project commands with coherent styling and readable labels. Busy and Open-guard states disable them while local recovery remains available. No blocking findings or connected visual regressions remain.",
+  "screenshotInspection": [
+    {
+      "path": "C:\\dev\\polylith-skills\\.codex-tmp\\descriptive-wireframe-ui-20261002\\pair-1-A\\ui\\repair-1-r1\\preview-page-1.png",
+      "sha256": "d63f0a7625a62112d6afb17fe98de707b0f0d0591501c65626c422204e12625f",
+      "tool": "view_image",
+      "detail": "original",
+      "sceneIds": [
+        "s01-composition-base",
+        "s02-inclusive-range",
+        "s03-object-trim",
+        "s04-independent-zoom"
+      ],
+      "evidence": "s01–s04: four header commands fit, project identity remains separate from video identity, workspace order is retained. The longer selection heading and all four long Save Video labels remain unclipped. Player and aligned timeline context remain undisturbed.",
+      "geometryWarnings": []
+    },
+    {
+      "path": "C:\\dev\\polylith-skills\\.codex-tmp\\descriptive-wireframe-ui-20261002\\pair-1-A\\ui\\repair-1-r1\\preview-page-2.png",
+      "sha256": "f0d037b5ea75c8499eea13bbae60bc0b69ff6ab5f6b66d2d640b3da5e930c130",
+      "tool": "view_image",
+      "detail": "original",
+      "sceneIds": [
+        "s05-track-audio",
+        "s06-group-properties",
+        "s07-framing-invalid",
+        "s08-staged-add-conflict"
+      ],
+      "evidence": "s05–s08: four header commands fit through track-audio, group, invalid rectangle and Add-conflict contexts. Properties, selected-content identity, invalid/disabled states and local recovery controls remain legible.",
+      "geometryWarnings": []
+    },
+    {
+      "path": "C:\\dev\\polylith-skills\\.codex-tmp\\descriptive-wireframe-ui-20261002\\pair-1-A\\ui\\repair-1-r1\\preview-page-3.png",
+      "sha256": "f9451aeee44105aa5e70f3da0ebdc37102661b8de79301a44f2ff2ae0c6893d0",
+      "tool": "view_image",
+      "detail": "original",
+      "sceneIds": [
+        "s08-source-rectangle",
+        "s09-clip-save-failure",
+        "s10-clip-update",
+        "s11-video-save-failure"
+      ],
+      "evidence": "Source crop, Save Clip failure, named-clip update and Save Video failure: header commands fit above the retained task context. Long source-crop heading and Save Video label fit. Project commands remain visually separate from local clip/video actions and failure recovery.",
+      "geometryWarnings": []
+    },
+    {
+      "path": "C:\\dev\\polylith-skills\\.codex-tmp\\descriptive-wireframe-ui-20261002\\pair-1-A\\ui\\repair-1-r1\\preview-page-4.png",
+      "sha256": "37a0158e8c09abd2d250bd7d295690f69f713ac1ea682e6db4d86c8de382c224",
+      "tool": "view_image",
+      "detail": "original",
+      "sceneIds": [
+        "s11-video-saving-busy",
+        "s12-project-guard-failure"
+      ],
+      "evidence": "Save Video busy and project guard: four header commands are visibly disabled. Saving status, retained draft/range/insertion/frame, and the disabled long Save Video command remain clear. The guard retains the full long failure message, deferred-discard meaning and enabled local retry/discard/cancel choices.",
+      "geometryWarnings": []
+    }
+  ],
+  "correctionChecks": [
+    {
+      "id": "A-UI-01",
+      "category": "coverage",
+      "status": "closed",
+      "sourceRefs": [
+        "inputs/source-description.md:Projects And Content",
+        "inputs/scope-surfaces.json:application.shell.regions[project-header]",
+        "inputs/interaction-frames.json:video-view.regions[video-view-project-header]",
+        "inputs/actions.json:new-project,open-project,save-project,save-project-as",
+        "inputs/scenarios.json:s01-composition-base,s11-video-saving-busy,s12-project-guard-failure"
+      ],
+      "evidence": "Independent original-detail inspection of all four repair-1-r1 PNGs confirms New, Open, Save Project and Save As are visible in all fourteen project headers. Their outlined treatment is consistent, labels fit, and project identity and workspace ordering remain legible. Effective nodes bind the four commands to the matching frozen actions. All four are visibly disabled during Save Video committing and the Open-project guard. Retry Save Project, Discard Project Changes and Cancel Open remain enabled in the guard. The separate active-video identity and long Save Video label remain clear, including failed/busy states.",
+      "impact": "Required project entry points and their represented availability are now exposed without confusing project persistence with active-video persistence or obscuring recovery controls.",
+      "specificCorrection": "Completed in the exact reviewed UI revision. No further correction required.",
+      "route": "layout"
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "sceneId": "s01-composition-base",
+      "status": "pass",
+      "capturePage": 1,
+      "scope": "Repaired header plus connected visual/context regressions; unaffected round-1 findings carried forward.",
+      "basis": "s01–s04: four header commands fit, project identity remains separate from video identity, workspace order is retained. The longer selection heading and all four long Save Video labels remain unclipped. Player and aligned timeline context remain undisturbed."
+    },
+    {
+      "sceneId": "s02-inclusive-range",
+      "status": "pass",
+      "capturePage": 1,
+      "scope": "Repaired header plus connected visual/context regressions; unaffected round-1 findings carried forward.",
+      "basis": "s01–s04: four header commands fit, project identity remains separate from video identity, workspace order is retained. The longer selection heading and all four long Save Video labels remain unclipped. Player and aligned timeline context remain undisturbed."
+    },
+    {
+      "sceneId": "s03-object-trim",
+      "status": "pass",
+      "capturePage": 1,
+      "scope": "Repaired header plus connected visual/context regressions; unaffected round-1 findings carried forward.",
+      "basis": "s01–s04: four header commands fit, project identity remains separate from video identity, workspace order is retained. The longer selection heading and all four long Save Video labels remain unclipped. Player and aligned timeline context remain undisturbed."
+    },
+    {
+      "sceneId": "s04-independent-zoom",
+      "status": "pass",
+      "capturePage": 1,
+      "scope": "Repaired header plus connected visual/context regressions; unaffected round-1 findings carried forward.",
+      "basis": "s01–s04: four header commands fit, project identity remains separate from video identity, workspace order is retained. The longer selection heading and all four long Save Video labels remain unclipped. Player and aligned timeline context remain undisturbed."
+    },
+    {
+      "sceneId": "s05-track-audio",
+      "status": "pass",
+      "capturePage": 2,
+      "scope": "Repaired header plus connected visual/context regressions; unaffected round-1 findings carried forward.",
+      "basis": "s05–s08: four header commands fit through track-audio, group, invalid rectangle and Add-conflict contexts. Properties, selected-content identity, invalid/disabled states and local recovery controls remain legible."
+    },
+    {
+      "sceneId": "s06-group-properties",
+      "status": "pass",
+      "capturePage": 2,
+      "scope": "Repaired header plus connected visual/context regressions; unaffected round-1 findings carried forward.",
+      "basis": "s05–s08: four header commands fit through track-audio, group, invalid rectangle and Add-conflict contexts. Properties, selected-content identity, invalid/disabled states and local recovery controls remain legible."
+    },
+    {
+      "sceneId": "s07-framing-invalid",
+      "status": "pass",
+      "capturePage": 2,
+      "scope": "Repaired header plus connected visual/context regressions; unaffected round-1 findings carried forward.",
+      "basis": "s05–s08: four header commands fit through track-audio, group, invalid rectangle and Add-conflict contexts. Properties, selected-content identity, invalid/disabled states and local recovery controls remain legible."
+    },
+    {
+      "sceneId": "s08-staged-add-conflict",
+      "status": "pass",
+      "capturePage": 2,
+      "scope": "Repaired header plus connected visual/context regressions; unaffected round-1 findings carried forward.",
+      "basis": "s05–s08: four header commands fit through track-audio, group, invalid rectangle and Add-conflict contexts. Properties, selected-content identity, invalid/disabled states and local recovery controls remain legible."
+    },
+    {
+      "sceneId": "s08-source-rectangle",
+      "status": "pass",
+      "capturePage": 3,
+      "scope": "Repaired header plus connected visual/context regressions; unaffected round-1 findings carried forward.",
+      "basis": "Source crop, Save Clip failure, named-clip update and Save Video failure: header commands fit above the retained task context. Long source-crop heading and Save Video label fit. Project commands remain visually separate from local clip/video actions and failure recovery."
+    },
+    {
+      "sceneId": "s09-clip-save-failure",
+      "status": "pass",
+      "capturePage": 3,
+      "scope": "Repaired header plus connected visual/context regressions; unaffected round-1 findings carried forward.",
+      "basis": "Source crop, Save Clip failure, named-clip update and Save Video failure: header commands fit above the retained task context. Long source-crop heading and Save Video label fit. Project commands remain visually separate from local clip/video actions and failure recovery."
+    },
+    {
+      "sceneId": "s10-clip-update",
+      "status": "pass",
+      "capturePage": 3,
+      "scope": "Repaired header plus connected visual/context regressions; unaffected round-1 findings carried forward.",
+      "basis": "Source crop, Save Clip failure, named-clip update and Save Video failure: header commands fit above the retained task context. Long source-crop heading and Save Video label fit. Project commands remain visually separate from local clip/video actions and failure recovery."
+    },
+    {
+      "sceneId": "s11-video-save-failure",
+      "status": "pass",
+      "capturePage": 3,
+      "scope": "Repaired header plus connected visual/context regressions; unaffected round-1 findings carried forward.",
+      "basis": "Source crop, Save Clip failure, named-clip update and Save Video failure: header commands fit above the retained task context. Long source-crop heading and Save Video label fit. Project commands remain visually separate from local clip/video actions and failure recovery."
+    },
+    {
+      "sceneId": "s11-video-saving-busy",
+      "status": "pass",
+      "capturePage": 4,
+      "scope": "Repaired header plus connected visual/context regressions; unaffected round-1 findings carried forward.",
+      "basis": "Save Video busy and project guard: four header commands are visibly disabled. Saving status, retained draft/range/insertion/frame, and the disabled long Save Video command remain clear. The guard retains the full long failure message, deferred-discard meaning and enabled local retry/discard/cancel choices."
+    },
+    {
+      "sceneId": "s12-project-guard-failure",
+      "status": "pass",
+      "capturePage": 4,
+      "scope": "Repaired header plus connected visual/context regressions; unaffected round-1 findings carried forward.",
+      "basis": "Save Video busy and project guard: four header commands are visibly disabled. Saving status, retained draft/range/insertion/frame, and the disabled long Save Video command remain clear. The guard retains the full long failure message, deferred-discard meaning and enabled local retry/discard/cancel choices."
+    }
+  ],
+  "findings": [],
+  "connectedChecks": [
+    {
+      "category": "coverage",
+      "sourceRefs": [
+        "inputs/actions.json:new-project,open-project,save-project,save-project-as"
+      ],
+      "result": "Four source-bound commands are present in every effective scene and actual capture. They are disabled in busy/Open-guard scenes; guard continuation actions retain matching source bindings and remain enabled."
+    },
+    {
+      "category": "visual",
+      "sourceRefs": [
+        "inputs/design-language.json",
+        "inputs/render-theme.json"
+      ],
+      "result": "Exact shared theme is unchanged. Header actions use consistent outlined secondary styling, clear grouping and adequate spacing; project identity remains on the left, with unchanged workspace navigation below."
+    },
+    {
+      "category": "visual",
+      "sourceRefs": [
+        "inputs/samples.json:longerAppText",
+        "inputs/scenarios.json:s02-inclusive-range,s08-source-rectangle,s11-video-save-failure,s11-video-saving-busy,s12-project-guard-failure"
+      ],
+      "result": "The exact longer selection heading, every complete-workspace Save Video label, source-rectangle heading and project-failure message remain legible and unclipped. User names, selected scope and recovery meaning remain intact."
+    },
+    {
+      "category": "structural",
+      "sourceRefs": [
+        "inputs/scenarios.json",
+        "layout/wireframe.json"
+      ],
+      "result": "The UI base equals the newly accepted layout. Effective-scene differences from the original reviewed UI are limited to identity-region grid/children, added project controls and the project-save disabled state in the Open guard. All downstream nodes, numeric relationships, theme and scene IDs are unchanged."
+    }
+  ],
+  "verification": {
+    "evidencePath": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/reviews/ui-repair-1-evidence.json",
+    "baseMatchesAcceptedLayout": true,
+    "themeExact": true,
+    "allCaptureHashesMatch": true,
+    "sceneIdsUnchanged": true,
+    "originalReviewPreserved": true
+  },
+  "decisions": [
+    {
+      "question": "Does the repaired header require re-reviewing every unchanged interaction?",
+      "decision": "No. Reuse the settled round-1 source, numeric and visual assessment; verify changed header nodes and connected states in all four captures."
+    },
+    {
+      "question": "Did the new project commands require a new policy or scenario?",
+      "decision": "No. The repair implements the existing frozen header affordances and represented busy/guard availability; no export combination was added."
+    }
+  ],
+  "assessmentLimits": [
+    "Experimental UI acceptance only, not canonical publication or runtime verification.",
+    "Static images and effective nodes do not execute keyboard/focus behavior, actual disabled enforcement, project/video persistence or commit outcomes.",
+    "Exact shared theme and documented system-font/22-pixel heading and schematic-media limitations remain accepted nonblocking comparison constraints."
+  ],
+  "measurements": {
+    "kind": "UTC wall-clock stage markers, not reasoning-only timing",
+    "elapsedMs": 207426
+  },
+  "completion": "Targeted repair review complete. No remaining findings, author-artifact edits, new checkpoints, extra model sessions, or live-product writes."
+}

@@ -1,0 +1,199 @@
+{
+  "schemaVersion": "experiment-structural-review-1",
+  "run": "pair-1-A",
+  "stage": "structural-re-review-2-authoring",
+  "round": 3,
+  "subject": {
+    "path": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/layout/wireframe.json",
+    "sha256": "5e3edb08e24f57883bd6bafd17ad6d9b208b4fc4ba84967fcdf59cb06bb3265a",
+    "layoutNotes": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/layout/layout-repair-2-notes.md",
+    "captureManifest": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/layout/layout-r15/captures.json"
+  },
+  "subjectSha256": "5e3edb08e24f57883bd6bafd17ad6d9b208b4fc4ba84967fcdf59cb06bb3265a",
+  "previousReview": {
+    "path": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/reviews/structural-review-r2.json",
+    "sha256": "52d626cc5c234dce16ee32bdf1c17aa4ea0a5ece216f8ac6b17bffcfbeea73d4"
+  },
+  "reviewer": {
+    "task": "/root/pair_1_a_structure",
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "ultra",
+    "actualBackendIdentity": "unknown",
+    "sourceAuditSupport": "Existing in-session source_semantics agent; read-only numeric-node and Add-scope corroboration on the same exact subject."
+  },
+  "startUtc": "2026-10-02T19:55:24.689Z",
+  "inputsReadyUtc": "2026-10-02T19:56:17.245Z",
+  "endUtc": "2026-10-02T19:58:34.392Z",
+  "verdict": "pass",
+  "summary": "The three residual structural findings are closed. The selected saved-video identity is visible, rectangle previews use a uniform spatial scale, and the explicitly labeled 200% overview window has correct size and pan offset. No blocking structural findings remain in the reviewed scope. Prior accepted corrections are retained; visual polish and text fit still require the planned UI stage.",
+  "scope": "Targeted verification of A-STR-05, A-STR-06 and A-STR-07 plus connected context/control regressions. Frozen source and prior review context reused; no unrelated broad re-review or policy redesign.",
+  "sourceBase": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/",
+  "screenshotInspection": [
+    {
+      "path": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/layout/layout-r15/preview-page-1.png",
+      "tool": "view_image",
+      "detail": "original",
+      "focusScenes": [
+        "s04-independent-zoom"
+      ],
+      "connectedChecks": "Existing frame, retained range/insertion, independent timeline window, controls and ordinary Fit player remain coherent."
+    },
+    {
+      "path": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/layout/layout-r15/preview-page-2.png",
+      "tool": "view_image",
+      "detail": "original",
+      "focusScenes": [
+        "s07-framing-invalid",
+        "s08-staged-add-conflict"
+      ],
+      "connectedChecks": "Invalid values/disabled Apply/Full frame/Cancel and Add captured destination/conflict/disabled commit/Cancel remain."
+    },
+    {
+      "path": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/layout/layout-r15/preview-page-3.png",
+      "tool": "view_image",
+      "detail": "original",
+      "focusScenes": [
+        "s08-source-rectangle"
+      ],
+      "connectedChecks": "Staged file identity, Add target, source units, numerical crop fields, Apply/Cancel and staged-return semantics remain."
+    },
+    {
+      "path": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-A/layout/layout-r15/preview-page-4.png",
+      "inspection": "Reused round2 evidence; capture SHA-256 is unchanged",
+      "sha256": "7fb4cb100a44954bde78f8f7ee38c490239488b74ddd541b068c9b2e6ab09422"
+    }
+  ],
+  "correctionChecks": [
+    {
+      "id": "A-STR-05",
+      "category": "structural",
+      "status": "closed",
+      "sourceRefs": [
+        "inputs/scenarios.json:s08-staged-add-conflict",
+        "inputs/interaction-frames.json:timeline-add-decision"
+      ],
+      "evidence": "Page2 Add conflict now leads with visible Selected: Harbor evening · saved video, followed by a compact selector. Captured Track2/frame1500(50s), incompatible output/audio feedback, disabled Add selected content and Cancel Add remain visible. The required selected identity no longer sits behind the feedback.",
+      "impact": "The user can identify the exact staged saved video and understand/cancel the refused addition.",
+      "specificCorrection": "Completed; no further structural correction required.",
+      "route": "layout"
+    },
+    {
+      "id": "A-STR-06",
+      "category": "structural",
+      "status": "closed",
+      "sourceRefs": [
+        "inputs/scenarios.json:s07-framing-invalid,s08-source-rectangle",
+        "inputs/source-description.md:78-82"
+      ],
+      "evidence": "Pages2/3 show a384×216 frame for1920×1080 at uniform0.2 scale. Source crop is320×180 at display offset32/18 for160,90,1600,900. Output invalid rectangle begins at displayx360 and extends80px to440,56px beyond frame right384. Handles, numeric fields, invalid bounds and decision controls are retained.",
+      "impact": "Visual framing now preserves the fixture's actual proportions and clearly distinguishes valid inset crop from out-of-bounds output placement.",
+      "specificCorrection": "Completed; no further structural correction required.",
+      "route": "layout"
+    },
+    {
+      "id": "A-STR-07",
+      "category": "structural",
+      "status": "closed",
+      "sourceRefs": [
+        "inputs/scenarios.json:s04-independent-zoom",
+        "inputs/source-description.md:62"
+      ],
+      "evidence": "Page1 explicitly labels Full composition overview ·400×225 and200% viewed area. The viewing window is200×112.5 at offset50/36.25. From centered100/56.25, content pan+100/+40 at2× shifts the overview window−50/−20. The window is therefore half-sized on both axes and offset consistently, while frame750, range600–1199, timeline600–1499 and Track1 Append remain unchanged.",
+      "impact": "Temporary inspection scale/pan is represented coherently and remains distinct from saved framing and temporal zoom.",
+      "specificCorrection": "Completed using the accepted schematic overview representation; no further structural correction required.",
+      "route": "layout"
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "sceneId": "s01-composition-base",
+      "status": "pass",
+      "basis": "Round2 acceptance carried forward; neighboring ordinary Fit player/control context checked on page1."
+    },
+    {
+      "sceneId": "s02-inclusive-range",
+      "status": "pass",
+      "basis": "Round2 acceptance carried forward; connected range/time controls remain on page1."
+    },
+    {
+      "sceneId": "s03-object-trim",
+      "status": "pass",
+      "basis": "Round2 acceptance carried forward; connected selected-object state remains on page1."
+    },
+    {
+      "sceneId": "s04-independent-zoom",
+      "status": "pass",
+      "basis": "Targeted actual screenshot and numeric geometry review; A-STR-07 closed."
+    },
+    {
+      "sceneId": "s05-track-audio",
+      "status": "pass",
+      "basis": "Round2 acceptance carried forward; neighboring track context remains on page2."
+    },
+    {
+      "sceneId": "s06-group-properties",
+      "status": "pass",
+      "basis": "Round2 acceptance carried forward; neighboring group context remains on page2."
+    },
+    {
+      "sceneId": "s07-framing-invalid",
+      "status": "pass",
+      "basis": "Targeted actual screenshot and numeric geometry review; A-STR-06 closed."
+    },
+    {
+      "sceneId": "s08-staged-add-conflict",
+      "status": "pass",
+      "basis": "Targeted selected-identity, chooser and recovery review; A-STR-05 closed."
+    },
+    {
+      "sceneId": "s08-source-rectangle",
+      "status": "pass",
+      "basis": "Targeted actual screenshot, crop geometry and Add-return context review; A-STR-06 closed."
+    },
+    {
+      "sceneId": "s09-clip-save-failure",
+      "status": "pass",
+      "basis": "Round2 acceptance carried forward; neighboring retained failure context remains on page3."
+    },
+    {
+      "sceneId": "s10-clip-update",
+      "status": "pass",
+      "basis": "Round2 acceptance carried forward, including failure continuation in repair1 notes."
+    },
+    {
+      "sceneId": "s11-video-save-failure",
+      "status": "pass",
+      "basis": "Round2 acceptance carried forward; neighboring retained context remains on page3."
+    },
+    {
+      "sceneId": "s11-video-saving-busy",
+      "status": "pass",
+      "basis": "Round2 acceptance reused; page4 image bytes are unchanged."
+    },
+    {
+      "sceneId": "s12-project-guard-failure",
+      "status": "pass",
+      "basis": "Round2 acceptance reused; page4 image bytes are unchanged."
+    }
+  ],
+  "findings": [],
+  "nonblockingObservations": [
+    {
+      "category": "visual",
+      "route": "ui",
+      "evidence": "The compact selector/captured-target labels, rectangle-handle labels and several existing status areas still require text-fit and spacing work. Their required meanings are exposed by visible summaries or numeric controls in these scenes.",
+      "specificCorrection": "Carry ordinary overlap, typography, density, text fit and longer-label checks into the planned UI review."
+    },
+    {
+      "category": "visual",
+      "route": "ui",
+      "evidence": "The 200% scene is an explicitly labeled schematic overview, and all media remain schematic under the shared renderer constraint.",
+      "specificCorrection": "Preserve this accepted structural meaning when styling; do not treat schematic imagery or shared font limitations as structural defects."
+    }
+  ],
+  "assessmentLimits": [
+    "Experimental structural approval only, not canonical publication or finished-UI approval.",
+    "Static capture/node/notes review; runtime focus, gestures, keyboard operation, disabled-control enforcement and persistence were not executed.",
+    "No new source policy or research proposal was adopted."
+  ]
+}
