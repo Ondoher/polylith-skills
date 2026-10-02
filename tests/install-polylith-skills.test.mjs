@@ -125,6 +125,33 @@ function fixture() {
 	return {directory, repository, codexHome};
 }
 
+test('real catalog exposes the product researcher through the managed agents link', () => {
+	const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'polylith-skills-product-researcher-'));
+	try {
+		const codexHome = path.join(directory, 'codex-home');
+		fs.mkdirSync(codexHome);
+		const result = invoke(root, codexHome, 'plan');
+		assert.equal(result.status, 0, result.stderr);
+		const plan = JSON.parse(result.stdout);
+		assert.deepEqual(plan.collisions, []);
+		const agentsLink = plan.links.find((link) => link.path === path.join(codexHome, 'agents'));
+		assert.equal(agentsLink.target, path.join(root, 'agents'));
+		const manifest = JSON.parse(fs.readFileSync(path.join(root, 'governance.json'), 'utf8'));
+		assert.equal(manifest.catalog.agents.filter((agent) => agent === 'product-researcher.toml').length, 1);
+		assert.equal(fs.statSync(path.join(agentsLink.target, 'product-researcher.toml')).isFile(), true);
+		assert.equal(
+			fs
+				.statSync(path.join(plan.repository, 'planning', 'implementation-agents', 'product-researcher.md'))
+				.isFile(),
+			true,
+		);
+		assert.deepEqual(fs.readdirSync(codexHome), []);
+	} finally {
+		assert.equal(path.dirname(path.resolve(directory)), path.resolve(os.tmpdir()));
+		fs.rmSync(directory, {recursive: true, force: true});
+	}
+});
+
 test('installation rejects a checkout missing a required planning contract directory', () => {
 	const {directory, repository, codexHome} = fixture();
 	try {
