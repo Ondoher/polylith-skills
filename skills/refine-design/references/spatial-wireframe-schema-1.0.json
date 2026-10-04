@@ -65,7 +65,8 @@
 				"rationale": {"$ref": "#/$defs/text"},
 				"bindings": {"type": "array", "items": {"$ref": "#/$defs/binding"}, "minItems": 1},
 				"control": {
-					"type": "object", "additionalProperties": false,
+					"type": "object",
+					"additionalProperties": false,
 					"required": ["kind", "accessibleName"],
 					"properties": {
 						"kind": {"$ref": "#/$defs/text"},
@@ -74,7 +75,8 @@
 					}
 				},
 				"icon": {
-					"type": "object", "additionalProperties": false,
+					"type": "object",
+					"additionalProperties": false,
 					"required": ["library", "version", "asset", "variant", "meaning"],
 					"properties": {
 						"library": {"$ref": "#/$defs/text"},
@@ -85,9 +87,11 @@
 					}
 				},
 				"menuEntries": {
-					"type": "array", "minItems": 1,
+					"type": "array",
+					"minItems": 1,
 					"items": {
-						"type": "object", "additionalProperties": false,
+						"type": "object",
+						"additionalProperties": false,
 						"required": ["id", "label", "binding"],
 						"properties": {
 							"id": {"$ref": "#/$defs/id"},
@@ -97,9 +101,11 @@
 					}
 				},
 				"states": {
-					"type": "array", "minItems": 1,
+					"type": "array",
+					"minItems": 1,
 					"items": {
-						"type": "object", "additionalProperties": false,
+						"type": "object",
+						"additionalProperties": false,
 						"required": ["stateRef", "treatment"],
 						"properties": {
 							"stateRef": {"$ref": "#/$defs/id"},
@@ -682,7 +688,7 @@
 		"Extent constraints express meaningful limits or preferences in logical reference pixels. They are not mandatory dimensions. Distinguish an icon footprint from its owner interaction target; UI chooses actual geometry within applicable constraints.",
 		"Aspect ratios preserve a source or research-backed relationship without selecting a width, height, fit algorithm or derived axis. UI owns concrete geometry; no constraint-consistency, pixel-fit or viewport-budget review gate is added here.",
 		"Relationships name grouping, adjacency, meaningful reading order, association or shared scale. They do not choose row/column numbers, spans, offsets, alignment or positioning coordinates.",
-		"Scales and intervals preserve domain values and shared units, including source endpoint policy. UI selects pixel transforms and label/handle positions; this stage does not lay out timeline rows.",
+		"Scales and intervals preserve domain values and shared units, including source endpoint policy. UI selects pixel transforms and label/handle positions; this stage does not choose concrete row geometry.",
 		"Scenes bind accepted frames and states with explicit applicability. Reuse parts and focused field changes; do not duplicate complete workspaces solely to paint context or prove already-reviewed UX behavior.",
 		"Bindings reference accepted affordance, action, subject and destination meanings. Reuse accepted UX without another review of guards, focus, transitions, payloads or outcome correctness.",
 		"Outcomes are optional structural witnesses. When supplied, reference actual resulting objects, values or retained regions rather than a pending or success message. Do not construct an outcome gallery for every upstream operation.",

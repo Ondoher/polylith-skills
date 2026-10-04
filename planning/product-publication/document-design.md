@@ -16,7 +16,7 @@ with that clarification before turning them into generator requirements.
 Open the [linked HTML sample](design-preview/prd.html) to review the appearance.
 It contains a synthetic PRD, interaction guide, and design-language reference.
 Its sample product decisions and comps demonstrate the format; they are not
-Alexa artifacts or accepted application design. The research is recorded
+application artifacts or accepted application design. The research is recorded
 [separately](research.md).
 The detailed sample includes a six-step use case owned by the Harvest entry
 form, including its confirmation dialog, editing/review states, validation,

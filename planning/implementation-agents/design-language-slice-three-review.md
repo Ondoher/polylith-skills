@@ -6,7 +6,7 @@ Status: implemented and fixture-tested on 2026-09-17. Live named UI-agent evalua
 
 Schema 0.4 adds one to eight typography roles to the existing palette/theme document. Each role has a bundled font ID, normal style, weight, CSS-pixel size and line height, theme color reference and one to four explicit sample lines. Missing font/size/weight/line-height choices retain null source values and explicit defaults. The Markdown displays metrics, sample text, asset hashes, status and missing decisions; Open Questions remains last.
 
-The sample uses Roboto 16px/400 with provisional 24px line height and Merriweather 32px/700 with proposed 40px line height. Merriweather is the agreed serif exploration candidate; neither pairing nor metrics select Alexa typography.
+The sample uses Roboto 16px/400 with provisional 24px line height and Merriweather 32px/700 with proposed 40px line height. Merriweather is the agreed serif exploration candidate; neither pairing nor metrics select the application typography.
 
 Fontkit 2.0.4 shapes bundled Google Fonts into self-contained SVG paths. SHA-256 checks prevent unintended font replacement; no installed fonts or network are needed during rendering. Font sources and SIL licenses are packaged in assets/fonts. Non-weight variation axes are fixed and recorded in SVG metadata. Font names in the catalog distinguish the public family from Merriweather's internal "Merriweather Light" name.
 

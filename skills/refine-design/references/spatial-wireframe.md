@@ -6,9 +6,8 @@ The owner corrected this boundary on October 3, 2026: wireframes define nested
 structure, important proportions and necessary constraints. UI owns actual layout.
 
 This is an authored-file contract. Its exact hash binds acceptance; it adds no
-canonical artifact kind, renderer or inspected-preview integration. Previous
-Alexa descriptions and their copied schema remain historical evidence of the
-superseded detailed-layout approach. Their review does not accept this replacement.
+canonical artifact kind, renderer or inspected-preview integration. A review under the superseded detailed-layout contract does not accept this
+replacement. Preserve earlier application handoffs in the owning project.
 
 ## Structure
 

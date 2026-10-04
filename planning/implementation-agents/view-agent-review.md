@@ -1,6 +1,6 @@
 # View Agent Assessment Role Review
 
-Date: 2026-09-16. Scope: owner-requested formalization and isolated Alexa assessment. This is authoring-parent rule review, not independent standards certification. No implementation mode, planning-skill expansion, repository opt-in or combined coding workflow is enabled.
+Date: 2026-09-16. Scope: formalization and static review of the read-only view-assessment role. This is authoring-parent rule review, not independent standards certification.
 
 ## Traceability And Static Review
 
@@ -34,22 +34,10 @@ Known limits: TESTING-043 shutdown wording does not establish a Polylith stop ho
 
 The standalone custom-agent configuration uses the schema verified in [official Codex documentation](https://learn.chatgpt.com/docs/agent-configuration/subagents). It inherits the caller model, sets medium reasoning and read-only sandbox, and imposes behavioral prohibitions even if parent runtime overrides widen permissions. Configuration alone is not proof of effective sandbox enforcement.
 
-Static checks and live Alexa evidence are recorded below after execution. This request authorizes that bounded run; deployment still requires the existing comparative quality/efficiency evaluation. Dedicated reviewer agents were not started and no independent CLEAN or compliance finding is claimed.
+Static validation is recorded below. Application-specific evaluations belong in the owning project; they do not grant routine deployment approval or standards certification.
 
 ## Static Validation Results
 
 All 12 installed global agent TOML files parsed with required fields and unique names. The new role has read-only sandbox, medium reasoning and no model override. Its prompt is 514 words. All 190 local links/anchors across the new contract/review/cases and connected index/design/plan/guidance resolved before the run. No global config, reviewer lifecycle, canonical standards or application code was changed.
 
-## Live Alexa Evaluation
-
-The owner-requested run completed successfully in 173.0 seconds on 2026-09-16. The fresh-session wrapper reported spawning the actual named view-agent and returned its output; it did not report a substitute. The [captured assessment](view-agent-alexa-assessment.md) is historical evidence, not accepted product policy.
-
-Inputs were Alexa's design/prompt and mapped standards; relevant editor/app/shared-component/build scaffold; the earlier UX and UI reports marked provisional; the subsequent Google Fonts preference; and, optionally, the provisional controller report with the authoritative asynchronous-start/serial-ready correction. No complete model/controller/media contract or integrated architecture was supplied.
-
-Configured settings are inherited model and medium role effort. The wrapper's JSONL does not expose a complete child spawn/model/tool trace; its assertion of named-role execution is evidence with that limitation, not independent proof of the effective model or sandbox. Wrapper-reported usage was 204,623 input tokens, including 189,440 cached input tokens, and 2,260 output tokens. Do not interpret these as child-only usage, independent request sizes, billed credits or a controlled cost comparison.
-
-Parent evaluation: the output supplied a grounded component/region map, single state ownership, proposed controller/view data and intent needs, stale-result and borrowed-resource handling, CSS/assets and localization/accessibility requirements, blocked decisions and distinct verification levels. It retained unaccepted UI values and workflows as proposals and recognized explicit AppView.stop as an application cleanup method rather than a framework stop workflow. Its Google Fonts observation preserved the new preference without choosing a family.
-
-The parent checked the two actionable testing observations against source: TestHarness.render installs AppContext but not production MUI providers, and src/alexa/spec.js explicitly imports feature specs. These are integration needs for subsequent implementation/test planning, not fixes authorized by this assessment. Repository Git status remained the same as before the run.
-
-Limits: this is one written/source assessment, not sixteen independently executed scenarios, a rendered UI test, complete compliance review, architecture integration or deployment benchmark. Detailed operation signatures remain unresolved with domain/controller decisions. Static safety instructions plus a read-only configuration do not independently prove absence of every prohibited child action; no implementation artifacts or prohibited actions were reported or visible in the available evidence. The run was useful but broad; routine efficiency should be evaluated with narrowed scope, retained context and comparable verification conditions rather than inferred from this isolated measurement.
+Application-specific assessment outputs and live evaluation evidence are maintained in the owning project.

@@ -3,6 +3,11 @@
 Use during ordinary refinement and bounded performance experiments. Reuse saved
 outputs; do not commission another full design run just to populate a chart.
 Keep trace files beside the run, outside product authority and authoring stores.
+For a real application, durable inputs, trace, captures and outputs belong in its
+owning repository. Temporary experiments may hold application data in the skills
+checkout's designated temporary directory. Preserve useful project evidence in
+the application before retiring the experiment; keep tracked skills files limited
+to product-neutral tooling, general findings and unrelated synthetic fixtures.
 
 ## What to capture
 

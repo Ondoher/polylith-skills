@@ -1,6 +1,6 @@
 # Polylith Architect Preparation And Information Gaps
 
-Status: historical initial authoring-parent preparation based on existing rules/designs, not independent review. The owner subsequently authorized installation and an isolated Alexa run while leaving the questions below unanswered. The [role contract](polylith-architect.md) and [review/evaluation record](polylith-architect-review.md) hold current status.
+Status: historical authoring-parent preparation from shared rules and role contracts, not independent review. The [role contract](polylith-architect.md) and [review record](polylith-architect-review.md) hold shared role status.
 
 ## Derived Rules And Authority
 
@@ -22,13 +22,13 @@ Canonical sources: [architecture](../../documentation/standards/architecture.md)
 This is analysis of the draft, not execution of an agent.
 
 - Small visual-only change: brief triage, view/UI input only where relevant, no unnecessary service decomposition.
-- Ambiguous clip draft or timeline viewport ownership: use model/controller/view meaning and lifetime; keep disputed facts conditional rather than assign all state to React or a shared service.
+- Ambiguous draft or viewport ownership: use model/controller/view meaning and lifetime; keep disputed facts conditional rather than assign all state to React or a shared service.
 - New substantial internal class: private decomposition is allowed; no service promotion solely for testability and no automatic construction-policy decision.
 - Reused presentation: view proposes general contract; architecture checks cross-feature privacy and complete promotion, without requiring two existing consumers for all UI reuse.
 - Missing optional versus required service: optional absence has a defined effect; required absence identifies an invalid composition. No assumption that registration implies readiness.
 - Contribution versus event: purpose-built extension host owns collision/order/removal policy; mandatory operation does not become an event to avoid a dependency.
-- Late media result or navigation away: identify cross-owner identity/release contract; do not equate invalidation, cancellation and rollback.
-- Loadable game versus interleaved editing: weigh actual overlap and activation cost; no automatic unload or assumed advantage for Alexa.
+- Late asynchronous result or navigation away: identify cross-owner identity/release contract; do not equate invalidation, cancellation and rollback.
+- Loadable game versus interleaved editing: weigh actual overlap and activation cost; no automatic unload or assumed advantage for the application.
 - Changed boundary contract: identify consumers and sequence before type checking; return visible recovery changes to UX/owner.
 - Incomplete system report: conditional application map may proceed; process/host/storage/API guarantees remain upstream decisions.
 - Deferred unit/service test assessment: disclose the missing specialist evidence, still list verification needs, avoid claiming complete integration.
@@ -44,15 +44,9 @@ No additional product policy is necessary to complete a useful initial assessmen
 
 Provisional authoring choices are the callable name `polylith-architect`, two stages within one role, inherited model/medium effort, and concise triage versus longer synthesis. They can be refined from evaluation rather than requiring a naming or formatting discussion before drafting. Installation, planning-skill routing and a live run are separate work from this initial pass.
 
-### Inputs For A Useful Alexa Evaluation
+### Inputs For A Useful Evaluation
 
-1. **A bounded question.** Suggested first scope: structure supporting frame-accurate clip selection and its project/media contracts, while acknowledging the larger composition hierarchy. This is an evaluation proposal, not selection of the first implementation feature.
-2. **Decision status.** Identify which system/UX/UI/model/controller/view recommendations the owner has accepted. Existing reports may all be supplied as proposals; assessment remains possible without approving them first.
-3. **Consequential domain semantics.** End-frame inclusion/single-frame meaning, frame/time identity, shared-content editing and relevant retention/save behavior. The architect can show conditional boundaries until these are decided; it must not invent answers.
-4. **System/media capability guarantees.** Established process and filesystem/media interfaces, frame/thumbnail ownership, readiness, cancellation and completion semantics. Missing guarantees become upstream questions, not forced implementation architecture.
-5. **Verification coverage.** Unit/service-testing agent creation is deferred by the owner; UI-testing assessment remains pending. Supplied parent evidence can support the bounded exercise, but does not imply those agents ran.
-
-These are task inputs or disclosed unknowns, not prerequisites for every triage call. Ask the owner only about product intent; specialists and repository inspection should resolve technical evidence where possible.
+Supply a bounded question, the status of owner and specialist decisions, consequential domain semantics, system capability guarantees and available verification evidence. Unknowns permit a conditional assessment; they do not authorize invented policies or capability promises. Keep application-specific inputs and results in the owning project.
 
 ### Before Affected Implementation Or Routine Deployment
 

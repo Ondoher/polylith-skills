@@ -36,7 +36,10 @@ whole-product coverage. Document hierarchy and page breaks belong to the later
 | Assemble               | Accepted structured sources and explicit publication requests → immutable artifacts, manifest and detached context                                                          | Use `refinement-assembly.mjs`; bookkeeping requires no specialist. Existing validators, resource checks, lock authority and snapshot compare-and-swap still apply.                                                                                                                    |
 
 Before Plan UX, apply the [durable product research handoff](product-research.md):
-locate the product-owned scope/brief, check source identity and affected questions,
+use the [UX/UI research catalogue](research-library.md) to assess coverage by
+question before research dispatch, and reassess new UI/component questions before
+Compose UI. Save applicable findings and remaining gaps under the product root.
+Locate the product-owned scope/brief, check source identity and affected questions,
 reuse applicable findings, and assign `product-researcher` only for an initial
 brief that is needed or material gaps. Preserve requested owner inspection before
 adoption. Supply the saved brief and relevant section/evidence references to UX

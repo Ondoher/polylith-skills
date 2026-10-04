@@ -1,7 +1,6 @@
 # Product-document research
 
-Researched 2026-09-26 in response to the failed Alexa publication trial and the
-owner's clarification: the required publications are a PRD and a detailed
+Researched 2026-09-26 for the shared publication workflow. The owner clarified: the required publications are a PRD and a detailed
 interaction document with use cases, flows, and comps. A separate design-language
 document is under consideration. This research informs the proposed
 [document design](document-design.md) and [implementation plan](plan.md).
@@ -117,4 +116,4 @@ specific three-document proposal, page geometry, section order, version policy,
 and revision mechanics in this package are project recommendations. The two
 required document roles come from the owner. Separate design-language
 publication remains a proposal. Research does not accept new product behavior,
-choose Alexa's visual design, or establish that its missing comps are complete.
+choose the application's visual design, or establish that its missing comps are complete.

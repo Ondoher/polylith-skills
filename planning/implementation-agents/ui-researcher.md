@@ -38,6 +38,10 @@ session, backend call or local model proxy/observer. Report permission conflicts
 
 Follow [shared research guidance](research-guidance.md) and the
 [product-researcher](product-researcher.md) discovery and complexity-fit rules.
+Inspect the product's `research/index.md` and relevant findings/receipts under the
+[shared library contract](../../skills/refine-design/references/research-library.md)
+first. Return question IDs, actual covered scope, exclusions and remaining gaps
+with every delivery, including partial findings and pending verification.
 Inspect saved applicable research first. Preserve verified unchanged findings and
 question status, and research only material gaps, changed claims or uncertain fit.
 Derive the target complexity from accepted users/tasks/working scale rather than

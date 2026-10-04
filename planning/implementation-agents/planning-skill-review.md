@@ -1,6 +1,6 @@
 # Refine Design First-Version Review
 
-Owner authorization: after clarifying the original idea was for later, the owner requested a first implementation. This authorizes the planning skill and its narrowly reconciled assessment entry point, not an Alexa run or implementation workflow.
+Owner authorization: after clarifying the original idea was for later, the owner requested a first implementation. This authorizes the planning skill and its narrowly reconciled assessment entry point, not an application run or implementation workflow.
 
 Implemented one SKILL.md and normal-discovery UI metadata. Existing specialist guidance remains canonical in its own resources. Only model/controller entry-point instructions and contracts changed; assessment-only prohibitions remain. No new specialist was installed. The UI designer, view and other unready roles are reported as capability gaps.
 

@@ -4,7 +4,7 @@ Implemented the owner-approved split into design-language.md foundations and a s
 
 The component reference contains the six-state command-button sheet, field-with-embedded-button examples, relevant metrics/defaults, role references, usage limitations and coverage gaps. Optional password detail moves there when selected. Shared foundation decisions and open questions remain centralized in the design-language document, with links in both directions. Specialized component comps remain separate future work.
 
-Migrated the existing review folder to revision 4, retaining its one-color modmod identity and MUI baseline. No design values or SVGs changed.
+Migrated the existing review folder to revision 4, retaining its illustrative one-color identity and MUI baseline. No design values or SVGs changed.
 
 Both generated documents preserve owner notes outside their markers. Unowned, edited or missing companion files block publication before source/other document changes. The existing staged rollback path includes both Markdown outputs; crash-proof recovery and concurrent writers remain unsupported. Downgrade is blocked and unchanged rerenders preserve bytes/revision.
 

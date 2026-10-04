@@ -4,7 +4,7 @@ Implemented the requested ordinary text-field slice in schema 0.11: label, suppl
 
 Existing font measurement/outline rendering and theme expressions are reused. Focus consumes the brand-mapped primary role; errors use the MUI semantic error role with visible Error text. Messages wrap and extend the sheet; invalid geometry or unwrappable words fail before publication.
 
-components.md now has Ordinary Text Field and Field Messages: Helper And Error sections. The fixture proposes retaining helper instructions before adding a corrective error. It leaves the 4px message gap as an explicit default. The duplicate-name example is supplied illustrative content, not an accepted Alexa constraint. Validation and announcement timing remain UX decisions. Stable description IDs, aria-describedby and aria-invalid are handoff guidance, not behaviors implemented by the SVG.
+components.md now has Ordinary Text Field and Field Messages: Helper And Error sections. The fixture proposes retaining helper instructions before adding a corrective error. It leaves the 4px message gap as an explicit default. The duplicate-name example is supplied illustrative content, not an accepted application constraint. Validation and announcement timing remain UX decisions. Stable description IDs, aria-describedby and aria-invalid are handoff guidance, not behaviors implemented by the SVG.
 
 Pattern and field acceptance require resolved consumed defaults and explicit owner targets. Accepted fields protect their shared message pattern as a dependency. Migration preserves IDs, histories, owner notes in both documents, and earlier SVGs.
 

@@ -497,7 +497,7 @@ test('plans a complete conditional Polylith scaffold', () => {
 		plan.files.get(path.normalize('.agents/topics/standards/overlay.md')),
 		/^# Repository Standards Overlay\s+None\.\s*$/s,
 	);
-	assert.doesNotMatch(standardsManifest, /Source Lineage|Music Notebook|Modmod|Flattened Steel|Poly GC/);
+	assert.doesNotMatch(standardsManifest, /Source Lineage/);
 	for (const name of [
 		'BaseText',
 		'Text',

@@ -10,11 +10,17 @@ product or arrangement is a reusable default.
 
 ## Locate and assess reusable research
 
+First apply the [shared UX/UI research library](research-library.md): use the
+product-owned catalogue to assess covered questions, verification and gaps across
+all design roles, and preserve useful deliveries before ending an assignment.
+
 Resolve the product root through [product location](product-location.md). Look
 for existing product-owned scope, briefs and referenced evidence before assigning
 research. A useful default for new records is `research/research-scope.md` and
 `research/product-research-brief.md` under that root; retain existing workspace
-briefs and stable references rather than requiring relocation or duplication.
+briefs and stable references inside that product root rather than duplicating them.
+Preserve useful research currently held only in temporary or external assignment
+folders under `research/`, keeping frozen inputs, evidence links and provenance.
 These are ordinary maintained documents, not another product model or schema.
 
 The parent checks the research's product/source identity, source revision or

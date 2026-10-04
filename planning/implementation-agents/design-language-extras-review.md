@@ -8,6 +8,6 @@ Missing UI-spec templates can use dimensioned labeled boxes without inventing co
 
 Verification: 101/101 full design-language tests passed (137.1 seconds), including five new tests covering state output, stable rerenders, dimensions/wrapping/escaping, overflow rejection, migration and owner-note preservation, invalid inputs without publication, edited-asset protection, acceptance dependencies and explicit missing-component records. Skill validation, UI designer TOML parsing and generated/new reference document links passed.
 
-Headless Chrome screenshots of the comparison and placeholder were visually inspected: no clipped text or overlapping states. No interactive keyboard/tooltip/accessibility validation, VS Code preview or live UI-designer run was performed. Fixtures remain illustrative and do not accept Alexa design choices. These are MUI-oriented specimens, not exact browser component captures.
+Headless Chrome screenshots of the comparison and placeholder were visually inspected: no clipped text or overlapping states. No interactive keyboard/tooltip/accessibility validation, VS Code preview or live UI-designer run was performed. Fixtures remain illustrative and do not accept the application design choices. These are MUI-oriented specimens, not exact browser component captures.
 
 See [contract and primary references](../../skills/refine-design/references/design-language-extras.md). Remaining renderer coverage includes toggle buttons, embedded-field state variants and additional select variants; full comps remain a later stage.

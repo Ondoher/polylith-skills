@@ -13,18 +13,9 @@ can be reviewed without starting implementation planning or coding.
 
 ## Working project
 
-Use the owner's Alexa repository for the first trial. Keep its draft, generated
-support data, agent findings, and evaluation evidence in that repository; do not
-turn Alexa-specific architecture into a default for the shared skill. The
-repository currently has a human-owned product description and application
-source. Its previous derived design output was removed; a fresh product model
-and verified snapshot have now been rebuilt under the product's support-data
-folder for this trial. Reinspect their bindings and the repository state before
-reusing the trial rather than treating this readiness note as a frozen baseline.
+Use an authorized consuming repository for a live trial. Keep its human inputs, draft, generated support data, assessments and evaluation evidence there. Reinspect source and snapshot bindings before each reuse; do not turn a trial readiness note into a fixed baseline or its architecture into a shared default.
 
-Milestone 1 now has a provisional linked-Markdown guide and a concise assessment
-record in the Alexa repository. The owner can review that draft for sufficiency;
-its product-specific content is not copied into this shared planning repository.
+Application-specific drafts and assessments are maintained in their owning repository for owner review.
 
 ## Working rule for the first pass
 
@@ -145,46 +136,13 @@ in its product repository. Then use the broader batch to check repeatability,
 interrupted or invalid publication, generated-file ownership, and other
 failure cases before routine use.
 
-The first pass now uses [generate-technical](../../skills/generate-technical/SKILL.md)
-to publish an Alexa guide from a frozen technical artifact. After the owner's
-depth review, the source records and publisher were revised so the guide explains
-current versus target state, boundary behavior, decision rationale, five critical
-transitions, four conceptual contracts for risky boundaries, and the proofs needed
-before fixing implementation interfaces.
-The Alexa repository retains the provisional manual guide for comparison and the
-real system-architect and Polylith assessments, parent reconciliation, source baseline, and
-validated context as product-local support data. A synthetic positive path checks
-linked publication and repeatability. The manual draft still has a fuller runtime
-sketch and provisional Polylith mapping; the generated architecture now carries
-the bounded feature and conceptual-model interpretation without claiming a
-fixed feature tree. See the product-local comparison for remaining depth gaps.
-The first grouped hardening batch now exercises stale preparation bases, invalid
-decision evidence, stale source and assessment evidence, invalid detached
-contexts, authored or edited output, failed publication swaps, verified backup
-recovery after restart, malformed or edited backups, and linked output ancestors.
-It found and closed two publisher gaps: restart recovery and linked-ancestor
-protection. The repository's full test command passed after those changes.
-This is verification of the first-pass mechanics, not proof that Alexa's media
-architecture or future white-paper publication is ready for implementation.
+The first pass uses [generate-technical](../../skills/generate-technical/SKILL.md) to publish from a frozen technical context. Shared hardening covers stale inputs, invalid decision/assessment evidence, invalid detached contexts, authored or edited output, failed publication swaps, verified backup recovery and linked output ancestors. These checks establish publisher behavior, not implementation readiness of a consuming application.
 
-The owner's depth review found that the generated guide needs an architectural
-breakdown of proposed features, shared capabilities, and important conceptual
-models. This content should come from bounded system and Polylith assessments
-and parent reconciliation, with observed code and candidate placement labeled
-separately. Do not introduce mandatory `feature`, `model`, or `focus` record kinds
-to make one product fit the publisher. Use the existing bound architectural
-narrative where it carries the map clearly; change the publisher only if a
-reusable presentation need remains after product-specific review. The resulting
-Alexa guide should let a reader identify
-responsibility and state authority without enumerating views or local classes.
-If the product description and assessed code support only a sparse map, keep it
-sparse and conditional. Connect each supported candidate to its product behavior
-and technical boundary; missing detail is a stated gap, not an invitation to
-invent a complete feature tree.
+Technical guides should explain proposed features, shared capabilities and important conceptual models through bounded system and Polylith assessments and parent reconciliation. Label observed code and candidate placement separately. Use the existing architectural narrative rather than adding mandatory record kinds to fit one project. Keep sparse source evidence sparse and conditional; missing detail is a gap, not permission to invent a feature tree.
 
 ## 5. Link authored focused white papers after the general path is proven
 
-First-pass implementation and the Alexa player-paper trial are complete. The paper is bound as a source-only reference, researched and revised with a semantic ledger, and linked bidirectionally with the generated technical guide. Technical context records whether saved advisory research matches the current paper revision. Paper-backed technical records appear on a dedicated focused-paper page, while their unresolved questions follow the common decisions and handoff paths. The approved installer repair reports a healthy global skill installation; broader hardening and a collected review follow this first pass.
+The focused-paper route binds current authored bytes, advisory research status and a semantic revision ledger. Technical publication can link a dedicated paper-backed page and retain unresolved questions in the common handoff. Application trial evidence belongs in the owning project.
 
 The [white-paper next action plan](technical-white-paper-workflow.md#next-action-plan)
 sets four reviewable results: research agent, linked-source binding, paper

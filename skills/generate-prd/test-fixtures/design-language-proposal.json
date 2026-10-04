@@ -120,7 +120,7 @@
 		"shapeSurfaces": null,
 		"sharedStates": "Brand-driven primary states use explicit darkening mixes; focus, pressed and loading presentation remain proposals. Disabled treatment inherits MUI action colors. Derived shades are not additional identity colors.",
 		"spacingLayout": null,
-		"visualDirection": "Modmod-inspired minimal identity: one magenta accent mapped into MUI primary, with ordinary surfaces and status colors inherited from MUI. Demonstration only; sample-product identity is still undecided."
+		"visualDirection": "Synthetic minimal identity: one magenta accent mapped into MUI primary, with ordinary surfaces and status colors inherited from MUI. Demonstration only; sample-product identity is still undecided."
 	},
 	"icons": [
 		{
@@ -257,7 +257,7 @@
 	"id": "slice-six-demo",
 	"identityPalette": {
 		"memberIds": ["core"],
-		"rationale": "Modmod is the initial model: one identity accent supplies MUI primary and direct app accents. Add a second or third color only for a distinct app purpose; none is also valid. This magenta demonstrates the model, not accepted sample-product branding."
+		"rationale": "The synthetic fixture illustrates that one identity accent supplies MUI primary and direct app accents. Add a second or third color only for a distinct app purpose; none is also valid. This magenta demonstrates the model, not accepted sample-product branding."
 	},
 	"openQuestions": [
 		"What body line height should be accepted?",
@@ -271,9 +271,9 @@
 		"members": [
 			{
 				"id": "core",
-				"name": "Modmod identity accent",
+				"name": "Illustrative identity accent",
 				"purpose": "Single app identity accent, used for primary actions and direct identity accents.",
-				"rationale": "Historical external example `modmod`: `src/assets/styles/modmod.css` (`--branded-color`). Initial model only; not accepted sample-product branding.",
+				"rationale": "Synthetic specimen accent for renderer demonstration; not accepted sample-product branding.",
 				"status": "proposed",
 				"value": "#E60CE9"
 			},
@@ -487,7 +487,7 @@
 	},
 	"schemaVersion": "0.14",
 	"source": {
-		"description": "Synthetic component reference extending the modmod identity example with button variants and an unresolved diagram-canvas placeholder; not accepted sample-product design decisions.",
+		"description": "Synthetic component reference extending the synthetic identity example with button variants and an unresolved diagram-canvas placeholder; not accepted sample-product design decisions.",
 		"kind": "fixture"
 	},
 	"theme": {
@@ -501,7 +501,7 @@
 					"memberId": "core",
 					"paletteId": "studio-brand"
 				},
-				"purpose": "Map the identity accent to MUI primary, following modmod.",
+				"purpose": "Map the identity accent to MUI primary.",
 				"rationale": "Explicit brand-to-theme mapping; other ordinary UI colors keep MUI defaults.",
 				"status": "proposed"
 			},

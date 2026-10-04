@@ -41,7 +41,7 @@ Detailed password rules, product-specific copy, exact placement and the chosen w
 
 ## Password Specimen And Renderer Implications
 
-Owner clarification: retaining password as a test/preview is useful; its inclusion in a particular basic document is optional. It is not part of the required initial example set. Do not remove the implemented template or assume Alexa requires a password feature.
+Owner clarification: retaining password as a test/preview is useful; its inclusion in a particular basic document is optional. It is not part of the required initial example set. Do not remove the implemented template or assume the application requires a password feature.
 
 Renderer capability, shared component-library membership, and inclusion in a particular document are separate decisions. A supported component need not appear in every design-language document. Conversely, a missing implementation does not erase a design requirement.
 

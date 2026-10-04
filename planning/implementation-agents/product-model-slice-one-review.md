@@ -15,8 +15,7 @@ product-description.md
 -> minimal static HTML
 ```
 
-Alexa was withheld from reusable fixtures, schemas, prompts, implementation,
-and expected results. The neutral Field Journal fixture exercises the route.
+Reusable fixtures, schemas, prompts, implementation and expected results remain product-neutral. The neutral Field Journal fixture exercises the route.
 
 ## Installed units
 
@@ -87,7 +86,7 @@ public format.
 
 Focused architecture, contract, privacy/security, and verification inspection
 found no remaining blocker. These reviews were scoped to the global staged
-skills because the Alexa repository standards ledger does not govern files in
+skills because the application repository standards ledger does not govern files in
 the global Codex home; this record does not claim an aggregate repository
 standards result.
 

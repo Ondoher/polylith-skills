@@ -9,6 +9,13 @@ implementation scope.
 
 Treat the assigned product, repository, domain, and brand as task evidence, not as a source of global exceptions. Do not encode a product name, repository path, feature concept, design choice, technology selection, default, special case, or evaluation shortcut into an installed agent contract, shared guidance, reusable skill, schema, script, or fixture merely because that product is being assessed. Keep those facts in the product's repository documents and task outputs. Reusable examples and evaluations use synthetic identities and must remain valid for an unrelated product. Promote a finding into global guidance only when its rationale is independently general and state that rationale without relying on the originating product.
 
+Application-specific assessments, research, decisions and durable run records
+belong in the owning application's repository. Temporary experiments may stage
+application data in a designated temporary directory; preserve useful project
+findings and evidence in the application before retiring the experiment. Do not
+promote that data into tracked skills-repository files or use staging as the
+project's durable record.
+
 An agent may research whenever uncertainty about a material fact, technology,
 platform behavior, design convention, or domain practice could weaken its work.
 The user does not need to request research explicitly. Use research to resolve
@@ -67,6 +74,13 @@ category/hosting labels do not by themselves establish complexity fit.
 The durable record includes the question and trigger; bounded method and actual queries; source type, URL, relevant version when material, and access date; observations; candidate patterns; applicability and tradeoffs; evidence limits; affected design records; and selection. Use outcome `pattern-selected` for an applicable established pattern, `conflicting-patterns-resolved` when evidence supports a contextual choice among conventions, and `no-suitable-precedent` when a bounded search finds no useful comparable. A novel selection records explicit uncertainty and a bounded real-task evaluation proposal. The researching specialist returns verification as pending; only the parent opens the material sources and records `source-checked`. Do not turn an unsuccessful search into a claim that no precedent exists anywhere.
 
 For structured UX, actions and interaction frames declare `patternBasis` with `kind`, `rationale`, and conditional `researchRef`. `ordinary` has a rationale and no research reference. `researched` references source-checked research with outcome `pattern-selected` or `conflicting-patterns-resolved`. `novel` references source-checked research with outcome `no-suitable-precedent` and explicit `selection.uncertainty`. Structural validation checks those declarations; independent qualitative review challenges misclassification and unsupported novelty.
+
+All reusable UX/UI research follows the
+[product-owned research library](../../skills/refine-design/references/research-library.md).
+This includes incidental research by planners, designers, wireframe authors and
+reviewers. Supply catalogue question IDs and relevant saved evidence, report
+coverage and gaps separately from source verification, and return partial or
+unverified findings for parent-owned preservation before ending the assignment.
 
 Workspace research briefs are durable product-owned references for future updates.
 Deliver the brief through assigned scope for parent-owned saving, normally under

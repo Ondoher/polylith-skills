@@ -38,6 +38,10 @@ directory. The technical guide keeps its own independently owned directory.
 Durable structured data, research, and review evidence remain under
 `product/<name>/`.
 
+Use the helper's `researchRoot` and `researchIndexPath` for the shared
+[UX/UI research library](research-library.md). Catalogue and supporting evidence
+live there across invocations; temporary run directories are delivery staging.
+
 The canonical layout is:
 
 ```text
@@ -53,6 +57,8 @@ The canonical layout is:
       contexts/prd/<material-sha256>/context.json
       contexts/prd/<material-sha256>/artifact-resources/
       ux/ux-spec.json
+      research/index.md
+      research/ # Briefs, evidence, frozen inputs and verification receipts
       design-language/design-language.json
       design-language/review-layout.json
       ui/ui-spec.json

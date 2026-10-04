@@ -1,17 +1,19 @@
 # Active work
 
-Current work: [refinement efficiency](../../.codex-tmp/refinement-efficiency/plan.md), including checkpoint prerequisites and verification follow-up.
+Current work: refine the reusable design pipeline and its durable research handoff.
 
-Current owner correction: [structure, proportions and constraints](../../skills/refine-design/references/spatial-wireframe.md).
-UX descriptions leave concrete layout to UI. The completed Alexa spatial output
-uses the superseded detailed-layout contract and needs a reduced handoff before UI.
+Next implementation sequence: [research-first planning and parallel design](../../planning/implementation-agents/parallel-design-pipeline-plan.md).
+Its seven milestones define the operational plan, recovery tests, research/planner
+handoff, scoped integration and live evaluation. The plan is persisted; execution
+has not begun.
 
-Latest execution handoff: [Alexa spatial JSON pipeline status](../../.codex-tmp/refinement-efficiency/experiments/alexa-spatial-json-20261003/STATUS.md).
-Read this before continuing the Alexa pipeline. The owner requested existing
-research and the latest parsed description through the updated semantic UX and
-JSON spatial-description pipeline. Rendering and visual inspection are outside
-the run. The [previous handoff](../../.codex-tmp/refinement-efficiency/experiments/alexa-research-structured-ux-20261002/STATUS.md)
-retains the completed research and earlier candidate evidence.
+- [Product-owned UX/UI research](../../skills/refine-design/references/research-library.md): assess covered questions, verification and gaps before assigning research.
+- [Refinement stage sequence](../../skills/refine-design/references/refinement-cycle.md): reuse evidence and preserve exact author/reviewer gates.
+- [Spatial handoff](../../skills/refine-design/references/spatial-wireframe.md): UX owns structure, important proportions and constraints; UI owns concrete layout.
 
-Repository identity and package ownership: [AGENTS.md](../../AGENTS.md) and [governance.json](../../governance.json).
-Standards applicability: [folder manifest](standards/manifest.md) and [repository overlay](standards/overlay.md).
+Application-specific status, decisions and durable run evidence belong in the
+owning application. Temporary experiments may stage application data under
+`.codex-tmp/`; their results are not reusable skill defaults.
+
+Repository ownership: [AGENTS.md](../../AGENTS.md) and [governance.json](../../governance.json).
+Standards: [folder manifest](standards/manifest.md) and [repository overlay](standards/overlay.md).

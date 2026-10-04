@@ -12,7 +12,7 @@ Acceptance for button:<id> protects its metrics, expressions and consumed type/t
 
 All 70 design-language tests passed, including seven new button tests covering state output, deterministic derivation, default propagation, geometry stability, 0.7 migration, acceptance/dependency protection, invalid-input rejection, and edited/unowned artifact preservation. Skill quick validation and UI-designer TOML parsing passed. A focus CSS-class collision discovered during testing was corrected by isolating the ring class.
 
-Rendered the synthetic fixture in a temporary folder and visually inspected its SVG with headless Chrome: all six labels are legible, focus treatment is distinct, and normal/loading widths match. Reviewed Markdown integration through generation/tests. No actual VS Code preview, live UI-designer assessment, interaction testing or accessibility certification was performed. This is fixture evidence, not an accepted Alexa design.
+Rendered the synthetic fixture in a temporary folder and visually inspected its SVG with headless Chrome: all six labels are legible, focus treatment is distinct, and normal/loading widths match. Reviewed Markdown integration through generation/tests. No actual VS Code preview, live UI-designer assessment, interaction testing or accessibility certification was performed. This is fixture evidence, not an accepted application design.
 
 ## Remaining Work
 
@@ -28,8 +28,8 @@ Verification: five new MUI-focused tests passed, including an end-to-end render;
 
 ## Minimal Identity Follow-Up
 
-Owner selected modmod as the initial model for an optional identity palette: start with one purposeful color; allow up to three only for distinct app uses; none is valid. Derived states, neutrals and framework colors do not count. Schema 0.9 adds explicit identity member IDs/rationale and separates their table from supporting references while preserving legacy records and acceptance histories. Identity metadata does not grant acceptance of values or reset theme overrides.
+The shared specimen demonstrates an optional identity palette: start with one purposeful color; allow up to three only for distinct app uses; none is valid. Derived states, neutrals and framework colors do not count. Schema 0.9 adds explicit identity member IDs/rationale and separates their table from supporting references while preserving legacy records and acceptance histories. Identity metadata does not grant acceptance of values or reset theme overrides.
 
-The review document is now revision 3. Its single proposed magenta (#E60CE9) comes from modmod's --branded-color and maps into the primary-action role. Button hover/pressed shades derive from that base. Ordinary MUI defaults remain, as do separately labeled prior reference colors retained under the no-deletion migration contract. Modmod is a model, not accepted Alexa branding.
+The review document is now revision 3. Its single proposed magenta (#E60CE9) is an illustrative fixture value and maps into the primary-action role. Button hover/pressed shades derive from that base. Ordinary MUI defaults remain, as do separately labeled prior reference colors retained under the no-deletion migration contract. Fixture colors are not accepted application branding.
 
 Verification: the full 78-test suite passed. After clarifying empty-selection wording, the affected rendering/stability test passed again. Skill validation and UI-role TOML parsing passed. Visually inspected the new button SVG in headless Chrome; no live specialist or VS Code preview was performed. Source grouping, alpha/theme limitations and pending specimen capabilities remain explicit.

@@ -4,13 +4,26 @@ Topics folder: agents/topics
 
 This repository is the source of truth for the managed Codex skills, agents, and documentation listed in `governance.json`.
 
+Keep this repository product-neutral. Information specific to an application
+project belongs in that application's repository, including requirements,
+decisions, research, assessments, run records, copied inputs, screenshots,
+captures and durable artifacts. Temporary experiments may hold application-specific
+inputs and outputs in a task or run directory under `.codex-tmp/`. Keep that data
+temporary: preserve useful project findings and evidence in the owning application
+before retiring the experiment, then remove the retired experimental copies. Do not promote them into tracked repository files
+or use the temporary directory as the project's durable store. Keep only reusable
+skills, standards, tooling, general guidance and unrelated synthetic fixtures
+here. Derive general lessons without retaining application names, paths, data
+or design choices. Preserve misplaced application material in its owning
+project before removing the local copy.
+
 Keep the manifest catalog closed and explicit. Add or remove a managed package and its catalog entry in the same change. Do not commit `node_modules`; the installer restores locked runtime dependencies with `npm ci --ignore-scripts`.
 
 Use the repository-local `install-polylith-skills` skill for installation, inspection, repair, update, and relocation. Use `uninstall-polylith-skills` for ownership-aware unlinking. User-level mutations require review of the dry-run plan and explicit authorization.
 
 Current work is routed through [agents/topics/active-topic.md](agents/topics/active-topic.md). Resolve engineering standards through the [folder manifest](agents/topics/standards/manifest.md) and [repository overlay](agents/topics/standards/overlay.md).
 
-Create all temporary files in a task or run subdirectory under the repository-root
+Create temporary files in a task or run subdirectory under the repository-root
 `.codex-tmp/`. This includes scratch scripts, copied inputs, intermediate artifacts,
 logs, captures, browser profiles and temporary progress records. Apply this rule to
 delegated agents and configure tool output and temporary directories accordingly.

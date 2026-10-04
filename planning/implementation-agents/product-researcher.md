@@ -71,6 +71,10 @@ to the parent with its rationale before pursuing it.
 
 Follow [shared research guidance](research-guidance.md) for evidence quality,
 pattern claims, source verification, ownership routing and durable reuse.
+Inspect the product's `research/index.md` and relevant findings/receipts under the
+[shared library contract](../../skills/refine-design/references/research-library.md)
+first. Return question IDs, actual covered scope, exclusions and remaining gaps
+with every delivery, including partial findings and pending verification.
 Inspect relevant saved research first. Preserve current verified findings and
 check only material gaps, changed claims or uncertain applicability; distinguish
 available evidence from inspected and applicable evidence. A continuation starts

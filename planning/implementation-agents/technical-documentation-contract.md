@@ -1,6 +1,6 @@
 # Technical documentation: working contract
 
-Status: agreed audience, depth, and publication format for a future technical-documentation consumer. This is a design contract, not an installed skill or an instruction to generate Alexa documentation now.
+Status: agreed audience, depth, and publication format for a future technical-documentation consumer. This is a design contract, not an installed skill or an instruction to generate the application documentation now.
 
 The [research note](technical-documentation-research.md) records the external guidance used to calibrate this contract and its limits. The [delivery plan](technical-documentation-delivery-plan.md) breaks the future workflow into reviewable milestones.
 

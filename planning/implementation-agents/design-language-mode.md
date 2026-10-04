@@ -8,7 +8,7 @@ Schema 0.8 adds the bounded contained command-button state sheet with theme refe
 
 ## Logical Input Guidance And Feedback
 
-Owner clarified the pattern with modmod's complex inputs: one helper/error area can belong to a composite input with multiple children. Name the shared pattern Input Guidance And Feedback. Place its shared messages beneath the complete logical input, keep individual child labels, and distinguish group-level errors from child-specific errors. Schema 0.12 demonstrates this with a two-width weekday checkbox group reusing the same pattern as the ordinary field. This does not imply a generic comp renderer or an Alexa weekday requirement.
+The shared composite-input pattern establishes that one helper/error area can belong to a composite input with multiple children. Name the shared pattern Input Guidance And Feedback. Place its shared messages beneath the complete logical input, keep individual child labels, and distinguish group-level errors from child-specific errors. Schema 0.12 demonstrates this with a two-width weekday checkbox group reusing the same pattern as the ordinary field. This does not imply a generic comp renderer or an application weekday requirement.
 
 ## Ordinary Field And Shared Messages
 
@@ -20,9 +20,9 @@ Owner decision: standard component examples belong in a compact components.md al
 
 ## Accepted Minimal Identity Direction
 
-Owner decision, 2026-09-17: use modmod as the initial model. An app may have no custom identity palette; when useful, start with one color and add up to two more only for distinct, app-specific purposes. Do not manufacture semantic roles to fill slots. Each color has an explicit meaning/use and can map into an appropriate MUI theme role or a direct identity accent. Derived states, neutrals and ordinary MUI defaults do not count as independent brand colors. This compact scope supersedes any implication in earlier research that every app needs full brand families/tones.
+Shared identity-palette direction, 2026-09-17: An app may have no custom identity palette; when useful, start with one color and add up to two more only for distinct, app-specific purposes. Do not manufacture semantic roles to fill slots. Each color has an explicit meaning/use and can map into an appropriate MUI theme role or a direct identity accent. Derived states, neutrals and ordinary MUI defaults do not count as independent brand colors. This compact scope supersedes any implication in earlier research that every app needs full brand families/tones.
 
-The initial demonstration uses modmod's magenta mapped to primary actions, while preserving ordinary MUI colors. It is a reference model, not acceptance of magenta as Alexa branding. Schema 0.9 separates identity from supporting color tables. Existing broad research remains optional background, not required palette scope.
+The initial demonstration uses an illustrative magenta mapped to primary actions, while preserving ordinary MUI colors. It is a reference model, not acceptance of magenta as the application branding. Schema 0.9 separates identity from supporting color tables. Existing broad research remains optional background, not required palette scope.
 
 ## Purpose And Scope
 

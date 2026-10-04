@@ -1,6 +1,6 @@
 # Linked technical white papers: working workflow
 
-Status: first-pass implementation and Alexa player-paper trial completed; the approved installer repair created the global `refine-detail` link and reported a healthy installation. The existing [attach-detail](../../skills/attach-detail/SKILL.md) skill writes the source link, [refine-detail](../../skills/refine-detail/SKILL.md) owns research and revisions, and technical context binds current paper bytes and research status.
+Status: first-pass implementation complete. [attach-detail](../../skills/attach-detail/SKILL.md) owns source linking, [refine-detail](../../skills/refine-detail/SKILL.md) owns research and revision, and technical context binds current paper bytes and research status.
 
 ## Source and authority
 
@@ -28,7 +28,7 @@ Changing a paper invalidates its bound technical interpretation and may stale gu
 
 ## First-pass results and next checks
 
-The four slices below are implemented. The read-only `technical-researcher` returned a sourced advisory handoff for a synthetic JSON-described media sequence. A synthetic linked-paper fixture exercises reference binding, current/stale research status, technical-record mapping, generated guide linking, and changed paper bytes. The Alexa trial added an authored player architecture paper, a source-only product-model reference, an immutable before/after revision ledger, a digest-bound advisory research report, and a generated focused-paper mapping. Existing source, playback, and media-proof questions were reused; new JSON-description, pipeline, and playlist-segment questions entered the same open-question register. No player pipeline or JSON schema was accepted from the research alone.
+The four slices below are implemented. A synthetic linked-paper fixture exercises reference binding, current/stale research status, technical-record mapping, generated guide linking and changed paper bytes. Product-specific trial results are retained in the owning application. Advisory research alone does not accept architecture or a schema.
 
 The first grouped hardening pass should examine concurrent edits, a changed product-description link, linked ancestors, report tampering, multiple papers, and meaningful claim-preservation review. A specialist review of the collected implementation can follow that batch. The installed agents directory and new skill directory are live links; a fresh Codex session may be needed for skill discovery.
 

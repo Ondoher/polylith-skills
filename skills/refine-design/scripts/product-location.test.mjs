@@ -19,6 +19,8 @@ test('location preserves the confirmed name beneath the repository root without 
 	const location = resolveProductLocation({repositoryRoot: root, productName: 'Field Journal'});
 	assert.equal(location.productRoot, path.join(root, 'product', 'Field Journal'));
 	assert.equal(location.currentPath, path.join(location.productRoot, 'current.json'));
+	assert.equal(location.researchRoot, path.join(location.productRoot, 'research'));
+	assert.equal(location.researchIndexPath, path.join(location.researchRoot, 'index.md'));
 	assert.equal(location.documentationRoot, path.join(root, 'documents', 'Field Journal'));
 	assert.equal(fs.existsSync(path.join(root, 'product')), false);
 	assert.equal(fs.existsSync(path.join(root, 'documents')), false);
@@ -72,6 +74,20 @@ test('location rejects file, case-only, and linked directory collisions', (t) =>
 	fs.mkdirSync(outside);
 	fs.symlinkSync(outside, path.join(product, 'Linked'), process.platform === 'win32' ? 'junction' : 'dir');
 	assert.throws(() => resolveProductLocation({repositoryRoot: root, productName: 'Linked'}), /ordinary directories/);
+});
+
+test('research destinations reject files and links outside the product root', (t) => {
+	const root = repository(t);
+	const productRoot = path.join(root, 'product', 'Journal');
+	fs.mkdirSync(productRoot, {recursive: true});
+	const researchRoot = path.join(productRoot, 'research');
+	fs.writeFileSync(researchRoot, 'owned file');
+	assert.throws(() => resolveProductLocation({repositoryRoot: root, productName: 'Journal'}), /ordinary directories/);
+	fs.unlinkSync(researchRoot);
+	const outside = path.join(root, 'elsewhere');
+	fs.mkdirSync(outside);
+	fs.symlinkSync(outside, researchRoot, process.platform === 'win32' ? 'junction' : 'dir');
+	assert.throws(() => resolveProductLocation({repositoryRoot: root, productName: 'Journal'}), /ordinary directories/);
 });
 
 test('documentation destinations reject files, case collisions, and linked output directories', (t) => {

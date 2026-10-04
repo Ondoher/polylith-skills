@@ -2,7 +2,7 @@
 
 Status, 2026-09-26: research and a proposed document design are available for
 review. Production skill contracts and renderers have not yet been changed to
-implement this proposal. The first Alexa publication remains a failed trial.
+implement this proposal. Application-specific trial status is maintained in the owning project.
 The owner has accepted decimal section numbering for the interaction guide
 and requires resilient continuation through failures. Their contracts are
 recorded below, in the document design, and in [resilience](resilience.md).
@@ -93,7 +93,7 @@ go through the structure agent when applying the format to actual product data.
 
 **Exit:** a concrete format is available to refine and select for implementation.
 The required PRD/interaction split is already directed; the optional third
-document and precise sample design remain choices. No Alexa regeneration is
+document and precise sample design remain choices. No application regeneration is
 needed to evaluate this format proposal.
 
 ## B. Define the composition and revision contract
@@ -245,7 +245,7 @@ requirement and must accompany these implementation slices.
 | Safe publication          | Links/assets/receipts validate; only owned product output is replaced                                                                                                                                                                      |
 | Readability               | Desktop/narrow screenshots, keyboard navigation, and print checks cover the selected patterns                                                                                                                                              |
 
-Use sparse and developed unrelated synthetic products. Then trial Alexa with
+Use sparse and developed unrelated synthetic products. Then trial the application with
 current inputs in its authorized consuming-repository scope. Complete its
 missing UI evidence upstream before claiming finished comps. Keep its product
 facts, outputs, and comparison evidence in that repository.

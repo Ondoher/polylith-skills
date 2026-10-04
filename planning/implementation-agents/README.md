@@ -4,6 +4,9 @@ This directory holds the maintained planning and role contracts for product
 design and the deferred coding workflow. The current roadmap is in
 [plan.md](plan.md); the [pipeline plan](product-model-pipeline-plan.md)
 distinguishes implemented PRD publication from future consumer and coding work.
+The [research-first parallel design plan](parallel-design-pipeline-plan.md)
+defines seven executable milestones for durable planning, deterministic recovery
+and scoped parallel authoring. It is planned work, not an enabled execution mode.
 Reusable tests use synthetic or sanitized data. Historical assessment records
 are background, not proof of current readiness or retained live-run provenance.
 
@@ -45,12 +48,12 @@ Installed agents load only the contracts and shared guidance named by their TOML
 
 - [Polylith architect: assessment contract](polylith-architect.md)
 - [Polylith architect: review and evaluation](polylith-architect-review.md)
-- [Polylith architect: first Alexa assessment](polylith-architect-alexa-assessment.md)
+
 - [Polylith architect: preparation and information gaps](polylith-architect-preparation.md)
 - [View agent: assessment contract](view-agent.md)
 - [View agent: review and validation](view-agent-review.md)
 - [View agent: evaluation cases](view-agent-evaluation.md)
-- [View agent: first Alexa assessment](view-agent-alexa-assessment.md)
+
 - [Controller agent: assessment contract](controller-agent.md)
 - [Controller agent: review and validation](controller-agent-review.md)
 - [Controller agent: evaluation cases](controller-agent-evaluation.md)

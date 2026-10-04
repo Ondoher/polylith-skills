@@ -1,16 +1,6 @@
 # Product publication: first-pass plan (historical)
 
-Archived 2026-09-26. The [current correction plan](plan.md) supersedes the
-variable-document-set direction and the deferred correction status below.
-Retain this record for the original milestones, contract rationale, and failed
-Alexa trial. The hierarchy and page-break agent process remains required.
-
-Status: Milestone 6's Alexa publication trial failed owner review. The editor
-image is a partial wireframe, not finished UI. The linked HTML is a
-source-record catalog, not a usable PRD. Source coverage, bindings, links, and
-repeat rendering passed their mechanical checks, but the visual and editorial
-exit criteria were not met. The generated Alexa files remain trial output;
-no correction approach has been selected yet.
+Archived 2026-09-26. The [current correction plan](plan.md) supersedes the earlier direction. This record retains reusable milestones and contract rationale. Application-specific trial status and evidence are maintained in the owning project.
 
 The accepted [joint source inventory](m3-joint-inventory.md) and
 [schema and link proposal](m3-schema-proposal.md) explain the milestone's
@@ -24,11 +14,11 @@ their inputs, generated publications, and comparison notes.
 
 ## Working boundary
 
-This plan keeps the shared skill product-neutral. Use Alexa early to inspect a
+This plan keeps the shared skill product-neutral. Use the application early to inspect a
 real agent-created outline, while deriving reusable rules from validated
 context contracts, artifact relationships, and unrelated synthetic examples.
-Alexa's page names, behaviors, and design choices must not become skill defaults.
-Keep Alexa-specific trial outputs and comparison notes in its owning repository.
+the application's page names, behaviors, and design choices must not become skill defaults.
+Keep application-specific trial outputs and comparison notes in its owning repository.
 
 **Locked publication location:** generated reader-facing documents belong under
 `documents/<product>/<doc-name>/`. Intermediate models, contexts, outlines,
@@ -281,15 +271,15 @@ Each numbered action leaves a source-bound artifact, a working slice, or a
 validation result. The outline and navigation skeleton are deliberate editorial
 review points; routine internal actions do not require separate review rounds.
 
-### 1. Produce the first outline, using Alexa as a test example
+### 1. Produce the first outline, using the application as a test example
 
 Build the smallest `generate-prd` outline-only path that invokes the new
 `document-structure` agent. Add its initial read-only definition and managed
 catalog entry together. Establish the initial input and outline contract from
-the shared validated context and a product-neutral synthetic example. Alexa is
+the shared validated context and a product-neutral synthetic example. The application is
 the first real test of that contract and the first outline shown for editorial
 review; its content does not define reusable agent behavior, schema fields, or
-publication defaults. Immediately before the Alexa run, verify its exact
+publication defaults. Immediately before the application run, verify its exact
 context, snapshot, and source bindings. If the source changed, obtain a fresh
 validated context first.
 
@@ -301,7 +291,7 @@ the same agent makes document and page decisions in the next step using that
 outline and feedback. The checkpoint does not limit the agent's later editorial
 authority. Outline grouping expresses information relationships, not a draft
 table of contents. Save the structured outline and Markdown review view under
-Alexa's `product/Alexa/` support area, bound to the exact context identity.
+the application's `product/<name>/` support area, bound to the exact context identity.
 Do not replace the current PRD or technical guide. Keep the trial's product
 facts and outputs out of this shared skills repository.
 
@@ -309,8 +299,8 @@ Start with the existing context format. If its structure obscures necessary
 source identity, relationships, accepted detail, or coverage, make the smallest
 validated `refine-design` output change that supplies those inputs as reusable
 source information, not as documentation layout fields. Express any deficiency
-found through Alexa as a general source-contract need and check the fix on an
-unrelated synthetic case before rerunning Alexa.
+found through the application as a general source-contract need and check the fix on an
+unrelated synthetic case before rerunning the application.
 `refine-design` may package source data, but the new agent alone inventories and
 outlines it. Refinement does not arrange documents. Mirror any shared context
 validator changes in the publisher.
@@ -325,16 +315,16 @@ Intermediate steps:
    source references.
 3. Add the `generate-prd` outline-only path and minimal coverage validation.
    Run the synthetic input without planning a document.
-4. Resolve Alexa's current PRD context against `product/Alexa/current.json`;
+4. Resolve the application's current PRD context against `product/<name>/current.json`;
    record its context ID, snapshot digest, and source digest. If it lacks an
    accepted source type or relationship, make a generic `refine-design` output
    change, verify that change with a second unrelated synthetic case, and then
-   resolve Alexa's context again.
-5. Run the agent on the bound Alexa context. Save its structured result and a
-   locally formatted Markdown view in Alexa's product support area, then show
+   resolve the application's context again.
+5. Run the agent on the bound application context. Save its structured result and a
+   locally formatted Markdown view in the application's product support area, then show
    the outline and coverage summary for review.
 
-**First reviewable artifact:** the agent's Alexa inventory outline, with source
+**First reviewable artifact:** the agent's application inventory outline, with source
 references, visible gaps, and a short account of what was included or omitted.
 Document organization comes in the next agent pass. Present the outline for
 editorial review before implementing document splitting or a full renderer.
@@ -342,7 +332,7 @@ Structural validity alone does not make the outline useful.
 
 ### 2. Refine the outline and generalize its contract
 
-Use feedback on the Alexa outline to improve the agent's grouping, terminology,
+Use feedback on the application outline to improve the agent's grouping, terminology,
 coverage, and treatment of open questions. Show what changed between outline
 revisions and why. Preserve source facts and exact references; route a requested
 product-behavior change back to `refine-design`. Give the agent the prior outline
@@ -350,7 +340,7 @@ and feedback for each revision, and validate coverage again.
 
 After that first real review, record the reusable source-type and coverage rules
 in a `source-contract-map.md` here. Check them against unrelated sparse and
-developed synthetic contexts so Alexa's areas and language do not become
+developed synthetic contexts so the application's areas and language do not become
 reusable defaults. This is a contract map for what the agent may read and what
 the publisher can validate, not a developer-authored product outline. A complete
 count of current source-index entries does not prove that each entry is
@@ -358,7 +348,7 @@ sufficiently composable or that the context retained every accepted source fact.
 
 Intermediate steps:
 
-1. Annotate the reviewed Alexa outline with specific missing, misplaced,
+1. Annotate the reviewed application outline with specific missing, misplaced,
    duplicated, or unclear items, each tied to its source reference where one
    exists. Check whether important use-case alternatives, substantial UX
    substeps, dialogs, and recovery are visible at a useful outline depth rather
@@ -398,16 +388,16 @@ Intermediate steps:
    the third reviewable output.
 6. Extract reusable source-type and coverage rules into
    `source-contract-map.md`, then check them against unrelated sparse and
-   developed synthetic contexts. Revise the rules if they encode Alexa-specific
+   developed synthetic contexts. Revise the rules if they encode application-specific
    names or divisions.
 
-**Exit:** the reviewed Alexa outline is a usable working account of its current
+**Exit:** the reviewed application outline is a usable working account of its current
 validated context. Each accepted complex interaction exposes its substantive
 substeps, including dialogs, nested under the owning UX or linked to a shared
 home. A complex shared component has a separately referenced account when that
 clarifies its reusable behavior. These subjects have meaningful-state comp
 coverage or a specific source or product-decision gap. The product-neutral
-contract map can explain and validate coverage without encoding Alexa-specific
+contract map can explain and validate coverage without encoding application-specific
 content.
 
 ### 3. Make the product and UX sources independently composable
@@ -426,12 +416,12 @@ stable identities, provenance, source-claim coverage, lineage, and locks.
 
 Intermediate steps:
 
-1. Inventory the product-model and UX schemas against the Alexa outline's
+1. Inventory the product-model and UX schemas against the application outline's
    compressed sources. Identify independently meaningful product requirements,
    rules, goals, constraints, and gaps, alongside UX goals, steps,
    alternatives, decisions, recovery, states, dialogs, shared components, and
    feedback. Record current IDs, source claims, links, and places where prose,
-   array position, or similar names carry meaning. Use Alexa as a test case
+   array position, or similar names carry meaning. Use the application as a test case
    only. Save the joint inventory as the first reviewable artifact.
 2. Propose one product-neutral relationship contract for both sources. Define
    which product facts deserve separate records and how they relate to
@@ -455,7 +445,7 @@ Intermediate steps:
    accepted meaning in that fresh derivation. Record missing relationships as
    gaps rather than fabricating them.
 5. Run focused positive checks with sparse and developed unrelated synthetic
-   inputs. Then regenerate Alexa's product model, UX, PRD context, and outline
+   inputs. Then regenerate the application's product model, UX, PRD context, and outline
    as a trial; compare source coverage, required behavior, flow ordering,
    shared-element reuse, and open questions with the prior bound outline.
    Save the comparison and new outline for one grouped milestone review.
@@ -472,7 +462,7 @@ and their typed links to reconstruct accepted requirements, rules,
 interactions, alternatives, recovery, shared elements, and UI evidence without
 parsing narrative prose or inventing a document hierarchy. Bounded planning
 and coding handoffs can use the same graph without silently inventing behavior.
-The Alexa comparison shows retained meaning and reports source gaps explicitly.
+The application comparison shows retained meaning and reports source gaps explicitly.
 
 ### 4. Plan and review both forms of split
 
@@ -492,7 +482,7 @@ outline change requires the appropriate revision rather than silent reuse.
 Make the structure inspectable before full publication: present the plan and a
 lightweight navigation/content skeleton that shows document entry points, page
 links, headings, source coverage, and gaps. Iterate on editorial feedback with
-Alexa as a concrete trial, then test transfer with a large coherent synthetic
+the application as a concrete trial, then test transfer with a large coherent synthetic
 subject that should remain one document with linked pages and with distinct
 subjects that warrant separate document entry points. The agent may use both
 forms in one collection.
@@ -524,7 +514,7 @@ Intermediate steps:
 
 **Exit:** readers can review the proposed reading paths and trace every eligible
 outline item to one canonical destination or explicit gap. The agent can revise
-a valid split without losing content or turning Alexa choices into fixed policy.
+a valid split without losing content or turning application choices into fixed policy.
 
 ### 5. Complete the contract and publisher
 
@@ -595,13 +585,10 @@ Intermediate steps:
    editorial quality, contracts, output ownership, links, and presentation.
 3. Fix material findings and rerun the checks affected by those fixes. Record
    additional test cases for the later comprehensive pass.
-4. Complete Alexa's current-schema UI pass before restarting its outline and
-   structure proposal. The older export scenes are bound to UX/UI 0.2 and
-   cannot be attached to UX 0.3 by matching names. Preserve them as design
-   evidence while supplying current scenes and explicit gaps.
-5. Republish Alexa from a freshly verified context, compare every eligible
+4. Complete the consuming product's current-schema UI pass before restarting its outline and structure proposal. An older scene cannot be rebound by matching names; use current source bindings and explicit evidence gaps.
+5. Republish the application from a freshly verified context, compare every eligible
    source item with its published home, inspect the desktop reading path, and
-   record product-specific results and remaining gaps in Alexa's repository.
+   record product-specific results and remaining gaps in the application's repository.
 
 **Exit:** the completion criteria below are supported by product-neutral tests
 and one real integration assessment. Resolve findings or record them as explicit
@@ -609,7 +596,7 @@ follow-up work before claiming the publication change complete.
 
 ## Completion criteria
 
-- The first reviewable artifact is the new agent's Alexa inventory outline,
+- The first reviewable artifact is the new agent's application inventory outline,
   with exact source references and no document or page organization proposal.
 - The agent selects as many product documents as the supplied content warrants;
   each names an audience and stands alone for that reader, and the collection

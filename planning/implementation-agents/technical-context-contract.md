@@ -243,7 +243,7 @@ a background resource lifetime, observed code versus target decisions, specialis
 reconciliation, a relevant UX constraint, a dirty baseline, and a routed gap.
 Bindings are symbolic labels resolved by the fixture's input catalog; milestone 3
 must build real model/artifact envelopes and byte hashes with existing writers.
-No Alexa architecture or product-specific expected output is a shared default.
+No application architecture or product-specific expected output is a shared default.
 
 Milestone-2 checks cover JSON parsing, declared shape, unique IDs, reference
 closure, and the representative positive walkthrough. They do not demonstrate a

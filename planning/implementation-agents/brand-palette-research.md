@@ -1,12 +1,12 @@
 # Brand Palettes And UI Color Usage
 
-Status: primary-source research and proposed design-language evolution, 2026-09-17. The owner identified branding as a palette from which more specific treatments can be developed. This note proposes how to represent that; it does not select Alexa colors or implement a new schema.
+Status: primary-source research and proposed design-language evolution, 2026-09-17. The owner identified branding as a palette from which more specific treatments can be developed. This note proposes how to represent that; it does not select the application colors or implement a new schema.
 
 ## Accepted Minimal Identity Direction
 
-Owner decision, 2026-09-17: use modmod as the initial model. An app may have no custom identity palette; when useful, start with one color and add up to two more only for distinct, app-specific purposes. Do not manufacture semantic roles to fill slots. Each color has an explicit meaning/use and can map into an appropriate MUI theme role or a direct identity accent. Derived states, neutrals and ordinary MUI defaults do not count as independent brand colors. This compact scope supersedes any implication in earlier research that every app needs full brand families/tones.
+Shared identity-palette direction, 2026-09-17: An app may have no custom identity palette; when useful, start with one color and add up to two more only for distinct, app-specific purposes. Do not manufacture semantic roles to fill slots. Each color has an explicit meaning/use and can map into an appropriate MUI theme role or a direct identity accent. Derived states, neutrals and ordinary MUI defaults do not count as independent brand colors. This compact scope supersedes any implication in earlier research that every app needs full brand families/tones.
 
-The initial demonstration uses modmod's magenta mapped to primary actions, while preserving ordinary MUI colors. It is a reference model, not acceptance of magenta as Alexa branding. Schema 0.9 separates identity from supporting color tables. Existing broad research remains optional background, not required palette scope.
+The initial demonstration uses an illustrative magenta mapped to primary actions, while preserving ordinary MUI colors. It is a reference model, not acceptance of magenta as the application branding. Schema 0.9 separates identity from supporting color tables. Existing broad research remains optional background, not required palette scope.
 
 ## Findings From Primary Sources
 

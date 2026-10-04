@@ -26,7 +26,7 @@ The sandbox initially prevented Node test subprocess creation (spawn EPERM). The
 
 ## Review Artifact
 
-The sample is intentionally synthetic, with source.kind `fixture`; it is not an Alexa branding decision or a UI-agent assessment.
+The sample is intentionally synthetic, with source.kind `fixture`; it is not an application branding decision or a UI-agent assessment.
 
 ## Remaining Evidence
 

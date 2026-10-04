@@ -5,6 +5,13 @@ description: Refine human-owned product descriptions into canonical persisted pr
 
 # Refine Design
 
+For every UX/UI research handoff, follow the [product-owned research library](references/research-library.md).
+Load `research/index.md` under the existing product root, assess question-level
+coverage and freshness, and assign only uncovered or materially changed questions.
+Save useful findings and evidence there, including pending verification, before
+ending the assignment. Apply this to incidental research by all design roles as
+well as `product-researcher` and `ui-researcher`.
+
 ## Shared MCP operations
 
 When configured `workflow_*` tools are available, use product.prepare/product.select, units._, ux-review._, the existing-writer adapters, publication.assemble, and context.resolve. Use technical.inspect/technical.prepare/technical.resolve for technical preparation. The parent owns canonical writes and independently reviewed UX remains required before UI persistence. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.

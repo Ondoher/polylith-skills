@@ -30,7 +30,7 @@ The generated palette and theme swatches were inspected visually through a headl
 
 ## Review Artifact
 
-The sample shows a core/soft/strong blue family plus a neutral, five theme roles and one missing border mapping with an explicit default. Accepted entries are simulated fixture decisions, not accepted Alexa branding.
+The sample shows a core/soft/strong blue family plus a neutral, five theme roles and one missing border mapping with an explicit default. Accepted entries are simulated fixture decisions, not accepted application branding.
 
 The current color source and nine SVGs are under design-language/. Browser-inspection HTML and theme-preview.png are temporary evaluation artifacts.
 

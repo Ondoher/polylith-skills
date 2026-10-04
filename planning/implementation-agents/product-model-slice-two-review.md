@@ -17,8 +17,7 @@ changed product description
 -> deterministic PRD publication
 ```
 
-Alexa remained withheld from reusable code, schemas, prompts, fixtures, and
-expected output. The synthetic Field Journal fixture and product-neutral
+Reusable code, schemas, prompts, fixtures and expected output remain product-neutral. The synthetic Field Journal fixture and product-neutral
 contract tests exercise the completed route.
 
 ## Living product model
@@ -131,7 +130,7 @@ contract tests exercise the completed route.
   and passed targeted follow-up review. Its low JSDoc advisory was also closed
   with shared closed-shape types and public parameter/result/error contracts.
 
-These are global staged skills, so the Alexa repository standards ledger does
+These are global staged skills, so the application repository standards ledger does
 not govern them. Focused architecture, contract, privacy/security, and
 verification inspections were used instead; this record does not claim an
 aggregate repository standards result.

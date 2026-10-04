@@ -46,7 +46,7 @@ to `IO-01` regardless of where either appears in the document hierarchy.
 
 Fieldbook is fictional. Its content is intentionally more detailed than the
 repository's minimal Garden Log fixture and does not claim to derive from it.
-None of these decisions are Alexa requirements or reusable skill defaults.
+None of these decisions are application requirements or reusable skill defaults.
 
 | ID        | Illustrative fact or choice                                                                                                                                                                                                        |
 | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

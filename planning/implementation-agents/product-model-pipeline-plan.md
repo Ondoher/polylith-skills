@@ -48,7 +48,7 @@ is not a remaining acceptance requirement.
 
 The context resolver accepts `prd` and a first pass of `technical`.
 Technical preparation, frozen context production, and linked Markdown publication
-are implemented for a first Alexa trial. Implementation planning,
+are implemented for the first pass. Implementation planning,
 system-architecture views, and coder packages remain future consumers.
 The [technical-documentation contract](technical-documentation-contract.md)
 sets the audience, depth, and linked Markdown publication format. The [delivery plan](technical-documentation-delivery-plan.md) stages

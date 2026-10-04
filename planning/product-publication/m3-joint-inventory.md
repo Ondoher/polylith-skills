@@ -1,12 +1,8 @@
 # Milestone 3: product and UX source inventory
 
-This is the first reviewable output for milestone 3. It inventories the
-current canonical contracts against the accepted Alexa outline, without
-choosing document or page organization. Alexa is a diagnostic example, not a
-source of reusable schema vocabulary or decomposition defaults. The proposed
-replacement contract is in [the schema proposal](m3-schema-proposal.md).
+This historical inventory identifies product-neutral source-contract gaps without choosing document or page organization. Application-bound measurements and examples are maintained in the owning project. The proposed replacement is in [the schema proposal](m3-schema-proposal.md).
 
-## Current contracts and bound trial
+## Historical contracts
 
 The product model uses [schema 1.0][product-schema] and
 [its invariants][product-contract].
@@ -26,15 +22,6 @@ and component behavior remain nested. Some nested records have IDs; those IDs
 cannot yet be addressed by stable, typed cross-artifact references. Other
 details, notably component behavior requirements, are plain strings.
 
-The accepted Alexa outline is bound to PRD context
-`prd-context-6623432c4683`, snapshot 32. Its source index has 132 eligible
-references, placed once in 73 outline groups. The bound product model has one
-purpose, one user, 15 capabilities, four gaps, and 21 source claims. The bound
-UX payload has four features, four use cases, four surfaces, 12 components,
-19 actions, 15 interaction frames, eight nested use-case steps, 13 nested
-alternatives, and four open questions. Two proposed UI scenes depict part of
-the export flow. These counts describe the trial, not target cardinalities.
-
 ## Addressability and missing links
 
 | Semantic unit                               | Current address and evidence                                                                                 | Contract gap                                                                                                                                                                                 |
@@ -46,34 +33,6 @@ the export flow. These counts describe the trial, not target cardinalities.
 | UX action, feedback, recovery               | Actions have top-level IDs. Nested feedback and recovery have IDs.                                           | Feedback/recovery cannot be independently linked, shared, or impact-traced through a stable catalog.                                                                                         |
 | UX state, dialog, shared component          | A state is a string scoped to a surface. Dialogs are first-class frames; components are first-class records. | State identity depends on context; substantial component behavior may be undifferentiated strings. A frame or component can exist without a link to the precise use-case branch it supports. |
 | UI scene and comp                           | Scenes name a UX frame, surface, state, and use cases; scene nodes bind affordances to UX actions.           | The scene does not explicitly identify every semantic step, decision, rule, or state it depicts. A proposed scene is evidence, not a published comp.                                         |
-
-Alexa makes the granularity issue concrete. `product:clip-library` contains
-the ordinary-editing rule, explicit update eligibility, impact explanation,
-atomic propagation, local-override preservation, and cancel/failure behavior
-in one 546-character description. All are supported by
-`claim-clip-library`, but none has its own product record. The
-`product:video-export` description similarly combines saved-video eligibility,
-MP4 defaults, per-attempt destination validation and replacement consent,
-progress, cancellation, workspace persistence, retry behavior, and output
-correctness. Splitting those meanings must retain their shared claim provenance
-and cannot silently create new product policy.
-
-The `export-video` UX use case has two nested steps and four alternatives.
-The alternative `export-existing` bundles Replace, Choose Another Location,
-Cancel, a nested chooser, and fresh consent on later attempts in its response
-and recovery strings. The `clip-operations` component has four
-`behaviorRequirements` strings covering distinct eligibility, confirmation,
-commit, and failure behavior. UX revision 5 added frames for some export
-branches, yet no typed edge connects each branch to its exact frame and scene.
-The outline's child references make the current publication more readable;
-they do not repair the canonical source relationships.
-
-The UX feature's `sourceRefs` cite the human description broadly. They do not
-identify which product capability or individual rule governs a use case,
-action, or state. Matching names is unsafe, and a UI scene's frame link does
-not prove that every requirement or branch has comp coverage. The four
-product gaps remain unresolved decisions; missing UX detail and missing
-trace links are separate deficiencies.
 
 ## Decisions this inventory supports
 
