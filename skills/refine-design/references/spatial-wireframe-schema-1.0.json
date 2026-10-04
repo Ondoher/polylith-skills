@@ -1,0 +1,692 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"title": "Spatial structure, proportions and constraints",
+	"$comment": "Authored UX guidance, not a layout algorithm, canonical product-artifact kind or renderer input. Historical contracts remain bound by their exact hashes.",
+	"type": "object",
+	"additionalProperties": false,
+	"required": ["schemaVersion", "purpose", "evidence", "parts", "scenes"],
+	"properties": {
+		"schemaVersion": {
+			"const": "1.0"
+		},
+		"purpose": {
+			"$ref": "#/$defs/text"
+		},
+		"evidence": {
+			"type": "array",
+			"items": {
+				"$ref": "#/$defs/evidence"
+			},
+			"minItems": 1
+		},
+		"decisions": {
+			"type": "array",
+			"items": {
+				"$ref": "#/$defs/decision"
+			}
+		},
+		"parts": {
+			"type": "array",
+			"items": {
+				"$ref": "#/$defs/part"
+			},
+			"minItems": 1
+		},
+		"scenes": {
+			"type": "array",
+			"items": {
+				"$ref": "#/$defs/scene"
+			},
+			"minItems": 1
+		},
+		"outcomes": {
+			"type": "array",
+			"items": {
+				"$ref": "#/$defs/outcome"
+			}
+		},
+		"presentationGuidance": {
+			"type": "array",
+			"items": {"$ref": "#/$defs/presentationGuidance"},
+			"description": "Advisory semantic detail and working UI recommendations; never scene layout or new behavior."
+		}
+	},
+	"$defs": {
+		"presentationGuidance": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["id", "nodeRefs", "evidenceRefs", "ownership", "recommendation", "rationale"],
+			"properties": {
+				"id": {"$ref": "#/$defs/id"},
+				"nodeRefs": {"$ref": "#/$defs/refs", "minItems": 1},
+				"evidenceRefs": {"$ref": "#/$defs/refs"},
+				"ownership": {"enum": ["ui-working-default", "accepted-ux-detail"]},
+				"recommendation": {"$ref": "#/$defs/text"},
+				"rationale": {"$ref": "#/$defs/text"},
+				"bindings": {"type": "array", "items": {"$ref": "#/$defs/binding"}, "minItems": 1},
+				"control": {
+					"type": "object", "additionalProperties": false,
+					"required": ["kind", "accessibleName"],
+					"properties": {
+						"kind": {"$ref": "#/$defs/text"},
+						"label": {"$ref": "#/$defs/text"},
+						"accessibleName": {"$ref": "#/$defs/text"}
+					}
+				},
+				"icon": {
+					"type": "object", "additionalProperties": false,
+					"required": ["library", "version", "asset", "variant", "meaning"],
+					"properties": {
+						"library": {"$ref": "#/$defs/text"},
+						"version": {"$ref": "#/$defs/text"},
+						"asset": {"$ref": "#/$defs/text"},
+						"variant": {"$ref": "#/$defs/text"},
+						"meaning": {"$ref": "#/$defs/text"}
+					}
+				},
+				"menuEntries": {
+					"type": "array", "minItems": 1,
+					"items": {
+						"type": "object", "additionalProperties": false,
+						"required": ["id", "label", "binding"],
+						"properties": {
+							"id": {"$ref": "#/$defs/id"},
+							"label": {"$ref": "#/$defs/text"},
+							"binding": {"$ref": "#/$defs/binding"}
+						}
+					}
+				},
+				"states": {
+					"type": "array", "minItems": 1,
+					"items": {
+						"type": "object", "additionalProperties": false,
+						"required": ["stateRef", "treatment"],
+						"properties": {
+							"stateRef": {"$ref": "#/$defs/id"},
+							"treatment": {"$ref": "#/$defs/text"}
+						}
+					}
+				}
+			}
+		},
+		"text": {
+			"type": "string",
+			"minLength": 1
+		},
+		"id": {
+			"type": "string",
+			"pattern": "^[a-z][a-z0-9-]*$"
+		},
+		"refs": {
+			"type": "array",
+			"items": {
+				"$ref": "#/$defs/id"
+			},
+			"uniqueItems": true
+		},
+		"nonnegative": {
+			"type": "number",
+			"minimum": 0
+		},
+		"positive": {
+			"type": "number",
+			"exclusiveMinimum": 0
+		},
+		"evidence": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["id", "kind", "locator", "statement", "applicability"],
+			"properties": {
+				"id": {
+					"$ref": "#/$defs/id"
+				},
+				"kind": {
+					"enum": ["product", "accepted-ux", "research"]
+				},
+				"locator": {
+					"$ref": "#/$defs/text"
+				},
+				"statement": {
+					"$ref": "#/$defs/text"
+				},
+				"applicability": {
+					"$ref": "#/$defs/text"
+				},
+				"sha256": {
+					"type": "string",
+					"pattern": "^[a-f0-9]{64}$"
+				},
+				"accessedOn": {
+					"type": "string",
+					"format": "date"
+				}
+			}
+		},
+		"decision": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["id", "nodeRefs", "propertyPaths", "authority", "choice", "rationale", "evidenceRefs"],
+			"properties": {
+				"id": {
+					"$ref": "#/$defs/id"
+				},
+				"nodeRefs": {
+					"$ref": "#/$defs/refs",
+					"minItems": 1
+				},
+				"propertyPaths": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"pattern": "^/"
+					},
+					"minItems": 1,
+					"uniqueItems": true
+				},
+				"authority": {
+					"enum": ["source-required", "working"]
+				},
+				"choice": {
+					"$ref": "#/$defs/text"
+				},
+				"rationale": {
+					"$ref": "#/$defs/text"
+				},
+				"evidenceRefs": {
+					"$ref": "#/$defs/refs"
+				}
+			}
+		},
+		"binding": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["trigger", "actionRef", "uxNodeRef"],
+			"properties": {
+				"trigger": {
+					"$ref": "#/$defs/text"
+				},
+				"actionRef": {
+					"$ref": "#/$defs/id"
+				},
+				"uxNodeRef": {
+					"$ref": "#/$defs/id"
+				},
+				"optionRef": {
+					"$ref": "#/$defs/id"
+				},
+				"subjectRef": {
+					"$ref": "#/$defs/id"
+				},
+				"destinationRef": {
+					"$ref": "#/$defs/id"
+				},
+				"value": {
+					"type": ["string", "number", "boolean", "null"]
+				}
+			}
+		},
+		"scale": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["id", "min", "max", "unit"],
+			"properties": {
+				"id": {
+					"$ref": "#/$defs/id"
+				},
+				"min": {
+					"type": "number"
+				},
+				"max": {
+					"type": "number"
+				},
+				"unit": {
+					"$ref": "#/$defs/text"
+				}
+			}
+		},
+		"region": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["id", "kind", "role", "purpose", "children"],
+			"properties": {
+				"id": {
+					"$ref": "#/$defs/id"
+				},
+				"kind": {
+					"const": "region"
+				},
+				"role": {
+					"$ref": "#/$defs/text"
+				},
+				"purpose": {
+					"$ref": "#/$defs/text"
+				},
+				"children": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/node"
+					},
+					"minItems": 1
+				},
+				"stateRef": {
+					"$ref": "#/$defs/id"
+				},
+				"bindings": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/binding"
+					},
+					"minItems": 1
+				},
+				"scale": {
+					"$ref": "#/$defs/scale"
+				},
+				"constraints": {
+					"$ref": "#/$defs/constraints"
+				},
+				"interval": {
+					"$ref": "#/$defs/interval"
+				},
+				"relationships": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/relationship"
+					},
+					"minItems": 1
+				},
+				"interaction": {
+					"$ref": "#/$defs/interaction"
+				},
+				"guidanceRefs": {
+					"$ref": "#/$defs/refs",
+					"minItems": 1,
+					"description": "Applicable evidence IDs; ancestors may carry shared guidance."
+				}
+			}
+		},
+		"element": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["id", "kind", "role", "purpose"],
+			"properties": {
+				"id": {
+					"$ref": "#/$defs/id"
+				},
+				"kind": {
+					"const": "element"
+				},
+				"role": {
+					"$ref": "#/$defs/text"
+				},
+				"purpose": {
+					"$ref": "#/$defs/text"
+				},
+				"stateRef": {
+					"$ref": "#/$defs/id"
+				},
+				"text": {
+					"$ref": "#/$defs/text"
+				},
+				"bindings": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/binding"
+					},
+					"minItems": 1
+				},
+				"constraints": {
+					"$ref": "#/$defs/constraints"
+				},
+				"interval": {
+					"$ref": "#/$defs/interval"
+				},
+				"interaction": {
+					"$ref": "#/$defs/interaction"
+				},
+				"guidanceRefs": {
+					"$ref": "#/$defs/refs",
+					"minItems": 1,
+					"description": "Applicable evidence IDs; ancestors may carry shared guidance."
+				}
+			}
+		},
+		"node": {
+			"oneOf": [
+				{
+					"$ref": "#/$defs/region"
+				},
+				{
+					"$ref": "#/$defs/element"
+				}
+			]
+		},
+		"part": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["id", "root"],
+			"properties": {
+				"id": {
+					"$ref": "#/$defs/id"
+				},
+				"root": {
+					"$ref": "#/$defs/region"
+				}
+			}
+		},
+		"change": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["nodeRef", "set"],
+			"properties": {
+				"nodeRef": {
+					"$ref": "#/$defs/id"
+				},
+				"set": {
+					"type": "object",
+					"additionalProperties": false,
+					"minProperties": 1,
+					"required": [],
+					"properties": {
+						"constraints": {
+							"type": "array",
+							"items": {
+								"$ref": "#/$defs/constraint"
+							}
+						},
+						"relationships": {
+							"type": "array",
+							"items": {
+								"$ref": "#/$defs/relationship"
+							}
+						},
+						"stateRef": {
+							"$ref": "#/$defs/id"
+						},
+						"text": {
+							"$ref": "#/$defs/text"
+						},
+						"purpose": {
+							"$ref": "#/$defs/text"
+						},
+						"bindings": {
+							"type": "array",
+							"items": {
+								"$ref": "#/$defs/binding"
+							}
+						},
+						"interval": {
+							"$ref": "#/$defs/interval"
+						},
+						"interaction": {
+							"$ref": "#/$defs/interaction"
+						},
+						"guidanceRefs": {
+							"$ref": "#/$defs/refs",
+							"minItems": 1
+						}
+					}
+				}
+			}
+		},
+		"scene": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["id", "partRef", "frameRefs", "stateRef", "applicability", "changes"],
+			"properties": {
+				"id": {
+					"$ref": "#/$defs/id"
+				},
+				"partRef": {
+					"$ref": "#/$defs/id"
+				},
+				"frameRefs": {
+					"$ref": "#/$defs/refs",
+					"minItems": 1
+				},
+				"stateRef": {
+					"$ref": "#/$defs/id"
+				},
+				"changes": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/change"
+					}
+				},
+				"applicability": {
+					"$ref": "#/$defs/text"
+				}
+			}
+		},
+		"outcome": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["sceneRef", "sourceRef", "sourcePath", "nodeRefs", "resultKind"],
+			"properties": {
+				"sceneRef": {
+					"$ref": "#/$defs/id"
+				},
+				"sourceRef": {
+					"$ref": "#/$defs/id"
+				},
+				"sourcePath": {
+					"type": "string",
+					"pattern": "^/"
+				},
+				"nodeRefs": {
+					"$ref": "#/$defs/refs",
+					"minItems": 1
+				},
+				"resultKind": {
+					"enum": ["visible-change", "navigation", "unchanged"]
+				}
+			}
+		},
+		"constraint": {
+			"oneOf": [
+				{
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["kind", "decisionRef", "axis", "relativeTo", "preferredPercent"],
+					"properties": {
+						"kind": {
+							"const": "proportion"
+						},
+						"decisionRef": {
+							"$ref": "#/$defs/id"
+						},
+						"axis": {
+							"enum": ["width", "height", "area"]
+						},
+						"relativeTo": {
+							"$ref": "#/$defs/id"
+						},
+						"preferredPercent": {
+							"type": "number",
+							"exclusiveMinimum": 0,
+							"maximum": 100
+						},
+						"minPercent": {
+							"type": "number",
+							"minimum": 0,
+							"maximum": 100
+						},
+						"maxPercent": {
+							"type": "number",
+							"exclusiveMinimum": 0,
+							"maximum": 100
+						}
+					}
+				},
+				{
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["kind", "decisionRef", "axis"],
+					"properties": {
+						"kind": {
+							"const": "extent"
+						},
+						"decisionRef": {
+							"$ref": "#/$defs/id"
+						},
+						"axis": {
+							"enum": ["width", "height"]
+						},
+						"minPx": {
+							"$ref": "#/$defs/nonnegative"
+						},
+						"maxPx": {
+							"$ref": "#/$defs/positive"
+						},
+						"preferredPx": {
+							"$ref": "#/$defs/positive"
+						}
+					},
+					"anyOf": [
+						{
+							"required": ["minPx"]
+						},
+						{
+							"required": ["maxPx"]
+						},
+						{
+							"required": ["preferredPx"]
+						}
+					]
+				},
+				{
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["kind", "decisionRef", "width", "height"],
+					"properties": {
+						"kind": {
+							"const": "aspect-ratio"
+						},
+						"decisionRef": {
+							"$ref": "#/$defs/id"
+						},
+						"width": {
+							"$ref": "#/$defs/positive"
+						},
+						"height": {
+							"$ref": "#/$defs/positive"
+						}
+					}
+				},
+				{
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["kind", "decisionRef", "minWidthPx", "minHeightPx"],
+					"properties": {
+						"kind": {
+							"const": "interaction-target"
+						},
+						"decisionRef": {
+							"$ref": "#/$defs/id"
+						},
+						"minWidthPx": {
+							"$ref": "#/$defs/positive"
+						},
+						"minHeightPx": {
+							"$ref": "#/$defs/positive"
+						}
+					}
+				},
+				{
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["kind", "decisionRef", "requirement"],
+					"properties": {
+						"kind": {
+							"const": "visibility"
+						},
+						"decisionRef": {
+							"$ref": "#/$defs/id"
+						},
+						"requirement": {
+							"enum": ["keep-available", "keep-visible", "retain-full-content"]
+						}
+					}
+				}
+			]
+		},
+		"constraints": {
+			"type": "array",
+			"items": {
+				"$ref": "#/$defs/constraint"
+			},
+			"minItems": 1
+		},
+		"relationship": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["kind", "nodeRefs", "decisionRef"],
+			"properties": {
+				"kind": {
+					"enum": ["adjacent", "reading-order", "associated", "shared-scale"]
+				},
+				"nodeRefs": {
+					"$ref": "#/$defs/refs",
+					"minItems": 2
+				},
+				"decisionRef": {
+					"$ref": "#/$defs/id"
+				}
+			}
+		},
+		"interval": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["scaleRef", "start"],
+			"properties": {
+				"scaleRef": {
+					"$ref": "#/$defs/id"
+				},
+				"start": {
+					"type": "number"
+				},
+				"end": {
+					"type": "number"
+				}
+			}
+		},
+		"interaction": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["kind", "scope"],
+			"description": "Semantic intent reused from accepted UX; does not select a visual component or define behavior.",
+			"properties": {
+				"kind": {
+					"$ref": "#/$defs/text",
+					"examples": ["command", "toggle", "menu-trigger", "value-adjustment", "directional-step"]
+				},
+				"scope": {
+					"$ref": "#/$defs/text"
+				},
+				"stateMeaning": {
+					"$ref": "#/$defs/text"
+				},
+				"valueMeaning": {
+					"$ref": "#/$defs/text"
+				}
+			}
+		}
+	},
+	"x-semanticRules": [
+		"Optional presentationGuidance references existing part-tree node IDs and evidence IDs. accepted-ux-detail restates supplied interaction meaning and existing bindings; ui-working-default proposes concrete presentation without becoming UX authority. All action, option, destination and state references resolve to accepted source records. Menu entries expose only accepted choices. Icons identify an inspected exact library asset, version and variant. No coordinates, scene layout or invented behavior are allowed. Enrichment writes a new authored copy with its own exact hash; it never retroactively changes acceptance of the input.",
+		"Tree containment defines functional grouping; child membership does not prescribe grid cells, tracks, alignment or a layout algorithm. Meaningful reading order is explicit in a reading-order relationship.",
+		"Use nested functional groups where the task or supplied guidance distinguishes control purposes. Optional interaction describes existing kind, scope and meaningful state/value, not a new state machine or selected UI widget. guidanceRefs resolves to applicable evidence records and may be shared at the containing region; it does not turn advice into a requirement. Missing accepted interaction meaning is a source gap; ordinary visual choices stay with UI. Completeness and research adherence remain the only substantive description criteria.",
+		"JSON/schema/reference diagnostics are format hygiene handled by the parent, not an independent substantive review criterion. IDs and references identify their declared scope; scene changes describe reuse of existing parts.",
+		"Spatial guidance is sparse. Omit constraints and relationships when no material source, research adaptation or task rationale justifies them. Missing layout fields are intentionally left to UI; do not fill every node with generic sizing or content-growth defaults.",
+		"Each constraint and relationship references a decision bound to its owning node or region, with propertyPaths resolving to that guidance. Relationship nodeRefs identify related nodes. Source-required authority needs applicable source evidence; research observations inform disclosed working choices rather than becoming mandates by citation.",
+		"Proportions express preferred emphasis relative to the named region, not cell allocation or residual-space arithmetic. Percentages name their relativeTo region; preferred proportions need not total 100.",
+		"Extent constraints express meaningful limits or preferences in logical reference pixels. They are not mandatory dimensions. Distinguish an icon footprint from its owner interaction target; UI chooses actual geometry within applicable constraints.",
+		"Aspect ratios preserve a source or research-backed relationship without selecting a width, height, fit algorithm or derived axis. UI owns concrete geometry; no constraint-consistency, pixel-fit or viewport-budget review gate is added here.",
+		"Relationships name grouping, adjacency, meaningful reading order, association or shared scale. They do not choose row/column numbers, spans, offsets, alignment or positioning coordinates.",
+		"Scales and intervals preserve domain values and shared units, including source endpoint policy. UI selects pixel transforms and label/handle positions; this stage does not lay out timeline rows.",
+		"Scenes bind accepted frames and states with explicit applicability. Reuse parts and focused field changes; do not duplicate complete workspaces solely to paint context or prove already-reviewed UX behavior.",
+		"Bindings reference accepted affordance, action, subject and destination meanings. Reuse accepted UX without another review of guards, focus, transitions, payloads or outcome correctness.",
+		"Outcomes are optional structural witnesses. When supplied, reference actual resulting objects, values or retained regions rather than a pending or success message. Do not construct an outcome gallery for every upstream operation.",
+		"No size modes, layout modes, grid tracks, row/column placement, fill weights, padding, gaps, stretch/start alignment, per-axis overflow or text-growth implementation policies belong here. UI owns those decisions as well as fonts, colors, glyph assets, templates and visual styling.",
+		"Description review has exactly two substantive criteria: completeness of the assigned scope and adherence to applicable supplied research guidance, with adaptations or departures explained. Every blocking finding identifies a concrete omission or research departure. These encoding and authoring rules are not an additional review checklist. Do not add layout, geometry, consistency or behavioral gates, renderability, screenshots, painted fit or retrospective visual acceptance. No canonical publication or runtime support is implied."
+	]
+}

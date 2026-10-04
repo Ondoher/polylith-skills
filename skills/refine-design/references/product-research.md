@@ -21,7 +21,13 @@ The parent checks the research's product/source identity, source revision or
 content hash and immutable input reference where available, covered questions,
 owner constraints, and material evidence verification state. Compare the current
 source and requested scope with that context. An identical source and relevant
-scope support reuse; changed source bytes call for an applicability assessment,
+scope support reuse after checking reference complexity fit; source verification
+alone does not establish suitability as a design precedent. Reassess material
+comparables against the current intended users, task breadth, working scale,
+simultaneous concepts, modes and required capabilities. Distinguish overall
+interface precedents from bounded pattern examples and unsuitable references.
+An overly complex product must not dictate whole-interface organization even
+when its documentation is authoritative and unchanged. Changed source bytes call for an applicability assessment,
 not automatic rejection of every finding. Retain findings for unchanged meaning
 and reopen only questions affected by changed requirements, stale material
 claims, conflicting evidence or unresolved applicability. Record missing identity
@@ -42,6 +48,10 @@ scope when available, prior findings and evidence, and the bounded questions to
 answer. Supply exact input paths/handles and source identity. Ask it to reuse a
 current supplied scope; derive one only when absent or materially incomplete.
 Do not repeat completed discovery to change the role that performs research.
+Require a compact target complexity profile and a reference-fit comparison in
+the brief. Prefer similar-complexity interfaces for whole-workspace research;
+permit a substantially more complex product only as explicitly bounded pattern
+evidence. Preserve unknowns, excluded complexity and bounded search limitations.
 
 Assign an absolute `outputDirectory` inside an effective writable root or an
 approved local MCP assignment capability using the existing protocol. The
@@ -56,6 +66,9 @@ evidence rules, and promotes useful output to the product-owned scope/brief.
 Keep observations, inferred applicability, recommendations, alternatives and open
 questions distinguishable. Preserve source links, access dates, relevant versions,
 linked interface evidence and whether an interface was actually inspected.
+Retain each material comparable's complexity match/mismatch, use classification,
+transfer boundary and selection/rejection rationale with the relevant findings,
+so downstream authors do not elevate a bounded example into an overall design.
 Record answered-by-reuse questions and remaining owner/technical dependencies
 alongside new findings. Do not copy transcripts or create a duplicate requirements
 catalog. Retain completed deliveries if canonical destination access is pending;
@@ -86,6 +99,9 @@ Include the relevant references for independent review when they support materia
 claims. Reuse findings across stages instead of independently researching the
 same precedents. Consumers report conflicting requirements and evidence gaps;
 new research stays bounded to questions the brief does not adequately answer.
+Pass the reference-fit classifications and transfer limits with those locators.
+Design consumers must respect a reference's bounded scope; a saved screenshot or
+source check is not permission to import the reference product's complexity.
 
 The brief informs UX selections, spatial wireframe decisions and visual treatment
 within their existing ownership. Research advice is not accepted working design.

@@ -305,6 +305,95 @@ test('requires exact UX interaction bindings and permits explicit partial deferr
 	);
 });
 
+test('retains an inactive alternate action on one owner with exact frame coverage', () => {
+	const ui = proposal();
+	const source = ux();
+	const frame = source.interactionFrames.find((item) => item.id === ui.scenes[0].interactionFrameRef);
+	const region = frame.regions.find((item) => item.affordances.some((item) => item.id === 'open-record-affordance'));
+	region.affordances.push({
+		...structuredClone(region.affordances.find((item) => item.id === 'open-record-affordance')),
+		id: 'close-record-affordance',
+		actionRef: 'close-record',
+		label: 'Close',
+		order: 2,
+	});
+	frame.focus.orderRefs.push('close-record-affordance');
+	source.actions.push({
+		...structuredClone(source.actions.find((item) => item.id === 'open-record')),
+		id: 'close-record',
+		alternateInputs: [],
+		alternateRefs: [],
+		feedbackRefs: ['record-closed'],
+	});
+	source.feedback.push({
+		...structuredClone(source.feedback.find((item) => item.actionRef === 'open-record')),
+		id: 'record-closed',
+		actionRef: 'close-record',
+	});
+	const flow = source.flows.find((item) => item.id === 'update-record');
+	flow.steps.push({
+		...structuredClone(flow.steps.find((item) => item.actionRef === 'open-record')),
+		id: 'close-record-step',
+		actionRef: 'close-record',
+	});
+	ui.uxArtifactBinding.sha256 = createHash('sha256').update(canonicalPublicationJson(source)).digest('hex');
+	const node = ui.parts[0].root.children[1];
+	node.alternateInteractionBindings = [
+		{
+			interactionNodeRef: 'close-record-affordance',
+			actionRef: 'close-record',
+			condition: 'Record is open',
+			label: 'Close',
+		},
+	];
+	const validate = () => validateUiSpec(ui, {uxSpec: source, designLanguage: designLanguage()});
+	assert.doesNotThrow(validate);
+	node.alternateInteractionBindings[0].actionRef = 'open-record';
+	assert.throws(validate, /must match UX affordance/);
+	node.alternateInteractionBindings[0].actionRef = 'close-record';
+	node.alternateInteractionBindings[0].condition = '';
+	assert.throws(validate, /condition/);
+	node.alternateInteractionBindings[0].condition = 'Record is open';
+	node.alternateInteractionBindings.push(structuredClone(node.alternateInteractionBindings[0]));
+	assert.throws(validate, /more than once/);
+	node.alternateInteractionBindings.pop();
+	ui.parts[0].root.children[0].alternateInteractionBindings = structuredClone(node.alternateInteractionBindings);
+	assert.throws(validate, /presentational template/);
+});
+
+test('permits repeated controls only in distinct explicit containing instance regions', () => {
+	const ui = proposal();
+	const root = ui.parts[0].root;
+	const first = root.children[1];
+	const second = structuredClone(first);
+	second.id = 'second-record-control';
+	const wrap = (id, control, row) => ({
+		id,
+		kind: 'region',
+		layout: {mode: 'flex', direction: 'row', gap: 0, padding: 0, align: 'stretch', justify: 'start'},
+		placement: {row, column: 1},
+		children: [control],
+	});
+	first.interactionInstanceRef = 'first-record';
+	second.interactionInstanceRef = 'second-record';
+	delete first.placement;
+	delete second.placement;
+	root.children.splice(1, 1, wrap('first-record', first, 2), wrap('second-record', second, 3));
+	root.layout.rows.push({unit: 'content'});
+	const validate = () => validateUiSpec(ui, {uxSpec: ux(), designLanguage: designLanguage()});
+	assert.doesNotThrow(validate);
+	second.interactionInstanceRef = 'missing-instance';
+	assert.throws(validate, /containing instance region/);
+	second.interactionInstanceRef = 'second-record';
+	delete second.interactionInstanceRef;
+	assert.throws(validate, /more than once/);
+	second.interactionInstanceRef = 'second-record';
+	const duplicate = structuredClone(second);
+	duplicate.id = 'duplicate-instance-control';
+	root.children[2].children.push(duplicate);
+	assert.throws(validate, /more than once/);
+});
+
 test('routes behavior changes upstream without authorizing unbound UI behavior', () => {
 	const ui = proposal();
 	ui.uxChangeRequests = [

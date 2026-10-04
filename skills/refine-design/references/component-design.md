@@ -10,6 +10,19 @@ Use component mode for a diagram editor, spatial planner, layered canvas, data v
 
 ## UI Designer Response
 
+Apply the shared [text economy rule](ui-composition.md#text-economy) to component
+states and their independent rendered review.
+
+UI designer may request parent dispatch of `ui-researcher` for an unresolved
+material visual/interface question. Reuse its product-owned brief and existing
+product research under the [standalone contract](../../../planning/implementation-agents/ui-researcher.md)
+and [composition research handoff](ui-composition.md#research-into-control-design).
+Advisory findings can support the existing `patternResearch` evidence and concrete
+control/icon/state choices; new claims remain pending parent verification. UI
+designer owns the proposal and accepted visual treatment. Conditional consultation
+adds no runtime schema fields or mandatory stage and cannot change accepted
+behavior or waive the existing research contract.
+
 For an explicit `component` assignment, the named `ui-designer` returns one JSON-only schema 0.4 composition document with `designMode: "component"`. It uses the normal UI composition scene vocabulary and adds:
 
 - `artifactKind`: `comp` only when the scene expresses finished visual hierarchy, geometry, styling, information density, representative content, and meaningful state distinctions; otherwise `wireframe`;
@@ -27,11 +40,13 @@ Research is required when an unfamiliar or product-specific component has establ
 
 Durable research records contain public evidence and reusable conclusions only. Source URLs must use public HTTPS hosts without credentials, secret query keys, private IPs, IPv4-compatible or NAT64 private/loopback forms, or local/internal names. URL paths, queries, and fragments plus queries, observations, notes, and limits are decoded through bounded percent-encoding layers before scanning and must not contain bearer/vendor tokens, credential-shaped assignments, file URLs, or private absolute filesystem paths. Ordinary design prose about passwords remains valid.
 
-If relevant comparables cannot be found, set the research outcome to `no-established-comparable`, keep shared patterns empty, record the search scope and limitation, and continue as a wireframe or novel direction awaiting review. Do not manufacture a common pattern from a single implementation.
+If relevant comparables cannot be found, set the research outcome to `no-established-comparable`, keep shared patterns empty, and record the search scope and limitation. Propose a concrete novel visual direction consistent with accepted UX for review; do not manufacture a common pattern from a single implementation. An interim wireframe is allowed during construction, but lack of a comparable alone does not waive the finished-comp requirement for a full UI pass.
 
 The UI designer returns research verification as `pending`. Before persistence as a comp, the parent opens the material sources, confirms that they are primary and that their cited observations support the selected pattern, then records `source-checked`, the date, and a short note. Failed or irrelevant evidence returns to the designer for one focused correction. The validator rejects an unverified comp, so this check cannot be skipped by the publisher or placeholder-registration path.
 
 Calling an artifact a comp is a substantive claim. Labeled structural boxes, placeholder prose, or flat blocks without credible content treatment remain a wireframe even when their dimensions and states are correct. A wireframe may be rendered for review, but it cannot register as the final replacement for a product-comp placeholder. The parent promotes it only after the missing visual work is present and browser inspection confirms the claim.
+
+Incomplete source detail belongs in component/interface documentation, not in depicted component states. Show the best source-compatible working state and keep author notes, open questions, placeholder descriptions and reviewer annotations outside the canvas. When a component placed in the wireframe lacks sufficient detail for responsible design, its UI placeholder is an acceptable documented outcome for the surrounding stage. Preserve its placement and known role; do not claim that the component itself is fully designed or register the placeholder as a finished dedicated component. Design and inspect sufficiently specified components normally.
 
 ## Validate And Persist
 

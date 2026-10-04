@@ -1,1 +1,0 @@
-Call probe(id) for IDs 1 through 8 in parallel, in one model response. All calls are independent. Do nothing else.

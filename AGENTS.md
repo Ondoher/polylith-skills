@@ -8,6 +8,14 @@ Use the repository-local `install-polylith-skills` skill for installation, inspe
 
 Current work is routed through [agents/topics/active-topic.md](agents/topics/active-topic.md). Resolve engineering standards through the [folder manifest](agents/topics/standards/manifest.md) and [repository overlay](agents/topics/standards/overlay.md).
 
+Create all temporary files in a task or run subdirectory under the repository-root
+`.codex-tmp/`. This includes scratch scripts, copied inputs, intermediate artifacts,
+logs, captures, browser profiles and temporary progress records. Apply this rule to
+delegated agents and configure tool output and temporary directories accordingly.
+Only files intended to become part of the repository may be written outside that
+directory. When that intent is unclear, keep the file under `.codex-tmp/`; move only
+intended repository deliverables to their final locations.
+
 Use `skills/refine-design/scripts/bounded-read.mjs` for large instruction or file
 batches. Supply all paths together and forward one raw page per tool response;
 follow its continuation instead of combining large command outputs. Keep existing

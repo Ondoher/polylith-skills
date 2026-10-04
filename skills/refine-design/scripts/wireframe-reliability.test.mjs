@@ -94,6 +94,11 @@ test('shared packet preserves source meaning and a dialog renders actual selecti
 	const doc = document();
 	const preview = renderPreview(doc);
 	assert.match(preview.html, /role="option" aria-selected="true"/);
+	const approvedPreview = renderPreview(doc, {
+		packet: {...packet, sourceUxApproval: 'pass', sourceBinding: {uxArtifact: {revision: '6'}}},
+	});
+	assert.match(approvedPreview.html, /approved source UX; wireframe review pending/);
+	assert.doesNotMatch(approvedPreview.html, /unreviewed source UX/);
 	assert.match(preview.html, /data-ui-node="dialog-body"/);
 	assert.match(preview.html, /overflow:auto/);
 	assert.deepEqual(new Set(preview.coverage.map((x) => x.actionRef)), new Set(['choose', 'add']));
@@ -121,7 +126,8 @@ test('choice focus and disabled controls render the supported states', () => {
 test('inspected submission and independent acceptance release exact UI work once and survive resume', () => {
 	const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'wf-reliable-'));
 	try {
-		const store = new WireframeStore({workspace, context});
+		const approvedContext = {...context, approval: 'pass'};
+		const store = new WireframeStore({workspace, context: approvedContext});
 		const author = {scope: {role: 'wireframe', elementId: element.id}};
 		store.setScope({elements: [element]}, author);
 		const doc = document();
@@ -135,7 +141,12 @@ test('inspected submission and independent acceptance release exact UI work once
 		assert.equal(store.uiDispatchDecision(submitted).reason, 'awaiting-wireframe-review');
 		const reviewer = {scope: {role: 'wireframe-review', elementId: element.id, revision: draft.revision}};
 		store.review({elementId: element.id, revision: draft.revision, verdict: 'pass', findings: []}, reviewer);
-		const resumed = new WireframeStore({workspace, context});
+		assert.equal(
+			JSON.parse(fs.readFileSync(path.join(workspace, 'outputs/add-dialog/wireframe-review-r1.json')))
+				.sourceUxApproval,
+			'pass',
+		);
+		const resumed = new WireframeStore({workspace, context: approvedContext});
 		assert.equal(resumed.uiDispatchDecision(submitted).needed, true);
 		const ui = {scope: {role: 'ui', elementId: element.id, wireframeRevision: draft.revision}};
 		const comp = resumed.contribute(
@@ -145,7 +156,7 @@ test('inspected submission and independent acceptance release exact UI work once
 		resumed.submit({elementId: element.id, revision: comp.revision, inspected: true}, ui);
 		assert.equal(resumed.uiDispatchDecision(submitted).reason, 'complete');
 		// A new global revision requires fresh scope but leaves identical local acceptance reusable.
-		const unrelated = structuredClone(context);
+		const unrelated = structuredClone(approvedContext);
 		unrelated.sourceBinding = {revision: 99};
 		unrelated.scopeBasis.currentSources[0].revision = 'next';
 		unrelated.scopeBasis.currentSources[0].records.unrelated = 'An unrelated screen changed';

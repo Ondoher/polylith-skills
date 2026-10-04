@@ -312,7 +312,7 @@ function validateRepository(repository) {
 }
 
 function run(command, args, cwd, allowFailure = false) {
-	const result = spawnSync(command, args, {cwd, encoding: 'utf8', windowsHide: true});
+	const result = spawnSync(command, args, {cwd, encoding: 'utf8', windowsHide: true, maxBuffer: 16 * 1024 * 1024});
 	if (result.error || (!allowFailure && result.status !== 0)) {
 		const detail =
 			result.error?.message || result.stderr?.trim() || result.stdout?.trim() || `exit ${result.status}`;

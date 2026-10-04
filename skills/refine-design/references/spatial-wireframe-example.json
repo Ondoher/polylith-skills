@@ -1,0 +1,268 @@
+{
+	"schemaVersion": "1.0",
+	"purpose": "Synthetic example of nested functional regions with sparse proportions and constraints. Measurements are illustrative, not defaults or research consensus.",
+	"evidence": [
+		{
+			"id": "example-ux",
+			"kind": "accepted-ux",
+			"locator": "synthetic:review-workspace",
+			"statement": "Illustrative fixture: inspect a selected item beside its primary content, toggle annotation visibility, and open a menu for temporary display magnification.",
+			"applicability": "This example only; not a claim of a real independent UX review."
+		},
+		{
+			"id": "target-research",
+			"kind": "research",
+			"locator": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum",
+			"statement": "WCAG 2.2 SC 2.5.8 specifies a 24 by 24 CSS pixel minimum pointer target, with stated exceptions. It does not prescribe icon glyph dimensions.",
+			"applicability": "Relevant to pointer targets in web content. This example chooses a larger target without relying on an exception; it does not claim general conformance.",
+			"accessedOn": "2026-10-03"
+		}
+	],
+	"presentationGuidance": [
+		{
+			"id": "annotation-toggle-treatment",
+			"nodeRefs": ["annotation-visibility"],
+			"evidenceRefs": ["example-ux"],
+			"ownership": "ui-working-default",
+			"recommendation": "Use a visibly labeled toggle button with a persistent pressed indication for annotation visibility.",
+			"rationale": "Makes the existing binary state recognizable without inventing behavior or choosing scene layout. This is an illustrative UI default, not a researched consensus.",
+			"control": {"kind": "toggle-button", "label": "Annotations", "accessibleName": "Show annotations"},
+			"bindings": [{"trigger": "activate", "actionRef": "toggle-annotations", "uxNodeRef": "annotation-visibility-control", "subjectRef": "current-content-view"}]
+		},
+		{
+			"id": "magnification-menu-treatment",
+			"nodeRefs": ["display-magnification"],
+			"evidenceRefs": ["example-ux"],
+			"ownership": "ui-working-default",
+			"recommendation": "Use a menu button labeled Fit with an accessible name explaining that it opens display magnification choices.",
+			"rationale": "Preserves supplied current value and menu semantics. The fixture supplies no accepted option inventory, so menuEntries are intentionally omitted.",
+			"control": {"kind": "menu-button", "label": "Fit", "accessibleName": "Display magnification: Fit"}
+		}
+	],
+	"decisions": [
+		{
+			"id": "inspection-structure",
+			"nodeRefs": ["content-region"],
+			"propertyPaths": ["/relationships/0"],
+			"authority": "working",
+			"choice": "Keep selected content and its detail available together.",
+			"rationale": "Supports the synthetic inspection task without choosing a grid or positions.",
+			"evidenceRefs": ["example-ux"]
+		},
+		{
+			"id": "context-proportion",
+			"nodeRefs": ["context"],
+			"propertyPaths": ["/constraints/0"],
+			"authority": "working",
+			"choice": "Prefer roughly 30 percent of content-region width for contextual detail.",
+			"rationale": "Illustrates secondary emphasis; UI chooses a suitable layout and actual allocation.",
+			"evidenceRefs": ["example-ux"]
+		},
+		{
+			"id": "inspection-target",
+			"nodeRefs": ["inspect-command"],
+			"propertyPaths": ["/constraints/0"],
+			"authority": "working",
+			"choice": "Use a minimum 32 by 32 logical pixel interaction target for this browser example.",
+			"rationale": "A disclosed adaptation above the cited pointer-target minimum; not a glyph dimension.",
+			"evidenceRefs": ["target-research"]
+		},
+		{
+			"id": "icon-footprint",
+			"nodeRefs": ["inspect-symbol"],
+			"propertyPaths": ["/constraints/0", "/constraints/1"],
+			"authority": "working",
+			"choice": "Prefer a 20 by 20 logical pixel symbol footprint.",
+			"rationale": "Illustrative guidance only; UI chooses the glyph and its placement.",
+			"evidenceRefs": []
+		}
+	],
+	"parts": [
+		{
+			"id": "review-workspace",
+			"root": {
+				"id": "workspace",
+				"kind": "region",
+				"role": "workspace",
+				"purpose": "Inspect selected content and contextual detail.",
+				"children": [
+					{
+						"id": "commands",
+						"kind": "region",
+						"role": "command-group",
+						"purpose": "Inspection actions.",
+						"children": [
+							{
+								"id": "inspect-command",
+								"kind": "region",
+								"role": "action",
+								"purpose": "Inspect the selected item.",
+								"constraints": [
+									{
+										"kind": "interaction-target",
+										"minWidthPx": 32,
+										"minHeightPx": 32,
+										"decisionRef": "inspection-target"
+									}
+								],
+								"bindings": [
+									{
+										"trigger": "activate",
+										"actionRef": "inspect-item",
+										"uxNodeRef": "inspect-item-control",
+										"subjectRef": "selected-item"
+									}
+								],
+								"children": [
+									{
+										"id": "inspect-symbol",
+										"kind": "element",
+										"role": "icon",
+										"purpose": "Symbol for inspection.",
+										"constraints": [
+											{
+												"kind": "extent",
+												"axis": "width",
+												"preferredPx": 20,
+												"decisionRef": "icon-footprint"
+											},
+											{
+												"kind": "extent",
+												"axis": "height",
+												"preferredPx": 20,
+												"decisionRef": "icon-footprint"
+											}
+										]
+									}
+								],
+								"interaction": {
+									"kind": "command",
+									"scope": "Selected item"
+								}
+							},
+							{
+								"id": "display-controls",
+								"kind": "region",
+								"role": "command-group",
+								"purpose": "Temporary viewing controls, distinct from the selected-item inspection action.",
+								"guidanceRefs": ["example-ux"],
+								"children": [
+									{
+										"id": "annotation-visibility",
+										"kind": "element",
+										"role": "control",
+										"purpose": "Change whether annotations are visible without changing item content.",
+										"interaction": {
+											"kind": "toggle",
+											"scope": "Current content view",
+											"stateMeaning": "Annotations are currently visible; communicate enabled versus hidden as a state of this same control."
+										},
+										"bindings": [
+											{
+												"trigger": "activate",
+												"actionRef": "toggle-annotations",
+												"uxNodeRef": "annotation-visibility-control",
+												"subjectRef": "current-content-view"
+											}
+										]
+									},
+									{
+										"id": "display-magnification",
+										"kind": "element",
+										"role": "control",
+										"purpose": "Open temporary display magnification choices.",
+										"interaction": {
+											"kind": "menu-trigger",
+											"scope": "Current content view",
+											"valueMeaning": "Fit is the current setting; communicate the value and that activating this control opens choices."
+										},
+										"bindings": [
+											{
+												"trigger": "activate",
+												"actionRef": "open-display-options",
+												"uxNodeRef": "display-options-control",
+												"destinationRef": "display-options-menu"
+											}
+										]
+									}
+								]
+							}
+						],
+						"guidanceRefs": ["example-ux"]
+					},
+					{
+						"id": "content-region",
+						"kind": "region",
+						"role": "inspection-content",
+						"purpose": "Selected content and its detail available together.",
+						"relationships": [
+							{
+								"kind": "adjacent",
+								"nodeRefs": ["primary", "context"],
+								"decisionRef": "inspection-structure"
+							}
+						],
+						"children": [
+							{
+								"id": "primary",
+								"kind": "region",
+								"role": "primary-content",
+								"purpose": "Selected content remains available beside its detail.",
+								"children": [
+									{
+										"id": "primary-content",
+										"kind": "element",
+										"role": "domain-content",
+										"purpose": "Selected item representation."
+									}
+								]
+							},
+							{
+								"id": "context",
+								"kind": "region",
+								"role": "context",
+								"purpose": "Selected item detail remains available with its content.",
+								"constraints": [
+									{
+										"kind": "proportion",
+										"axis": "width",
+										"relativeTo": "content-region",
+										"preferredPercent": 30,
+										"decisionRef": "context-proportion"
+									}
+								],
+								"children": [
+									{
+										"id": "selected-detail",
+										"kind": "element",
+										"role": "detail",
+										"purpose": "Selected item detail."
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		}
+	],
+	"scenes": [
+		{
+			"id": "selected-item-view",
+			"partRef": "review-workspace",
+			"frameRefs": ["inspect-selected-item"],
+			"stateRef": "item-selected",
+			"applicability": "Selected-item inspection in this synthetic browser example.",
+			"changes": []
+		}
+	],
+	"outcomes": [
+		{
+			"sceneRef": "selected-item-view",
+			"sourceRef": "example-ux",
+			"sourcePath": "/flows/inspect-item/outcome",
+			"nodeRefs": ["selected-detail"],
+			"resultKind": "visible-change"
+		}
+	]
+}

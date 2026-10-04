@@ -18,7 +18,7 @@ design proposal following a failed first trial. It restores the required PRD and
 interaction-document roles while retaining agent-created interaction hierarchy
 and page breaks. Separate design-language publication is proposed.
 
-The [refinement-efficiency implementation](refinement-efficiency/plan.md) now
+The [refinement-efficiency implementation](../.codex-tmp/refinement-efficiency/plan.md) now
 has focused local verification for structured planner input, stage resume and
 serial assembly. Inherited test-fixture failures and checkpoint-adviser
 eligibility remain unresolved; live performance has not been measured. Further
@@ -35,7 +35,7 @@ for operational instructions and the roadmap below for remaining work.
 
 | Document                                                                                                | Purpose                                                                                                                      |
 | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| [Refinement efficiency](refinement-efficiency/plan.md)                                                  | Implemented workflow streamlining and local evidence; outstanding package/adviser gates and future ordinary-run measurement. |
+| [Refinement efficiency](../.codex-tmp/refinement-efficiency/plan.md)                                                  | Implemented workflow streamlining and local evidence; outstanding package/adviser gates and future ordinary-run measurement. |
 | [Product publication plan](product-publication/plan.md)                                                 | Stable PRD and interaction-document design, agent-owned hierarchy/page breaks, and repeatable composition and revision.      |
 | [Implementation discussion plan](implementation-agents/plan.md)                                         | Role review, feasibility, repository opt-in, and orchestration decisions.                                                    |
 | [Implementation-agent design](implementation-agents/design.md)                                          | Coding orchestrator, specialty ownership, test authorship, and review handoffs.                                              |

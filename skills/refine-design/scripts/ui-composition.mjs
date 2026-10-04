@@ -901,7 +901,7 @@ export function validateUiSpec(
 		if (height.maxPx !== undefined)
 			positiveInteger(height.maxPx, `scene ${scene.id}.transientBehavior.height.maxPx`);
 	};
-	const visitNode = (node, context, label, nodeIds, seenObjects) => {
+	const visitNode = (node, context, label, nodeIds, seenObjects, ancestorRegionIds = []) => {
 		object(node, label);
 		if (seenObjects.has(node)) fail(`${label} must not reuse or cycle node objects`);
 		seenObjects.add(node);
@@ -916,6 +916,8 @@ export function validateUiSpec(
 			'templateRef',
 			'interactionNodeRef',
 			'actionRef',
+			'alternateInteractionBindings',
+			'interactionInstanceRef',
 			'state',
 			'parameters',
 			'content',
@@ -969,7 +971,10 @@ export function validateUiSpec(
 				});
 			}
 			children.forEach((child, index) =>
-				visitNode(child, context, `${label}.children[${index}]`, nodeIds, seenObjects),
+				visitNode(child, context, `${label}.children[${index}]`, nodeIds, seenObjects, [
+					...ancestorRegionIds,
+					id,
+				]),
 			);
 			return;
 		}
@@ -991,26 +996,59 @@ export function validateUiSpec(
 			fail(`${label}.templateRef.version does not match template ${template.id}`);
 		const hasInteractionNodeRef = node.interactionNodeRef !== undefined;
 		const hasActionRef = node.actionRef !== undefined;
-		if (template.interaction === 'behavioral' || hasInteractionNodeRef || hasActionRef) {
+		const hasAlternateBindings = node.alternateInteractionBindings !== undefined;
+		const hasInstanceRef = node.interactionInstanceRef !== undefined;
+		if (
+			template.interaction === 'behavioral' ||
+			hasInteractionNodeRef ||
+			hasActionRef ||
+			hasAlternateBindings ||
+			hasInstanceRef
+		) {
 			if (template.interaction !== 'behavioral')
 				fail(`${label} cannot bind behavior through presentational template ${template.id}`);
-			text(node.interactionNodeRef, `${label}.interactionNodeRef`);
-			text(node.actionRef, `${label}.actionRef`);
-			const interactionNode = context.interactionNodes.get(node.interactionNodeRef);
-			if (!interactionNode)
-				fail(
-					`${label}.interactionNodeRef references missing interaction node ${node.interactionNodeRef} in frame ${context.frame.id}`,
-				);
-			if (interactionNode.kind !== 'affordance')
-				fail(`${label}.interactionNodeRef must reference a UX affordance`);
-			if (interactionNode.record.actionRef !== node.actionRef)
-				fail(`${label}.actionRef must match UX affordance ${node.interactionNodeRef}`);
-			reference(node.actionRef, ux.actions.ids, `${label}.actionRef`);
-			if (!['accepted', 'locked'].includes(ux.actionsById.get(node.actionRef).status))
-				fail(`${label}.actionRef must reference an accepted or locked UX action`);
-			if (context.boundInteractionNodeIds.has(node.interactionNodeRef))
-				fail(`scene ${context.scene.id} binds UX affordance ${node.interactionNodeRef} more than once`);
-			context.boundInteractionNodeIds.add(node.interactionNodeRef);
+			if (hasInstanceRef) {
+				text(node.interactionInstanceRef, `${label}.interactionInstanceRef`);
+				if (!ancestorRegionIds.includes(node.interactionInstanceRef))
+					fail(`${label}.interactionInstanceRef must reference a containing instance region`);
+			}
+			const bindings = [{binding: node, bindingLabel: label}];
+			if (hasAlternateBindings) {
+				const alternates = list(node.alternateInteractionBindings, `${label}.alternateInteractionBindings`);
+				if (!alternates.length) fail(`${label}.alternateInteractionBindings must not be empty`);
+				for (const [index, binding] of alternates.entries()) {
+					const bindingLabel = `${label}.alternateInteractionBindings[${index}]`;
+					allowedKeys(binding, ['interactionNodeRef', 'actionRef', 'condition', 'label'], bindingLabel);
+					text(binding.condition, `${bindingLabel}.condition`);
+					text(binding.label, `${bindingLabel}.label`);
+					bindings.push({binding, bindingLabel});
+				}
+			}
+			for (const {binding, bindingLabel} of bindings) {
+				text(binding.interactionNodeRef, `${bindingLabel}.interactionNodeRef`);
+				text(binding.actionRef, `${bindingLabel}.actionRef`);
+				const interactionNode = context.interactionNodes.get(binding.interactionNodeRef);
+				if (!interactionNode)
+					fail(
+						`${bindingLabel}.interactionNodeRef references missing interaction node ${binding.interactionNodeRef} in frame ${context.frame.id}`,
+					);
+				if (interactionNode.kind !== 'affordance')
+					fail(`${bindingLabel}.interactionNodeRef must reference a UX affordance`);
+				if (interactionNode.record.actionRef !== binding.actionRef)
+					fail(`${bindingLabel}.actionRef must match UX affordance ${binding.interactionNodeRef}`);
+				reference(binding.actionRef, ux.actions.ids, `${bindingLabel}.actionRef`);
+				if (!['accepted', 'locked'].includes(ux.actionsById.get(binding.actionRef).status))
+					fail(`${bindingLabel}.actionRef must reference an accepted or locked UX action`);
+				const instances = context.boundInteractionInstanceRefs.get(binding.interactionNodeRef);
+				if (
+					instances &&
+					(instances.has(undefined) || !hasInstanceRef || instances.has(node.interactionInstanceRef))
+				)
+					fail(`scene ${context.scene.id} binds UX affordance ${binding.interactionNodeRef} more than once`);
+				if (!instances) context.boundInteractionInstanceRefs.set(binding.interactionNodeRef, new Set());
+				context.boundInteractionInstanceRefs.get(binding.interactionNodeRef).add(node.interactionInstanceRef);
+				context.boundInteractionNodeIds.add(binding.interactionNodeRef);
+			}
 		}
 		text(node.state, `${label}.state`);
 		if (!template.supportedStates.includes(node.state))
@@ -1021,6 +1059,27 @@ export function validateUiSpec(
 		for (const required of metadata.requiredParameterIds) {
 			if (!Object.hasOwn(node.parameters, required))
 				fail(`${label}.parameters is missing required parameter ${required}`);
+		}
+		if (['button', 'icon-button'].includes(template.html.renderer)) {
+			for (const field of ['assetId', 'leadingAssetId', 'trailingAssetId']) {
+				if (node.parameters[field] === undefined) continue;
+				reference(node.parameters[field], assets.ids, `${label}.parameters.${field}`);
+				const asset = assets.result.find((candidate) => candidate.id === node.parameters[field]);
+				if (asset.kind !== 'image') fail(`${label}.parameters.${field} must reference an image asset`);
+				if (!(node.assetRefs ?? []).includes(asset.id))
+					fail(`${label}.assetRefs must include parameters.${field}`);
+			}
+			for (const field of ['expanded', 'pressed']) {
+				if (node.parameters[field] !== undefined)
+					boolean(node.parameters[field], `${label}.parameters.${field}`);
+			}
+			if (
+				node.parameters.hasPopup !== undefined &&
+				!['menu', 'listbox', 'dialog'].includes(node.parameters.hasPopup)
+			)
+				fail(`${label}.parameters.hasPopup is unsupported`);
+			if (node.parameters.accessibleLabel !== undefined)
+				text(node.parameters.accessibleLabel, `${label}.parameters.accessibleLabel`);
 		}
 		if (template.html.renderer === 'visual' && !visualRoles.has(node.parameters.role)) {
 			fail(`${label}.parameters.role is unsupported for the visual renderer`);
@@ -1228,6 +1287,7 @@ export function validateUiSpec(
 			regionIds,
 			boundRegionIds: new Set(),
 			boundInteractionNodeIds: new Set(),
+			boundInteractionInstanceRefs: new Map(),
 			placeholderCount: 0,
 		};
 		if (scene.root?.kind !== 'region') fail(`scene ${scene.id}.root must be a region`);
@@ -1327,6 +1387,10 @@ export function uiRequiredScopeRefs(spec) {
 		add(node.uxRef);
 		add(node.interactionNodeRef);
 		add(node.actionRef);
+		for (const binding of node.alternateInteractionBindings ?? []) {
+			add(binding.interactionNodeRef);
+			add(binding.actionRef);
+		}
 		if (node.kind === 'region' && Array.isArray(node.children)) node.children.forEach(visit);
 	};
 	for (const scene of spec.scenes ?? []) {

@@ -125,7 +125,7 @@ function fixture() {
 	return {directory, repository, codexHome};
 }
 
-test('real catalog exposes the product researcher through the managed agents link', () => {
+test('real catalog exposes the research agents through the managed agents link', () => {
 	const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'polylith-skills-product-researcher-'));
 	try {
 		const codexHome = path.join(directory, 'codex-home');
@@ -139,6 +139,12 @@ test('real catalog exposes the product researcher through the managed agents lin
 		const manifest = JSON.parse(fs.readFileSync(path.join(root, 'governance.json'), 'utf8'));
 		assert.equal(manifest.catalog.agents.filter((agent) => agent === 'product-researcher.toml').length, 1);
 		assert.equal(fs.statSync(path.join(agentsLink.target, 'product-researcher.toml')).isFile(), true);
+		assert.equal(manifest.catalog.agents.filter((agent) => agent === 'ui-researcher.toml').length, 1);
+		assert.equal(fs.statSync(path.join(agentsLink.target, 'ui-researcher.toml')).isFile(), true);
+		assert.equal(
+			fs.statSync(path.join(plan.repository, 'planning', 'implementation-agents', 'ui-researcher.md')).isFile(),
+			true,
+		);
 		assert.equal(
 			fs
 				.statSync(path.join(plan.repository, 'planning', 'implementation-agents', 'product-researcher.md'))

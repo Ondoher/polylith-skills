@@ -40,9 +40,44 @@ UX research is required before selecting a direction when a capability is unfami
 
 Start with a directly applicable normative standard or official platform/design-system guideline. Otherwise compare official primary documentation from established products and, when it answers the question, credible original research. A cross-product pattern claim requires two independent product sources; one product can illustrate a candidate but cannot establish shared convention. A directly applicable normative or platform source may stand alone. Extract behavior and vocabulary without copying trade dress.
 
+Choose product references with task and interface complexity appropriate to the
+assigned users and product scope. Derive a concise complexity profile from the
+supplied requirements and compare expertise, task breadth, working scale,
+simultaneous concepts, modes and required advanced capabilities. Popularity,
+category leadership or authoritative documentation does not prove suitability.
+For material comparables, record match/mismatch and distinguish whole-interface
+precedents from bounded task/component evidence and unsuitable references. A
+substantially more complex product may support a specific transferable pattern,
+but must not become the default whole-interface layout or introduce unrelated
+features, controls or modes. Explain the transfer boundary and seek closer peers
+for overall organization. A directly applicable normative/platform guideline
+still governs its relevant criterion; it does not become a product-complexity
+comparable. Reassess applicability when reusing saved research: a checked source
+can remain factually valid while being a poor design reference. State bounded
+search gaps instead of manufacturing a complexity match.
+
+For comparable-product discovery, use broad category, intended-user and task
+queries derived from the assignment before narrowing to known brands. Look for
+focused or lightweight peers when the target scope warrants them; do not default
+to expert suites because their documentation is familiar. Evaluate a bounded
+candidate set, record selection/exclusion reasons and verify material claims
+against primary sources and actual interface evidence. Discovery results and
+category/hosting labels do not by themselves establish complexity fit.
+
 The durable record includes the question and trigger; bounded method and actual queries; source type, URL, relevant version when material, and access date; observations; candidate patterns; applicability and tradeoffs; evidence limits; affected design records; and selection. Use outcome `pattern-selected` for an applicable established pattern, `conflicting-patterns-resolved` when evidence supports a contextual choice among conventions, and `no-suitable-precedent` when a bounded search finds no useful comparable. A novel selection records explicit uncertainty and a bounded real-task evaluation proposal. The researching specialist returns verification as pending; only the parent opens the material sources and records `source-checked`. Do not turn an unsuccessful search into a claim that no precedent exists anywhere.
 
 For structured UX, actions and interaction frames declare `patternBasis` with `kind`, `rationale`, and conditional `researchRef`. `ordinary` has a rationale and no research reference. `researched` references source-checked research with outcome `pattern-selected` or `conflicting-patterns-resolved`. `novel` references source-checked research with outcome `no-suitable-precedent` and explicit `selection.uncertainty`. Structural validation checks those declarations; independent qualitative review challenges misclassification and unsupported novelty.
+
+Workspace research briefs are durable product-owned references for future updates.
+Deliver the brief through assigned scope for parent-owned saving, normally under
+the product's `research/` directory. Preserve its task scope, date, source context,
+citations and image references, observations, recommendations, evidence limits
+and open questions. Before new research, retrieve relevant saved briefs and reuse
+verified findings. Update only the portions affected by new product requirements,
+new questions or material source changes. Pass paths or handles to downstream
+agents instead of repeating the research text. The brief remains evidence;
+selected product decisions and required structured research records retain their
+existing ownership and verification rules.
 
 Keep research proportional and scoped. Record or cite sources supporting
 material claims, including relevant versions, dates, environments, and

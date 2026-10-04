@@ -5,7 +5,10 @@ import {NumericScale} from './NumericScale.mjs';
 import {OutcomeEvidence} from './OutcomeEvidence.mjs';
 
 export const PREVIEW_SCHEMA = 'wireframe-ui-pilot-1';
-const notice = 'Provisional experiment · structurally ready, unreviewed source UX';
+const previewNotice = (packet) =>
+	packet?.sourceUxApproval === 'pass'
+		? 'Provisional experiment · approved source UX; wireframe review pending'
+		: 'Provisional experiment · structurally ready, unreviewed source UX';
 const roles = new Set([
 	'surface',
 	'item',
@@ -394,7 +397,7 @@ function prepare(document, options, ancestors = new Set(), registrations = []) {
 		templates,
 		tokens: [],
 		assets: [],
-		uxArtifactBinding: {revision: 'unreviewed'},
+		uxArtifactBinding: {revision: options.packet?.sourceBinding?.uxArtifact?.revision ?? 'unreviewed'},
 		designLanguageSource: {revision: 'provisional'},
 		componentTemplate: {stateScenes: renderScenes.map((scene) => ({state: scene.id, sceneRef: scene.id}))},
 	};
@@ -490,7 +493,7 @@ export function renderPreview(document, options = {}) {
 				`<section class="pilot-scene"><h2>${escape(scene.name)}</h2><div class="pilot-scroll">${renderInlineScene(scene, spec, {uxSpec, componentRegistrations: registrations})}</div></section>`,
 		)
 		.join('\n');
-	const html = `<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="wireframe-ui-pilot"><title>${escape(title)}</title><style>${css(mode, theme)}</style></head><body data-preview-mode="${mode}"><header><p class="pilot-notice">${notice}</p><h1>${escape(title)}</h1><p>Static preview · mechanical validation only · no review approval</p></header><main>${content}</main><footer><p>Source flow references: ${document.sourceFlowRefs.map(escape).join(' · ')}</p><p>Source action references: ${(document.sourceActionRefs ?? []).map(escape).join(' · ') || 'None supplied'}</p></footer></body></html>\n`;
+	const html = `<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="wireframe-ui-pilot"><title>${escape(title)}</title><style>${css(mode, theme)}</style></head><body data-preview-mode="${mode}"><header><p class="pilot-notice">${previewNotice(options.packet)}</p><h1>${escape(title)}</h1><p>Static preview · mechanical validation only · no review approval</p></header><main>${content}</main><footer><p>Source flow references: ${document.sourceFlowRefs.map(escape).join(' · ')}</p><p>Source action references: ${(document.sourceActionRefs ?? []).map(escape).join(' · ') || 'None supplied'}</p></footer></body></html>\n`;
 	const choiceStyles =
 		'.ui-choice-group{display:grid;gap:8px;align-content:start;min-width:0}.ui-choice-group [role=option]{padding:8px 12px;border:1px solid var(--pilot-border);white-space:normal;overflow-wrap:anywhere}.ui-choice-group [aria-selected=true]{border:2px solid var(--pilot-primary);font-weight:600}.ui-choice-group [aria-disabled=true]{opacity:.5}.ui-choice-group small{display:block;font-weight:400}.ui-choice-group[role=tablist]{display:flex;flex-wrap:wrap}.ui-choice-group button,.ui-choice-group select{font:inherit;padding:8px;color:inherit;background:var(--pilot-surface);border:1px solid var(--pilot-border)}';
 	return {

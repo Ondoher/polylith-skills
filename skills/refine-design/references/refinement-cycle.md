@@ -26,14 +26,14 @@ current product, UX, review, or UI schemas. A whole-product request retains
 whole-product coverage. Document hierarchy and page breaks belong to the later
 `generate-prd` document-structure consultation.
 
-| Stage                  | Inputs and output                                                                                                                                    | Reuse and invalidation                                                                                                                                                                                                                            |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Interpret              | Complete current human description and latest owner input → product-model 2.0 proposal and validated store                                           | Read in source order; account for every line, including late constraints, references, and unclassified material. Reuse the current model only when exact source bytes and source identity match. Changed bytes require a complete bound proposal. |
-| Plan UX                | Structured product authority, current UX, requested scope, reusable research → UX 0.4 candidate                                                      | Use `refinement-input.mjs` below. Preserve IDs and unaffected decisions. Consult source excerpts for ambiguity; do not commission a second general prose interpretation. Independent review still reads the original intent.                      |
-| Consolidate and freeze | Selected product/UX decisions and settled visual defaults → one coordinated description writeback, formatted source, current product model, bound UX | Do this before review. Write only decisions that add or change intent; avoid cosmetic rewrites. A changed source still needs its complete model proposal. Reconcile affected UX and exact bindings; never just replace hashes on an old proposal. |
-| Review                 | Exact final description, saved UX and scope → independently validated UX-review 0.2 receipt                                                          | Reuse only a still-current passing receipt for the exact scope. Changed source or UX bytes invalidate it. Corrections return to the smallest affected records, then freeze and review again.                                                      |
-| Compose UI             | Current passing review, UX, settled design language → UI/component candidates                                                                        | Preserve unaffected designs and locks. Behavior changes return to UX; product-intent changes require another writeback and review. Do not schedule routine source formatting after review.                                                        |
-| Assemble               | Accepted structured sources and explicit publication requests → immutable artifacts, manifest and detached context                                   | Use `refinement-assembly.mjs`; bookkeeping requires no specialist. Existing validators, resource checks, lock authority and snapshot compare-and-swap still apply.                                                                                |
+| Stage                  | Inputs and output                                                                                                                                                           | Reuse and invalidation                                                                                                                                                                                                                                                                |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Interpret              | Complete current human description and latest owner input → product-model 2.0 proposal and validated store                                                                  | Read in source order; account for every line, including late constraints, references, and unclassified material. Reuse the current model only when exact source bytes and source identity match. Changed bytes require a complete bound proposal.                                     |
+| Plan UX                | Structured product authority, current UX, requested scope, reusable research → UX 0.4 candidate                                                                             | Use `refinement-input.mjs` below. Preserve IDs and unaffected decisions. Consult source excerpts for ambiguity; do not commission a second general prose interpretation. Independent review still reads the original intent.                                                          |
+| Consolidate and freeze | Owner updates, selected product/UX decisions and settled visual defaults → synthesized current description with highlighted open questions, current product model, bound UX | Do this before review. Integrate amendments and resolve superseded prose in one coordinated writeback; preserve current meaning and detail. Changed source needs its complete model proposal. Reconcile affected UX and exact bindings; never just replace hashes on an old proposal. |
+| Review                 | Exact final description, saved UX and scope → independently validated UX-review 0.2 receipt                                                                                 | Reuse only a still-current passing receipt for the exact scope. Changed source or UX bytes invalidate it. Corrections return to the smallest affected records, then freeze and review again.                                                                                          |
+| Compose UI             | Current passing review, UX, settled design language → UI/component candidates                                                                                               | Preserve unaffected designs and locks. Behavior changes return to UX; product-intent changes require another writeback and review. Do not schedule routine source formatting after review.                                                                                            |
+| Assemble               | Accepted structured sources and explicit publication requests → immutable artifacts, manifest and detached context                                                          | Use `refinement-assembly.mjs`; bookkeeping requires no specialist. Existing validators, resource checks, lock authority and snapshot compare-and-swap still apply.                                                                                                                    |
 
 Before Plan UX, apply the [durable product research handoff](product-research.md):
 locate the product-owned scope/brief, check source identity and affected questions,
@@ -49,6 +49,25 @@ Ask for decisions and design once, then use saved candidates for reconciliation
 and assembly. Do not ask each specialist to restate the entire brief or rebuild
 unchanged artifacts. A substantive review correction may require another pass;
 record that cost instead of weakening the gate.
+
+## Product-description completion check
+
+The consolidate-and-freeze stage delivers a synthesized current product
+description, not only a small appended list of decisions. Incorporate every
+owner amendment and selected product/UX/UI decision affecting product intent,
+replace superseded prose, preserve current detail and constraints, and highlight
+remaining open questions with their working assumptions or temporary policies.
+Remove answered and obsolete questions from the current list. This is one
+coordinated synthesis, not another rewrite between each specialist.
+
+Before reporting the refinement complete, verify that this description exists at
+the authoritative path, that it incorporates the run's final product decisions,
+and that dependent artifacts are bound to its final bytes. If later UI work
+changes intent or resolves a product question, return through coordinated
+writeback, reconcile the model and affected UX, refresh affected review evidence
+and update dependent UI. Do not declare completion with an unsynthesized source
+or stale dependent bindings. Ordinary UI geometry and token decisions remain in
+design artifacts unless they affect product intent.
 
 ## Structured planner input
 

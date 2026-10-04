@@ -1,9 +1,0 @@
-{
-  "layout": {"artifact": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/layout-submission-2/layout.md"},
-  "ui": {
-    "basePreview": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-B/ui/base-r3/preview.png",
-    "preview": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-B/ui/repair-1-r2/preview.html",
-    "captures": ".codex-tmp/descriptive-wireframe-ui-20261002/pair-1-B/ui/repair-1-r2/captures.json",
-    "requiredReferences": "planning/refinement-efficiency/experiments/descriptive-wireframe-ui/runs/pair-1-B/ui-submission-2/auxiliaries/references.json"
-  }
-}

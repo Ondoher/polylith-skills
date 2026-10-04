@@ -201,6 +201,14 @@ function renderTemplate(node, template, context) {
 	const classes =
 		`ui-template ${template.html.className} ${compact} ui-is-${cssIdentifier(node.state)} ${sourceClasses(node)}`.trim();
 	const common = `class="${escapeHtml(classes)}"`;
+	const commandState = () =>
+		`${parameters.accessibleLabel ? ` aria-label="${escapeHtml(parameters.accessibleLabel)}"` : ''}${parameters.hasPopup ? ` aria-haspopup="${escapeHtml(parameters.hasPopup)}"` : ''}${parameters.expanded !== undefined ? ` aria-expanded="${parameters.expanded}"` : ''}${parameters.pressed !== undefined ? ` aria-pressed="${parameters.pressed}"` : ''}`;
+	const commandIcon = (assetId) => {
+		if (!assetId) return '';
+		const asset = context.assets.get(assetId);
+		const source = relativeHref(context.request.output, imageAssetRelative(asset));
+		return `<img class="ui-command-icon" src="${escapeHtml(source)}" alt="" aria-hidden="true" width="${asset.widthPx}" height="${asset.heightPx}">`;
+	};
 	if (
 		template.html.renderer === 'heading' ||
 		template.html.renderer === 'text' ||
@@ -210,12 +218,16 @@ function renderTemplate(node, template, context) {
 	}
 	if (template.html.renderer === 'button') {
 		const disabled = node.state === 'disabled' || parameters.disabled === true ? ' disabled' : '';
-		return `<button type="button" ${common}${disabled}>${escapeHtml(parameters.label)}</button>`;
+		return `<button type="button" ${common}${disabled}${commandState()}>${commandIcon(parameters.leadingAssetId)}${escapeHtml(parameters.label)}${commandIcon(parameters.trailingAssetId)}</button>`;
 	}
 	if (template.html.renderer === 'icon-button') {
 		const label = parameters.accessibleLabel ?? parameters.label;
 		const disabled = node.state === 'disabled' || parameters.disabled === true ? ' disabled' : '';
-		return `<button type="button" ${common}${disabled} aria-label="${escapeHtml(label)}" title="${escapeHtml(parameters.tooltip ?? label)}"><span aria-hidden="true">${escapeHtml(parameters.glyph ?? '•')}</span></button>`;
+		const icon = parameters.assetId
+			? commandIcon(parameters.assetId)
+			: `<span aria-hidden="true">${escapeHtml(parameters.glyph ?? '•')}</span>`;
+		const state = `${parameters.hasPopup ? ` aria-haspopup="${escapeHtml(parameters.hasPopup)}"` : ''}${parameters.expanded !== undefined ? ` aria-expanded="${parameters.expanded}"` : ''}${parameters.pressed !== undefined ? ` aria-pressed="${parameters.pressed}"` : ''}`;
+		return `<button type="button" ${common}${disabled} aria-label="${escapeHtml(label)}" title="${escapeHtml(parameters.tooltip ?? label)}"${state}>${icon}</button>`;
 	}
 	if (template.html.renderer === 'text-field') {
 		const inputId = `ui-field-${cssIdentifier(node.id)}`;
@@ -301,7 +313,7 @@ function renderTemplate(node, template, context) {
 			const source = `${relativeHref(context.request.output, output)}#scene`;
 			return `<iframe class="ui-complex-component" src="${escapeHtml(source)}" title="${escapeHtml(`${registration.name} ${node.state}`)}" loading="lazy"></iframe>`;
 		}
-		return `<section ${common} role="img" aria-label="${escapeHtml(node.placeholder.label)}"><strong>${escapeHtml(node.placeholder.label)}</strong><p>${escapeHtml(node.placeholder.description)}</p>${parameters.detail ? `<small>${escapeHtml(parameters.detail)}</small>` : ''}</section>`;
+		return `<section ${common} aria-hidden="true"><span class="ui-placeholder-shape"></span></section>`;
 	}
 	fail(`Unsupported HTML renderer ${template.html.renderer}`);
 }
@@ -365,6 +377,60 @@ function pageNavigation(scene, request, requestsForScene, artifactKind) {
 	return `<nav class="ui-review-nav" aria-label="UI review pages"><a href="../index.html">Product requirements</a><a href="../design-language/index.html">Design language</a><a href="../components/index.html">Component states</a><a href="index.html">Product UI</a>${item(clean, `Clean ${artifactKind}`)}${item(annotated, `Annotated ${artifactKind}`)}</nav>`;
 }
 
+function renderSceneNotes(scene, request, spec, componentRegistrations) {
+	const templates = new Map(spec.templates.map((template) => [template.id, template]));
+	const placeholders = [];
+	const annotations = [];
+	const nodeIds = new Set();
+	const visit = (node) => {
+		nodeIds.add(node.id);
+		if (node.kind === 'region') {
+			annotations.push(`${node.id}: ${node.label ?? 'region'} (${node.layout.mode})`);
+			for (const child of node.children) visit(child);
+			return;
+		}
+		const template = templates.get(node.templateRef.id);
+		annotations.push(`${node.id}: ${template.name} (${node.state})`);
+		for (const binding of node.alternateInteractionBindings ?? []) {
+			annotations.push(
+				`${node.id}: alternate ${binding.label} when ${binding.condition} (${binding.interactionNodeRef} / ${binding.actionRef})`,
+			);
+		}
+		if (node.placeholder && !componentRegistration(node, template, componentRegistrations)) {
+			placeholders.push(`${node.id}: ${node.placeholder.label} — ${node.placeholder.description}`);
+		}
+	};
+	visit(scene.root);
+	const affectsScene = (item) => item.affects?.some((reference) => reference === scene.id || nodeIds.has(reference));
+	const unresolvedRequirements = (spec.unspecifiedRequirements ?? [])
+		.filter((item) => item.status === 'unresolved' && affectsScene(item))
+		.map((item) => `${item.id}: ${item.description}`);
+	const openQuestions = (spec.openQuestions ?? [])
+		.filter((item) => item.status === 'open' && affectsScene(item))
+		.map((item) => `${item.id}: ${item.question}`);
+	if (
+		placeholders.length === 0 &&
+		unresolvedRequirements.length === 0 &&
+		openQuestions.length === 0 &&
+		request.variant !== 'annotated'
+	)
+		return '';
+	const placeholderNotes = placeholders.length
+		? `<h3>Unresolved components</h3><ul>${placeholders.map((note) => `<li>${escapeHtml(note)}</li>`).join('')}</ul>`
+		: '';
+	const requirementNotes = unresolvedRequirements.length
+		? `<h3>Incomplete specification</h3><ul>${unresolvedRequirements.map((note) => `<li>${escapeHtml(note)}</li>`).join('')}</ul>`
+		: '';
+	const questionNotes = openQuestions.length
+		? `<h3>Open questions</h3><ul>${openQuestions.map((note) => `<li>${escapeHtml(note)}</li>`).join('')}</ul>`
+		: '';
+	const annotationNotes =
+		request.variant === 'annotated'
+			? `<h3>Scene nodes</h3><ol>${annotations.map((note) => `<li>${escapeHtml(note)}</li>`).join('')}</ol>`
+			: '';
+	return `<aside class="ui-scene-notes ui-transient-review" aria-label="Interface documentation"><h2>Interface documentation</h2>${placeholderNotes}${requirementNotes}${questionNotes}${annotationNotes}</aside>`;
+}
+
 function renderScenePage(scene, request, spec, uxSpec, componentRegistrations) {
 	const requests = spec.renderRequests.filter((candidate) => candidate.sceneRef === scene.id);
 	const sceneMarkup = renderSceneTree(scene, spec, uxSpec, {request, componentRegistrations, uxSpec});
@@ -396,6 +462,7 @@ function renderScenePage(scene, request, spec, uxSpec, componentRegistrations) {
     <section id="scene" class="ui-viewport-frame" aria-label="${escapeHtml(scene.name)} fixed desktop viewport">
       <div class="ui-viewport" style="--ui-viewport-width:${scene.viewport.width}px;--ui-viewport-height:${scene.viewport.height}px" data-ui-scene="${escapeHtml(scene.id)}" data-ui-source-revisions="${escapeHtml(`${spec.uxArtifactBinding.revision}/${spec.designLanguageSource.revision}`)}">${sceneMarkup}</div>
     </section>
+    ${renderSceneNotes(scene, request, spec, componentRegistrations)}
     ${transientReview}
   </main>
   <footer><p>Generated from one structured UI scene. Change the UI specification and regenerate rather than editing this page.</p></footer>
@@ -468,9 +535,12 @@ dialog.ui-scene-root { inset: auto; margin: 0; color: inherit; }
 .ui-button:disabled, .ui-icon-button:disabled { background: color-mix(in srgb, var(--rd-color-body-text) 12%, var(--rd-color-surface)); color: color-mix(in srgb, var(--rd-color-body-text) 48%, var(--rd-color-surface)); box-shadow: none; cursor: not-allowed; }
 .ui-button { padding: 0 var(--rd-control-button-padding-x); }
 .ui-icon-button { width: var(--rd-control-button-height); padding: 0; }
+.ui-command-icon { display: inline-block; vertical-align: middle; margin-inline: 4px; flex-shrink: 0; }
+.ui-button:disabled .ui-command-icon, .ui-icon-button:disabled .ui-command-icon { opacity: 0.38; }
 .ui-button-secondary { border: 1px solid var(--rd-button-outlined-default-border); background: var(--rd-button-outlined-default-background); color: var(--rd-button-outlined-default-foreground); }
 .ui-button-secondary:disabled { border-color: var(--rd-button-outlined-disabled-border); background: var(--rd-button-outlined-disabled-background); color: var(--rd-button-outlined-disabled-foreground); }
 .ui-button-text { border: 0; background: transparent; color: var(--rd-button-text-default-foreground); }
+.ui-button-text:disabled { background: var(--rd-button-text-disabled-background); color: var(--rd-button-text-disabled-foreground); }
 .ui-image-viewport { position: relative; width: 100%; height: 100%; min-width: 0; min-height: 0; overflow: hidden; background: #111; }
 .ui-image-viewport img { display: block; width: 100%; height: 100%; max-width: none; transform-origin: top left; }
 .ui-surface-flat { border: 0; background: var(--rd-color-surface); box-shadow: none; }
@@ -482,9 +552,9 @@ dialog.ui-scene-root { inset: auto; margin: 0; color: inherit; }
 .ui-status.ui-is-failed, .ui-status.ui-is-unavailable { background: color-mix(in srgb, var(--rd-color-failure) 12%, var(--rd-color-surface)); color: var(--rd-color-body-text); }
 .ui-status.ui-is-available, .ui-status.ui-is-completed { background: color-mix(in srgb, var(--rd-color-success) 12%, var(--rd-color-surface)); color: var(--rd-color-body-text); }
 .ui-status.ui-is-unsaved { background: color-mix(in srgb, var(--rd-color-warning) 14%, var(--rd-color-surface)); }
-.ui-text-field { display: grid; gap: var(--rd-space-1); }
+.ui-text-field { display: grid; min-width: 0; gap: var(--rd-space-1); }
 .ui-text-field label { color: var(--rd-field-label); font-size: var(--rd-type-field-label-size); line-height: var(--rd-type-field-label-line); }
-.ui-text-field input { min-height: var(--rd-control-field-height); padding: 0 var(--rd-control-field-padding-x); border: 1px solid var(--rd-field-border); border-radius: var(--rd-radius-small); background: var(--rd-color-surface); color: inherit; font: inherit; }
+.ui-text-field input { box-sizing: border-box; width: 100%; min-width: 0; min-height: var(--rd-control-field-height); padding: 0 var(--rd-control-field-padding-x); border: 1px solid var(--rd-field-border); border-radius: var(--rd-radius-small); background: var(--rd-color-surface); color: inherit; font: inherit; }
 .ui-text-field input:focus-visible, .ui-text-field.ui-is-focus input { border-color: var(--rd-field-border); outline: 2px solid var(--rd-color-primary-action); outline-offset: 2px; }
 .ui-text-field input:disabled { border-color: var(--rd-field-disabledBorder); background: color-mix(in srgb, var(--rd-color-body-text) 5%, var(--rd-color-surface)); color: color-mix(in srgb, var(--rd-color-body-text) 48%, var(--rd-color-surface)); cursor: not-allowed; }
 .ui-text-field p { margin: 0; color: var(--rd-review-muted); font-size: var(--rd-type-field-message-size); line-height: var(--rd-type-field-message-line); }
@@ -549,21 +619,13 @@ dialog.ui-scene-root { inset: auto; margin: 0; color: inherit; }
 .ui-visual.ui-is-focus { outline: 2px solid var(--rd-color-primary-action); outline-offset: -2px; }
 .ui-button.ui-is-focus, .ui-icon-button.ui-is-focus { outline: 2px solid var(--rd-color-primary-action); outline-offset: 2px; }
 .ui-complex-component { display: block; width: 100%; height: 100%; min-width: 0; min-height: 0; border: 0; background: transparent; }
-.ui-placeholder { display: grid; place-content: center; gap: var(--rd-space-2); width: 100%; height: 100%; padding: var(--rd-space-4); border: 1px dashed var(--rd-color-primary-action); border-radius: var(--rd-radius-small); background: color-mix(in srgb, var(--rd-color-primary-action) 4%, var(--rd-color-surface)); text-align: center; }
-.ui-placeholder p, .ui-placeholder small { margin: 0; color: var(--rd-review-muted); }
+.ui-placeholder { display: grid; place-content: center; width: 100%; height: 100%; padding: var(--rd-space-4); border: 1px dashed var(--rd-color-primary-action); border-radius: var(--rd-radius-small); background: color-mix(in srgb, var(--rd-color-primary-action) 4%, var(--rd-color-surface)); }
+.ui-placeholder-shape { display: block; width: min(96px, 80%); height: 28px; border-radius: var(--rd-radius-small); background: color-mix(in srgb, var(--rd-color-primary-action) 15%, var(--rd-color-surface)); }
 .ui-placeholder-compact { padding: var(--rd-space-2); }
-.ui-placeholder-compact p, .ui-placeholder-compact small { display: none; }
 .ui-color-role--primary-action { color: var(--rd-color-primary-action); }
 .ui-color-role--body-text { color: var(--rd-color-body-text); }
 .ui-typography-role--heading { font-family: var(--rd-type-heading-family), sans-serif; }
 .ui-typography-role--supporting, .ui-typography-role--field-label, .ui-typography-role--field-message { font-size: 12px; line-height: 16px; }
-.ui-page--annotated [data-ui-annotation] { outline: 1px solid color-mix(in srgb, var(--rd-color-information) 72%, transparent); outline-offset: -1px; }
-.ui-page--annotated [data-ui-annotation]::before { position: absolute; z-index: 20; top: 2px; left: 2px; max-width: calc(100% - 4px); padding: 2px 6px; border: 1px solid var(--rd-color-information); border-radius: 3px; background: rgba(255,255,255,.82); color: var(--rd-color-body-text); content: attr(data-ui-annotation); font: 10px/14px ui-monospace, SFMono-Regular, Consolas, monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; pointer-events: none; }
-.ui-page--annotated .ui-node-frame:has(> .ui-visual--surface)::before,
-.ui-page--annotated .ui-node-frame:has(> .ui-visual--indicator)::before,
-.ui-page--annotated .ui-node-frame:has(> .ui-visual--track)::before,
-.ui-page--annotated .ui-node-frame:has(> .ui-visual--thumb)::before { display: none; }
-.ui-page--annotated [data-ui-measurement]::after { position: absolute; z-index: 21; right: 4px; bottom: 3px; width: min(240px, calc(100% - 8px)); padding-top: 5px; border-top: 1px solid var(--rd-color-information); background: linear-gradient(var(--rd-color-information),var(--rd-color-information)) left top/1px 5px no-repeat, linear-gradient(var(--rd-color-information),var(--rd-color-information)) right top/1px 5px no-repeat, rgba(255,255,255,.72); color: var(--rd-color-body-text); content: attr(data-ui-measurement); font: 10px/14px ui-monospace, SFMono-Regular, Consolas, monospace; text-align: center; white-space: nowrap; pointer-events: none; }
 .ui-comp-index { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--rd-space-4); padding: 0 clamp(var(--rd-space-4), 4vw, var(--rd-space-10)) var(--rd-space-10); }
 .ui-comp-index article { padding: var(--rd-space-6); border: 1px solid var(--rd-color-panel-border); border-radius: var(--rd-radius-card); background: var(--rd-color-surface); }
 .ui-comp-index article div { display: flex; flex-wrap: wrap; gap: var(--rd-space-2); }

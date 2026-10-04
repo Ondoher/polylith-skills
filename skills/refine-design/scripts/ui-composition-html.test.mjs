@@ -74,17 +74,156 @@ test('publishes deterministic clean and annotated HTML from one scene tree', () 
 	assert.match(clean, /clean product wireframe/);
 	assert.match(clean, /Partial UI wireframe/);
 	assert.match(clean, /<section id="scene" class="ui-viewport-frame"/);
-	assert.match(clean, /role="img" aria-label="Record list — placeholder"/);
+	assert.match(clean, /aria-hidden="true"><span class="ui-placeholder-shape"/);
 	assert.equal(sceneMarkup(clean), sceneMarkup(annotated));
-	assert.match(before[3][1].toString(), /\.ui-page--annotated \[data-ui-annotation\]::before/);
+	assert.doesNotMatch(sceneMarkup(clean), /Shows available records until/);
+	assert.doesNotMatch(sceneMarkup(clean), /Record list — placeholder/);
+	assert.doesNotMatch(sceneMarkup(clean), /The reusable record-list template has not been designed/);
+	assert.match(clean, /<aside class="ui-scene-notes ui-transient-review" aria-label="Interface documentation">/);
+	assert.match(clean, /Shows available records until/);
+	assert.match(clean, /<h3>Incomplete specification<\/h3>/);
+	assert.match(clean, /The reusable record-list template has not been designed/);
+	assert.match(annotated, /<h3>Scene nodes<\/h3>/);
+	assert.doesNotMatch(before[3][1].toString(), /\[data-ui-annotation\]::before/);
 	assert.match(clean, /data-ui-measurement="padding 16px · gap 16px · 1c×2r"/);
-	assert.match(before[3][1].toString(), /\[data-ui-measurement\]::after/);
+	assert.doesNotMatch(before[3][1].toString(), /\[data-ui-measurement\]::after/);
 	assert.match(before[3][1].toString(), /#scene:target \{ zoom: \.86; \}/);
 	assert.match(before[3][1].toString(), /\.ui-button:disabled, \.ui-icon-button:disabled/);
+	assert.match(
+		before[3][1].toString(),
+		/\.ui-button-text:disabled \{ background: var\(--rd-button-text-disabled-background\); color: var\(--rd-button-text-disabled-foreground\); \}/,
+	);
+	assert.ok(
+		before[3][1].toString().indexOf('.ui-button-text:disabled') >
+			before[3][1].toString().indexOf('.ui-button:disabled, .ui-icon-button:disabled'),
+	);
 	assert.match(before[3][1].toString(), /\.ui-text-field input:disabled/);
 
 	publishUiCompositionHtml(input.uiFile, input.uxFile, input.designFile, output);
 	assert.deepEqual(snapshot(output), before);
+});
+
+test('renders verified image assets and semantic state on command controls', () => {
+	for (const renderer of ['button', 'icon-button']) {
+		const base = folder();
+		const ui = fixture();
+		const assetRoot = path.join(base, 'media');
+		fs.mkdirSync(assetRoot);
+		const svg =
+			'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#222222" d="M4 4h16v16H4z"/></svg>';
+		fs.writeFileSync(path.join(assetRoot, 'symbol.svg'), svg);
+		ui.assets = [
+			{
+				id: 'command-symbol',
+				kind: 'image',
+				status: 'accepted',
+				path: 'symbol.svg',
+				mimeType: 'image/svg+xml',
+				widthPx: 24,
+				heightPx: 24,
+				sha256: createHash('sha256').update(svg).digest('hex'),
+			},
+		];
+		const template = ui.templates[1];
+		template.id = 'symbol-command';
+		template.kind = renderer;
+		template.availability = 'available';
+		template.html = {
+			renderer,
+			element: 'button',
+			className: renderer === 'button' ? 'ui-button' : 'ui-icon-button',
+		};
+		template.parameters = [
+			'label',
+			'accessibleLabel',
+			'assetId',
+			'leadingAssetId',
+			'trailingAssetId',
+			'pressed',
+			'hasPopup',
+			'expanded',
+		].map((id) => ({id, required: false}));
+		template.supportedStates = ['default'];
+		const node = ui.parts[0].root.children[1];
+		node.templateRef = {id: template.id, version: template.version};
+		node.state = 'default';
+		node.assetRefs = ['command-symbol'];
+		node.parameters = {
+			label: 'Open',
+			accessibleLabel: 'Open choices',
+			pressed: true,
+			hasPopup: 'menu',
+			expanded: false,
+			...(renderer === 'button'
+				? {leadingAssetId: 'command-symbol', trailingAssetId: 'command-symbol'}
+				: {assetId: 'command-symbol'}),
+		};
+		delete node.placeholder;
+		const input = sources(base, ui);
+		const output = path.join(base, 'preview');
+		publishUiCompositionHtml(input.uiFile, input.uxFile, input.designFile, output, {assetRoot});
+		const clean = fs.readFileSync(path.join(output, 'comps/records-viewing.html'), 'utf8');
+		const annotated = fs.readFileSync(path.join(output, 'comps/records-viewing-annotated.html'), 'utf8');
+		assert.equal(sceneMarkup(clean), sceneMarkup(annotated));
+		assert.match(clean, /aria-haspopup="menu" aria-expanded="false" aria-pressed="true"/);
+		assert.match(
+			clean,
+			/<img class="ui-command-icon"[^>]+symbol\.svg[^>]+alt="" aria-hidden="true" width="24" height="24">/,
+		);
+		const image = fs.readdirSync(path.join(output, 'assets/ui-media'))[0];
+		assert.equal(fs.readFileSync(path.join(output, 'assets/ui-media', image), 'utf8'), svg);
+	}
+});
+
+test('documents inactive alternate bindings outside the unchanged scene canvas', () => {
+	const base = folder();
+	const ui = fixture();
+	const source = ux();
+	const frame = source.interactionFrames.find((item) => item.id === ui.scenes[0].interactionFrameRef);
+	const region = frame.regions.find((item) => item.affordances.some((item) => item.id === 'open-record-affordance'));
+	region.affordances.push({
+		...structuredClone(region.affordances.find((item) => item.id === 'open-record-affordance')),
+		id: 'close-record-affordance',
+		actionRef: 'close-record',
+		order: 2,
+	});
+	frame.focus.orderRefs.push('close-record-affordance');
+	source.actions.push({
+		...structuredClone(source.actions.find((item) => item.id === 'open-record')),
+		id: 'close-record',
+		alternateInputs: [],
+		alternateRefs: [],
+		feedbackRefs: ['record-closed'],
+	});
+	source.feedback.push({
+		...structuredClone(source.feedback.find((item) => item.actionRef === 'open-record')),
+		id: 'record-closed',
+		actionRef: 'close-record',
+	});
+	const flow = source.flows.find((item) => item.id === 'update-record');
+	flow.steps.push({
+		...structuredClone(flow.steps.find((item) => item.actionRef === 'open-record')),
+		id: 'close-record-step',
+		actionRef: 'close-record',
+	});
+	ui.uxArtifactBinding.sha256 = createHash('sha256').update(canonicalPublicationJson(source)).digest('hex');
+	ui.parts[0].root.children[1].alternateInteractionBindings = [
+		{
+			interactionNodeRef: 'close-record-affordance',
+			actionRef: 'close-record',
+			condition: 'Record is open',
+			label: '<Close record>',
+		},
+	];
+	const input = sources(base, ui, source);
+	const output = path.join(base, 'preview');
+	publishUiCompositionHtml(input.uiFile, input.uxFile, input.designFile, output);
+	const clean = fs.readFileSync(path.join(output, 'comps/records-viewing.html'), 'utf8');
+	const annotated = fs.readFileSync(path.join(output, 'comps/records-viewing-annotated.html'), 'utf8');
+	assert.equal(sceneMarkup(clean), sceneMarkup(annotated));
+	assert.doesNotMatch(sceneMarkup(clean), /alternate|Close record/);
+	assert.match(annotated, /alternate &lt;Close record&gt; when Record is open/);
+	assert.doesNotMatch(annotated, /<Close record>/);
 });
 
 test('renders a bounded choice group with semantic tabs from one UX binding', () => {

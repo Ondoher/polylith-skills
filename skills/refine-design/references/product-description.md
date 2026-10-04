@@ -71,6 +71,30 @@ rename sections when that improves comprehension or the owner asks, not as a
 mandatory pass between specialists. Preserve human meaning, constraints,
 terminology and unresolved questions. See [the stage boundaries](refinement-cycle.md).
 
+The synthesized description is a required refinement deliverable. It must read as
+the current product, incorporating all owner updates and selected product/UX/UI
+decisions that affect product intent. Fold amendment blocks into the relevant
+sections and replace superseded statements; retain their history in existing
+source snapshots or run evidence rather than leaving conflicting versions in the
+current description. Preserve every still-current requirement, constraint,
+term, link and lock. Synthesis is consolidation of meaning, not a summary that
+discards details, and it requires no rigid template for future owner input.
+
+Clearly highlight a dedicated open-question section. For each remaining question,
+state what is unresolved and, when one exists, the selected working assumption or
+temporary policy. Remove answered or obsolete questions from the current list and
+incorporate their answers into the product prose. Never present an assumption as
+an owner-confirmed fact. Detailed component limitations remain in accompanying
+interface documentation; reflect them in the description when they materially
+affect product understanding. A generated artifact or run-report summary does not
+substitute for updating the authoritative description.
+
+Complete this writeback before review inputs are frozen. If a later UX or UI
+decision changes product intent, reconcile it through the same coordinated
+writeback and refresh affected model, UX, review and UI bindings. At completion,
+verify the live description against selected decisions and remaining questions;
+do not make a late unbound editorial rewrite after dependent artifacts pass.
+
 A directional visual change can become concrete editable defaults. For example,
 “tighten the whitespace and reduce the vertical size of the controls” can lead
 the design pass to revise spacing roles and control-height defaults, update the

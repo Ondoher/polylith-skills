@@ -52,6 +52,27 @@ Classify the pattern basis of every retained action and interaction frame as `or
 
 Research informs a product choice; it does not create a product requirement by itself. Do not promote a pattern from one reference product or the current fixture into a reusable default. Keep product-specific findings and adaptations in the product artifact, and make broader claims only when the evidence independently supports them.
 
+### Durable workspace research briefs
+
+Save each workspace research brief as a product-owned reference, normally at
+`<product-root>/research/<workspace>-brief.md`, rather than only in temporary
+delivery files, conversation messages or a run report. The parent promotes the
+specialist's scoped output into this durable location. Include the workspace and
+task scope, research date, relevant product/source context, sources and linked
+interface images, observed patterns and differences, recommendations and their
+applicability, evidence limits, and open questions. Distinguish observed evidence
+from recommendations and the UX decisions subsequently selected from them.
+
+Future refinements retrieve the saved brief first and pass its path or handle to
+UX, wireframe, UI and review consumers without reproducing it in each assignment.
+Reuse relevant verified findings; investigate only new questions, changed
+requirements, or material changes to the cited products/platforms. An unrelated
+description edit alone does not require repeating the entire research pass.
+Keep the current brief coherent, record what changed in the run evidence, and
+preserve prior evidence through existing snapshots or run records. A brief is
+reusable design evidence, not binding product authority or a replacement for
+required structured `patternResearch` records and source verification.
+
 ## UX Planner Request
 
 Request planning-consultation assessment mode for the selected scope. Ask the named `ux-planner` to read this workflow and the complete [UX schema 0.4 machine contract](./ux-schema-0.4.json) before composing its response, then return one JSON object that conforms to both, with no Markdown fence or explanatory wrapper. The machine contract is authoritative for exact field names, required fields, arrays versus objects, enums, and conditional members; do not infer substitutes from prose. Before returning, the planner self-checks every emitted object and array against that contract, including empty arrays and conditional fields. Supply the structured planner packet with exact model/source bindings and source locator, current UX artifact when present, changed-record evidence, bounded scope, and reusable research. The parent incorporates latest human input into product authority before this request. The planner may write proposal JSON only in an explicitly assigned temporary `proposalDirectory`, following the [file-delivery boundary](single-pass-design.md#proposal-file-permission-and-delivery); without that assignment it remains read-only. The parent consumes saved files directly and owns canonical persistence. It marks selected recommendations `accepted`, uses `proposed` only for an unselected candidate retained for comparison, and uses `unresolved` where it cannot choose. Newly researched selections whose parent verification is still pending, plus resolved records that depend on them, remain `proposed` until the parent source-checks the evidence and promotes the affected records together. Reusable evidence that is already source-checked may support accepted records. It preserves every supplied `locked` record exactly unless the current user request explicitly names that scope and requests a change; it never creates a lock itself. When the role is unavailable, the parent may construct the same design and records source provenance honestly; never claim a named-agent run.

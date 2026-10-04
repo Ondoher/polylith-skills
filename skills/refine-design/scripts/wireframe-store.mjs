@@ -389,7 +389,7 @@ export class WireframeStore {
 			binding,
 			role: owner.scope.role,
 			at: new Date().toISOString(),
-			sourceUxApproval: 'unreviewed',
+			sourceUxApproval: this.context.approval ?? 'unreviewed',
 		});
 		this.event({type: 'review-ready', role: owner.scope.role, ...input, path: location});
 		return {saved: true, path: location, verdict: input.verdict, findings: input.findings.length};

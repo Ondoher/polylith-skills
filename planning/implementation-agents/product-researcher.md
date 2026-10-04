@@ -76,7 +76,54 @@ check only material gaps, changed claims or uncertain applicability; distinguish
 available evidence from inspected and applicable evidence. A continuation starts
 from saved scope, findings and question status, not discovery from scratch.
 
-Select comparables and primary sources by task fit and explanatory value. For
+### Comparable complexity and applicability
+
+Before selecting product references, derive a compact complexity profile from
+the supplied facts: intended user expertise, task breadth/frequency, typical
+working scale, concepts visible at once, interaction modes, advanced capabilities
+and platform constraints. Missing facts remain unknown; do not turn assumptions
+about audience or simplicity into requirements. A short qualitative comparison
+suffices; no new scoring framework or research schema is required.
+
+Search for products whose actual workflows and interfaces have a similar level
+of complexity. Category similarity, popularity, market leadership and source
+authority are insufficient. Compare the specific referenced workspace or task,
+not just the product's overall feature count. A nominally simple product may be
+too limited for a complex task, while an expert suite may add irrelevant concepts
+and modes to a focused product.
+
+Begin comparable discovery with category, intended-user and task queries derived
+from the description, including focused/lightweight alternatives when supported
+by the target scope. Do not begin with a fixed shortlist of familiar expert
+brands. Use broad discovery to find peers, then inspect a bounded candidate set
+and select by workflow/interface fit. Hosting model or category labels alone do
+not establish a match. Search results are leads; primary documentation and actual
+interface evidence support the selected references. Save discovery queries and
+selection/exclusion reasons without requiring exhaustive market research or an
+arbitrary candidate count.
+
+For each material comparable, record the match and differences, evidence and
+inspection state, permitted use, what must not transfer, and one classification:
+
+- **Whole-interface precedent:** sufficiently matched users, task scope and
+  interface complexity to inform overall organization.
+- **Bounded task/component evidence:** a specific transferable interaction or
+  presentation pattern; broader workspace structure and unrelated controls/modes
+  are not recommendations for the target product.
+- **Unsuitable:** the mismatch defeats the proposed use; retain the reason if
+  useful to explain the search outcome.
+
+A substantially more complex product cannot serve as the default whole-interface
+precedent. Use it only for an explicitly scoped transferable pattern and identify
+the excluded complexity. Select primary whole-interface evidence from closer
+peers; if none is found in a bounded search, state that limitation rather than
+silently treating an expert interface as the target design. Source verification
+and complexity suitability are separate checks. Reassess this applicability when
+reusing older briefs, even when their factual source checks remain current.
+
+### Evidence collection and synthesis
+
+Select comparables and primary sources by task fit, complexity fit and explanatory value. For
 actual research, browse current primary evidence and inspect material sources;
 do not turn recollection into a claim of verification. Examine task walkthroughs,
 connected workspaces, consequences and recovery where relevant rather than
@@ -109,7 +156,9 @@ The saved output contains the scope when needed, progressive findings or advisor
 brief, and evidence references. Retain source context and dates; question and
 method including actual queries; material URLs, versions and inspection state;
 observations and applicability limits; recommendations and alternatives; source
-conflicts; owner/technical dependencies; and scope-to-finding references. Keep
+conflicts; owner/technical dependencies; and scope-to-finding references. Include
+the target complexity profile and each material reference's complexity match,
+use classification, transfer boundaries and selection/rejection rationale. Keep
 operational logs outside the research narrative. Record only available timing,
 source-reuse and other requested metrics; do not infer tokens or credits.
 

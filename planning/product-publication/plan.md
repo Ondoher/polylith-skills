@@ -7,7 +7,7 @@ The owner has accepted decimal section numbering for the interaction guide
 and requires resilient continuation through failures. Their contracts are
 recorded below, in the document design, and in [resilience](resilience.md).
 
-Priority update: [refinement efficiency](../refinement-efficiency/plan.md) takes
+Priority update: [refinement efficiency](../../.codex-tmp/refinement-efficiency/plan.md) takes
 precedence over further document-format tweaking. Preserve these samples and
 accepted requirements as the baseline while that work proceeds. This plan's
 publication implementation and remaining format decisions are still pending.

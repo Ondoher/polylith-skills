@@ -166,7 +166,7 @@ function renderPrdIndex(spec, uiSpec = null, hasComponentComps = false, componen
 			unresolvedCount > 0
 				? `<p class="prd-attention"><strong>Partial UI wireframe.</strong> ${unresolvedCount} unresolved component ${unresolvedCount === 1 ? 'prevents' : 'prevent'} this scene from qualifying as a finished comp.</p>`
 				: '';
-		return `<figure class="prd-comp-inline"><div class="prd-comp-inline-heading"><div><p class="prd-kicker">${escapeHtml(scene.stateRef)} · ${kind}</p><h4>${escapeHtml(scene.name)}</h4></div><div class="prd-comp-actions">${compLinks(scene)}</div></div>${partialNotice}${content}<figcaption>${escapeHtml(scene.viewport.width)} × ${escapeHtml(scene.viewport.height)} · ${kind}. Specialized components remain visibly labeled where their detailed comps have not yet been designed.</figcaption></figure>`;
+		return `<figure class="prd-comp-inline"><div class="prd-comp-inline-heading"><div><p class="prd-kicker">${escapeHtml(scene.stateRef)} · ${kind}</p><h4>${escapeHtml(scene.name)}</h4></div><div class="prd-comp-actions">${compLinks(scene)}</div></div>${partialNotice}${content}<figcaption>${escapeHtml(scene.viewport.width)} × ${escapeHtml(scene.viewport.height)} · ${kind}. Any unresolved component is documented outside the depicted interface.</figcaption></figure>`;
 	};
 	const shellNavigation = spec.application.shell.navigation
 		? `<div><dt>Navigation</dt><dd><strong>${escapeHtml(spec.application.shell.navigation.pattern)}</strong><br>${escapeHtml(spec.application.shell.navigation.description)}</dd></div>`
