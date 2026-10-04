@@ -1,0 +1,202 @@
+{
+	"schemaVersion": "1.0",
+	"id": "two-workflows",
+	"revision": 1,
+	"sources": [
+		{
+			"ref": "source:brief",
+			"digest": "1f3d65465dfa32b23d06f5b8a6222fe146a1b554f6f5c0c795eee1e26650ffac"
+		}
+	],
+	"scopeRefs": ["component:shared", "flow:alpha", "flow:beta", "whole-ux", "view:alpha", "view:beta"],
+	"outcomes": [
+		{
+			"id": "shared",
+			"sourceRefs": ["source:brief"]
+		},
+		{
+			"id": "alpha",
+			"sourceRefs": ["source:brief"]
+		},
+		{
+			"id": "beta",
+			"sourceRefs": ["source:brief"]
+		},
+		{
+			"id": "visual",
+			"sourceRefs": ["source:brief"]
+		}
+	],
+	"gaps": [],
+	"gates": [
+		{
+			"id": "whole-ux-review",
+			"reviewerItemId": "review-ux",
+			"scopeRefs": ["whole-ux"],
+			"inputs": [
+				{
+					"ref": "source:brief",
+					"digest": "1f3d65465dfa32b23d06f5b8a6222fe146a1b554f6f5c0c795eee1e26650ffac"
+				},
+				{
+					"producer": "assemble-ux",
+					"output": "ux:document:frozen"
+				}
+			]
+		}
+	],
+	"items": [
+		{
+			"id": "shared-ux",
+			"role": "ux-planner",
+			"stage": "ux",
+			"scopeRefs": ["component:shared"],
+			"outcomeIds": ["shared"],
+			"owns": ["ux:element:shared"],
+			"dependsOn": [],
+			"inputs": [
+				{
+					"ref": "source:brief",
+					"digest": "1f3d65465dfa32b23d06f5b8a6222fe146a1b554f6f5c0c795eee1e26650ffac"
+				}
+			],
+			"requiredGates": [],
+			"unresolved": []
+		},
+		{
+			"id": "alpha-ux",
+			"role": "ux-planner",
+			"stage": "ux",
+			"scopeRefs": ["flow:alpha"],
+			"outcomeIds": ["alpha"],
+			"owns": ["ux:flow:alpha"],
+			"dependsOn": ["shared-ux"],
+			"inputs": [
+				{
+					"ref": "source:brief",
+					"digest": "1f3d65465dfa32b23d06f5b8a6222fe146a1b554f6f5c0c795eee1e26650ffac"
+				},
+				{
+					"producer": "shared-ux",
+					"output": "ux:element:shared"
+				}
+			],
+			"requiredGates": [],
+			"unresolved": []
+		},
+		{
+			"id": "beta-ux",
+			"role": "ux-planner",
+			"stage": "ux",
+			"scopeRefs": ["flow:beta"],
+			"outcomeIds": ["beta"],
+			"owns": ["ux:flow:beta"],
+			"dependsOn": ["shared-ux"],
+			"inputs": [
+				{
+					"ref": "source:brief",
+					"digest": "1f3d65465dfa32b23d06f5b8a6222fe146a1b554f6f5c0c795eee1e26650ffac"
+				},
+				{
+					"producer": "shared-ux",
+					"output": "ux:element:shared"
+				}
+			],
+			"requiredGates": [],
+			"unresolved": []
+		},
+		{
+			"id": "assemble-ux",
+			"role": "parent",
+			"stage": "assembly",
+			"scopeRefs": ["whole-ux"],
+			"outcomeIds": [],
+			"owns": ["ux:document:frozen"],
+			"dependsOn": ["shared-ux", "alpha-ux", "beta-ux"],
+			"inputs": [
+				{
+					"ref": "source:brief",
+					"digest": "1f3d65465dfa32b23d06f5b8a6222fe146a1b554f6f5c0c795eee1e26650ffac"
+				},
+				{
+					"producer": "shared-ux",
+					"output": "ux:element:shared"
+				},
+				{
+					"producer": "alpha-ux",
+					"output": "ux:flow:alpha"
+				},
+				{
+					"producer": "beta-ux",
+					"output": "ux:flow:beta"
+				}
+			],
+			"requiredGates": [],
+			"unresolved": []
+		},
+		{
+			"id": "review-ux",
+			"role": "ux-reviewer",
+			"stage": "review",
+			"scopeRefs": ["whole-ux"],
+			"outcomeIds": [],
+			"owns": ["review:ux:receipt"],
+			"dependsOn": ["assemble-ux"],
+			"inputs": [
+				{
+					"ref": "source:brief",
+					"digest": "1f3d65465dfa32b23d06f5b8a6222fe146a1b554f6f5c0c795eee1e26650ffac"
+				},
+				{
+					"producer": "assemble-ux",
+					"output": "ux:document:frozen"
+				}
+			],
+			"requiredGates": [],
+			"unresolved": [],
+			"reviewOf": ["shared-ux", "alpha-ux", "beta-ux"]
+		},
+		{
+			"id": "alpha-ui",
+			"role": "ui-designer",
+			"stage": "ui",
+			"scopeRefs": ["view:alpha"],
+			"outcomeIds": ["visual"],
+			"owns": ["ui:flow:alpha"],
+			"dependsOn": ["assemble-ux", "review-ux"],
+			"inputs": [
+				{
+					"ref": "source:brief",
+					"digest": "1f3d65465dfa32b23d06f5b8a6222fe146a1b554f6f5c0c795eee1e26650ffac"
+				},
+				{
+					"producer": "assemble-ux",
+					"output": "ux:document:frozen"
+				}
+			],
+			"requiredGates": ["whole-ux-review"],
+			"unresolved": []
+		},
+		{
+			"id": "beta-ui",
+			"role": "ui-designer",
+			"stage": "ui",
+			"scopeRefs": ["view:beta"],
+			"outcomeIds": ["visual"],
+			"owns": ["ui:flow:beta"],
+			"dependsOn": ["assemble-ux", "review-ux"],
+			"inputs": [
+				{
+					"ref": "source:brief",
+					"digest": "1f3d65465dfa32b23d06f5b8a6222fe146a1b554f6f5c0c795eee1e26650ffac"
+				},
+				{
+					"producer": "assemble-ux",
+					"output": "ux:document:frozen"
+				}
+			],
+			"requiredGates": ["whole-ux-review"],
+			"unresolved": []
+		}
+	]
+}

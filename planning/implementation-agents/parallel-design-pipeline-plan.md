@@ -1,9 +1,9 @@
 # Research-first planning and parallel design: execution plan
 
-Status: planned. This document specifies implementation and evaluation work; it
-does not enable parallel design authoring or claim an implemented coordinator.
-All milestones below are pending. Complete them in order, retaining usable
-intermediate results and recording evidence at each exit.
+Status: implementation in progress. See the [milestone progress record](parallel-design-pipeline-progress.md)
+for completed acceptance checks and remaining work. The normal authoring mode
+stays serial until scoped integration and live evaluation pass. Complete the
+milestones in order, retaining usable results and evidence at each exit.
 
 ## Intended outcome
 

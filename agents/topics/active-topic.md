@@ -4,8 +4,8 @@ Current work: refine the reusable design pipeline and its durable research hando
 
 Next implementation sequence: [research-first planning and parallel design](../../planning/implementation-agents/parallel-design-pipeline-plan.md).
 Its seven milestones define the operational plan, recovery tests, research/planner
-handoff, scoped integration and live evaluation. The plan is persisted; execution
-has not begun.
+handoff, scoped integration and live evaluation. See [implementation progress](../../planning/implementation-agents/parallel-design-pipeline-progress.md)
+for the completed offline foundation and the next research/planner handoff.
 
 - [Product-owned UX/UI research](../../skills/refine-design/references/research-library.md): assess covered questions, verification and gaps before assigning research.
 - [Refinement stage sequence](../../skills/refine-design/references/refinement-cycle.md): reuse evidence and preserve exact author/reviewer gates.

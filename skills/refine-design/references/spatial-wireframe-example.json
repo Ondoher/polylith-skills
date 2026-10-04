@@ -27,7 +27,14 @@
 			"recommendation": "Use a visibly labeled toggle button with a persistent pressed indication for annotation visibility.",
 			"rationale": "Makes the existing binary state recognizable without inventing behavior or choosing scene layout. This is an illustrative UI default, not a researched consensus.",
 			"control": {"kind": "toggle-button", "label": "Annotations", "accessibleName": "Show annotations"},
-			"bindings": [{"trigger": "activate", "actionRef": "toggle-annotations", "uxNodeRef": "annotation-visibility-control", "subjectRef": "current-content-view"}]
+			"bindings": [
+				{
+					"trigger": "activate",
+					"actionRef": "toggle-annotations",
+					"uxNodeRef": "annotation-visibility-control",
+					"subjectRef": "current-content-view"
+				}
+			]
 		},
 		{
 			"id": "magnification-menu-treatment",
