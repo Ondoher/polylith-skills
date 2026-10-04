@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {execFileSync, spawnSync} from 'node:child_process';
-import {mkdirSync, mkdtempSync, rmSync, writeFileSync} from 'node:fs';
+import {mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {test} from 'node:test';
@@ -8,12 +8,32 @@ import {fileURLToPath} from 'node:url';
 
 const script = path.join(path.dirname(fileURLToPath(import.meta.url)), 'standards-attestation.mjs');
 
+test('attestation validation honors a custom topic folder without rewriting historical provenance', (t) => {
+	const repo = repository(t, {
+		schemaVersion: 2,
+		status: 'normalized',
+		everNormalized: true,
+		manifest: '.agents/topics/standards/manifest.md',
+		normalizedAt: '2026-01-01T00:00:00.000Z',
+		pendingDivergences: 0,
+		deferredDivergences: 0,
+	});
+	const marker = readFileSync(path.join(repo, '.agents/topics/standards/normalization.json'), 'utf8');
+	mkdirSync(path.join(repo, 'docs'));
+	renameSync(path.join(repo, '.agents/topics'), path.join(repo, 'docs/topics'));
+	writeFileSync(path.join(repo, 'AGENTS.md'), 'Topics folder: docs/topics\n');
+	const result = JSON.parse(execFileSync(process.execPath, [script, 'validate', '--repo', repo], {encoding: 'utf8'}));
+	assert.equal(result.output, 'docs/topics/standards/normalization.json');
+	assert.equal(result.manifest, '.agents/topics/standards/manifest.md');
+	assert.equal(readFileSync(path.join(repo, result.output), 'utf8'), marker);
+});
+
 function repository(t, marker) {
 	const repo = mkdtempSync(path.join(tmpdir(), 'standards-marker-'));
 	t.after(() => rmSync(repo, {recursive: true, force: true}));
-	mkdirSync(path.join(repo, 'agents', 'topics', 'standards'), {recursive: true});
+	mkdirSync(path.join(repo, '.agents', 'topics', 'standards'), {recursive: true});
 	writeFileSync(
-		path.join(repo, 'agents', 'topics', 'standards', 'normalization.json'),
+		path.join(repo, '.agents', 'topics', 'standards', 'normalization.json'),
 		`${JSON.stringify(marker)}\n`,
 	);
 	return repo;
@@ -23,7 +43,7 @@ test('legacy successful normalization remains valid after its historical inputs 
 	const repo = repository(t, {
 		schemaVersion: 1,
 		status: 'normalized',
-		manifest: 'agents/topics/standards/manifest.md',
+		manifest: '.agents/topics/standards/manifest.md',
 		normalizedAt: '2026-01-01T00:00:00.000Z',
 		repositoryStandardsFingerprint: 'sha256:historical',
 		pendingDivergences: 0,
@@ -40,7 +60,7 @@ test('new durable marker requires explicit successful first normalization', (t) 
 		schemaVersion: 2,
 		status: 'normalized',
 		everNormalized: false,
-		manifest: 'agents/topics/standards/manifest.md',
+		manifest: '.agents/topics/standards/manifest.md',
 		normalizedAt: '2026-01-01T00:00:00.000Z',
 		pendingDivergences: 0,
 		deferredDivergences: 0,
@@ -52,7 +72,7 @@ test('new durable marker requires explicit successful first normalization', (t) 
 
 test('first attestation includes host instructions and excludes review artifacts and independent repositories', (t) => {
 	const repo = repository(t, {});
-	const standards = path.join(repo, 'agents', 'topics', 'standards');
+	const standards = path.join(repo, '.agents', 'topics', 'standards');
 	const manifest = [
 		'# Folder Standards Manifest',
 		'',

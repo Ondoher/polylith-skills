@@ -3,6 +3,7 @@
 import {readFile, realpath} from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
+import {TopicPaths} from '../../normalize-standards/scripts/TopicPaths.mjs';
 import {
 	overlayForPath,
 	parseManifest,
@@ -35,8 +36,9 @@ function parseArgs(argv) {
 try {
 	const args = parseArgs(process.argv.slice(2));
 	const repo = await realpath(path.resolve(args.repo));
-	const manifestPath = args.manifest ?? 'agents/topics/standards/manifest.md';
-	const overlayPath = args.overlay ?? 'agents/topics/standards/overlay.md';
+	const topics = TopicPaths.directory(repo);
+	const manifestPath = args.manifest ?? `${topics}/standards/manifest.md`;
+	const overlayPath = args.overlay ?? `${topics}/standards/overlay.md`;
 	const manifest = parseManifest(await readFile(path.join(repo, ...manifestPath.split('/')), 'utf8'), manifestPath);
 	const overlay = parseOverlay(
 		await readFile(path.join(repo, ...overlayPath.split('/')), 'utf8'),

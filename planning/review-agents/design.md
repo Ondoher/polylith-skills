@@ -43,7 +43,7 @@ Topics are context and evidence only. They cannot select, exclude, add, or repla
 ```text
 repository/
 ├── AGENTS.md
-└── agents/topics/
+└── .agents/topics/
     ├── active-topic.md
     └── standards/
         ├── manifest.md
@@ -80,7 +80,7 @@ planned investigation. Do not rewrite its hashes to bypass the gate.
 
 ## First-Normalization Gate
 
-Successful first reconciliation creates `agents/topics/standards/normalization.json`. It permanently records that the repository completed deliberate standards normalization. Initial input hashes may remain as provenance, but validation does not compare them with current files. Later instruction, manifest, overlay, or canonical-standard changes never make the marker stale.
+Successful first reconciliation creates `.agents/topics/standards/normalization.json`. It permanently records that the repository completed deliberate standards normalization. Initial input hashes may remain as provenance, but validation does not compare them with current files. Later instruction, manifest, overlay, or canonical-standard changes never make the marker stale.
 
 First normalization requires:
 

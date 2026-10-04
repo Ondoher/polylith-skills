@@ -1,6 +1,7 @@
 import {existsSync, readFileSync, readdirSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {TopicPaths} from '../../normalize-standards/scripts/TopicPaths.mjs';
 
 export function validateApp(targetPath, options) {
 	const target = path.resolve(targetPath);
@@ -46,7 +47,7 @@ export function validateApp(targetPath, options) {
 		if (!/sharedRegistry/.test(router) || !/registry\.attach\('shared', sharedRegistry\)/.test(router))
 			errors.push('application router does not attach the shared installation registry');
 	}
-	const manifest = readFileSync(path.join(target, 'agents', 'topics', 'standards', 'manifest.md'), 'utf8');
+	const manifest = readFileSync(path.join(target, TopicPaths.directory(target), 'standards', 'manifest.md'), 'utf8');
 	if (!manifest.includes(`src/${options.appSlug}/`))
 		errors.push('standards manifest lacks the app source assignment');
 	if (options.server.enabled && !manifest.includes(`server/${options.appSlug}/`))

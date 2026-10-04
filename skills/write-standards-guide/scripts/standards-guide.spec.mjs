@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync, symlinkSync} from 'node:fs';
+import {mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync, symlinkSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {test} from 'node:test';
@@ -17,7 +17,7 @@ test('guide publishes GitHub links while hashing local standards and preserving 
 	t.after(() => rmSync(root, {recursive: true, force: true}));
 	const repo = path.join(root, 'repo');
 	const codex = path.join(root, 'codex');
-	const standardsDirectory = path.join(repo, 'agents', 'topics', 'standards');
+	const standardsDirectory = path.join(repo, '.agents', 'topics', 'standards');
 	const canonicalDirectory = path.join(codex, 'documentation', 'standards');
 	mkdirSync(standardsDirectory, {recursive: true});
 	mkdirSync(canonicalDirectory, {recursive: true});
@@ -50,7 +50,7 @@ test('guide publishes GitHub links while hashing local standards and preserving 
 		schemaVersion: 2,
 		status: 'normalized',
 		everNormalized: true,
-		manifest: 'agents/topics/standards/manifest.md',
+		manifest: '.agents/topics/standards/manifest.md',
 		normalizedAt: '2026-01-01T00:00:00.000Z',
 		pendingDivergences: 0,
 		deferredDivergences: 0,
@@ -73,7 +73,7 @@ test('guide publishes GitHub links while hashing local standards and preserving 
 		).length,
 		2,
 	);
-	assert.ok(firstGuide.includes('(./agents/topics/standards/manifest.md)'));
+	assert.ok(firstGuide.includes('(./.agents/topics/standards/manifest.md)'));
 	assert.ok(!firstGuide.includes('../codex'));
 	assert.ok(!firstGuide.includes(codex));
 	assert.equal((await buildGuide({repo, codex_root: codex})).content, firstGuide);
@@ -119,6 +119,18 @@ test('guide publishes GitHub links while hashing local standards and preserving 
 	);
 	await assert.rejects(buildGuide({repo, codex_root: codex}), /local canonical link/);
 	assert.equal(readFileSync(path.join(repo, 'STANDARDS.md'), 'utf8'), relocated.content);
+	writeFileSync(path.join(standardsDirectory, 'manifest.md'), originalManifest);
+	let previous = '.agents/topics';
+	for (const topics of ['docs/topics', 'agents/topics']) {
+		mkdirSync(path.dirname(path.join(repo, topics)), {recursive: true});
+		renameSync(path.join(repo, previous), path.join(repo, topics));
+		writeFileSync(path.join(repo, 'AGENTS.md'), `# Agents\n\nTopics folder: ${topics}\n`);
+		const guide = await buildGuide({repo, codex_root: codex});
+		assert.ok(guide.content.includes(`(./${topics}/standards/manifest.md)`));
+		assert.ok(guide.content.includes(`(./${topics}/standards/overlay.md)`));
+		assert.equal(readFileSync(path.join(repo, topics, 'standards/normalization.json'), 'utf8'), marker);
+		previous = topics;
+	}
 });
 
 test('publication follows linked documentation to its owning checkout and supports GitHub remote forms', async (t) => {
@@ -157,7 +169,10 @@ test('publication rejects missing or invalid authority instead of emitting local
 	t.after(() => rmSync(root, {recursive: true, force: true}));
 	const canonical = path.join(root, 'documentation', 'standards');
 	mkdirSync(canonical, {recursive: true});
-	await assert.rejects(publicationTarget(canonical), /Cannot find governance.json/);
+	await assert.rejects(
+		publicationTarget(canonical),
+		/Cannot find governance.json|does not own the canonical standards/,
+	);
 	for (const remote of [
 		'https://other.example/example/standards',
 		'https://github.com/example/standards?token=secret',

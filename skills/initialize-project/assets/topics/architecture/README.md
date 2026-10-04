@@ -8,7 +8,7 @@
 
 {{ARCHITECTURE_SELECTIONS}}
 
-This topic records only project-local structure and selected capabilities. Responsibility rules are canonical under `$CODEX_HOME/documentation/standards` and are mapped through the [folder standards manifest](../standards/manifest.md).
+This topic records project-local structure and selected capabilities.
 
 ## Documentation Ownership
 

@@ -875,7 +875,7 @@ test('visual persistence uses exact synthetic UX review and existing owned targe
 
 test('standards mapping, guide, repository request and independent ledger validation use current contracts', async (scenario) => {
 	const f = await fixture(scenario);
-	const standardsDirectory = path.join(f.root, 'agents/topics/standards');
+	const standardsDirectory = path.join(f.root, '.agents/topics/standards');
 	fs.mkdirSync(standardsDirectory, {recursive: true});
 	const standard = path.resolve('documentation/standards/documentation.md');
 	const link = path.relative(standardsDirectory, standard).replaceAll('\\', '/');
@@ -890,7 +890,7 @@ test('standards mapping, guide, repository request and independent ledger valida
 			schemaVersion: 2,
 			status: 'normalized',
 			everNormalized: true,
-			manifest: 'agents/topics/standards/manifest.md',
+			manifest: '.agents/topics/standards/manifest.md',
 			normalizedAt: '2026-01-01T00:00:00.000Z',
 			pendingDivergences: 0,
 			deferredDivergences: 0,
@@ -909,8 +909,8 @@ test('standards mapping, guide, repository request and independent ledger valida
 	);
 	const mapped = f.value(
 		await f.execute('standards.resolve', {
-			manifestPath: 'agents/topics/standards/manifest.md',
-			overlayPath: 'agents/topics/standards/overlay.md',
+			manifestPath: '.agents/topics/standards/manifest.md',
+			overlayPath: '.agents/topics/standards/overlay.md',
 			file: 'notes.md',
 		}),
 	);
@@ -919,7 +919,7 @@ test('standards mapping, guide, repository request and independent ledger valida
 	assert.match(guide.content, /documentation.md/);
 	const explicit = f.value(
 		await f.execute('standards.guide', {
-			options: {manifest: 'agents/topics/standards/manifest.md', overlay: 'agents/topics/standards/overlay.md'},
+			options: {manifest: '.agents/topics/standards/manifest.md', overlay: '.agents/topics/standards/overlay.md'},
 		}),
 	);
 	assert.equal(explicit.content, guide.content);

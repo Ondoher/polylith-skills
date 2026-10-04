@@ -25,5 +25,3 @@ Use the checked-in package scripts:
 npm install
 {{FOUNDATION_COMMANDS}}
 ```
-
-Global rules governing repository folders are mapped through the [folder standards manifest](../standards/manifest.md); do not copy their text into this topic.

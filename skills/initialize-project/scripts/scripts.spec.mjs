@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
-import {existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync} from 'node:fs';
+import {existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync} from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -142,7 +142,7 @@ test('keeps project and initial application identity separate and records hostin
 	assert.equal(config.apps[0].name, 'chores');
 	assert.equal(config.apps[0].mount, '/');
 	assert.deepEqual(config.discover, ['deployed-apps']);
-	assert.match(plan.files.get(path.normalize('agents/topics/chores/README.md')), /# Chore Console/);
+	assert.match(plan.files.get(path.normalize('.agents/topics/chores/README.md')), /# Chore Console/);
 });
 
 test('rejects invalid conditional combinations', () => {
@@ -188,10 +188,17 @@ test('validates a representative non-Polylith fixture', (context) => {
 	const report = validateProject(target, options);
 
 	assert.equal(report.ok, true, report.errors.join('\n'));
+	assert.match(readFileSync(path.join(target, 'AGENTS.md'), 'utf8'), /^Topics folder: \.agents\/topics$/m);
+	assert.equal(existsSync(path.join(target, 'agents/topics')), false);
 	assert.equal(existsSync(path.join(target, 'src', 'testing.spec.js')), true);
 	const manifest = JSON.parse(readFileSync(path.join(target, 'package.json'), 'utf8'));
 	assert.match(manifest.scripts.coverage, /--reports-dir=coverage\/src/);
 	assert.match(manifest.scripts.coverage, /--reporter=json-summary/);
+	mkdirSync(path.join(target, 'docs'));
+	renameSync(path.join(target, '.agents/topics'), path.join(target, 'docs/topics'));
+	writeFileSync(path.join(target, 'AGENTS.md'), 'Topics folder: docs/topics\n');
+	const relocated = validateProject(target, options);
+	assert.equal(relocated.ok, true, relocated.errors.join('\n'));
 });
 
 test('rejects placeholder infrastructure topics while allowing the undefined app topic', (context) => {
@@ -207,12 +214,12 @@ test('rejects placeholder infrastructure topics while allowing the undefined app
 		skipInstall: true,
 	});
 	writeFileSync(
-		path.join(target, 'agents', 'topics', 'architecture', 'README.md'),
+		path.join(target, '.agents', 'topics', 'architecture', 'README.md'),
 		'# Architecture\n\nOwns architecture.\n',
 	);
 	const report = validateProject(target, options);
 	assert.equal(report.ok, false);
-	assert.ok(report.errors.includes('agents/topics/architecture/README.md: local topic is incomplete'));
+	assert.ok(report.errors.includes('.agents/topics/architecture/README.md: local topic is incomplete'));
 	assert.doesNotMatch(report.errors.join('\n'), /topic-guard.*incomplete/);
 });
 
@@ -228,13 +235,13 @@ test('rejects a drifting standards manifest and copied standard topic', (context
 		versions: {nodeVersion: '25.4.0', npmVersion: '11.0.0'},
 		skipInstall: true,
 	});
-	const manifestPath = path.join(target, 'agents', 'topics', 'standards', 'manifest.md');
+	const manifestPath = path.join(target, '.agents', 'topics', 'standards', 'manifest.md');
 	writeFileSync(manifestPath, readFileSync(manifestPath, 'utf8').replace(/^- \[types\.md\].*\r?\n/m, ''));
-	mkdirSync(path.join(target, 'agents', 'topics', 'jsdoc'), {
+	mkdirSync(path.join(target, '.agents', 'topics', 'jsdoc'), {
 		recursive: true,
 	});
 	writeFileSync(
-		path.join(target, 'agents', 'topics', 'jsdoc', 'README.md'),
+		path.join(target, '.agents', 'topics', 'jsdoc', 'README.md'),
 		'# Copied JSDoc\n\n## Rules\n\nThis should remain global.\n',
 	);
 	const report = validateProject(target, options);
@@ -320,12 +327,12 @@ test('plans a complete conditional Polylith scaffold', () => {
 	});
 
 	for (const filename of [
-		'agents/topics/standards/manifest.md',
-		'agents/topics/standards/overlay.md',
-		'agents/topics/architecture/README.md',
-		'agents/topics/app-shell/README.md',
-		'agents/topics/server/README.md',
-		'agents/topics/testing/README.md',
+		'.agents/topics/standards/manifest.md',
+		'.agents/topics/standards/overlay.md',
+		'.agents/topics/architecture/README.md',
+		'.agents/topics/app-shell/README.md',
+		'.agents/topics/server/README.md',
+		'.agents/topics/testing/README.md',
 		'scripts/create-local-certificate.mjs',
 		'polylith.json',
 		'builds/full-app.json',
@@ -379,7 +386,7 @@ test('plans a complete conditional Polylith scaffold', () => {
 	assert.equal(JSON.parse(plan.files.get(path.normalize('builds/full-app.json'))).routerRoot, '/');
 	assert.match(plan.files.get(path.normalize('src/full-app/templates/index.html')), /<base href="\.\/">/);
 	assert.match(
-		plan.files.get(path.normalize('agents/topics/architecture/README.md')),
+		plan.files.get(path.normalize('.agents/topics/architecture/README.md')),
 		/Standalone mount `\/`; composed mount `\/full-app`; configured repository mount `\/`/,
 	);
 	const appContextContract = plan.files.get(path.normalize('src/full-app/services/app-context.d.ts'));
@@ -403,7 +410,7 @@ test('plans a complete conditional Polylith scaffold', () => {
 	assert.doesNotMatch(appContextContract, /\b(?:import|export)\b/);
 	assert.match(appContextContract, /\*\*[\s\S]*?\n\s*\*\s*\n\s*\* @returns/);
 	for (const name of ['project-foundation', 'architecture', 'app-shell', 'server', 'testing']) {
-		const topic = plan.files.get(path.normalize(`agents/topics/${name}/README.md`));
+		const topic = plan.files.get(path.normalize(`.agents/topics/${name}/README.md`));
 		assert.ok(topic.length >= 200, `${name} topic should record local configuration`);
 		assert.match(topic, /^##\s+/m, `${name} topic should expose loadable sections`);
 		assert.doesNotMatch(
@@ -412,9 +419,9 @@ test('plans a complete conditional Polylith scaffold', () => {
 			`${name} topic should not track standards origins`,
 		);
 		assert.doesNotMatch(topic, /\{\{[A-Z0-9_]+\}\}/, `${name} topic should be fully configured`);
-		assert.match(plan.files.get(path.normalize('agents/topics/README.md')), new RegExp(`\\./${name}/README\\.md`));
+		assert.match(plan.files.get(path.normalize('.agents/topics/README.md')), new RegExp(`\\./${name}/README\\.md`));
 	}
-	const applicabilityManifest = plan.files.get(path.normalize('agents/topics/standards/manifest.md'));
+	const applicabilityManifest = plan.files.get(path.normalize('.agents/topics/standards/manifest.md'));
 	assert.ok(applicabilityManifest.length >= 200, 'standards manifest should record applicability');
 	assert.match(applicabilityManifest, /^##\s+/m, 'standards manifest should expose loadable sections');
 	assert.doesNotMatch(
@@ -430,7 +437,19 @@ test('plans a complete conditional Polylith scaffold', () => {
 	assert.match(applicabilityManifest, /## Folder Assignments/);
 	assert.match(applicabilityManifest, /- `src\/full-app\/` — `browser`/);
 	assert.match(applicabilityManifest, /- `server\/full-app\/` — `server`/);
-	assert.match(plan.files.get(path.normalize('agents/topics/README.md')), /\.\/standards\/manifest\.md/);
+	assert.doesNotMatch(plan.files.get(path.normalize('.agents/topics/README.md')), /\.\/standards\//);
+	const instructions = plan.files.get('AGENTS.md');
+	assert.match(instructions, /\[STANDARDS\.md\]\(\.\/STANDARDS\.md\)/);
+	assert.match(instructions, /\$bootstrap/);
+	assert.doesNotMatch(instructions, /standards\/manifest|standards\/overlay|documentation\/standards/);
+	for (const [filename, content] of plan.files) {
+		if (
+			filename.startsWith(path.normalize('.agents/topics/')) &&
+			!filename.includes(`${path.sep}standards${path.sep}`)
+		) {
+			assert.doesNotMatch(content, /standards\/manifest|standards\/overlay|documentation\/standards/, filename);
+		}
+	}
 	for (const name of [
 		'jsdoc',
 		'polylith',
@@ -444,12 +463,12 @@ test('plans a complete conditional Polylith scaffold', () => {
 		'socket-io',
 	]) {
 		assert.equal(
-			plan.files.has(path.normalize(`agents/topics/${name}/README.md`)),
+			plan.files.has(path.normalize(`.agents/topics/${name}/README.md`)),
 			false,
 			`${name} standard should remain global`,
 		);
 	}
-	const standardsManifest = plan.files.get(path.normalize('agents/topics/standards/manifest.md'));
+	const standardsManifest = plan.files.get(path.normalize('.agents/topics/standards/manifest.md'));
 	for (const filename of [
 		'documentation.md',
 		'project-foundation.md',
@@ -475,7 +494,7 @@ test('plans a complete conditional Polylith scaffold', () => {
 	assert.match(standardsManifest, /\$CODEX_HOME\/documentation\/standards/);
 	assert.match(standardsManifest, /\[overlay\.md\]\(\.\/overlay\.md\)/);
 	assert.match(
-		plan.files.get(path.normalize('agents/topics/standards/overlay.md')),
+		plan.files.get(path.normalize('.agents/topics/standards/overlay.md')),
 		/^# Repository Standards Overlay\s+None\.\s*$/s,
 	);
 	assert.doesNotMatch(standardsManifest, /Source Lineage|Music Notebook|Modmod|Flattened Steel|Poly GC/);
@@ -747,9 +766,9 @@ test('omits BaseText and UI files from branches that do not support them', () =>
 		}),
 		{nodeVersion: '25.4.0', npmVersion: '11.0.0'},
 	);
-	assert.equal(muiOnly.files.has(path.normalize('agents/topics/mui/README.md')), false);
-	assert.equal(muiOnly.files.has(path.normalize('agents/topics/base-components/README.md')), false);
-	const muiStandards = muiOnly.files.get(path.normalize('agents/topics/standards/manifest.md'));
+	assert.equal(muiOnly.files.has(path.normalize('.agents/topics/mui/README.md')), false);
+	assert.equal(muiOnly.files.has(path.normalize('.agents/topics/base-components/README.md')), false);
+	const muiStandards = muiOnly.files.get(path.normalize('.agents/topics/standards/manifest.md'));
 	assert.match(muiStandards, /\[mui\.md\]\(/);
 	assert.doesNotMatch(muiStandards, /\[base-components\.md\]\(/);
 	assert.doesNotMatch(muiStandards, /\[localization\.md\]\(/);

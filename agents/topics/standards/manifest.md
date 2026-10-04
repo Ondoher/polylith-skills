@@ -54,6 +54,7 @@ Standards:
 
 - `.` — `base` — Governance, package configuration, documentation and planning.
 - `scripts/` — `node-tooling` — Repository installer tools.
+- `skills/bootstrap/scripts/` — `node-tooling` — Topic-location discovery and bootstrap helpers.
 - `tests/` — `node-tooling` — Repository tooling tests.
 - `skills/create-app/scripts/` — `node-tooling` — Skill helper modules and colocated tests.
 - `skills/generate-prd/scripts/` — `node-tooling` — Skill helper modules and colocated tests.

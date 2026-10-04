@@ -28,7 +28,7 @@ For checkpoint-adviser modes, go directly to [Checkpoint Adviser](#checkpoint-ad
 
 ## Load Authority And Resolve Paths
 
-Resolve the Codex and repository roots. Read applicable `AGENTS.md`, work-context topics, `agents/topics/standards/manifest.md`, `agents/topics/standards/overlay.md`, and only the canonical standards required by the resolved paths and lanes.
+Resolve the Codex and repository roots. Read root `AGENTS.md` and resolve its `Topics folder:` directive through `normalize-standards/scripts/TopicPaths.mjs`, defaulting to `.agents/topics`. Read applicable instructions, work-context topics, `<topics-folder>/standards/manifest.md`, `<topics-folder>/standards/overlay.md`, and only the canonical standards required by the resolved paths and lanes. Bootstrap owns automatic recording of a legacy `agents/topics` exception; review helpers do not silently infer legacy locations or alter root instructions.
 
 Treat canonical `documentation.md` as the sole governance reference. Topics, reconciliation reports, `STANDARDS.md`, prompts, and agent memory never select or modify standards.
 

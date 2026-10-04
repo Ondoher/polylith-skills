@@ -18,6 +18,8 @@ The generator assembles the baseline, installs dependencies, and creates project
 
 Canonical standards must be available from the installed toolkit. Their prose is referenced rather than copied into the project.
 
+After verification, bootstrap finalizes initial standards evidence, generates root `STANDARDS.md`, and starts applicable reviewers. The resulting project is ready for future `$bootstrap` sessions. `AGENTS.md` links standards through `STANDARDS.md` only; the app-specific topic remains, while folder mappings and the overlay are internal tooling metadata.
+
 ## Verification and boundaries
 
 The skill validates the structure and runs applicable formatting, build, test, and coverage checks against actual installed dependencies. Dependency compatibility is reported only after the generated project passes its required commands.

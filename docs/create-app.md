@@ -16,7 +16,7 @@ You choose the app name, slug, capabilities, and routing. The workflow considers
 
 A dry-run plan identifies every file to create or update. The shared application engine integrates app sources, builds, routes, selected tests, scripts, documentation, and folder standards mappings. It may add missing dependencies or shared setup while preserving existing dependency versions and unrelated scripts.
 
-After applying the plan, the skill installs dependencies, formats the disclosed paths, refreshes standards documentation, and validates the app. It runs the repository format check and build, plus app tests and coverage when enabled.
+After applying the plan, the skill installs dependencies, formats the disclosed paths, and validates the app. It runs the repository format check and build, plus app tests and coverage when enabled. It then delegates standards finalization to bootstrap, which preserves the normalization record, refreshes `STANDARDS.md`, and refreshes reviewer readiness. The app-specific topic contains local app facts.
 
 ## Result and boundaries
 

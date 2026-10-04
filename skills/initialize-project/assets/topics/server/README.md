@@ -6,7 +6,7 @@ Polylith owns the Express lifecycle. Repository deployment setup starts at `serv
 
 {{SERVER_FEATURES}}
 
-Socket.IO, HTTP headers, route ordering, localized Markdown, failure handling, and test rules are mapped through the [folder standards manifest](../standards/manifest.md). This topic owns only the routes and infrastructure actually installed in this project.
+This topic records the routes and infrastructure installed in this project.
 
 ## Verification
 

@@ -65,32 +65,7 @@ The generator owns deterministic baseline assembly, runs the installed `polylith
 
 Generation is not proof that every selected behavioral contract is complete. After it returns, compare the generated files and tests with every applicable canonical standard, then complete any missing behavior only in files created by this run. This review is mandatory for base components, `BaseDialog`, shells, localization, Markdown, server routing and Socket.IO. Do not report completion until the selected canonical contracts and meaningful tests are satisfied.
 
-Review `agents/topics/standards/manifest.md` and `agents/topics/standards/overlay.md` after generation. The manifest must define valid named standards sets, assign the required root and generated source/server folders, include exactly the canonical standards applicable to the normalized options, use `$CODEX_HOME/documentation/standards` as their owner, provide working local Markdown links, contain no copied standards prose, and link the overlay. The overlay must contain `None.` and no invented local rule.
-
-## Finalize standards governance
-
-Do not perform this section until the **Verify** section below and every applicable generated-project check have succeeded. Then finalize the fresh project's standards before handoff. This initialization path is valid only because preflight proved the target was empty or fresh, every repository standards file was created by this run, the manifested selection came from the engineer-approved normalized options, the overlay still contains exactly `None.`, and no inherited local standards exist. If any condition is false, do not attest directly; run the normal `$normalize-standards audit`, manual-review, and reconcile workflow.
-
-For the qualifying fresh project:
-
-1. Create `agents/topics/standards/reconciliation.md` from the global normalization skill's reconciliation template. Record that this is a fresh-project initialization with no inherited standards or divergences, identify the manifested selections, link Standards Governance and root `STANDARDS.md`, mark configuration and precedence findings as clear, and use phase and status `initialized`/`normalized`. Do not invent a developer decision or pretend a divergence was reviewed.
-2. Create and validate the initial normalization attestation with the global normalization helper:
-
-    ```text
-    node <codex-root>/skills/normalize-standards/scripts/standards-attestation.mjs create --repo <target>
-    node <codex-root>/skills/normalize-standards/scripts/standards-attestation.mjs validate --repo <target>
-    ```
-
-3. Run the global standards-guide writer and its read-only freshness check:
-
-    ```text
-    node <codex-root>/skills/write-standards-guide/scripts/standards-guide.mjs write --repo <target> --codex-root <codex-root>
-    node <codex-root>/skills/write-standards-guide/scripts/standards-guide.mjs check --repo <target> --codex-root <codex-root>
-    ```
-
-4. Record the attestation and guide-source fingerprints in the reconciliation report, rerun the project's formatting check so the generated guide is included, and confirm the guide check remains current.
-
-Failure to create or validate the attestation blocks guide generation and project completion. Guide generation or freshness failure after a valid attestation does not invalidate normalization, but the initialization remains incomplete until the required guide is current.
+Review `.agents/topics/standards/manifest.md` and `.agents/topics/standards/overlay.md` after generation. The manifest must define valid named standards sets, assign the required root and generated source/server folders, include exactly the canonical standards applicable to the normalized options, use `$CODEX_HOME/documentation/standards` as their owner, provide working local Markdown links, contain no copied standards prose, and link the overlay. The overlay must contain `None.` and no invented local rule.
 
 The generator may replace only files created by its own Polylith subprocesses during the current run. It refuses every path that existed at preflight, including GitHub-owned files. On failure, preserve its partial output and report the exact error; do not rerun over that partial scaffold.
 
@@ -129,4 +104,10 @@ meaningful behavior, not merely file presence or lines executed for their own
 sake. The 100% expectation applies to the generated baseline only; do not add a
 project-wide threshold or claim that future developer code remains at 100%.
 
-On failure, stop, preserve partial output, report the exact failure and files created, and do not retry by overwriting. At handoff, report choices, created structure, install/build/test results, normalization and guide fingerprints, and anything not verified.
+## Bootstrap standards handoff
+
+After every applicable generated-project check passes, load the global `bootstrap` skill and execute its **Project standards handoff** for this target. Supply this run's empty/fresh preflight, generated-file inventory, engineer-approved normalized options, manifest/overlay validation, and verification results. Bootstrap owns initial normalization evidence, guide generation, and reviewer startup; do not reproduce its finalization sequence here.
+
+Root `AGENTS.md` must use `STANDARDS.md` as its only standards entry point. Keep the app-specific topic and local infrastructure facts; do not publish a standards topic or direct canonical/manifest/overlay links from those topics. The hidden standards metadata remains tooling input for bootstrap. Do not finish initialization until root `STANDARDS.md` is current and standard-profile bootstrap is ready under the installed infrastructure. Report any infrastructure blocker rather than silently selecting `instructions-only`.
+
+On failure, stop, preserve partial output, report the exact failure and files created, and do not retry by overwriting. At handoff, report choices, created structure, install/build/test results, bootstrap readiness, normalization and guide fingerprints, and anything not verified.

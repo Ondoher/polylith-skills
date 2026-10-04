@@ -17,25 +17,25 @@ const STANDARD_NAMES = [
 /** Synthetic normalized repository shared by direct and MCP positive cases. */
 export function createApplicationFixture(assignedTarget) {
 	const target = assignedTarget ?? mkdtempSync(path.join(os.tmpdir(), 'create-app-'));
-	for (const directory of ['agents/topics/standards', 'agents/topics', 'src/home', 'builds', 'node_modules/.bin'])
+	for (const directory of ['.agents/topics/standards', '.agents/topics', 'src/home', 'builds', 'node_modules/.bin'])
 		mkdirSync(path.join(target, directory), {recursive: true});
 	writeFileSync(
 		path.join(target, 'node_modules/.bin', process.platform === 'win32' ? 'prettier.cmd' : 'prettier'),
 		'',
 	);
 	writeFileSync(path.join(target, 'AGENTS.md'), '# Agents\n');
-	writeFileSync(path.join(target, 'agents/topics/README.md'), '# Topics\n');
-	writeFileSync(path.join(target, 'agents/topics/standards/overlay.md'), '# Overlay\n\nNone.\n');
+	writeFileSync(path.join(target, '.agents/topics/README.md'), '# Topics\n');
+	writeFileSync(path.join(target, '.agents/topics/standards/overlay.md'), '# Overlay\n\nNone.\n');
 	writeFileSync(
-		path.join(target, 'agents/topics/standards/reconciliation.md'),
+		path.join(target, '.agents/topics/standards/reconciliation.md'),
 		'# Standards Reconciliation\n\nStatus: normalized\n',
 	);
 	writeFileSync(
-		path.join(target, 'agents/topics/standards/normalization.json'),
+		path.join(target, '.agents/topics/standards/normalization.json'),
 		`${JSON.stringify({schemaVersion: 2, status: 'normalized', everNormalized: true})}\n`,
 	);
 	writeFileSync(
-		path.join(target, 'agents/topics/standards/manifest.md'),
+		path.join(target, '.agents/topics/standards/manifest.md'),
 		`# Folder Standards Manifest\n\n## Standards Sets\n\n### \`base\`\n\nExtends: none\nStandards:\n\n${STANDARD_NAMES.map((name) => `- [${name}](C:/standards/${name}) - Canonical.`).join('\n')}\n\n## Folder Assignments\n\n- \`.\` - \`base\` - Repository root.\n`,
 	);
 	writeFileSync(

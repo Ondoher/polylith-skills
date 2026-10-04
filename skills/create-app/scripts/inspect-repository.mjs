@@ -1,11 +1,13 @@
 import {existsSync, readFileSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {TopicPaths} from '../../normalize-standards/scripts/TopicPaths.mjs';
 
 export function inspectRepository(targetPath) {
 	const target = path.resolve(targetPath);
 	const errors = [];
 	const warnings = [];
+	const topicsDirectory = TopicPaths.directory(target);
 	const readJson = (name) => {
 		const filename = path.join(target, name);
 		if (!existsSync(filename)) {
@@ -22,13 +24,13 @@ export function inspectRepository(targetPath) {
 
 	const config = readJson('polylith.json');
 	const packageJson = readJson('package.json');
-	const normalization = readJson(path.join('agents', 'topics', 'standards', 'normalization.json'));
+	const normalization = readJson(path.join(topicsDirectory, 'standards', 'normalization.json'));
 	for (const required of [
 		'AGENTS.md',
-		path.join('agents', 'topics', 'README.md'),
-		path.join('agents', 'topics', 'standards', 'manifest.md'),
-		path.join('agents', 'topics', 'standards', 'overlay.md'),
-		path.join('agents', 'topics', 'standards', 'reconciliation.md'),
+		path.join(topicsDirectory, 'README.md'),
+		path.join(topicsDirectory, 'standards', 'manifest.md'),
+		path.join(topicsDirectory, 'standards', 'overlay.md'),
+		path.join(topicsDirectory, 'standards', 'reconciliation.md'),
 	])
 		if (!existsSync(path.join(target, required))) errors.push(`${required} is required`);
 	if (!Array.isArray(config.apps)) errors.push('polylith.json must declare an explicit apps array');
@@ -68,6 +70,7 @@ export function inspectRepository(targetPath) {
 	return {
 		ok: errors.length === 0,
 		target,
+		topicsDirectory,
 		errors,
 		warnings,
 		config,

@@ -10,7 +10,7 @@ This topic owns repository-wide code formatting, naming, placement, validation, 
 
 <!-- rule: CODE-CONVENTIONS-002 -->
 
-- Use JavaScript/JSX ESM and explicit `.js`/`.jsx` runtime imports.
+- Use JavaScript/JSX ESM and explicit `.js`/`.jsx` runtime imports by default. For deliberately adopted TypeScript implementations, select [TypeScript conventions](typescript.md) in the folder manifest and follow its source and runtime-import rules.
 
 <!-- rule: CODE-CONVENTIONS-003 -->
 
@@ -66,11 +66,11 @@ Prefer small, cohesive modules. Flag a class as it approaches roughly 1,000 line
 
 <!-- rule: CODE-CONVENTIONS-015 -->
 
-Runtime remains JavaScript. Shared data and general capability contracts live in included ambient `.d.ts` files and are referenced directly from JSDoc. Give complex public values one canonical named type and document each property. Use a named ambient string union rather than repeating literal unions inline. Application-service interfaces are the exported declaration exception described in the JSDoc standard.
+For JavaScript/JSX implementations, shared data and general capability contracts live in included ambient `.d.ts` files and are referenced directly from JSDoc. Give complex public values one canonical named type and document each property. Use a named ambient string union rather than repeating literal unions inline. Application-service interfaces are the exported declaration exception described in the JSDoc standard. Deliberately adopted TypeScript implementations follow the source-owned contracts in [TypeScript conventions](typescript.md).
 
 <!-- rule: CODE-CONVENTIONS-016 -->
 
-Component declarations live in their nearest `types` folder instead of beside same-named JSX files. Each application-service declaration sits beside its implementation and exports the interface describing its public service methods. Registry-service interfaces extend the shared ambient `EventBus` contract. See the JSDoc standard for the service-interface exception and full callable/declaration rules.
+For JavaScript/JSX implementations, component declarations live in their nearest `types` folder instead of beside same-named JSX files. Each application-service declaration sits beside its implementation and exports the interface describing its public service methods. Registry-service interfaces extend the shared ambient `EventBus` contract. See the JSDoc standard for the service-interface exception and full callable/declaration rules. TypeScript implementations use the corresponding source-owned contracts in [TypeScript conventions](typescript.md).
 
 ## Validation And Failure Policy
 
@@ -158,7 +158,7 @@ Tests assert current public behavior, not the deletion or renaming of implementa
 
 <!-- rule: CODE-CONVENTIONS-036 -->
 
-Prettier is the canonical formatter for every JavaScript repository. Declare `prettier` as a direct project `devDependency`, keep an explicit Prettier configuration in the repository, and do not rely on a global installation or configuration. Preserve an existing compatible declared version. When adding Prettier, install the current compatible stable release and retain the resulting lockfile so the resolved version is reproducible.
+Prettier is the canonical formatter for every JavaScript or TypeScript repository. Declare `prettier` as a direct project `devDependency`, keep an explicit Prettier configuration in the repository, and do not rely on a global installation or configuration. Preserve an existing compatible declared version. When adding Prettier, install the current compatible stable release and retain the resulting lockfile so the resolved version is reproducible.
 
 <!-- rule: CODE-CONVENTIONS-037 -->
 

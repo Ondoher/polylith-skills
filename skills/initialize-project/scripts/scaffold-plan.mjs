@@ -2,40 +2,48 @@ import {readFileSync} from 'node:fs';
 import {homedir} from 'node:os';
 import path from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
+import {TopicPaths} from '../../normalize-standards/scripts/TopicPaths.mjs';
 
 const json = (value) => `${JSON.stringify(value, null, '\t')}\n`;
 const text = (value) => `${value.trim()}\n`;
 
 export function createScaffoldPlan(options, runtime = {}) {
+	const topicsDirectory = TopicPaths.fromInstructions(
+		`Topics folder: ${runtime.topicsDirectory ?? '.agents/topics'}`,
+	);
+	runtime = {...runtime, topicsDirectory};
 	const nodeMajor = String(runtime.nodeVersion || process.versions.node).split('.')[0];
 	const npmVersion = String(runtime.npmVersion || 'latest');
 	const files = new Map();
 	const directories = new Set(['src']);
 	const add = (filename, content) => files.set(path.normalize(filename), normalizeGeneratedContent(content));
 	const addConfiguredTopic = (name, asset = name, replacements = {}) =>
-		add(`agents/topics/${name}/README.md`, configuredTopicAsset(asset, options, replacements, runtime));
+		add(`${topicsDirectory}/${name}/README.md`, configuredTopicAsset(asset, options, replacements, runtime));
 
 	add(
 		'AGENTS.md',
 		text(
-			`# Agents\n\nRead [the active topic](agents/topics/active-topic.md) for work context, then [the folder standards manifest](agents/topics/standards/manifest.md) and [repository standards overlay](agents/topics/standards/overlay.md). Resolve standards for each task file from its longest matching folder assignment under \`$CODEX_HOME/documentation/standards\` (or \`~/.codex/documentation/standards\` when \`CODEX_HOME\` is unset), then apply matching folder overlay entries. Topics do not select or override standards.`,
+			`# Agents\n\nTopics folder: ${topicsDirectory}\n\nStart repository sessions with \`$bootstrap\`. Read [the active topic](${topicsDirectory}/active-topic.md) for work context and [STANDARDS.md](./STANDARDS.md) for engineering standards. Topics record project and app facts; they do not select or override standards.`,
 		),
 	);
-	add('agents/topics/README.md', topicIndex(options));
+	add(`${topicsDirectory}/README.md`, topicIndex(options));
 	add(
-		'agents/topics/active-topic.md',
+		`${topicsDirectory}/active-topic.md`,
 		text(`# Active Topic\n\nRead [${options.appName || options.projectName}](./${options.slug}/README.md).`),
 	);
 	add(
-		`agents/topics/${options.slug}/README.md`,
+		`${topicsDirectory}/${options.slug}/README.md`,
 		text(
 			`# ${options.appName || options.projectName}\n\n${options.appName || options.projectName} needs to be defined.`,
 		),
 	);
 	addConfiguredTopic('project-foundation');
 	addConfiguredTopic('architecture');
-	add('agents/topics/standards/manifest.md', configuredTopicAsset('standards/manifest.md', options));
-	add('agents/topics/standards/overlay.md', configuredTopicAsset('standards/overlay.md', options));
+	add(
+		`${topicsDirectory}/standards/manifest.md`,
+		configuredTopicAsset('standards/manifest.md', options, {}, runtime),
+	);
+	add(`${topicsDirectory}/standards/overlay.md`, configuredTopicAsset('standards/overlay.md', options, {}, runtime));
 
 	if (options.prettier) {
 		add(
@@ -159,7 +167,7 @@ export function createScaffoldPlan(options, runtime = {}) {
 		if (options.shell.initialPage) addInitialPage(add, options, root);
 	}
 	if (options.baseComponents) addBaseComponents(add, root, options);
-	if (options.server.enabled) addServer(add, options, root);
+	if (options.server.enabled) addServer(add, options, root, runtime);
 	if (options.testing.enabled) {
 		add('karma.conf.cjs', karmaConfig(false, false));
 		add('karma.watch.conf.cjs', karmaConfig(true, false));
@@ -1454,7 +1462,7 @@ function concrete(base) {
 	);
 }
 
-function addServer(addToPlan, options, root) {
+function addServer(addToPlan, options, root, runtime) {
 	const add = (filename, content) =>
 		addToPlan(filename.startsWith('server/') ? `server/${options.slug}/${filename.slice(7)}` : filename, content);
 	add(
@@ -1504,7 +1512,7 @@ function addServer(addToPlan, options, root) {
 		serviceContract('IoService', ['request(url: string, options?: RequestInit): Promise<Response | null>']),
 	);
 	if (options.testing.enabled) add(`${root}/services/_tests/IoSpec.js`, httpServiceSpec());
-	add('agents/topics/server/README.md', configuredTopicAsset('server', options));
+	add(`${runtime.topicsDirectory}/server/README.md`, configuredTopicAsset('server', options, {}, runtime));
 	if (options.server.defaultAppRouting) {
 		add(
 			'server/features/app/index.js',
@@ -1906,7 +1914,11 @@ function standardsRootLink(runtime = {}) {
 			path.join(process.env.CODEX_HOME || path.join(homedir(), '.codex'), 'documentation', 'standards'),
 	);
 	if (!runtime.target) return pathToFileURL(standardsRoot).href;
-	const topicDirectory = path.join(path.resolve(runtime.target), 'agents', 'topics', 'standards');
+	const topicDirectory = path.join(
+		path.resolve(runtime.target),
+		runtime.topicsDirectory ?? '.agents/topics',
+		'standards',
+	);
 	const relative = path.relative(topicDirectory, standardsRoot);
 	if (path.isAbsolute(relative)) return pathToFileURL(standardsRoot).href;
 	return relative
@@ -2005,7 +2017,6 @@ function topicIndex(options) {
 		],
 		['project-foundation', 'package, runtime, repository boundary, and verification commands'],
 		['architecture', 'local source layout and selected infrastructure'],
-		['standards', 'applicable canonical standards and repository overlay'],
 	];
 	if (options.shell?.enabled)
 		topics.push(['app-shell', 'installed page registry, selection, navigation, and routing configuration']);
@@ -2014,7 +2025,7 @@ function topicIndex(options) {
 	if (options.testing.enabled)
 		topics.push(['testing', 'test locations, runners, behavior expectations, and optional coverage']);
 	return text(
-		`# Topics\n\nRead [active-topic.md](./active-topic.md) first, then the [standards manifest](./standards/manifest.md). Load only the local topics and canonical standards relevant to the current task.\n\n${topics.map(([name, description]) => `- [${topicTitle(name, options)}](./${name}/README.md) — ${description}.`).join('\n')}`,
+		`# Topics\n\nRead [active-topic.md](./active-topic.md) first. Load only the local topics relevant to the current task.\n\n${topics.map(([name, description]) => `- [${topicTitle(name, options)}](./${name}/README.md) — ${description}.`).join('\n')}`,
 	);
 }
 function topicTitle(name, options) {

@@ -18,12 +18,14 @@ This reference owns generator-specific decisions. Engineering standards live onl
 
 ## Generated Documentation
 
+Root `AGENTS.md` records `Topics folder: .agents/topics`; generated repository links and topic metadata use that folder. Existing repositories may instead select a repository-relative topics folder through the same directive. Their explicit location governs app additions and standards tooling, while bootstrap records an undeclared legacy `agents/topics` exception without relocating its contents.
+
 Create:
 
 ```text
 AGENTS.md
 STANDARDS.md
-agents/topics/
+.agents/topics/
   README.md
   active-topic.md
   <app-slug>/README.md
@@ -37,9 +39,9 @@ agents/topics/
 
 Add project-local `app-shell`, `server`, and `testing` topics only when those capabilities are generated. These topics record selected paths, routes, commands, and configuration; they do not reproduce global standards.
 
-`agents/topics/standards/manifest.md` identifies `$CODEX_HOME/documentation/standards` as canonical, defines reusable standards sets, assigns the root and generated source/server folders, links only canonical files applicable to the normalized options, and links `overlay.md`. The overlay begins with `None.` and is the only repository file allowed to own local engineering-standard `ADD` or `REPLACE` rules using repository or folder scope. `AGENTS.md` routes readers through the active topic, manifest, and overlay; topics do not alter standards applicability.
+`.agents/topics/standards/manifest.md` identifies `$CODEX_HOME/documentation/standards` as canonical, defines reusable standards sets, assigns the root and generated source/server folders, links only canonical files applicable to the normalized options, and links `overlay.md`. The overlay begins with `None.` and is the only repository file allowed to own local engineering-standard `ADD` or `REPLACE` rules using repository or folder scope. `AGENTS.md` routes work context through the active topic and engineering standards through root `STANDARDS.md` only. The manifest and overlay are internal bootstrap/reviewer inputs; omit the standards directory from the topic index and do not link canonical standards or this metadata from fact topics. Topics do not alter standards applicability.
 
-After the generated project passes its checks, initialization records the no-divergence standards result in `reconciliation.md`, creates and validates `normalization.json`, and invokes the global `write-standards-guide` skill to create root `STANDARDS.md`. The guide is generated developer reference, never standards authority. This direct initial attestation is restricted to a preflight-confirmed fresh project whose standards surface was wholly generated from the engineer-approved options and whose overlay remains empty.
+After the generated project passes its checks, initialization invokes bootstrap's project standards handoff with its fresh-project evidence. Bootstrap records the no-divergence result, creates and validates the initial normalization marker, generates root `STANDARDS.md`, and establishes reviewer readiness. The guide remains a derived entry point; tools still resolve effective rules from canonical files and metadata. Bootstrap permits initial attestation only for a preflight-confirmed fresh project whose standards surface was wholly generated from the engineer-approved options and whose overlay remains empty.
 
 The initial app topic remains a short statement that the project needs to be defined. Do not invent product requirements.
 

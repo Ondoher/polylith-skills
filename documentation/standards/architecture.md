@@ -172,11 +172,11 @@ Tests follow the same ownership model. Browser specs are selected and bundled by
 
 <!-- rule: ARCHITECTURE-032 -->
 
-- Product requirements and current work belong in `agents/topics/<app-slug>/README.md` once defined.
+- Product requirements and current work belong in `.agents/topics/<app-slug>/README.md` once defined.
 
 <!-- rule: ARCHITECTURE-033 -->
 
-- Package and runtime facts belong in `agents/topics/project-foundation/README.md`.
+- Package and runtime facts belong in `.agents/topics/project-foundation/README.md`.
 
 <!-- rule: ARCHITECTURE-034 -->
 

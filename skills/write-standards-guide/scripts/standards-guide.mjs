@@ -8,6 +8,7 @@ import {fileURLToPath} from 'node:url';
 import {formatRepositoryMarkdown} from '../../markdown-format.mjs';
 import {parseManifest, parseOverlay} from '../../normalize-standards/scripts/standards-config.mjs';
 import {publicationTarget, standardUrl} from './publication-links.mjs';
+import {TopicPaths} from '../../normalize-standards/scripts/TopicPaths.mjs';
 
 const generatedWarning = [
 	'> **Generated developer reference.** Do not modify this file directly or use it as standards authority.',
@@ -84,12 +85,10 @@ async function resolveStandards(manifestFile, parsed, canonicalRoot) {
 	return resolved;
 }
 
-async function validateNormalization(repo) {
+async function validateNormalization(repo, topics) {
 	let attestation;
 	try {
-		attestation = JSON.parse(
-			await readFile(path.join(repo, 'agents', 'topics', 'standards', 'normalization.json'), 'utf8'),
-		);
+		attestation = JSON.parse(await readFile(path.join(repo, topics, 'standards', 'normalization.json'), 'utf8'));
 	} catch (error) {
 		throw new Error(`Repository normalization is missing or invalid: ${error.message}`, {cause: error});
 	}
@@ -114,7 +113,7 @@ async function validateNormalization(repo) {
 
 function markdownPath(fromDirectory, destination) {
 	let relative = path.relative(fromDirectory, destination).replaceAll('\\', '/');
-	if (!relative.startsWith('.')) relative = `./${relative}`;
+	if (!relative.startsWith('./') && !relative.startsWith('../')) relative = `./${relative}`;
 	return /[ ()]/.test(relative) ? `<${relative}>` : relative;
 }
 
@@ -141,9 +140,10 @@ export async function buildGuide(args) {
 	const codexRoot = await realpath(path.resolve(args.codex_root));
 	const canonicalRoot = await realpath(path.join(codexRoot, 'documentation', 'standards'));
 	const publication = await publicationTarget(canonicalRoot);
-	const normalization = await validateNormalization(repo);
-	const manifestFile = await repositoryFile(repo, args.manifest ?? normalization.manifest);
-	const overlayFile = await repositoryFile(repo, args.overlay ?? 'agents/topics/standards/overlay.md');
+	const topics = TopicPaths.directory(repo);
+	const normalization = await validateNormalization(repo, topics);
+	const manifestFile = await repositoryFile(repo, args.manifest ?? `${topics}/standards/manifest.md`);
+	const overlayFile = await repositoryFile(repo, args.overlay ?? `${topics}/standards/overlay.md`);
 	const manifest = parseManifest(manifestFile.content, manifestFile.path);
 	const overlay = parseOverlay(overlayFile.content, manifest.selected, overlayFile.path);
 	const standards = await resolveStandards(manifestFile, manifest, canonicalRoot);

@@ -14,7 +14,7 @@ Each project's local foundation topic records its full project name, package slu
 
 <!-- rule: PROJECT-FOUNDATION-003 -->
 
-New application projects start at version `0.0.1`, use npm, use ESM, and use JavaScript/JSX with ambient TypeScript declarations until the runtime toolchain deliberately adopts TypeScript.
+New application projects start at version `0.0.1`, use npm, use ESM, and use JavaScript/JSX with ambient TypeScript declarations until the runtime toolchain deliberately adopts TypeScript. On adoption, select [TypeScript conventions](typescript.md) for the affected folders and record the supported compiler, build, runtime, and type-check commands in project foundation.
 
 <!-- rule: PROJECT-FOUNDATION-004 -->
 
@@ -88,7 +88,7 @@ Generated initialization is additive and conservative:
 
 <!-- rule: PROJECT-FOUNDATION-020 -->
 
-`AGENTS.md` routes readers to `agents/topics/active-topic.md`. The active topic points to the product, application, or bounded work topic governing the current task; a new repository's initial product topic is intentionally undefined until product work begins. In a multi-app repository, application-specific facts belong to separately addressable app-owned topics rather than one ambiguous repository-wide app topic. `agents/topics/README.md` is a routing index: load only the topic needed for the current task instead of treating the entire documentation tree as always-active context.
+Root `AGENTS.md` selects the repository's topics folder through the `Topics folder:` directive described in [standards governance](documentation.md#required-repository-shape), defaulting to `.agents/topics`. Its links route readers to that folder's `active-topic.md`. The active topic points to the product, application, or bounded work topic governing the current task; a new repository's initial product topic is intentionally undefined until product work begins. In a multi-app repository, application-specific facts belong to separately addressable app-owned topics rather than one ambiguous repository-wide app topic. The topics folder's `README.md` is a routing index: load only the topic needed for the current task instead of treating the entire documentation tree as always-active context.
 
 <!-- rule: PROJECT-FOUNDATION-021 -->
 

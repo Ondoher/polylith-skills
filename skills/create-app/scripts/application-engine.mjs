@@ -4,6 +4,7 @@ import path from 'node:path';
 
 import {applicableStandardNames, createScaffoldPlan} from '../../initialize-project/scripts/scaffold-plan.mjs';
 import {normalizeMount} from './normalize-application-options.mjs';
+import {TopicPaths} from '../../normalize-standards/scripts/TopicPaths.mjs';
 
 export function createInitialApplicationPlan(options, runtime = {}) {
 	return createScaffoldPlan(options, runtime);
@@ -11,6 +12,10 @@ export function createInitialApplicationPlan(options, runtime = {}) {
 
 export function createExistingApplicationPlan(repository, options, runtime = {}) {
 	validateCandidate(repository, options);
+	const topicsDirectory = repository.target
+		? TopicPaths.directory(repository.target)
+		: (repository.topicsDirectory ?? '.agents/topics');
+	runtime = {...runtime, topicsDirectory};
 	const scaffoldOptions = {
 		...options,
 		polylith: true,
@@ -25,7 +30,7 @@ export function createExistingApplicationPlan(repository, options, runtime = {})
 	const root = path.normalize(`src/${options.appSlug}/`);
 	const serverRoot = path.normalize(`server/${options.appSlug}/`);
 	const buildPath = path.normalize(`builds/${options.appSlug}.json`);
-	const topicPath = path.normalize(`${runtime.appTopicRoot || 'agents/topics'}/${options.appSlug}/README.md`);
+	const topicPath = path.normalize(`${runtime.appTopicRoot || topicsDirectory}/${options.appSlug}/README.md`);
 
 	for (const [filename, content] of baseline.files) {
 		if (filename.startsWith(root) || filename.startsWith(serverRoot) || filename === buildPath)
@@ -110,12 +115,12 @@ export function createExistingApplicationPlan(repository, options, runtime = {})
 		}
 	}
 
-	const manifestPath = path.normalize('agents/topics/standards/manifest.md');
+	const manifestPath = path.normalize(`${topicsDirectory}/standards/manifest.md`);
 	if (runtime.manifest) replacements.set(manifestPath, updateStandardsManifest(runtime.manifest, options, runtime));
-	const reconciliationPath = path.normalize('agents/topics/standards/reconciliation.md');
+	const reconciliationPath = path.normalize(`${topicsDirectory}/standards/reconciliation.md`);
 	if (runtime.reconciliation)
 		replacements.set(reconciliationPath, updateReconciliation(runtime.reconciliation, options));
-	const topicIndexPath = path.normalize(runtime.topicIndexPath || 'agents/topics/README.md');
+	const topicIndexPath = path.normalize(runtime.topicIndexPath || `${topicsDirectory}/README.md`);
 	if (runtime.topicIndex) replacements.set(topicIndexPath, updateTopicIndex(runtime.topicIndex, options));
 
 	return {
@@ -227,7 +232,7 @@ function updateStandardsManifest(content, options, runtime = {}) {
 	for (const name of missing) {
 		const filename = path.join(standardsRoot, name);
 		if (!existsSync(filename)) throw new Error(`canonical standard is missing: ${name}`);
-		const manifestDirectory = path.join(runtime.target, 'agents', 'topics', 'standards');
+		const manifestDirectory = path.join(runtime.target, runtime.topicsDirectory, 'standards');
 		knownLinks.set(name, path.relative(manifestDirectory, filename).replaceAll('\\', '/'));
 	}
 	const uiOnly = new Set([

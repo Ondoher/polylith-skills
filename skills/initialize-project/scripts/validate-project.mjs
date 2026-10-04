@@ -5,9 +5,11 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {parseManifest} from '../../normalize-standards/scripts/standards-config.mjs';
 import {applicableStandardNames} from './scaffold-plan.mjs';
+import {TopicPaths} from '../../normalize-standards/scripts/TopicPaths.mjs';
 
 export function validateProject(targetPath, options, preflight = null) {
 	const target = path.resolve(targetPath);
+	const topicsDirectory = TopicPaths.directory(target);
 	const errors = [];
 	const warnings = [];
 	const requirePath = (relativePath, reason) => {
@@ -19,9 +21,9 @@ export function validateProject(targetPath, options, preflight = null) {
 	requirePath('src', 'missing source directory');
 	requirePath('package.json', 'missing package manifest');
 	requirePath('AGENTS.md', 'missing agent entrypoint');
-	requirePath(path.join('agents', 'topics', 'active-topic.md'), 'missing active topic');
-	requirePath(path.join('agents', 'topics', 'standards', 'manifest.md'), 'missing folder standards manifest');
-	requirePath(path.join('agents', 'topics', options.slug, 'README.md'), 'missing initial app topic');
+	requirePath(path.join(topicsDirectory, 'active-topic.md'), 'missing active topic');
+	requirePath(path.join(topicsDirectory, 'standards', 'manifest.md'), 'missing folder standards manifest');
+	requirePath(path.join(topicsDirectory, options.slug, 'README.md'), 'missing initial app topic');
 	validateTopics(target, options, errors);
 	validateStandardsManifest(target, options, errors);
 
@@ -153,46 +155,44 @@ export function validateProject(targetPath, options, preflight = null) {
 }
 
 function validateTopics(target, options, errors) {
-	const topicsRoot = path.join(target, 'agents', 'topics');
+	const topicsDirectory = TopicPaths.directory(target);
+	const topicsRoot = path.join(target, topicsDirectory);
 	if (!existsSync(topicsRoot)) return;
 	const indexPath = path.join(topicsRoot, 'README.md');
 	const index = existsSync(indexPath) ? readFileSync(indexPath, 'utf8') : '';
 	for (const entry of readdirSync(topicsRoot, {withFileTypes: true})) {
 		if (!entry.isDirectory()) continue;
-		if (entry.name === 'standards') {
-			if (!index.includes('./standards/manifest.md'))
-				errors.push('agents/topics/README.md: missing standards manifest link');
-			continue;
-		}
+		if (entry.name === 'standards') continue;
 		const readmePath = path.join(topicsRoot, entry.name, 'README.md');
 		if (!existsSync(readmePath)) {
-			errors.push(`agents/topics/${entry.name}/README.md: missing topic documentation`);
+			errors.push(`${topicsDirectory}/${entry.name}/README.md: missing topic documentation`);
 			continue;
 		}
 		if (!index.includes(`./${entry.name}/README.md`))
-			errors.push(`agents/topics/README.md: missing ${entry.name} topic link`);
+			errors.push(`${topicsDirectory}/README.md: missing ${entry.name} topic link`);
 		if (entry.name === options.slug) continue;
 		const content = readFileSync(readmePath, 'utf8');
 		if (content.length < 200 || !/^##\s+/m.test(content))
-			errors.push(`agents/topics/${entry.name}/README.md: local topic is incomplete`);
+			errors.push(`${topicsDirectory}/${entry.name}/README.md: local topic is incomplete`);
 		if (/Source Lineage|source authorit/i.test(content))
-			errors.push(`agents/topics/${entry.name}/README.md: local topic must not track standards origins`);
+			errors.push(`${topicsDirectory}/${entry.name}/README.md: local topic must not track standards origins`);
 		if (/\{\{[A-Z0-9_]+\}\}/.test(content))
-			errors.push(`agents/topics/${entry.name}/README.md: unresolved topic template value`);
+			errors.push(`${topicsDirectory}/${entry.name}/README.md: unresolved topic template value`);
 	}
 }
 
 function validateStandardsManifest(target, options, errors) {
-	const manifestPath = path.join(target, 'agents', 'topics', 'standards', 'manifest.md');
+	const topicsDirectory = TopicPaths.directory(target);
+	const manifestPath = path.join(target, topicsDirectory, 'standards', 'manifest.md');
 	if (!existsSync(manifestPath)) return;
 	const content = readFileSync(manifestPath, 'utf8');
-	const overlayPath = path.join(target, 'agents', 'topics', 'standards', 'overlay.md');
+	const overlayPath = path.join(target, topicsDirectory, 'standards', 'overlay.md');
 	if (!content.includes('$CODEX_HOME/documentation/standards')) {
-		errors.push('agents/topics/standards/manifest.md: canonical standards root is missing');
+		errors.push(`${topicsDirectory}/standards/manifest.md: canonical standards root is missing`);
 	}
 	let parsed;
 	try {
-		parsed = parseManifest(content, 'agents/topics/standards/manifest.md');
+		parsed = parseManifest(content, `${topicsDirectory}/standards/manifest.md`);
 	} catch (error) {
 		errors.push(error.message);
 		return;
@@ -201,7 +201,7 @@ function validateStandardsManifest(target, options, errors) {
 	const expected = applicableStandardNames(options).sort();
 	if (JSON.stringify(listed) !== JSON.stringify(expected)) {
 		errors.push(
-			`agents/topics/standards/manifest.md: applicable standards mismatch; expected ${expected.join(', ')}`,
+			`${topicsDirectory}/standards/manifest.md: applicable standards mismatch; expected ${expected.join(', ')}`,
 		);
 	}
 	const canonicalRoot = path.resolve(
@@ -217,32 +217,32 @@ function validateStandardsManifest(target, options, errors) {
 				? fileURLToPath(destination)
 				: path.resolve(path.dirname(manifestPath), decodeURI(destination));
 		} catch {
-			errors.push(`agents/topics/standards/manifest.md: invalid link for ${filename}`);
+			errors.push(`${topicsDirectory}/standards/manifest.md: invalid link for ${filename}`);
 			continue;
 		}
 		if (path.normalize(resolved).toLowerCase() !== path.join(canonicalRoot, filename).toLowerCase()) {
 			errors.push(
-				`agents/topics/standards/manifest.md: ${filename} does not link to the canonical standards root`,
+				`${topicsDirectory}/standards/manifest.md: ${filename} does not link to the canonical standards root`,
 			);
 		} else if (!existsSync(resolved)) {
-			errors.push(`agents/topics/standards/manifest.md: linked standard is missing: ${filename}`);
+			errors.push(`${topicsDirectory}/standards/manifest.md: linked standard is missing: ${filename}`);
 		}
 	}
 	for (const assignment of parsed.assignments) {
 		if (assignment.folder === '.') continue;
 		if (!existsSync(path.join(target, ...assignment.folder.slice(0, -1).split('/')))) {
-			errors.push(`agents/topics/standards/manifest.md: assigned folder is missing: ${assignment.folder}`);
+			errors.push(`${topicsDirectory}/standards/manifest.md: assigned folder is missing: ${assignment.folder}`);
 		}
 	}
 	if (content.length > 8000)
-		errors.push('agents/topics/standards/manifest.md: folder manifest contains copied standards prose');
+		errors.push(`${topicsDirectory}/standards/manifest.md: folder manifest contains copied standards prose`);
 	if (!content.includes('[overlay.md](./overlay.md)')) {
-		errors.push('agents/topics/standards/manifest.md: repository overlay link is missing');
+		errors.push(`${topicsDirectory}/standards/manifest.md: repository overlay link is missing`);
 	}
 	if (!existsSync(overlayPath)) {
-		errors.push('agents/topics/standards/overlay.md: missing repository standards overlay');
+		errors.push(`${topicsDirectory}/standards/overlay.md: missing repository standards overlay`);
 	} else if (!/^# Repository Standards Overlay\s+None\.\s*$/s.test(readFileSync(overlayPath, 'utf8'))) {
-		errors.push('agents/topics/standards/overlay.md: initialized overlay must contain None.');
+		errors.push(`${topicsDirectory}/standards/overlay.md: initialized overlay must contain None.`);
 	}
 	for (const legacyTopic of [
 		'accessibility',
@@ -256,8 +256,8 @@ function validateStandardsManifest(target, options, errors) {
 		'remvc',
 		'socket-io',
 	]) {
-		if (existsSync(path.join(target, 'agents', 'topics', legacyTopic))) {
-			errors.push(`agents/topics/${legacyTopic}: canonical standard must not be copied into the project`);
+		if (existsSync(path.join(target, topicsDirectory, legacyTopic))) {
+			errors.push(`${topicsDirectory}/${legacyTopic}: canonical standard must not be copied into the project`);
 		}
 	}
 }

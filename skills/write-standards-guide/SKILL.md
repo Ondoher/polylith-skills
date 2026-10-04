@@ -13,7 +13,9 @@ Generate a deterministic developer reference without creating another standards 
 
 ## Authority Boundary
 
-Effective rules come only from canonical global standards, the named sets and folder assignments in `agents/topics/standards/manifest.md`, and matching `ADD` or `REPLACE` entries in `agents/topics/standards/overlay.md`. Topics and generated output do not affect standards selection.
+Resolve the topics folder from root `AGENTS.md` through the standalone `Topics folder:` directive, defaulting to `.agents/topics`. Paths below describe that default and use the selected folder when an exception exists. Read the durable marker and current manifest/overlay under that folder; the marker's original manifest path is historical provenance and does not override current topic-location configuration.
+
+Effective rules come only from canonical global standards, the named sets and folder assignments in `.agents/topics/standards/manifest.md`, and matching `ADD` or `REPLACE` entries in `.agents/topics/standards/overlay.md`. Topics and generated output do not affect standards selection.
 
 Do not generate unless the durable ever-normalized marker validates. Current changes never make that marker stale. A missing or stale guide does not invalidate normalization; bootstrap and review workflows refresh it automatically before reviewers start.
 

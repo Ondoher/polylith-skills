@@ -6,6 +6,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {parseManifest, parseOverlay, standardsForPath} from '../../normalize-standards/scripts/standards-config.mjs';
 import {parseRules} from './rule-inventory.mjs';
+import {TopicPaths} from '../../normalize-standards/scripts/TopicPaths.mjs';
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 export const digest = (value) =>
@@ -89,6 +90,7 @@ const owners = {
 	'local-https.md': ['privacy-security-reviewer'],
 	'code-conventions.md': ['contracts-reviewer'],
 	'types.md': ['contracts-reviewer'],
+	'typescript.md': ['contracts-reviewer'],
 	'jsdoc.md': ['contracts-reviewer'],
 	'react.md': ['ui-reviewer'],
 	'mui.md': ['ui-reviewer'],
@@ -252,13 +254,14 @@ export function buildRequest(repo, codex, baseline, explicitPaths = []) {
 		),
 	].sort();
 	required(paths.length > 0, 'Empty review unit');
-	const manifestPath = 'agents/topics/standards/manifest.md';
+	const topics = TopicPaths.directory(repo);
+	const manifestPath = `${topics}/standards/manifest.md`;
 	const manifest = parseManifest(read(path.join(repo, manifestPath)), manifestPath);
-	const overlay = parseOverlay(read(path.join(repo, 'agents/topics/standards/overlay.md')), manifest.selected);
+	const overlay = parseOverlay(read(path.join(repo, topics, 'standards/overlay.md')), manifest.selected);
 	const standards = new Map();
 	for (const [name, item] of manifest.selected) {
 		required(owners[name], `Standard has no reviewer owner: ${name}`);
-		const target = realpathSync(path.resolve(repo, 'agents/topics/standards', item.href));
+		const target = realpathSync(path.resolve(repo, topics, 'standards', item.href));
 		required(
 			target === realpathSync(path.join(codex, 'documentation/standards', name)),
 			`Canonical link mismatch: ${name}`,
@@ -286,7 +289,8 @@ export function buildRequest(repo, codex, baseline, explicitPaths = []) {
 	// This deliberately errs toward invalidation when related work context changes.
 	const repoInputs = Object.keys(current.files).filter(
 		(file) =>
-			current.files[file] && (file.endsWith('AGENTS.md') || (file.startsWith('agents/') && file.endsWith('.md'))),
+			current.files[file] &&
+			(file.endsWith('AGENTS.md') || (file.startsWith(`${topics}/`) && file.endsWith('.md'))),
 	);
 	const context = {};
 	for (const lane of Object.keys(lanes).sort()) {
@@ -298,6 +302,7 @@ export function buildRequest(repo, codex, baseline, explicitPaths = []) {
 			'skills/review-standards/scripts/review-ledger.mjs',
 			'skills/review-standards/scripts/rule-inventory.mjs',
 			'skills/review-standards/scripts/react-event-check.mjs',
+			'skills/normalize-standards/scripts/TopicPaths.mjs',
 			...new Set(lanes[lane].map(({rule}) => `documentation/standards/${rule.standard}`)),
 		];
 		context[lane] = JSON.parse(

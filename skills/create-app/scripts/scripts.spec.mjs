@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
-import {mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync} from 'node:fs';
+import {existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync} from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
+import {fileURLToPath} from 'node:url';
 
 import {applyApp} from './apply-app.mjs';
 import {inspectRepository} from './inspect-repository.mjs';
@@ -11,6 +12,7 @@ import {normalizeApplicationOptions} from './normalize-application-options.mjs';
 import {validateApp} from './validate-app.mjs';
 
 import {createApplicationFixture as fixture} from './application-test-fixture.mjs';
+import {TopicPaths} from '../../normalize-standards/scripts/TopicPaths.mjs';
 
 test('normalizes independent application identity, posture, mounts, and implied testing', () => {
 	const options = normalizeApplicationOptions({
@@ -46,7 +48,7 @@ test('repository inspection accepts legacy evidence that standards were normaliz
 	const target = fixture();
 	context.after(() => rmSync(target, {recursive: true, force: true}));
 	writeFileSync(
-		path.join(target, 'agents/topics/standards/normalization.json'),
+		path.join(target, '.agents/topics/standards/normalization.json'),
 		`${JSON.stringify({schemaVersion: 1, status: 'normalized'})}\n`,
 	);
 	assert.equal(inspectRepository(target).ok, true);
@@ -71,9 +73,9 @@ test('dry-run and apply add one app without rebuilding repository infrastructure
 	assert.deepEqual(
 		dryRun.update.sort(),
 		[
-			'agents/topics/README.md',
-			'agents/topics/standards/manifest.md',
-			'agents/topics/standards/reconciliation.md',
+			'.agents/topics/README.md',
+			'.agents/topics/standards/manifest.md',
+			'.agents/topics/standards/reconciliation.md',
 			'package.json',
 			'polylith.json',
 		]
@@ -98,11 +100,11 @@ test('dry-run and apply add one app without rebuilding repository infrastructure
 	assert.equal(config.apps[1].mount, '/reports');
 	assert.equal(config.deployment.setup, 'server/setup-deployment.js');
 	assert.match(
-		readFileSync(path.join(target, 'agents/topics/standards/manifest.md'), 'utf8'),
+		readFileSync(path.join(target, '.agents/topics/standards/manifest.md'), 'utf8'),
 		/\[accessibility\.md\]\(\.\.\//,
 	);
 	assert.match(
-		readFileSync(path.join(target, 'agents/topics/standards/reconciliation.md'), 'utf8'),
+		readFileSync(path.join(target, '.agents/topics/standards/reconciliation.md'), 'utf8'),
 		/`reports` application folders/,
 	);
 	const packageJson = JSON.parse(readFileSync(path.join(target, 'package.json'), 'utf8'));
@@ -142,4 +144,34 @@ test('planning rejects duplicate application names and route mounts', (context) 
 
 function readConfig(target) {
 	return JSON.parse(readFileSync(path.join(target, 'polylith.json'), 'utf8'));
+}
+
+for (const topics of ['docs/company/topics', 'agents/topics']) {
+	test(`app creation honors ${topics} and preserves normalization evidence`, (t) => {
+		const target = fixture();
+		t.after(() => rmSync(target, {recursive: true, force: true}));
+		const marker = readFileSync(path.join(target, '.agents/topics/standards/normalization.json'), 'utf8');
+		mkdirSync(path.dirname(path.join(target, topics)), {recursive: true});
+		renameSync(path.join(target, '.agents/topics'), path.join(target, topics));
+		if (topics === 'agents/topics') TopicPaths.bootstrap(target, true);
+		else writeFileSync(path.join(target, 'AGENTS.md'), `# Agents\n\nTopics folder: ${topics}\n`);
+		assert.equal(inspectRepository(target).topicsDirectory, topics);
+		const options = normalizeApplicationOptions({
+			appName: 'Reports',
+			appSlug: 'reports',
+			repositoryPosture: 'hosting',
+			mount: '/reports',
+			accessibility: true,
+		});
+		const standardsRoot = fileURLToPath(new URL('../../../documentation/standards', import.meta.url));
+		const preview = applyApp(target, options, {dryRun: true, standardsRoot});
+		assert.ok(preview.create.includes(path.normalize(`${topics}/reports/README.md`)));
+		applyApp(target, options, {skipFormat: true, standardsRoot});
+		assert.equal(validateApp(target, options).ok, true);
+		assert.equal(existsSync(path.join(target, '.agents/topics')), false);
+		assert.equal(readFileSync(path.join(target, topics, 'standards/normalization.json'), 'utf8'), marker);
+		const manifest = readFileSync(path.join(target, topics, 'standards/manifest.md'), 'utf8');
+		const href = /\[accessibility\.md\]\(([^)]+)\)/.exec(manifest)[1];
+		assert.equal(path.resolve(target, topics, 'standards', href), path.join(standardsRoot, 'accessibility.md'));
+	});
 }

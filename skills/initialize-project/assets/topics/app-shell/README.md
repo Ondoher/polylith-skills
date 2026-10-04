@@ -8,7 +8,7 @@
 
 {{SHELL_BEHAVIOR}}
 
-The generated initial-page and routing choices are local application facts. The canonical page-registry, navigation, responsive, URL-ownership, accessibility, and testing rules are mapped through the [folder standards manifest](../standards/manifest.md).
+The generated initial-page and routing choices are local application facts.
 
 ## Verification
 

@@ -5,25 +5,28 @@ import {fileURLToPath} from 'node:url';
 
 import {createExistingApplicationPlan} from './application-engine.mjs';
 import {inspectRepository} from './inspect-repository.mjs';
+import {TopicPaths} from '../../normalize-standards/scripts/TopicPaths.mjs';
 
 export function applyApp(targetPath, options, runtime = {}) {
 	const repository = runtime.repository || inspectRepository(targetPath);
 	if (!repository.ok) throw new Error(repository.errors.join('\n'));
 	const target = repository.target;
-	const manifestPath = path.join(target, 'agents', 'topics', 'standards', 'manifest.md');
-	const reconciliationPath = path.join(target, 'agents', 'topics', 'standards', 'reconciliation.md');
-	const appCatalogPath = path.join(target, 'agents', 'topics', 'apps', 'README.md');
+	const topicsDirectory = TopicPaths.directory(target);
+	const manifestPath = path.join(target, topicsDirectory, 'standards', 'manifest.md');
+	const reconciliationPath = path.join(target, topicsDirectory, 'standards', 'reconciliation.md');
+	const appCatalogPath = path.join(target, topicsDirectory, 'apps', 'README.md');
 	const topicIndexPath = existsSync(appCatalogPath)
 		? appCatalogPath
-		: path.join(target, 'agents', 'topics', 'README.md');
+		: path.join(target, topicsDirectory, 'README.md');
 	const topicIndexRelative = path.normalize(path.relative(target, topicIndexPath));
 	const appTopicRoot = existsSync(appCatalogPath)
-		? path.normalize('agents/topics/apps')
-		: path.normalize('agents/topics');
+		? path.join(topicsDirectory, 'apps')
+		: path.normalize(topicsDirectory);
 	const babelPath = path.join(target, 'babel.config.cjs');
 	const existingPaths = collectPaths(target);
 	const plan = createExistingApplicationPlan(repository, options, {
 		target,
+		topicsDirectory,
 		standardsRoot: runtime.standardsRoot,
 		manifest: readFileSync(manifestPath, 'utf8'),
 		reconciliation: readFileSync(reconciliationPath, 'utf8'),

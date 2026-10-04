@@ -6,7 +6,7 @@ These documents are the global engineering standards for Codex-managed projects.
 $CODEX_HOME/documentation/standards
 ```
 
-Projects do not copy these documents. Each project keeps a folder manifest at `agents/topics/standards/manifest.md` that defines named standards sets and assigns them to repository folders. Repository and folder-scoped additions and replacements live separately in `agents/topics/standards/overlay.md`.
+Projects do not copy these documents. Each project selects its topics folder in root `AGENTS.md` with `Topics folder: <repository-relative folder>`, defaulting to `.agents/topics`. Its `standards/manifest.md` defines named standards sets and assigns them to repository folders; repository and folder-scoped additions and replacements live separately in `standards/overlay.md`. See [standards governance](documentation.md#required-repository-shape) for location resolution and legacy bootstrap discovery.
 
 ## Standards Index
 
@@ -16,6 +16,7 @@ Projects do not copy these documents. Each project keeps a folder manifest at `a
 - `data-persistence.md` — database-neutral persistent identifiers, concrete instants, persistence boundaries, and verification.
 - `code-conventions.md` — JavaScript, files, validation, diagnostics, React/CSS baseline, and formatting.
 - `types.md` — ambient JavaScript type contracts and declaration placement.
+- `typescript.md` — TypeScript source contracts, documentation, privacy, compiler checks, and runtime verification.
 - `jsdoc.md` — runtime documentation and service-interface conventions.
 - `react.md` — React presentation, state, effects, lifecycle, markup, CSS, and tests.
 - `polylith.md` — builds, feature activation, deployment, lifecycle, server ownership, and browser-test assembly.

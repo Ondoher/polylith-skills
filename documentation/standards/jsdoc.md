@@ -2,7 +2,7 @@
 
 <!-- rule: JSDOC-001 -->
 
-JSDoc documents runtime JavaScript and references contracts owned by declaration files: ambient data/general capability types and the exported application-service interfaces described below. Apply these rules to all authored JavaScript and JSX.
+JSDoc documents runtime JavaScript and references contracts owned by declaration files: ambient data/general capability types and the exported application-service interfaces described below. Apply these rules to all authored JavaScript and JSX. TypeScript implementations follow [TypeScript conventions](typescript.md) for source annotations and descriptive documentation comments.
 
 ## Types and declarations
 

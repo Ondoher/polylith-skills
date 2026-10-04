@@ -5,6 +5,7 @@ import {readdir, readFile, realpath, stat, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import {parseManifest, parseOverlay} from './standards-config.mjs';
+import {TopicPaths} from './TopicPaths.mjs';
 
 const fail = (message, details = {}) => {
 	process.stdout.write(`${JSON.stringify({ok: false, message, ...details}, null, 2)}\n`);
@@ -111,7 +112,8 @@ async function walkFiles(root, current, accept, files) {
 }
 
 async function discoverStandardsInputs(repoReal, manifest) {
-	const overlay = 'agents/topics/standards/overlay.md';
+	const topics = TopicPaths.directory(repoReal);
+	const overlay = `${topics}/standards/overlay.md`;
 	const manifestPath = await resolveInput(repoReal, manifest);
 	const manifestText = await readFile(manifestPath, 'utf8');
 	const parsedManifest = parseManifest(manifestText.replaceAll('\r\n', '\n'), manifest);
@@ -126,7 +128,7 @@ async function discoverStandardsInputs(repoReal, manifest) {
 	const discovered = new Set([manifest, overlay]);
 	await walkFiles(repoReal, repoReal, (name) => name === 'AGENTS.md' || name === 'AGENTS.override.md', discovered);
 	for (const relativeRoot of [
-		'agents/topics/standards',
+		`${topics}/standards`,
 		'standards',
 		'docs/standards',
 		'documentation/standards',
@@ -162,8 +164,9 @@ const fingerprint = (inputs) => `sha256:${sha256(Buffer.from(JSON.stringify(inpu
 async function createAttestation(args) {
 	if (!args.repo) throw new Error('create requires --repo');
 	const repoReal = await realpath(path.resolve(args.repo));
-	const manifest = normalizeRelativePath(args.manifest ?? 'agents/topics/standards/manifest.md');
-	const output = normalizeRelativePath(args.output ?? 'agents/topics/standards/normalization.json');
+	const topics = TopicPaths.directory(repoReal);
+	const manifest = normalizeRelativePath(args.manifest ?? `${topics}/standards/manifest.md`);
+	const output = normalizeRelativePath(args.output ?? `${topics}/standards/normalization.json`);
 	const discovered = await discoverStandardsInputs(repoReal, manifest);
 	const inputs = await buildInputs(repoReal, [...args.inputs, ...discovered]);
 	const attestation = {
@@ -186,7 +189,9 @@ async function createAttestation(args) {
 async function validateAttestation(args) {
 	if (!args.repo) throw new Error('validate requires --repo');
 	const repoReal = await realpath(path.resolve(args.repo));
-	const output = normalizeRelativePath(args.output ?? 'agents/topics/standards/normalization.json');
+	const output = normalizeRelativePath(
+		args.output ?? `${TopicPaths.directory(repoReal)}/standards/normalization.json`,
+	);
 	let attestation;
 	try {
 		attestation = JSON.parse(await readFile(path.resolve(repoReal, ...output.split('/')), 'utf8'));

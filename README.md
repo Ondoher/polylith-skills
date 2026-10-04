@@ -120,5 +120,8 @@ fixtures, sealed calibration evidence, vendored assets, generated lockfiles and
 temporary review artifacts are excluded in `.prettierignore`.
 
 Repository standards assignments and local rules live in
-[`agents/topics/standards/`](agents/topics/standards/manifest.md). The generated
+[`agents/topics/standards/`](agents/topics/standards/manifest.md), as selected by
+`Topics folder: agents/topics` in this checkout's root `AGENTS.md`. New projects
+default to `.agents/topics`; each repository may declare its own topics folder.
+Bootstrap records an existing legacy folder as an exception without moving it. The generated
 [`STANDARDS.md`](STANDARDS.md) is the developer reference.

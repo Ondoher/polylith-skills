@@ -202,7 +202,7 @@ The dialog should not own persistence, server calls, feature state, or validatio
 
 <!-- rule: BASE-COMPONENTS-048 -->
 
-Ambient component declarations live in `src/<app>/components/types`. Never place a same-named declaration beside a JSX component because editor navigation may prefer the declaration over the implementation. Runtime imports continue to name the `.jsx` implementation explicitly.
+For JavaScript/JSX components, ambient component declarations live in `src/<app>/components/types`. Never place a same-named declaration beside a JSX component because editor navigation may prefer the declaration over the implementation. Runtime imports continue to name the `.jsx` implementation explicitly. TypeScript components define their contracts in source and follow [TypeScript conventions](typescript.md) for type placement and runtime imports.
 
 ## Test Harness
 

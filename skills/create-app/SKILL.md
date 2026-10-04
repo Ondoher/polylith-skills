@@ -5,6 +5,8 @@ description: Add a new Polylith application to an established normalized reposit
 
 # Create App
 
+Resolve the existing repository's topics folder from the standalone `Topics folder:` directive in root `AGENTS.md`, defaulting to `.agents/topics`. Use that folder for the app topic, topic index, standards manifest, and reconciliation updates. Bootstrap records undeclared legacy `agents/topics` exceptions; app creation does not create a second topic tree or move existing topics.
+
 ## Shared MCP operations
 
 When configured `workflow_*` tools are available, use project.inspect and project.plan with kind existing. Run the existing dedicated apply/validation workers in the host for dependency installation and subprocess permissions; reuse saved options. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
@@ -55,14 +57,7 @@ Read [integration-rules.md](references/integration-rules.md) whenever the app us
 
 ## Standards and documentation
 
-The new folder assignments select canonical rules for the app; they are not local overrides. Preserve the repository overlay. Recreate and validate the normalization attestation after the manifest update, then regenerate and check the human-readable guide:
-
-```text
-node <codex-root>/skills/normalize-standards/scripts/standards-attestation.mjs create --repo <repository>
-node <codex-root>/skills/normalize-standards/scripts/standards-attestation.mjs validate --repo <repository>
-node <codex-root>/skills/write-standards-guide/scripts/standards-guide.mjs write --repo <repository> --codex-root <codex-root>
-node <codex-root>/skills/write-standards-guide/scripts/standards-guide.mjs check --repo <repository> --codex-root <codex-root>
-```
+The new folder assignments select canonical rules for the app; they are not local overrides. Preserve the repository overlay and durable normalization marker. Keep the app-specific topic and local infrastructure facts, with `STANDARDS.md` as the standards entry point. Do not install standards prose or add canonical/manifest/overlay links to app topics. Existing repository instructions remain developer-owned.
 
 When a selected canonical standard is not yet linked by the repository manifest, resolve it from the canonical standards root and add it only to the new app's applicable generated set. Stop if the canonical file is missing. Do not copy its prose, invent a local substitute, or silently broaden an existing set.
 
@@ -78,4 +73,6 @@ npm run build
 
 Run `npm run test:<app-slug>` when testing is enabled and `npm run coverage:<app-slug>` when coverage is enabled. The generated tests participate in the repository's established Polylith flow; do not create a parallel harness. Run any existing whole-repository validation required by `AGENTS.md`.
 
-On failure, preserve partial output and report the exact created and updated paths. Do not retry over partial output. At handoff, report the app choices, repository changes, dependency installation, build/test/coverage results, standards attestation and guide status, and anything not verified.
+After integration checks pass, load the global `bootstrap` skill and execute its **Project standards handoff** for the existing target. Bootstrap validates the existing marker, regenerates/checks `STANDARDS.md`, and starts or refreshes applicable reviewers. Do not create another attestation or duplicate bootstrap's standards sequence.
+
+On failure, preserve partial output and report the exact created and updated paths. Do not retry over partial output. At handoff, report the app choices, repository changes, dependency installation, build/test/coverage results, bootstrap readiness, standards attestation and guide status, and anything not verified.

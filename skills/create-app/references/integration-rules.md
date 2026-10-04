@@ -19,4 +19,4 @@ Merge only missing package dependencies. Preserve installed version policy and n
 
 Generated tests must use the repository's Polylith test/build output and existing Karma or Node runners. App server tests enter through `server/<app-slug>/spec.js`. Coverage destinations must be app-scoped.
 
-Add an app topic, link it from the current topic index, and add longest-match folder assignments for both app roots. A new standards set may reuse canonical links already present in the normalized manifest. Recreate the normalization attestation and `STANDARDS.md` after the manifest changes.
+Add an app topic, link it from the current topic index, and add longest-match folder assignments for both app roots. A new standards set may reuse canonical links already present in the normalized manifest. Use bootstrap's project standards handoff after verification to refresh `STANDARDS.md` and reviewer context. Preserve the existing normalization attestation.

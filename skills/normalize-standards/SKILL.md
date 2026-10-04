@@ -5,6 +5,8 @@ description: Audit and reconcile repository-local folder standards mappings and 
 
 # Normalize Standards
 
+Resolve the repository's topics folder from the standalone `Topics folder:` directive in root `AGENTS.md`, defaulting to `.agents/topics`, using `scripts/TopicPaths.mjs`. Paths below describe the default; substitute the selected folder for every topic and standards-metadata path. Bootstrap records undeclared legacy `agents/topics` exceptions; normalization does not silently infer or move an existing topic tree.
+
 ## Shared MCP operations
 
 When configured `workflow_*` tools are available, use standards.resolve, files.read, and digest-guarded files.edit. The existing normalization attestation CLI and reconciliation decisions remain under this skill. Read `documentation/workflows/mcp.md` under the governance checkout (the parent of the physical Codex documentation directory) for the shared protocol. Inspect exact operation inputs with `workflow_catalog`; keep large results in handles and pass them with `inputHandles`. Specialists use only parent-issued assignment capabilities and return handles/paths. Reuse completed data and repair affected units rather than restarting. The maintained CLI instructions below remain bootstrap/recovery or explicitly retained host routes; do not generate ad hoc wrapper scripts for operations provided by the service.
@@ -16,8 +18,8 @@ Perform a repository's required first standards normalization without losing use
 1. Resolve the repository and Codex roots.
 2. Read applicable Codex-home and repository `AGENTS.md` instructions and routed work context.
 3. Treat `<codex-root>/documentation/standards` as the canonical standards root.
-4. Treat `agents/topics/standards/manifest.md` as the sole applicability authority. It defines named standards sets and assigns them to repository folders.
-5. Treat `agents/topics/standards/overlay.md` as the sole repository authority for local engineering-rule additions and replacements.
+4. Treat `.agents/topics/standards/manifest.md` as the sole applicability authority. It defines named standards sets and assigns them to repository folders.
+5. Treat `.agents/topics/standards/overlay.md` as the sole repository authority for local engineering-rule additions and replacements.
 6. Treat root `STANDARDS.md` as a generated developer view only when it bears the exact generator warning.
 7. Report standards authority found elsewhere as misplaced. Do not classify product, design, or implementation facts as standards merely because they contain requirements.
 
@@ -35,7 +37,7 @@ This skill reconciles standards documentation and configuration. It does not aud
 
 ## Audit Phase
 
-Audit is non-destructive. Its only permitted content change is creating or refreshing `agents/topics/standards/reconciliation.md`, unless repository instructions name another report.
+Audit is non-destructive. Its only permitted content change is creating or refreshing `.agents/topics/standards/reconciliation.md`, unless repository instructions name another report.
 
 Compare standards semantically. For each divergence:
 

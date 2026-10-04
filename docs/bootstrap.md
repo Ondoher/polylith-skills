@@ -30,6 +30,12 @@ Bootstrap profile: instructions-only
 
 Bootstrap still loads required instructions, but skips governance updates, reviewer startup, normalization and formatting eligibility checks, and generated-guide checks. A later explicit standards-review request still follows that skill's gates.
 
+## Project and app handoff
+
+`initialize-project` and `create-app` delegate standards finalization to bootstrap after their project checks pass. A verified fresh initialization supplies the evidence for its first normalization record; app additions preserve the existing record. Bootstrap generates/checks root `STANDARDS.md` and establishes reviewer readiness through the standard profile. This handoff checks installation state without applying user-level updates unless synchronization was separately authorized.
+
+Generated `AGENTS.md` points to `STANDARDS.md` as the single standards entry point. App-specific topics and local infrastructure facts remain; standards metadata stays internal to the tooling.
+
 ## Result
 
 You receive an initialized session, an instructions-only session, or exact blocked prerequisites and recovery steps. Bootstrap establishes working authority; it is not itself a repository-wide code audit.

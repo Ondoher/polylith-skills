@@ -85,7 +85,7 @@ test('rejects topic scopes and folder globs', () => {
 ## ADD: Old topic rule
 
 Extends: testing.md#Coverage
-Scope: topic:agents/topics/test.md
+Scope: topic:.agents/topics/test.md
 Rule: Record evidence.
 Reason: Old model.
 `,

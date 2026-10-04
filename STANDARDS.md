@@ -10,10 +10,10 @@
 - Repository overlay: [`agents/topics/standards/overlay.md`](./agents/topics/standards/overlay.md)
 - Standards governance: [`documentation.md`](https://github.com/Ondoher/polylith-skills/blob/main/documentation/standards/documentation.md)
 - First normalized: `2026-09-26T19:46:12.665Z`
-- Repository standards configuration fingerprint: `sha256:a538031acdb995f0e53669375b076aa77a644df75431ebcb98a3322d8a49123b`
+- Repository standards configuration fingerprint: `sha256:57fb612b87a5102a3d2a9d09f49292eb589eb9f4aabe67201ff800eedf402544`
 - Local standards overlay fingerprint: `sha256:0cd23bf5c1aa033f890f9cc0ac9ef50fc6a341f8544291f922d6bd2c3fe596ab`
-- Selected canonical standards fingerprint: `sha256:5eb4182a501a017aa97a527eacf08d13dceda07968cf80687fdf11efd62cc2f1`
-- Guide source fingerprint: `sha256:337c15838397f25e58ea031288071274e4e9bce2e164e8d277c9a9ee750fa0b5`
+- Selected canonical standards fingerprint: `sha256:c945269b00b2b9968c6cb7e6cdaaed3404e5f25dbea13edf66c9b9e8119b725e`
+- Guide source fingerprint: `sha256:c56535e56201969062f56c05f99fa033af907775794bd643ddf8cf76cfad1bda`
 
 For each file, the longest matching folder assignment selects one named standards set. The set includes its inherited canonical standards, then matching folder-scoped overlay rules modify specific sections. This file is a readable projection only.
 
@@ -74,6 +74,7 @@ Adds:
 
 - `.` → `base` — Governance, package configuration, documentation and planning.
 - `scripts/` → `node-tooling` — Repository installer tools.
+- `skills/bootstrap/scripts/` → `node-tooling` — Topic-location discovery and bootstrap helpers.
 - `tests/` → `node-tooling` — Repository tooling tests.
 - `skills/create-app/scripts/` → `node-tooling` — Skill helper modules and colocated tests.
 - `skills/generate-prd/scripts/` → `node-tooling` — Skill helper modules and colocated tests.

@@ -19,8 +19,8 @@ Standards governance has three authoritative layers:
 | Layer              | Canonical location                         | Question answered                                                                            |
 | ------------------ | ------------------------------------------ | -------------------------------------------------------------------------------------------- |
 | Global standards   | `$CODEX_HOME/documentation/standards/*.md` | What is the shared engineering rule?                                                         |
-| Folder manifest    | `agents/topics/standards/manifest.md`      | Which named standards set governs each repository folder?                                    |
-| Repository overlay | `agents/topics/standards/overlay.md`       | What local rule adds to or replaces one canonical section within repository or folder scope? |
+| Folder manifest    | `.agents/topics/standards/manifest.md`     | Which named standards set governs each repository folder?                                    |
+| Repository overlay | `.agents/topics/standards/overlay.md`      | What local rule adds to or replaces one canonical section within repository or folder scope? |
 
 <!-- rule: DOCUMENTATION-005 -->
 
@@ -75,11 +75,27 @@ Applicability is path-based and comes from the declared manifest. File contents 
 
 ## Required Repository Shape
 
+<!-- rule: DOCUMENTATION-144 -->
+
+The repository-root `AGENTS.md` may select a topics folder with one standalone directive, `Topics folder: <repository-relative folder>`. Use a normalized path with `/` separators, without absolute paths, parent traversal, or links escaping the repository. Read the directive from root instructions, excluding fenced examples; nested instruction files and work topics cannot override it. When absent, the default is `.agents/topics`. Every topics path in this document describes that default and is resolved beneath the selected folder when an exception is declared.
+
+<!-- rule: DOCUMENTATION-145 -->
+
+New repositories create topics, standards metadata, and repository instruction references beneath `.agents/topics`, and record `Topics folder: .agents/topics` in root `AGENTS.md`. Existing repositories may retain another location through the directive. This repository convention does not rename Codex's installed `agents/` definitions or the skill metadata directory required by the host.
+
+<!-- rule: DOCUMENTATION-146 -->
+
+Bootstrap resolves the directive before loading work context or standards. If no directive exists, `.agents/topics` is absent, and `agents/topics` exists, bootstrap records `Topics folder: agents/topics` in root `AGENTS.md` and rereads the instructions. Preserve all existing instructions and topic contents; do not move topics, rewrite historical normalization evidence, or infer new standards decisions. An explicit directive is authoritative, including when its target is missing; if both conventional folders exist without a directive, use `.agents/topics`.
+
+<!-- rule: DOCUMENTATION-147 -->
+
+Scaffolding, app creation, normalization, standards guides, and reviewer requests use the same topic-folder resolution from root `AGENTS.md`. Load active work from `<topics-folder>/active-topic.md` and standards authority from `<topics-folder>/standards/`. Historical normalization input hashes and the original manifest path remain provenance; current tools resolve current standards under the selected folder. Topic-location changes refresh reviewer context and generated guides without repeating normalization.
+
 <!-- rule: DOCUMENTATION-016 -->
 
 ```text
 AGENTS.md
-agents/topics/
+.agents/topics/
   active-topic.md
   standards/
     manifest.md
@@ -126,7 +142,7 @@ Canonical standards are loaded fresh for each review. Updating only a global sta
 
 <!-- rule: DOCUMENTATION-024 -->
 
-Every normalized repository keeps `agents/topics/standards/manifest.md` with exactly one `## Standards Sets` section and one `## Folder Assignments` section.
+Every normalized repository keeps `.agents/topics/standards/manifest.md` with exactly one `## Standards Sets` section and one `## Folder Assignments` section.
 
 ### Standards sets
 
@@ -162,6 +178,13 @@ Standards:
 
 - [server.md](<resolved canonical link>) — This folder contains server routes and services.
 - [data-persistence.md](<resolved canonical link>) — This folder owns persisted application data.
+
+### `typescript-ui`
+
+Extends: browser-ui
+Standards:
+
+- [typescript.md](<resolved canonical link>) — This folder deliberately adopts TypeScript source contracts and checks.
 ```
 
 <!-- rule: DOCUMENTATION-027 -->
@@ -273,7 +296,7 @@ This directory-prefix model deliberately excludes general globs. Exact folder an
 
 <!-- rule: DOCUMENTATION-049 -->
 
-`agents/topics/standards/overlay.md` is the sole repository authority for local engineering-rule differences. It supports:
+`.agents/topics/standards/overlay.md` is the sole repository authority for local engineering-rule differences. It supports:
 
 <!-- rule: DOCUMENTATION-050 -->
 
@@ -497,6 +520,10 @@ The global `write-standards-guide` skill may generate root `STANDARDS.md`. It re
 
 Agents resolve effective rules from the manifest, canonical documents, and overlay. A stale or missing guide does not invalidate normalization. Standard bootstrap and reviewer preflight regenerate it automatically.
 
+<!-- rule: DOCUMENTATION-148 -->
+
+Generated projects use root `STANDARDS.md` as their single standards entry point from `AGENTS.md`. App and infrastructure topics record local facts without publishing standards topics or direct canonical/manifest/overlay links. The manifest, overlay, and normalization record remain internal tooling inputs. `initialize-project` and `create-app` delegate standards finalization and readiness to bootstrap after their applicable project checks pass.
+
 ## Normalization And Attestation
 
 <!-- rule: DOCUMENTATION-098 -->
@@ -535,7 +562,7 @@ node <codex-root>/skills/normalize-standards/scripts/standards-attestation.mjs v
 
 <!-- rule: DOCUMENTATION-106 -->
 
-Only first reconciliation may create an existing repository's durable normalization marker. Do not refresh or revoke it for later standards changes. The fresh-project initializer retains its narrow no-divergence exception.
+Only first reconciliation may create an existing repository's durable normalization marker. Do not refresh or revoke it for later standards changes. Bootstrap's initializer handoff retains the narrow fresh-project no-divergence exception: active-run preflight proves the target was empty/fresh, all standards metadata was generated from engineer-approved options, the overlay is empty, applicable project checks pass, and no marker exists. Ordinary bootstrap does not infer this exception. App creation validates and preserves the existing marker.
 
 ## Change Workflows
 

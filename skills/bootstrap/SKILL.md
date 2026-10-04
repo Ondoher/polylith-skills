@@ -1,9 +1,17 @@
 ---
 name: bootstrap
-description: Bootstrap the current repository when the user says to bootstrap by loading Codex-root and repository-root AGENTS.md instructions, with an explicit instructions-only profile for repositories that do not use code-review infrastructure.
+description: Bootstrap repository instructions and standards readiness, including the standards handoff after initialize-project or create-app, configured topic locations and legacy exceptions, and an explicit instructions-only profile.
 ---
 
 # Bootstrap
+
+## Project standards handoff
+
+`initialize-project` and `create-app` use this skill after their project checks pass. Root `STANDARDS.md` is the generated project's standards entry point; manifests, overlays, and normalization evidence remain internal tooling inputs, not authored standards topics. Preserve app-specific topics and local project facts.
+
+For a project handoff, read [project-standards.md](references/project-standards.md), then follow the standard bootstrap sequence below. Load both instruction sets and resolve the configured topics folder first. Before reviewer preflight at step 9, prepare or validate standards evidence as that reference directs. A handoff alone does not authorize user-level installation, repair, or governance updates: at step 8 use the installer's read-only repair plan even for a clean checkout unless the engineer explicitly requested bootstrap or separately authorized synchronization. Apply the same required-link and checkout-identity checks.
+
+Ordinary bootstrap never creates a normalization marker for an existing repository. The fresh-project exception requires evidence from the active initialization run, not an inferred empty overlay or a claim in a saved report. Guide refresh and reviewer startup use the same standard-profile gates for both callers. If a reviewer session is already active, invalidate affected context and refresh its roster through `review-standards`; do not create duplicate reviewers.
 
 ## Shared MCP operations
 
@@ -12,10 +20,10 @@ When configured `workflow_*` tools are available, use files.read, repository.sna
 1. Resolve the Codex root from `CODEX_HOME`, or use `~/.codex` when `CODEX_HOME` is unset.
 2. If `AGENTS.md` exists in the Codex root, read it completely and follow its instructions, including reading any files it routes to.
 3. Determine the root of the repository containing the current working directory without modifying Git state.
-4. Read the repository root's `AGENTS.md` completely and follow its instructions, including reading any files it routes to, before continuing with the user's repository work.
+4. Read the repository root's `AGENTS.md` completely before continuing with the user's repository work. Resolve its standalone `Topics folder:` directive using the topic-location helper below before following routed topic and standards links. The default is `.agents/topics`; only root instructions may select a different repository-relative folder.
 5. Apply both instruction sets. When they conflict, follow the repository-specific instruction unless a higher-priority instruction requires otherwise.
 6. The absence of a Codex-root `AGENTS.md` is not an error. If the current working directory is not inside a repository, or the repository root has no `AGENTS.md`, report that clearly and do not invent repository instructions.
-7. After reading the repository-root `AGENTS.md`, check for the exact standalone directive `Bootstrap profile: instructions-only`. Only the repository-root file may select this profile; do not infer it from repository contents or accept it from a nested instruction file. When present:
+7. After reading the repository-root `AGENTS.md`, resolve topic discovery with `node <this-skill>/scripts/topics-directory.mjs inspect --repo <repository-root>`. If it selects an undeclared legacy `agents/topics` folder, run the same command with `record` to append `Topics folder: agents/topics`, then reread root instructions and follow their routed authority. This narrowly scoped repository instruction repair is authorized by bootstrap and applies to both profiles; it preserves existing text and topic contents. Explicit directives win; when both conventional folders exist without a directive, the default wins. Do not infer another folder, create a missing instruction file, relocate topics, or rewrite normalization provenance. After topic resolution, check for the exact standalone directive `Bootstrap profile: instructions-only`. Only the repository-root file may select this profile; do not infer it from repository contents or accept it from a nested instruction file. When present:
     - finish loading and following every instruction and routed authority required by the Codex-root and repository-root `AGENTS.md` files;
     - skip `review-standards` bootstrap, normalization and Prettier eligibility checks, reviewer and checkpoint-adviser startup, topic-refresh lifecycle setup, and `write-standards-guide` checks;
     - report bootstrap complete using the `instructions-only` profile and continue directly with the user's work under the loaded repository authority; and
@@ -23,7 +31,7 @@ When configured `workflow_*` tools are available, use files.read, repository.sna
 
     This profile does not bypass system or developer instructions, applicable safety and permission rules, the Codex-root `AGENTS.md`, or any skill explicitly invoked by the engineer. A later request to run a standards reviewer still goes through `review-standards` and all of its gates.
 
-8. When the directive is absent, use the standard profile. Before any other state-changing bootstrap action, check for the Polylith skills installation record at `<codex-root>/.polylith-skills-installation.json`. When it exists:
+8. When the profile directive is absent, use the standard profile. After any topic-location instruction repair and before other state-changing bootstrap actions, check for the Polylith skills installation record at `<codex-root>/.polylith-skills-installation.json`. When it exists:
     - resolve the recorded governance checkout and inspect `git status --porcelain --untracked-files=all` without modifying it;
     - when the checkout is dirty, invoke its `scripts/install-polylith-skills.mjs repair` **without** `--apply` to validate the recorded checkout, remote, branch, upstream, and installed links. Do not apply the repair or pull. Report that governance synchronization was skipped and local unpublished rules and skills are being used. Continue reviewer startup when that plan succeeds, the installed `bootstrap`, `review-standards`, `agents`, and `documentation` links each have action `none` and the recorded target, and the managed Codex-root instructions block has action `none`. A plan's overall `healthy: false` from an unrelated pending skill-link change is not a reviewer eligibility failure; report that change separately. A dirty checkout alone is never a reviewer eligibility failure;
     - when the checkout is clean, invoke `scripts/install-polylith-skills.mjs update` first without `--apply` to inspect the exact plan and then with `--apply` to perform it. The installer retains its clean-tree requirement and uses only `git pull --ff-only` plus reconciliation of installer-owned links and files;
@@ -34,7 +42,7 @@ When configured `workflow_*` tools are available, use files.read, repository.sna
     When the installation record is absent, continue with the installed local authority and report that automatic governance synchronization is unavailable. An `instructions-only` profile does not run the update or any other review-infrastructure action; it may use read-only installation status to report that governance could be stale, then continues under the instructions already loaded.
 
 9. After the governance checkout has been validated and any eligible clean-checkout synchronization succeeds, check whether the global `review-standards` skill and its required reviewer definitions are installed. When they exist, read the skill and execute its `bootstrap` mode after repository instructions are loaded. This is part of bootstrap, not a recursive invocation of this skill. The review preflight may report that the repository is ineligible, but it must not weaken either gate or prevent the loaded repository instructions from governing subsequent work.
-10. If review infrastructure is missing or any startup eligibility gate fails, report bootstrap as instruction-loaded but review-blocked. A repository has satisfied the standards-normalization prerequisite permanently once a structurally valid `agents/topics/standards/normalization.json` records a completed normalization; later standards configuration changes do not make it stale. Name each failed prerequisite and give these exact recovery commands as applicable, in dependency order:
+10. If review infrastructure is missing or any startup eligibility gate fails, report bootstrap as instruction-loaded but review-blocked. A repository has satisfied the standards-normalization prerequisite permanently once a structurally valid `.agents/topics/standards/normalization.json` records a completed normalization; later standards configuration changes do not make it stale. Name each failed prerequisite and give these exact recovery commands as applicable, in dependency order:
     - missing reviewer infrastructure: `$review-standards setup reviewers`
     - repository has never normalized, or its marker is missing or structurally invalid: `$normalize-standards audit`, then manually review every divergence, then `$normalize-standards reconcile`
     - after all prerequisites pass: `$bootstrap`

@@ -13,6 +13,8 @@ Promote the repository's proven local rule into the global canonical standard un
 
 ## Resolve The Promotion Source
 
+Resolve the repository topics folder from root `AGENTS.md` through its standalone `Topics folder:` directive, defaulting to `.agents/topics`. Substitute that folder for the default topic and standards-metadata paths below.
+
 1. Resolve the repository and Codex roots. Read canonical `documentation.md`, the complete target standard, the repository manifest, and the repository overlay.
 2. Identify the repository-relative path or folder whose effective rule is being changed. Resolve its longest matching folder assignment, expanded standards set, and matching overlay entries with the shared folder-standards helper.
 3. For the requested standard and section, select the active local rule by normal precedence: matching `ADD` entries accumulate, and the longest matching folder `REPLACE` wins over broader replacements and repository scope.
@@ -42,7 +44,7 @@ Format and check each edited Markdown file with the repository-local Prettier co
 
 ## Complete The Promotion
 
-- After the canonical document fully expresses the promoted requirement, remove the source `ADD` or `REPLACE` entry from `agents/topics/standards/overlay.md` because it is now redundant. A new additive canonical rule does not make a source `REPLACE` redundant when removing it would reactivate a conflicting canonical requirement; retain that override until the conflict is explicitly resolved.
+- After the canonical document fully expresses the promoted requirement, remove the source `ADD` or `REPLACE` entry from `.agents/topics/standards/overlay.md` because it is now redundant. A new additive canonical rule does not make a source `REPLACE` redundant when removing it would reactivate a conflicting canonical requirement; retain that override until the conflict is explicitly resolved.
 - Preserve unrelated overlay entries exactly. If no entries remain, restore the canonical empty overlay form with `None.`.
 - Keep the local entry only when the engineer explicitly requests it or part of its behavior remains intentionally repository-specific; explain the remaining difference.
 - Do not refresh or recreate `normalization.json`.

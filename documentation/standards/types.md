@@ -5,7 +5,7 @@
 Status: canonical standard for JavaScript type contracts. This
 document owns ambient type usage, general type placement, class-related types,
 and interface types. See [JSDoc](jsdoc.md) for how runtime code refers to these
-contracts.
+contracts. These declaration-placement rules govern JavaScript/JSX implementations. Deliberately adopted TypeScript implementations use [TypeScript conventions](typescript.md) for source-owned types and interfaces.
 
 ## Ambient Types
 
