@@ -29,6 +29,22 @@ shared elements/components and visual foundations one owner; local work consumes
 their accepted outputs. Distinct record IDs do not prove disjoint meaning. Resolve
 semantic overlap and revise/validate affected ownership before dispatch.
 
+Check native feasibility as well as graph validity. In schema 0.4, scene overrides
+cannot change a part's children or identity or remove its behavior references.
+States with different control trees need separately owned parts, even when one
+workflow author owns all of them. Once UX is frozen, reconcile actual frames and
+affordances with planned UI parts/scenes and their assembly inputs before claiming
+UI work. Preserve unchanged UX acceptance when revising only UI ownership.
+Every planned interactive control also needs an accepted UX action and canonical
+frame affordance. A described shared navigation component alone does not provide
+those bindings. Resolve missing behavioral ownership in UX before freezing its
+review; do not disguise interactive UI as presentational nodes to avoid a gap.
+
+Choose source roots and native supporting-document paths before freezing review
+subjects. Native relative paths cannot traverse outside their root. Preserve
+shared research in its owning product folder and supply its exact paths/bindings
+in the parent handoff; do not invent run-local links to files that are elsewhere.
+
 ## Claim and deliver existing units
 
 The parent opens the existing UX/UI unit stores with exact input bindings. A ready
@@ -83,6 +99,12 @@ outside that boundary does not establish a parallel claim. Preserve durable copi
 in the app before retiring temporary evidence.
 
 ## Whole-UX phase boundary
+
+Native delivery can save valid siblings while reporting rejected units. Check
+delivery issues and every owned unit's saved identity before accepting an item;
+do not accept older persisted units when a proposed replacement was rejected.
+Retain partial-work notices for incomplete sibling references until whole-stage
+assembly. Delivery/materialization readiness never substitutes for review.
 
 Complete parallel UX contributions, assemble and validate the native UX, consolidate
 consequential decisions into the authoritative description, update/reconcile model

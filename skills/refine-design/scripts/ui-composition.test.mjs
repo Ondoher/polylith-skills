@@ -6,6 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {validateUiSpec, writeUiSpec} from './ui-composition.mjs';
+import {buildUiCompositionHtml} from './ui-composition-html.mjs';
 import {ROOT_BOUND_TARGETS} from './root-bound-artifact.mjs';
 import {createUxReviewSubject, UX_REVIEW_CRITERIA} from './ux-review.mjs';
 import {createUxTestSpec} from './ux-test-fixture.mjs';
@@ -898,6 +899,148 @@ test('validates one bounded behavioral choice group without duplicating its UX a
 		() => validateUiSpec(ui, {uxSpec: ux(), designLanguage: designLanguage()}),
 		/selectedId references a missing option/,
 	);
+});
+
+test('permits explicitly disabled native controls as presentational pending specimens only', () => {
+	for (const renderer of ['button', 'icon-button', 'text-field', 'choice-group']) {
+		for (const disabledByState of [true, false]) {
+			const ui = proposal();
+			const template = ui.templates[1];
+			template.kind = renderer;
+			template.status = 'accepted';
+			template.availability = 'available';
+			template.interaction = 'presentational';
+			template.html = {
+				renderer,
+				element: renderer.includes('button') ? 'button' : 'div',
+				className: `ui-${renderer}`,
+			};
+			template.supportedStates = ['default', 'focus', 'disabled'];
+			template.parameters = ['label', 'value', 'presentation', 'options', 'selectedId', 'disabled'].map((id) => ({
+				id,
+				required: false,
+			}));
+			template.sizing = {width: 'fill', height: 'content'};
+			const node = ui.parts[0].root.children[1];
+			node.state = disabledByState ? 'disabled' : 'default';
+			node.parameters = {label: 'Pending control', disabled: !disabledByState};
+			if (renderer === 'text-field') node.parameters.value = 'Current value';
+			if (renderer === 'choice-group') {
+				node.parameters.presentation = 'select';
+				node.parameters.options = [{id: 'current', label: 'Current item'}];
+				node.parameters.selectedId = 'current';
+			}
+			delete node.placeholder;
+			delete node.interactionNodeRef;
+			delete node.actionRef;
+			ui.parts[0].root.uxRegionRef = 'saving-details';
+			ui.scenes[0].interactionFrameRef = 'records-saving';
+			ui.scenes[0].stateRef = 'saving';
+			ui.scenes[0].depictsRefs = ['ux:frame:records-saving', 'ux:state:saving'];
+			ui.scenes[0].completeness = 'complete';
+			ui.scenes[0].unspecifiedRequirementRefs = [];
+			ui.unspecifiedRequirements = [];
+			const dependencies = {uxSpec: ux(), designLanguage: designLanguage()};
+			assert.doesNotThrow(() => validateUiSpec(ui, dependencies));
+			const {outputs} = buildUiCompositionHtml(ui, dependencies);
+			assert.match(outputs.get('comps/records-viewing.html'), /<(?:button|input|select)[^>]* disabled/);
+			for (const [parameter, value] of [
+				['interactionNodeRef', 'open-record-affordance'],
+				['actionRef', 'open-record'],
+				['alternateInteractionBindings', []],
+				['interactionInstanceRef', ui.parts[0].root.id],
+			]) {
+				const boundPresentation = structuredClone(ui);
+				boundPresentation.parts[0].root.children[1][parameter] = value;
+				assert.throws(
+					() => validateUiSpec(boundPresentation, dependencies),
+					/cannot bind behavior through presentational template/,
+				);
+			}
+			for (const disabled of ['true', 1, null]) {
+				const invalidFlag = structuredClone(ui);
+				invalidFlag.parts[0].root.children[1].parameters.disabled = disabled;
+				assert.throws(() => validateUiSpec(invalidFlag, dependencies), /parameters.disabled must be boolean/);
+			}
+			const enabledPresentation = structuredClone(ui);
+			Object.assign(enabledPresentation.parts[0].root.children[1], {
+				state: 'default',
+				parameters: {...node.parameters, disabled: false},
+			});
+			assert.throws(
+				() => validateUiSpec(enabledPresentation, dependencies),
+				/must be explicitly disabled through presentational control template/,
+			);
+			const reenabledScene = structuredClone(ui);
+			reenabledScene.scenes[0].changes = [
+				{nodeRef: node.id, set: {state: 'focus', parameters: {...node.parameters, disabled: false}}},
+			];
+			assert.throws(
+				() => validateUiSpec(reenabledScene, dependencies),
+				/must be explicitly disabled through presentational control template/,
+			);
+			const unboundBehavior = structuredClone(enabledPresentation);
+			unboundBehavior.templates[1].interaction = 'behavioral';
+			assert.throws(
+				() => validateUiSpec(unboundBehavior, dependencies),
+				/interactionNodeRef must be non-empty text/,
+			);
+			Object.assign(unboundBehavior.parts[0].root.children[1], {
+				interactionNodeRef: 'open-record-affordance',
+				actionRef: 'open-record',
+			});
+			assert.throws(
+				() => validateUiSpec(unboundBehavior, dependencies),
+				/references missing interaction node open-record-affordance in frame records-saving/,
+			);
+			const incompleteCoverage = structuredClone(ui);
+			incompleteCoverage.parts[0].root.uxRegionRef = 'viewing-collection';
+			Object.assign(incompleteCoverage.scenes[0], {
+				interactionFrameRef: 'records-viewing',
+				stateRef: 'viewing',
+				depictsRefs: ['ux:frame:records-viewing', 'ux:state:viewing'],
+			});
+			assert.throws(
+				() => validateUiSpec(incompleteCoverage, dependencies),
+				/must bind or explicitly defer UX affordance open-record-affordance/,
+			);
+		}
+	}
+});
+
+test('rejects malformed declared text-field parameters before replacing a persisted UI artifact', () => {
+	const taskRoot = fileURLToPath(
+		new URL('../../../.codex-tmp/parallel-design-execution/renderer-repair/ingress-tests/', import.meta.url),
+	);
+	fs.mkdirSync(taskRoot, {recursive: true});
+	const directory = fs.mkdtempSync(path.join(taskRoot, 'ui-ingress-'));
+	const paths = writeInputs(directory);
+	const output = uiOutput(directory);
+	write(paths, output);
+	const before = fs.readFileSync(output, 'utf8');
+	const ui = proposal();
+	Object.assign(ui.templates[1], {
+		kind: 'text-field',
+		status: 'accepted',
+		availability: 'available',
+		html: {renderer: 'text-field', element: 'div', className: 'ui-text-field'},
+		parameters: ['label', 'value', 'multiline', 'rows', 'error', 'disabled'].map((id) => ({id, required: false})),
+	});
+	const node = ui.parts[0].root.children[1];
+	delete node.placeholder;
+	for (const [parameter, invalid] of [
+		['multiline', 1],
+		['error', 'true'],
+		['rows', 0],
+		['rows', 1.5],
+		['rows', Number.MAX_SAFE_INTEGER + 1],
+		['disabled', 'false'],
+	]) {
+		node.parameters = {label: 'Title', value: 'Current value', [parameter]: invalid};
+		fs.writeFileSync(paths.input, JSON.stringify(ui));
+		assert.throws(() => write(paths, output), new RegExp(`parameters.${parameter} must be`));
+		assert.equal(fs.readFileSync(output, 'utf8'), before);
+	}
 });
 
 test('accepts ordered headings only for list choice groups', () => {

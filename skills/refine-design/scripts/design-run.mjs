@@ -10,7 +10,7 @@ import {buildUiCompositionHtml} from './ui-composition-html.mjs';
 import {buildDesignLanguageAssetOutputs} from './design-language-html.mjs';
 
 const VERSION = 'single-pass-design/1';
-const ASSEMBLY_VERSION = 'single-pass-assembly/3';
+const ASSEMBLY_VERSION = 'single-pass-assembly/4';
 
 /** Called by run persistence to identify exact bytes.
  * @param {string|Buffer} bytes - UTF-8 or binary material.

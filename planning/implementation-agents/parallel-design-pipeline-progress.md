@@ -12,7 +12,7 @@ acceptance or prove model quality.
 | M3: failure/change behavior      | Complete    | Focused scenarios, fresh Node-process lock recovery, exact review gates, invalidation and uncertain promotion handling                     |
 | M4: coordinated research/planner | Complete    | Sequential live researchers, source-checked reusable catalogue, saved validated plan and independently assessed concrete uncertainty cases |
 | M5: scoped integration           | In progress | Reviewed guarded stores/service assignments and exact native render/review validator; live qualitative acceptance pending                  |
-| M6: live comparison/recovery     | In progress | Same frozen source/research/foundation; serial and parallel UX authoring, shared-reference repairs retained; fresh recovery pending        |
+| M6: live comparison/recovery     | In progress | Both exact whole-UX reviews pass; fresh coordinator recovered original parallel claims without redispatch; actual UI review pending        |
 | M7: broader evaluation           | In progress | Seven deterministic sparse/dependent/update/change/research/reviewer cases pass; final live readiness assessment pending                   |
 
 ## Offline foundation
@@ -57,6 +57,20 @@ retry of the same fsynced pending file under the same writer lock. Independent
 review confirmed terminal errors leave prior state authoritative; the original
 failure evidence remains saved. The repository-wide formatting check passed. Live runs remain temporary
 synthetic experiments; no consuming-app information is committed here.
+
+Actual UX reviews found and closed shared navigation, retained-edit recovery and
+validation-state issues. Both exact whole-UX gates now pass. The fresh parallel
+coordinator loaded durable inputs and positive worker observations, retained
+accepted shared work and recovered the original concurrent local attempts with
+zero recovery redispatches. Later quality repairs and owner replacements remain
+separate measured work.
+
+Live UI authoring exposed multiline/error/focus and disabled-control capability
+gaps. The bounded native repair passed 75 focused integration tests covering UI
+validation, HTML, exact review freshness, assembly, native design and PRD output.
+The parent independently reviewed its implementation. Actual captures and fresh
+independent visual review remain pending. Host thread limits required a recorded
+UI-author reuse across trials; this limits comparative quality and timing claims.
 
 Complete live scoped authoring and exact independent reviews using the
 [research/planner handoff](../../skills/refine-design/references/parallel-research-handoff.md).

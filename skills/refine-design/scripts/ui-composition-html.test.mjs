@@ -1,18 +1,27 @@
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
+import {fileURLToPath} from 'node:url';
 
-import {publishUiCompositionHtml as publishUiCompositionHtmlRaw} from './ui-composition-html.mjs';
+import {
+	buildUiCompositionHtml,
+	publishUiCompositionHtml as publishUiCompositionHtmlRaw,
+} from './ui-composition-html.mjs';
 import {createUxTestSpec} from './ux-test-fixture.mjs';
 import {canonicalPublicationJson} from './product-publication-payload.mjs';
 
 const fixtureFile = new URL('../references/ui-composition-proposal.json', import.meta.url);
 const designFixtureFile = new URL('../references/extras-proposal.json', import.meta.url);
 const fixture = () => JSON.parse(fs.readFileSync(fixtureFile, 'utf8'));
-const folder = () => fs.mkdtempSync(path.join(os.tmpdir(), 'ui-composition-html-'));
+const folder = () => {
+	const taskRoot = fileURLToPath(
+		new URL('../../../.codex-tmp/parallel-design-execution/renderer-repair/tests/', import.meta.url),
+	);
+	fs.mkdirSync(taskRoot, {recursive: true});
+	return fs.mkdtempSync(path.join(taskRoot, 'ui-composition-html-'));
+};
 
 function publishUiCompositionHtml(uiFile, uxFile, designFile, output, options = {}) {
 	return publishUiCompositionHtmlRaw(uiFile, uxFile, designFile, output, {
@@ -66,7 +75,7 @@ test('publishes deterministic clean and annotated HTML from one scene tree', () 
 	const clean = before[1][1].toString();
 	const annotated = before[2][1].toString();
 
-	assert.equal(first.rendererVersion, 'ui-composition-html-2.0');
+	assert.equal(first.rendererVersion, 'ui-composition-html-3.0');
 	assert.equal(first.counts.scenes, 1);
 	assert.equal(first.counts.placeholders, 1);
 	assert.match(clean, /ui-page--clean/);
@@ -268,6 +277,151 @@ test('renders a bounded choice group with semantic tabs from one UX binding', ()
 	assert.equal((clean.match(/data-ui-node="record-list-instance"/g) ?? []).length, 1);
 });
 
+test('renders native single-line and multiline fields with independent focus, error and disabled states', () => {
+	for (const [state, parameters] of [
+		['default', {value: 'Example title'}],
+		['default', {value: '\nFirst line\n<second> & </textarea>', multiline: true, rows: 8}],
+		['focus', {value: 'Focused title'}],
+		['error', {value: ''}],
+		['focus', {value: '', error: true}],
+		['focus', {value: 'Disabled title', disabled: true, error: true}],
+		['disabled', {value: 'First\nSecond', multiline: true, rows: 2}],
+	]) {
+		const ui = fixture();
+		const template = ui.templates[1];
+		template.kind = 'text-field';
+		template.status = 'accepted';
+		template.availability = 'available';
+		template.html = {renderer: 'text-field', element: 'div', className: 'ui-text-field'};
+		template.supportedStates = ['default', 'focus', 'error', 'disabled'];
+		template.parameters = ['label', 'value', 'helperText', 'disabled', 'multiline', 'rows', 'error'].map((id) => ({
+			id,
+			required: ['label', 'value'].includes(id),
+		}));
+		template.sizing = {width: 'fill', height: 'content'};
+		const node = ui.parts[0].root.children[1];
+		node.state = state;
+		node.parameters = {label: 'Title', helperText: 'Shared field guidance', ...parameters};
+		node.styleRefs = [{kind: 'color-role', id: 'body-text'}];
+		delete node.placeholder;
+		ui.scenes[0].completeness = 'complete';
+		ui.scenes[0].unspecifiedRequirementRefs = [];
+		ui.unspecifiedRequirements = [];
+		const {outputs, report} = buildUiCompositionHtml(ui, {uxSpec: ux(), designLanguage: design()});
+		const clean = outputs.get('comps/records-viewing.html');
+		const css = outputs.get('assets/composition.css');
+		const fieldId = 'ui-field-record-list-instance';
+		assert.match(clean, new RegExp(`<label for="${fieldId}">Title</label>`));
+		assert.match(clean, new RegExp(`readonly[^>]*aria-describedby="${fieldId}-helper"`));
+		assert.equal((clean.match(new RegExp(`id="${fieldId}-helper"`, 'g')) ?? []).length, 1);
+		assert.equal(report.counts.unresolvedPlaceholders, 0);
+		assert.match(clean, /ui-color-role--body-text/);
+		if (parameters.multiline) {
+			assert.match(clean, new RegExp(`<textarea[^>]*rows="${parameters.rows}"`));
+			assert.doesNotMatch(sceneMarkup(clean), /<input/);
+			assert.ok(
+				clean.includes(
+					`>\n${parameters.value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')}</textarea>`,
+				),
+			);
+		} else {
+			assert.match(clean, new RegExp(`<input[^>]*value="${parameters.value}"`));
+			assert.doesNotMatch(sceneMarkup(clean), /<textarea/);
+		}
+		if (state === 'error' || parameters.error) {
+			assert.match(clean, /ui-field-error/);
+			assert.match(clean, /aria-invalid="true"/);
+		} else assert.doesNotMatch(clean, /aria-invalid|ui-field-error/);
+		if (state === 'disabled' || parameters.disabled) {
+			assert.match(clean, /ui-field-disabled/);
+			assert.match(clean, /readonly disabled/);
+		} else assert.doesNotMatch(sceneMarkup(clean), /ui-field-disabled|readonly disabled/);
+		assert.match(css, /\.ui-text-field textarea \{ padding-block: var\(--rd-space-2\); resize: none; \}/);
+		assert.match(
+			css,
+			/\.ui-text-field.ui-color-role--body-text.ui-is-focus:not\(\.ui-field-disabled\) label[^\n]*color: var\(--rd-color-body-text\)/,
+		);
+		assert.match(
+			css,
+			/\.ui-text-field.ui-field-error.ui-color-role--body-text:not\(\.ui-field-disabled\) label[^\n]*color: var\(--rd-color-failure\)/,
+		);
+		assert.match(
+			css,
+			/\.ui-text-field.ui-field-error:not\(\.ui-field-disabled\) textarea[^\n]*outline-color: var\(--rd-color-failure\)/,
+		);
+		assert.ok(css.indexOf('.ui-text-field.ui-field-error') > css.indexOf('.ui-text-field.ui-is-focus'));
+		if (state === 'default' && !parameters.multiline) {
+			for (const [parameter, invalid] of [
+				['multiline', 'true'],
+				['error', 1],
+				['rows', 0],
+				['rows', 1.5],
+			]) {
+				const invalidUi = structuredClone(ui);
+				invalidUi.parts[0].root.children[1].parameters[parameter] = invalid;
+				assert.throws(
+					() => buildUiCompositionHtml(invalidUi, {uxSpec: ux(), designLanguage: design()}),
+					new RegExp(`parameters.${parameter} must be`),
+				);
+			}
+		}
+	}
+});
+
+test('renders focused select while preserving the selected option identity', () => {
+	for (const disabled of [false, true]) {
+		const ui = fixture();
+		const template = ui.templates[1];
+		template.kind = 'choice-group';
+		template.status = 'accepted';
+		template.availability = 'available';
+		template.html = {renderer: 'choice-group', element: 'div', className: 'ui-choice-group'};
+		template.supportedStates = ['focus'];
+		template.parameters = ['label', 'presentation', 'options', 'selectedId', 'disabled'].map((id) => ({
+			id,
+			required: true,
+		}));
+		template.sizing = {width: 'fill', height: 'content'};
+		const node = ui.parts[0].root.children[1];
+		node.state = 'focus';
+		node.styleRefs = [{kind: 'color-role', id: 'body-text'}];
+		node.parameters = {
+			label: 'Draft',
+			presentation: 'select',
+			selectedId: 'draft-b',
+			disabled,
+			options: [
+				{id: 'draft-a', label: 'First draft'},
+				{id: 'draft-b', label: 'Second draft'},
+			],
+		};
+		delete node.placeholder;
+		ui.scenes[0].completeness = 'complete';
+		ui.scenes[0].unspecifiedRequirementRefs = [];
+		ui.unspecifiedRequirements = [];
+		const {outputs} = buildUiCompositionHtml(ui, {uxSpec: ux(), designLanguage: design()});
+		const clean = outputs.get('comps/records-viewing.html');
+		const css = outputs.get('assets/composition.css');
+		assert.match(clean, /ui-is-focus ui-color-role--body-text/);
+		assert.match(
+			clean,
+			new RegExp(`<option value="draft-b" selected${disabled ? ' disabled' : ''}>Second draft</option>`),
+		);
+		assert.match(clean, new RegExp(`<option value="draft-a"${disabled ? ' disabled' : ''}>First draft</option>`));
+		assert.equal((clean.match(/ selected/g) ?? []).length, 1);
+		assert.match(clean, new RegExp(`<select id="ui-choice-record-list-instance"${disabled ? ' disabled' : ''}>`));
+		assert.match(
+			css,
+			/\.ui-choice-group\[data-presentation="select"\].ui-is-focus select:not\(:disabled\)[^\n]*outline: 2px solid var\(--rd-color-primary-action\)/,
+		);
+		assert.match(
+			css,
+			/\.ui-choice-group.ui-color-role--body-text\[data-presentation="select"\].ui-is-focus[^\n]*color: var\(--rd-color-body-text\)/,
+		);
+		assert.match(css, /\.ui-choice-group\[data-presentation="select"\] select:disabled[^\n]*outline: none/);
+	}
+});
+
 test('renders ordered list choice headings without adding UX bindings', () => {
 	const base = folder();
 	const ui = fixture();
@@ -316,7 +470,7 @@ test('publishes a validated image viewport as one deterministic media asset', (t
 	const base = folder();
 	const ui = fixture();
 	const fileName = `.ui-composition-image-${process.pid}-${Date.now()}.png`;
-	const filePath = path.join(process.cwd(), fileName);
+	const filePath = path.join(path.dirname(base), fileName);
 	const png = Buffer.from(
 		'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
 		'base64',

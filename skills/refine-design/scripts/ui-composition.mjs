@@ -22,6 +22,7 @@ const nodeKinds = new Set(['region', 'component']);
 const trackUnits = new Set(['px', 'fr', 'content']);
 const sizeModes = new Set(['content', 'fill', 'fixed']);
 const styleKinds = new Set(['color-role', 'typography-role', 'icon']);
+const controlRenderers = new Set(['button', 'icon-button', 'text-field', 'choice-group']);
 const htmlRenderers = new Set([
 	'heading',
 	'text',
@@ -691,12 +692,6 @@ export function validateUiSpec(
 		if (!availabilityKinds.has(template.availability)) fail(`template ${template.id}.availability is unsupported`);
 		if (!['presentational', 'behavioral'].includes(template.interaction))
 			fail(`template ${template.id}.interaction is unsupported`);
-		if (
-			['button', 'icon-button', 'text-field', 'choice-group'].includes(template.html?.renderer) &&
-			template.interaction !== 'behavioral'
-		) {
-			fail(`template ${template.id}.interaction must be behavioral for ${template.html.renderer}`);
-		}
 		if (template.availability === 'placeholder' && template.status === 'accepted')
 			fail(`placeholder template ${template.id} cannot be accepted`);
 		htmlContract(template.html, template, `template ${template.id}.html`);
@@ -1060,6 +1055,28 @@ export function validateUiSpec(
 			if (!Object.hasOwn(node.parameters, required))
 				fail(`${label}.parameters is missing required parameter ${required}`);
 		}
+		if (controlRenderers.has(template.html.renderer)) {
+			if (node.parameters.disabled !== undefined)
+				boolean(node.parameters.disabled, `${label}.parameters.disabled`);
+			// Resolved disabled specimens preserve task context without inventing UX affordances.
+			if (
+				template.interaction === 'presentational' &&
+				node.state !== 'disabled' &&
+				node.parameters.disabled !== true
+			)
+				fail(`${label} must be explicitly disabled through presentational control template ${template.id}`);
+		}
+		if (template.html.renderer === 'text-field') {
+			for (const parameter of ['multiline', 'error']) {
+				if (node.parameters[parameter] !== undefined)
+					boolean(node.parameters[parameter], `${label}.parameters.${parameter}`);
+			}
+			if (
+				node.parameters.rows !== undefined &&
+				(!Number.isSafeInteger(node.parameters.rows) || node.parameters.rows < 1)
+			)
+				fail(`${label}.parameters.rows must be a positive integer`);
+		}
 		if (['button', 'icon-button'].includes(template.html.renderer)) {
 			for (const field of ['assetId', 'leadingAssetId', 'trailingAssetId']) {
 				if (node.parameters[field] === undefined) continue;
@@ -1127,8 +1144,6 @@ export function validateUiSpec(
 			) {
 				fail(`${label}.parameters.selectedId references a missing option`);
 			}
-			if (node.parameters.disabled !== undefined)
-				boolean(node.parameters.disabled, `${label}.parameters.disabled`);
 		}
 		if (template.html.renderer === 'image') {
 			reference(node.parameters.assetId, assets.ids, `${label}.parameters.assetId`);

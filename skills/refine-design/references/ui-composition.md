@@ -103,7 +103,7 @@ The response contains:
 - exact `uxArtifactBinding` (`id`, `revision`, SHA-256 of recursively key-sorted canonical UX JSON) and `designLanguageSource` bindings;
 - a top-level `uxChangeRequests` list;
 - dimension tokens with design-language or disclosed UI-default provenance;
-- versioned templates with `interaction` (`presentational` or `behavioral`), `html.renderer`, semantic `html.element`, namespaced `html.className`, supported states, parameters, sizing, and availability; standard button, icon-button, and text-field templates are behavioral;
+- versioned templates with `interaction` (`presentational` or `behavioral`), `html.renderer`, semantic `html.element`, namespaced `html.className`, supported states, parameters, sizing, and availability; enabled control templates are behavioral;
 - assets and design-role references;
 - scenes with a fixed viewport, one `interactionFrameRef`, UX surface/use-case/frame-region/component references, nested Grid/Flex regions, stable node IDs, exact `stateRef`, `depictsRefs`, constraints, content, placeholders, completeness, and `deferredInteractionNodeRefs`;
 - `interactionNodeRef` and `actionRef` on every behavioral component node;
@@ -116,6 +116,14 @@ Canonical schema 0.4 stores `parts: [{id, root}]` and scenes with `partRef` and 
 Schema 0.4 ingress is closed. Every contract-owned object rejects undeclared properties at the root and at nested levels so misspelled or future fields cannot be silently persisted. Only declared free-form JSON payloads, such as a template instance's `parameters` and authored `content`, remain open; parameter keys still must match that template's declared parameter contract.
 
 ## UX Traceability And Change Requests
+
+Visible unavailable controls may use presentational `button`, `icon-button`,
+`text-field` or `choice-group` templates only when each resolved instance is
+explicitly disabled through `state: "disabled"` or `parameters.disabled: true`.
+These nodes carry no action, affordance, alternate or interaction-instance
+bindings. Scene overrides cannot re-enable them. Use behavioral templates with
+exact accepted frame affordances for enabled controls; this exception does not
+create an action in a pending frame or waive affordance coverage.
 
 `scene.interactionFrameRef` references one accepted or locked UX interaction frame in the reviewer's passing scope; a surface scene's `stateRef` matches that frame's `stateRef`. `uxRegionRef` resolves against the referenced frame's regions. A component node using a behavioral template carries both `interactionNodeRef` and `actionRef`: the interaction-node reference names one affordance in that frame, and the action must equal the affordance's UX action. Presentational templates cannot carry behavior bindings. Bind every affordance to one owner (including declared inactive alternatives); repeated subject instances require the explicit distinct containing-region scopes described below. Unscoped affordances appear exactly once unless the scene is explicitly partial and lists that affordance ID in `deferredInteractionNodeRefs`. A complete scene has an empty deferral list. Do not use alternate input IDs as separate affordances, duplicate an action merely to fill layout, or bind decorative presentation to an action.
 
@@ -152,6 +160,25 @@ For a whole-product composition request, cover every sufficiently defined accept
 Every required comp must be built, even when its visual specification is incomplete or unclear. For a whole-product pass, every accepted UX surface is required; lack of visual detail does not exclude it from scope. Choose a coherent working visual state consistent with accepted UX, depict the controls and content that can be shown, and record each assumption or unanswered question in the accompanying interface documentation. A component already placed in an accepted wireframe may remain a visual placeholder in the UI when its supplied detail is insufficient for responsible component design. Preserve its geometry and known role, document the missing detail outside the canvas, and retain honest schema completeness and publication labels. This exception permits the surrounding UI stage to complete with documented component gaps; it neither asserts finished component design nor permits omitted scenes or placeholders for sufficiently specified controls. Do not put planning commentary, TODOs, uncertainty labels, placeholder descriptions, or review notes inside either a comp or wireframe canvas. Visible words belong there only when they are plausible end-user UI copy. If a sufficiently specified component cannot be rendered, extend the renderer or use a supported composition that faithfully conveys it; renderer absence alone does not qualify for the missing-detail exception. Do not invent unsupported behavior; route that question to UX and continue independent visual work.
 
 For `choice-group` list presentation, each ordered option may include an optional `group` label. The renderer emits a heading whenever that label changes without creating another UX binding. Group labels are invalid for tab and select presentation.
+
+The static `text-field` renderer accepts declared `label`, `value` and `helperText`
+parameters, with optional `multiline` (boolean), `rows` (positive integer) and
+`error` (boolean). Multiline values render as a read-only textarea with preserved
+line breaks. Helper text is associated with the field; error presentation carries
+`aria-invalid`. Use an accepted `focus` state with `error: true` to depict focused
+error feedback without inventing another state vocabulary. Focus and select focus
+remain visibly distinct from selection and disabled presentation. An explicit
+supported `body-text` color role may keep focused labels readable while retaining
+the primary border/ring; error treatment takes precedence. Verify actual text and
+nontext contrast against the frozen design language rather than assuming every
+primary color is suitable for ordinary text. These are rendered design states,
+not runtime form behavior or accessibility-conformance evidence. Per-option focus
+for list presentation remains outside this bounded parameter contract.
+
+Native HTML specimens use labels above controls. They do not assert MUI outlined
+geometry, notching or implementation fidelity. If MUI outlined controls are an
+assignment's actual target, retain the applicable MUI label/outline rules; an
+explicit body-text role in a native specimen does not waive those rules.
 
 ## Validate And Persist
 
