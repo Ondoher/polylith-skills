@@ -4,6 +4,13 @@ Use after the trusted facts packet is ready. Parsing and product authority remai
 unchanged. UX and UI schema 0.4 are the canonical persisted formats; assembly never
 reconstructs the old flow graph or saves expanded scene copies.
 
+This reference defines the serial default and the native unit/delivery contract
+also reused by explicit [bounded parallel design](parallel-design.md). In that mode,
+the saved validated plan defines ownership and readiness, and claim guards protect
+existing-store mutations. The forward pass and optional repair bound apply to each
+scoped author. Shared units retain one owner and whole assembled UX passes its
+exact independent review before dependent UI; do not infer per-flow overlap.
+
 When configured, use the shared MCP protocol in `documentation/workflows/mcp.md`
 under the governance checkout. The parent opens each store with `units.open` and
 assigns input handles, stage and record references through `workflow_assign`.
@@ -52,7 +59,7 @@ bootstrap and recovery when MCP is unavailable.
 7. Publication and technical preparation consume the same canonical meaning and
    stable references; they do not ask UX/UI to re-author the product.
 
-There is one UX author and one UI author. Foundation work can overlap UX today;
+In serial mode there is one UX author and one UI author. Foundation work can overlap UX;
 scene authoring waits for the exact UX review binding. A transport manifest is not
 a review receipt. Independent scene rendering can run in parallel after inputs
 are fixed, without starting more design agents.

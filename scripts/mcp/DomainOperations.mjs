@@ -163,6 +163,17 @@ export class DomainOperations {
 		return context.files.resolve(path.join(context.run.directory, 'units', input.stage));
 	}
 
+	/** Called after lazy imports to retain the parent guard across a synchronous store mutation.
+	 * @param {WorkflowOperationContext} context - Exact current assignment.
+	 * @param {WorkflowAssignmentAction} action - Synchronous units operation.
+	 * @returns {unknown} - Existing store receipt.
+	 */
+	_withAssignment(context, action) {
+		if (context.scope.assignmentGuardRequired === true && typeof context.withAssignment !== 'function')
+			throw new Error('Guarded operation requires its parent context');
+		return context.withAssignment ? context.withAssignment(action) : action();
+	}
+
 	/** Called by review delivery to enforce the parent's exact assigned subject.
 	 * @param {WorkflowUxReviewSubject} subject - Supplied review binding.
 	 * @param {WorkflowOperationContext} context - Parent or bounded reviewer capability.
@@ -429,12 +440,16 @@ export class DomainOperations {
 			true,
 			true,
 			async (input, context) => {
+				let wireframes;
 				if (input.stage === 'ui') {
 					const {WireframeOperations} = await this._module('scripts/mcp/WireframeOperations.mjs');
-					WireframeOperations.requireUiAcceptance(context);
+					wireframes = WireframeOperations;
 				}
 				const {DesignRun} = await this._module('skills/refine-design/scripts/design-run.mjs');
-				return DesignRun.deliver(this._store(input, context), input.records, input.repairs ?? {});
+				return this._withAssignment(context, () => {
+					wireframes?.requireUiAcceptance(context);
+					return DesignRun.deliver(this._store(input, context), input.records, input.repairs ?? {});
+				});
 			},
 		);
 		this._add(
@@ -448,7 +463,9 @@ export class DomainOperations {
 				const {DesignContributions} = await this._module(
 					'skills/refine-design/scripts/design-contributions.mjs',
 				);
-				return DesignContributions.status(this._store(input, context), input.references);
+				return this._withAssignment(context, () =>
+					DesignContributions.status(this._store(input, context), input.references),
+				);
 			},
 		);
 		this._add(
@@ -493,7 +510,9 @@ export class DomainOperations {
 					'skills/refine-design/scripts/design-contributions.mjs',
 				);
 				const references = input.changes.map((change) => change.unit);
-				return DesignContributions.contribute(this._store({stage: input.stage, references}, context), input);
+				return this._withAssignment(context, () =>
+					DesignContributions.contribute(this._store({stage: input.stage, references}, context), input),
+				);
 			},
 		);
 		this._add(
@@ -507,7 +526,9 @@ export class DomainOperations {
 				const {DesignContributions} = await this._module(
 					'skills/refine-design/scripts/design-contributions.mjs',
 				);
-				return DesignContributions.finish(this._store(input, context), input.references);
+				return this._withAssignment(context, () =>
+					DesignContributions.finish(this._store(input, context), input.references),
+				);
 			},
 		);
 		this._add(
@@ -519,7 +540,9 @@ export class DomainOperations {
 			false,
 			async (input, context) => {
 				const {DesignRecords} = await this._module('skills/refine-design/scripts/design-records.mjs');
-				return DesignRecords.read(this._store(input, context), input.references);
+				return this._withAssignment(context, () =>
+					DesignRecords.read(this._store(input, context), input.references),
+				);
 			},
 		);
 		this._add(

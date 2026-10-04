@@ -776,3 +776,135 @@ test('unowned outputs and placeholder identities cannot become accepted contribu
 	assert.deepEqual(coordinator.open().accepted, {});
 	assert.equal(coordinator.open().revision, state.revision);
 });
+
+test('temporary Windows atomic replacement contention retries one complete state under its writer lock', async (scenario) => {
+	const {directory, plan} = scenarioInputs(scenario);
+	const coordinator = new DesignCoordinator(directory);
+	coordinator.initialize({plan, bindings: plan.sources});
+	let state = coordinator.claim({itemId: 'shared-ux', agentId: 'author', expectedRevision: 1});
+	const attemptId = state.attempts['shared-ux'].id;
+	state = coordinator.deliver({
+		itemId: 'shared-ux',
+		attemptId,
+		agentId: 'author',
+		outputs: [{ref: 'ux:element:shared', digest: artifactDigest('saved shared contribution')}],
+		resultRef: 'results/shared.json',
+		expectedRevision: state.revision,
+	});
+	const originalPlatform = Object.getOwnPropertyDescriptor(process, 'platform');
+	Object.defineProperty(process, 'platform', {...originalPlatform, value: 'win32'});
+	scenario.after(() => Object.defineProperty(process, 'platform', originalPlatform));
+	const originalRename = fs.renameSync;
+	let attempts = 0;
+	let pendingPath;
+	let pendingBytes;
+	let lockToken;
+	const renameMock = scenario.mock.method(fs, 'renameSync', (source, destination) => {
+		if (destination !== path.join(directory, 'state.json')) return originalRename(source, destination);
+		attempts++;
+		const bytes = fs.readFileSync(source, 'utf8');
+		const observedLock = coordinator.lockInfo();
+		if (attempts === 1) {
+			pendingPath = source;
+			pendingBytes = bytes;
+			lockToken = observedLock.token;
+		}
+		assert.equal(source, pendingPath);
+		assert.equal(bytes, pendingBytes);
+		assert.equal(observedLock.token, lockToken);
+		assert.equal(coordinator.open().revision, state.revision);
+		if (attempts <= 3)
+			throw Object.assign(new Error('Synthetic transient Windows sharing conflict'), {
+				code: ['EPERM', 'EACCES', 'EBUSY'][attempts - 1],
+			});
+		return originalRename(source, destination);
+	});
+	state = await coordinator.accept(
+		{itemId: 'shared-ux', attemptId, expectedRevision: state.revision},
+		({attempt}) => ({outputs: attempt.delivery.outputs}),
+	);
+	renameMock.mock.restore();
+	assert.equal(attempts, 4);
+	assert.equal(state.history.filter((entry) => entry.event === 'accepted').length, 1);
+	assert.equal(coordinator.open().attempts['shared-ux'].status, 'accepted');
+	assert.equal(coordinator.lockInfo(), null);
+	assert.equal(fs.existsSync(pendingPath), false);
+});
+
+test('terminal Windows atomic replacement contention preserves previous state and unaccepted pending evidence', async (scenario) => {
+	const {directory, plan} = scenarioInputs(scenario);
+	const coordinator = new DesignCoordinator(directory);
+	coordinator.initialize({plan, bindings: plan.sources});
+	let state = coordinator.claim({itemId: 'shared-ux', agentId: 'author', expectedRevision: 1});
+	const attemptId = state.attempts['shared-ux'].id;
+	state = coordinator.deliver({
+		itemId: 'shared-ux',
+		attemptId,
+		agentId: 'author',
+		outputs: [{ref: 'ux:element:shared', digest: artifactDigest('saved shared contribution')}],
+		resultRef: 'results/shared.json',
+		expectedRevision: state.revision,
+	});
+	const previous = fs.readFileSync(path.join(directory, 'state.json'), 'utf8');
+	const originalPlatform = Object.getOwnPropertyDescriptor(process, 'platform');
+	Object.defineProperty(process, 'platform', {...originalPlatform, value: 'win32'});
+	scenario.after(() => Object.defineProperty(process, 'platform', originalPlatform));
+	let attempts = 0;
+	let pendingPath;
+	const sharingError = Object.assign(new Error('Synthetic continuing Windows sharing conflict'), {code: 'EPERM'});
+	const renameMock = scenario.mock.method(fs, 'renameSync', (source) => {
+		attempts++;
+		pendingPath ??= source;
+		assert.equal(source, pendingPath);
+		assert.ok(coordinator.lockInfo());
+		throw sharingError;
+	});
+	await assert.rejects(
+		coordinator.accept({itemId: 'shared-ux', attemptId, expectedRevision: state.revision}, ({attempt}) => ({
+			outputs: attempt.delivery.outputs,
+		})),
+		(error) => error === sharingError,
+	);
+	renameMock.mock.restore();
+	assert.equal(attempts, 20);
+	assert.equal(fs.readFileSync(path.join(directory, 'state.json'), 'utf8'), previous);
+	assert.equal(new DesignCoordinator(directory).open().attempts['shared-ux'].status, 'delivered');
+	assert.deepEqual(coordinator.open().accepted, {});
+	assert.equal(coordinator.lockInfo(), null);
+	assert.ok(fs.existsSync(pendingPath));
+	assert.equal(JSON.parse(fs.readFileSync(pendingPath, 'utf8')).payload.attempts['shared-ux'].status, 'accepted');
+	state = await coordinator.accept(
+		{itemId: 'shared-ux', attemptId, expectedRevision: state.revision},
+		({attempt}) => ({outputs: attempt.delivery.outputs}),
+	);
+	assert.equal(state.history.filter((entry) => entry.event === 'accepted').length, 1);
+	assert.equal(coordinator.open().attempts['shared-ux'].status, 'accepted');
+});
+
+test('POSIX access failures and unrelated Windows rename failures propagate without retries', (scenario) => {
+	const {directory, plan} = scenarioInputs(scenario);
+	const coordinator = new DesignCoordinator(directory);
+	coordinator.initialize({plan, bindings: plan.sources});
+	const originalPlatform = Object.getOwnPropertyDescriptor(process, 'platform');
+	scenario.after(() => Object.defineProperty(process, 'platform', originalPlatform));
+	for (const [platform, code] of [
+		['linux', 'EPERM'],
+		['win32', 'ENOENT'],
+	]) {
+		Object.defineProperty(process, 'platform', {...originalPlatform, value: platform});
+		let attempts = 0;
+		const failure = Object.assign(new Error('Synthetic nonretryable rename failure'), {code});
+		const renameMock = scenario.mock.method(fs, 'renameSync', () => {
+			attempts++;
+			throw failure;
+		});
+		assert.throws(
+			() => coordinator.claim({itemId: 'shared-ux', agentId: 'author', expectedRevision: 1}),
+			(error) => error === failure,
+		);
+		renameMock.mock.restore();
+		assert.equal(attempts, 1);
+		assert.equal(coordinator.open().revision, 1);
+		assert.equal(coordinator.lockInfo(), null);
+	}
+});

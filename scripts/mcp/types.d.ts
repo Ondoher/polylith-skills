@@ -147,6 +147,24 @@ interface WorkflowAssignmentReceipt extends WorkflowAccessRequest {
 	outputDirectory: string | null;
 }
 
+/** Synchronous storage action whose caller retains its current parent guard. */
+type WorkflowAssignmentAction = () => unknown;
+
+/** Parent-only volatile guard; callbacks never cross the worker transport. */
+type WorkflowAssignmentGuard = (action: WorkflowAssignmentAction) => unknown;
+
+/** Exact parent-authorized assignment revocation. */
+interface WorkflowAssignmentRevocation extends WorkflowAccessRequest {
+	/** Secret worker capability, kept only in parent process memory. */
+	assignmentAccess: string;
+}
+
+/** Synchronous binding before a marked token is delivered to a worker. */
+interface WorkflowAssignmentGuardRequest extends WorkflowAssignmentRevocation {
+	/** Parent-owned durable-claim guard. */
+	guard: WorkflowAssignmentGuard;
+}
+
 /** Store exactly one direct JSON value or existing JSON file. */
 interface WorkflowStoreRequest extends WorkflowAccessRequest {
 	/** Direct result, mutually exclusive with file. */
@@ -241,6 +259,8 @@ interface WorkflowOperationContext {
 	outputDirectory: string | null;
 	/** Authorizes a caller-selected input path. */
 	inputPath: (location: string) => string;
+	/** Reauthorize after async waits and retain exact durable claim during synchronous mutation. */
+	withAssignment?: WorkflowAssignmentGuard;
 }
 
 /** Curated domain operation. */

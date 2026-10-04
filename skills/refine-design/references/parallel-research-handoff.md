@@ -5,6 +5,10 @@ checklist. One product/UX researcher then assesses interaction questions; one UI
 researcher consumes that handoff and assesses remaining presentation questions.
 The parent proposes and validates the operational plan after these deliveries
 are saved. Author workers start only after the plan is persisted.
+Use this handoff for explicit [bounded parallel design](parallel-design.md);
+the serial authoring route remains supported and is the normal default pending
+readiness evidence. All research findings and durable execution data belong to
+the consuming app.
 
 ## Assess and assign questions
 
@@ -19,8 +23,10 @@ Give each outstanding question one owner. Operational research work owns referen
 such as `research:question:record-picker`; the Markdown catalogue remains the
 research authority and no second research-content schema is introduced.
 
-Research items use the ordinary plan claims and attempt records. At the initial
-handoff, finish product/UX research before dispatching UI research. UI receives
+Track initial question assignments with catalogue IDs and saved assignment/result
+locators. Research work represented in a persisted operational plan uses ordinary
+claims and attempt records. At the initial handoff, finish product/UX research
+before dispatching UI research. UI receives
 the saved UX findings and remaining gaps, and may reuse UX evidence. Give downstream
 authors only the relevant question IDs, findings, source-check receipts and gaps.
 
@@ -30,7 +36,9 @@ validated plan revision, or enqueue one bounded follow-up. Do not launch another
 researcher because a different worker encountered the same question.
 
 Save useful partial/negative findings and pending verification before releasing
-the researcher. A saved file is not completed coverage; an unverified material
+the researcher. End the bounded assignment after the saved handoff; retain durable
+references instead of an idle researcher thread. A later material gap gets a new
+bounded assignment through the parent queue. A saved file is not completed coverage; an unverified material
 claim cannot close a design gate. Unknown product policy goes to its owner, and
 unknown technical feasibility goes to the relevant technical assessment.
 

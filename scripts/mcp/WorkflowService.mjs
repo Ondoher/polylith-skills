@@ -11,7 +11,9 @@ import {
 } from './consts.mjs';
 import {InputContract} from './InputContract.mjs';
 
-/** Resident workflow state, scoped capabilities, exact results and operation ownership. */
+/** Resident workflow state, scoped capabilities, exact results and operation ownership.
+ * @implements {DesignWorkflowService}
+ */
 export class WorkflowService {
 	/** Creates one workspace service; the owner capability must stay with the parent.
 	 * @param {WorkflowServiceOptions} options - Workspace, state directory and operation registry.
@@ -37,6 +39,7 @@ export class WorkflowService {
 		this.instance = randomUUID();
 		this.ownerAccess = randomBytes(32).toString('hex');
 		this._capabilities = new Map([[this.ownerAccess, {owner: true}]]);
+		this._assignmentGuards = new Map();
 		this._runs = new Map();
 		this._results = new Map();
 		this._jobs = new Map();
@@ -172,6 +175,56 @@ export class WorkflowService {
 		return {access: token, run, operations: capability.operations, outputDirectory: capability.outputDirectory};
 	}
 
+	/** Call this method from the parent before handing a guarded capability to a worker.
+	 * @param {WorkflowAssignmentGuardRequest} request - Owner, exact assignment and synchronous guard.
+	 * @returns {void}
+	 */
+	bindAssignmentGuard({access, run, assignmentAccess, guard}) {
+		this._authorize(access, run, true);
+		const assignment = this._authorize(assignmentAccess, run);
+		if (
+			assignment.owner ||
+			assignment.scope?.assignmentGuardRequired !== true ||
+			typeof guard !== 'function' ||
+			guard.constructor.name === 'AsyncFunction'
+		)
+			throw new Error('A marked assignment and parent guard are required');
+		if (this._assignmentGuards.has(assignmentAccess)) throw new Error('Assignment guard already bound');
+		this._assignmentGuards.set(assignmentAccess, guard);
+	}
+
+	/** Call this method from the parent to invalidate a capability, including queued operations.
+	 * @param {WorkflowAssignmentRevocation} request - Owner and exact assignment.
+	 * @returns {void}
+	 */
+	revokeAssignment({access, run, assignmentAccess}) {
+		this._authorize(access, run, true);
+		const assignment = this._capabilities.get(assignmentAccess);
+		if (assignment?.owner || (assignment && assignment.run !== run))
+			throw new Error('Only an assignment in this run can be revoked');
+		this._assignmentGuards.delete(assignmentAccess);
+		this._capabilities.delete(assignmentAccess);
+	}
+
+	/** Called after asynchronous waits to run a synchronous mutation under its current claim.
+	 * @param {string} access - Exact volatile capability.
+	 * @param {string} run - Exact run.
+	 * @param {WorkflowAssignmentAction} action - Synchronous storage operation.
+	 * @returns {unknown} - Storage result.
+	 */
+	_withAssignment(access, run, action) {
+		const capability = this._authorize(access, run);
+		this._run(run);
+		if (!capability.owner && capability.scope?.assignmentGuardRequired === true) {
+			const guard = this._assignmentGuards.get(access);
+			if (!guard) throw new Error('Assignment guard is not bound');
+			const result = guard(action);
+			if (result && typeof result.then === 'function') throw new Error('Assignment guards must be synchronous');
+			return result;
+		}
+		return action();
+	}
+
 	/** Call this method to store an assigned proposal or existing file once.
 	 * @param {WorkflowStoreRequest} request - Run, capability and exactly one data source.
 	 * @returns {WorkflowResultReceipt} - Saved result; canonical files are never written.
@@ -182,7 +235,9 @@ export class WorkflowService {
 			throw new Error('Result submission is not assigned');
 		if ((value === undefined) === (file === undefined)) throw new Error('Supply value or file, exclusively');
 		const data = file === undefined ? value : this.files.json(this._inputPath(capability, file));
-		const receipt = this._saveResult(this._run(runId), data);
+		const receipt = /** @type {WorkflowResultReceipt} */ (
+			this._withAssignment(access, runId, () => this._saveResult(this._run(runId), data))
+		);
 		if (!capability.owner) capability.handles.add(receipt.handle);
 		return receipt;
 	}
@@ -296,6 +351,7 @@ export class WorkflowService {
 				const started = performance.now();
 				job.status = 'running';
 				try {
+					this._withAssignment(access, runId, () => undefined);
 					const context = {
 						run,
 						files: this.files,
@@ -304,8 +360,10 @@ export class WorkflowService {
 						readPaths: capability.readPaths ?? [],
 						outputDirectory: capability.outputDirectory ?? null,
 						inputPath: (location) => this._inputPath(capability, location),
+						withAssignment: (action) => this._withAssignment(access, runId, action),
 					};
 					const value = await definition.execute(values, context);
+					this._withAssignment(access, runId, () => undefined);
 					const receipt = this._saveResult(run, value ?? null);
 					if (
 						definition.inlineResult &&

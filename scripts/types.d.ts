@@ -322,6 +322,167 @@ type DesignCoordinatorClaim = DesignCoordinatorRevision & {
 	/** Actual assigned worker identity. */
 	agentId: string;
 };
+
+/** Exact worker claim for a synchronous existing-store action. */
+type DesignCoordinatorClaimGuard = {
+	/** Durable owned item identity. */
+	itemId: string;
+	/** Exact current attempt identity. */
+	attemptId: string;
+	/** Parent-observed worker identity. */
+	agentId: string;
+};
+
+/** Synchronous parent action performed while coordinator writer lock is held. */
+type DesignCoordinatorClaimAction = (context: DesignCoordinatorValidationRequest) => unknown;
+
+/** Parent-only workflow adapter configuration; never persisted. */
+type DesignWorkflowOptions = {
+	/** Resident scoped assignment service. */
+	service: DesignWorkflowService;
+	/** App-owned durable operational coordinator. */
+	coordinator: DesignWorkflowCoordinator;
+	/** Already opened workflow run identity. */
+	run: string;
+	/** Observes exact current file/unit identities synchronously, in the assigned input order. */
+	resolveInputs: (context: DesignCoordinatorValidationRequest) => DesignPlanBinding[];
+};
+
+/** Parent capability issuer consumed by the durable-claim adapter. */
+interface DesignWorkflowService {
+	/** Secret owner capability retained in parent memory. */
+	readonly ownerAccess: string;
+	/** Mints a bounded volatile assignment. */
+	assign(request: WorkflowAssignmentRequest): WorkflowAssignmentReceipt;
+	/** Binds synchronous claim authority before worker handoff. */
+	bindAssignmentGuard(request: WorkflowAssignmentGuardRequest): void;
+	/** Invalidates a volatile worker token and its queued operations. */
+	revokeAssignment(request: WorkflowAssignmentRevocation): void;
+}
+
+/** Exact durable-claim authority consumed by the parent adapter. */
+interface DesignWorkflowCoordinator {
+	/** Reads verified persisted plan and attempt state. */
+	open(): DesignCoordinatorState;
+	/** Holds the coordinator lock across one synchronous existing-store action. */
+	withClaim(request: DesignCoordinatorClaimGuard, action: DesignCoordinatorClaimAction): unknown;
+}
+
+/** Volatile parent request to revoke an adapter-issued assignment. */
+type DesignWorkflowRevocation = {
+	/** Secret worker token, never persisted. */
+	access: string;
+};
+
+/** Parent-created bounded author or reviewer capability request. */
+type DesignWorkflowAssignment = DesignCoordinatorClaimGuard & {
+	/** Already saved workflow input handles. */
+	handles?: string[];
+	/** Exact input file grants. */
+	readPaths?: string[];
+	/** Assigned proposal directory; canonical persistence remains parent-owned. */
+	outputDirectory?: string | null;
+	/** Existing exact subject for an independent UX reviewer. */
+	reviewSubject?: WorkflowUxReviewSubject;
+	/** Parent-bound exact wireframe element IDs for UI units. */
+	wireframeElementIds?: string[];
+};
+
+/** Reconciled surviving attempt with positive parent liveness evidence. */
+type DesignWorkflowRefresh = DesignWorkflowAssignment & {
+	/** Current exact live observation; unknown does not renew authority. */
+	observation: DesignCoordinatorObservation;
+};
+
+/** Synthetic native-store fixture configuration. */
+type DesignWorkflowTestOptions = {
+	/** Maintained operation catalog, optionally with a controlled wait barrier. */
+	operations?: Record<string, WorkflowOperation>;
+};
+
+/** Workflow service capabilities exercised by native integration scenarios. */
+interface DesignWorkflowTestService extends DesignWorkflowService {
+	/** Opens a run with immutable source paths. */
+	open(request: WorkflowOpenRequest): WorkflowRunReceipt;
+	/** Executes synchronous or queued domain operations. */
+	execute(request: WorkflowExecuteRequest): Promise<WorkflowResultReceipt>;
+	/** Saves an assigned proposal without canonical authority. */
+	store(request: WorkflowStoreRequest): WorkflowResultReceipt;
+	/** Settles accepted operations before cleanup. */
+	drain(): Promise<void>;
+}
+
+/** Durable coordinator operations used by native workflow scenarios. */
+interface DesignWorkflowTestCoordinator extends DesignWorkflowCoordinator {
+	/** Revises operational ownership while retaining current accepted native outputs. */
+	revise(request: DesignCoordinatorRevisionRequest): DesignCoordinatorState;
+	/** Saves dispatch intent before issuing an assignment. */
+	claim(request: DesignCoordinatorClaim): DesignCoordinatorState;
+	/** Records observed delivery independently from acceptance. */
+	deliver(request: DesignCoordinatorDelivery): DesignCoordinatorState;
+	/** Accepts exact saved native outputs through a parent validator. */
+	accept(request: DesignCoordinatorAcceptance, validate: DesignCoordinatorValidator): Promise<DesignCoordinatorState>;
+	/** Reconciles saved attempts with current parent observations. */
+	reconcile(request: DesignCoordinatorReconciliation): DesignCoordinatorState;
+	/** Records positive worker failure before replacement. */
+	fail(request: DesignCoordinatorFailure): DesignCoordinatorState;
+	/** Inspects the current exclusive writer lock. */
+	lockInfo(): DesignCoordinatorLock | null;
+}
+
+/** Parent adapter authority for exact scoped workers and retained file delivery. */
+interface DesignWorkflowAdapter {
+	/** Issues a guarded exact saved assignment. */
+	assign(request: DesignWorkflowAssignment): WorkflowAssignmentReceipt;
+	/** Renews authority after exact positive reconciliation. */
+	refresh(request: DesignWorkflowRefresh): WorkflowAssignmentReceipt;
+	/** Invalidates an owned worker capability. */
+	revoke(request: DesignWorkflowRevocation): void;
+	/** Holds the exact claim across a synchronous native operation. */
+	withClaim(request: DesignCoordinatorClaimGuard, action: DesignCoordinatorClaimAction): unknown;
+}
+
+/** Isolated synthetic two-flow native-store integration fixture. */
+type DesignWorkflowTestFixture = {
+	/** Exact owned temporary workspace. */
+	directory: string;
+	/** Real scoped service with maintained operations. */
+	service: DesignWorkflowTestService;
+	/** Stable run locations and identity. */
+	run: WorkflowRunReceipt;
+	/** Existing UX native units directory. */
+	store: string;
+	/** Persisted synthetic operational state. */
+	coordinator: DesignWorkflowTestCoordinator;
+	/** Parent-only exact assignment adapter. */
+	adapter: DesignWorkflowAdapter;
+	/** Synthetic shared, alpha and beta native references. */
+	refs: Record<string, string>;
+	/** Saves an exact test worker claim. */
+	claim: (itemId: string) => DesignCoordinatorClaimGuard;
+	/** Observes actual current source and native unit identities. */
+	resolveInputs: (context: DesignCoordinatorValidationRequest) => DesignPlanBinding[];
+	/** Synthetic human-owned description path. */
+	sourcePath: string;
+};
+
+/** Exact-subject deterministic reviewer branch fixture; no live quality claim. */
+type DesignWorkflowReviewTestFixture = DesignWorkflowTestFixture & {
+	/** Exact saved source-bound UX path. */
+	uxPath: string;
+	/** Existing immutable review subject. */
+	subject: WorkflowUxReviewSubject;
+	/** Current independent reviewer claim. */
+	claimRequest: DesignCoordinatorClaimGuard;
+	/** Adapter-issued reviewer capability. */
+	assignment: WorkflowAssignmentReceipt;
+	/** Actual saved assembled review receipt. */
+	receipt: WorkflowResultReceipt;
+	/** Existing-schema deterministic receipt decoded from saved bytes. */
+	review: Record<string, WorkflowJson>;
+	/** Actual exact file options used by the maintained validator. */
+	reviewOptions: WorkflowUxReviewValidation;
+};
 /** Exact current attempt, excluding late results from replaced workers. */
 type DesignCoordinatorAcceptance = DesignCoordinatorRevision & {
 	/** Work item receiving its current result. */
@@ -488,3 +649,219 @@ interface DesignCoordinatorTestContext {
 	/** Call this method to register owned scratch cleanup after the scenario. */
 	after(cleanup: () => void): void;
 }
+
+/** Parent-owned native visual-review inputs; each file is reobserved read-only. */
+type DesignUiReviewInputs = {
+	/** Absolute owning run root for authoritative source and rendered evidence. */
+	sourceRoot: string;
+	/** Authoritative human description, absolute or relative to sourceRoot. */
+	productDescriptionPath: string;
+	/** Frozen canonical UX file. */
+	uxPath: string;
+	/** Existing passing exact whole-UX receipt. */
+	uxReviewPath: string;
+	/** Saved canonical design-language file. */
+	designLanguagePath: string;
+	/** Saved canonical composition schema 0.4 file. */
+	uiPath: string;
+	/** Parent-frozen render and actual screenshot manifest. */
+	renderEvidencePath: string;
+	/** All parent-observed authors; none may review this output. */
+	authorAgentIds: string[];
+	/** Exact independent in-session reviewer identity assigned by the parent. */
+	reviewerAgentId: string;
+	/** Required canonical scene IDs; defaults to all scenes. */
+	requiredSceneRefs?: string[];
+	/** Required actual screenshot IDs; defaults to the entire manifest. */
+	requiredScreenshotRefs?: string[];
+	/** Optional reusable research/evidence files, relative to supportingRoot. */
+	supportingPaths?: string[];
+	/** Explicit trusted absolute product-owned supporting root; defaults to sourceRoot. */
+	supportingRoot?: string;
+	/** Confined renderer output directory; defaults to the directory containing uiPath. */
+	renderBasePath?: string;
+	/** True selects the existing prepared-wireframe route; native helper rejects it. */
+	wireframePrepared?: boolean;
+	/** Presence selects the existing wireframe route; never waived by this helper. */
+	preparedWireframeRunPath?: string;
+};
+
+/** Parent-frozen manifest row for one actual screenshot. */
+type DesignUiReviewScreenshotEvidence = {
+	/** Unique stable screenshot reference assigned before review. */
+	ref: string;
+	/** Existing canonical UI scene identity. */
+	sceneRef: string;
+	/** Actual PNG/JPEG/WebP file relative to sourceRoot. */
+	path: string;
+};
+
+/** Actual HTML render with its matching capture references. */
+type DesignUiReviewRenderEvidence = {
+	/** Canonical scene rendered by this declared request. */
+	sceneRef: string;
+	/** Rendered HTML file relative to sourceRoot. */
+	path: string;
+	/** Actual captures of this rendered scene. */
+	screenshotRefs: string[];
+};
+
+/** Operational render manifest; hashes bind exact saved file bytes. */
+type DesignUiReviewEvidence = {
+	/** SHA256 of exact canonical UI file bytes, not normalized JSON. */
+	uiSha256: string;
+	/** SHA256 of exact frozen UX file bytes. */
+	uxSha256: string;
+	/** SHA256 of exact saved design-language file bytes. */
+	designLanguageSha256: string;
+	/** Every required-scene declared render, including variants. */
+	renders: DesignUiReviewRenderEvidence[];
+	/** Actual saved screenshot files and scene associations. */
+	screenshots: DesignUiReviewScreenshotEvidence[];
+};
+
+/** Stable read-only file observation under its declared owning root. */
+type DesignUiReviewFileIdentity = {
+	/** Root-relative portable file path. */
+	path: string;
+	/** SHA256 of actual read bytes. */
+	sha256: string;
+	/** Actual file size in bytes. */
+	bytes: number;
+};
+
+/** File identity and bytes retained only during synchronous validation. */
+type DesignUiReviewObservation = {
+	/** Actual observed file bytes, never copied through a model. */
+	bytes: Buffer;
+	/** Stable root-relative identity. */
+	identity: DesignUiReviewFileIdentity;
+};
+
+/** Actual observed render and exact matching screenshot references. */
+type DesignUiReviewRenderIdentity = DesignUiReviewRenderEvidence & DesignUiReviewFileIdentity;
+
+/** Actual observed screenshot image and scene association. */
+type DesignUiReviewScreenshotIdentity = DesignUiReviewScreenshotEvidence & DesignUiReviewFileIdentity;
+
+/** Exact immutable native visual-review subject derived from current bytes. */
+type DesignUiReviewSubject = {
+	/** Operational subject version; not a replacement canonical UI schema. */
+	format: 'design-ui-review-subject/1';
+	/** Parent-owned absolute authoritative run root. */
+	sourceRoot: string;
+	/** Parent-owned absolute reusable research/evidence root. */
+	supportingRoot: string;
+	/** Authoritative human source identity. */
+	source: DesignUiReviewFileIdentity;
+	/** Frozen canonical UX identity. */
+	ux: DesignUiReviewFileIdentity;
+	/** Current exact passing UX review file identity. */
+	uxReview: DesignUiReviewFileIdentity;
+	/** Current design-language identity. */
+	designLanguage: DesignUiReviewFileIdentity;
+	/** Current canonical UI identity. */
+	ui: DesignUiReviewFileIdentity;
+	/** Exact parent-frozen render manifest identity. */
+	renderEvidence: DesignUiReviewFileIdentity;
+	/** Actual rendered request identities. */
+	renders: DesignUiReviewRenderIdentity[];
+	/** Actual current renderer index, shared CSS, report and copied asset identities. */
+	renderSupporting: DesignUiReviewFileIdentity[];
+	/** Actual screenshot image identities. */
+	screenshots: DesignUiReviewScreenshotIdentity[];
+	/** Exact reused supporting research/verification file identities. */
+	supporting: DesignUiReviewFileIdentity[];
+	/** Parent-observed authors excluded from reviewing. */
+	authorAgentIds: string[];
+	/** Exact independent reviewer assignment. */
+	reviewerAgentId: string;
+	/** Complete required canonical scene scope. */
+	requiredSceneRefs: string[];
+	/** Complete required actual image-inspection scope. */
+	requiredScreenshotRefs: string[];
+	/** Canonical SHA256 of all preceding subject fields. */
+	sha256: string;
+};
+
+/** Fresh subject and canonical materialized node references used for finding validation. */
+type DesignUiReviewObservedSubject = {
+	/** Exact current immutable input binding. */
+	subject: DesignUiReviewSubject;
+	/** Actual existing node IDs for each canonical scene. */
+	nodesByScene: Map<string, Set<string>>;
+};
+
+/** Independently authored native UI review conclusion.
+ * - **"pass"** - All required captures inspected, with no blocking findings.
+ * - **"revise"** - Preserve judgment and findings; acceptance remains blocked.
+ */
+type DesignUiReviewVerdict = 'pass' | 'revise';
+
+/** Visual issue impact assessed by the independent reviewer.
+ * - **"blocking"** - Required outcome must be repaired before acceptance.
+ * - **"advisory"** - Bounded improvement that does not block current acceptance.
+ */
+type DesignUiReviewSeverity = 'blocking' | 'advisory';
+
+/** Scoped visual finding against an existing scene and optional concrete node. */
+type DesignUiReviewFinding = {
+	/** Existing scene within the required review scope. */
+	sceneRef: string;
+	/** Optional actual node ID in the materialized scene. */
+	nodeRef?: string;
+	/** Required repair impact. */
+	severity: DesignUiReviewSeverity;
+	/** Concrete observed problem, authored by the reviewer. */
+	issue: string;
+	/** Required product/interaction outcome after the smallest sufficient repair. */
+	requiredOutcome: string;
+};
+
+/** Independent operational receipt; no transport-generated pass boolean. */
+type DesignUiReviewReceipt = {
+	/** Exact subject echoed unchanged by the assigned reviewer. */
+	subject: DesignUiReviewSubject;
+	/** Actual assigned reviewer identity. */
+	reviewerAgentId: string;
+	/** Independent qualitative conclusion preserved by validation. */
+	verdict: DesignUiReviewVerdict;
+	/** Actual screenshot references the reviewer inspected. */
+	inspectedScreenshotRefs: string[];
+	/** Concrete scoped issues; blocking findings forbid passing acceptance. */
+	findings: DesignUiReviewFinding[];
+	/** Reviewer-authored observed strengths. */
+	strengths: string[];
+	/** Reviewer-authored limitations; no fabricated measurements. */
+	limits: string[];
+};
+
+/** Read-only native visual-review authority consumed by the parent coordinator. */
+interface DesignUiReviewContract {
+	/** Builds an exact current subject from authoritative files and actual image evidence. */
+	subject(inputs: DesignUiReviewInputs): DesignUiReviewSubject;
+	/** Reobserves current inputs and preserves the independent verdict. */
+	validate(receipt: DesignUiReviewReceipt, inputs: DesignUiReviewInputs): DesignUiReviewReceipt;
+	/** Requires a current independent passing receipt before a parent gate is accepted. */
+	requirePassing(receipt: DesignUiReviewReceipt, inputs: DesignUiReviewInputs): DesignUiReviewReceipt;
+}
+
+/** Native visual-review fixture configuration for copied-output coverage. */
+type DesignUiReviewTestOptions = {
+	/** Includes an approved image and its actual generated copied output. */
+	withAsset?: boolean;
+};
+
+/** Synthetic native visual-review fixture with real renderer output and tiny image files. */
+type DesignUiReviewTestFixture = {
+	/** Exact isolated task-root temporary directory. */
+	directory: string;
+	/** Explicit actual file and assignment inputs. */
+	inputs: DesignUiReviewInputs;
+	/** Parent-frozen render manifest used for missing-evidence tests. */
+	evidence: DesignUiReviewEvidence;
+	/** Read-only exact validator implementation. */
+	helper: DesignUiReviewContract;
+	/** Deterministic mock qualitative conclusion, not live visual evidence. */
+	receipt: DesignUiReviewReceipt;
+};

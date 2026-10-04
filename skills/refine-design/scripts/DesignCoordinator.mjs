@@ -3,7 +3,9 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {DesignPlan} from './DesignPlan.mjs';
 
-/** Durable operational assignments referencing existing design and review artifacts. */
+/** Durable operational assignments referencing existing design and review artifacts.
+ * @implements {DesignWorkflowCoordinator}
+ */
 export class DesignCoordinator {
 	/** Creates a coordinator for one explicitly owned, link-free planning directory.
 	 *
@@ -134,7 +136,32 @@ export class DesignCoordinator {
 		return state;
 	}
 
+	/** Called by persistence to replace state despite short-lived Windows sharing conflicts.
+	 * The same complete pending file and writer lock survive every attempt. Only
+	 * Windows access/sharing failures receive up to nineteen 25 ms waits; other
+	 * failures propagate immediately. The destination is never unlinked.
+	 *
+	 * @param {string} temporary - Complete fsynced pending state path.
+	 * @param {string} target - Owned current state path.
+	 * @returns {void}
+	 */
+	_replace(temporary, target) {
+		const waitBuffer = new Int32Array(new SharedArrayBuffer(4));
+		for (let attempt = 0; ; attempt++) {
+			try {
+				fs.renameSync(temporary, target);
+				return;
+			} catch (error) {
+				if (process.platform !== 'win32' || !['EPERM', 'EACCES', 'EBUSY'].includes(error.code) || attempt >= 19)
+					throw error;
+				Atomics.wait(waitBuffer, 0, 0, 25);
+			}
+		}
+	}
+
 	/** Called by state transitions to atomically publish complete verified bytes.
+	 * Failed pending bytes remain available for inspection without replacing the
+	 * previous state or being treated as accepted recovery state.
 	 *
 	 * @param {DesignCoordinatorState} state - Complete next operational state.
 	 * @returns {void}
@@ -151,10 +178,9 @@ export class DesignCoordinator {
 			fs.fsyncSync(descriptor);
 			fs.closeSync(descriptor);
 			descriptor = undefined;
-			fs.renameSync(temporary, target);
+			this._replace(temporary, target);
 		} finally {
 			if (descriptor !== undefined) fs.closeSync(descriptor);
-			if (fs.existsSync(temporary)) fs.unlinkSync(temporary);
 		}
 	}
 
@@ -309,6 +335,44 @@ export class DesignCoordinator {
 	 */
 	open() {
 		return this._read();
+	}
+
+	/** Call from the parent to mutate an existing unit while its exact claim stays current.
+	 * Holds the coordinator writer lock throughout the synchronous storage action.
+	 * Unknown workers, obsolete attempts and stale prerequisites retain their data
+	 * but cannot author more units. This is not delivery or review acceptance.
+	 *
+	 * @param {DesignCoordinatorClaimGuard} request - Exact current worker claim.
+	 * @param {DesignCoordinatorClaimAction} action - Synchronous guarded operation.
+	 * @returns {unknown} - Existing operation result; state revision is unchanged.
+	 */
+	withClaim({itemId, attemptId, agentId}, action) {
+		if (typeof action !== 'function' || action.constructor.name === 'AsyncFunction')
+			throw new Error('A synchronous claim action is required');
+		this._checkPath(this._directory);
+		const lock = path.join(this._directory, 'writer.lock');
+		this._checkPath(lock);
+		const descriptor = fs.openSync(lock, 'wx');
+		try {
+			fs.writeFileSync(descriptor, JSON.stringify({pid: process.pid, token: crypto.randomUUID()}));
+			fs.fsyncSync(descriptor);
+			const state = this._read();
+			const attempt = this._attempt(state, itemId, attemptId);
+			if (attempt.agentId !== agentId || !['intent', 'running'].includes(attempt.status))
+				throw new Error('Claim is not an active exact worker assignment');
+			const item = state.plan.items.find((item) => item.id === itemId);
+			if (
+				!new DesignPlan(state.plan).inspect(state).ready.includes(itemId) ||
+				this._digest(attempt.inputs) !== this._digest(this._inputs(item, state))
+			)
+				throw new Error('Claim inputs or required gates are stale');
+			const result = action({item, attempt, state});
+			if (result && typeof result.then === 'function') throw new Error('Claim actions cannot return promises');
+			return result;
+		} finally {
+			fs.closeSync(descriptor);
+			fs.unlinkSync(lock);
+		}
 	}
 
 	/** Call this method to recompute readiness and show uncertain assignments.

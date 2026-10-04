@@ -55,6 +55,7 @@ From the governance checkout:
 ```text
 node skills/refine-design/scripts/design-pipeline.mjs validate --plan <plan.json>
 node skills/refine-design/scripts/design-pipeline.mjs inspect --plan <plan.json> --state <state.json>
+node skills/refine-design/scripts/design-pipeline.mjs status --directory <saved-plan-directory>
 ```
 
 These commands inspect only. They do not launch agents, grant capabilities,
@@ -64,3 +65,54 @@ Store consuming apps' plans and current execution state under
 `product/<name>/planning/<plan-id>/`. Research stays in the product-owned
 [research library](research-library.md). Synthetic fixtures demonstrate operational
 rules; they do not supply product requirements or authorize real-app defaults.
+
+## Resume from saved state
+
+First resolve the owning app and confirmed product name through
+[product location](product-location.md); verify that the selected plan directory is
+exactly its `product/<name>/planning/<plan-id>/` and that the plan's source bindings
+identify the current authoritative files. Open `state.json` through
+`DesignCoordinator`, inspect its embedded plan, revision/digest, attempts, accepted
+results, gates and transition history, and resolve referenced contributions,
+research and review evidence. Do not reconstruct accepted work from conversation
+history or trust an old saved ready flag.
+
+Observe current source/native bytes and exact independent review subjects through
+the existing domain APIs. A changed description uses complete interpretation and
+coordinated writeback; do not restore freshness by changing hashes alone. Changed
+shared inputs invalidate their actual dependents; wider whole-artifact review
+bindings may require wider repairs. Preserve unaffected contributions and locks.
+
+For native parallel UI review, use [DesignUiReview](../scripts/DesignUiReview.mjs)
+to reobserve the saved receipt against actual current inputs. Require
+`requirePassing(receipt, currentInputs)` before restoring its visual gate; retained
+transport/structural receipts do not establish qualitative inspection. Prepared
+wireframe runs retain their existing exact acceptance route.
+
+Reconcile saved attempts against current live-assignment observations before
+dispatch. Positive live observations must identify the exact attempt and agent.
+Unknown liveness retains an uncertain assignment and blocks replacement and
+further native mutations. Saved dispatch intent alone proves neither launch nor
+failure. Reuse existing delivered/accepted contributions and validate outstanding
+deliveries separately; do not replay accepted authoring. A replacement requires
+resolved prior liveness and a new durable claim; late obsolete deliveries remain
+history rather than replacing current work.
+
+Capabilities and guard callbacks are volatile. Reopen the saved MCP run with its
+same paths, then use `DesignWorkflow.refresh` only after positively observing and
+reconciling the surviving attempt as running. Issue fresh capabilities and bind
+their current claim guards; never persist tokens in operational state or evidence.
+Revoke ended capabilities. Retained file delivery uses the same guarded native
+mutation boundary described in [parallel design](parallel-design.md#required-mutation-boundary).
+
+An uncertain canonical promotion requires inspection of the existing writer,
+target bytes and compare-and-swap state before retry or retirement. A result
+receipt alone does not prove the writer ended or that canonical state matches.
+Never steal a coordinator writer lock on age alone; inspect its recorded owner
+and preserve uncertainty when termination cannot be established. Report corrupt
+or inconsistent saved state explicitly rather than initializing over it.
+
+Recompute eligible/blocked/uncertain work after reconciliation. Report exact saved
+result and review locators plus the smallest next recovery action. A clean reset
+retains its fresh-input rules; it does not recover from previous derived research,
+designs or operational plans.

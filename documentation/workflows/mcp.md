@@ -79,7 +79,8 @@ Dependent writes, validation and acceptance stay after collection.
 `readOnlyHint` describes the operation; it does not enable client/model batching.
 For native collection, the client must expose native tools and allow parallel
 function calls. The tested Codex build reads both decisions from its model
-catalog. Use the task-scoped launcher when starting a native workflow session:
+catalog. Only when the current user explicitly requests that separate model-session
+path, use the task-scoped launcher when starting a native workflow session:
 
 ```text
 node <governance-root>/scripts/codex-native-workflows.mjs --model=<selected model> --binary=<Codex executable> -- [Codex arguments]
@@ -101,8 +102,9 @@ prepare independent calls in one `functions.exec` using `Promise.allSettled`,
 inspect every result, and preserve each raw result. The combined wrapper output
 still has its own limit: use bounded waves whose **combined** output fits that
 limit. Do not combine individually large native pages into an oversized wrapper
-or raise client limits silently. Use a newly launched native session when separate
-large result allowances are required. Do not label wrapper execution as native
+or raise client limits silently. Otherwise use the current conversation's tools and
+bounded waves; larger result allowances do not authorize a separate model session.
+Do not label wrapper execution as native
 multi-call generation.
 
 For evidence, count calls per model response separately from overlapping tool
@@ -120,6 +122,47 @@ prepared batch. Full-return hashes and truncation checks remain necessary.
 7. `artifact.commit` and `publication.assemble` perform parent-owned canonical persistence. `context.resolve` prepares consumers; `collection.preview`/`collection.publish` consume the structure agent's exact context, outline, weight and page-plan files. The structure agent still owns information hierarchy and page breaks. `technical.inspect`, `technical.prepare`, `technical.resolve`, and `technical.publish` carry current technical evidence and frozen context to the existing publisher.
 
 Schema validation remains inside the current domain functions. Do not synthesize review passes, authorizations or evidence to make a save succeed. Correct only the affected input, retain prior units/results and continue independent work. An operation error is a failed operation, not an instruction to abort the entire skill. Report stale or missing required evidence honestly. Do not automatically retry an uncertain canonical mutation after a worker failure; inspect current state first.
+
+## Durable parallel assignments
+
+Explicit [bounded parallel design](../../skills/refine-design/references/parallel-design.md)
+uses the app-owned validated `DesignPlan` and durable `DesignCoordinator` before
+author dispatch. The parent claims exact item/attempt/agent identities and inputs;
+two authors initially work only on exclusive native unit references. Shared/context
+records have one owner. Canonical assembly/writes stay parent-only. Complete,
+frozen whole UX must pass exact independent review before dependent scoped UI.
+Qualitative UI inspection and required render evidence retain their existing gates;
+a unit receipt or structural check cannot supply those passes.
+
+The parent host uses `DesignWorkflow({service, coordinator, run, resolveInputs})`
+to connect current claims to volatile service capabilities. Its synchronous input
+observer verifies actual source/native identities against the claimed inputs.
+`assign` marks `scope.assignmentGuardRequired: true` and calls the parent library
+method `WorkflowService.bindAssignmentGuard({access, run, assignmentAccess, guard})`
+before issuing the capability to an author. Its guard calls synchronous
+`DesignCoordinator.withClaim({itemId, attemptId, agentId}, action)` under the same
+writer lock as coordinator transitions. Unknown or obsolete attempts, changed
+inputs/prerequisites and missing review gates cannot mutate native units. Callbacks
+must finish storage synchronously: async functions, promises and deferred writes
+do not satisfy this boundary.
+
+These parent library methods add no MCP tools. An ordinary `workflow_assign`
+capability does not install a durable guard. Guard-required assignments without a
+bound callback fail closed. The service reauthorizes queued execution and guarded
+domain routes recheck after lazy imports; marked operations remain in process so
+the callback survives until the synchronous store action completes. Ordinary
+operations retain their existing worker execution. The retained file route loads
+completed scoped proposals, then uses `DesignWorkflow.withClaim` around existing
+native contribution/delivery operations with identical input and scope checks.
+Hosts without this boundary use serial delivery.
+
+`DesignWorkflow.refresh` reissues capabilities only for an exactly observed live
+attempt already reconciled as running; it neither claims nor redispatches work.
+The parent revokes ended adapter capabilities with `DesignWorkflow.revoke` (the
+service library also exposes parent-only `revokeAssignment`). Never persist access
+tokens or callbacks. Follow [operational recovery](../../skills/refine-design/references/operational-design-plan.md#resume-from-saved-state)
+for saved-state/source checks, unknown liveness and uncertain canonical promotions.
+This integration contract does not establish M5–M7 acceptance or routine readiness.
 
 ## Other skills and retained host operations
 

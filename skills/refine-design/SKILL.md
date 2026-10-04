@@ -38,7 +38,14 @@ Scripts should inspect large design files directly and return only the records
 or summaries needed for the next decision.
 
 For initial or substantial UX/UI authoring after the trusted product facts are ready,
-use [single-pass authoring and resumable delivery](references/single-pass-design.md).
+use serial [single-pass authoring and resumable delivery](references/single-pass-design.md)
+by default. An explicit `parallel-design` run follows
+[bounded parallel design](references/parallel-design.md): coordinated research and
+a saved validated plan before claims, at most two concurrent authors initially,
+one owner for shared units, claim-guarded existing-store delivery, parent canonical
+writes, and assembled/frozen whole UX independently reviewed before scoped UI.
+Serial remains supported for repair, comparison and hosts without guarded delivery;
+broader parallel readiness remains pending actual evaluation evidence.
 Request `single-pass-ux` and `single-pass-ui` modes: one forward authoring pass per
 stage, at most one optional issue-directed repair pass, then deterministic assembly
 into the current consumer schemas. Persist and reuse completed units during the run.
@@ -65,7 +72,7 @@ Independent UX reviewers use [progressive review delivery](references/ux-review.
 grant `ux-review.contribute` and `ux-review.assemble`, the exact subject and required
 inputs. Save completed review meaning in natural batches and assemble the existing
 receipt mechanically. Reuse handles through validation and UI handoff. Preserve
-the serial author/reviewer gate and exact passing scope; parallel reads do not
+the author/reviewer phase gate and exact passing scope; parallel reads do not
 authorize parallel acceptance or a reviewer editing the UX.
 
 Run one bounded design-refinement cycle. For a whole-product refinement, complete both the UX and UI passes in this skill: persist UX, obtain its independent review, then compose UI from the reviewed UX. A request confined to one decision or artifact may update only the affected scope; preserve and revalidate dependent artifacts before treating them as current. Treat the user's current input as a fresh, potentially unstructured design input and reconstruct context from durable documents rather than conversation shape. Reuse product meaning and prior evidence recorded there; consult only specialists whose input can materially change the result. The workflow is planning-only, with a bounded design-language artifact path. It does not require a complete specification or a repository implementation opt-in.
@@ -172,6 +179,10 @@ Handoff from product to architecture contains accepted requirements, representat
 
 ## Product Research Handoff
 
+For explicit parallel design, use [the sequential research/planner handoff](references/parallel-research-handoff.md).
+The parent checks answered and assigned catalogue question IDs before dispatching
+late research; authors return gaps through that queue instead of duplicating searches.
+
 Before interaction planning, locate the product-owned research scope and brief,
 check their source identity and applicability to the requested work, and reuse
 current findings. Follow [product research](references/product-research.md) when
@@ -185,6 +196,11 @@ adoption. Research remains advisory and does not accept product or design choice
 the existing UX `patternResearch` and parent source-check gate still apply.
 
 ## UX Design Mode
+
+An explicit parallel assignment uses the bounded owned-unit delivery contract in
+[parallel design](references/parallel-design.md) and the existing contribution store,
+instead of asking every worker to return a whole-product JSON proposal. Exact schema,
+source authority, locks and independent review requirements below still apply.
 
 For a product/UX request, read [the UX design workflow](references/ux-design.md) and its exact [schema 0.4 machine contract](references/ux-schema-0.4.json). Supply both to the named planner; the JSON contract is authoritative for field names, required members, arrays versus objects, enums, and conditional members. Produce local `flows` owned by identified interaction elements, with ordered steps, local alternates and reusable dialog references. Keep meaningful actions, semantic frames, states, feedback and component behavior. Bind product realizations to the exact current product-model snapshot and record missing traces as gaps. The artifact contains no document outline or page map. This mode supports incomplete products and may refine one feature while preserving explicit gaps elsewhere.
 

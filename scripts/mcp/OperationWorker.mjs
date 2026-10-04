@@ -8,8 +8,9 @@ export class OperationWorker {
 	constructor() {
 		this._worker = null;
 		this._pending = new Map();
+		this._definitions = new DomainOperations().operations;
 		this.operations = Object.fromEntries(
-			Object.entries(new DomainOperations().operations).map(([name, definition]) => [
+			Object.entries(this._definitions).map(([name, definition]) => [
 				name,
 				{...definition, execute: (input, context) => this._execute(name, input, context)},
 			]),
@@ -55,6 +56,11 @@ export class OperationWorker {
 	 * @returns {Promise<WorkflowJson>} - Exact domain result.
 	 */
 	_execute(operation, input, context) {
+		if (context.scope.assignmentGuardRequired === true) {
+			if (typeof context.withAssignment !== 'function')
+				return Promise.reject(new Error('Guarded operation requires its parent context'));
+			return Promise.resolve(this._definitions[operation].execute(input, context));
+		}
 		this._start();
 		const id = randomUUID();
 		return new Promise((resolve, reject) => {
