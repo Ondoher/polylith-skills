@@ -45,7 +45,8 @@ a saved validated plan before claims, at most two concurrent authors initially,
 one owner for shared units, claim-guarded existing-store delivery, parent canonical
 writes, and assembled/frozen whole UX independently reviewed before scoped UI.
 Serial remains supported for repair, comparison and hosts without guarded delivery;
-broader parallel readiness remains pending actual evaluation evidence.
+native two-workflow retained-file use has bounded live evidence, while larger live
+designs, live MCP-host recovery and broader parallel readiness need further evidence.
 Request `single-pass-ux` and `single-pass-ui` modes: one forward authoring pass per
 stage, at most one optional issue-directed repair pass, then deterministic assembly
 into the current consumer schemas. Persist and reuse completed units during the run.

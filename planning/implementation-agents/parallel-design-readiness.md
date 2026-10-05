@@ -1,97 +1,114 @@
 # Parallel design readiness
 
-Status: live acceptance in progress. The normal authoring mode remains serial.
-This assessment accompanies the [execution plan](parallel-design-pipeline-plan.md)
-and [milestone progress](parallel-design-pipeline-progress.md).
+Status: independently reviewed; bounded native two-workflow operation is supported. Serial remains the default. This assessment accompanies the
+[execution plan](parallel-design-pipeline-plan.md) and
+[milestone progress](parallel-design-pipeline-progress.md).
 
-## Implemented operating boundary
+## Supported operating boundary
 
-An explicit bounded mode coordinates one initial product/UX research assignment,
-one initial UI research assignment, a persisted source-bound parent plan and at
-most two concurrent author workers. Shared context and components have one owner.
-The parent alone assembles and promotes canonical artifacts through existing
-stores and writers. The operational graph does not replace product meaning.
+Explicit bounded parallel use is supported for the evaluated native two-workflow
+case: one initial product/UX researcher, one initial UI researcher, a persisted
+source-bound parent plan, one owner for shared outputs and at most two concurrent
+local authors. The parent assembles and promotes existing-format artifacts through
+the existing stores and writers. The operational plan does not replace product
+meaning or establish that different IDs have no semantic overlap.
 
-Exact current claims guard synchronous native mutations. Dispatch intent precedes
-launch; delivery, validation, independent review and final acceptance remain
-separate. Unknown worker liveness and uncertain writes stay visible until positive
-observations permit recovery. Capability tokens remain process-local.
+Claims save intent before dispatch. A current exact claim guards each synchronous
+native mutation under the same writer lock. Delivery, validation, independent review
+and acceptance remain distinct. Unknown worker liveness and uncertain writes stay
+visible until positive observations permit recovery. Process-local capabilities
+must be reissued after restart.
 
-The phase boundary is whole UX: local authoring may overlap, then the parent
-assembles/freezes the whole UX and obtains exact independent review. Dependent UI
-starts only after that gate. Whole UI assembly, actual captures and independent
-qualitative inspection remain required. Native part/scene review verifies current
-raw source identities and all generated renderer bytes before accepting a subject;
-prepared wireframe runs retain their existing review gate.
+The whole UX is assembled, frozen and independently reviewed before dependent UI.
+UI requires current native output, actual complete-canvas captures and independent
+qualitative inspection. The review helper verifies raw source identities and every
+expected renderer byte, including theme CSS, fonts and licenses, before first
+subject creation. Prepared wireframe runs retain their existing gates. Keep every
+actual original and repair author in the reviewer exclusion list, including retained
+contributions from attempts that failed before whole-item acceptance.
 
 See [operating instructions](../../skills/refine-design/references/parallel-design.md)
 and [saved-state recovery](../../skills/refine-design/references/operational-design-plan.md#resume-from-saved-state).
 
 ## Evidence established
 
-The expanded design lane passed 343 tests. The final planning lane passed 87 after
-adding exact native UI review and Windows atomic-replacement checks. Repeated
-Windows sharing failures prompted a bounded same-pending-file retry under the
-same writer lock; terminal failure retains the prior authoritative state.
-Independent reviews verified that correction and the native UI freshness fix.
+The earlier expanded design lane passed 343 tests. After actual Windows replacement
+failures, the repaired planning lane passed 87; independent review verified bounded
+retry of the same fsynced pending file under the same lock, with prior state
+authoritative on terminal failure. The final ten affected suites passed 155 tests
+in 66.494 seconds, covering planning, exact review, native assembly, disabled and
+multiline states, focus/error presentation, canonical metrics, modal paint order
+and PRD rendering. These do not claim a new full-repository test run.
 
-The deterministic matrix covers seven distinct cases: a larger interdependent
-graph, sparse source, an incremental unchanged-result reuse, changed shared input,
-late research questions, conflicting findings and a missing reviewer. These use
-simulated receipts. They prove coordinator behavior and ownership/gate preservation,
-not larger-product model quality or visual acceptance.
+Seven broader deterministic cases cover a larger interdependent graph, sparse
+source, unchanged incremental reuse, changed shared input, late research questions,
+conflicting findings and a missing reviewer. Their simulated receipts prove
+coordinator behavior, ownership and gate preservation; they do not prove larger
+live model quality or visual acceptance.
 
-Live evaluation currently uses the same frozen synthetic source, research packet
-and shared synthetic visual foundation for serial and parallel runs. The fresh parallel
-coordinator loaded only durable state/operating instructions and current worker
-observations, reused accepted shared work and did not redispatch the original local
-author attempts. Exact final review and comparison remain pending.
+The serial and parallel live trials share frozen source, facts, research and visual
+foundation. Both account for twelve requested outcomes. Their actual independent
+whole-UX and whole-UI gates pass and guarded finalization is accepted. Serial has
+eleven scenes and twenty-two inspected images; parallel has twelve and twenty-four.
+Valid guard policies and scene decomposition differ, so architecture hashes and
+layouts are not expected to match. Actual app-owned comparison, receipts, concrete
+outcome locators, repair notes and UTC measurements remain in the temporary
+experiment; no product records are committed to this repository.
+
+A fresh in-session parallel coordinator loaded only durable state, operating
+instructions and positive live-worker observations at the local dispatch boundary.
+It reused accepted shared work and preserved both original local attempts with
+zero initial redispatch or authoring replay. Later quality repairs and deliberate
+owner replacements remain separate: seven repair/review redispatches. This
+approximates loss of conversation context, not forced client compaction.
+
+The retained file route has live evidence. The scoped MCP adapter has deterministic
+in-process tests and independent mechanical assessment; no live MCP-host trial is
+claimed. Source/adapter corrections, asset freshness and containment were
+independently assessed. The independent final readiness assessment confirmed this scope without blocking findings.
 
 ## Planner and handoff lessons
 
-Outcome coverage, unique record IDs and an acyclic graph are necessary but cannot
-prove coherent native authoring or interaction behavior. Check shared feature/task
-surface membership, required underlying frames, exact source-kind contracts,
-first-class navigation actions and canonical frame affordances. Inspect actual
-frozen UX frames before claiming UI work: state trees with different controls
-need independently owned parts because scene overrides cannot change part
-structure or remove behavior references.
+Coverage, unique IDs and an acyclic graph cannot establish coherent native design.
+Check task/surface membership, underlying frames, source-kind contracts, explicit
+navigation actions and canonical frame affordances. Inspect frozen UX before UI:
+different control trees need independently owned parts because scene overrides
+cannot change structure or remove behavior references.
 
-Native delivery may retain good siblings while reporting rejected units. Parent
-acceptance must inspect delivery/materialization results and current identities;
-older persisted records cannot stand in for rejected proposals. Scoped local
-repair should preserve usable contributions, with explicit new attempts and
-provenance when an owner is replaced.
+Inspect actual delivery issues and materialized identities before acceptance.
+Transport acceptance is not native assembly validity. Retain good siblings, correct
+serialization without reauthoring meaning, and save fresh claims/provenance when
+an owner is replaced. Research questions return through one coverage-aware queue;
+repeated verification is recorded separately from discovery. The live handoff used
+two sequential discovery assignments, UI reused four UX sections, and no unplanned
+author discovery assignment occurred.
 
-Check renderer and validator capability against the accepted state semantics.
-Multiline editing, focused error feedback and disabled controls need faithful
-native representations. Pending frames may have no affordances: explicitly
-disabled presentational controls must not invent action bindings. Preserve the
-frozen comparison foundation and select supported readable roles when a token
-fails the intended text contrast. Static native specimens do not establish
-framework fidelity or runtime accessibility.
+Check native renderer capability against accepted semantics. Actual reviews exposed
+multiline/error/focus, disabled presentation, canonical field metrics and modal
+stacking gaps. Scope repairs to reproduced problems. Shared producer changes can
+invalidate both trials' renders and active reviews. Preserve old subjects and
+findings, recapture current output and obtain exact independent acceptance; do not
+count failed attempts as savings. A provenance-only subject correction may reuse
+unchanged images after explicit reviewer acknowledgment and freshness checks.
 
-Research reuse needs concrete scope assessment. Verification can revisit a known
-primary source without becoming a new discovery assignment. Record real late
-questions, reused findings and remaining limits; do not equate a shared URL with
-complete coverage or count repeated verification as zero source reads.
+## Measured benefits and limits
 
-## Limits and readiness exit
+Observed benefits are durable recovery without initial replay, explicit shared
+ownership, source-outcome accounting, research reuse and actual concurrent local
+authoring. Total trial elapsed time includes shared-host contention, development,
+coordination, repairs, capture failures and repeated reviews. It establishes no
+isolated speed improvement. Token/usage telemetry is unavailable.
 
-Routine parallel readiness is not yet established. Complete live exact UX/UI
-acceptance, comparison and controlled recovery evidence before granting the mode
-its proven operating scope. Keep larger designs, complex assets, broader host
-support, narrower review scopes and per-flow UX/UI overlap as explicit follow-ups
-unless their own live evidence is obtained.
+Host thread limits required cross-run reuse of an actual UI author. Start times and
+authored viewports differ. These limit comparative timing and prevent a claim of
+independent-specialist convergence. Static specimens do not prove implementation,
+runtime keyboard behavior, accessibility conformance, font readiness or framework
+fidelity. Custom aggregate PRD review layouts are outside the native review helper's
+default-theme asset contract.
 
-Whole-document review and stage bindings can force wider invalidation than a
-single work item. Do not promise narrower reuse than current consumers validate.
-Shared-host elapsed times include coordination, verification, repairs and service
-contention; they cannot establish an isolated speed improvement. Model token/usage
-telemetry is unavailable in this experiment. No runtime application behavior or
-accessibility conformance is established by static captures alone.
-
-Host thread limits required reuse of an available actual UI author across the
-two experimental runs. Record that context reuse and repair effort explicitly;
-the runs cannot establish independent-specialist convergence. Reviewer
-unavailability cannot be replaced with parent-authored qualitative approval.
+Keep larger live designs, live MCP-host recovery, complex assets, narrower review
+bindings, per-flow UX/UI overlap and broader viewport/runtime accessibility coverage
+as bounded follow-ups. Whole-document gates may force wider invalidation than a
+local item. An unavailable reviewer remains a block; parent structural validation
+cannot replace independent qualitative acceptance. Expand scope only when the
+additional live evidence supports it.

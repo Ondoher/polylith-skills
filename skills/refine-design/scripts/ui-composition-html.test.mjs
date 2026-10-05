@@ -8,7 +8,10 @@ import {fileURLToPath} from 'node:url';
 import {
 	buildUiCompositionHtml,
 	publishUiCompositionHtml as publishUiCompositionHtmlRaw,
+	renderInlineScene,
 } from './ui-composition-html.mjs';
+import {buildDesignLanguageAssetOutputs} from './design-language-html.mjs';
+import {createDefaultReviewConfig} from './design-language-review-pages.mjs';
 import {createUxTestSpec} from './ux-test-fixture.mjs';
 import {canonicalPublicationJson} from './product-publication-payload.mjs';
 
@@ -75,7 +78,7 @@ test('publishes deterministic clean and annotated HTML from one scene tree', () 
 	const clean = before[1][1].toString();
 	const annotated = before[2][1].toString();
 
-	assert.equal(first.rendererVersion, 'ui-composition-html-3.0');
+	assert.equal(first.rendererVersion, 'ui-composition-html-3.2');
 	assert.equal(first.counts.scenes, 1);
 	assert.equal(first.counts.placeholders, 1);
 	assert.match(clean, /ui-page--clean/);
@@ -422,6 +425,82 @@ test('renders focused select while preserving the selected option identity', () 
 	}
 });
 
+test('uses canonical field and button metrics within native scenes while preserving explicit review layout assets', () => {
+	const ui = fixture();
+	const designLanguage = design();
+	Object.assign(designLanguage.textField.metrics, {height: 56, paddingX: 14, radius: 10});
+	Object.assign(designLanguage.button.metrics, {height: 48, paddingX: 18, radius: 8});
+	const reviewLayout = createDefaultReviewConfig();
+	Object.assign(reviewLayout.layout, {fieldHeight: 44, fieldPaddingX: 11, buttonHeight: 36, buttonPaddingX: 9});
+	const baseAssetsBefore = buildDesignLanguageAssetOutputs(designLanguage, reviewLayout);
+	const baseCss = baseAssetsBefore.get('assets/prd.css');
+	assert.match(baseCss, /--rd-control-field-height: 44px;/);
+	assert.match(baseCss, /--rd-control-field-padding-x: 11px;/);
+	assert.match(baseCss, /--rd-control-button-height: 36px;/);
+	assert.match(baseCss, /--rd-control-button-padding-x: 9px;/);
+	Object.assign(ui.templates[1], {
+		kind: 'text-field',
+		status: 'accepted',
+		availability: 'available',
+		html: {renderer: 'text-field', element: 'div', className: 'ui-text-field'},
+		parameters: [
+			{id: 'label', required: true},
+			{id: 'value', required: true},
+		],
+		sizing: {width: 'fill', height: 'content'},
+	});
+	const field = ui.parts[0].root.children[1];
+	field.parameters = {label: 'Title', value: 'Current title'};
+	delete field.placeholder;
+	ui.templates.push({
+		id: 'disabled-command',
+		name: 'Disabled command',
+		kind: 'button',
+		version: '1',
+		status: 'accepted',
+		availability: 'available',
+		interaction: 'presentational',
+		html: {renderer: 'button', element: 'button', className: 'ui-button'},
+		supportedStates: ['disabled'],
+		parameters: [{id: 'label', required: true}],
+		sizing: {width: 'content', height: 'content'},
+	});
+	ui.parts[0].root.children.push({
+		id: 'disabled-command-instance',
+		kind: 'component',
+		templateRef: {id: 'disabled-command', version: '1'},
+		state: 'disabled',
+		parameters: {label: 'Unavailable command'},
+		placement: {row: 3, column: 1},
+	});
+	ui.parts[0].root.layout.rows.push({unit: 'content'});
+	ui.scenes[0].completeness = 'complete';
+	ui.scenes[0].unspecifiedRequirementRefs = [];
+	ui.unspecifiedRequirements = [];
+	const {outputs} = buildUiCompositionHtml(ui, {uxSpec: ux(), designLanguage});
+	const css = outputs.get('assets/composition.css');
+	const nativeViewport = css.match(/\.ui-viewport \{[^\n]+\}/)?.[0];
+	assert.match(nativeViewport, /--rd-control-field-height: 56px;/);
+	assert.match(nativeViewport, /--rd-control-field-padding-x: 14px;/);
+	assert.match(nativeViewport, /--rd-control-field-radius: 10px;/);
+	assert.match(nativeViewport, /--rd-control-button-height: 48px;/);
+	assert.match(nativeViewport, /--rd-control-button-padding-x: 18px;/);
+	assert.match(nativeViewport, /--rd-control-button-radius: 8px;/);
+	assert.match(
+		css,
+		/\.ui-text-field input, \.ui-text-field textarea[^\n]*border-radius: var\(--rd-control-field-radius\)/,
+	);
+	for (const markup of [
+		outputs.get('comps/records-viewing.html'),
+		renderInlineScene(ui.scenes[0], ui, {uxSpec: ux()}),
+	]) {
+		assert.match(markup, /class="[^"]*ui-viewport"/);
+		assert.match(markup, /<input[^>]*value="Current title"/);
+		assert.match(markup, /<button[^>]*ui-button[^>]* disabled>Unavailable command<\/button>/);
+	}
+	assert.deepEqual(buildDesignLanguageAssetOutputs(designLanguage, reviewLayout), baseAssetsBefore);
+});
+
 test('renders ordered list choice headings without adding UX bindings', () => {
 	const base = folder();
 	const ui = fixture();
@@ -588,6 +667,56 @@ test('renders a transient dialog semantically and documents its interaction cont
 	const base = folder();
 	const ui = fixture();
 	const uxSource = ux();
+	ui.templates.push({
+		id: 'retained-field',
+		name: 'Retained text',
+		kind: 'text-field',
+		version: '1',
+		status: 'accepted',
+		availability: 'available',
+		interaction: 'presentational',
+		html: {renderer: 'text-field', element: 'div', className: 'ui-text-field'},
+		supportedStates: ['disabled'],
+		parameters: ['label', 'value', 'multiline', 'rows'].map((id) => ({id, required: true})),
+		sizing: {width: 'fill', height: 'content'},
+	});
+	const root = ui.parts[0].root;
+	root.children = [
+		{
+			id: 'retained-editor-underlay',
+			kind: 'region',
+			label: 'Inactive editor context',
+			placement: {row: 1, column: 1, rowSpan: 2},
+			layout: {
+				mode: 'grid',
+				columns: [{unit: 'fr', value: 1}],
+				rows: [{unit: 'content'}],
+				gap: 0,
+				padding: 0,
+				align: 'stretch',
+				justify: 'start',
+			},
+			children: [
+				{
+					id: 'retained-text',
+					kind: 'component',
+					templateRef: {id: 'retained-field', version: '1'},
+					state: 'disabled',
+					parameters: {label: 'Text', value: 'Retained edit\nSecond line', multiline: true, rows: 8},
+					placement: {row: 1, column: 1},
+				},
+			],
+		},
+		{
+			id: 'decision-card',
+			kind: 'region',
+			label: 'Decision',
+			surfaceTreatment: 'elevation-1',
+			placement: {row: 1, column: 1, rowSpan: 2},
+			layout: structuredClone(root.layout),
+			children: root.children,
+		},
+	];
 	uxSource.surfaces[0].kind = 'dialog';
 	ui.uxArtifactBinding.sha256 = createHash('sha256').update(canonicalPublicationJson(uxSource)).digest('hex');
 	ui.scenes[0].transientBehavior = {
@@ -607,6 +736,13 @@ test('renders a transient dialog semantically and documents its interaction cont
 	const annotated = fs.readFileSync(path.join(output, 'comps/records-viewing-annotated.html'), 'utf8');
 	assert.match(clean, /<dialog class="ui-scene-root/);
 	assert.match(clean, /data-ui-transient="dialog" open aria-modal="true"/);
+	assert.ok(clean.indexOf('data-ui-node="retained-editor-underlay"') < clean.indexOf('data-ui-node="decision-card"'));
+	assert.match(
+		sceneMarkup(clean),
+		/<textarea[^>]*readonly disabled[^>]*rows="8">\nRetained edit\nSecond line<\/textarea>/,
+	);
+	assert.match(sceneMarkup(clean), /class="ui-region ui-surface-elevation-1"/);
+	assert.equal(sceneMarkup(clean), sceneMarkup(annotated));
 	assert.doesNotMatch(clean, /Transient interaction contract/);
 	assert.match(annotated, /Transient interaction contract/);
 	assert.match(annotated, /Content driven, max 560px/);

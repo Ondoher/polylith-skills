@@ -1,9 +1,11 @@
 # Research-first planning and parallel design: execution plan
 
-Status: implementation in progress. See the [milestone progress record](parallel-design-pipeline-progress.md)
-for completed acceptance checks and remaining work. The normal authoring mode
-stays serial until scoped integration and live evaluation pass. Complete the
-milestones in order, retaining usable results and evidence at each exit.
+Status: all seven milestones complete within the proven native two-workflow scope. See the
+[milestone progress record](parallel-design-pipeline-progress.md) and
+[operating scope](parallel-design-readiness.md). Serial remains the default;
+explicit bounded parallel use retains whole-stage exact review gates. Broader
+live cases and hosts require their own evidence. Preserve the milestone
+acceptance checks below when expanding or repairing the implementation.
 
 ## Intended outcome
 

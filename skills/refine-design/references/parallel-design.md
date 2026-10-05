@@ -6,6 +6,12 @@ and a host that supports the claim guard below. Serial
 readiness evidence is pending. This mode changes dispatch and delivery, not
 product authority, canonical schemas, locks, review, rendering or publication.
 
+Live evidence supports the native retained-file route for two workflows with the
+whole-UX barrier and at most two concurrent local authors. The MCP adapter has
+deterministic in-process coverage; larger live designs, live MCP-host recovery
+and per-flow UX/UI overlap require additional evidence. Keep serial as the default
+and preserve these boundaries when choosing a run's scope.
+
 ## Prepare before dispatch
 
 Follow [the coordinated research handoff](parallel-research-handoff.md): parser →
@@ -62,6 +68,11 @@ Return handles, paths, record references and notices, not reconstructed payloads
 The parent retains assembly, validation, source checking, canonical persistence
 and acceptance. Delivery, successful import and structural validation are separate
 from design acceptance.
+
+Keep native unit envelopes distinct from assembled consumer documents. A
+`kind: "part"` record carries identity in its envelope `id`; its `data` contains
+only `{root}`. Assembly supplies the consumer's `parts[].id`. A redundant
+`part.data.id` is invalid even when generic unit transport accepts its JSON.
 
 ### Required mutation boundary
 
@@ -141,6 +152,14 @@ The parent checks current exact identities, actual inspection and independence
 from every affected author before recording acceptance. Missing screenshots or
 material inputs leave an explicit block, never a fabricated inspection pass.
 
+Capture the complete authored canvas, including its required focus and transient
+states. The native publisher's `#scene` view removes publication chrome, but its
+responsive zoom rules still apply at smaller browser widths. Use a browser width
+above those breakpoints when reviewing unscaled fixed scenes, retain the authored
+viewport, and verify actual screenshot dimensions and full-canvas visibility.
+Record browser size, scale and capture settings as bound supporting evidence.
+Partial or cropped attempts remain separate and cannot establish inspection.
+
 Use the read-only [DesignUiReview helper](../scripts/DesignUiReview.mjs) and its
 `DesignUiReviewInputs`/`DesignUiReviewReceipt` contracts for this native branch.
 The parent creates `subject(inputs)` from actual authoritative files and supplied
@@ -149,6 +168,21 @@ receipt contract to the reviewer. Set `renderBasePath` to the actual hashed rend
 root; bind product-owned research through `supportingRoot`/`supportingPaths` when
 it lives outside the source root. Keep the helper's file/asset checks authoritative
 instead of reconstructing its public contract in prose.
+
+Supply every actual contributor whose work remains in the reviewed output,
+including original owners and repair owners. The latest accepted assignment list
+alone may omit retained work from an earlier or failed whole-item attempt. Preserve
+the original proposal identities and verify which contributions remain; bind that
+provenance as supporting evidence. A provenance-only subject revision may reuse
+unchanged captures after explicit reviewer acknowledgment of the new subject and
+continued independence. It must not silently accept the older subject.
+
+This native branch also rebuilds the default theme assets used by `DesignRun`
+and verifies their exact bytes. Shared CSS, selected bundled fonts and licenses
+automatically enter `renderSupporting`; optional `supportingPaths` do not control
+that required closure. An aggregate PRD with a different explicit review layout
+is outside this branch's default-asset contract. Native viewport controls use the
+frozen component metrics rather than review-page layout defaults.
 
 After the fresh independent reviewer actually inspects the images and saves its
 receipt, the parent must call `requirePassing(receipt, currentInputs)` with current

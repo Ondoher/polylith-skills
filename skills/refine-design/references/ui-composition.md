@@ -180,6 +180,11 @@ geometry, notching or implementation fidelity. If MUI outlined controls are an
 assignment's actual target, retain the applicable MUI label/outline rules; an
 explicit body-text role in a native specimen does not waive those rules.
 
+Within native and inline scene viewports, field and button dimensions come from
+the frozen design language's component metrics. Review-page layout overrides
+remain separate. Capture and review the actual result; a correctly declared UI
+dimension token cannot prove that a loaded stylesheet paints that dimension.
+
 ## Validate And Persist
 
 Run:

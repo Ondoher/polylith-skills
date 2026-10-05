@@ -303,7 +303,7 @@ test('integrates product comps and surface links from a validated UI specificati
 
 	assert.equal(first.counts.uiScenes, 1);
 	assert.equal(first.counts.uiRenderRequests, 2);
-	assert.equal(first.uiComposition.rendererVersion, 'ui-composition-html-3.0');
+	assert.equal(first.uiComposition.rendererVersion, 'ui-composition-html-3.2');
 	assert.match(index, /Product comps/);
 	assert.match(index, /<link rel="stylesheet" href="assets\/composition\.css">/);
 	assert.match(index, /<figure class="prd-comp-inline"/);

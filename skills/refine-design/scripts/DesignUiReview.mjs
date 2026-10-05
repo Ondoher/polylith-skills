@@ -6,6 +6,7 @@ import {validateUiSpec} from './ui-composition.mjs';
 import {validatePassingUxReview} from './ux-review.mjs';
 import {UiParts} from './ui-parts.mjs';
 import {canonicalPublicationJson} from './product-publication-payload.mjs';
+import {buildDesignLanguageAssetOutputs} from './design-language-html.mjs';
 import {
 	buildUiCompositionHtml,
 	UI_COMPOSITION_HTML_GENERATOR,
@@ -281,7 +282,8 @@ export class DesignUiReview {
 		});
 		const sceneOutputPaths = new Set(uiSpec.renderRequests.map((request) => request.output));
 		const renderSupporting = [];
-		for (const [relative, expectedBytes] of expected.outputs) {
+		const expectedOutputs = new Map([...buildDesignLanguageAssetOutputs(designLanguage), ...expected.outputs]);
+		for (const [relative, expectedBytes] of expectedOutputs) {
 			const observed = this._read(root, path.resolve(renderBase, relative));
 			if (!observed.bytes.equals(Buffer.isBuffer(expectedBytes) ? expectedBytes : Buffer.from(expectedBytes)))
 				throw new Error('Rendered output is stale or differs from current renderer: ' + relative);

@@ -8,6 +8,7 @@ import {DesignUiReview} from './DesignUiReview.mjs';
 import {createUxTestSpec} from './ux-test-fixture.mjs';
 import {createUxReviewSubject, UX_REVIEW_CRITERIA} from './ux-review.mjs';
 import {buildUiCompositionHtml} from './ui-composition-html.mjs';
+import {buildDesignLanguageAssetOutputs} from './design-language-html.mjs';
 
 /** Called by review scenarios to preserve actual file bindings and renderer output.
  * Tiny PNG files and qualitative judgments are deterministic fixtures, not live screenshots or assessment.
@@ -95,7 +96,7 @@ function fixture(scenario, {withAsset = false} = {}) {
 			limits: ['No live specialist assessment or usability evidence.'],
 		}),
 	);
-	for (const [relative, bytes] of buildUiCompositionHtml(ui, {
+	const uiOutputs = buildUiCompositionHtml(ui, {
 		uxSpec: ux,
 		designLanguage: design,
 		uiSource: fs.readFileSync(path.join(directory, inputs.uiPath), 'utf8'),
@@ -103,7 +104,8 @@ function fixture(scenario, {withAsset = false} = {}) {
 		designSource: fs.readFileSync(path.join(directory, inputs.designLanguagePath), 'utf8'),
 		sourceRoot: directory,
 		assetRoot: directory,
-	}).outputs) {
+	}).outputs;
+	for (const [relative, bytes] of new Map([...buildDesignLanguageAssetOutputs(design), ...uiOutputs])) {
 		const target = path.join(directory, relative);
 		fs.mkdirSync(path.dirname(target), {recursive: true});
 		fs.writeFileSync(target, bytes);
@@ -168,6 +170,7 @@ test('all authoritative, rendering and screenshot byte changes invalidate the sa
 		f.evidence.renders[0].path,
 		f.evidence.screenshots[0].path,
 		'assets/composition.css',
+		'assets/prd.css',
 		'ui/render-report.json',
 	];
 	for (const relative of files) {
@@ -180,6 +183,38 @@ test('all authoritative, rendering and screenshot byte changes invalidate the sa
 				fs.writeFileSync(target, changed);
 			} else fs.appendFileSync(target, '\n');
 			assert.throws(() => f.helper.requirePassing(f.receipt, f.inputs), /stale|sha256|bindings/i, relative);
+		} finally {
+			fs.writeFileSync(target, before);
+		}
+	}
+	assert.deepEqual(f.helper.requirePassing(f.receipt, f.inputs), f.receipt);
+});
+
+test('first subject automatically binds and verifies shared theme CSS, fonts and licenses', (scenario) => {
+	const f = fixture(scenario);
+	const design = JSON.parse(fs.readFileSync(path.join(f.directory, f.inputs.designLanguagePath), 'utf8'));
+	const assets = buildDesignLanguageAssetOutputs(design);
+	for (const relative of assets.keys()) {
+		assert.ok(
+			f.receipt.subject.renderSupporting.some((identity) => identity.path === relative),
+			relative,
+		);
+	}
+	const font = [...assets.keys()].find((relative) => relative.endsWith('.ttf'));
+	assert.ok(font);
+	for (const relative of ['assets/prd.css', font]) {
+		const target = path.join(f.directory, relative);
+		const before = fs.readFileSync(target);
+		try {
+			fs.appendFileSync(target, '\nChanged unlisted supporting asset');
+			assert.throws(() => f.helper.subject(f.inputs), /Rendered output is stale/, relative);
+			assert.throws(() => f.helper.requirePassing(f.receipt, f.inputs), /Rendered output is stale/, relative);
+		} finally {
+			fs.writeFileSync(target, before);
+		}
+		try {
+			fs.unlinkSync(target);
+			assert.throws(() => f.helper.subject(f.inputs), /ENOENT/, relative);
 		} finally {
 			fs.writeFileSync(target, before);
 		}

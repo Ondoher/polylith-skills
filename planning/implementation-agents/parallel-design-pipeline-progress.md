@@ -1,19 +1,19 @@
 # Parallel design implementation progress
 
 Execution follows [the milestone plan](parallel-design-pipeline-plan.md).
-The normal refine-design authoring mode remains serial until scoped integration
-and live evaluation pass. Offline coordinator evidence does not grant UX/UI
-acceptance or prove model quality.
+Serial remains the default. Explicit bounded parallel operation is supported for
+the evaluated native two-workflow case with whole-stage exact reviews. Broader
+deterministic cases do not prove wider live model quality.
 
-| Milestone                        | State       | Evidence                                                                                                                                   |
-| -------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| M1: inspectable plan             | Complete    | `DesignPlan`, source checklist, synthetic brief/plan, validation and inspection CLI                                                        |
-| M2: durable execution            | Complete    | `DesignCoordinator`, saved-before-dispatch claims, reopened state and terminal seven-item fake-worker demonstration                        |
-| M3: failure/change behavior      | Complete    | Focused scenarios, fresh Node-process lock recovery, exact review gates, invalidation and uncertain promotion handling                     |
-| M4: coordinated research/planner | Complete    | Sequential live researchers, source-checked reusable catalogue, saved validated plan and independently assessed concrete uncertainty cases |
-| M5: scoped integration           | In progress | Reviewed guarded stores/service assignments and exact native render/review validator; live qualitative acceptance pending                  |
-| M6: live comparison/recovery     | In progress | Both exact whole-UX reviews pass; fresh coordinator recovered original parallel claims without redispatch; actual UI review pending        |
-| M7: broader evaluation           | In progress | Seven deterministic sparse/dependent/update/change/research/reviewer cases pass; final live readiness assessment pending                   |
+| Milestone                        | State            | Evidence                                                                                                                                                       |
+| -------------------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| M1: inspectable plan             | Complete         | `DesignPlan`, source checklist, synthetic brief/plan, validation and inspection CLI                                                                            |
+| M2: durable execution            | Complete         | `DesignCoordinator`, saved-before-dispatch claims, reopened state and terminal seven-item fake-worker demonstration                                            |
+| M3: failure/change behavior      | Complete         | Focused scenarios, fresh Node-process lock recovery, exact review gates, invalidation and uncertain promotion handling                                         |
+| M4: coordinated research/planner | Complete         | Sequential live researchers, source-checked reusable catalogue, saved validated plan and independently assessed concrete uncertainty cases                     |
+| M5: scoped integration           | Complete         | Guarded native/service routes, actual native UX/UI passes, renderer/support freshness and accepted existing-format design                                      |
+| M6: live comparison/recovery     | Complete         | Both trials source-bound and finalized after actual independent UX/UI passes; fresh coordinator retained original attempts with zero initial redispatch/replay |
+| M7: broader evaluation           | Complete, scoped | Seven deterministic cases pass; final independent readiness assessment supports native two-workflow use and explicit broader follow-ups                        |
 
 ## Offline foundation
 
@@ -42,40 +42,49 @@ restart checks. All task/test outputs resolve to repository-root `.codex-tmp/`.
 The repository formatting check also required two existing formatting-only
 corrections; no wireframe example semantics changed.
 
-## Next
+## Live evaluation and operating scope
 
-The guarded service adapter and native UI review helper have independent
-mechanical assessments. Initial UI subject creation now verifies current raw
-source identities and every renderer-produced byte, including copied assets;
-hashing an old render bundle cannot grant freshness. Nine helper fixtures use
-mock captures/judgments and do not establish qualitative UI acceptance.
+Both synthetic trials share frozen source, facts, research and visual foundation,
+account for twelve requested outcomes and pass exact independent whole-UX/UI gates.
+Guarded finalization accepts existing-format artifacts: serial eleven scenes with
+twenty-two inspected images, parallel twelve with twenty-four. Concrete app-owned
+outcome ledgers and the side-by-side comparison bind actual artifacts, captures
+and receipts. Different valid guard policies and authored viewports remain explicit.
 
-The prior expanded design lane passed 343 tests. A later combined planning run
-passed 82 of 84; two recurring Windows sharing errors affected atomic state-file
-replacement. The repaired planning lane passed all 87 after a bounded Windows-only
-retry of the same fsynced pending file under the same writer lock. Independent
-review confirmed terminal errors leave prior state authoritative; the original
-failure evidence remains saved. The repository-wide formatting check passed. Live runs remain temporary
-synthetic experiments; no consuming-app information is committed here.
+A fresh parallel coordinator loaded durable state and positive current observations,
+reused accepted shared work and preserved original local attempts with zero initial
+redispatch or authoring replay. Seven later quality repair/review redispatches are
+counted separately. Two sequential initial researchers shared one catalogue; UI
+reused four UX answers and no unplanned author discovery assignment occurred.
+Repeated factual verification is recorded separately from discovery.
 
-Actual UX reviews found and closed shared navigation, retained-edit recovery and
-validation-state issues. Both exact whole-UX gates now pass. The fresh parallel
-coordinator loaded durable inputs and positive worker observations, retained
-accepted shared work and recovered the original concurrent local attempts with
-zero recovery redispatches. Later quality repairs and owner replacements remain
-separate measured work.
+Actual independent reviews exposed navigation, retained-edit recovery, title
+validation, missing UI specimens and native renderer limitations. Focused repairs
+closed multiline/error/focus, explicitly disabled presentation, canonical control
+metrics and reproduced modal paint-order gaps. A shared producer change invalidated
+serial’s old twenty-two-image inspection before a verdict; current output was
+recaptured and freshly reviewed. A browser timeout retained twenty partial images
+before a bounded successful retry. Old subjects, failed attempts and observations
+remain diagnostics, not current acceptance. Reviewer attribution includes original
+retained contributors and repair authors, including a failed whole-item attempt
+whose unchanged component contributions remain.
 
-Live UI authoring exposed multiline/error/focus and disabled-control capability
-gaps. The bounded native repair passed 75 focused integration tests covering UI
-validation, HTML, exact review freshness, assembly, native design and PRD output.
-The parent independently reviewed its implementation. Actual captures and fresh
-independent visual review remain pending. Host thread limits required a recorded
-UI-author reuse across trials; this limits comparative quality and timing claims.
+The earlier expanded design lane passed 343 tests. Subsequent repaired planning
+passed 87; the final ten affected planning/native/review/HTML/PRD suites passed
+155/155 in 66.494 seconds. Independent mechanical assessment closed atomic
+replacement, scoped adapter, asset freshness and containment findings. Full
+repository formatting and final changed-document checks pass.
 
-Complete live scoped authoring and exact independent reviews using the
-[research/planner handoff](../../skills/refine-design/references/parallel-research-handoff.md).
-Keep claims,
-attempts and review provenance durable while capability tokens remain process-local.
-The service must reject obsolete/revoked assignments even when their work was
-queued before revocation. Existing native stores and canonical writers retain
-their authority, locks and exact subject checks.
+All seven milestones are complete within the supported scope.
+[Readiness](parallel-design-readiness.md) records the measured benefits and limits.
+Retained-file delivery has live proof; MCP has deterministic in-process adapter
+coverage, not a live host trial. Larger live designs, complex assets, narrower
+review scopes and per-flow UX/UI overlap remain follow-ups. Shared-host timing,
+different start times/viewports and cross-run UI-author reuse prevent isolated
+speed or independent-specialist convergence claims. Token telemetry is unavailable.
+Static specimens do not establish runtime implementation or accessibility conformance.
+No consuming-app data, experiment captures or product records are committed here.
+
+Follow [bounded operating instructions](../../skills/refine-design/references/parallel-design.md)
+and [saved-state recovery](../../skills/refine-design/references/operational-design-plan.md#resume-from-saved-state).
+Global installation and publication remain separate explicitly requested workflows.
