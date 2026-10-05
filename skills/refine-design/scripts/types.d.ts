@@ -655,3 +655,383 @@ interface OutcomeLink {
 	/** Optional comparisons to already structured source scalars. */
 	values?: OutcomeValue[];
 }
+/** Supported managed author specialties.
+ * - **"ux-planner"** - Existing UX author role; no upstream research during preparation.
+ * - **"ui-designer"** - Existing UI author role; independent reviewed UX remains a prerequisite.
+ */
+type DesignPreparationRole = 'ux-planner' | 'ui-designer';
+/** Managed preparation state, independent of thread liveness.
+ * - **"preparing"** - Exact read-and-wait acknowledgment is outstanding.
+ * - **"available"** - Exact acknowledgment and positive availability exist.
+ * - **"assigned"** - Saved unresolved author assignment, including claim crash windows.
+ * - **"failed"** - Positively failed creation with confirmed thread absence.
+ * - **"uncertain"** - Liveness or assignment outcome needs positive reconciliation.
+ * - **"retired"** - No new work intended; unconfirmed closure still consumes a slot.
+ */
+type DesignPreparationStatus = 'preparing' | 'available' | 'assigned' | 'failed' | 'uncertain' | 'retired';
+/** Independently observed thread liveness.
+ * - **"unknown"** - Potentially open thread or interrupted creation; retains pool capacity.
+ * - **"open"** - Actual creation or availability positively observed.
+ * - **"absent"** - Creation produced no thread, positively confirmed.
+ * - **"closed"** - Actual thread termination positively confirmed.
+ */
+type DesignPreparationThread = 'unknown' | 'open' | 'absent' | 'closed';
+/** Nonsecret grant lifecycle; volatile capabilities never enter the ledger.
+ * - **"pending"** - Claim intent exists but no authority grant was attempted.
+ * - **"issued"** - Grant attempted; revocation must be positively established.
+ * - **"revoked"** - Parent has revoked prior scoped authority.
+ */
+type DesignPreparationAuthorityStatus = 'pending' | 'issued' | 'revoked';
+/** Parent-owned read-only saved input packet, bounded to 16384 UTF-8 JSON bytes. */
+type DesignPreparationPacket = {
+	/** Explicit product/run scope; never a generic cross-product worker. */
+	scope: string;
+	/** Parent revision label; digest still binds the complete exact packet. */
+	revision: string;
+	/** Stable actual role instructions plus read, acknowledge and wait obligations. */
+	instructions: string;
+	/** Exact saved source/schema/foundation inputs; final author inputs may contain more records. */
+	bindings: DesignPlanBinding[];
+};
+/** Host-wide positive snapshot, including primary, researchers, reviewers and other open agents. */
+type DesignPreparationCapacity = {
+	/** Unique observation identity; changing this alone never clears backoff. */
+	id: string;
+	/** Parent-observed UTC time or durable event reference. */
+	observedAt: string;
+	/** Runtime-reported total thread limit including primary, or null when unobservable. */
+	runtimeLimit: number | null;
+	/** Configured subagent ceiling for evidence only; never assumed active at runtime. */
+	configuredSubagentLimit: number | null;
+	/** Actual known open host threads, including outsiders and primary. */
+	openThreadIds: string[];
+	/** Upcoming mandatory independent reviewer slots, at least one. */
+	reviewerReserve: number;
+	/** Explicit conservative batch slots when runtime capacity is unknown, from zero to two. */
+	conservativeSlots: number;
+};
+/** Forecast advice for one current author specialty; it never grants ownership. */
+type DesignPreparationDemand = {
+	/** Actual specialist role. */
+	role: DesignPreparationRole;
+	/** Plausible author count, bounded by four. */
+	count: number;
+	/** Exact role and saved preparation inputs. */
+	packet: DesignPreparationPacket;
+};
+/** Later mandatory author demand reserving pool capacity when closure is unavailable. */
+type DesignPreparationLaterRole = {
+	/** Later incompatible specialty, never relabeled onto an existing author. */
+	role: DesignPreparationRole;
+	/** Required minimum managed author slots. */
+	count: number;
+};
+/** Cheap parent forecast, valid before a complete operational plan. */
+type DesignPreparationForecast = {
+	/** Parent forecast revision persisted before creation intents. */
+	revision: string;
+	/** Current plausible roles and bounded packets. */
+	demands: DesignPreparationDemand[];
+	/** Required later roles consuming reserved managed slots. */
+	laterRoles: DesignPreparationLaterRole[];
+};
+/** Exact current packet acknowledgment; no design or write authority. */
+type DesignPreparationAck = {
+	/** Actual host agent identity. */
+	agentId: string;
+	/** Exact preparation attempt identity. */
+	attemptId: string;
+	/** Exact complete packet SHA-256. */
+	packetDigest: string;
+	/** Saved positive read-and-wait receipt reference. */
+	observation: string;
+};
+/** Saved assignment reservation separate from a volatile capability. */
+type DesignPreparationSavedAssignment = {
+	/** Granted retained-file or scoped-service route; null before any grant attempt. */
+	channel: DesignPreparationAuthorityChannel | null;
+	/** Current operational work identity. */
+	itemId: string;
+	/** Exact coordinator attempt, or null across the pre-claim crash window. */
+	attemptId: string | null;
+	/** Conservative author grant/revocation status. */
+	authority: DesignPreparationAuthorityStatus;
+};
+/** One retained author, including failed or retired agents whose threads may remain open. */
+type DesignPreparationAuthor = {
+	/** Ledger-local stable record identity. */
+	id: string;
+	/** Current preparation attempt identity; changes on packet refresh. */
+	attemptId: string;
+	/** Actual host identity, or null until successful creation is reconciled. */
+	agentId: string | null;
+	/** Actual role/instructions, never relabeled for another specialty. */
+	role: DesignPreparationRole;
+	/** Current exact bounded packet. */
+	packet: DesignPreparationPacket;
+	/** SHA-256 packet binding. */
+	packetDigest: string;
+	/** Preparation or assignment lifecycle state. */
+	status: DesignPreparationStatus;
+	/** Host thread lifecycle independently observed. */
+	thread: DesignPreparationThread;
+	/** Current acknowledgment, or null before reading current packet. */
+	ack: DesignPreparationAck | null;
+	/** Unresolved work and authority state, or null when positively released. */
+	assignment: DesignPreparationSavedAssignment | null;
+	/** Actual earlier contributor provenance retained for independent-review exclusions. */
+	contributions: Record<string, unknown>[];
+	/** Ordered nonsecret observation and preparation timing evidence. */
+	observations: Record<string, unknown>[];
+};
+/** Complete pre-plan durable preparation ledger. */
+type DesignPreparationState = {
+	/** Current closed preparation format. */
+	format: string;
+	/** Monotonic compare-and-swap revision. */
+	revision: number;
+	/** Product/run ownership scope. */
+	scope: string;
+	/** Latest advisory forecast, or null before forecasting. */
+	forecast: DesignPreparationForecast | null;
+	/** Latest host snapshot, or null before observing capacity. */
+	capacity: DesignPreparationCapacity | null;
+	/** Persistent ceiling/backoff evidence; clears only after positive free-capacity increase. */
+	ceiling: {
+		/** Accounted free physical host slots at the ceiling event; null when runtime capacity is unknown. */
+		freeSlots: number | null;
+		/** Snapshot at observed ceiling. */ capacity: DesignPreparationCapacity;
+		/** Saved error reference. */ observation: string;
+	} | null;
+	/** All historical managed author records, including positively terminated authors. */
+	authors: DesignPreparationAuthor[];
+	/** Ordered forecast and intent evidence, never capabilities. */
+	history: Record<string, unknown>[];
+};
+/** Derived persisted pool accounting. */
+type DesignPreparationInspection = {
+	/** Complete verified ledger. */
+	state: DesignPreparationState;
+	/** Known or potentially open managed authors, maximum four. */
+	openCount: number;
+	/** Unresolved simultaneous author assignments, maximum two. */
+	authoringCount: number;
+	/** Managed identities needing positive liveness reconciliation. */
+	uncertain: string[];
+};
+/** Product/run initialization without an operational plan. */
+type DesignPreparationInitialization = {/** Explicit owning product/run. */ scope: string};
+/** Exact ledger revision for every state-changing operation. */
+type DesignPreparationRevision = {/** Observed CAS revision. */ expectedRevision: number};
+/** Forecast/capacity batch input. */
+type DesignPreparationAdvice = DesignPreparationRevision & {
+	/** Current early forecast. */ forecast: DesignPreparationForecast;
+	/** Current actual host observation. */ capacity: DesignPreparationCapacity;
+};
+/** Unmet forecast specialty reservation. */
+type DesignPreparationReservation = DesignPreparationRevision & {
+	/** Required actual specialty. */ role: DesignPreparationRole;
+};
+/** Exact managed record mutation request. */
+type DesignPreparationAuthorRequest = DesignPreparationRevision & {/** Managed record identity. */ authorId: string};
+/** Actual creation confirmation or interrupted-spawn reconciliation. */
+type DesignPreparationCreation = DesignPreparationAuthorRequest & {
+	/** Saved preparation attempt. */ attemptId: string;
+	/** Actual host agent. */ agentId: string;
+	/** Positive creation receipt reference. */ observation: string;
+};
+/** Creation failure certainty.
+ * - **"absent"** - No thread was created, positively confirmed.
+ * - **"unknown"** - A thread may exist; no replacement is authorized.
+ */
+type DesignPreparationFailureOutcome = 'absent' | 'unknown';
+/** Bounded creation failure record. */
+type DesignPreparationFailure = DesignPreparationAuthorRequest & {
+	/** Exact preparation attempt. */ attemptId: string;
+	/** Positively known absence or uncertainty. */ outcome: DesignPreparationFailureOutcome;
+	/** Whether this error establishes host thread-ceiling backoff. */ ceiling?: boolean;
+	/** Saved host error/observation reference. */ observation: string;
+};
+/** Positive existing-author adoption without relabeling an incompatible specialist. */
+type DesignPreparationAdoption = DesignPreparationRevision & {
+	/** Positively observed actual installed role; must equal the requested specialty. */ actualRole: DesignPreparationRole;
+	/** Positive confirmation that earlier author assignments are resolved. */ assignmentResolved: boolean;
+	/** Positive confirmation that earlier author capability has been revoked. */ authorityRevoked: boolean;
+	/** Actual available host author. */ agentId: string;
+	/** Actual established role. */ role: DesignPreparationRole;
+	/** New bounded read-only packet. */ packet: DesignPreparationPacket;
+	/** Earlier actual contributor provenance. */ contributions?: Record<string, unknown>[];
+	/** Saved availability and prior-authority revocation confirmation. */ observation: string;
+};
+/** Current read-and-wait receipt ingress. */
+type DesignPreparationAcknowledgment = DesignPreparationAuthorRequest & DesignPreparationAck;
+/** Packet refresh after source changes or stage-boundary final input preparation. */
+type DesignPreparationPacketRefresh = DesignPreparationAuthorRequest & {
+	/** Replacement exact packet. */ packet: DesignPreparationPacket;
+};
+/** Positive host observation class.
+ * - **"available"** - Actual author positively available; unresolved work remains assigned.
+ * - **"live"** - Exact surviving assigned author is positively alive; idle availability is not inferred.
+ * - **"unknown"** - No positive liveness evidence; retain capacity and freeze authoring.
+ * - **"closed"** - Thread termination positively confirmed; unresolved effects remain retained.
+ */
+type DesignPreparationObservationStatus = 'available' | 'live' | 'unknown' | 'closed';
+/** Resume liveness reconciliation. */
+type DesignPreparationObservation = DesignPreparationAuthorRequest & {
+	/** Exact actual host identity. */ agentId: string;
+	/** Positively observed liveness. */ status: DesignPreparationObservationStatus;
+	/** Durable host observation reference. */ observation: string;
+};
+/** No-new-work retirement preserving potentially open slots. */
+type DesignPreparationRetirement = DesignPreparationAuthorRequest & {
+	/** Parent reason/reference. */ observation: string;
+};
+/** Pre-claim pool assignment reservation. */
+type DesignPreparationAssignmentIntent = DesignPreparationAuthorRequest & {
+	/** Exact earlier coordinator attempt, or null when none existed before this intent; recovery evidence only. */
+	priorAttemptId?: string | null;
+	/** Exact ready work identity. */ itemId: string;
+	/** Current work item's actual specialty. */ role: DesignPreparationRole;
+	/** Current exact acknowledged packet identity. */ packetDigest: string;
+	/** Positively observed current preparation bindings; final claim may add more inputs. */ bindings: DesignPlanBinding[];
+	/** Positive current availability/input observation reference. */ observation: string;
+};
+/** Post-claim linking or crash-window reconciliation. */
+type DesignPreparationClaimBinding = DesignPreparationAuthorRequest & {
+	/** Verified current coordinator snapshot. */ coordinatorState: DesignCoordinatorState;
+};
+/** Nonsecret exact author grant lifecycle observation. */
+type DesignPreparationAuthority = DesignPreparationAuthorRequest & {
+	/** Scoped service by default, or the existing parent-owned retained-file route. */ channel?: DesignPreparationAuthorityChannel;
+	/** Exact current native claim. */ claim: DesignCoordinatorClaimGuard;
+	/** Issued or positively revoked grant state. */ status: DesignPreparationAuthorityStatus;
+};
+/** Prepared assignment guard binding. */
+type DesignPreparationAssignmentGuard = {
+	/** Exact managed author. */ authorId: string;
+	/** Exact native coordinator claim. */ claim: DesignCoordinatorClaimGuard;
+};
+/** Parent synchronous guarded operation with no asynchronous lock escape. */
+type DesignPreparationGuardAction = () => unknown;
+/** Positive stop observation for resolved prior author work. */
+type DesignPreparationStop = {
+	/** Literal stopped observation. */ status: 'stopped';
+	/** Exact actual author. */ agentId: string;
+	/** Exact prior assignment, or null for a positively claimless crash intent. */ attemptId: string | null;
+	/** Durable actual stop confirmation reference. */ ref: string;
+};
+/** Safe resolved-assignment release; delivery alone is insufficient. */
+type DesignPreparationRelease = DesignPreparationAuthorRequest & {
+	/** Verified coordinator resolution/no-claim snapshot. */ coordinatorState: DesignCoordinatorState;
+	/** Exact positively stopped prior work. */ observation: DesignPreparationStop;
+};
+/** Internal synchronous CAS transition. */
+type DesignPreparationMutation = (state: DesignPreparationState) => void;
+/** Minimal ledger capability consumed by the existing workflow adapter. */
+interface DesignPreparationLedger {
+	/** Reads durable state without minting authority. */ open(): DesignPreparationState;
+	/** Saves pool assignment reservation before coordinator claim. */ beginAssignment(
+		request: DesignPreparationAssignmentIntent,
+	): DesignPreparationState;
+	/** Binds or reconciles the exact saved coordinator claim. */ bindClaim(
+		request: DesignPreparationClaimBinding,
+	): DesignPreparationState;
+	/** Saves conservative nonsecret grant/revocation state. */ authority(
+		request: DesignPreparationAuthority,
+	): DesignPreparationState;
+	/** Guards an exact prepared assignment under the ledger lock. */ withAssignment(
+		request: DesignPreparationAssignmentGuard,
+		action: DesignPreparationGuardAction,
+	): unknown;
+	/** Verifies resolution, revocation and actual stop before reusable release. */ release(
+		request: DesignPreparationRelease,
+	): DesignPreparationState;
+}
+/** Parent prepared author claim route. */
+type DesignWorkflowPreparedClaim = {
+	/** Exact managed author. */ authorId: string;
+	/** Current ready native item. */ itemId: string;
+	/** Current observed preparation input identities. */ bindings: DesignPlanBinding[];
+	/** Positive current availability and input evidence reference. */ observation: string;
+	/** Exact pool revision. */ preparationRevision: number;
+	/** Exact operational coordinator revision. */ coordinatorRevision: number;
+};
+/** Scoped capability creation for an exact prepared native author. */
+type DesignWorkflowPreparedAssignment = DesignWorkflowAssignment & {
+	/** Managed author bound to the claim. */ authorId: string;
+	/** Exact current pool revision. */ preparationRevision: number;
+};
+/** Parent revocation and positively stopped reusable release. */
+type DesignWorkflowPreparedRelease = {
+	/** Managed author currently assigned. */ authorId: string;
+	/** Exact positive stopped prior work. */ observation: DesignPreparationStop;
+	/** Exact current pool revision. */ preparationRevision: number;
+};
+/** Exact prepared claim retained by the parent file route. */
+type DesignWorkflowPreparedGuard = DesignCoordinatorClaimGuard & {/** Managed author identity. */ authorId: string};
+
+/** Actual native-store preparation fixture for guarded workflow regressions. */
+type DesignWorkflowPreparationFixture = {
+	/** Persisted lifecycle and exact positive fake-host observations. */ preparation: DesignPreparationTestFixture['ledger'];
+	/** Current exact saved input packet. */ packet: DesignPreparationPacket;
+	/** Actual tracked author identity and preparation attempt. */ author: DesignPreparationAuthor;
+};
+/** Existing authority route used by one current author assignment.
+ * - **"file"** - Parent mutations under both ledger and exact native claim guards.
+ * - **"service"** - Process-local scoped service capability guarded by the same claims.
+ */
+type DesignPreparationAuthorityChannel = 'file' | 'service';
+/** Compact data-only CLI receipt; packet bodies and capabilities are excluded. */
+type DesignPreparationCliReceipt = {
+	/** Current ledger CAS revision. */ revision: number;
+	/** Product/run scope. */ scope: string;
+	/** Current advisory forecast revision or null. */ forecastRevision: string | null;
+	/** Latest actual host snapshot. */ capacity: DesignPreparationCapacity | null;
+	/** Current persistent ceiling evidence. */ ceiling: DesignPreparationState['ceiling'];
+	/** Count of known or potentially open authors. */ openCount: number;
+	/** Count of unresolved author assignments. */ authoringCount: number;
+	/** Managed records requiring positive reconciliation. */ uncertain: string[];
+	/** Compact current authors; source bodies and permissions omitted. */ authors: Pick<
+		DesignPreparationAuthor,
+		'id' | 'attemptId' | 'agentId' | 'role' | 'status' | 'thread' | 'packetDigest' | 'ack' | 'assignment'
+	>[];
+	/** Latest nonsecret forecast/intent evidence. */ lastEvent: Record<string, unknown> | null;
+};
+/** Product-neutral deterministic preparation test fixture. */
+type DesignPreparationTestFixture = {
+	/** Actual persisted ledger API. */ ledger: DesignPreparationLedger & {
+		/** Saves advisory role and host observations. */ advise(
+			request: DesignPreparationAdvice,
+		): DesignPreparationState;
+		/** Reserves a creation intent. */ reserve(request: DesignPreparationReservation): DesignPreparationState;
+		/** Records actual fake-host identity. */ created(request: DesignPreparationCreation): DesignPreparationState;
+		/** Accepts exact packet acknowledgment. */ acknowledge(
+			request: DesignPreparationAcknowledgment,
+		): DesignPreparationState;
+		/** Adopts positively available existing author. */ adopt(
+			request: DesignPreparationAdoption,
+		): DesignPreparationState;
+		/** Refreshes stale read-only packet. */ refreshPacket(
+			request: DesignPreparationPacketRefresh,
+		): DesignPreparationState;
+		/** Derives bounded pool accounting. */ inspect(): DesignPreparationInspection;
+		/** Saves failed or uncertain actual creation outcome. */ failed(
+			request: DesignPreparationFailure,
+		): DesignPreparationState;
+		/** Retires resolved preparation without assuming thread closure. */ retire(
+			request: DesignPreparationRetirement,
+		): DesignPreparationState;
+		/** Reconciles exact actual liveness. */ observe(request: DesignPreparationObservation): DesignPreparationState;
+		/** Inspects surviving exclusive writer identity. */ lockInfo(): DesignCoordinatorLock | null;
+		/** Recovers only a provably dead exact lock owner. */ recoverLock(token: string): void;
+	};
+	/** Isolated temporary fixture workspace. */ directory: string;
+	/** Current synthetic saved input packet. */ packet: DesignPreparationPacket;
+	/** Deterministic host observation, never live telemetry. */ capacity: DesignPreparationCapacity;
+	/** Early role demand with later-stage reserve. */ forecast: DesignPreparationForecast;
+	/** Attempts one saved reservation. */ reserve(role?: DesignPreparationRole): DesignPreparationAuthor | null;
+	/** Confirms deterministic creation and read-and-wait receipt. */ ready(
+		author: DesignPreparationAuthor,
+		agentId: string,
+	): DesignPreparationAuthor;
+};

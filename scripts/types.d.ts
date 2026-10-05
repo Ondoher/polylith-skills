@@ -338,8 +338,12 @@ type DesignCoordinatorClaimAction = (context: DesignCoordinatorValidationRequest
 
 /** Parent-only workflow adapter configuration; never persisted. */
 type DesignWorkflowOptions = {
+	/** Optional early author preparation ledger; parent supplies it after independent initialization. */
+	preparation?: DesignPreparationLedger;
+	/** Actual current product/run scope for retained files; defaults to run and cannot override a service run. */
+	preparationScope?: string;
 	/** Resident scoped assignment service. */
-	service: DesignWorkflowService;
+	service?: DesignWorkflowService;
 	/** App-owned durable operational coordinator. */
 	coordinator: DesignWorkflowCoordinator;
 	/** Already opened workflow run identity. */
@@ -362,6 +366,8 @@ interface DesignWorkflowService {
 
 /** Exact durable-claim authority consumed by the parent adapter. */
 interface DesignWorkflowCoordinator {
+	/** Persists exact ready-work intent before author dispatch. */
+	claim(request: DesignCoordinatorClaim): DesignCoordinatorState;
 	/** Reads verified persisted plan and attempt state. */
 	open(): DesignCoordinatorState;
 	/** Holds the coordinator lock across one synchronous existing-store action. */
@@ -376,6 +382,8 @@ type DesignWorkflowRevocation = {
 
 /** Parent-created bounded author or reviewer capability request. */
 type DesignWorkflowAssignment = DesignCoordinatorClaimGuard & {
+	/** Managed preparation record bound by the parent prepared-assignment route. */
+	preparedAuthorId?: string;
 	/** Already saved workflow input handles. */
 	handles?: string[];
 	/** Exact input file grants. */
@@ -432,6 +440,16 @@ interface DesignWorkflowTestCoordinator extends DesignWorkflowCoordinator {
 
 /** Parent adapter authority for exact scoped workers and retained file delivery. */
 interface DesignWorkflowAdapter {
+	/** Authorizes the existing parent-owned native file route without a service token. */
+	authorizePreparedFile(request: DesignWorkflowPreparedAssignment): DesignPreparationState;
+	/** Holds both preparation and native coordinator locks across a file mutation. */
+	withPreparedClaim(request: DesignWorkflowPreparedGuard, action: DesignCoordinatorClaimAction): unknown;
+	/** Saves preparation intent before the ordinary exact operational claim. */
+	claimPrepared(request: DesignWorkflowPreparedClaim): DesignCoordinatorClaimGuard;
+	/** Issues guarded author authority only after exact preparation binding. */
+	assignPrepared(request: DesignWorkflowPreparedAssignment): WorkflowAssignmentReceipt;
+	/** Revokes prior authority and verifies resolution plus positive stop before reuse. */
+	releasePrepared(request: DesignWorkflowPreparedRelease): DesignPreparationState;
 	/** Issues a guarded exact saved assignment. */
 	assign(request: DesignWorkflowAssignment): WorkflowAssignmentReceipt;
 	/** Renews authority after exact positive reconciliation. */

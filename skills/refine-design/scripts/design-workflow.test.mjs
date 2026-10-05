@@ -10,6 +10,7 @@ import {OperationWorker} from '../../../scripts/mcp/OperationWorker.mjs';
 import {DesignCoordinator} from './DesignCoordinator.mjs';
 import {DesignPlan} from './DesignPlan.mjs';
 import {DesignWorkflow} from './DesignWorkflow.mjs';
+import {DesignPreparation} from './DesignPreparation.mjs';
 import {DesignRecords} from './design-records.mjs';
 import {DesignAssembly} from './design-assembly.mjs';
 import {DesignContributions} from './design-contributions.mjs';
@@ -154,6 +155,402 @@ async function contribute(f, assignment, ref, goal) {
 	});
 	return f.service.execute({...request, operation: 'units.finish', input: {stage: 'ux', references: [ref]}});
 }
+
+/** Creates actual scoped preparation beside a native fixture without changing its plan.
+ * @param {DesignWorkflowTestFixture} f - Actual synthetic native stores and coordinator.
+ * @param {string} scope - Explicit parent product/run scope.
+ * @param {string} agentId - Actual available author identity.
+ * @param {boolean} [acknowledge=true] - Whether the read-and-wait turn is complete.
+ * @returns {DesignWorkflowPreparationFixture} - Persisted ledger, packet and actual actor.
+ */
+function prepareFixture(f, scope, agentId, acknowledge = true) {
+	const preparation = new DesignPreparation(path.join(f.directory, 'preparation'));
+	preparation.initialize({scope});
+	const packet = {
+		scope,
+		revision: 'native-scope-preparation',
+		instructions: 'Read the exact current saved inputs and wait.',
+		bindings: f.coordinator.open().bindings,
+	};
+	preparation.adopt({
+		agentId,
+		role: 'ux-planner',
+		actualRole: 'ux-planner',
+		assignmentResolved: true,
+		authorityRevoked: true,
+		packet,
+		observation: 'fake-host/available-and-revoked',
+		expectedRevision: preparation.open().revision,
+	});
+	const author = preparation.open().authors[0];
+	if (acknowledge)
+		preparation.acknowledge({
+			authorId: author.id,
+			agentId,
+			attemptId: author.attemptId,
+			packetDigest: author.packetDigest,
+			observation: 'fake-host/actual-exact-read',
+			expectedRevision: preparation.open().revision,
+		});
+	return {preparation, packet, author};
+}
+
+test('foreign preparation scope cannot claim native work or override an actual service run', async (scenario) => {
+	const f = await fixture(scenario),
+		prepared = prepareFixture(f, 'foreign-product/foreign-run', 'foreign-author');
+	const options = {
+		service: f.service,
+		coordinator: f.coordinator,
+		run: f.run.run,
+		resolveInputs: f.resolveInputs,
+		preparation: prepared.preparation,
+	};
+	assert.throws(
+		() => new DesignWorkflow({...options, preparationScope: 'foreign-product/foreign-run'}),
+		/cannot be overridden/,
+	);
+	const adapter = new DesignWorkflow(options),
+		before = prepared.preparation.open();
+	assert.throws(
+		() =>
+			adapter.claimPrepared({
+				authorId: prepared.author.id,
+				itemId: 'alpha',
+				bindings: prepared.packet.bindings,
+				observation: 'fake-host/available',
+				preparationRevision: before.revision,
+				coordinatorRevision: f.coordinator.open().revision,
+			}),
+		/scope/,
+	);
+	assert.deepEqual(prepared.preparation.open(), before);
+	assert.equal(f.coordinator.open().attempts.alpha, undefined);
+	assert.throws(() => new DesignWorkflow({...options, run: undefined}), /current product\/run scope/);
+	const fileAdapter = new DesignWorkflow({
+		...options,
+		service: undefined,
+		run: undefined,
+		preparationScope: f.run.run,
+	});
+	assert.throws(
+		() =>
+			fileAdapter.claimPrepared({
+				authorId: prepared.author.id,
+				itemId: 'alpha',
+				bindings: prepared.packet.bindings,
+				observation: 'fake-host/available',
+				preparationRevision: before.revision,
+				coordinatorRevision: f.coordinator.open().revision,
+			}),
+		/scope/,
+	);
+});
+
+test('configured preparation enforces every ordinary native grant and file guard without changing reviewer assignment', async (scenario) => {
+	const f = await fixture(scenario),
+		prepared = prepareFixture(f, f.run.run, 'preparing-actor', false);
+	const adapter = new DesignWorkflow({
+		service: f.service,
+		coordinator: f.coordinator,
+		run: f.run.run,
+		resolveInputs: f.resolveInputs,
+		preparation: prepared.preparation,
+	});
+	const state = f.coordinator.claim({
+		itemId: 'alpha',
+		agentId: prepared.author.agentId,
+		expectedRevision: f.coordinator.open().revision,
+	});
+	const claim = {itemId: 'alpha', attemptId: state.attempts.alpha.id, agentId: prepared.author.agentId};
+	const before = DesignRecords.read(f.store);
+	assert.throws(() => adapter.assign(claim), /unavailable/);
+	assert.throws(() => adapter.withClaim(claim, () => assert.fail('ordinary native file bypass')), /unavailable/);
+	const other = f.coordinator.claim({
+		itemId: 'beta',
+		agentId: 'untracked-native-author',
+		expectedRevision: f.coordinator.open().revision,
+	});
+	assert.throws(
+		() => adapter.assign({itemId: 'beta', attemptId: other.attempts.beta.id, agentId: 'untracked-native-author'}),
+		/must be tracked/,
+	);
+	assert.equal(prepared.preparation.inspect().authoringCount, 0);
+	assert.deepEqual(DesignRecords.read(f.store), before);
+	const review = await reviewFixture(scenario),
+		reviewPreparation = new DesignPreparation(path.join(review.directory, 'review-preparation'));
+	reviewPreparation.initialize({scope: review.run.run});
+	const reviewerAdapter = new DesignWorkflow({
+		service: review.service,
+		coordinator: review.coordinator,
+		run: review.run.run,
+		preparation: reviewPreparation,
+		resolveInputs: ({attempt}) => attempt.inputs,
+	});
+	const reviewGrant = reviewerAdapter.assign({...review.claimRequest, reviewSubject: review.subject});
+	assert.ok(reviewGrant.operations.includes('ux-review.contribute'));
+	assert.equal(reviewPreparation.inspect().openCount, 0);
+	reviewerAdapter.revoke({access: reviewGrant.access});
+});
+
+test('prepared claim preflight rejects accepted work and stale coordinator observations without stranding pool intent', async (scenario) => {
+	const f = await fixture(scenario),
+		prepared = prepareFixture(f, f.run.run, 'shared-author');
+	const adapter = new DesignWorkflow({
+		coordinator: f.coordinator,
+		run: f.run.run,
+		resolveInputs: f.resolveInputs,
+		preparation: prepared.preparation,
+	});
+	const before = prepared.preparation.open();
+	const request = {
+		authorId: prepared.author.id,
+		itemId: 'shared',
+		bindings: prepared.packet.bindings,
+		observation: 'fake-host/ready',
+		preparationRevision: before.revision,
+		coordinatorRevision: f.coordinator.open().revision,
+	};
+	assert.throws(() => adapter.claimPrepared(request), /not ready/);
+	assert.throws(
+		() => adapter.claimPrepared({...request, itemId: 'alpha', coordinatorRevision: 1}),
+		/Stale coordinator/,
+	);
+	assert.deepEqual(prepared.preparation.open(), before);
+	assert.equal(before.authors[0].assignment, null);
+});
+
+test('prepared author uses exact native guards, releases after revocation and stop, and reuses actual identity', async (scenario) => {
+	const f = await fixture(scenario);
+	const preparation = new DesignPreparation(path.join(f.directory, 'preparation'));
+	preparation.initialize({scope: f.run.run});
+	const bindings = f.coordinator.open().bindings;
+	const packet = {
+		scope: f.run.run,
+		revision: 'preparation-1',
+		instructions: 'Read exact saved source and wait; no research or authoring.',
+		bindings,
+	};
+	preparation.adopt({
+		agentId: 'reusable-ux-author',
+		role: 'ux-planner',
+		actualRole: 'ux-planner',
+		assignmentResolved: true,
+		authorityRevoked: true,
+		packet,
+		observation: 'fake-host/available-and-revoked',
+		expectedRevision: preparation.open().revision,
+	});
+	const author = preparation.open().authors[0];
+	preparation.acknowledge({
+		authorId: author.id,
+		agentId: author.agentId,
+		attemptId: author.attemptId,
+		packetDigest: author.packetDigest,
+		observation: 'fake-host/acknowledged-read-and-wait',
+		expectedRevision: preparation.open().revision,
+	});
+	const adapter = new DesignWorkflow({
+		service: f.service,
+		coordinator: f.coordinator,
+		run: f.run.run,
+		resolveInputs: f.resolveInputs,
+		preparation,
+	});
+	const claim = adapter.claimPrepared({
+		authorId: author.id,
+		itemId: 'alpha',
+		bindings,
+		observation: 'fake-host/currently-available',
+		preparationRevision: preparation.open().revision,
+		coordinatorRevision: f.coordinator.open().revision,
+	});
+	const grant = adapter.assignPrepared({
+		...claim,
+		authorId: author.id,
+		preparationRevision: preparation.open().revision,
+	});
+	const receipt = await contribute(f, grant, f.refs.alpha, 'Prepared native proposal');
+	const outputs = [{ref: `ux:${f.refs.alpha}`, digest: DesignRecords.read(f.store).identities[f.refs.alpha]}];
+	let state = f.coordinator.deliver({
+		...claim,
+		outputs,
+		resultRef: receipt.handle,
+		expectedRevision: f.coordinator.open().revision,
+	});
+	await f.coordinator.accept({...claim, expectedRevision: state.revision}, ({attempt}) => ({
+		outputs: attempt.delivery.outputs,
+	}));
+	const reopenedAdapter = new DesignWorkflow({
+		service: f.service,
+		coordinator: f.coordinator,
+		run: f.run.run,
+		resolveInputs: f.resolveInputs,
+		preparation: new DesignPreparation(path.join(f.directory, 'preparation')),
+	});
+	assert.throws(
+		() =>
+			reopenedAdapter.releasePrepared({
+				authorId: author.id,
+				observation: {
+					status: 'stopped',
+					agentId: author.agentId,
+					attemptId: claim.attemptId,
+					ref: 'fake-host/stopped-after-reopen',
+				},
+				preparationRevision: preparation.open().revision,
+			}),
+		/revocation is unconfirmed/,
+	);
+	adapter.releasePrepared({
+		authorId: author.id,
+		observation: {
+			status: 'stopped',
+			agentId: author.agentId,
+			attemptId: claim.attemptId,
+			ref: 'fake-host/stopped-alpha',
+		},
+		preparationRevision: preparation.open().revision,
+	});
+	assert.equal(preparation.open().authors[0].contributions[0].agentId, author.agentId);
+	await assert.rejects(
+		f.service.execute({
+			access: grant.access,
+			run: f.run.run,
+			operation: 'units.status',
+			input: {stage: 'ux', references: [f.refs.alpha]},
+		}),
+	);
+	const next = adapter.claimPrepared({
+		authorId: author.id,
+		itemId: 'beta',
+		bindings,
+		observation: 'fake-host/currently-available-again',
+		preparationRevision: preparation.open().revision,
+		coordinatorRevision: f.coordinator.open().revision,
+	});
+	assert.equal(next.agentId, claim.agentId);
+	assert.notEqual(next.attemptId, claim.attemptId);
+	const nextGrant = adapter.assignPrepared({
+		...next,
+		authorId: author.id,
+		preparationRevision: preparation.open().revision,
+	});
+	const secondReceipt = await contribute(f, nextGrant, f.refs.beta, 'Reused native proposal');
+	assert.ok(secondReceipt.inline);
+	assert.equal(preparation.inspect().authoringCount, 1);
+});
+
+test('prepared retained-file route denies preparation writes and guards materialization without a service token', async (scenario) => {
+	const f = await fixture(scenario),
+		preparation = new DesignPreparation(path.join(f.directory, 'preparation'));
+	preparation.initialize({scope: f.run.run});
+	const packet = {
+		scope: f.run.run,
+		revision: 'file-preparation',
+		instructions: 'Read current source; acknowledge and wait without authoring.',
+		bindings: f.coordinator.open().bindings,
+	};
+	preparation.adopt({
+		agentId: 'file-author',
+		role: 'ux-planner',
+		actualRole: 'ux-planner',
+		assignmentResolved: true,
+		authorityRevoked: true,
+		packet,
+		observation: 'fake-host/available',
+		expectedRevision: preparation.open().revision,
+	});
+	const author = preparation.open().authors[0];
+	const adapter = new DesignWorkflow({
+		coordinator: f.coordinator,
+		run: f.run.run,
+		resolveInputs: f.resolveInputs,
+		preparation,
+	});
+	const before = DesignRecords.read(f.store);
+	assert.throws(
+		() =>
+			adapter.withPreparedClaim(
+				{authorId: author.id, itemId: 'alpha', attemptId: 'unclaimed', agentId: author.agentId},
+				() => assert.fail('preparation cannot write'),
+			),
+		/unavailable/,
+	);
+	preparation.acknowledge({
+		authorId: author.id,
+		agentId: author.agentId,
+		attemptId: author.attemptId,
+		packetDigest: author.packetDigest,
+		observation: 'fake-host/packet-read',
+		expectedRevision: preparation.open().revision,
+	});
+	const claim = adapter.claimPrepared({
+		authorId: author.id,
+		itemId: 'alpha',
+		bindings: packet.bindings,
+		observation: 'fake-host/currently-available',
+		preparationRevision: preparation.open().revision,
+		coordinatorRevision: f.coordinator.open().revision,
+	});
+	adapter.authorizePreparedFile({...claim, authorId: author.id, preparationRevision: preparation.open().revision});
+	const reopened = new DesignPreparation(path.join(f.directory, 'preparation'));
+	const resumed = new DesignWorkflow({
+		coordinator: new DesignCoordinator(path.join(f.directory, 'planning')),
+		run: f.run.run,
+		resolveInputs: f.resolveInputs,
+		preparation: reopened,
+	});
+	f.coordinator.reconcile({observations: [], expectedRevision: f.coordinator.open().revision});
+	reopened.observe({
+		authorId: author.id,
+		agentId: author.agentId,
+		status: 'unknown',
+		observation: 'fake-host/resume-unknown',
+		expectedRevision: reopened.open().revision,
+	});
+	const guarded = (action) => resumed.withPreparedClaim({...claim, authorId: author.id}, action);
+	assert.throws(() => guarded(() => assert.fail('uncertain author cannot write')), /unavailable/);
+	f.coordinator.reconcile({
+		observations: [{...claim, status: 'live'}],
+		expectedRevision: f.coordinator.open().revision,
+	});
+	reopened.observe({
+		authorId: author.id,
+		agentId: author.agentId,
+		status: 'live',
+		observation: 'fake-host/same-surviving-attempt',
+		expectedRevision: reopened.open().revision,
+	});
+	const status = guarded(() => DesignContributions.status(f.store, [f.refs.alpha]));
+	guarded(() =>
+		DesignContributions.contribute(f.store, {
+			batchId: 'prepared-file',
+			base: {[f.refs.alpha]: status.units[0].revision},
+			changes: [{unit: f.refs.alpha, op: 'set', fields: {goal: 'Prepared file proposal'}}],
+		}),
+	);
+	guarded(() => DesignContributions.finish(f.store, [f.refs.alpha]));
+	assert.notEqual(DesignRecords.read(f.store).identities[f.refs.alpha], before.identities[f.refs.alpha]);
+	const outputs = [{ref: `ux:${f.refs.alpha}`, digest: DesignRecords.read(f.store).identities[f.refs.alpha]}];
+	const delivered = f.coordinator.deliver({
+		...claim,
+		outputs,
+		resultRef: 'saved/file-proposal',
+		expectedRevision: f.coordinator.open().revision,
+	});
+	await f.coordinator.accept({...claim, expectedRevision: delivered.revision}, ({attempt}) => ({
+		outputs: attempt.delivery.outputs,
+	}));
+	const after = DesignRecords.read(f.store);
+	assert.throws(() => guarded(() => assert.fail('accepted author cannot write')), /active exact/);
+	resumed.releasePrepared({
+		authorId: author.id,
+		observation: {status: 'stopped', agentId: author.agentId, attemptId: claim.attemptId, ref: 'fake-host/stopped'},
+		preparationRevision: preparation.open().revision,
+	});
+	assert.equal(preparation.open().authors[0].status, 'available');
+	assert.deepEqual(DesignRecords.read(f.store), after);
+});
 
 /** Called by branch scenarios to issue a real exact-subject reviewer capability.
  * Uses deterministic fixture judgments, not a live specialist quality verdict.
