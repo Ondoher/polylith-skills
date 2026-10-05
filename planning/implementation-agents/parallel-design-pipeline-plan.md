@@ -7,8 +7,10 @@ explicit bounded parallel use retains whole-stage exact review gates. Broader
 live cases and hosts require their own evidence. Preserve the milestone
 acceptance checks below when expanding or repairing the implementation.
 
-Next planned change: [proactive agent preparation](parallel-design-agent-preparation-plan.md),
-evaluated with the existing design boundaries. The
+Evaluated change: [proactive agent preparation](parallel-design-agent-preparation-plan.md),
+implemented as experimental opt-in within existing design boundaries. See its
+[readiness assessment](parallel-design-agent-preparation-readiness.md) for open
+quality and performance proof. The
 [UI state → treatment → assembly exploration](parallel-design-followup-exploration.md)
 is deferred. These records do not change the supported operating mode.
 

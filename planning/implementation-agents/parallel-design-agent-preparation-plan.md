@@ -2,10 +2,13 @@
 
 Recorded: 5 October 2026.
 
-Status: next planned change; implementation has not started. The owner selected
-proactive preparation with a maximum pool of four author agents and backoff when
-the host reaches its thread ceiling. Existing design boundaries, canonical stores
-and review gates remain the baseline for this change.
+Status: lifecycle implemented and independently reviewed; budgeted live trial
+executed with promotion gates still open. See the
+[readiness assessment](parallel-design-agent-preparation-readiness.md) and
+[execution progress](parallel-design-agent-preparation-progress.md). The owner
+selected proactive preparation with a maximum pool of four author agents and
+backoff when the host reaches its thread ceiling. Existing design boundaries,
+canonical stores and review gates remain the baseline for this change.
 
 The [state → treatment → assembly exploration](parallel-design-followup-exploration.md)
 is deferred. Do not combine that decomposition change with preparation work.

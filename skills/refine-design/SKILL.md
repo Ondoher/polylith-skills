@@ -47,6 +47,16 @@ writes, and assembled/frozen whole UX independently reviewed before scoped UI.
 Serial remains supported for repair, comparison and hosts without guarded delivery;
 native two-workflow retained-file use has bounded live evidence, while larger live
 designs, live MCP-host recovery and broader parallel readiness need further evidence.
+For explicitly requested experimental agent preparation inside `parallel-design`,
+read [author preparation](references/agent-preparation.md). Preparation may begin
+from an early forecast before the operational plan exists; it grants no authoring
+authority. Keep at most four known or potentially open managed authors and at most
+two concurrent author assignments. Serial and on-demand operation remain the default;
+read the [recorded preparation boundary](../../planning/implementation-agents/parallel-design-agent-preparation-readiness.md)
+for actual bounded live observations and unresolved evidence. The baseline whole
+UI was accepted; the prepared branch's quality gate remains open and timing is
+inconclusive. General performance benefit remains unproved; preserve the supported
+host and guard boundary.
 Request `single-pass-ux` and `single-pass-ui` modes: one forward authoring pass per
 stage, at most one optional issue-directed repair pass, then deterministic assembly
 into the current consumer schemas. Persist and reuse completed units during the run.

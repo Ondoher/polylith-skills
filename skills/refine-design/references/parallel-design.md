@@ -30,10 +30,29 @@ then initialize `DesignCoordinator` under
 meaning in existing stores; the plan is execution metadata. Read
 [the operational contract](operational-design-plan.md) for bindings and recovery.
 
-Initially bound the author pool to two concurrent authors. Give shared context,
+Keep authoring concurrency at no more than two. Give shared context,
 shared elements/components and visual foundations one owner; local work consumes
 their accepted outputs. Distinct record IDs do not prove disjoint meaning. Resolve
 semantic overlap and revise/validate affected ownership before dispatch.
+
+Use [agent preparation](agent-preparation.md) only when explicitly requested for
+this parallel run. Serial and on-demand author creation remain the default.
+Guarded preparation, reuse and saved recovery have bounded retained-file live
+observations. The baseline whole UI was accepted; the prepared branch's quality
+gate remains open and timing is inconclusive. Follow the [recorded operating boundary](../../../planning/implementation-agents/parallel-design-agent-preparation-readiness.md)
+and keep preparation experimental. A cheap forecast may reserve
+read-and-wait authors before the operational plan exists, while the existing
+research and planning path continues. Persist the separate ledger under the app's
+planning root, grant no author permissions during preparation, and reserve exact
+claims only after the validated plan and required gates are current.
+
+The managed pool has a maximum of four known or potentially open authors,
+including assigned, uncertain and unconfirmed retired threads. That ceiling does
+not increase the two-author execution limit. Preserve reviewer capacity and later
+incompatible author-role capacity, especially when closure is unavailable. The
+parent executes current in-session host tools; the data-only ledger and CLI cannot
+spawn model sessions or turn a forecast into design authority. Preparation does
+not change the whole-UX barrier or introduce state/treatment decomposition.
 
 Check native feasibility as well as graph validity. In schema 0.4, scene overrides
 cannot change a part's children or identity or remove its behavior references.
@@ -55,7 +74,8 @@ in the parent handoff; do not invent run-local links to files that are elsewhere
 
 The parent opens the existing UX/UI unit stores with exact input bindings. A ready
 item is claimed with its item ID, assigned agent identity and observed coordinator
-revision. Save dispatch intent and exact inputs before launching the worker. Supply
+revision. Save dispatch intent and exact inputs before activating the authoring
+assignment. Supply
 only its owned native record references, source/dependency identities, relevant
 research and current contribution revisions. Stage-qualified plan references such
 as `ux:flow:edit-entry` map to existing store references such as `flow:edit-entry`.

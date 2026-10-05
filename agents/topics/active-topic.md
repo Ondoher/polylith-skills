@@ -2,9 +2,12 @@
 
 Current work: refine the reusable design pipeline and its durable research handoff.
 
-Next planned change: [proactive agent preparation](../../planning/implementation-agents/parallel-design-agent-preparation-plan.md).
-Preserve existing design boundaries while evaluating advance startup, a four-author
-preparation pool and thread-ceiling backoff. The
+Evaluated change: [proactive agent preparation](../../planning/implementation-agents/parallel-design-agent-preparation-plan.md).
+The lifecycle is implemented with an experimental opt-in boundary; its prepared
+rendered UI gate remains open and performance is inconclusive. See
+[readiness](../../planning/implementation-agents/parallel-design-agent-preparation-readiness.md).
+Preserve existing design boundaries, the four-author pool ceiling and thread-ceiling
+backoff. The
 [UI state → treatment → assembly exploration](../../planning/implementation-agents/parallel-design-followup-exploration.md)
 is deferred.
 
