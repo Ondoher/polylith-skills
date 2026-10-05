@@ -31,6 +31,15 @@ Only files intended to become part of the repository may be written outside that
 directory. When that intent is unclear, keep the file under `.codex-tmp/`; move only
 intended repository deliverables to their final locations.
 
+Treat estimated execution time limits as progress checkpoints unless the user
+explicitly requires a hard deadline or resource cap. Continue while evidence
+shows meaningful progress toward the goal. At each checkpoint record completed
+work, reduced uncertainty, remaining work and the next checkpoint. Repeated
+retries or activity without new evidence are not progress; change approach or
+stop the stalled path when repeated attempts cease advancing the goal. Preserve
+actual timings and failures rather than changing success criteria to justify
+continuation. Individual operation timeouts still apply to detect hangs.
+
 Use `skills/refine-design/scripts/bounded-read.mjs` for large instruction or file
 batches. Supply all paths together and forward one raw page per tool response;
 follow its continuation instead of combining large command outputs. Keep existing
