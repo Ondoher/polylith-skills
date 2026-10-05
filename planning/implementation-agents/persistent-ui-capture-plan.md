@@ -2,7 +2,7 @@
 
 Recorded: 5 October 2026.
 
-Status: executing; milestones 1–3 passed, timing and integration pending. See
+Status: all five experiment milestones passed. See the [readiness assessment](persistent-ui-capture-readiness.md) and
 [execution progress](persistent-ui-capture-progress.md). This is a bounded follow-up
 to the [agent-preparation trial](parallel-design-agent-preparation-readiness.md),
 whose screenshot replacements exposed font fidelity and browser timeout problems.
