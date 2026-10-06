@@ -2,7 +2,9 @@
 
 Started: 5 October 2026. Governing [plan](persistent-ui-capture-plan.md).
 
-Status: all five experiment milestones passed; managed integration remains a separate unit.
+Status: all five experiment milestones passed; the subsequent owner-authorized
+[managed integration](persistent-ui-capture-promotion.md) is implemented.
+Historical experiment milestones and evidence below are preserved.
 Prototype and raw synthetic evidence remain under
 `.codex-tmp/persistent-ui-capture/run-2026-10-05/`. Existing design artifacts and
 the earlier prepared branch's open review gate remain unchanged.

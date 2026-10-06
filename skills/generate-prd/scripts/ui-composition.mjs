@@ -1,4 +1,5 @@
 import {UiParts} from './ui-parts.mjs';
+import {NumericScale} from './NumericScale.mjs';
 import {UxFlows} from './ux-flows.mjs';
 import {createHash} from 'node:crypto';
 import fs from 'node:fs';
@@ -21,6 +22,7 @@ const nodeKinds = new Set(['region', 'component']);
 const trackUnits = new Set(['px', 'fr', 'content']);
 const sizeModes = new Set(['content', 'fill', 'fixed']);
 const styleKinds = new Set(['color-role', 'typography-role', 'icon']);
+const controlRenderers = new Set(['button', 'icon-button', 'text-field', 'choice-group']);
 const htmlRenderers = new Set([
 	'heading',
 	'text',
@@ -433,7 +435,16 @@ function padding(value, tokens, label) {
 
 function layout(value, tokens, label) {
 	object(value, label);
-	allowedKeys(value, ['mode', 'columns', 'rows', 'direction', 'wrap', 'gap', 'padding', 'align', 'justify'], label);
+	allowedKeys(
+		value,
+		['mode', 'columns', 'rows', 'direction', 'wrap', 'gap', 'padding', 'align', 'justify', 'scale'],
+		label,
+	);
+	if (value.scale) {
+		allowedKeys(value.scale, ['min', 'max'], `${label}.scale`);
+		NumericScale.position(value.scale, value.scale.min);
+		if (value.mode !== 'grid' || value.columns?.length !== 1) fail(`${label}.scale requires one grid column`);
+	}
 	if (value.mode === 'grid') {
 		if (value.direction !== undefined || value.wrap !== undefined) fail(`${label} grid cannot declare flex fields`);
 		const columns = list(value.columns, `${label}.columns`);
@@ -681,12 +692,6 @@ export function validateUiSpec(
 		if (!availabilityKinds.has(template.availability)) fail(`template ${template.id}.availability is unsupported`);
 		if (!['presentational', 'behavioral'].includes(template.interaction))
 			fail(`template ${template.id}.interaction is unsupported`);
-		if (
-			['button', 'icon-button', 'text-field', 'choice-group'].includes(template.html?.renderer) &&
-			template.interaction !== 'behavioral'
-		) {
-			fail(`template ${template.id}.interaction must be behavioral for ${template.html.renderer}`);
-		}
 		if (template.availability === 'placeholder' && template.status === 'accepted')
 			fail(`placeholder template ${template.id} cannot be accepted`);
 		htmlContract(template.html, template, `template ${template.id}.html`);
@@ -891,7 +896,7 @@ export function validateUiSpec(
 		if (height.maxPx !== undefined)
 			positiveInteger(height.maxPx, `scene ${scene.id}.transientBehavior.height.maxPx`);
 	};
-	const visitNode = (node, context, label, nodeIds, seenObjects) => {
+	const visitNode = (node, context, label, nodeIds, seenObjects, ancestorRegionIds = []) => {
 		object(node, label);
 		if (seenObjects.has(node)) fail(`${label} must not reuse or cycle node objects`);
 		seenObjects.add(node);
@@ -899,13 +904,15 @@ export function validateUiSpec(
 		if (nodeIds.has(id)) fail(`scene ${context.scene.id} contains duplicate node id ${id}`);
 		nodeIds.add(id);
 		if (!nodeKinds.has(node.kind)) fail(`${label}.kind is unsupported`);
-		const commonKeys = ['id', 'kind', 'placement', 'constraints', 'styleRefs', 'assetRefs'];
+		const commonKeys = ['id', 'kind', 'placement', 'constraints', 'styleRefs', 'assetRefs', 'scalePosition'];
 		const regionKeys = ['label', 'surfaceTreatment', 'uxRegionRef', 'layout', 'children'];
 		const componentKeys = [
 			'uxRef',
 			'templateRef',
 			'interactionNodeRef',
 			'actionRef',
+			'alternateInteractionBindings',
+			'interactionInstanceRef',
 			'state',
 			'parameters',
 			'content',
@@ -935,6 +942,13 @@ export function validateUiSpec(
 			}
 			layout(node.layout, tokens, `${label}.layout`);
 			const children = list(node.children, `${label}.children`);
+			for (const child of children)
+				if (child.scalePosition !== undefined) {
+					allowedKeys(child.scalePosition, ['start', 'end'], `${label}.scalePosition`);
+					NumericScale.place(node.layout.scale, child.scalePosition);
+					if (child.constraints?.minWidthPx !== undefined || child.constraints?.maxWidthPx !== undefined)
+						fail(`${label}: numeric placement owns horizontal extent`);
+				}
 			if (!children.length) fail(`${label}.children must not be empty`);
 			if (node.layout.mode === 'grid') {
 				children.forEach((child, index) => {
@@ -952,7 +966,10 @@ export function validateUiSpec(
 				});
 			}
 			children.forEach((child, index) =>
-				visitNode(child, context, `${label}.children[${index}]`, nodeIds, seenObjects),
+				visitNode(child, context, `${label}.children[${index}]`, nodeIds, seenObjects, [
+					...ancestorRegionIds,
+					id,
+				]),
 			);
 			return;
 		}
@@ -974,26 +991,59 @@ export function validateUiSpec(
 			fail(`${label}.templateRef.version does not match template ${template.id}`);
 		const hasInteractionNodeRef = node.interactionNodeRef !== undefined;
 		const hasActionRef = node.actionRef !== undefined;
-		if (template.interaction === 'behavioral' || hasInteractionNodeRef || hasActionRef) {
+		const hasAlternateBindings = node.alternateInteractionBindings !== undefined;
+		const hasInstanceRef = node.interactionInstanceRef !== undefined;
+		if (
+			template.interaction === 'behavioral' ||
+			hasInteractionNodeRef ||
+			hasActionRef ||
+			hasAlternateBindings ||
+			hasInstanceRef
+		) {
 			if (template.interaction !== 'behavioral')
 				fail(`${label} cannot bind behavior through presentational template ${template.id}`);
-			text(node.interactionNodeRef, `${label}.interactionNodeRef`);
-			text(node.actionRef, `${label}.actionRef`);
-			const interactionNode = context.interactionNodes.get(node.interactionNodeRef);
-			if (!interactionNode)
-				fail(
-					`${label}.interactionNodeRef references missing interaction node ${node.interactionNodeRef} in frame ${context.frame.id}`,
-				);
-			if (interactionNode.kind !== 'affordance')
-				fail(`${label}.interactionNodeRef must reference a UX affordance`);
-			if (interactionNode.record.actionRef !== node.actionRef)
-				fail(`${label}.actionRef must match UX affordance ${node.interactionNodeRef}`);
-			reference(node.actionRef, ux.actions.ids, `${label}.actionRef`);
-			if (!['accepted', 'locked'].includes(ux.actionsById.get(node.actionRef).status))
-				fail(`${label}.actionRef must reference an accepted or locked UX action`);
-			if (context.boundInteractionNodeIds.has(node.interactionNodeRef))
-				fail(`scene ${context.scene.id} binds UX affordance ${node.interactionNodeRef} more than once`);
-			context.boundInteractionNodeIds.add(node.interactionNodeRef);
+			if (hasInstanceRef) {
+				text(node.interactionInstanceRef, `${label}.interactionInstanceRef`);
+				if (!ancestorRegionIds.includes(node.interactionInstanceRef))
+					fail(`${label}.interactionInstanceRef must reference a containing instance region`);
+			}
+			const bindings = [{binding: node, bindingLabel: label}];
+			if (hasAlternateBindings) {
+				const alternates = list(node.alternateInteractionBindings, `${label}.alternateInteractionBindings`);
+				if (!alternates.length) fail(`${label}.alternateInteractionBindings must not be empty`);
+				for (const [index, binding] of alternates.entries()) {
+					const bindingLabel = `${label}.alternateInteractionBindings[${index}]`;
+					allowedKeys(binding, ['interactionNodeRef', 'actionRef', 'condition', 'label'], bindingLabel);
+					text(binding.condition, `${bindingLabel}.condition`);
+					text(binding.label, `${bindingLabel}.label`);
+					bindings.push({binding, bindingLabel});
+				}
+			}
+			for (const {binding, bindingLabel} of bindings) {
+				text(binding.interactionNodeRef, `${bindingLabel}.interactionNodeRef`);
+				text(binding.actionRef, `${bindingLabel}.actionRef`);
+				const interactionNode = context.interactionNodes.get(binding.interactionNodeRef);
+				if (!interactionNode)
+					fail(
+						`${bindingLabel}.interactionNodeRef references missing interaction node ${binding.interactionNodeRef} in frame ${context.frame.id}`,
+					);
+				if (interactionNode.kind !== 'affordance')
+					fail(`${bindingLabel}.interactionNodeRef must reference a UX affordance`);
+				if (interactionNode.record.actionRef !== binding.actionRef)
+					fail(`${bindingLabel}.actionRef must match UX affordance ${binding.interactionNodeRef}`);
+				reference(binding.actionRef, ux.actions.ids, `${bindingLabel}.actionRef`);
+				if (!['accepted', 'locked'].includes(ux.actionsById.get(binding.actionRef).status))
+					fail(`${bindingLabel}.actionRef must reference an accepted or locked UX action`);
+				const instances = context.boundInteractionInstanceRefs.get(binding.interactionNodeRef);
+				if (
+					instances &&
+					(instances.has(undefined) || !hasInstanceRef || instances.has(node.interactionInstanceRef))
+				)
+					fail(`scene ${context.scene.id} binds UX affordance ${binding.interactionNodeRef} more than once`);
+				if (!instances) context.boundInteractionInstanceRefs.set(binding.interactionNodeRef, new Set());
+				context.boundInteractionInstanceRefs.get(binding.interactionNodeRef).add(node.interactionInstanceRef);
+				context.boundInteractionNodeIds.add(binding.interactionNodeRef);
+			}
 		}
 		text(node.state, `${label}.state`);
 		if (!template.supportedStates.includes(node.state))
@@ -1004,6 +1054,49 @@ export function validateUiSpec(
 		for (const required of metadata.requiredParameterIds) {
 			if (!Object.hasOwn(node.parameters, required))
 				fail(`${label}.parameters is missing required parameter ${required}`);
+		}
+		if (controlRenderers.has(template.html.renderer)) {
+			if (node.parameters.disabled !== undefined)
+				boolean(node.parameters.disabled, `${label}.parameters.disabled`);
+			// Resolved disabled specimens preserve task context without inventing UX affordances.
+			if (
+				template.interaction === 'presentational' &&
+				node.state !== 'disabled' &&
+				node.parameters.disabled !== true
+			)
+				fail(`${label} must be explicitly disabled through presentational control template ${template.id}`);
+		}
+		if (template.html.renderer === 'text-field') {
+			for (const parameter of ['multiline', 'error']) {
+				if (node.parameters[parameter] !== undefined)
+					boolean(node.parameters[parameter], `${label}.parameters.${parameter}`);
+			}
+			if (
+				node.parameters.rows !== undefined &&
+				(!Number.isSafeInteger(node.parameters.rows) || node.parameters.rows < 1)
+			)
+				fail(`${label}.parameters.rows must be a positive integer`);
+		}
+		if (['button', 'icon-button'].includes(template.html.renderer)) {
+			for (const field of ['assetId', 'leadingAssetId', 'trailingAssetId']) {
+				if (node.parameters[field] === undefined) continue;
+				reference(node.parameters[field], assets.ids, `${label}.parameters.${field}`);
+				const asset = assets.result.find((candidate) => candidate.id === node.parameters[field]);
+				if (asset.kind !== 'image') fail(`${label}.parameters.${field} must reference an image asset`);
+				if (!(node.assetRefs ?? []).includes(asset.id))
+					fail(`${label}.assetRefs must include parameters.${field}`);
+			}
+			for (const field of ['expanded', 'pressed']) {
+				if (node.parameters[field] !== undefined)
+					boolean(node.parameters[field], `${label}.parameters.${field}`);
+			}
+			if (
+				node.parameters.hasPopup !== undefined &&
+				!['menu', 'listbox', 'dialog'].includes(node.parameters.hasPopup)
+			)
+				fail(`${label}.parameters.hasPopup is unsupported`);
+			if (node.parameters.accessibleLabel !== undefined)
+				text(node.parameters.accessibleLabel, `${label}.parameters.accessibleLabel`);
 		}
 		if (template.html.renderer === 'visual' && !visualRoles.has(node.parameters.role)) {
 			fail(`${label}.parameters.role is unsupported for the visual renderer`);
@@ -1051,8 +1144,6 @@ export function validateUiSpec(
 			) {
 				fail(`${label}.parameters.selectedId references a missing option`);
 			}
-			if (node.parameters.disabled !== undefined)
-				boolean(node.parameters.disabled, `${label}.parameters.disabled`);
 		}
 		if (template.html.renderer === 'image') {
 			reference(node.parameters.assetId, assets.ids, `${label}.parameters.assetId`);
@@ -1211,6 +1302,7 @@ export function validateUiSpec(
 			regionIds,
 			boundRegionIds: new Set(),
 			boundInteractionNodeIds: new Set(),
+			boundInteractionInstanceRefs: new Map(),
 			placeholderCount: 0,
 		};
 		if (scene.root?.kind !== 'region') fail(`scene ${scene.id}.root must be a region`);
@@ -1310,6 +1402,10 @@ export function uiRequiredScopeRefs(spec) {
 		add(node.uxRef);
 		add(node.interactionNodeRef);
 		add(node.actionRef);
+		for (const binding of node.alternateInteractionBindings ?? []) {
+			add(binding.interactionNodeRef);
+			add(binding.actionRef);
+		}
 		if (node.kind === 'region' && Array.isArray(node.children)) node.children.forEach(visit);
 	};
 	for (const scene of spec.scenes ?? []) {
@@ -1326,7 +1422,18 @@ export function uiRequiredScopeRefs(spec) {
 	return [...refs];
 }
 
-/** Validate and persist a canonical UI composition source for HTML comp rendering. */
+/** Call this method to validate and persist a canonical UI composition source.
+ * Existing targets require their exact dependencies; explicit prior paths are used
+ * only for ownership validation, never for incoming design or review validation.
+ * Invalid ownership, current inputs, review, target paths or lock changes throw before replacement.
+ *
+ * @param {string} inputPath - Incoming UI proposal file.
+ * @param {string} outputPath - Canonical UI target file.
+ * @param {string} uxPath - Current independently reviewed UX file.
+ * @param {string} designLanguagePath - Current design-language file.
+ * @param {UiPersistenceOptions} options - Authority, prior dependencies and lock reasons.
+ * @returns {UiPersistenceResult} - Persisted source identity and scene count.
+ */
 export function writeUiSpec(inputPath, outputPath, uxPath, designLanguagePath, options = {}) {
 	const spec = JSON.parse(fs.readFileSync(inputPath, 'utf8'));
 	const uxSource = fs.readFileSync(uxPath);
@@ -1368,7 +1475,18 @@ export function writeUiSpec(inputPath, outputPath, uxPath, designLanguagePath, o
 		relativeTarget,
 		value: spec,
 		validateExisting: (existing) => {
-			validateUiSpec(existing, {uxSpec, designLanguage, assetRoot, sourceRoot});
+			const existingUxSpec = options.existingUxPath
+				? JSON.parse(fs.readFileSync(path.resolve(options.existingUxPath), 'utf8'))
+				: uxSpec;
+			const existingDesignLanguage = options.existingDesignLanguagePath
+				? JSON.parse(fs.readFileSync(path.resolve(options.existingDesignLanguagePath), 'utf8'))
+				: designLanguage;
+			validateUiSpec(existing, {
+				uxSpec: existingUxSpec,
+				designLanguage: existingDesignLanguage,
+				assetRoot,
+				sourceRoot,
+			});
 			if (existing.id !== spec.id)
 				fail(`UI artifact identity ${existing.id} does not match incoming identity ${spec.id}`);
 		},
@@ -1392,7 +1510,7 @@ function cli(argumentsToParse) {
 	const productDocumentRoot = options.get('--product-document-root');
 	if (!input || !output || !ux || !designLanguage || !uxReview || !productDescription || !sourceRoot)
 		fail(
-			'Usage: node ui-composition.mjs --input <ui-spec.json> --ux <ux-spec.json> --ux-review <ux-review.json> --product-description <product-description.md> [--product-description-id <ux-source-id>] --source-root <authoritative-source-root> [--product-document-root <product/<name>>] --design-language <design-language.json> --output <ui-spec.json> [--asset-root <ui-asset-root> (required for image assets)] [--lock-reason <current-user-request>] [--locked-change-reason <current-user-request>]',
+			'Usage: node ui-composition.mjs --input <ui-spec.json> --ux <ux-spec.json> --ux-review <ux-review.json> --product-description <product-description.md> [--product-description-id <ux-source-id>] --source-root <authoritative-source-root> [--product-document-root <product/<name>>] --design-language <design-language.json> --output <ui-spec.json> [--existing-ux <prior-ux.json>] [--existing-design-language <prior-design-language.json>] [--asset-root <ui-asset-root> (required for image assets)] [--lock-reason <current-user-request>] [--locked-change-reason <current-user-request>]',
 		);
 	process.stdout.write(
 		`${JSON.stringify(
@@ -1402,6 +1520,8 @@ function cli(argumentsToParse) {
 				productDescriptionId: options.get('--product-description-id'),
 				sourceRoot: path.resolve(sourceRoot),
 				productDocumentRoot: productDocumentRoot ? path.resolve(productDocumentRoot) : undefined,
+				existingUxPath: options.get('--existing-ux'),
+				existingDesignLanguagePath: options.get('--existing-design-language'),
 				assetRoot: options.get('--asset-root')
 					? path.resolve(options.get('--asset-root'))
 					: path.dirname(path.resolve(input)),

@@ -5,8 +5,9 @@ Assessed: 5 October 2026. Governing [plan](persistent-ui-capture-plan.md) and
 
 Status: all five experiment gates passed, including actual independent rendered
 review of all 14 final screenshots. Parent exact-subject passing validation
-succeeded. This is a local experiment, not a promoted managed
-capture service or default-policy change.
+succeeded. The experiment was subsequently promoted by owner instruction; see
+[maintained integration and verification](persistent-ui-capture-promotion.md).
+The measured results below describe the original local experiment.
 
 ## Measured result
 
@@ -62,7 +63,7 @@ not independently instrumented.
 
 ## Operating recommendation and boundary
 
-Proceed with a separate managed integration unit if the owner selects adoption.
+The owner selected adoption and the separate [managed integration](persistent-ui-capture-promotion.md) is now implemented. The following recommendation records the original experiment boundary.
 The useful boundary is one run-owned browser, a serial request queue and fresh
 pages, with explicit asset readiness and source-bound output records. The temporary
 prototype accepts saved HTML paths; direct HTML strings, concurrent pages and a

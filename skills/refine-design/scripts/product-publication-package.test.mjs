@@ -1,3 +1,4 @@
+import {publicationResourceExtensions} from './publication-resource-media.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -234,4 +235,22 @@ test('copies only declared hash-bound resources, deduplicates bytes, and replays
 	assert.deepEqual(fs.readdirSync(path.join(outputRoot, 'artifact-resources')), [`${sha256(png)}.png`]);
 	const verified = verifyArtifactResourceFiles(collected.resources, {resourceRoot: outputRoot});
 	assert.deepEqual(verified[0].bytes, png);
+});
+
+test('published resource schemas cover the reviewed-render media contract', () => {
+	const schemas = [
+		'../references/product-artifact-schema-1.0.json',
+		'../references/product-context-schema-1.0.json',
+		'../references/product-context-schema-2.0.json',
+		'../references/technical-context-schema-1.0.json',
+		'../../generate-prd/references/product-context-schema-1.0.json',
+		'../../generate-prd/references/product-context-schema-2.0.json',
+	];
+	for (const file of schemas) {
+		const properties = JSON.parse(fs.readFileSync(new URL(file, import.meta.url), 'utf8')).$defs.resourceDescriptor
+			.properties;
+		assert.deepEqual([...properties.mediaType.enum].sort(), [...publicationResourceExtensions.keys()].sort());
+		for (const extension of publicationResourceExtensions.values())
+			assert.match(`artifact-resources/${'a'.repeat(64)}.${extension}`, new RegExp(properties.path.pattern));
+	}
 });

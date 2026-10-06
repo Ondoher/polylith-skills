@@ -315,7 +315,7 @@ export function reviewPages(document, config, componentBlock = null) {
 	return pages;
 }
 
-function parts(existing, expected, start = begin, finish = end) {
+function parts(existing, expected, start = begin, finish = end, format = (file, content) => content, file = '') {
 	const startIndex = existing.indexOf(start),
 		endIndex = existing.indexOf(finish);
 	if (
@@ -325,13 +325,25 @@ function parts(existing, expected, start = begin, finish = end) {
 		existing.indexOf(finish, endIndex + 1) >= 0
 	)
 		fail('Missing or ambiguous generated page markers');
-	if (existing.slice(startIndex, endIndex + finish.length).replace(/\r\n/g, '\n') !== expected)
+	if (
+		format(file, existing.slice(startIndex, endIndex + finish.length).replace(/\r\n/g, '\n')).trimEnd() !==
+		format(file, expected).trimEnd()
+	)
 		fail('Generated review page was edited; reconcile before rendering');
 	return {prefix: existing.slice(0, startIndex), suffix: existing.slice(endIndex + finish.length)};
 }
 
 /** Plan every page before publication; preserve owner notes and reject collisions. */
-export function planReviewPages(base, saved, next, oldConfig, newConfig, oldComponents, newComponents) {
+export function planReviewPages(
+	base,
+	saved,
+	next,
+	oldConfig,
+	newConfig,
+	oldComponents,
+	newComponents,
+	format = (file, content) => content,
+) {
 	if (!next.typography || !next.theme)
 		fail('Review pages require the foundation scope; bootstrap missing foundations first');
 	if (oldConfig) validateReviewConfig(oldConfig);
@@ -355,7 +367,7 @@ export function planReviewPages(base, saved, next, oldConfig, newConfig, oldComp
 		}
 		if (expected) {
 			if (existing === null) fail('Missing generated review page: ' + file);
-			const preserved = parts(existing, expected, start, finish);
+			const preserved = parts(existing, expected, start, finish, format, file);
 			if (!oldConfig && file === 'design-language.md') {
 				movedNotes = preserved.prefix + preserved.suffix;
 				outputs.set(file, generated + '\n');

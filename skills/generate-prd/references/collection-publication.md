@@ -2,7 +2,8 @@
 
 Run this collection publisher after the current UI composition pass. The
 operational command requires a publication manifest selecting current UX 0.4
-and UI 0.4 artifacts, at least one source-bound scene, and a plan that selects
+and UI 0.4 artifacts, a reviewed `ui-capture` 1.0 artifact selected by manifest
+1.1, at least one source-bound scene, and a plan that selects
 every scene. A partial pass may retain explicit missing-coverage gaps; a scene
 still needs visual inspection before it is called a finished comp.
 
@@ -28,9 +29,11 @@ the publisher does not synthesize visual evidence.
 When a plan selects current UI scenes or render requests, the context must
 contain their bound rich publication package. The existing UI renderer
 validates and renders the supplied scene, local image resources, and full-size
-comp outputs. The collection embeds each selected scene as native markup near
-its owning content, copies the rich renderer's supporting pages and assets
-into that document, and offers a separate full-size link. It does not
+comp outputs. The collection embeds the exact reviewed clean PNG near
+its owning content with alternative text and a state caption, copies the
+reviewed clean/annotated images and supporting HTML/assets into that document,
+and offers full-size PNG and saved HTML links. Publication validates exact source,
+renderer and image identities, copying the reviewed saved HTML/CSS/font resources; it never captures a new image. It does not
 use an iframe or read arbitrary asset paths. Each document receipt records
 the context, outline, weights, and plan hashes, all emitted file paths and
 byte hashes, and selected resource descriptors.

@@ -5,6 +5,7 @@ import {isDeepStrictEqual} from 'node:util';
 import {validateUiSpec} from './ui-composition.mjs';
 import {validatePassingUxReview} from './ux-review.mjs';
 import {UiParts} from './ui-parts.mjs';
+import {buildComponentRegistration} from './component-design.mjs';
 import {canonicalPublicationJson} from './product-publication-payload.mjs';
 import {buildDesignLanguageAssetOutputs} from './design-language-html.mjs';
 import {
@@ -150,6 +151,7 @@ export class DesignUiReview {
 				'renderBasePath',
 				'wireframePrepared',
 				'preparedWireframeRunPath',
+				'componentPaths',
 			],
 			'UI review inputs',
 		);
@@ -268,6 +270,23 @@ export class DesignUiReview {
 			)
 				throw new Error('Render report source bindings are stale');
 		}
+		const componentInputs =
+			inputs.componentPaths === undefined
+				? []
+				: this._strings(inputs.componentPaths, 'componentPaths', false).map((file) => this._read(root, file));
+		const componentRegistrations = componentInputs.map((input) => {
+			const inlineSpec = JSON.parse(input.bytes.toString('utf8'));
+			return {
+				...buildComponentRegistration(inlineSpec, uiSpec, {
+					uxSpec,
+					designLanguage,
+					sourceRoot: root,
+					componentAssetRoot: path.dirname(path.resolve(root, input.identity.path)),
+					surfaceAssetRoot: root,
+				}),
+				inlineSpec,
+			};
+		});
 		const expected = buildUiCompositionHtml(uiSpec, {
 			uxSpec,
 			designLanguage,
@@ -277,6 +296,7 @@ export class DesignUiReview {
 			uiLabel: renderReport.sources.ui.label,
 			uxLabel: renderReport.sources.ux.label,
 			designLabel: renderReport.sources.designLanguage.label,
+			componentRegistrations,
 			sourceRoot: root,
 			assetRoot: root,
 		});
@@ -358,6 +378,7 @@ export class DesignUiReview {
 			uxReview: uxReview.identity,
 			designLanguage: design.identity,
 			ui: ui.identity,
+			...(componentInputs.length ? {components: componentInputs.map((input) => input.identity)} : {}),
 			renderEvidence: evidence.identity,
 			renders,
 			renderSupporting,

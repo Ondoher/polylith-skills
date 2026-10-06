@@ -13,6 +13,9 @@ import {
 } from '../scripts/generate-prd.mjs';
 import {createOutlineSourceIndex} from '../scripts/prd-outline.mjs';
 import {encodePublicationDocument} from '../scripts/product-publication-payload.mjs';
+import {decodePublicationDocument} from '../scripts/product-publication-payload.mjs';
+import {capturePublicationFixture} from './capture-publication.mjs';
+import {UiParts} from '../scripts/ui-parts.mjs';
 import {
 	assertUiPass,
 	createProductCollection,
@@ -42,6 +45,7 @@ export async function sourceBoundTrial({withScene = false, root: assignedRoot} =
 		const imageOutput = `assets/ui-media/${imageSha.slice(0, 12)}-harvest.png`;
 		const recordDependency = [{id: context.product.id, materialSha256: context.product.materialSha256}];
 		const artifact = (id, artifactKind, owner, document, artifactDependencies = [], resources = []) => {
+			if (artifactKind === 'ui-composition') document = UiParts.importLegacy({...document, schemaVersion: '0.3'});
 			const value = {
 				schemaVersion: '1.0',
 				kind: 'product-artifact',
@@ -49,7 +53,13 @@ export async function sourceBoundTrial({withScene = false, root: assignedRoot} =
 				artifactKind,
 				owner,
 				artifactSchemaVersion:
-					artifactKind === 'prd-publication' ? '1.0' : artifactKind === 'design-language' ? '0.14' : '0.4',
+					artifactKind === 'prd-publication'
+						? document.schemaVersion
+						: artifactKind === 'ui-capture'
+							? '1.0'
+							: artifactKind === 'design-language'
+								? '0.14'
+								: '0.4',
 				revision: 1,
 				status: 'accepted',
 				consumerDomains: ['prd'],
@@ -109,6 +119,7 @@ export async function sourceBoundTrial({withScene = false, root: assignedRoot} =
 					{
 						id: 'entry-scene',
 						name: 'Entry scene',
+						stateRef: 'available',
 						status: 'accepted',
 						completeness: 'complete',
 						surfaceRef: 'entry-surface',
@@ -157,32 +168,70 @@ export async function sourceBoundTrial({withScene = false, root: assignedRoot} =
 				},
 			],
 		);
-		const manifest = artifact(
-			'garden-publication',
-			'prd-publication',
-			'product',
-			{
-				schemaVersion: '1.0',
-				uxArtifactId: ux.id,
-				designLanguageArtifactId: 'garden-design',
-				uiArtifactId: ui.id,
-				componentArtifactIds: [],
-			},
+		const captureDocument = capturePublicationFixture({
+			ui: decodePublicationDocument(ui.payload).document,
+			ux: decodePublicationDocument(ux.payload).document,
+			designLanguage: decodePublicationDocument(design.payload).document.designLanguage,
+			bytes: imageBytes,
+		});
+		const capture = artifact(
+			'garden-capture',
+			'ui-capture',
+			'ui',
+			captureDocument,
 			[ux, design, ui].map((entry) => ({
 				id: entry.id,
 				revision: entry.revision,
 				materialSha256: entry.materialSha256,
 			})),
+			[
+				...captureDocument.assets.map((asset) => ({
+					id: asset.id,
+					logicalPath: asset.path,
+					path: `artifact-resources/${imageSha}.png`,
+					mediaType: 'image/png',
+					byteLength: imageBytes.length,
+					sha256: imageSha,
+				})),
+				...captureDocument.renderFiles.map((file) => ({
+					id: file.id,
+					logicalPath: file.path,
+					path: `artifact-resources/${file.sha256}.html`,
+					mediaType: file.mimeType,
+					byteLength: Buffer.byteLength('mock HTML for transport only'),
+					sha256: file.sha256,
+				})),
+			],
 		);
-		context.artifacts.push(ux, design, ui, manifest);
+		const manifest = artifact(
+			'garden-publication',
+			'prd-publication',
+			'product',
+			{
+				schemaVersion: '1.1',
+				uxArtifactId: ux.id,
+				designLanguageArtifactId: 'garden-design',
+				uiArtifactId: ui.id,
+				componentArtifactIds: [],
+				uiCaptureArtifactId: capture.id,
+			},
+			[ux, design, ui, capture].map((entry) => ({
+				id: entry.id,
+				revision: entry.revision,
+				materialSha256: entry.materialSha256,
+			})),
+		);
+		context.artifacts.push(ux, design, ui, capture, manifest);
 		context.materialSha256 = calculateProductContextMaterialSha256(context);
 		context.contextId = `prd-context-${context.materialSha256.slice(0, 12)}`;
 		artifactPublication = {
+			capture: captureDocument,
 			files: new Map([
 				['assets/prd.css', Buffer.from('/* product styles */\n')],
 				['assets/composition.css', Buffer.from('/* UI styles */\n')],
 				['comps/entry.html', Buffer.from('<!doctype html><title>Entry scene</title>\n')],
 				[imageOutput, imageBytes],
+				...captureDocument.screenshots.map((shot) => [shot.path, imageBytes]),
 			]),
 			resources: [
 				{

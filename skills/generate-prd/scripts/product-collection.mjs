@@ -11,7 +11,7 @@ import {createOutlineSourceIndex} from './prd-outline.mjs';
 import {assertUiPass} from './prd-readiness.mjs';
 import {validateStructurePlan, validateWeightAssessment} from './prd-structure.mjs';
 import {decodePublicationDocument} from './product-publication-payload.mjs';
-import {renderInlineScene} from './ui-composition-html.mjs';
+import {renderReviewedCapture} from './ui-capture-publication.mjs';
 
 const RECEIPT = 'publication-receipt.json';
 const GENERATOR = {id: 'generate-prd-collection', version: '1.0.0'};
@@ -33,7 +33,7 @@ const PRIMARY_FIELDS = [
 const CSS = `:root{color-scheme:light;font:16px/1.55 system-ui,sans-serif;--ink:#1b2835;--muted:#536371;--line:#d5dde4;--accent:#235b83;--paper:#fff;--back:#f5f7f8}
 *{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--back)}a{color:var(--accent)}a:focus-visible{outline:3px solid #db8d23;outline-offset:2px}
 .layout{display:grid;grid-template-columns:minmax(14rem,20rem) minmax(0,1fr);max-width:95rem;margin:auto;min-height:100vh}.sidebar{padding:1.4rem;border-right:1px solid var(--line);background:var(--paper)}.sidebar nav ul{list-style:none;padding:0}.sidebar nav ul ul{padding-left:1rem;border-left:1px solid var(--line)}.sidebar li{margin:.45rem 0}.sidebar a[aria-current=page]{font-weight:700;color:var(--ink)}main{padding:2rem clamp(1rem,4vw,4rem);max-width:72rem}
-.eyebrow,.meta{color:var(--muted);font-size:.88rem}h1{font-size:clamp(1.8rem,3vw,2.7rem);line-height:1.2}h2{margin-top:2.7rem;border-top:1px solid var(--line);padding-top:1.2rem}h3{margin:0 0 .4rem}.intro,.source,.comp{background:var(--paper);border:1px solid var(--line);border-radius:.5rem;padding:1.2rem;margin:1rem 0}.source{border-left:4px solid #a3bacb}.source p{margin:.5rem 0}.source details{margin-top:.8rem}.source pre{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--back);padding:1rem}.source-links{font-size:.9rem}.status{display:inline-block;padding:.1rem .45rem;border-radius:1rem;background:#e7eff5;font-size:.8rem}.pages,.related{display:flex;gap:.65rem;flex-wrap:wrap}.pages a,.related a{padding:.35rem .6rem;background:var(--paper);border:1px solid var(--line);border-radius:.3rem}.comp{overflow:auto}.comp .prd-comp-canvas{max-width:100%}.notice{border-left:4px solid #bd7a17;padding:.7rem 1rem;background:#fff7e8}
+.eyebrow,.meta{color:var(--muted);font-size:.88rem}h1{font-size:clamp(1.8rem,3vw,2.7rem);line-height:1.2}h2{margin-top:2.7rem;border-top:1px solid var(--line);padding-top:1.2rem}h3{margin:0 0 .4rem}.intro,.source,.comp{background:var(--paper);border:1px solid var(--line);border-radius:.5rem;padding:1.2rem;margin:1rem 0}.source{border-left:4px solid #a3bacb}.source p{margin:.5rem 0}.source details{margin-top:.8rem}.source pre{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--back);padding:1rem}.source-links{font-size:.9rem}.status{display:inline-block;padding:.1rem .45rem;border-radius:1rem;background:#e7eff5;font-size:.8rem}.pages,.related{display:flex;gap:.65rem;flex-wrap:wrap}.pages a,.related a{padding:.35rem .6rem;background:var(--paper);border:1px solid var(--line);border-radius:.3rem}.comp{overflow:auto}.comp .prd-reviewed-capture img{display:block;max-width:100%;width:100%;height:auto}.notice{border-left:4px solid #bd7a17;padding:.7rem 1rem;background:#fff7e8}
 @media(max-width:800px){.layout{display:block}.sidebar{border-right:0;border-bottom:1px solid var(--line)}main{padding:1.25rem}}
 `;
 
@@ -244,11 +244,10 @@ function renderPage(plan, document, page, result, index, compPublication, contex
 			if (clean && !compPublication?.files.has(clean.value.output)) {
 				fail(`Selected comp ${clean.ref} has no rendered output ${clean.value.output}`);
 			}
-			return `<section class="comp" aria-label="${esc(scene.name)}"><h2>${esc(scene.name)}</h2><p class="meta">${esc(scene.completeness === 'partial' ? 'Partial source scene' : 'Source scene')} · ${esc(scene.status)}</p>${renderInlineScene(
-				scene,
-				uiSpec,
-				{uxSpec, componentRegistrations: compPublication?.inlineComponentRegistrations ?? []},
-			)}${clean ? `<p><a href="${esc(clean.value.output)}">Open the full-size comp</a></p>` : ''}</section>`;
+			if (!compPublication?.capture) fail('Selected scenes require reviewed screenshot assets');
+			for (const shot of compPublication.capture.screenshots)
+				if (!compPublication.files.has(shot.path)) fail(`Reviewed image ${shot.path} is missing`);
+			return `<section class="comp" aria-label="${esc(scene.name)}"><h2>${esc(scene.name)}</h2><p class="meta">${esc(scene.completeness === 'partial' ? 'Partial source scene' : 'Source scene')} · ${esc(scene.status)}</p>${renderReviewedCapture(scene, compPublication.capture)}</section>`;
 		})
 		.join('');
 	const related = links.length
@@ -291,6 +290,7 @@ export function createProductCollection({
 		? (suppliedArtifactPublication ?? buildArtifactPublication(context, {contextDirectory}))
 		: null;
 	if (selectedCompCount && !compPublication) fail('Selected comps require a current rendered UI publication package');
+	if (selectedCompCount) assertUiPass(context, plan);
 	const documents = new Map();
 	for (const document of plan.documents) {
 		const files = new Map([

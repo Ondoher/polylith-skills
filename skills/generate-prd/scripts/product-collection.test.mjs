@@ -46,7 +46,7 @@ test('a validated outline publishes deterministic linked pages in a new preview'
 	);
 });
 
-test('a planned current UI pass selects every source-bound scene', () => {
+test('a planned UI pass without reviewed images is rejected before publication', () => {
 	const payload = (document) => encodePublicationDocument(document, {encoding: 'json'});
 	const context = {
 		artifacts: [
@@ -93,7 +93,7 @@ test('a planned current UI pass selects every source-bound scene', () => {
 			},
 		],
 	};
-	assert.doesNotThrow(() => assertUiPass(context, plan));
+	assert.throws(() => assertUiPass(context, plan), /reviewed screenshot publication handoff/);
 });
 
 test('a selected current scene is inline and has a local full-size comp', async () => {
@@ -103,9 +103,10 @@ test('a selected current scene is inline and has a local full-size comp', async 
 	assert.doesNotThrow(() => assertUiPass(trial.context, plan));
 	const collection = trial.collection(plan);
 	const page = collection.documents.get('garden-guide').files.get('harvests.html').toString('utf8');
-	assert.match(page, /data-ui-scene="entry-scene"/);
+	assert.match(page, /<img src="captures\/entry-clean\.png"/);
+	assert.match(page, /alt="Entry scene:/);
 	assert.match(page, /href="comps\/entry\.html"/);
-	assert.match(page, /src="assets\/ui-media\/[a-f0-9]{12}-harvest\.png"/);
+	assert.doesNotMatch(page, /prd-comp-canvas|<iframe/);
 	assert.equal(collection.documents.get('garden-guide').files.has('comps/entry.html'), true);
 	const preview = path.join(trial.root, 'scene-preview');
 	await previewProductCollection(preview, collection);

@@ -9,6 +9,8 @@ import {createUxTestSpec} from './ux-test-fixture.mjs';
 import {createUxReviewSubject, UX_REVIEW_CRITERIA} from './ux-review.mjs';
 import {buildUiCompositionHtml} from './ui-composition-html.mjs';
 import {buildDesignLanguageAssetOutputs} from './design-language-html.mjs';
+import {validateCapturePublication, renderReviewedCapture} from './ui-capture-publication.mjs';
+import {buildReviewedCapturePublication} from './ui-reviewed-capture.mjs';
 
 /** Called by review scenarios to preserve actual file bindings and renderer output.
  * Tiny PNG files and qualitative judgments are deterministic fixtures, not live screenshots or assessment.
@@ -156,6 +158,40 @@ test('native visual subject observes actual files and validates a deterministic 
 	assert.equal(f.receipt.subject.renders.length, 2);
 	assert.equal(f.receipt.subject.screenshots.length, 2);
 	assert.deepEqual(fs.readFileSync(path.join(f.directory, f.inputs.renderEvidencePath)), before);
+});
+
+test('reviewed PNG export binds every inspected variant and refuses revise or stale evidence', async (scenario) => {
+	const f = fixture(scenario);
+	const {document, files} = await buildReviewedCapturePublication(f.receipt, f.inputs);
+	assert.equal(files.size, document.renderFiles.length + document.screenshots.length);
+	assert.equal(document.review.subjectSha256, f.receipt.subject.sha256);
+	const read = (file) => JSON.parse(fs.readFileSync(path.join(f.directory, file)));
+	const sources = {
+		ui: read(f.inputs.uiPath),
+		ux: read(f.inputs.uxPath),
+		designLanguage: read(f.inputs.designLanguagePath),
+	};
+	assert.doesNotThrow(() => validateCapturePublication(document, sources));
+	const figure = renderReviewedCapture({...sources.ui.scenes[0], completeness: 'partial'}, document);
+	assert.match(figure, /<img src="captures\//);
+	assert.match(figure, /alt="[^"]+partial UI wireframe/);
+	assert.match(figure, /Annotated image/);
+	assert.doesNotMatch(figure, /iframe|prd-comp-canvas/);
+	await assert.rejects(
+		buildReviewedCapturePublication({...f.receipt, verdict: 'revise'}, f.inputs),
+		/requires revision/,
+	);
+	const stale = structuredClone(sources);
+	stale.ui.revision = 'changed';
+	assert.throws(() => validateCapturePublication(document, stale), /Stale reviewed ui/);
+	const missing = structuredClone(document);
+	missing.screenshots.pop();
+	assert.throws(() => validateCapturePublication(missing, sources), /exactly one image/);
+	const uninspected = structuredClone(document);
+	uninspected.review.inspectedScreenshotRefs = [];
+	assert.throws(() => validateCapturePublication(uninspected, sources), /Uninspected/);
+	fs.appendFileSync(path.join(f.directory, f.evidence.screenshots[0].path), 'changed');
+	await assert.rejects(buildReviewedCapturePublication(f.receipt, f.inputs), /stale|image bytes/);
 });
 
 test('all authoritative, rendering and screenshot byte changes invalidate the saved visual subject', (scenario) => {

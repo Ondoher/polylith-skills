@@ -1,6 +1,8 @@
+import {publicationResourceExtensions} from './publication-resource-media.mjs';
+import {validatePublicationResourceBytes} from './publication-resource-bytes.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-import {loadUiImageAsset, validateUiImageAssetBytes} from './ui-composition.mjs';
+import {loadUiImageAsset} from './ui-composition.mjs';
 import {ensureUnlinkedPath, fail, sha256, writeImmutable} from './product-artifact-utils.mjs';
 import {
 	PUBLICATION_RESOURCE_MAX_BYTES,
@@ -10,12 +12,7 @@ import {
 } from './product-publication-payload.mjs';
 
 export * from './product-publication-payload.mjs';
-const extensions = new Map([
-	['image/png', 'png'],
-	['image/jpeg', 'jpg'],
-	['image/webp', 'webp'],
-	['image/svg+xml', 'svg'],
-]);
+const extensions = publicationResourceExtensions;
 
 /** Read declared image assets only, requiring explicit source/asset roots and unlinked paths. */
 export function collectArtifactResources(document, {assetRoot, sourceRoot} = {}) {
@@ -41,6 +38,27 @@ export function collectArtifactResources(document, {assetRoot, sourceRoot} = {})
 		descriptors.set(asset.path, descriptor);
 		files.set(descriptor.path, {descriptor, bytes: loaded.bytes});
 	}
+	for (const file of document.renderFiles ?? []) {
+		if (!assetRoot || !sourceRoot) fail('Reviewed resource collection requires assetRoot and sourceRoot');
+		validatePublicationLogicalPath(file.path);
+		const target = path.resolve(assetRoot, file.path);
+		ensureUnlinkedPath(target, sourceRoot);
+		const stat = fs.lstatSync(target);
+		if (!stat.isFile() || stat.size > PUBLICATION_RESOURCE_MAX_BYTES) fail('Invalid reviewed resource file');
+		const bytes = fs.readFileSync(target);
+		const descriptor = {
+			id: file.id,
+			logicalPath: file.path,
+			path: `artifact-resources/${file.sha256}.${extensions.get(file.mimeType)}`,
+			mediaType: file.mimeType,
+			byteLength: bytes.length,
+			sha256: file.sha256,
+		};
+		validatePublicationResourceBytes(descriptor, bytes);
+		if (descriptors.has(file.path)) fail('Duplicate reviewed resource path');
+		descriptors.set(file.path, descriptor);
+		files.set(descriptor.path, {descriptor, bytes});
+	}
 	const resources = [...descriptors.values()].sort((a, b) =>
 		a.logicalPath < b.logicalPath ? -1 : a.logicalPath > b.logicalPath ? 1 : 0,
 	);
@@ -58,16 +76,8 @@ export function verifyArtifactResourceFiles(resources, {resourceRoot}) {
 		const stats = fs.lstatSync(target);
 		if (!stats.isFile() || stats.size !== descriptor.byteLength || stats.size > PUBLICATION_RESOURCE_MAX_BYTES)
 			fail('Resource file type or size does not match descriptor');
-		const loaded = loadUiImageAsset(
-			{
-				id: 'publication-resource',
-				path: descriptor.path,
-				mimeType: descriptor.mediaType,
-				sha256: descriptor.sha256,
-			},
-			resourceRoot,
-			resourceRoot,
-		);
+		const loaded = {bytes: fs.readFileSync(target)};
+		validatePublicationResourceBytes(descriptor, loaded.bytes);
 		if (loaded.bytes.length !== descriptor.byteLength) fail('Resource bytes do not match descriptor');
 		files.set(descriptor.path, {descriptor, bytes: loaded.bytes});
 	}
@@ -85,10 +95,7 @@ export function publishArtifactResourceFiles(files, {outputRoot}) {
 			sha256(file.bytes) !== file.descriptor.sha256
 		)
 			fail('Resource bytes or hash do not match descriptor');
-		validateUiImageAssetBytes(
-			{id: file.descriptor.id, mimeType: file.descriptor.mediaType, sha256: file.descriptor.sha256},
-			file.bytes,
-		);
+		validatePublicationResourceBytes(file.descriptor, file.bytes);
 		const prior = unique.get(file.descriptor.path);
 		if (prior && !prior.bytes.equals(file.bytes)) fail('Conflicting resource bytes');
 		unique.set(file.descriptor.path, file);

@@ -1,10 +1,43 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {execFileSync} from 'node:child_process';
 
 const own = (object, key) => Object.hasOwn(object, key);
 
 export function fail(message) {
 	throw new Error(message);
+}
+
+/** Format generated review Markdown with the consuming repository's local Prettier. */
+export function formatLocalMarkdown(content, file) {
+	let folder = path.dirname(path.resolve(file));
+	let declared = false;
+	while (true) {
+		const cli = path.join(folder, 'node_modules', 'prettier', 'bin', 'prettier.cjs');
+		if (fs.existsSync(cli)) {
+			try {
+				return execFileSync(process.execPath, [cli, '--stdin-filepath', file], {
+					input: content,
+					encoding: 'utf8',
+					maxBuffer: 8 * 1024 * 1024,
+				});
+			} catch (error) {
+				fail(`Local Prettier could not format ${file}: ${error.message}`);
+			}
+		}
+		declared ||= [
+			'.prettierrc',
+			'.prettierrc.json',
+			'.prettierrc.yaml',
+			'prettier.config.js',
+			'prettier.config.mjs',
+		].some((name) => fs.existsSync(path.join(folder, name)));
+		const parent = path.dirname(folder);
+		if (parent === folder) break;
+		folder = parent;
+	}
+	if (declared) fail(`Repository declares Prettier but has no local installation for ${file}`);
+	return content;
 }
 
 export function objectWithKeys(value, keys, name) {

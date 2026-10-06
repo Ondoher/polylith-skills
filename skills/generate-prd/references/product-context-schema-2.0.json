@@ -802,10 +802,20 @@
 				},
 				"path": {
 					"type": "string",
-					"pattern": "^artifact-resources/[a-f0-9]{64}\\.(?:png|jpg|webp|svg)$"
+					"pattern": "^artifact-resources/[a-f0-9]{64}\\.(?:png|jpg|webp|svg|html|css|txt|ttf|woff2)$"
 				},
 				"mediaType": {
-					"enum": ["image/png", "image/jpeg", "image/webp", "image/svg+xml"]
+					"enum": [
+						"image/png",
+						"image/jpeg",
+						"image/webp",
+						"image/svg+xml",
+						"text/html",
+						"text/css",
+						"text/plain",
+						"font/ttf",
+						"font/woff2"
+					]
 				},
 				"byteLength": {
 					"type": "integer",

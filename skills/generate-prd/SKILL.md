@@ -11,7 +11,8 @@ When configured `workflow_*` tools are available, use context.resolve, collectio
 
 Start after `refine-design` has completed a current UI composition pass and
 resolved a PRD context containing its source-bound UX 0.4 and UI 0.4 artifacts,
-design language, and publication manifest. A partial UI pass is usable only
+design language, independently reviewed `ui-capture` 1.0 images, and a publication
+manifest 1.1 selecting those captures with exact dependencies. A partial UI pass is usable only
 when it discloses its missing scenes and coverage; do not treat an earlier UX
 or UI package as current merely because its names match. If the handoff is
 missing, return to `refine-design` before creating the outline or PRD preview.
@@ -50,7 +51,11 @@ node scripts/product-collection.mjs --context <context.json> --outline <outline.
 
 Preview requires a new directory under `product/<name>/` and never replaces a
 current publication. Inspect its links, source coverage, page order, gaps, and
-available inline comps. When publication is requested, run the same command
+available reviewed images, their captions/alternative text and full-size links.
+Reuse the exact clean and annotated PNGs accepted by refinement; do not launch
+a browser, recapture scenes or embed regenerated scene markup inline during
+publication. Keep linked HTML views for selectable text and source inspection.
+When publication is requested, run the same command
 with `--output <repository-root>/documents/<name>` instead of `--preview`.
 The publisher replaces and retires only receipt-owned product document
 directories. It leaves `technical/` and unrelated content alone. A current

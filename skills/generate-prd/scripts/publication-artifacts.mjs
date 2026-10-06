@@ -1,9 +1,11 @@
+import {validatePublicationResourceBytes} from './publication-resource-bytes.mjs';
 import {createHash} from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
 import {publishPrdHtml} from './prd-html.mjs';
+import {validateCapturePublication} from './ui-capture-publication.mjs';
 import {
 	PUBLICATION_DOCUMENT_MAX_BYTES,
 	PUBLICATION_DOCUMENTS_MAX_BYTES,
@@ -15,10 +17,11 @@ import {
 
 export const PUBLICATION_ARTIFACT_KINDS = Object.freeze({
 	manifest: Object.freeze({artifactKind: 'prd-publication', artifactSchemaVersion: '1.0'}),
-	ux: Object.freeze({artifactKind: 'ux-design', artifactSchemaVersion: '0.3'}),
+	ux: Object.freeze({artifactKind: 'ux-design', artifactSchemaVersion: '0.4'}),
 	designLanguage: Object.freeze({artifactKind: 'design-language', artifactSchemaVersion: '0.14'}),
-	ui: Object.freeze({artifactKind: 'ui-composition', artifactSchemaVersion: '0.3'}),
-	component: Object.freeze({artifactKind: 'component-design', artifactSchemaVersion: '0.3'}),
+	ui: Object.freeze({artifactKind: 'ui-composition', artifactSchemaVersion: '0.4'}),
+	component: Object.freeze({artifactKind: 'component-design', artifactSchemaVersion: '0.4'}),
+	capture: Object.freeze({artifactKind: 'ui-capture', artifactSchemaVersion: '1.0'}),
 });
 
 export const MAX_DECODED_ARTIFACT_BYTES = PUBLICATION_DOCUMENT_MAX_BYTES;
@@ -165,7 +168,9 @@ function loadResourceBytes(contextDirectory, descriptor, label) {
 	const bytes = fs.readFileSync(realCandidate);
 	if (sha256(bytes) !== descriptor.sha256) fail(`${label} hash does not match its descriptor`);
 	const detected = detectedMimeType(bytes);
-	if (detected !== descriptor.mediaType) fail(`${label} bytes do not match ${descriptor.mediaType}`);
+	validatePublicationResourceBytes(descriptor, bytes);
+	if (descriptor.mediaType.startsWith('image/') && detected !== descriptor.mediaType)
+		fail(`${label} bytes do not match ${descriptor.mediaType}`);
 	if (detected === 'image/svg+xml') validateSvgBytes(bytes, label);
 	return bytes;
 }
@@ -179,7 +184,11 @@ function validatePackageDocument(artifact, document, resources) {
 	const expected = Object.values(PUBLICATION_ARTIFACT_KINDS).find(
 		({artifactKind}) => artifactKind === artifact.artifactKind,
 	);
-	if (!expected || artifact.artifactSchemaVersion !== expected.artifactSchemaVersion) {
+	if (
+		!expected ||
+		(artifact.artifactSchemaVersion !== expected.artifactSchemaVersion &&
+			!(artifact.artifactKind === 'prd-publication' && artifact.artifactSchemaVersion === '1.1'))
+	) {
 		fail(
 			`artifact ${artifact.id} uses unsupported ${artifact.artifactKind} schema ${artifact.artifactSchemaVersion}`,
 		);
@@ -189,10 +198,18 @@ function validatePackageDocument(artifact, document, resources) {
 	if (artifact.artifactKind === PUBLICATION_ARTIFACT_KINDS.manifest.artifactKind) {
 		exactKeys(
 			document,
-			['schemaVersion', 'uxArtifactId', 'designLanguageArtifactId', 'uiArtifactId', 'componentArtifactIds'],
+			[
+				'schemaVersion',
+				'uxArtifactId',
+				'designLanguageArtifactId',
+				'uiArtifactId',
+				'componentArtifactIds',
+				...(document.schemaVersion === '1.1' ? ['uiCaptureArtifactId'] : []),
+			],
 			`artifact ${artifact.id} document`,
 		);
-		if (document.schemaVersion !== '1.0') fail(`artifact ${artifact.id} publication manifest must use schema 1.0`);
+		if (!['1.0', '1.1'].includes(document.schemaVersion))
+			fail(`artifact ${artifact.id} publication manifest must use schema 1.0 or 1.1`);
 		for (const [key, value] of [
 			['uxArtifactId', document.uxArtifactId],
 			['designLanguageArtifactId', document.designLanguageArtifactId],
@@ -219,6 +236,7 @@ function validatePackageDocument(artifact, document, resources) {
 			document.designLanguageArtifactId,
 			...(document.uiArtifactId ? [document.uiArtifactId] : []),
 			...document.componentArtifactIds,
+			...(document.schemaVersion === '1.1' ? [document.uiCaptureArtifactId] : []),
 		];
 		if (new Set(namedIds).size !== namedIds.length)
 			fail(`artifact ${artifact.id} publication roles must name distinct artifacts`);
@@ -328,6 +346,10 @@ export function buildArtifactPublication(context, {contextDirectory} = {}) {
 	const componentArtifacts = manifest.componentArtifactIds.map((id) =>
 		namedArtifact(id, 'component', PUBLICATION_ARTIFACT_KINDS.component),
 	);
+	const captureArtifact =
+		manifest.schemaVersion === '1.1'
+			? namedArtifact(manifest.uiCaptureArtifactId, 'reviewed captures', PUBLICATION_ARTIFACT_KINDS.capture)
+			: null;
 	if (componentArtifacts.length && !uiArtifact)
 		fail('component-design publication requires one ui-composition artifact');
 
@@ -336,6 +358,7 @@ export function buildArtifactPublication(context, {contextDirectory} = {}) {
 		designArtifact.id,
 		...(uiArtifact ? [uiArtifact.id] : []),
 		...componentArtifacts.map(({id}) => id),
+		...(captureArtifact ? [captureArtifact.id] : []),
 	];
 	const dependencies = new Map(
 		manifestArtifact.artifactDependencies.map((dependency) => [dependency.id, dependency]),
@@ -353,7 +376,13 @@ export function buildArtifactPublication(context, {contextDirectory} = {}) {
 		}
 	}
 
-	const selected = [uxArtifact, designArtifact, ...(uiArtifact ? [uiArtifact] : []), ...componentArtifacts];
+	const selected = [
+		uxArtifact,
+		designArtifact,
+		...(uiArtifact ? [uiArtifact] : []),
+		...componentArtifacts,
+		...(captureArtifact ? [captureArtifact] : []),
+	];
 	const packages = selected.map((artifact) => {
 		const decoded = decodePackage(artifact);
 		return {...decoded, artifact, document: validatePackageDocument(artifact, decoded.document, decoded.resources)};
@@ -424,6 +453,18 @@ export function buildArtifactPublication(context, {contextDirectory} = {}) {
 			writeCanonicalDocument(file, byArtifactId.get(artifact.id).document);
 			return file;
 		});
+		let captureFile, captureDocument;
+		if (captureArtifact) {
+			captureDocument = byArtifactId.get(captureArtifact.id).document;
+			validateCapturePublication(captureDocument, {
+				ui: byArtifactId.get(uiArtifact.id).document,
+				ux: uxEntry.document,
+				designLanguage: designEntry.document.designLanguage,
+				components: componentArtifacts.map((artifact) => byArtifactId.get(artifact.id).document),
+			});
+			captureFile = path.join(sourceRoot, captureArtifact.id, 'capture.json');
+			writeCanonicalDocument(captureFile, captureDocument);
+		}
 
 		let inlineComponentRegistrations = [];
 		publishPrdHtml(uxFile, designFile, outputRoot, {
@@ -436,6 +477,7 @@ export function buildArtifactPublication(context, {contextDirectory} = {}) {
 			designLabel: `artifact:${designArtifact.id}@${designArtifact.revision}`,
 			layoutLabel: `artifact:${designArtifact.id}@${designArtifact.revision}#review-layout`,
 			...(uiArtifact ? {uiFile, uiLabel: `artifact:${uiArtifact.id}@${uiArtifact.revision}`} : {}),
+			...(captureFile ? {captureFile} : {}),
 			...(componentFiles.length
 				? {
 						componentFiles,
@@ -448,6 +490,7 @@ export function buildArtifactPublication(context, {contextDirectory} = {}) {
 		return {
 			files: collectOutputFiles(outputRoot),
 			inlineComponentRegistrations,
+			capture: captureDocument ?? null,
 			resources: resourceReceipt.sort((left, right) =>
 				compareCodePoints(`${left.artifactId}/${left.logicalPath}`, `${right.artifactId}/${right.logicalPath}`),
 			),

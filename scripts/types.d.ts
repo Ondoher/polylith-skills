@@ -670,6 +670,8 @@ interface DesignCoordinatorTestContext {
 
 /** Parent-owned native visual-review inputs; each file is reobserved read-only. */
 type DesignUiReviewInputs = {
+	/** Exact component source paths when resolved component designs appear in the surface render. */
+	componentPaths?: string[];
 	/** Absolute owning run root for authoritative source and rendered evidence. */
 	sourceRoot: string;
 	/** Authoritative human description, absolute or relative to sourceRoot. */
@@ -764,6 +766,8 @@ type DesignUiReviewScreenshotIdentity = DesignUiReviewScreenshotEvidence & Desig
 
 /** Exact immutable native visual-review subject derived from current bytes. */
 type DesignUiReviewSubject = {
+	/** Resolved component sources rendered into this exact reviewed surface. */
+	components?: DesignUiReviewFileIdentity[];
 	/** Operational subject version; not a replacement canonical UI schema. */
 	format: 'design-ui-review-subject/1';
 	/** Parent-owned absolute authoritative run root. */

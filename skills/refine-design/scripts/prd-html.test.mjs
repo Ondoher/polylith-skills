@@ -180,7 +180,7 @@ test('publishes a linked deterministic PRD, design language, and component state
 	const components = before.find(([name]) => name === 'components/index.html')[1].toString();
 	const design = before.find(([name]) => name === 'design-language/index.html')[1].toString();
 
-	assert.equal(first.rendererVersion, 'prd-html-1.8');
+	assert.equal(first.rendererVersion, 'prd-html-1.9');
 	assert.equal(first.designLanguage.rendererVersion, 'design-language-html-1.14');
 	assert.equal(first.counts.features, 1);
 	assert.equal(first.counts.openQuestions, 1);
@@ -308,8 +308,8 @@ test('integrates product comps and surface links from a validated UI specificati
 	assert.match(index, /<link rel="stylesheet" href="assets\/composition\.css">/);
 	assert.match(index, /<figure class="prd-comp-inline"/);
 	assert.ok(index.indexOf('data-ux-frame="records-viewing"') < index.indexOf('<figure class="prd-comp-inline"'));
-	assert.match(index, /<div class="prd-comp-canvas ui-viewport"/);
-	assert.match(index, /data-ui-scene="records-viewing"/);
+	assert.match(index, /Review capture pending/);
+	assert.doesNotMatch(index, /<div class="prd-comp-canvas ui-viewport"/);
 	assert.doesNotMatch(index, /<iframe/);
 	assert.match(index, /Partial UI wireframe/);
 	assert.match(index, /href="comps\/records-viewing\.html">Clean wireframe/);

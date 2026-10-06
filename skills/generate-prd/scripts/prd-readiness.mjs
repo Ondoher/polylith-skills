@@ -1,4 +1,5 @@
 import {decodePublicationDocument} from './product-publication-payload.mjs';
+import {validateCapturePublication} from './ui-capture-publication.mjs';
 
 function fail(message) {
 	throw new Error(message);
@@ -23,6 +24,26 @@ export function assertUiPass(context, plan = null) {
 	}
 	const uxSpec = decodePublicationDocument(ux.payload).document;
 	const spec = decodePublicationDocument(ui.payload).document;
+	const capture = context.artifacts.find((artifact) => artifact.id === selection.uiCaptureArtifactId);
+	const design = context.artifacts.find((artifact) => artifact.id === selection.designLanguageArtifactId);
+	if (
+		selection.schemaVersion !== '1.1' ||
+		!capture ||
+		capture.artifactKind !== 'ui-capture' ||
+		capture.artifactSchemaVersion !== '1.0' ||
+		!design
+	)
+		fail('Product document generation requires the reviewed screenshot publication handoff');
+	validateCapturePublication(decodePublicationDocument(capture.payload).document, {
+		ui: spec,
+		ux: uxSpec,
+		designLanguage: decodePublicationDocument(design.payload).document.designLanguage,
+		components: (selection.componentArtifactIds ?? []).map((id) => {
+			const component = context.artifacts.find((artifact) => artifact.id === id);
+			if (!component) fail(`Missing component ${id}`);
+			return decodePublicationDocument(component.payload).document;
+		}),
+	});
 	if (
 		spec.schemaVersion !== '0.4' ||
 		spec.uxArtifactBinding?.id !== uxSpec.id ||

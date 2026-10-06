@@ -1,6 +1,8 @@
+import {publicationResourceExtensions} from './publication-resource-media.mjs';
 import crypto from 'node:crypto';
 import {TextDecoder} from 'node:util';
 import {gzipSync, gunzipSync} from 'node:zlib';
+import {validateCapturePublication} from './ui-capture-publication.mjs';
 
 export const PUBLICATION_DOCUMENT_MAX_BYTES = 8 * 1024 * 1024;
 export const PUBLICATION_DOCUMENTS_MAX_BYTES = 16 * 1024 * 1024;
@@ -13,13 +15,9 @@ const versions = new Map([
 	['ui-composition', '0.4'],
 	['component-design', '0.4'],
 	['prd-publication', '1.0'],
+	['ui-capture', '1.0'],
 ]);
-const extensions = new Map([
-	['image/png', 'png'],
-	['image/jpeg', 'jpg'],
-	['image/webp', 'webp'],
-	['image/svg+xml', 'svg'],
-]);
+const extensions = publicationResourceExtensions;
 const digest = (bytes) => crypto.createHash('sha256').update(bytes).digest('hex');
 const fail = (message) => {
 	throw new Error(message);
@@ -139,7 +137,12 @@ export function validateResourceDescriptors(resources, document) {
 	if (document !== undefined) {
 		if (document?.assets !== undefined && !Array.isArray(document.assets))
 			fail('Publication document assets must be an array');
-		const images = document?.assets?.filter((asset) => asset?.kind === 'image') ?? [];
+		const images = [
+			...(document?.assets?.filter((asset) => asset?.kind === 'image') ?? []),
+			...(document?.schemaVersion === '1.0' && document?.review?.verdict === 'pass'
+				? (document.renderFiles ?? [])
+				: []),
+		];
 		for (const image of images) {
 			validatePublicationLogicalPath(image.path);
 			const descriptor = resources.find((item) => item.logicalPath === image.path);
@@ -267,7 +270,10 @@ export function isPublicationPayload(artifact) {
 
 /** Validate the exact artifact-kind version and logical document version. */
 export function validatePublicationPayload(artifact) {
-	if (versions.get(artifact.artifactKind) !== artifact.artifactSchemaVersion)
+	if (
+		versions.get(artifact.artifactKind) !== artifact.artifactSchemaVersion &&
+		!(artifact.artifactKind === 'prd-publication' && artifact.artifactSchemaVersion === '1.1')
+	)
 		fail(`Unsupported ${artifact.artifactKind} publication artifact version`);
 	const decoded = decodePublicationDocument(artifact.payload);
 	const {document} = decoded;
@@ -281,7 +287,14 @@ export function validatePublicationPayload(artifact) {
 	if (artifact.artifactKind === 'prd-publication') {
 		closed(
 			document,
-			['schemaVersion', 'uxArtifactId', 'designLanguageArtifactId', 'uiArtifactId', 'componentArtifactIds'],
+			[
+				'schemaVersion',
+				'uxArtifactId',
+				'designLanguageArtifactId',
+				'uiArtifactId',
+				'componentArtifactIds',
+				...(document.schemaVersion === '1.1' ? ['uiCaptureArtifactId'] : []),
+			],
 			'PRD publication manifest',
 		);
 		if (artifact.payload.encoding !== 'json' || artifact.resources.length)
@@ -292,6 +305,8 @@ export function validatePublicationPayload(artifact) {
 			!validId(document.uxArtifactId) ||
 			!validId(document.designLanguageArtifactId) ||
 			(document.uiArtifactId !== null && !validId(document.uiArtifactId)) ||
+			(document.schemaVersion === '1.1' &&
+				(!validId(document.uiCaptureArtifactId) || document.uiArtifactId === null)) ||
 			!Array.isArray(document.componentArtifactIds) ||
 			document.componentArtifactIds.some((id) => !validId(id))
 		)
@@ -301,6 +316,7 @@ export function validatePublicationPayload(artifact) {
 			document.designLanguageArtifactId,
 			...(document.uiArtifactId === null ? [] : [document.uiArtifactId]),
 			...document.componentArtifactIds,
+			...(document.schemaVersion === '1.1' ? [document.uiCaptureArtifactId] : []),
 		];
 		if (
 			new Set(ids).size !== ids.length ||
@@ -311,5 +327,6 @@ export function validatePublicationPayload(artifact) {
 		if (dependencies.length !== ids.length || ids.some((id) => !dependencies.includes(id)))
 			fail('PRD publication manifest must bind exactly its named artifact dependencies');
 	}
+	if (artifact.artifactKind === 'ui-capture') validateCapturePublication(document);
 	return decoded;
 }

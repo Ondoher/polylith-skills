@@ -1035,3 +1035,83 @@ type DesignPreparationTestFixture = {
 		agentId: string,
 	): DesignPreparationAuthor;
 };
+/** Installed-browser capture worker configuration; no browser download or remote URL authority. */
+interface UiCaptureOptions {
+	executablePath: string;
+	sourceRoot: string;
+	runRoot: string;
+	timeoutMs?: number;
+	cleanupMs?: number;
+}
+interface UiCaptureRequest {
+	id: string;
+	sceneRef: string;
+	variant: 'clean' | 'annotated';
+	html: string;
+	htmlSha256: string;
+	assets: Array<{path: string; sha256: string}>;
+	requiredFonts: string[];
+	width: number;
+	height: number;
+	output: string;
+}
+interface UiCaptureResult {
+	id: string;
+	sceneRef: string;
+	variant: 'clean' | 'annotated';
+	status: 'success' | 'failed';
+	startedAt: string;
+	finishedAt: string;
+	timings: Record<string, number>;
+	failedResources: Array<{url: string; error?: string}>;
+	error?: string;
+	cleanupError?: string;
+	browserGeneration?: number;
+	browserPid?: number;
+	readiness?: {fonts: string[]; images: Array<{width: number; height: number}>};
+	output?: string;
+	htmlSha256?: string;
+	pngSha256?: string;
+	width?: number;
+	height?: number;
+}
+interface UiCapturePublicationSources {
+	ui: {
+		renderRequests: Array<{id: string; sceneRef: string; output: string; variant: string}>;
+		[key: string]: unknown;
+	};
+	ux: object;
+	designLanguage: object;
+	components?: object[];
+}
+interface UiCapturePublication {
+	schemaVersion: '1.0';
+	renderFiles: Array<{id: string; path: string; sha256: string; mimeType: string}>;
+	sources: {ui: string; ux: string; designLanguage: string; components: string[]};
+	review: {
+		subjectSha256: string;
+		reviewerAgentId: string;
+		authorAgentIds: string[];
+		verdict: 'pass';
+		inspectedScreenshotRefs: string[];
+	};
+	assets: Array<{id: string; kind: 'image'; path: string; mimeType: 'image/png'; sha256: string}>;
+	screenshots: Array<{
+		ref: string;
+		sceneRef: string;
+		renderOutput: string;
+		variant: 'clean' | 'annotated';
+		artifactKind: 'comp' | 'wireframe';
+		path: string;
+		width: number;
+		height: number;
+	}>;
+}
+/** Batch input paths are relative to sourceRoot; runRoot is a child directory of that root. */
+interface UiCaptureBatchOptions extends UiCaptureOptions {
+	renderBasePath: string;
+	uiPath: string;
+	uxPath: string;
+	designLanguagePath: string;
+	requiredFonts: string[];
+}

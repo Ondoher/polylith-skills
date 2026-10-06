@@ -7,6 +7,7 @@ import {validateUiSpec} from './ui-composition.mjs';
 import {validateComponentDesign, buildComponentRegistration} from './component-design.mjs';
 import {validateProductArtifact} from './product-artifact-contract.mjs';
 import {loadCurrentProduct} from './product-model.mjs';
+import {validateCapturePublication} from './ui-capture-publication.mjs';
 import {
 	closed,
 	ensureUnlinkedPath,
@@ -31,8 +32,9 @@ const contracts = new Map([
 	['ui-composition', {version: '0.4', owner: 'ui'}],
 	['component-design', {version: '0.4', owner: 'ui'}],
 	['prd-publication', {version: '1.0', owner: 'product'}],
+	['ui-capture', {version: '1.0', owner: 'ui'}],
 ]);
-const sourceNames = new Set(['ux', 'designLanguage', 'reviewLayout', 'ui', 'component']);
+const sourceNames = new Set(['ux', 'designLanguage', 'reviewLayout', 'ui', 'component', 'capture']);
 
 function validateBoundUxProduct(ux, chain) {
 	const bound = chain.snapshot.productModel;
@@ -124,8 +126,10 @@ export function createPublicationArtifactProposal({currentPath, request, sourceR
 		],
 		'Publication request',
 	);
-	const contract = contracts.get(request.artifactKind);
-	if (!contract) fail(`Unsupported publication artifact kind ${request.artifactKind}`);
+	const contract = {...contracts.get(request.artifactKind)};
+	if (request.artifactKind === 'prd-publication' && request.publication?.schemaVersion === '1.1')
+		contract.version = '1.1';
+	if (!contract.version) fail(`Unsupported publication artifact kind ${request.artifactKind}`);
 	if (!sourceRoot) fail('Publication sourceRoot is required');
 	if (!request.sources || typeof request.sources !== 'object' || Array.isArray(request.sources))
 		fail('Publication sources must be an object');
@@ -175,6 +179,7 @@ export function createPublicationArtifactProposal({currentPath, request, sourceR
 			[document?.uxArtifactId, 'ux-design'],
 			[document?.designLanguageArtifactId, 'design-language'],
 			...(document?.uiArtifactId == null ? [] : [[document.uiArtifactId, 'ui-composition']]),
+			...(document?.uiCaptureArtifactId == null ? [] : [[document.uiCaptureArtifactId, 'ui-capture']]),
 			...(document?.componentArtifactIds ?? []).map((id) => [id, 'component-design']),
 		];
 		for (const [id, kind] of roles)
@@ -187,6 +192,24 @@ export function createPublicationArtifactProposal({currentPath, request, sourceR
 				)
 			)
 				fail(`Publication role ${id} must bind ${kind} at its current schema`);
+	} else if (request.artifactKind === 'ui-capture') {
+		document = read('capture');
+		const allowed = new Set(['ui-composition', 'ux-design', 'design-language', 'component-design']);
+		if (dependencies.some((item) => !allowed.has(item.artifactKind)))
+			fail('Capture publication has an unrelated dependency');
+		const dependency = (kind) => {
+			const matches = dependencies.filter((item) => item.artifactKind === kind);
+			if (matches.length !== 1) fail(`Capture publication requires exactly one ${kind} dependency`);
+			return decodePublicationDocument(matches[0].payload).document;
+		};
+		validateCapturePublication(document, {
+			ui: dependency('ui-composition'),
+			ux: dependency('ux-design'),
+			designLanguage: dependency('design-language').designLanguage,
+			components: dependencies
+				.filter((item) => item.artifactKind === 'component-design')
+				.map((item) => decodePublicationDocument(item.payload).document),
+		});
 	} else {
 		inputs.uxSpec = read('ux');
 		inputs.designLanguage = read('designLanguage');

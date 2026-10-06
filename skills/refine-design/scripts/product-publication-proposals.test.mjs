@@ -1,6 +1,6 @@
+import {reviewedRenderMediaType} from './publication-resource-media.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import {createPublicationArtifactProposal} from './product-publication-proposals.mjs';
@@ -13,10 +13,20 @@ import {sha256} from './product-artifact-utils.mjs';
 import {createUxTestSpec} from './ux-test-fixture.mjs';
 import {createDefaultReviewConfig} from './design-language-review-pages.mjs';
 import {DesignAssembly} from './design-assembly.mjs';
+import {fileURLToPath} from 'node:url';
+import {buildUiCompositionHtml} from './ui-composition-html.mjs';
+import {buildDesignLanguageAssetOutputs} from './design-language-html.mjs';
+import {capturePublicationFixture} from '../../generate-prd/test-fixtures/capture-publication.mjs';
+import {buildArtifactPublication} from '../../generate-prd/scripts/publication-artifacts.mjs';
 
 function fixture(t, singlePass = false) {
-	const root = fs.mkdtempSync(path.join(os.tmpdir(), 'publication-proposals-'));
-	t.after(() => fs.rmSync(root, {recursive: true, force: true}));
+	const parent = fileURLToPath(new URL('../../../.codex-tmp/capture-promotion/proposal-tests/', import.meta.url));
+	fs.mkdirSync(parent, {recursive: true});
+	const root = fs.mkdtempSync(path.join(parent, 'case-'));
+	t.after(() => {
+		assert.equal(path.dirname(fs.realpathSync(root)), fs.realpathSync(parent));
+		fs.rmSync(root, {recursive: true, force: true});
+	});
 	const store = path.join(root, 'product');
 	const productFixture = new URL('../references/fixtures/product-model/field-journal/', import.meta.url);
 	persistProductModel({
@@ -145,6 +155,121 @@ test('single-pass UX/UI feeds validated publication artifacts, components, manif
 	assert.equal(context.path, `contexts/prd/${context.materialSha256}/context.json`);
 	assert.equal(context.context.artifacts.length, 5);
 	assert.equal(loadCurrentProduct(environment.currentPath).snapshot.artifacts.length, 5);
+});
+
+test('reviewed-image transport survives the canonical store and publishes exact PNGs without recapture', (t) => {
+	const environment = fixture(t, true);
+	commit(environment, request('publication-ux', 'ux-design', {sources: {ux: 'ux.json'}}));
+	commit(
+		environment,
+		request('publication-foundations', 'design-language', {
+			sources: {designLanguage: 'designLanguage.json', reviewLayout: 'reviewLayout.json'},
+		}),
+	);
+	const dependencies = ['publication-ux', 'publication-foundations', 'publication-ui'];
+	commit(
+		environment,
+		request('publication-ui', 'ui-composition', {
+			sources: {ux: 'ux.json', designLanguage: 'designLanguage.json', ui: 'ui.json'},
+			artifactDependencyIds: dependencies.slice(0, 2),
+		}),
+	);
+	const read = (name) => JSON.parse(fs.readFileSync(path.join(environment.root, `${name}.json`)));
+	const ui = read('ui'),
+		ux = read('ux'),
+		designLanguage = read('designLanguage');
+	const bytes = Buffer.from(
+		'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a/AkAAAAASUVORK5CYII=',
+		'base64',
+	);
+	// This exercises transport only: fixture PNGs and judgments are not live visual evidence.
+	const capture = capturePublicationFixture({ui, ux, designLanguage, bytes});
+	const rendered = new Map([
+		...buildDesignLanguageAssetOutputs(designLanguage),
+		...buildUiCompositionHtml(ui, {
+			uxSpec: ux,
+			designLanguage,
+			sourceRoot: environment.root,
+			assetRoot: environment.root,
+		}).outputs,
+	]);
+	capture.renderFiles = [...rendered]
+		.filter(([file]) => !file.endsWith('.json'))
+		.map(([file, content], index) => ({
+			id: `render-${index + 1}`,
+			path: file,
+			sha256: sha256(content),
+			mimeType: reviewedRenderMediaType(file),
+		}));
+	for (const [file, content] of rendered) {
+		fs.mkdirSync(path.dirname(path.join(environment.root, file)), {recursive: true});
+		fs.writeFileSync(path.join(environment.root, file), content);
+	}
+	fs.mkdirSync(path.join(environment.root, 'captures'));
+	for (const asset of capture.assets) fs.writeFileSync(path.join(environment.root, asset.path), bytes);
+	fs.writeFileSync(path.join(environment.root, 'capture.json'), JSON.stringify(capture));
+	commit(
+		environment,
+		request('publication-capture', 'ui-capture', {
+			sources: {capture: 'capture.json'},
+			artifactDependencyIds: dependencies,
+		}),
+	);
+	commit(
+		environment,
+		request('publication-manifest', 'prd-publication', {
+			encoding: 'json',
+			artifactDependencyIds: [...dependencies, 'publication-capture'],
+			publication: {
+				schemaVersion: '1.1',
+				uxArtifactId: dependencies[0],
+				designLanguageArtifactId: dependencies[1],
+				uiArtifactId: dependencies[2],
+				componentArtifactIds: [],
+				uiCaptureArtifactId: 'publication-capture',
+			},
+		}),
+	);
+	const context = resolveProductContext({currentPath: environment.currentPath});
+	const contextDirectory = path.dirname(path.resolve(environment.store, context.path));
+	const publication = buildArtifactPublication(context.context, {contextDirectory});
+	const again = buildArtifactPublication(context.context, {contextDirectory});
+	assert.deepEqual([...publication.files], [...again.files]);
+	for (const shot of capture.screenshots) assert.deepEqual(publication.files.get(shot.path), bytes);
+	for (const file of capture.renderFiles)
+		assert.deepEqual(publication.files.get(file.path), Buffer.from(rendered.get(file.path)));
+	const damaged = structuredClone(capture);
+	damaged.renderFiles[0].sha256 = '0'.repeat(64);
+	fs.writeFileSync(path.join(environment.root, 'capture.json'), JSON.stringify(damaged));
+	assert.throws(
+		() =>
+			createPublicationArtifactProposal({
+				...environment,
+				sourceRoot: environment.root,
+				request: request('damaged-render', 'ui-capture', {
+					sources: {capture: 'capture.json'},
+					artifactDependencyIds: dependencies,
+				}),
+			}),
+		/Resource bytes or hash do not match/,
+	);
+	assert.match(publication.files.get('index.html').toString(), /<img src="captures\//);
+	assert.doesNotMatch(publication.files.get('index.html').toString(), /prd-comp-canvas ui-viewport/);
+	const stale = structuredClone(capture);
+	stale.sources.ui = '0'.repeat(64);
+	fs.writeFileSync(path.join(environment.root, 'capture.json'), JSON.stringify(stale));
+	assert.throws(
+		() =>
+			createPublicationArtifactProposal({
+				...environment,
+				sourceRoot: environment.root,
+				request: request('stale-capture', 'ui-capture', {
+					sources: {capture: 'capture.json'},
+					artifactDependencyIds: dependencies,
+				}),
+			}),
+		/Stale reviewed ui/,
+	);
 });
 
 test('detached context packages retain only verified declared resources after the store is removed', (t) => {

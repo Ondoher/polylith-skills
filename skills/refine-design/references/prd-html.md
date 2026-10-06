@@ -21,7 +21,7 @@ parallel scene or specimen publication.
 For authorized renderer inspection or maintenance, the lower-level command is:
 
 ```text
-node scripts/prd-html.mjs <ux-spec.json> <design-language.json> <prd-output-root> --layout <review-layout.json> [--source-root <authoritative-source-root>] [--ui <ui-spec.json>] [--component <component-design.json>]... [--ux-label <label>] [--design-label <label>] [--ui-label <label>] [--component-label <label>]... [--layout-label <label>] [--design-title <title>]
+node scripts/prd-html.mjs <ux-spec.json> <design-language.json> <prd-output-root> --layout <review-layout.json> [--source-root <authoritative-source-root>] [--ui <ui-spec.json>] [--component <component-design.json>]... [--capture <reviewed-capture.json>] [--capture-asset-root <root>] [--ux-label <label>] [--design-label <label>] [--ui-label <label>] [--component-label <label>]... [--layout-label <label>] [--design-title <title>]
 ```
 
 The publisher validates every supplied source and their cross-source bindings before writing. It regenerates the design-language section with site navigation, writes `index.html`, `components/index.html`, `assets/product.css`, the existing shared design-language assets, and one aggregate `render-report.json`. The design-language publisher writes its bounded diagnostics to `design-language/render-report.json` so report ownership does not overlap. Repeat `--component` to register independently owned custom components in one surface. Repeat `--component-label` in the same order when explicit source labels are needed.
@@ -39,6 +39,19 @@ For every surface with `interactionFrameRefs`, render each referenced interactio
 Use headings, lists, groups, and text links that expose semantic order rather than simulated application controls. Preserve stable `data-ux-frame`, `data-ux-region`, `data-ux-content`, `data-ux-affordance`, and `data-ux-action` hooks. Show labels, action priority and availability, canonical and alternate input meaning, feedback persistence, cancellation and recovery, focus intent, and textual state/frame/surface/completion transitions when they materially aid review. Accepted and default records remain unbadged; identify locked, proposed, and unresolved material explicitly.
 
 The wireframe is interaction-architecture evidence. Its caption states that UI owns exact layout, component choice, spacing, typography, color, and treatment. Do not add JavaScript, fake interactive controls, device chrome, a fixed device viewport, pixel or source geometry, framework components, application theme colors, an iframe, or a standalone wireframe publication. Do not infer missing actions from conventional UI or from a fixture. If a UI comp is available, render it after the semantic wireframe and retain the frame/action traceability links so reviewers can compare the semantic contract with its visual realization.
+
+## Reviewed UI illustrations
+
+Use [the maintained capture flow](ui-capture.md) after rendering and before
+independent UI review. Detailed UI illustrations embed the exact reviewed clean
+PNG with alternative text, state caption and full-size image link; saved HTML
+and annotated images remain linked. `--capture` supplies the source-bound
+`capture.json`. Validate exact structured source meaning, complete image coverage,
+renderer HTML/CSS/font bytes and PNG hashes/dimensions before planning output.
+Do not recapture or embed live scene markup inline during publication. Semantic
+UX wireframes keep their native HTML contract above. Without captures, this
+lower-level inspection renderer shows a capture-pending notice and does not
+satisfy operational PRD readiness.
 
 ## Component-State Catalog
 

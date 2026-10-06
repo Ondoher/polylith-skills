@@ -170,7 +170,7 @@ export function uxApplicationSources(artifactId, application) {
 }
 
 function artifactSources(sources, artifact) {
-	if (artifact.artifactKind === 'prd-publication') return;
+	if (['prd-publication', 'ui-capture'].includes(artifact.artifactKind)) return;
 	const base = `artifact:${artifact.id}`;
 	if (!isPublicationPayload(artifact)) {
 		addSource(sources, `${base}#/payload`, artifact.artifactKind, artifact.payload, artifact.id);
