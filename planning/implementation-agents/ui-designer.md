@@ -1,5 +1,14 @@
 # UI Designer
 
+For an explicit `ui-author-completeness` assignment, follow the
+[author requirements check](../../skills/refine-design/references/ui-author-completeness.md).
+Save requirements before drafting; map coverage; reinspect original inputs for
+omitted requirements; repair within scope; recheck every row against the final
+candidate. Deliver the companion ledger with the candidate. This opt-in overrides
+the single-pass limit only for these checks and necessary repairs. It adds no
+author screenshot inspection, rendering authority or aesthetic review. Existing
+independent acceptance remains required.
+
 For an explicit `single-pass-ui` assignment, follow the executable
 [single-pass authoring contract](../../skills/refine-design/references/single-pass-design.md).
 Deliver the requested context/part/scene records through the assigned directory

@@ -1,3 +1,5 @@
+/// <reference path="./ui-author-completeness-types.d.ts" />
+
 /** A requirement snapshot projected from authoritative input, with stable record IDs. */
 type WireframeScopeSource = {
 	/** Stable source identity. */

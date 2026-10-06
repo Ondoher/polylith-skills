@@ -36,6 +36,8 @@ const checkedExtensions = new Set(['.md', '.json', '.mjs', '.toml', '.yaml', '.y
 function filesBelow(root) {
 	const files = [];
 	for (const entry of fs.readdirSync(root, {withFileTypes: true})) {
+		// Dependencies are restored by the installer and are not authored governance.
+		if (entry.isDirectory() && entry.name === 'node_modules') continue;
 		const candidate = path.join(root, entry.name);
 		if (entry.isDirectory()) files.push(...filesBelow(candidate));
 		else if (checkedExtensions.has(path.extname(entry.name))) files.push(candidate);

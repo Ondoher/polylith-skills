@@ -241,6 +241,16 @@ requirement and let engineering design determine how to satisfy it.
 
 ## UI Composition And Product Comps
 
+An explicit `ui-author-completeness` assignment uses the opt-in
+[author requirements check](references/ui-author-completeness.md). Supply exact
+accepted sources, ownership and a companion-ledger destination. Require the
+initial saved ledger before new authoring and the final all-row semantic recheck.
+Validate its bookkeeping against parent-derived current source/candidate
+identities; readiness does not replace independent review. Ordinary assignments
+retain their existing authoring contract until the comparative trial supports a
+default-policy decision. Do not send screenshots back for an additional author
+inspection cycle.
+
 For the UI pass of a whole-product refinement, or an explicit surface or complex-component comp request, read [the UI composition and HTML contract](references/ui-composition.md). Begin only after the exact UX schema 0.4 revision and requested scope pass the independent UX review gate. The named `ui-designer` may then return its JSON-only schema 0.4 `composition` response with reusable `parts` and `scenes` referencing `partRef` plus bounded `changes`. Every scene binds the exact UX artifact, a catalog state, and the steps, alternates, component behavior, frame, state, or feedback it depicts. The parent passes the saved review receipt, current product-description path, and canonical source root to `scripts/ui-composition.mjs`; persistence fails when the receipt is missing, stale, non-passing, outside the UI's consumed UX scope, or bound to a different file than the selected UX source path. When image assets are declared, pass an explicit asset root inside that canonical source root after realpath resolution; asset-free proposals do not treat their staging directory as asset authority. Generated HTML uses the same asset boundary. After persistence, render clean and annotated HTML from the same scene with `scripts/ui-composition-html.mjs` or the combined PRD publisher.
 
 Carry the accepted handoff's functional groups, control intent, state/value meaning and applicable research guidance into UI. Follow [research into control design](references/ui-composition.md#research-into-control-design) in composition and component modes; keep the compact decision account in accompanying notes. The independent UI reviewer checks recognizable controls and research translation in the actual render. This does not expand description review beyond completeness and research adherence.
