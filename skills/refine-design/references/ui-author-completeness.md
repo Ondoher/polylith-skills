@@ -10,6 +10,9 @@ captures and obtains the existing exact independent review.
 
 Supply exact accepted UX and any spatial handoff, foundations, applicable research,
 existing UI when relevant, owned scope IDs and the assigned output destination.
+Assign source and candidate identity IDs up front. These file-role identifiers
+need not equal runtime artifact IDs; use the same expected IDs when validating
+delivery, and always recompute their hashes from current files.
 Keep the ledger beside the owning product's run or assignment. Temporary synthetic
 experiments may use a task directory under repository-root `.codex-tmp/`.
 Use the ordinary scoped file/MCP route. The parent owns canonical writes.
@@ -28,10 +31,16 @@ coverage; a candidate change invalidates the final recheck.
 1. Read accepted inputs and save the initial ledger. Include required surfaces,
    scenes, materially different states, controls, visible values, content, feedback,
    accessibility and constraints within owned scope. Capture dependencies on
-   shared treatments without claiming their ownership.
+   shared treatments without claiming their ownership. Include source-required
+   relationships between scenes or layers that must coexist in the final state,
+   such as retained host context with an open dialog. Separate previews do not
+   prove the assembled state; record another owner's contribution as an assembly
+   dependency for the parent.
 2. Author through the existing route. Update each row with scene/node evidence
    and its status. A reference that exists is insufficient: its representation
    must express the required state, subject, value and meaning.
+   Use the existing read-only native schema validation where available; a covered
+   semantic row does not excuse an invalid layout or other structural contract.
 3. Reinspect the original inputs, including requirements absent from the initial
    inventory. Add missing rows with their source references; repair omissions
    within scope. Record actual discoveries and repair episodes. Do not pretend

@@ -2,9 +2,10 @@
 
 Recorded: 5 October 2026.
 
-Status: execution in progress; reevaluated on 5 October 2026. Milestones 1-2 are
-implemented as opt-in; behavioral and comparative evaluation are underway.
-Default-policy changes have not been made. See
+Status: executed on 5 October 2026; milestones 1-5 complete. The check is
+implemented and evaluated as opt-in. The comparison does not support default
+promotion; the previous default is retained. See
+[readiness and disposition](ui-author-completeness-readiness.md) and
 [execution progress](ui-author-completeness-progress.md).
 The owner selected an author-owned requirements/omission check and explicitly
 excluded returning screenshots to the author for another inspection cycle.
